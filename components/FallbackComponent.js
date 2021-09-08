@@ -32,11 +32,7 @@ const FallbackComponent = () => {
               FontStyle.LabelButton,
               {color: Colors.GrayScale.White},
             ]}>
-            <Image
-              source={require('../assets/icons/arrow_right.png')}
-              resizeMode="contain"
-              style={styles.iconButton}
-            />
+            
           </TouchableOpacity>
         </View>
       </View>

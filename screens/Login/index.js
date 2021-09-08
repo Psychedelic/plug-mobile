@@ -9,7 +9,7 @@ function Login({ setLoading }) {
   useEffect(() => {
     console.log('login');
     setLoading(false);
-  }, [setLoading]);
+  }, []);
   return (
     <View style={styles.flex}>
       <Text>PLUG</Text>

@@ -18,11 +18,7 @@ const Checkbox = props => {
             setChecked(!checked);
           }}
           style={styles.checkbox}>
-          <Image
-            source={require('../assets/icons/check.png')}
-            resizeMode="contain"
-            style={styles.iconButton}
-          />
+          
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
