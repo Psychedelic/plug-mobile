@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     },
     buttonRainbow: {},
     buttonGray: {
-        backgroundColor: Colors.Gray.Medium,
+        backgroundColor: Colors.Gray.Primary,
     },
     textRainbow: {
         color: Colors.White.Pure,

@@ -56,7 +56,7 @@ export default LoaderHOC(Welcome, 'Verificando datos...');
 const styles = StyleSheet.create({
     root: {
         flex: 1,
-        backgroundColor: Colors.Background.Dark,
+        backgroundColor: Colors.Background.Primary,
         justifyContent: 'center'
     },
     container: {
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     title: {
         justifyContent: 'center',
         alignItems: 'center',
-        color: Colors.White.Medium,
+        color: Colors.White.Primary,
         fontSize: 26,
         fontWeight: "bold",
         marginTop: 28
