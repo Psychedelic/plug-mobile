@@ -16,19 +16,18 @@ export const FontFamily = {
 
 export const Colors = {
   Background: {
-    Dark: '#15161C',
-    SuperDark: '#000000',
+    Primary: '#15161C',
+    Pure: '#000000',
   },
   White: {
     Pure: '#FFFFFF',
-    Dark: '#F3F4F5',
-    Medium: '#E1E8FD',
-    Light: '#7A7E8B'
+    Primary: '#E1E8FD',
+    Secondary: '#7A7E8B'
   },
   Gray: {
-    Light: '#23242A',
-    Medium: '#33343A',
-    Dark: '#616571',
+    Primary: '#33343A',
+    Secondary: '#23242A',
+    Pure: '#616571',
   },
   Rainbow: 'linear-gradient(94.95deg, #FFE701 -1.41%, #FA51D3 34.12%, #10D9ED 70.19%, #52FF53 101.95%);',
   ActionBlue: '#3574F4',
