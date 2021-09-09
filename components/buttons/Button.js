@@ -1,5 +1,6 @@
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
+import { Colors, Rainbow } from '../../constants/theme';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 const Button = ({ text, onPress, variant, customStyle, }) => {
@@ -25,9 +26,9 @@ const WithRainbowGradient = ({ variant, children, customStyle }) => (
     variant === "rainbow"
         ? (<LinearGradient
             style={[styles.button, styles.buttonRainbow, customStyle]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            colors={['rgb(255, 231, 1)', 'rgb(250, 81, 211)', 'rgb(16, 217, 237)', 'rgb(82, 255, 83)']}
+            start={Rainbow.start}
+            end={Rainbow.end}
+            colors={Rainbow.colors}
         >
             {children}
         </LinearGradient>)
@@ -49,15 +50,14 @@ const styles = StyleSheet.create({
     },
     buttonRainbow: {},
     buttonGray: {
-        backgroundColor: '#33343A'
+        backgroundColor: Colors.Gray.Medium,
     },
     textRainbow: {
-        color: '#FFFFFF'
+        color: Colors.White.Pure,
     },
     textGray: {
-        color: '#FFFFFF'
+        color: Colors.White.Pure,
     }
-
 });
 
 const variants = {

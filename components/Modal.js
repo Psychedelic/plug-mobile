@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: Colors.GrayScale.BackgroundModal,
+    backgroundColor: Colors.Dark.SuperDark,
   },
   modalView: {
     margin: 20,
@@ -104,10 +104,10 @@ const styles = StyleSheet.create({
     height: 20,
   },
   textStyle: {
-    color: Colors.GrayScale.White,
+    color: Colors.White.Dark,
   },
   textStyleCancel: {
-    color: Colors.GrayScale.Medium,
+    color: Colors.Gray.Medium,
   },
   modalText: {
     margin: Metrics.Margin,
@@ -118,9 +118,9 @@ const styles = StyleSheet.create({
     marginBottom: Metrics.Margin,
     textAlign: 'center',
     ...FontStyle.Normal,
-    color: Colors.GrayScale.SuperDark,
+    color: Colors.Background.SuperDark,
   },
-  closeIcon: {width: 20, height: 20, tintColor: Colors.GrayScale.SuperDark},
+  closeIcon: {width: 20, height: 20, tintColor: Colors.Background.SuperDark},
   modalIcon: {
     width: 100,
     height: 100,

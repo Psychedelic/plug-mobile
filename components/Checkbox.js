@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   checkboxLabel: {
     ...FontStyle.Normal,
     letterSpacing: 1,
-    color: Colors.GrayScale.SuperDark,
+    color: Colors.Gray.Dark,
     paddingLeft: Metrics.Padding,
   },
   checkbox: {

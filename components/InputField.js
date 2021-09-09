@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   input: {
     ...FontStyle.Normal,
     paddingHorizontal: Metrics.Padding,
-    backgroundColor: Colors.GrayScale.White,
+    backgroundColor: Colors.White.Medium,
     ...Shadow,
     height: 50,
     width: '100%',

@@ -30,7 +30,7 @@ const FallbackComponent = () => {
               Shadow,
               styles.button,
               FontStyle.LabelButton,
-              {color: Colors.GrayScale.White},
+              {color: Colors.White.Dark},
             ]}>
             
           </TouchableOpacity>
@@ -55,7 +55,7 @@ export const styles = StyleSheet.create({
   },
   textError: {
     ...FontStyle.Normal,
-    color: Colors.GrayScale.SuperDark,
+    color: Colors.Gray.Dark,
     marginVertical: Metrics.Margin,
   },
   buttonContainer: {
@@ -74,7 +74,7 @@ export const styles = StyleSheet.create({
     borderRadius: 25,
   },
   buttonLabel: {
-    color: Colors.GrayScale.SuperDark,
+    color: Colors.Gray.Dark,
   },
   iconButton: {
     height: 25,

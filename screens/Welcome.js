@@ -4,6 +4,7 @@ import LoaderHOC from '../helpers/LoaderHOC';
 import { StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/slices/auth';
+import { Colors } from '../constants/theme';
 import Button from '../components/buttons/Button';
 import Container from '../components/Container';
 
@@ -55,7 +56,7 @@ export default LoaderHOC(Welcome, 'Verificando datos...');
 const styles = StyleSheet.create({
     root: {
         flex: 1,
-        backgroundColor: '#15161C',
+        backgroundColor: Colors.Background.Dark,
         justifyContent: 'center'
     },
     container: {
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
     title: {
         justifyContent: 'center',
         alignItems: 'center',
-        color: '#E1E8FD',
+        color: Colors.White.Medium,
         fontSize: 26,
         fontWeight: "bold",
         marginTop: 28

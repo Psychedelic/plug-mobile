@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   },
   loaderText: {
     ...FontStyle.Subtitle,
-    color: Colors.GrayScale.SuperDark,
+    color: Colors.Background.SuperDark,
     marginTop: Metrics.Margin,
   },
 });

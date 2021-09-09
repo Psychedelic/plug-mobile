@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     ...FontStyle.Big,
-    color: Colors.GrayScale.SuperDark,
+    color: Colors.Background.SuperDark,
     width: '70%',
     marginBottom: Metrics.Margin / 2,
   },

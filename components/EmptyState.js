@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
   label: {
     ...FontStyle.NormalBold,
-    color: Colors.GrayScale.SuperDark,
+    color: Colors.Gray.Dark,
     textAlign: 'center',
   },
 });
