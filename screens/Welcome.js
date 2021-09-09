@@ -1,19 +1,12 @@
 import React, { useEffect } from 'react';
 import { View, SafeAreaView, StatusBar, Text, Image} from 'react-native';
-import LoaderHOC from '../helpers/LoaderHOC';
 import { StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/slices/auth';
 import Button from '../components/buttons/Button';
-import Container from '../components/Container';
 
-function Welcome({ setLoading }) {
+function Welcome() {
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        console.log('welcome');
-        setLoading(false);
-    }, []);
 
     const onPress = () => {
         dispatch(login(true));
@@ -49,7 +42,7 @@ function Welcome({ setLoading }) {
     );
 }
 
-export default LoaderHOC(Welcome, 'Verificando datos...');
+export default Welcome;
 
 
 const styles = StyleSheet.create({
