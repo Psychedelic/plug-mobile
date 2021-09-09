@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 /* eslint-disable no-param-reassign */
 export const walletSlice = createSlice({
@@ -9,11 +9,12 @@ export const walletSlice = createSlice({
   },
   reducers: {
     login: (state, action) => {
-      state.assetsLoading = action.payload;
+      state.isInitialized = action.payload;
+      state.isUnlocked = action.payload;
     },
   },
 });
 
-export const {login} = walletSlice.actions;
+export const { login } = walletSlice.actions;
 
 export default walletSlice.reducer;

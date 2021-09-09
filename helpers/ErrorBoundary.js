@@ -1,5 +1,4 @@
 import React from 'react';
-import FallbackComponent from '../components/FallbackComponent';
 
 class ErrorBoundary extends React.Component {
   state = {hasError: null};
@@ -15,7 +14,7 @@ class ErrorBoundary extends React.Component {
   logErrorToServices = console.log;
   render() {
     if (this.state.hasError) {
-      return <FallbackComponent />;
+      return <Text>Oops</Text>;
     }
     return this.props.children;
   }
