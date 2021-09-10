@@ -5,15 +5,15 @@
  * @format
  * @flow strict-local
  */
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 
-import {persistor, store} from './redux/configureStore';
+import { persistor, store } from './redux/configureStore';
 
 import Routes from './routes/index';
 import React from 'react';
 import ErrorBoundary from './helpers/ErrorBoundary';
-import {PersistGate} from 'redux-persist/integration/react';
-import {Text} from 'react-native';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Text } from 'react-native';
 
 const App = () => {
   console.log('renderin app');
