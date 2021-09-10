@@ -1,10 +1,11 @@
 import React from 'react';
+import { Text } from 'react-native';
 
 class ErrorBoundary extends React.Component {
-  state = {hasError: null};
+  state = { hasError: null };
 
   static getDerivedStateFromError(error) {
-    return {hasError: error};
+    return { hasError: error };
   }
 
   componentDidCatch(error, info) {

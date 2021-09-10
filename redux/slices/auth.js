@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-/* eslint-disable no-param-reassign */
 export const walletSlice = createSlice({
   name: 'auth',
   initialState: {
