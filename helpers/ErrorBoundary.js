@@ -1,4 +1,5 @@
 import React from 'react';
+import { Text } from 'react-native';
 
 class ErrorBoundary extends React.Component {
   state = {hasError: null};
