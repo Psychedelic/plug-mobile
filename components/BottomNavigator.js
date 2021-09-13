@@ -16,7 +16,7 @@ const BottomNavigator = ({ tabs, selected, onSelect }) => (
                             : styles.default,
                         styles.text]}
                     >
-                        {tab.text}
+                        {tab.name}
                     </Text>
                 </TouchableOpacity>
             ))
