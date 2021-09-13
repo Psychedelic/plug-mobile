@@ -2,31 +2,22 @@ import React from 'react';
 import { SafeAreaView, View, StyleSheet, StatusBar } from 'react-native';
 
 const MyStatusBar = ({ backgroundColor, ...props }) => (
-    <View style={[styles.statusBar, { backgroundColor }]}>
-        <SafeAreaView>
-            <StatusBar
-                translucent
-                backgroundColor={backgroundColor}
-                {...props}
-            />
-        </SafeAreaView>
-    </View>
-)
+  <View style={[styles.statusBar, { backgroundColor }]}>
+    <SafeAreaView>
+      <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+    </SafeAreaView>
+  </View>
+);
 
 const Container = ({ children }) => {
-    return (
-        <View style={styles.container}>
-            <MyStatusBar
-                barStyle="light-content"
-                backgroundColor='black'
-            />
-            <View style={styles.outerContainer} />
-            <View style={styles.content}>
-                {children}
-            </View>
-        </View>
-    )
-}
+  return (
+    <View style={styles.container}>
+      <MyStatusBar barStyle="light-content" backgroundColor="black" />
+      <View style={styles.outerContainer} />
+      <View style={styles.content}>{children}</View>
+    </View>
+  );
+};
 
 export default Container;
 
@@ -51,3 +42,4 @@ const styles = StyleSheet.create({
         paddingTop: 60,
     }
 })
+

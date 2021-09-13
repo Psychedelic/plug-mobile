@@ -1,4 +1,4 @@
-import {Dimensions} from 'react-native';
+import { Dimensions } from 'react-native';
 
 export const Metrics = {
   ScreenWidth: Dimensions.get('window').width,
@@ -15,27 +15,42 @@ export const FontFamily = {
 };
 
 export const Colors = {
-  Primary: '#00AFE8',
-  Second: '#6BD2EF',
-  Third: '#ECF3FC',
-  Background: '#F7F8F9',
-  Warning: '#FFC554',
-  Success: '#BDE346',
-  Error: '#E06454',
-  GrayScale: {
-    White: '#FFFFFF',
-    Divider: '#CCCCCC',
-    Light: '#E8E8E8',
-    Medium: '#CCCCCC',
-    Dark: '#767676',
-    VeryDark: '#585858',
-    SuperDark: '#3B3B3B',
-    BackgroundModal: 'rgba(118, 118, 118, 0.4)',
+  ActionBlue: '#3574F4',
+  Background: {
+    Primary: '#15161C',
+    Pure: '#000000',
+  },
+  White: {
+    Pure: '#FFFFFF',
+    Primary: '#E1E8FD',
+    Secondary: '#7A7E8B',
+  },
+  Gray: {
+    Primary: '#33343A',
+    Secondary: '#23242A',
+    Pure: '#616571',
   },
 };
 
+export const Rainbow = {
+  start: {
+    x: 0,
+    y: 0,
+  },
+  end: {
+    x: 1,
+    y: 1,
+  },
+  colors: [
+    'rgb(255, 231, 1)',
+    'rgb(250, 81, 211)',
+    'rgb(16, 217, 237)',
+    'rgb(82, 255, 83)',
+  ],
+};
+
 export const Shadow = {
-  shadowColor: Colors.GrayScale.SuperDark,
+  shadowColor: Colors.Background.Primary,
   shadowOffset: {
     width: 0,
     height: 4,
