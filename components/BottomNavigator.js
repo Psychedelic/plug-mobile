@@ -1,4 +1,5 @@
 import React from 'react';
+import { Colors } from '../constants/theme';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const BottomNavigator = ({ tabs, selected, onSelect }) => (
@@ -44,9 +45,9 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   selected: {
-    color: '#E1E8FD',
+    color: Colors.White.Primary,
   },
   default: {
-    color: '#7A7E8B',
+    color: Colors.White.Secondary,
   },
 });

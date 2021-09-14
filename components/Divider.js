@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { Colors } from '../constants/theme';
 
-const Divider = ({ color = '#23242A', style }) => (
+const Divider = ({ color = Colors.Gray.Secondary, style }) => (
   <View style={[styles.root, { backgroundColor: color }, style]} />
 );
 

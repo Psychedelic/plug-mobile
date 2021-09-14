@@ -6,6 +6,9 @@ import { Icon } from '../components/icons';
 import Tokens from './Tokens';
 import NFTs from './NFTs';
 import Divider from '../components/Divider';
+import Header from '../components/Header';
+import { FontStyles } from '../constants/theme';
+import AccountInfo from '../components/AccountInfo';
 
 const TABS = selected => [
   {
@@ -18,6 +21,12 @@ const TABS = selected => [
   },
 ];
 
+const header = {
+  left: <Text>🔥</Text>,
+  center: <AccountInfo />,
+  right: <Text>😀😁😆</Text>,
+};
+
 function Home() {
   const [selectedTab, setSelectedTab] = useState(0);
 
@@ -27,6 +36,7 @@ function Home() {
 
   return (
     <Container>
+      <Header {...header} />
       <Text style={styles.title}>{tabs[selectedTab].name}</Text>
       <Divider />
       {
@@ -44,10 +54,8 @@ export default Home;
 
 const styles = StyleSheet.create({
   title: {
-    color: '#E1E8FD',
-    fontSize: 28,
     paddingLeft: 20,
     paddingBottom: 20,
-    fontWeight: 'bold',
+    ...FontStyles.Title,
   },
 });

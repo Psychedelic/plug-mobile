@@ -1,5 +1,6 @@
 import React from 'react';
 import { SafeAreaView, View, StyleSheet, StatusBar } from 'react-native';
+import { Colors } from '../constants/theme';
 
 const MyStatusBar = ({ backgroundColor, ...props }) => (
   <View style={[styles.statusBar, { backgroundColor }]}>
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   outerContainer: {
-    backgroundColor: 'black',
+    backgroundColor: Colors.Black.Pure,
     flex: 1,
     position: 'absolute',
     top: 0,
@@ -36,9 +37,8 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    backgroundColor: '#15161C',
+    backgroundColor: Colors.Black.Primary,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
-    paddingTop: 60,
   },
 });

@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/slices/auth';
 import Button from '../components/buttons/Button';
+import { Colors } from '../constants/theme';
 
 function Welcome() {
   const dispatch = useDispatch();
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
   title: {
     justifyContent: 'center',
     alignItems: 'center',
-    color: '#E1E8FD',
+    color: Colors.White.Primary,
     fontSize: 26,
     fontWeight: 'bold',
     marginTop: 28,
