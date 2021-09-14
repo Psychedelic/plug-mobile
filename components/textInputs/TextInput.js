@@ -13,14 +13,14 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.Black.Primary,
     color: Colors.White.Pure,
     borderRadius: 15,
-    fontWeight: "600",
+    fontWeight: '600',
     fontSize: 18,
   },
   innerLabelStyle: {
     flex: 1,
     color: '#FFFFFF',
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
     paddingRight: 14,
   },
   labledInputStyle: {
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingBottom: 13,
     backgroundColor: Colors.Black.Primary,
-  }
+  },
 });
 
 const variants = {
@@ -62,8 +62,14 @@ const variants = {
   },
 };
 
-
-const Input = ({ label, value, variant, onChangeText, placeholder, customStyle }) => {
+const Input = ({
+  label,
+  value,
+  variant,
+  onChangeText,
+  placeholder,
+  customStyle,
+}) => {
   const {
     viewStyle,
     inputStyle,
@@ -76,9 +82,7 @@ const Input = ({ label, value, variant, onChangeText, placeholder, customStyle }
 
   return (
     <View style={[viewStyle, customStyle]}>
-      { variant === 'innerLabel' && (
-        <Text style={innerLabelStyle}>{label}</Text>
-      )}
+      {variant === 'innerLabel' && <Text style={innerLabelStyle}>{label}</Text>}
       <TextInput
         style={inputStyle}
         placeholderTextColor={placeholderTextColor}
