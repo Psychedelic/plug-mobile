@@ -27,7 +27,7 @@ const header = {
   right: <Text>😀😁😆</Text>,
 };
 
-function Home() {
+function Wallet() {
   const [selectedTab, setSelectedTab] = useState(0);
 
   const onSelect = value => setSelectedTab(value);
@@ -50,7 +50,7 @@ function Home() {
   );
 }
 
-export default Home;
+export default Wallet;
 
 const styles = StyleSheet.create({
   title: {
