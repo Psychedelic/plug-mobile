@@ -39,6 +39,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#15161C',
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
-    padding: 24,
+    paddingTop: 60,
   },
 });

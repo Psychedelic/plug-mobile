@@ -23,6 +23,7 @@
     "react-native-modal-selector": "^2.0.8",
     "react-native-restart": "^0.0.22",
     "react-native-safe-area-context": "^3.3.0",
+    "react-native-svg": "^12.1.1",
     "react-redux": "^7.2.4",
     "redux-persist": "^6.0.0",
     "yup": "^0.32.9"
