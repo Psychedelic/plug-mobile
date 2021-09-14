@@ -10,15 +10,14 @@ const Swipe = createMaterialTopTabNavigator();
 const renderTabBar = () => null;
 
 const SwipeNavigator = () => (
-    <View style={{ flex: 1 }}>
-        <Swipe.Navigator
-            initialRouteName={Routes.WALLET_SCREEN}
-            tabBar={renderTabBar}
-        >
-            <Swipe.Screen component={ProfileScreen} name={Routes.PROFILE_SCREEN} />
-            <Swipe.Screen component={WalletScreen} name={Routes.WALLET_SCREEN} />
-        </Swipe.Navigator>
-    </View>
-)
+  <View style={{ flex: 1 }}>
+    <Swipe.Navigator
+      initialRouteName={Routes.WALLET_SCREEN}
+      tabBar={renderTabBar}>
+      <Swipe.Screen component={ProfileScreen} name={Routes.PROFILE_SCREEN} />
+      <Swipe.Screen component={WalletScreen} name={Routes.WALLET_SCREEN} />
+    </Swipe.Navigator>
+  </View>
+);
 
 export default SwipeNavigator;

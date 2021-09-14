@@ -31,11 +31,9 @@ const AppStack = () => (
 
 export default function Navigation() {
   const { isUnlocked, isInitialized } = useSelector(state => state.auth);
-  return <NavigationContainer>
-    {
-      isUnlocked
-        ? <AppStack />
-        : <AuthStack isInitialized={isInitialized} />
-    }
-  </NavigationContainer>
+  return (
+    <NavigationContainer>
+      {isUnlocked ? <AppStack /> : <AuthStack isInitialized={isInitialized} />}
+    </NavigationContainer>
+  );
 }

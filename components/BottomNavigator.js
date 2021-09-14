@@ -5,7 +5,10 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 const BottomNavigator = ({ tabs, selected, onSelect }) => (
   <View style={styles.root}>
     {tabs.map((tab, index) => (
-      <TouchableOpacity key={index} style={styles.tab} onPress={() => onSelect(index)}>
+      <TouchableOpacity
+        key={index}
+        style={styles.tab}
+        onPress={() => onSelect(index)}>
         {tab.icon}
         <Text
           style={[
