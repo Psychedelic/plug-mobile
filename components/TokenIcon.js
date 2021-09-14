@@ -1,4 +1,5 @@
 import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 
 const TokenIcon = ({ icon, symbol, color, customStyle, ...props }) => {
   return (
