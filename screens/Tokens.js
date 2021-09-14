@@ -24,7 +24,7 @@ const Tokens = () => {
   return (
     <View>
       {TOKENS.map(token => (
-        <TokenItem {...token} />
+        <TokenItem key={token.symbol} {...token} />
       ))}
     </View>
   );

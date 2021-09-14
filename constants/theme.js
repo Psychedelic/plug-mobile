@@ -8,15 +8,9 @@ export const Metrics = {
   BorderRadius: 8,
 };
 
-export const FontFamily = {
-  Bold: 'oswald-bold',
-  Medium: 'oswald-medium',
-  Regular: 'oswald-regular',
-};
-
 export const Colors = {
   ActionBlue: '#3574F4',
-  Background: {
+  Black: {
     Primary: '#15161C',
     Pure: '#000000',
   },
@@ -50,7 +44,7 @@ export const Rainbow = {
 };
 
 export const Shadow = {
-  shadowColor: Colors.Background.Primary,
+  shadowColor: Colors.Black.Primary,
   shadowOffset: {
     width: 0,
     height: 4,
@@ -60,46 +54,55 @@ export const Shadow = {
   elevation: 5,
 };
 
-export const FontStyle = {
+export const FontStyles = {
   Title: {
-    fontSize: 24,
-    fontFamily: FontFamily.Bold,
+    fontSize: 22,
+    fontWeight: '600',
+    color: Colors.White.Primary,
   },
   Subtitle: {
-    fontSize: 18,
-    fontFamily: FontFamily.Medium,
+    fontSize: 20,
+    fontWeight: '600',
+    color: Colors.White.Primary,
   },
   Normal: {
     fontSize: 16,
-    fontFamily: FontFamily.Regular,
+    fontWeight: '500',
+    color: Colors.White.Primary
   },
-  NormalBold: {
+  NormalGray: {
     fontSize: 16,
-    fontFamily: FontFamily.Bold,
+    fontWeight: '400',
+    color: Colors.White.Secondary
   },
-  Min: {
+  Small: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: Colors.White.Primary
+  },
+  SmallGray: {
+    fontSize: 14,
+    fontWeight: '400',
+    color: Colors.White.Secondary
+  },
+  Smaller: {
     fontSize: 12,
-    fontFamily: FontFamily.Regular,
+    fontWeight: '400',
+    color: Colors.White.Primary
   },
-  Big: {
-    fontSize: 36,
-    fontFamily: FontFamily.Bold,
+  SmallerGray: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: Colors.White.Secondary
   },
   Button: {
-    fontSize: 18,
-    fontFamily: FontFamily.Medium,
-    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: '600',
+    color: Colors.White.Pure,
   },
-  LabelButton: {
-    fontSize: 18,
-    fontFamily: FontFamily.Regular,
-  },
-  Header: {
-    fontSize: 24,
-    fontFamily: FontFamily.Medium,
-  },
-  SuperMin: {
-    fontSize: 10,
-    fontFamily: FontFamily.Regular,
-  },
+  LinkButton: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: Colors.ActionBlue,
+  }
 };
