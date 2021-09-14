@@ -22,24 +22,23 @@ const Container = ({ children }) => {
 export default Container;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    outerContainer: {
-        backgroundColor: 'black',
-        flex: 1,
-        position: 'absolute',
-        top: 0, 
-        bottom: 0, 
-        right: 0, 
-        left: 0,
-    },
-    content: {
-        flex: 1,
-        backgroundColor: '#15161C',
-        borderTopLeftRadius: 40,
-        borderTopRightRadius: 40,
-        paddingTop: 60,
-    }
-})
-
+  container: {
+    flex: 1,
+  },
+  outerContainer: {
+    backgroundColor: 'black',
+    flex: 1,
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+  },
+  content: {
+    flex: 1,
+    backgroundColor: '#15161C',
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40,
+    paddingTop: 60,
+  },
+});

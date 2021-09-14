@@ -5,22 +5,16 @@ import XTCIcon from './svg/XTCIcon';
 import ICPIcon from './svg/ICPIcon';
 
 const IconTypes = {
-    tokens: TokensIcon,
-    nfts: NFTsIcon,
-    icp: ICPIcon,
-    xtc: XTCIcon,
+  tokens: TokensIcon,
+  nfts: NFTsIcon,
+  icp: ICPIcon,
+  xtc: XTCIcon,
 };
 
 const Icon = ({ name, color, ...props }) => {
-    const IconElement = IconTypes[name];
+  const IconElement = IconTypes[name];
 
-    return (
-        <IconElement
-            {...props}
-            name={name}
-            color={color}
-        />
-    )
-}
+  return <IconElement {...props} name={name} color={color} />;
+};
 
 export default Icon;
