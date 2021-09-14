@@ -3,7 +3,6 @@ import { View, Text, StyleSheet } from 'react-native';
 import TokenIcon from './TokenIcon';
 import { FontStyles } from '../constants/theme';
 
-
 const TokenItem = ({ icon, name, amount, value, symbol }) => (
   <View style={styles.root}>
     <TokenIcon icon={icon} symbol={symbol} />

@@ -1,7 +1,7 @@
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { FontStyles, Colors } from '../../constants/theme';
+import { Colors } from '../../constants/theme';
 
 const Button = ({ text, onPress, variant, customStyle }) => {
   const { buttonStyle, textStyle } = variants[variant];

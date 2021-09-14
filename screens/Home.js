@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import Container from '../components/Container';
 import BottomNavigator from '../components/BottomNavigator';
 import { Icon } from '../components/icons';
@@ -24,8 +24,8 @@ const TABS = selected => [
 const header = {
   left: <Text>🔥</Text>,
   center: <AccountInfo />,
-  right: <Text>😀😁😆</Text>
-}
+  right: <Text>😀😁😆</Text>,
+};
 
 function Home() {
   const [selectedTab, setSelectedTab] = useState(0);
@@ -56,6 +56,6 @@ const styles = StyleSheet.create({
   title: {
     paddingLeft: 20,
     paddingBottom: 20,
-    ...FontStyles.Title
+    ...FontStyles.Title,
   },
 });

@@ -68,32 +68,32 @@ export const FontStyles = {
   Normal: {
     fontSize: 16,
     fontWeight: '500',
-    color: Colors.White.Primary
+    color: Colors.White.Primary,
   },
   NormalGray: {
     fontSize: 16,
     fontWeight: '400',
-    color: Colors.White.Secondary
+    color: Colors.White.Secondary,
   },
   Small: {
     fontSize: 14,
     fontWeight: '500',
-    color: Colors.White.Primary
+    color: Colors.White.Primary,
   },
   SmallGray: {
     fontSize: 14,
     fontWeight: '400',
-    color: Colors.White.Secondary
+    color: Colors.White.Secondary,
   },
   Smaller: {
     fontSize: 12,
     fontWeight: '400',
-    color: Colors.White.Primary
+    color: Colors.White.Primary,
   },
   SmallerGray: {
     fontSize: 12,
     fontWeight: '500',
-    color: Colors.White.Secondary
+    color: Colors.White.Secondary,
   },
   Button: {
     fontSize: 20,
@@ -104,5 +104,5 @@ export const FontStyles = {
     fontSize: 16,
     fontWeight: '400',
     color: Colors.ActionBlue,
-  }
+  },
 };
