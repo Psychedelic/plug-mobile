@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     height: 56,
     width: '100%',
-    backgroundColor: Colors.Background.Primary,
+    backgroundColor: Colors.Black.Primary,
     color: Colors.White.Pure,
     borderRadius: 15,
     fontWeight: "600",
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     paddingTop: 13,
     paddingLeft: 20,
     paddingBottom: 13,
-    backgroundColor: Colors.Background.Primary,
+    backgroundColor: Colors.Black.Primary,
   }
 });
 
