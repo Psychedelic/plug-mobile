@@ -3,8 +3,18 @@ import TokensIcon from './svg/TokensIcon';
 import NFTsIcon from './svg/NFTsIcon';
 import XTCIcon from './svg/XTCIcon';
 import ICPIcon from './svg/ICPIcon';
+import ArrowDownIcon from './svg/ArrowDownIcon';
+import ChevronLeftIcon from './svg/ChevronLeftIcon';
+import ChevronRightIcon from './svg/ChevronRightIcon';
+import GearIcon from './svg/GearIcon';
+import PlusIcon from './svg/PlusIcon';
 
 const IconTypes = {
+  arrowDown: ArrowDownIcon,
+  chevronLeft: ChevronLeftIcon,
+  chevronRight: ChevronRightIcon,
+  gear: GearIcon,
+  plus: PlusIcon,
   tokens: TokensIcon,
   nfts: NFTsIcon,
   icp: ICPIcon,
