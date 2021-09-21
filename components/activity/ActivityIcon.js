@@ -1,15 +1,14 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ACTIVITY_TYPES } from '../constants/activity';
-import { Icon } from './icons';
+import { ACTIVITY_TYPES } from './constants';
+import { Icon } from '../icons';
+import { parseImageName } from './utils';
 
 const TYPE_IMAGES = {
   [ACTIVITY_TYPES.RECEIVE]: 'activityReceive',
   [ACTIVITY_TYPES.SEND]: 'activitySend',
   [ACTIVITY_TYPES.BURN]: 'activityReceive',
 };
-
-const parseImageName = name => name.replace('.svg', '').toLowerCase();
 
 const ActivityIcon = ({ image, type }) => (
   <View style={styles.root}>

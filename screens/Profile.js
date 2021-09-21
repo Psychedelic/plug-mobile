@@ -13,7 +13,7 @@ import { FontStyles, Metrics } from '../constants/theme';
 import Icon from '../components/icons/Icon';
 import UserIcon from '../components/UserIcon';
 import Button from '../components/buttons/Button';
-import ActivityItem from '../components/ActivityItem';
+import ActivityItem from '../components/activity/ActivityItem';
 
 const ACTIVITY = [
   {
