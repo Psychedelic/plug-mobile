@@ -10,7 +10,11 @@ const TokenItem = ({ icon, name, amount, value, symbol }) => (
     <TokenIcon icon={icon} symbol={symbol} />
     <View style={styles.leftContainer}>
       <Text style={FontStyles.Normal}>{name}</Text>
-      <TokenFormat value={amount} token={symbol} style={FontStyles.NormalGray} />
+      <TokenFormat
+        value={amount}
+        token={symbol}
+        style={FontStyles.NormalGray}
+      />
     </View>
     <UsdFormat value={value} style={styles.value} />
   </View>

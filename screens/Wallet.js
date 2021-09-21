@@ -23,7 +23,7 @@ const TABS = selected => [
 ];
 
 const header = {
-  left: <UserIcon size='small' icon='🔥' />,
+  left: <UserIcon size="small" icon="🔥" />,
   center: <AccountInfo />,
   right: <Text>😆</Text>,
 };

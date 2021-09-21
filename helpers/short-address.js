@@ -8,8 +8,12 @@ const defaultConfig = {
 };
 
 const shortAddress = (address, config = defaultConfig) => {
-  if (!address) return '';
-  if (typeof address !== 'string') return '';
+  if (!address) {
+    return '';
+  }
+  if (typeof address !== 'string') {
+    return '';
+  }
 
   let leftSize = config.leftSize || defaultConfig.leftSize;
   let rightSize = config.rightSize || defaultConfig.rightSize;
@@ -18,7 +22,9 @@ const shortAddress = (address, config = defaultConfig) => {
     rightSize = 4;
   }
 
-  if (address.length <= leftSize + rightSize) return address;
+  if (address.length <= leftSize + rightSize) {
+    return address;
+  }
 
   const separator = config.separator || defaultConfig.separator;
   const replaceRules = config.replace || defaultConfig.replace;

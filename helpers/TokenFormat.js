@@ -1,16 +1,16 @@
 import React from 'react';
 import { Text } from 'react-native';
-import NumberFormat from "react-number-format";
+import NumberFormat from 'react-number-format';
 
 const TokenFormat = ({ value, token, style }) => (
-    <NumberFormat
-        value={value}
-        displayType='text'
-        thousandSeparator=','
-        decimalScale={5}
-        suffix={` ${token}`}
-        renderText={value => <Text style={style}>{value}</Text>}
-    />
-)
+  <NumberFormat
+    value={value}
+    displayType="text"
+    thousandSeparator=","
+    decimalScale={5}
+    suffix={` ${token}`}
+    renderText={textValue => <Text style={style}>{textValue}</Text>}
+  />
+);
 
 export default TokenFormat;
