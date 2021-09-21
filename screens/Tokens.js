@@ -9,7 +9,7 @@ const TOKENS = [
     name: 'ICP',
     amount: 152.28,
     value: 12183.29,
-    icon: <Icon name="icp" />,
+    icon: <Icon name="dfinity" />,
   },
   {
     symbol: 'Cycles',

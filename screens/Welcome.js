@@ -20,13 +20,13 @@ function Welcome() {
         <Image source={require('../assets/icons/plug-white.png')} />
         <Text style={styles.title}>Welcome to Plug</Text>
         <Button
-          customStyle={styles.componentMargin}
+          buttonStyle={styles.componentMargin}
           text="Create Wallet"
           onPress={onPress}
           variant="rainbow"
         />
         <Button
-          customStyle={styles.componentMargin}
+          buttonStyle={styles.componentMargin}
           text="Import Wallet"
           onPress={onPress}
           variant="gray"

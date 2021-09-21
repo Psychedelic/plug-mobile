@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, StyleSheet, StatusBar } from 'react-native';
+import { SafeAreaView, View, StyleSheet, StatusBar, ScrollView } from 'react-native';
 import { Colors } from '../constants/theme';
 
 const MyStatusBar = ({ backgroundColor, ...props }) => (
@@ -13,9 +13,11 @@ const MyStatusBar = ({ backgroundColor, ...props }) => (
 const Container = ({ children }) => {
   return (
     <View style={styles.container}>
-      <MyStatusBar barStyle="light-content" backgroundColor="black" />
-      <View style={styles.outerContainer} />
-      <View style={styles.content}>{children}</View>
+      <ScrollView bounces={false} contentContainerStyle={styles.container}>
+        <MyStatusBar barStyle="light-content" backgroundColor="black" />
+        <View style={styles.outerContainer} />
+        <View style={styles.content}>{children}</View>
+      </ScrollView>
     </View>
   );
 };
@@ -24,7 +26,7 @@ export default Container;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
   },
   outerContainer: {
     backgroundColor: Colors.Black.Pure,

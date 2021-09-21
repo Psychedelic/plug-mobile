@@ -8,8 +8,12 @@ import ChevronLeftIcon from './svg/ChevronLeftIcon';
 import ChevronRightIcon from './svg/ChevronRightIcon';
 import GearIcon from './svg/GearIcon';
 import PlusIcon from './svg/PlusIcon';
+import ActivityReceiveIcon from './svg/ActivityReceiveIcon';
+import ActivitySendIcon from './svg/ActivitySendIcon';
 
 const IconTypes = {
+  activityReceive: ActivityReceiveIcon,
+  activitySend: ActivitySendIcon,
   arrowDown: ArrowDownIcon,
   chevronLeft: ChevronLeftIcon,
   chevronRight: ChevronRightIcon,
@@ -17,7 +21,7 @@ const IconTypes = {
   plus: PlusIcon,
   tokens: TokensIcon,
   nfts: NFTsIcon,
-  icp: ICPIcon,
+  dfinity: ICPIcon,
   xtc: XTCIcon,
 };
 

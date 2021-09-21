@@ -7,15 +7,15 @@ import { MMKV } from 'react-native-mmkv';
 // so we have to wrap our sync calls with Promise resolvers/rejecters
 export const storage = {
   setItem: (key, value) => {
-    MMKV.set(key, value);
+    MMKV?.set?.(key, value);
     return Promise.resolve(true);
   },
   getItem: key => {
-    const value = MMKV.getString(key);
+    const value = MMKV?.getString?.(key);
     return Promise.resolve(value);
   },
   removeItem: key => {
-    MMKV.delete(key);
+    MMKV?.delete?.(key);
     return Promise.resolve();
   },
 };

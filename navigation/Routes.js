@@ -11,29 +11,32 @@ import SwipeNavigator from './SwipeNavigator';
 const Stack = createStackNavigator();
 
 const AuthStack = ({ isInitialized }) => (
-  <Stack.Navigator
-    screenOptions={{
-      headerShown: false,
-    }}>
-    {isInitialized ? (
-      <Stack.Screen name={Routes.LOGIN_SCREEN} component={LoginScreen} />
-    ) : (
-      <Stack.Screen name={Routes.WELCOME_SCREEN} component={WelcomeScreen} />
-    )}
-  </Stack.Navigator>
+  <NavigationContainer>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      {isInitialized ? (
+        <Stack.Screen name={Routes.LOGIN_SCREEN} component={LoginScreen} />
+      ) : (
+        <Stack.Screen name={Routes.WELCOME_SCREEN} component={WelcomeScreen} />
+      )}
+    </Stack.Navigator>
+  </NavigationContainer>
 );
 
 const AppStack = () => (
-  <Stack.Navigator screenOptions={{ headerShown: false }}>
-    <Stack.Screen name={Routes.SWIPE_LAYOUT} component={SwipeNavigator} />
-  </Stack.Navigator>
+  <NavigationContainer>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name={Routes.SWIPE_LAYOUT} component={SwipeNavigator} />
+    </Stack.Navigator>
+  </NavigationContainer>
 );
 
 export default function Navigation() {
   const { isUnlocked, isInitialized } = useSelector(state => state.auth);
-  return (
-    <NavigationContainer>
-      {isUnlocked ? <AppStack /> : <AuthStack isInitialized={isInitialized} />}
-    </NavigationContainer>
-  );
+  return isUnlocked
+    ? <AppStack />
+    : <AuthStack isInitialized={isInitialized} />
 }
+

@@ -1,17 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Colors, Rainbow } from '../constants/theme';
 
 const UserIcon = ({ size, icon }) => (
-    <LinearGradient
-        style={[styles.circle, styles[size]]}
-        {...Rainbow}
-    >
-        <View style={[styles.background, styles['background' + size]]}>
-            <Text style={styles['text' + size]}>{icon}</Text>
-        </View>
-    </LinearGradient >
+    <TouchableOpacity>
+        <LinearGradient
+            style={[styles.circle, styles[size]]}
+            {...Rainbow}
+        >
+            <View style={[styles.background, styles['background' + size]]}>
+                <Text style={styles['text' + size]}>{icon}</Text>
+            </View>
+        </LinearGradient >
+    </TouchableOpacity>
 )
 
 export default UserIcon;

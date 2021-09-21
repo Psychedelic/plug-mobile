@@ -3,19 +3,19 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Colors } from '../../constants/theme';
 
-const Button = ({ text, onPress, variant, customStyle }) => {
-  const { buttonStyle, textStyle } = variants[variant];
+const Button = ({ text, onPress, variant, buttonStyle, textStyle }) => {
+  const { buttonVariant, textVariant } = variants[variant];
 
   return (
-    <WithRainbowGradient variant={variant} customStyle={customStyle}>
+    <WithRainbowGradient variant={variant} buttonStyle={buttonStyle}>
       <TouchableOpacity
         onPress={onPress}
         style={[
           styles.button,
-          buttonStyle,
-          variant !== 'rainbow' && customStyle,
+          buttonVariant,
+          variant !== 'rainbow' && buttonStyle,
         ]}>
-        <Text style={[styles.text, textStyle]}>{text}</Text>
+        <Text style={[styles.text, textVariant, textStyle]}>{text}</Text>
       </TouchableOpacity>
     </WithRainbowGradient>
   );
@@ -23,10 +23,10 @@ const Button = ({ text, onPress, variant, customStyle }) => {
 
 export default Button;
 
-const WithRainbowGradient = ({ variant, children, customStyle }) =>
+const WithRainbowGradient = ({ variant, children, buttonStyle }) =>
   variant === 'rainbow' ? (
     <LinearGradient
-      style={[styles.button, styles.buttonRainbow, customStyle]}
+      style={[styles.button, styles.buttonRainbow, buttonStyle]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
       colors={[
@@ -67,11 +67,11 @@ const styles = StyleSheet.create({
 
 const variants = {
   rainbow: {
-    buttonStyle: styles.buttonRainbow,
-    textStyle: styles.textRainbow,
+    buttonVariant: styles.buttonRainbow,
+    textVariant: styles.textRainbow,
   },
   gray: {
-    buttonStyle: styles.buttonGray,
-    textStyle: styles.textGray,
+    buttonVariant: styles.buttonGray,
+    textVariant: styles.textGray,
   },
 };
