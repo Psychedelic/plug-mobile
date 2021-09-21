@@ -2,15 +2,17 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import TokenIcon from './TokenIcon';
 import { FontStyles } from '../constants/theme';
+import UsdFormat from '../helpers/UsdFormat';
+import TokenFormat from '../helpers/TokenFormat';
 
 const TokenItem = ({ icon, name, amount, value, symbol }) => (
   <View style={styles.root}>
     <TokenIcon icon={icon} symbol={symbol} />
     <View style={styles.leftContainer}>
       <Text style={FontStyles.Normal}>{name}</Text>
-      <Text style={FontStyles.NormalGray}>{amount}</Text>
+      <TokenFormat value={amount} token={symbol} style={FontStyles.NormalGray} />
     </View>
-    <Text style={styles.value}>{value}</Text>
+    <UsdFormat value={value} style={styles.value} />
   </View>
 );
 
@@ -21,9 +23,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     width: '100%',
-    paddingTop: 20,
-    paddingLeft: 20,
-    paddingRight: 20,
+    marginTop: 20,
+    paddingHorizontal: 20,
   },
   leftContainer: {
     flexDirection: 'column',

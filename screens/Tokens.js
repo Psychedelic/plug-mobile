@@ -12,8 +12,8 @@ const TOKENS = [
     icon: <Icon name="dfinity" />,
   },
   {
-    symbol: 'Cycles',
-    name: 'XTC',
+    symbol: 'XTC',
+    name: 'Cycles',
     amount: 102.2913,
     value: 102.3,
     icon: <Icon name="xtc" />,

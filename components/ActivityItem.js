@@ -5,6 +5,8 @@ import { ACTIVITY_TYPES, ACTIVITY_STATUS } from '../constants/activity';
 import ActivityIcon from './ActivityIcon';
 import shortAddress from '../helpers/short-address';
 import { FontStyles } from '../constants/theme';
+import UsdFormat from '../helpers/UsdFormat';
+import TokenFormat from '../helpers/TokenFormat';
 
 const getTitle = (type, symbol, swapData, plug) => {
   switch (type) {
@@ -108,8 +110,8 @@ const ActivityItem = ({
         </Text>
       </View>
       <View style={styles.rightContainer}>
-        <Text style={FontStyles.Normal}>{amount}</Text>
-        <Text style={FontStyles.SmallGray}>{value}</Text>
+        <TokenFormat value={amount} token={symbol} style={FontStyles.Normal} />
+        <UsdFormat value={value} style={FontStyles.SmallGray} />
       </View>
     </View>
   );

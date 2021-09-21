@@ -13,11 +13,9 @@ const MyStatusBar = ({ backgroundColor, ...props }) => (
 const Container = ({ children }) => {
   return (
     <View style={styles.container}>
-      <ScrollView bounces={false} contentContainerStyle={styles.container}>
-        <MyStatusBar barStyle="light-content" backgroundColor="black" />
-        <View style={styles.outerContainer} />
-        <View style={styles.content}>{children}</View>
-      </ScrollView>
+      <MyStatusBar barStyle="light-content" backgroundColor="black" />
+      <View style={styles.outerContainer} />
+      <View style={styles.content}>{children}</View>
     </View>
   );
 };

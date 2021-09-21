@@ -9,6 +9,7 @@ import Divider from '../components/Divider';
 import Header from '../components/Header';
 import { FontStyles } from '../constants/theme';
 import AccountInfo from '../components/AccountInfo';
+import UserIcon from '../components/UserIcon';
 
 const TABS = selected => [
   {
@@ -22,9 +23,9 @@ const TABS = selected => [
 ];
 
 const header = {
-  left: <Text>🔥</Text>,
+  left: <UserIcon size='small' icon='🔥' />,
   center: <AccountInfo />,
-  right: <Text>😀😁😆</Text>,
+  right: <Text>😆</Text>,
 };
 
 function Wallet() {
