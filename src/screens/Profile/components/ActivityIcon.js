@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Icon } from '../../../components/icons';
+import Icon from '../../../components/icons';
 import { ACTIVITY_TYPES } from './constants';
 import { parseImageName } from './utils';
 
