@@ -24,38 +24,33 @@ const ActivityItem = ({
   image,
   name,
 }) => {
-
-  return type === ACTIVITY_TYPES.PLUG
-    ?
-    (
-      <View style={styles.container}>
-        <Image style={styles.image} source={icon} />
-        <View style={styles.leftContainer}>
-          <Text style={styles.pluggedTitle}>{`Plugged into ${name}`}</Text>
-          <Text>{moment(Date.parse(date)).format('MMM Do')}</Text>
-        </View>
+  return type === ACTIVITY_TYPES.PLUG ? (
+    <View style={styles.container}>
+      <Image style={styles.image} source={icon} />
+      <View style={styles.leftContainer}>
+        <Text style={styles.pluggedTitle}>{`Plugged into ${name}`}</Text>
+        <Text>{moment(Date.parse(date)).format('MMM Do')}</Text>
       </View>
-    )
-    :
-    (
-      <View style={styles.container}>
-        <ActivityIcon image={plug?.image || image} type={type} />
-        <View style={styles.leftContainer}>
-          <Text style={FontStyles.Normal}>
-            {getTitle(type, symbol, swapData, plug)}
-          </Text>
-          <Text style={FontStyles.SmallGray}>
-            {getStatus(status)}
-            {getDate(status, date)}
-            {getSubtitle(type, to, from)}
-          </Text>
-        </View>
-        <View style={styles.rightContainer}>
-          <TokenFormat value={amount} token={symbol} style={FontStyles.Normal} />
-          <UsdFormat value={value} style={FontStyles.SmallGray} />
-        </View>
+    </View>
+  ) : (
+    <View style={styles.container}>
+      <ActivityIcon image={plug?.image || image} type={type} />
+      <View style={styles.leftContainer}>
+        <Text style={FontStyles.Normal}>
+          {getTitle(type, symbol, swapData, plug)}
+        </Text>
+        <Text style={FontStyles.SmallGray}>
+          {getStatus(status, styles)}
+          {getDate(status, date)}
+          {getSubtitle(type, to, from)}
+        </Text>
       </View>
-    )
+      <View style={styles.rightContainer}>
+        <TokenFormat value={amount} token={symbol} style={FontStyles.Normal} />
+        <UsdFormat value={value} style={FontStyles.SmallGray} />
+      </View>
+    </View>
+  );
 };
 
 export default ActivityItem;
