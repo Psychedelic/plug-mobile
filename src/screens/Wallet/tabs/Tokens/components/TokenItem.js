@@ -6,6 +6,12 @@ import UsdFormat from '../../../../../components/number/UsdFormat';
 import TokenFormat from '../../../../../components/number/TokenFormat';
 
 import TokenIcon from './TokenIcon';
+<<<<<<< HEAD:src/screens/Wallet/tabs/Tokens/components/TokenItem.js
+=======
+import { FontStyles } from '../constants/theme';
+import UsdFormat from '../components/number/UsdFormat';
+import TokenFormat from './number/TokenFormat';
+>>>>>>> 6adbe41a2b228d110e19763bdd58af03c897dd53:src/components/TokenItem.js
 
 const TokenItem = ({ icon, name, amount, value, symbol }) => (
   <View style={styles.root}>
