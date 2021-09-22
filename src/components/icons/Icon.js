@@ -11,7 +11,7 @@ import PlusIcon from './svg/PlusIcon';
 import ActivityReceiveIcon from './svg/ActivityReceiveIcon';
 import ActivitySendIcon from './svg/ActivitySendIcon';
 
-export const IconTypes = {
+const IconTypes = {
   activityReceive: ActivityReceiveIcon,
   activitySend: ActivitySendIcon,
   arrowDown: ArrowDownIcon,
