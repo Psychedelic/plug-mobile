@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import Container from '../../components/Container';
 import BottomNavigator from '../../components/BottomNavigator';
-import { Icon } from '../../components/icons';
+import Icon from '../../components/icons';
 import Tokens from './tabs/Tokens';
 import NFTs from './tabs/NFTs';
 import Divider from '../../components/Divider';

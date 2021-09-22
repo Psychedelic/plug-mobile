@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { login } from '../../redux/slices/auth';
 import Button from '../../components/buttons/Button';
 import { Colors } from '../../constants/theme';
+import RainbowButton from '../../components/buttons/RainbowButton';
 
 function Welcome() {
   const dispatch = useDispatch();
@@ -19,17 +20,15 @@ function Welcome() {
       <View style={styles.container}>
         <Image source={require('../../assets/icons/plug-white.png')} />
         <Text style={styles.title}>Welcome to Plug</Text>
-        <Button
+        <RainbowButton
           buttonStyle={styles.componentMargin}
           text="Create Wallet"
           onPress={onPress}
-          variant="rainbow"
         />
         <Button
           buttonStyle={styles.componentMargin}
           text="Import Wallet"
           onPress={onPress}
-          variant="gray"
         />
       </View>
     </SafeAreaView>
