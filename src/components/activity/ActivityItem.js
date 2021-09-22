@@ -4,8 +4,8 @@ import moment from 'moment';
 import { ACTIVITY_TYPES } from './constants';
 import ActivityIcon from './ActivityIcon';
 import { FontStyles } from '../../constants/theme';
-import UsdFormat from '../../helpers/UsdFormat';
-import TokenFormat from '../../helpers/TokenFormat';
+import UsdFormat from '../../components/number/UsdFormat';
+import TokenFormat from '../number/TokenFormat';
 import { getDate, getStatus, getSubtitle, getTitle } from './utils';
 
 const ActivityItem = ({

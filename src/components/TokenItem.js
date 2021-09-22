@@ -2,8 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import TokenIcon from './TokenIcon';
 import { FontStyles } from '../constants/theme';
-import UsdFormat from '../helpers/UsdFormat';
-import TokenFormat from '../helpers/TokenFormat';
+import UsdFormat from '../components/number/UsdFormat';
+import TokenFormat from './number/TokenFormat';
 
 const TokenItem = ({ icon, name, amount, value, symbol }) => (
   <View style={styles.root}>
