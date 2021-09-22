@@ -1,7 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
-import TokenItem from '../../../../components/TokenItem';
+
 import Icon from '../../../../components/icons';
+
+import TokenItem from './components/TokenItem';
 
 const TOKENS = [
   {

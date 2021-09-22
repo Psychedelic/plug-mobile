@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import Container from '../../components/Container';
-import BottomNavigator from '../../components/BottomNavigator';
+import AccountInfo from '../../components/common/AccountInfo';
+import BottomTabs from '../../components/common/BottomTabs';
+import Container from '../../components/common/Container';
+import UserIcon from '../../components/common/UserIcon';
+import Divider from '../../components/common/Divider';
+import Header from '../../components/common/Header';
 import Icon from '../../components/icons';
+import { FontStyles } from '../../constants/theme';
+
 import Tokens from './tabs/Tokens';
 import NFTs from './tabs/NFTs';
-import Divider from '../../components/Divider';
-import Header from '../../components/Header';
-import { FontStyles } from '../../constants/theme';
-import AccountInfo from '../../components/AccountInfo';
-import UserIcon from '../../components/UserIcon';
 
 const TABS = selected => [
   {
@@ -46,7 +47,7 @@ function Wallet() {
       }
       {selectedTab === 1 && <NFTs />}
 
-      <BottomNavigator tabs={tabs} selected={selectedTab} onSelect={onSelect} />
+      <BottomTabs tabs={tabs} selected={selectedTab} onSelect={onSelect} />
     </Container>
   );
 }

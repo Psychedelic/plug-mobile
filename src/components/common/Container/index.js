@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView, View, StyleSheet, StatusBar } from 'react-native';
-import { Colors } from '../constants/theme';
+import { Colors } from '../../../constants/theme';
 
 const MyStatusBar = ({ backgroundColor, ...props }) => (
   <View style={[styles.statusBar, { backgroundColor }]}>

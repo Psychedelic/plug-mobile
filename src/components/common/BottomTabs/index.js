@@ -1,8 +1,8 @@
 import React from 'react';
-import { Colors } from '../constants/theme';
+import { Colors } from '../../../constants/theme';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const BottomNavigator = ({ tabs, selected, onSelect }) => (
+const BottomTabs = ({ tabs, selected, onSelect }) => (
   <View style={styles.root}>
     {tabs.map((tab, index) => (
       <TouchableOpacity
@@ -22,7 +22,7 @@ const BottomNavigator = ({ tabs, selected, onSelect }) => (
   </View>
 );
 
-export default BottomNavigator;
+export default BottomTabs;
 
 const styles = StyleSheet.create({
   root: {

@@ -1,19 +1,15 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Icon from '../../../components/icons';
-import { ACTIVITY_TYPES } from './constants';
-import { parseImageName } from './utils';
 
-const TYPE_IMAGES = {
-  [ACTIVITY_TYPES.RECEIVE]: 'activityReceive',
-  [ACTIVITY_TYPES.SEND]: 'activitySend',
-  [ACTIVITY_TYPES.BURN]: 'activityReceive',
-};
+import Icon from '../../../components/icons';
+
+import { ACTIVITY_TYPES, ACTIVITY_IMAGES } from './constants';
+import { parseImageName } from './utils';
 
 const ActivityIcon = ({ image, type }) => (
   <View style={styles.root}>
     {[ACTIVITY_TYPES.RECEIVE, ACTIVITY_TYPES.SEND].includes(type) && (
-      <Icon name={TYPE_IMAGES[type]} style={styles.activity} />
+      <Icon name={ACTIVITY_IMAGES[type]} style={styles.activity} />
     )}
     <Icon name={image ? parseImageName(image) : 'dfinity'} />
   </View>

@@ -1,21 +1,7 @@
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import { Colors, Rainbow } from '../constants/theme';
+import { StyleSheet } from 'react-native';
+import { Colors } from '../../../constants/theme';
 
-const UserIcon = ({ size, icon }) => (
-  <TouchableOpacity>
-    <LinearGradient style={[styles.circle, styles[size]]} {...Rainbow}>
-      <View style={[styles.background, styles['background' + size]]}>
-        <Text style={styles['text' + size]}>{icon}</Text>
-      </View>
-    </LinearGradient>
-  </TouchableOpacity>
-);
-
-export default UserIcon;
-
-const styles = StyleSheet.create({
+export default StyleSheet.create({
   circle: {
     justifyContent: 'center',
     alignItems: 'center',
