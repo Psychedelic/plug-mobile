@@ -12,3 +12,9 @@ export const ACTIVITY_STATUS = {
   PENDING: 1,
   REVERTED: 2,
 };
+
+export const ACTIVITY_IMAGES = {
+  [ACTIVITY_TYPES.RECEIVE]: 'activityReceive',
+  [ACTIVITY_TYPES.SEND]: 'activitySend',
+  [ACTIVITY_TYPES.BURN]: 'activityReceive',
+};

@@ -1,20 +1,14 @@
 import React from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import Container from '../../components/Container';
-import Divider from '../../components/Divider';
-import Header from '../../components/Header';
-import { FontStyles, Metrics } from '../../constants/theme';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import Container from '../../components/common/Container';
+import Divider from '../../components/common/Divider';
+import Header from '../../components/common/Header';
+import UserIcon from '../../components/common/UserIcon';
 import Icon from '../../components/icons';
-import UserIcon from '../../components/UserIcon';
 import Button from '../../components/buttons/Button';
 
 import ActivityItem from './components/ActivityItem';
+import styles from './styles';
 
 const ACTIVITY = [
   {
@@ -189,11 +183,8 @@ const Profile = () => (
           textStyle={{ fontSize: 16 }}
         />
       </View>
-
       <Divider />
-
       <Text style={styles.title}>Activity</Text>
-
       <View>
         {ACTIVITY.map((item, index) => (
           <ActivityItem key={index} {...item} />
@@ -204,17 +195,3 @@ const Profile = () => (
 );
 
 export default Profile;
-
-const styles = StyleSheet.create({
-  title: {
-    paddingVertical: Metrics.Padding,
-    paddingHorizontal: Metrics.Padding,
-    ...FontStyles.Title,
-  },
-  container: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    paddingHorizontal: Metrics.Padding,
-    paddingBottom: Metrics.Padding,
-  },
-});

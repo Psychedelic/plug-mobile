@@ -1,10 +1,11 @@
-import { Provider } from 'react-redux';
-import { persistor, store } from './src/redux/configureStore';
-import Routes from './src/navigation';
 import React from 'react';
-import ErrorBoundary from './src/components/ErrorBoundary';
-import { PersistGate } from 'redux-persist/integration/react';
 import { Text } from 'react-native';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+
+import Routes from './src/navigation';
+import { persistor, store } from './src/redux/configureStore';
+import ErrorBoundary from './src/components/common/ErrorBoundary';
 
 const App = () => {
   console.log('renderin app');

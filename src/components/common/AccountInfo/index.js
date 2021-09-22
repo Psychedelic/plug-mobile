@@ -1,5 +1,5 @@
 import React from 'react';
-import { FontStyles } from '../constants/theme';
+import { FontStyles } from '../../../constants/theme';
 import { StyleSheet, View, Text } from 'react-native';
 
 const AccountInfo = () => (
