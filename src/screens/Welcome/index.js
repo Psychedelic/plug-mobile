@@ -2,9 +2,9 @@ import React from 'react';
 import { View, SafeAreaView, StatusBar, Text, Image } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { login } from '../redux/slices/auth';
-import Button from '../components/buttons/Button';
-import { Colors } from '../constants/theme';
+import { login } from '../../redux/slices/auth';
+import Button from '../../components/buttons/Button';
+import { Colors } from '../../constants/theme';
 
 function Welcome() {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ function Welcome() {
     <SafeAreaView style={styles.root}>
       <StatusBar barStyle="light-content" />
       <View style={styles.container}>
-        <Image source={require('../assets/icons/plug-white.png')} />
+        <Image source={require('../../assets/icons/plug-white.png')} />
         <Text style={styles.title}>Welcome to Plug</Text>
         <Button
           buttonStyle={styles.componentMargin}

@@ -6,14 +6,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import Container from '../components/Container';
-import Divider from '../components/Divider';
-import Header from '../components/Header';
-import { FontStyles, Metrics } from '../constants/theme';
-import Icon from '../components/icons/Icon';
-import UserIcon from '../components/UserIcon';
-import Button from '../components/buttons/Button';
-import ActivityItem from '../components/activity/ActivityItem';
+import Container from '../../components/Container';
+import Divider from '../../components/Divider';
+import Header from '../../components/Header';
+import { FontStyles, Metrics } from '../../constants/theme';
+import Icon from '../../components/icons/Icon';
+import UserIcon from '../../components/UserIcon';
+import Button from '../../components/buttons/Button';
+import ActivityItem from '../../components/activity/ActivityItem';
 
 const ACTIVITY = [
   {

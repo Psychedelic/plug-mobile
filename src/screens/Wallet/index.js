@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text } from 'react-native';
-import Container from '../components/Container';
-import BottomNavigator from '../components/BottomNavigator';
-import { Icon } from '../components/icons';
-import Tokens from './Tokens';
-import NFTs from './NFTs';
-import Divider from '../components/Divider';
-import Header from '../components/Header';
-import { FontStyles } from '../constants/theme';
-import AccountInfo from '../components/AccountInfo';
-import UserIcon from '../components/UserIcon';
+import Container from '../../components/Container';
+import BottomNavigator from '../../components/BottomNavigator';
+import { Icon } from '../../components/icons';
+import Tokens from '../Tokens';
+import NFTs from '../NFTs';
+import Divider from '../../components/Divider';
+import Header from '../../components/Header';
+import { FontStyles } from '../../constants/theme';
+import AccountInfo from '../../components/AccountInfo';
+import UserIcon from '../../components/UserIcon';
 
 const TABS = selected => [
   {

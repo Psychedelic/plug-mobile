@@ -1,6 +1,6 @@
 import { Provider } from 'react-redux';
 import { persistor, store } from './src/redux/configureStore';
-import Routes from './src/navigation/Routes';
+import Routes from './src/navigation';
 import React from 'react';
 import ErrorBoundary from './src/helpers/ErrorBoundary';
 import { PersistGate } from 'redux-persist/integration/react';

@@ -1,9 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import Routes from './routesNames';
-import WalletScreen from '../screens/Wallet';
-import ProfileScreen from '../screens/Profile';
+import Routes from '../routes';
+import WalletScreen from '../../screens/Wallet';
+import ProfileScreen from '../../screens/Profile';
 
 const Swipe = createMaterialTopTabNavigator();
 
