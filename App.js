@@ -1,17 +1,8 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
 import { Provider } from 'react-redux';
-
-import { persistor, store } from './redux/configureStore';
-
-import Routes from './navigation/Routes';
+import { persistor, store } from './src/redux/configureStore';
+import Routes from './src/navigation';
 import React from 'react';
-import ErrorBoundary from './helpers/ErrorBoundary';
+import ErrorBoundary from './src/components/ErrorBoundary';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Text } from 'react-native';
 

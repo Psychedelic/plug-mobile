@@ -274,14 +274,14 @@ PODS:
     - React-jsi (= 0.65.1)
     - React-perflogger (= 0.65.1)
   - React-jsinspector (0.65.1)
-  - react-native-mmkv (1.2.5):
+  - react-native-mmkv (1.3.2):
     - MMKV
     - React-Core
   - react-native-pager-view (5.4.4):
     - React-Core
   - react-native-restart (0.0.22):
     - React-Core
-  - react-native-safe-area-context (3.3.0):
+  - react-native-safe-area-context (3.3.2):
     - React-Core
   - React-perflogger (0.65.1)
   - React-RCTActionSheet (0.65.1):
@@ -540,10 +540,10 @@ SPEC CHECKSUMS:
   React-jsi: 12913c841713a15f64eabf5c9ad98592c0ec5940
   React-jsiexecutor: 43f2542aed3c26e42175b339f8d37fe3dd683765
   React-jsinspector: 41e58e5b8e3e0bf061fdf725b03f2144014a8fb0
-  react-native-mmkv: b4087c6eb91e1dcfe44b74d55f53976c09246f03
+  react-native-mmkv: fec24eceb3afb9bfe744e5c8f88c44d6d05afc98
   react-native-pager-view: 5ab4d0b4b44d89f77310cb3eb8129745f274ce55
   react-native-restart: 733a51ad137f15b0f8dc34c4082e55af7da00979
-  react-native-safe-area-context: 61c8c484a3a9e7d1fda19f7b1794b35bbfd2262a
+  react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   React-perflogger: fd28ee1f2b5b150b00043f0301d96bd417fdc339
   React-RCTActionSheet: 7f3fa0855c346aa5d7c60f9ced16e067db6d29fa
   React-RCTAnimation: 2119a18ee26159004b001bc56404ca5dbaae6077
