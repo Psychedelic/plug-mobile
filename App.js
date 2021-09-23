@@ -1,18 +1,22 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Text } from 'react-native';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import Routes from './src/navigation';
-import { persistor, store } from './src/redux/configureStore';
+import { store } from './src/redux/configureStore';
 import { initKeyring } from './src/redux/slices/keyring';
 import ErrorBoundary from './src/components/common/ErrorBoundary';
+import persistStore from 'redux-persist/es/persistStore';
 
 const PersistedApp = () => {
   const dispatch = useDispatch();
-  const init = () => dispatch(initKeyring());
+
+  useEffect(() => {
+    dispatch(initKeyring());
+  }, [dispatch]);
   return (
-    <PersistGate loading={<Text>hello</Text>} persistor={persistor({}, init)}>
+    <PersistGate loading={<Text>hello</Text>} persistor={persistStore(store)}>
       <ErrorBoundary>
         <Routes />
       </ErrorBoundary>

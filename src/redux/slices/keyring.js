@@ -1,23 +1,27 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { PlugKeyRing } from '@psychedelic/plug-controller';
+import PlugController from '@psychedelic/plug-controller';
 import { keyringStorage } from '../configureReducer';
 
 export const initKeyring = createAsyncThunk('keyring/init', async () => {
-  const keyring = new PlugKeyRing(keyringStorage);
-  const res = await keyring.init();
-  console.log('KEYRING INIT', res, keyring);
+  const keyring = new PlugController.PlugKeyRing(keyringStorage);
+  await keyring.init();
   return keyring;
 });
 
 export const keyringSlice = createSlice({
   name: 'keyring',
   initialState: {
-    keyring: null,
+    instance: null,
+    state: {},
+    isInitialized: false,
+    isUnlocked: false,
   },
   reducers: {},
   extraReducers: builder => {
     builder.addCase(initKeyring.fulfilled, (state, action) => {
-      state.keyring = action.payload;
+      state.instance = action.payload;
+      state.isInitialized = action.payload.isInitialized;
+      state.isUnlocked = action.payload.isUnlocked;
     });
   },
 });
