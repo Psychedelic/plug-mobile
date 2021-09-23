@@ -2,7 +2,6 @@ import React from 'react';
 import { View } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Routes from '../Routes';
-import WalletScreen from '../../screens/Wallet';
 import ProfileScreen from '../../screens/Profile';
 import WalletNavigator from './WalletNavigator';
 

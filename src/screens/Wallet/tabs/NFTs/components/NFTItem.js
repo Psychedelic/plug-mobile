@@ -1,7 +1,3 @@
-import React from 'react';
-
-const NFTItem = () => (
-    <View></View>
-);
+const NFTItem = () => null;
 
 export default NFTItem;

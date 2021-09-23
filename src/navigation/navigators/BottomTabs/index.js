@@ -1,27 +1,12 @@
 import React from 'react';
 import { Colors } from '../../../constants/theme';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import Icon from '../../icons';
+import Icon from '../../../components/icons';
 
-const icons = [
-  <Icon name="tokens" />,
-  <Icon name="nfts" />,
-]
-
-const getIcon = (index) => icons[index];
-
-const BottomTabs = ({ state, descriptors, navigation }) => (
+const BottomTabs = ({ state, navigation }) => (
   <View style={styles.root}>
     {state.routes.map((route, index) => {
-
-      const { options } = descriptors[route.key];
-      const label =
-        options.tabBarLabel !== undefined
-          ? options.tabBarLabel
-          : options.title !== undefined
-            ? options.title
-            : route.name;
-
+      const label = route.name;
       const isFocused = state.index === index;
 
       const onPress = () => {
@@ -32,27 +17,25 @@ const BottomTabs = ({ state, descriptors, navigation }) => (
         });
 
         if (!isFocused && !event.defaultPrevented) {
-          navigation.navigate({ name: route.name, merge: true })
+          navigation.navigate({ name: route.name, merge: true });
         }
-      }
+      };
 
       return (
-        <TouchableOpacity
-          key={index}
-          style={styles.tab}
-          onPress={onPress}>
+        <TouchableOpacity key={index} style={styles.tab} onPress={onPress}>
           <Text>
-            <Icon name={index === 0 ? 'tokens' : 'nfts'} color={isFocused ? Colors.White.Primary : Colors.White.Secondary} />,
+            <Icon
+              name={index === 0 ? 'tokens' : 'nfts'}
+              color={isFocused ? Colors.White.Primary : Colors.White.Secondary}
+            />
+            ,
           </Text>
           <Text
-            style={[
-              isFocused ? styles.selected : styles.default,
-              styles.text,
-            ]}>
+            style={[isFocused ? styles.selected : styles.default, styles.text]}>
             {label}
           </Text>
         </TouchableOpacity>
-      )
+      );
     })}
   </View>
 );

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { RefreshControl, ScrollView, Text } from 'react-native';
+import { RefreshControl, ScrollView, Text, StyleSheet } from 'react-native';
 import Icon from '../../../../components/icons';
-import { Colors } from '../../../../constants/theme';
+import { Colors, FontStyles } from '../../../../constants/theme';
 import TokenItem from './components/TokenItem';
 import Container from '../../../../components/common/Container';
 import Divider from '../../../../components/common/Divider';
@@ -33,18 +33,18 @@ const TOKENS = [
 ];
 
 const Tokens = () => {
-
   const [refreshing, setRefresing] = useState(false);
 
   const onRefresh = () => {
     setRefresing(true);
 
-    setTimeout(() => setRefresing(false), 1000)
-  }
+    setTimeout(() => setRefresing(false), 1000);
+  };
 
   return (
     <Container>
       <Header {...header} />
+      <Text style={styles.title}>Tokens</Text>
       <Divider />
       <ScrollView
         refreshControl={
@@ -52,7 +52,8 @@ const Tokens = () => {
             refreshing={refreshing}
             onRefresh={onRefresh}
             tintColor={Colors.White.Primary}
-          />}>
+          />
+        }>
         {TOKENS.map(token => (
           <TokenItem key={token.symbol} {...token} />
         ))}
@@ -62,3 +63,11 @@ const Tokens = () => {
 };
 
 export default Tokens;
+
+const styles = StyleSheet.create({
+  title: {
+    paddingLeft: 20,
+    paddingBottom: 20,
+    ...FontStyles.Title,
+  },
+});

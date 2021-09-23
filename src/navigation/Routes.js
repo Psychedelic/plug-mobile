@@ -5,7 +5,7 @@ const Routes = {
   WALLET_SCREEN: 'WalletScreen',
   WELCOME_SCREEN: 'WelcomeScreen',
   TOKENS: 'Tokens',
-  NFTS: 'NFTs'
+  NFTS: 'NFTs',
 };
 
 export default Routes;
