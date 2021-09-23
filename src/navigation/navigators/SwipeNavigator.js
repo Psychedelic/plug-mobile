@@ -1,9 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import Routes from '../routes';
+import Routes from '../Routes';
 import WalletScreen from '../../screens/Wallet';
 import ProfileScreen from '../../screens/Profile';
+import WalletNavigator from './WalletNavigator';
 
 const Swipe = createMaterialTopTabNavigator();
 
@@ -15,7 +16,7 @@ const SwipeNavigator = () => (
       initialRouteName={Routes.WALLET_SCREEN}
       tabBar={renderTabBar}>
       <Swipe.Screen component={ProfileScreen} name={Routes.PROFILE_SCREEN} />
-      <Swipe.Screen component={WalletScreen} name={Routes.WALLET_SCREEN} />
+      <Swipe.Screen component={WalletNavigator} name={Routes.WALLET_SCREEN} />
     </Swipe.Navigator>
   </View>
 );

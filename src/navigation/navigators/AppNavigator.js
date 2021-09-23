@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import SwipeNavigator from './SwipeNavigator';
-import Routes from '../routes';
+import Routes from '../Routes';
 
 const Stack = createStackNavigator();
 

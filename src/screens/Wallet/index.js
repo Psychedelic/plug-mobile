@@ -8,7 +8,6 @@ import Divider from '../../components/common/Divider';
 import Header from '../../components/common/Header';
 import Icon from '../../components/icons';
 import { FontStyles } from '../../constants/theme';
-
 import Tokens from './tabs/Tokens';
 import NFTs from './tabs/NFTs';
 

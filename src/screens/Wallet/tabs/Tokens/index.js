@@ -1,9 +1,19 @@
-import React from 'react';
-import { View } from 'react-native';
-
+import React, { useState } from 'react';
+import { RefreshControl, ScrollView, Text } from 'react-native';
 import Icon from '../../../../components/icons';
-
+import { Colors } from '../../../../constants/theme';
 import TokenItem from './components/TokenItem';
+import Container from '../../../../components/common/Container';
+import Divider from '../../../../components/common/Divider';
+import Header from '../../../../components/common/Header';
+import UserIcon from '../../../../components/common/UserIcon';
+import AccountInfo from '../../../../components/common/AccountInfo';
+
+const header = {
+  left: <UserIcon size="small" icon="🔥" />,
+  center: <AccountInfo />,
+  right: <Text>😆</Text>,
+};
 
 const TOKENS = [
   {
@@ -23,12 +33,31 @@ const TOKENS = [
 ];
 
 const Tokens = () => {
+
+  const [refreshing, setRefresing] = useState(false);
+
+  const onRefresh = () => {
+    setRefresing(true);
+
+    setTimeout(() => setRefresing(false), 1000)
+  }
+
   return (
-    <View>
-      {TOKENS.map(token => (
-        <TokenItem key={token.symbol} {...token} />
-      ))}
-    </View>
+    <Container>
+      <Header {...header} />
+      <Divider />
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={Colors.White.Primary}
+          />}>
+        {TOKENS.map(token => (
+          <TokenItem key={token.symbol} {...token} />
+        ))}
+      </ScrollView>
+    </Container>
   );
 };
 
