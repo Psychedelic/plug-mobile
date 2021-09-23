@@ -6,7 +6,7 @@ import AuthNavigator from './navigators/AuthNavigator';
 import AppNavigator from './navigators/AppNavigator';
 
 export default function Navigation() {
-  const { isUnlocked, isInitialized } = useSelector(state => state.auth);
+  const { isUnlocked, isInitialized } = useSelector(state => state.keyring);
   return isUnlocked ? (
     <AppNavigator />
   ) : (
