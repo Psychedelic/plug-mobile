@@ -4,7 +4,7 @@ import { StyleSheet, View, Text } from 'react-native';
 
 const AccountInfo = () => (
   <View style={styles.container}>
-    <Text style={FontStyles.Normal}>lnth.icp</Text>
+    <Text style={FontStyles.Normal}>0xlnth.icp</Text>
     <Text style={FontStyles.SmallGray}>jfodm...kfm</Text>
   </View>
 );
