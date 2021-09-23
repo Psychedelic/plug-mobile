@@ -18,6 +18,16 @@ export const storage = {
     MMKV?.delete?.(key);
     return Promise.resolve();
   },
+  clear: () => {
+    MMKV?.clearAll?.();
+    return Promise.resolve();
+  },
+};
+
+export const keyringStorage = {
+  get: storage.getItem,
+  set: storage.setItem,
+  clear: storage.clear,
 };
 
 const authPersistConfig = {

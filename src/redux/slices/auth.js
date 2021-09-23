@@ -8,8 +8,9 @@ export const walletSlice = createSlice({
   },
   reducers: {
     login: (state, action) => {
-      state.isInitialized = action.payload;
-      state.isUnlocked = action.payload;
+      const { isInitialized, isUnlocked } = action.payload || {};
+      state.isInitialized = isInitialized;
+      state.isUnlocked = isUnlocked;
     },
   },
 });
