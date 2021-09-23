@@ -14,4 +14,14 @@ module.exports = {
       },
     }),
   },
+  resolver: {
+    extraNodeModules: {
+      // Polyfills for node libraries
+      crypto: require.resolve('crypto-browserify'),
+      assert: require.resolve('assert-browserify'),
+      stream: require.resolve('stream-browserify'),
+      events: require.resolve('events-browserify'),
+    },
+    sourceExts: ['jsx', 'js', 'ts', 'tsx'], //add here
+  },
 };
