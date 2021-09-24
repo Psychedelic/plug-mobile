@@ -9,11 +9,14 @@ export default StyleSheet.create({
     paddingRight: 20,
     height: 56,
     width: '100%',
-    backgroundColor: Colors.Black.Primary,
     color: Colors.White.Pure,
     borderRadius: 15,
     fontWeight: '600',
     fontSize: 18,
+  },
+  multiStyle:{
+    height: 90,
+    alignItems: 'flex-start',
   },
   innerLabelStyle: {
     flex: 1,
@@ -31,12 +34,12 @@ export default StyleSheet.create({
     alignItems: 'center',
     height: 56,
     borderRadius: 15,
+    backgroundColor: Colors.Black.Primary,
   },
   labledViewStyle: {
     flexWrap: 'nowrap',
     paddingTop: 13,
     paddingLeft: 20,
     paddingBottom: 13,
-    backgroundColor: Colors.Black.Primary,
   },
 });

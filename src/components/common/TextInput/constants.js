@@ -2,6 +2,22 @@ import styles from './styles';
 import { Colors } from '../../../constants/theme';
 
 export const variants = {
+  text: {
+    viewStyle: { ...styles.viewStyle, ...styles.textStyle },
+    inputStyle: styles.inputStyle,
+    placeholderTextColor: Colors.White.Secondary,
+    autoCorrect: false,
+    autoCapitalize: 'none',
+    secureTextEntry: false,
+  },
+  multi: {
+    viewStyle: { ...styles.viewStyle, ...styles.multiStyle },
+    inputStyle: {...styles.inputStyle, ...styles.multiStyle},
+    placeholderTextColor: Colors.White.Secondary,
+    autoCorrect: false,
+    autoCapitalize: 'none',
+    secureTextEntry: false,
+  },
   password: {
     viewStyle: styles.viewStyle,
     inputStyle: styles.inputStyle,

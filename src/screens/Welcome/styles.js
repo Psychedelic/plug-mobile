@@ -1,18 +1,13 @@
 import { StyleSheet } from 'react-native';
-
 import { Colors } from '../../constants/theme';
 
 export default StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: '#15161C',
-    justifyContent: 'center',
-  },
   container: {
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     textAlign: 'center',
-    padding: 24,
+    padding: 30,
+    flex: 1,
   },
   title: {
     justifyContent: 'center',
@@ -20,9 +15,12 @@ export default StyleSheet.create({
     color: Colors.White.Primary,
     fontSize: 26,
     fontWeight: 'bold',
-    marginTop: 28,
+    marginTop: 27,
   },
   componentMargin: {
-    marginTop: 24,
+    marginTop: 27,
   },
+  buttonMargin: {
+    marginTop: 22,
+  }
 });
