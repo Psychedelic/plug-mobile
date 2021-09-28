@@ -15,4 +15,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     backgroundColor: Colors.Gray.Primary,
   },
+  disabled: {
+    opacity: 0.2,
+  },
 });

@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     height: 74,
     justifyContent: 'center',
+    width: '100%',
   },
   left: {
     position: 'absolute',

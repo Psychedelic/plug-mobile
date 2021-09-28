@@ -11,7 +11,9 @@ import styles from './styles';
 function Welcome() {
   const navigation = useNavigation();
 
-  const onCreatePress = () => navigation.navigate(Routes.CREATE_PASSWORD);
+  const onCreatePress = () => navigation.navigate(Routes.CREATE_PASSWORD, {
+    navigateTo: Routes.BACKUP_SEED_PHRASE,
+  });
   const onImportPress = () => navigation.navigate(Routes.IMPORT_SEED_PHRASE);
 
   return (

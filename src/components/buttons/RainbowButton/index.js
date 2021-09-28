@@ -3,16 +3,22 @@ import LinearGradient from 'react-native-linear-gradient';
 import Button from '../Button';
 import { styles } from './styles';
 
-import { Rainbow } from '../../../constants/theme';
+import { DisabledRainbow, Rainbow } from '../../../constants/theme';
 
-const RainbowButton = ({ text, onPress, buttonStyle, textStyle }) => {
+const RainbowButton = ({ text, onPress, buttonStyle, textStyle, disabled, ...props }) => {
   return (
-    <LinearGradient style={[styles.button, buttonStyle]} {...Rainbow}>
+    <LinearGradient
+      style={[styles.button, buttonStyle]}
+      {...(disabled ? DisabledRainbow : Rainbow)}
+      {...props}
+    >
       <Button
         buttonStyle={[styles.buttonRainbow]}
         onPress={onPress}
         text={text}
         textStyle={[styles.textRainbow, textStyle]}
+        disabled={disabled}
+        {...props}
       />
     </LinearGradient>
   );

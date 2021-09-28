@@ -1,21 +1,20 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, Switch } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import Container from '../../../components/common/Container';
-import TextInput from '../../../components/common/TextInput';
-import { Colors, FontStyles } from '../../../constants/theme';
+import { FontStyles } from '../../../constants/theme';
 import RainbowButton from '../../../components/buttons/RainbowButton';
 import { useNavigation } from '@react-navigation/core';
-import Routes from '../../../navigation/Routes';
+import SeedPhrase from '../../../components/common/SeedPhrase';
+import Copy from '../../../components/common/Copy';
+
+const MNEMONIC = ['spread1', 'young1', 'spread2', 'young2', 'spread3', 'young3', 'spread4', 'young4', 'spread5', 'young5'];
 
 const BackupSeedPhrase = () => {
-  const [password, setPassword] = useState(null);
-  const [confirmPassword, setConfirmPassword] = useState(null);
-  const [faceId, setFaceId] = useState(false);
+  const [revealed, setRevealed] = useState(false);
   const navigation = useNavigation();
 
-  const toggleSwitch = () => setFaceId(previousState => !previousState);
-
-  const onPress = () => navigation.navigate(Routes.BACKUP_SEED_PHRASE);
+  const onPress = () => null;
+  const onReveal = () => setRevealed(true);
 
   return (
     <Container>
@@ -23,10 +22,15 @@ const BackupSeedPhrase = () => {
         <Text style={styles.title}>Seed Phrase Backup</Text>
         <Text style={styles.subtitle}>Below is the seed phrase for your new wallet, write it down.</Text>
 
+        <SeedPhrase mnemonic={MNEMONIC} onReveal={onReveal} />
+
+        <Copy text={MNEMONIC.join(' ')} customStyle={{ marginTop: 30 }} />
+
         <RainbowButton
-          buttonStyle={styles.componentMargin}
+          buttonStyle={styles.button}
           text="I've saved these words"
           onPress={onPress}
+          disabled={!revealed}
         />
 
       </View>
@@ -43,24 +47,16 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     ...FontStyles.NormalGray,
-    marginTop: 5,
+    marginTop: 10,
+    marginBottom: 30,
     textAlign: 'center'
   },
   container: {
     flex: 1,
     alignItems: 'center',
-    padding: 20,
+    padding: 30,
   },
-  switchContainer:{
-    flexDirection: 'row',
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  button: {
     marginTop: 30,
-    marginBottom: 35,
-  },
-  faceId:{
-    ...FontStyles.NormalGray,
-    fontSize: 16,
   }
 });

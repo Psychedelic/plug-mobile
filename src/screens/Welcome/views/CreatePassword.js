@@ -1,25 +1,34 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, Switch } from 'react-native';
+import { Text, View, Image, StyleSheet, Switch, Button } from 'react-native';
 import Container from '../../../components/common/Container';
 import TextInput from '../../../components/common/TextInput';
 import { Colors, FontStyles } from '../../../constants/theme';
 import RainbowButton from '../../../components/buttons/RainbowButton';
-import { useNavigation } from '@react-navigation/core';
-import Routes from '../../../navigation/Routes';
+import Header from '../../../components/common/Header';
+import PlugLogo from '../../../assets/icons/plug-logo-full.png';
 
-const CreatePassword = () => {
+const CreatePassword = ({ route, navigation }) => {
+  const { navigateTo } = route.params;
+  const { goBack } = navigation;
   const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
   const [faceId, setFaceId] = useState(false);
-  const navigation = useNavigation();
-
   const toggleSwitch = () => setFaceId(previousState => !previousState);
 
-  const onPress = () => navigation.navigate(Routes.BACKUP_SEED_PHRASE);
+  const handleNextStep = () => {
+    console.log(navigateTo)
+    navigation.navigate(navigateTo);
+  }
 
   return (
     <Container>
+
+      <Header left={<Button onPress={() => goBack()} title="< Back" />}
+        center={<Image source={PlugLogo} />}
+      />
+
       <View style={styles.container}>
+
         <Text style={styles.title}>Create Password</Text>
         <Text style={styles.subtitle}>Please create a secure password that you will remember.</Text>
 
@@ -39,6 +48,8 @@ const CreatePassword = () => {
           customStyle={{ backgroundColor: Colors.Gray.Secondary, marginTop: 22 }}
         />
 
+        <Text style={styles.help}>Must be at least 12 characters</Text>
+
         <View style={styles.switchContainer}>
           <Text style={styles.faceId}>Sign in with Face ID?</Text>
           <Switch
@@ -49,7 +60,13 @@ const CreatePassword = () => {
         <RainbowButton
           buttonStyle={styles.componentMargin}
           text="Continue"
-          onPress={onPress}
+          onPress={handleNextStep}
+          disabled={
+            !password || 
+            !confirmPassword || 
+            password !== confirmPassword ||
+            password.length < 12
+          }
         />
 
       </View>
@@ -62,7 +79,7 @@ export default CreatePassword;
 const styles = StyleSheet.create({
   title: {
     ...FontStyles.Title,
-    marginTop: 20,
+    marginTop: 20
   },
   subtitle: {
     ...FontStyles.NormalGray,
@@ -72,9 +89,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    padding: 20,
+    paddingHorizontal: 30,
   },
-  switchContainer:{
+  switchContainer: {
     flexDirection: 'row',
     width: '100%',
     alignItems: 'center',
@@ -82,8 +99,13 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginBottom: 35,
   },
-  faceId:{
+  faceId: {
     ...FontStyles.NormalGray,
     fontSize: 16,
+  },
+  help: {
+    ...FontStyles.SmallGray,
+    alignSelf: 'flex-start',
+    marginTop: 12
   }
 });

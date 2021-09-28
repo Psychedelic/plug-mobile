@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 export const walletSlice = createSlice({
   name: 'auth',
   initialState: {
-    isInitialized: false,
-    isUnlocked: false,
+    isInitialized: true,
+    isUnlocked: true,
   },
   reducers: {
     login: (state, action) => {

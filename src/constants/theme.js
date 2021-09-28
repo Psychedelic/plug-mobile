@@ -43,6 +43,23 @@ export const Rainbow = {
   ],
 };
 
+export const DisabledRainbow = {
+  start: {
+    x: 0,
+    y: 0,
+  },
+  end: {
+    x: 1,
+    y: 1,
+  },
+  colors: [
+    'rgba(255, 231, 1, 0.2)',
+    'rgba(250, 81, 211, 0.2)',
+    'rgba(16, 217, 237, 0.2)',
+    'rgba(82, 255, 83, 0.2)',
+  ],
+};
+
 export const Shadow = {
   shadowColor: Colors.Black.Primary,
   shadowOffset: {
