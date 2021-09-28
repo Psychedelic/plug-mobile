@@ -1,23 +1,38 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Image } from 'react-native';
 import Container from '../../../components/common/Container';
 import { FontStyles } from '../../../constants/theme';
 import RainbowButton from '../../../components/buttons/RainbowButton';
-import { useNavigation } from '@react-navigation/core';
 import SeedPhrase from '../../../components/common/SeedPhrase';
 import Copy from '../../../components/common/Copy';
+import Header from '../../../components/common/Header';
+import PlugLogo from '../../../assets/icons/plug-logo-full.png';
+import Back from '../../../components/common/Back';
 
 const MNEMONIC = ['spread1', 'young1', 'spread2', 'young2', 'spread3', 'young3', 'spread4', 'young4', 'spread5', 'young5'];
 
-const BackupSeedPhrase = () => {
+const BackupSeedPhrase = ({ navigation }) => {
+  const { goBack } = navigation;
   const [revealed, setRevealed] = useState(false);
-  const navigation = useNavigation();
 
   const onPress = () => null;
   const onReveal = () => setRevealed(true);
 
   return (
     <Container>
+
+      <Header
+        left={<Back onPress={() => goBack()} />}
+        center={<View style={{ width: 70, height: 33 }}>
+          <Image style={{
+            flex: 1,
+            width: null,
+            height: null,
+            resizeMode: 'contain'
+          }} source={PlugLogo} />
+        </View>}
+      />
+
       <View style={styles.container}>
         <Text style={styles.title}>Seed Phrase Backup</Text>
         <Text style={styles.subtitle}>Below is the seed phrase for your new wallet, write it down.</Text>

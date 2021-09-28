@@ -1,27 +1,48 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, Button, Image } from 'react-native';
+import { Text, View, StyleSheet, Button, Image, TouchableOpacity } from 'react-native';
 import Container from '../../../components/common/Container';
 import TextInput from '../../../components/common/TextInput';
 import { Colors, FontStyles } from '../../../constants/theme';
 import Routes from '../../../navigation/Routes';
-import { useNavigation } from '@react-navigation/core';
 import RainbowButton from '../../../components/buttons/RainbowButton';
 import Header from '../../../components/common/Header';
 import PlugLogo from '../../../assets/icons/plug-logo-full.png';
+import Back from '../../../components/common/Back';
+import Svg from 'react-native-svg';
 
 const ImportSeedPhrase = ({ navigation }) => {
   const { goBack } = navigation;
   const [seedPhrase, setSeedPhrase] = useState(null);
+  const [invalidSeedPhrase, setInvalidSeedPhrase] = useState(false);
 
   const onPress = () => navigation.navigate(Routes.CREATE_PASSWORD, {
     navigateTo: Routes.BACKUP_SEED_PHRASE,
-  });//change with real route
+  });
+
+  const validateMnemonic = () => (
+    seedPhrase === null
+      || seedPhrase.trim().split(/\s+/g).length !== 12
+      || invalidSeedPhrase
+  )
+
+  const onChangeText = (e) => {
+    setSeedPhrase(e);
+    setInvalidSeedPhrase(false);
+  }
 
   return (
     <Container>
 
-      <Header left={<Button onPress={() => goBack()} title="< Back" />}
-        center={<Image source={PlugLogo} />}
+      <Header
+        left={<Back onPress={() => goBack()} />}
+        center={<View style={{ width: 70, height: 33 }}>
+          <Image style={{
+            flex: 1,
+            width: null,
+            height: null,
+            resizeMode: 'contain'
+          }} source={PlugLogo} />
+        </View>}
       />
 
       <View style={styles.container}>
@@ -31,7 +52,7 @@ const ImportSeedPhrase = ({ navigation }) => {
         <TextInput
           value={seedPhrase}
           variant='multi'
-          onChangeText={setSeedPhrase}
+          onChangeText={onChangeText}
           placeholder='Secret Recovery Phrase'
           customStyle={{ backgroundColor: Colors.Gray.Secondary, marginTop: 30, marginBottom: 30 }}
           multiline
@@ -40,6 +61,7 @@ const ImportSeedPhrase = ({ navigation }) => {
         <RainbowButton
           text="Continue"
           onPress={onPress}
+          disabled={validateMnemonic()}
         />
 
 

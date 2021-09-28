@@ -6,6 +6,7 @@ import { Colors, FontStyles } from '../../../constants/theme';
 import RainbowButton from '../../../components/buttons/RainbowButton';
 import Header from '../../../components/common/Header';
 import PlugLogo from '../../../assets/icons/plug-logo-full.png';
+import Back from '../../../components/common/Back';
 
 const CreatePassword = ({ route, navigation }) => {
   const { navigateTo } = route.params;
@@ -23,8 +24,16 @@ const CreatePassword = ({ route, navigation }) => {
   return (
     <Container>
 
-      <Header left={<Button onPress={() => goBack()} title="< Back" />}
-        center={<Image source={PlugLogo} />}
+      <Header
+        left={<Back onPress={() => goBack()} />}
+        center={<View style={{ width: 70, height: 33 }}>
+          <Image style={{
+            flex: 1,
+            width: null,
+            height: null,
+            resizeMode: 'contain'
+          }} source={PlugLogo} />
+        </View>}
       />
 
       <View style={styles.container}>
@@ -62,8 +71,8 @@ const CreatePassword = ({ route, navigation }) => {
           text="Continue"
           onPress={handleNextStep}
           disabled={
-            !password || 
-            !confirmPassword || 
+            !password ||
+            !confirmPassword ||
             password !== confirmPassword ||
             password.length < 12
           }
