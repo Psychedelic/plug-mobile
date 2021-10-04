@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../../screens/Login';
 import Routes from '../Routes';
 import CreateImportNavigator from './CreateImportNavigator';
+import SwipeNavigator from './SwipeNavigator';
 
 const Stack = createStackNavigator();
 
@@ -14,7 +15,7 @@ const AuthNavigator = ({ isInitialized }) => (
         headerShown: false,
       }}>
       {isInitialized ? (
-        <Stack.Screen name={Routes.LOGIN_SCREEN} component={LoginScreen} />
+        <Stack.Screen name={Routes.SWIPE_LAYOUT} component={SwipeNavigator} />
       ) : (
         <Stack.Screen name={Routes.CREATE_IMPORT_LAYOUT} component={CreateImportNavigator} />
       )}

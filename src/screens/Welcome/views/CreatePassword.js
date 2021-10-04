@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, Image, StyleSheet, Switch, Button } from 'react-native';
+import { Text, View, Image, StyleSheet, Switch } from 'react-native';
 import Container from '../../../components/common/Container';
 import TextInput from '../../../components/common/TextInput';
 import { Colors, FontStyles } from '../../../constants/theme';
@@ -7,8 +7,10 @@ import RainbowButton from '../../../components/buttons/RainbowButton';
 import Header from '../../../components/common/Header';
 import PlugLogo from '../../../assets/icons/plug-logo-full.png';
 import Back from '../../../components/common/Back';
+import useKeyring from '../../../hooks/useKeyring';
 
 const CreatePassword = ({ route, navigation }) => {
+  const { createWallet } = useKeyring();
   const { navigateTo } = route.params;
   const { goBack } = navigation;
   const [password, setPassword] = useState(null);
@@ -16,8 +18,15 @@ const CreatePassword = ({ route, navigation }) => {
   const [faceId, setFaceId] = useState(false);
   const toggleSwitch = () => setFaceId(previousState => !previousState);
 
-  const handleNextStep = () => {
-    console.log(navigateTo)
+  const handleCreate = () => {
+    /*try {
+     const response = createWallet({ password });
+      console.log('response', response)
+    }
+    catch (e) {
+      console.log(e);
+    }*/
+
     navigation.navigate(navigateTo);
   }
 
@@ -69,7 +78,7 @@ const CreatePassword = ({ route, navigation }) => {
         <RainbowButton
           buttonStyle={styles.componentMargin}
           text="Continue"
-          onPress={handleNextStep}
+          onPress={handleCreate}
           disabled={
             !password ||
             !confirmPassword ||

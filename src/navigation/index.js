@@ -7,6 +7,9 @@ import AppNavigator from './navigators/AppNavigator';
 
 export default function Navigation() {
   const { isUnlocked, isInitialized } = useSelector(state => state.keyring);
+
+  console.log('unlocked', isUnlocked, isInitialized);
+
   return isUnlocked ? (
     <AppNavigator />
   ) : (

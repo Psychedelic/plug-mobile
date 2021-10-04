@@ -8,21 +8,30 @@ import RainbowButton from '../../../components/buttons/RainbowButton';
 import Header from '../../../components/common/Header';
 import PlugLogo from '../../../assets/icons/plug-logo-full.png';
 import Back from '../../../components/common/Back';
-import Svg from 'react-native-svg';
+import useKeyring from '../../../hooks/useKeyring';
 
 const ImportSeedPhrase = ({ navigation }) => {
+  const { importWallet } = useKeyring();
   const { goBack } = navigation;
   const [seedPhrase, setSeedPhrase] = useState(null);
   const [invalidSeedPhrase, setInvalidSeedPhrase] = useState(false);
 
-  const onPress = () => navigation.navigate(Routes.CREATE_PASSWORD, {
-    navigateTo: Routes.BACKUP_SEED_PHRASE,
-  });
+  const onPress = () => {
+    /*try {
+      importWallet({ mnemonic: seedPhrase });
+    }
+    catch (e) {
+      console.log(e);
+    }*/
+    navigation.navigate(Routes.CREATE_PASSWORD, {
+      navigateTo: Routes.BACKUP_SEED_PHRASE,
+    })
+  };
 
   const validateMnemonic = () => (
     seedPhrase === null
-      || seedPhrase.trim().split(/\s+/g).length !== 12
-      || invalidSeedPhrase
+    || seedPhrase.trim().split(/\s+/g).length !== 12
+    || invalidSeedPhrase
   )
 
   const onChangeText = (e) => {

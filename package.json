@@ -12,7 +12,7 @@
   "dependencies": {
     "@dfinity/agent": "^0.10.0",
     "@dfinity/principal": "^0.10.0",
-    "@psychedelic/plug-controller": "0.6.2",
+    "@psychedelic/plug-controller": "0.7.3",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/clipboard": "^1.5.1",
     "@react-navigation/bottom-tabs": "^6.0.2",
