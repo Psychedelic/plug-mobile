@@ -7,11 +7,11 @@ import RainbowButton from '../../../../components/buttons/RainbowButton';
 import Header from '../../../../components/common/Header';
 import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
 import Back from '../../../../components/common/Back';
-import useKeyring from '../../../../hooks/useKeyring';
+//import useKeyring from '../../../../hooks/useKeyring';
 import styles from './styles';
 
 const CreatePassword = ({ route, navigation }) => {
-  const { createWallet } = useKeyring();
+  //const { createWallet } = useKeyring();
   const { navigateTo } = route.params;
   const { goBack } = navigation;
   const [password, setPassword] = useState(null);
