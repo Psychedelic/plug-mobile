@@ -8,24 +8,24 @@ import KeyImg from '../../../assets/icons/key.png';
 const SeedPhrase = ({ mnemonic, onReveal }) => {
   const [reveal, setReveal] = useState(false);
 
-  const revealSeedPhrase = () => { setReveal(true); onReveal() };
+  const revealSeedPhrase = () => {
+    setReveal(true);
+    onReveal();
+  };
 
   return (
     <View style={styles.container}>
-      {
-        mnemonic.map((word, i) => (
-          <View style={styles.item} key={word}>
-            <ListItem number={i + 1} text={word} />
-          </View>
-        ))
-      }
-      {
-        !reveal &&
+      {mnemonic.map((word, i) => (
+        <View style={styles.item} key={word}>
+          <ListItem number={i + 1} text={word} />
+        </View>
+      ))}
+      {!reveal && (
         <>
           <BlurView
             style={styles.absolute}
             blurType={'dark'}
-            reducedTransparencyFallbackColor='black'
+            reducedTransparencyFallbackColor="black"
           />
 
           <TouchableOpacity onPress={revealSeedPhrase} style={styles.absolute}>
@@ -33,9 +33,9 @@ const SeedPhrase = ({ mnemonic, onReveal }) => {
             <Text style={styles.reveal}>Reveal Seed Phrase</Text>
           </TouchableOpacity>
         </>
-      }
+      )}
     </View>
-  )
+  );
 };
 
 export default SeedPhrase;
@@ -67,11 +67,11 @@ const styles = StyleSheet.create({
     bottom: 0,
     borderRadius: 15,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   reveal: {
     ...FontStyles.Normal,
     fontWeight: 'bold',
     marginTop: 6,
-  }
+  },
 });

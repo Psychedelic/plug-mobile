@@ -14,7 +14,7 @@ export default StyleSheet.create({
     fontWeight: '600',
     fontSize: 18,
   },
-  multiStyle:{
+  multiStyle: {
     height: 90,
     alignItems: 'flex-start',
   },

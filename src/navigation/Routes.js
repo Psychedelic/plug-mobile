@@ -5,7 +5,7 @@ const Routes = {
   WALLET_SCREEN: 'WalletScreen',
   TOKENS: 'Tokens',
   NFTS: 'NFTs',
-  
+
   CREATE_IMPORT_LAYOUT: 'CreateImportLayout',
   WELCOME_SCREEN: 'WelcomeScreen',
   CREATE_PASSWORD: 'CreatePassword',

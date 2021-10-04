@@ -6,16 +6,18 @@ import styles from './styles';
 
 const Copy = ({ text, customStyle }) => {
   const copyToClipboard = () => {
-    console.log(text)
+    console.log(text);
     Clipboard.setString(text);
-  }
+  };
 
   return (
-    <TouchableOpacity onPress={copyToClipboard} style={[styles.container, customStyle]}>
-      <Icon name='copy' />
+    <TouchableOpacity
+      onPress={copyToClipboard}
+      style={[styles.container, customStyle]}>
+      <Icon name="copy" />
       <Text style={styles.text}>Copy to clipboard</Text>
     </TouchableOpacity>
-  )
-}
+  );
+};
 
 export default Copy;

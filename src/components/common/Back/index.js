@@ -5,21 +5,21 @@ import Icon from '../../icons';
 
 const Back = ({ onPress }) => (
   <TouchableOpacity onPress={onPress} style={styles.container}>
-    <Icon name='chevronLeft' />
+    <Icon name="chevronLeft" />
     <Text style={styles.text}>Back</Text>
   </TouchableOpacity>
-)
+);
 
 export default Back;
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   text: {
     ...FontStyles.LinkButton,
     fontSize: 17,
     marginLeft: 5,
-  }
-})
+  },
+});

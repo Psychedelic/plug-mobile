@@ -12,7 +12,7 @@ export const variants = {
   },
   multi: {
     viewStyle: { ...styles.viewStyle, ...styles.multiStyle },
-    inputStyle: {...styles.inputStyle, ...styles.multiStyle},
+    inputStyle: { ...styles.inputStyle, ...styles.multiStyle },
     placeholderTextColor: Colors.White.Secondary,
     autoCorrect: false,
     autoCapitalize: 'none',

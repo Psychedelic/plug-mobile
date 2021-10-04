@@ -10,14 +10,17 @@ import BackupSeedPhrase from '../../screens/Welcome/views/BackupSeedPhrase';
 const Stack = createStackNavigator();
 
 const CreateImportNavigator = () => (
-  <Stack.Navigator
-    screenOptions={{ headerShown: false }}
-  >
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
     <Stack.Screen name={Routes.WELCOME_SCREEN} component={Welcome} />
     <Stack.Screen name={Routes.CREATE_PASSWORD} component={CreatePassword} />
-    <Stack.Screen name={Routes.BACKUP_SEED_PHRASE} component={BackupSeedPhrase} />
-    <Stack.Screen name={Routes.IMPORT_SEED_PHRASE} component={ImportSeedPhrase} />
-
+    <Stack.Screen
+      name={Routes.BACKUP_SEED_PHRASE}
+      component={BackupSeedPhrase}
+    />
+    <Stack.Screen
+      name={Routes.IMPORT_SEED_PHRASE}
+      component={ImportSeedPhrase}
+    />
   </Stack.Navigator>
 );
 

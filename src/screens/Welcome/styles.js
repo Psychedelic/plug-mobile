@@ -22,5 +22,5 @@ export default StyleSheet.create({
   },
   buttonMargin: {
     marginTop: 22,
-  }
+  },
 });

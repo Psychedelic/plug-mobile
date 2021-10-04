@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { FontStyles } from "../../../constants/theme";
+import { StyleSheet } from 'react-native';
+import { FontStyles } from '../../../constants/theme';
 
 export default StyleSheet.create({
   text: {
@@ -7,7 +7,7 @@ export default StyleSheet.create({
     fontWeight: '600',
     marginLeft: 9,
   },
-  container:{
-    flexDirection: 'row'
-  }
-})
+  container: {
+    flexDirection: 'row',
+  },
+});

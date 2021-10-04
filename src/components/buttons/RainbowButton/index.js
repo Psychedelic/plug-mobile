@@ -5,13 +5,19 @@ import { styles } from './styles';
 
 import { DisabledRainbow, Rainbow } from '../../../constants/theme';
 
-const RainbowButton = ({ text, onPress, buttonStyle, textStyle, disabled, ...props }) => {
+const RainbowButton = ({
+  text,
+  onPress,
+  buttonStyle,
+  textStyle,
+  disabled,
+  ...props
+}) => {
   return (
     <LinearGradient
       style={[styles.button, buttonStyle]}
       {...(disabled ? DisabledRainbow : Rainbow)}
-      {...props}
-    >
+      {...props}>
       <Button
         buttonStyle={[styles.buttonRainbow]}
         onPress={onPress}

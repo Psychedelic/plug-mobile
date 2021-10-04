@@ -2,13 +2,11 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import PlugController from '@psychedelic/plug-controller';
 import { keyringStorage } from '../configureReducer';
 
-export const initKeyring = createAsyncThunk(
-  'keyring/init',
-  async () => {
-    const keyring = new PlugController.PlugKeyRing(keyringStorage);
-    await keyring.init();
-    return keyring;
-  });
+export const initKeyring = createAsyncThunk('keyring/init', async () => {
+  const keyring = new PlugController.PlugKeyRing(keyringStorage);
+  await keyring.init();
+  return keyring;
+});
 
 export const keyringSlice = createSlice({
   name: 'keyring',

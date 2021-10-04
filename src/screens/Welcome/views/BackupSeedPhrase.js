@@ -9,7 +9,18 @@ import Header from '../../../components/common/Header';
 import PlugLogo from '../../../assets/icons/plug-logo-full.png';
 import Back from '../../../components/common/Back';
 
-const MNEMONIC = ['spread1', 'young1', 'spread2', 'young2', 'spread3', 'young3', 'spread4', 'young4', 'spread5', 'young5'];
+const MNEMONIC = [
+  'spread1',
+  'young1',
+  'spread2',
+  'young2',
+  'spread3',
+  'young3',
+  'spread4',
+  'young4',
+  'spread5',
+  'young5',
+];
 
 const BackupSeedPhrase = ({ navigation }) => {
   const { goBack } = navigation;
@@ -20,22 +31,28 @@ const BackupSeedPhrase = ({ navigation }) => {
 
   return (
     <Container>
-
       <Header
         left={<Back onPress={() => goBack()} />}
-        center={<View style={{ width: 70, height: 33 }}>
-          <Image style={{
-            flex: 1,
-            width: null,
-            height: null,
-            resizeMode: 'contain'
-          }} source={PlugLogo} />
-        </View>}
+        center={
+          <View style={{ width: 70, height: 33 }}>
+            <Image
+              style={{
+                flex: 1,
+                width: null,
+                height: null,
+                resizeMode: 'contain',
+              }}
+              source={PlugLogo}
+            />
+          </View>
+        }
       />
 
       <View style={styles.container}>
         <Text style={styles.title}>Seed Phrase Backup</Text>
-        <Text style={styles.subtitle}>Below is the seed phrase for your new wallet, write it down.</Text>
+        <Text style={styles.subtitle}>
+          Below is the seed phrase for your new wallet, write it down.
+        </Text>
 
         <SeedPhrase mnemonic={MNEMONIC} onReveal={onReveal} />
 
@@ -47,10 +64,9 @@ const BackupSeedPhrase = ({ navigation }) => {
           onPress={onPress}
           disabled={!revealed}
         />
-
       </View>
     </Container>
-  )
+  );
 };
 
 export default BackupSeedPhrase;
@@ -64,7 +80,7 @@ const styles = StyleSheet.create({
     ...FontStyles.NormalGray,
     marginTop: 10,
     marginBottom: 30,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   container: {
     flex: 1,
@@ -73,5 +89,5 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 30,
-  }
+  },
 });
