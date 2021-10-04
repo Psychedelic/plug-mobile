@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { Text, View, Image, StyleSheet, Switch } from 'react-native';
-import Container from '../../../components/common/Container';
-import TextInput from '../../../components/common/TextInput';
-import { Colors, FontStyles } from '../../../constants/theme';
-import RainbowButton from '../../../components/buttons/RainbowButton';
-import Header from '../../../components/common/Header';
-import PlugLogo from '../../../assets/icons/plug-logo-full.png';
-import Back from '../../../components/common/Back';
-import useKeyring from '../../../hooks/useKeyring';
+import { Text, View, Image, Switch } from 'react-native';
+import Container from '../../../../components/common/Container';
+import TextInput from '../../../../components/common/TextInput';
+import { Colors } from '../../../../constants/theme';
+import RainbowButton from '../../../../components/buttons/RainbowButton';
+import Header from '../../../../components/common/Header';
+import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
+import Back from '../../../../components/common/Back';
+import useKeyring from '../../../../hooks/useKeyring';
+import styles from './styles';
 
 const CreatePassword = ({ route, navigation }) => {
   const { createWallet } = useKeyring();
@@ -100,37 +101,3 @@ const CreatePassword = ({ route, navigation }) => {
 };
 
 export default CreatePassword;
-
-const styles = StyleSheet.create({
-  title: {
-    ...FontStyles.Title,
-    marginTop: 20,
-  },
-  subtitle: {
-    ...FontStyles.NormalGray,
-    marginTop: 5,
-    textAlign: 'center',
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: 30,
-  },
-  switchContainer: {
-    flexDirection: 'row',
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 30,
-    marginBottom: 35,
-  },
-  faceId: {
-    ...FontStyles.NormalGray,
-    fontSize: 16,
-  },
-  help: {
-    ...FontStyles.SmallGray,
-    alignSelf: 'flex-start',
-    marginTop: 12,
-  },
-});

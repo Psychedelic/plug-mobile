@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, Image } from 'react-native';
-import Container from '../../../components/common/Container';
-import { FontStyles } from '../../../constants/theme';
-import RainbowButton from '../../../components/buttons/RainbowButton';
-import SeedPhrase from '../../../components/common/SeedPhrase';
-import Copy from '../../../components/common/Copy';
-import Header from '../../../components/common/Header';
-import PlugLogo from '../../../assets/icons/plug-logo-full.png';
-import Back from '../../../components/common/Back';
+import { Text, View, Image } from 'react-native';
+import Container from '../../../../components/common/Container';
+import RainbowButton from '../../../../components/buttons/RainbowButton';
+import SeedPhrase from '../../../../components/common/SeedPhrase';
+import Copy from '../../../../components/common/Copy';
+import Header from '../../../../components/common/Header';
+import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
+import Back from '../../../../components/common/Back';
+import styles from './styles';
 
 const MNEMONIC = [
   'spread1',
@@ -70,24 +70,3 @@ const BackupSeedPhrase = ({ navigation }) => {
 };
 
 export default BackupSeedPhrase;
-
-const styles = StyleSheet.create({
-  title: {
-    ...FontStyles.Title,
-    marginTop: 20,
-  },
-  subtitle: {
-    ...FontStyles.NormalGray,
-    marginTop: 10,
-    marginBottom: 30,
-    textAlign: 'center',
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    padding: 30,
-  },
-  button: {
-    marginTop: 30,
-  },
-});

@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, Image } from 'react-native';
-import Container from '../../../components/common/Container';
-import TextInput from '../../../components/common/TextInput';
-import { Colors, FontStyles } from '../../../constants/theme';
-import Routes from '../../../navigation/Routes';
-import RainbowButton from '../../../components/buttons/RainbowButton';
-import Header from '../../../components/common/Header';
-import PlugLogo from '../../../assets/icons/plug-logo-full.png';
-import Back from '../../../components/common/Back';
+import { Text, View, Image } from 'react-native';
+import Container from '../../../../components/common/Container';
+import TextInput from '../../../../components/common/TextInput';
+import { Colors } from '../../../../constants/theme';
+import Routes from '../../../../navigation/Routes';
+import RainbowButton from '../../../../components/buttons/RainbowButton';
+import Header from '../../../../components/common/Header';
+import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
+import Back from '../../../../components/common/Back';
 //import useKeyring from '../../../hooks/useKeyring';
+import styles from './styles';
 
 const ImportSeedPhrase = ({ navigation }) => {
   //const { importWallet } = useKeyring();
@@ -87,20 +88,3 @@ const ImportSeedPhrase = ({ navigation }) => {
 };
 
 export default ImportSeedPhrase;
-
-const styles = StyleSheet.create({
-  title: {
-    ...FontStyles.Title,
-    marginTop: 20,
-  },
-  subtitle: {
-    ...FontStyles.NormalGray,
-    marginTop: 5,
-    textAlign: 'center',
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: 30,
-  },
-});
