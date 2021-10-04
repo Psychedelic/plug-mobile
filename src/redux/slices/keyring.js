@@ -17,15 +17,15 @@ export const keyringSlice = createSlice({
     isUnlocked: false,
   },
   reducers: {},
-  extraReducers: builder => {
-    builder.addCase(initKeyring.fulfilled, (state, action) => {
+  extraReducers: {
+    [initKeyring.fulfilled]: (state, action) => {
       state.instance = action.payload;
-      state.isInitialized = action.payload.isInitialized;
-      state.isUnlocked = action.payload.isUnlocked;
-    });
+      //state.isInitialized = action.payload.isInitialized;
+      //state.isUnlocked = action.payload.isUnlocked;
+    },
   },
 });
 
-export const { login } = keyringSlice.actions;
+export const {} = keyringSlice.actions;
 
 export default keyringSlice.reducer;

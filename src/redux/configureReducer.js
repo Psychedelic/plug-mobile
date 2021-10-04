@@ -1,4 +1,3 @@
-import AuthReducer from './slices/auth';
 import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import { MMKV } from 'react-native-mmkv';
@@ -31,18 +30,12 @@ export const keyringStorage = {
   clear: storage.clear,
 };
 
-const authPersistConfig = {
-  key: 'auth',
-  storage,
-};
-
 const keyringPersistConfig = {
   key: 'keyring',
   storage,
 };
 
 const createRootReducer = combineReducers({
-  auth: persistReducer(authPersistConfig, AuthReducer),
   keyring: persistReducer(keyringPersistConfig, KeyringReducer),
 });
 

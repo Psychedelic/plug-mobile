@@ -8,6 +8,7 @@ import { store } from './src/redux/configureStore';
 import { initKeyring } from './src/redux/slices/keyring';
 import ErrorBoundary from './src/components/common/ErrorBoundary';
 import persistStore from 'redux-persist/es/persistStore';
+import Container from './src/components/common/Container';
 
 const PersistedApp = () => {
   const dispatch = useDispatch();

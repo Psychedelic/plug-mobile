@@ -10,11 +10,13 @@ import GearIcon from './svg/GearIcon';
 import PlusIcon from './svg/PlusIcon';
 import ActivityReceiveIcon from './svg/ActivityReceiveIcon';
 import ActivitySendIcon from './svg/ActivitySendIcon';
+import CopyIcon from './svg/CopyIcon';
 
 export const IconTypes = {
   activityReceive: ActivityReceiveIcon,
   activitySend: ActivitySendIcon,
   arrowDown: ArrowDownIcon,
+  copy: CopyIcon,
   chevronLeft: ChevronLeftIcon,
   chevronRight: ChevronRightIcon,
   gear: GearIcon,

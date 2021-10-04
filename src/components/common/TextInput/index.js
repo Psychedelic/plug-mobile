@@ -1,14 +1,15 @@
 import React from 'react';
-import { Text, View, TextInput } from 'react-native';
+import { Text, View, TextInput as Input } from 'react-native';
 import { variants } from './constants';
 
-const Input = ({
+const TextInput = ({
   label,
   value,
   variant,
   onChangeText,
   placeholder,
   customStyle,
+  ...props
 }) => {
   const {
     viewStyle,
@@ -23,7 +24,7 @@ const Input = ({
   return (
     <View style={[viewStyle, customStyle]}>
       {variant === 'innerLabel' && <Text style={innerLabelStyle}>{label}</Text>}
-      <TextInput
+      <Input
         style={inputStyle}
         placeholderTextColor={placeholderTextColor}
         onChangeText={onChangeText}
@@ -32,9 +33,10 @@ const Input = ({
         secureTextEntry={secureTextEntry}
         placeholder={placeholder}
         value={value}
+        {...props}
       />
     </View>
   );
 };
 
-export default Input;
+export default TextInput;

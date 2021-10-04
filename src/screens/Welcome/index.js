@@ -1,63 +1,40 @@
 import React from 'react';
-import { View, SafeAreaView, StatusBar, Text, Image } from 'react-native';
-import { StyleSheet } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { login } from '../../redux/slices/auth';
+import Plug from '../../assets/icons/plug-white.png';
+import { View, Text, Image } from 'react-native';
 import Button from '../../components/buttons/Button';
-import { Colors } from '../../constants/theme';
 import RainbowButton from '../../components/buttons/RainbowButton';
+import Container from '../../components/common/Container';
+import { useNavigation } from '@react-navigation/native';
+import Routes from '../../navigation/Routes';
+import styles from './styles';
 
 function Welcome() {
-  const dispatch = useDispatch();
+  const navigation = useNavigation();
 
-  const onPress = () => {
-    dispatch(login(true));
-  };
+  const onCreatePress = () =>
+    navigation.navigate(Routes.CREATE_PASSWORD, {
+      navigateTo: Routes.BACKUP_SEED_PHRASE,
+    });
+  const onImportPress = () => navigation.navigate(Routes.IMPORT_SEED_PHRASE);
 
   return (
-    <SafeAreaView style={styles.root}>
-      <StatusBar barStyle="light-content" />
+    <Container>
       <View style={styles.container}>
-        <Image source={require('../../assets/icons/plug-white.png')} />
+        <Image source={Plug} />
         <Text style={styles.title}>Welcome to Plug</Text>
         <RainbowButton
           buttonStyle={styles.componentMargin}
           text="Create Wallet"
-          onPress={onPress}
+          onPress={onCreatePress}
         />
         <Button
-          buttonStyle={styles.componentMargin}
+          buttonStyle={styles.buttonMargin}
           text="Import Wallet"
-          onPress={onPress}
+          onPress={onImportPress}
         />
       </View>
-    </SafeAreaView>
+    </Container>
   );
 }
 
 export default Welcome;
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: '#15161C',
-    justifyContent: 'center',
-  },
-  container: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    textAlign: 'center',
-    padding: 24,
-  },
-  title: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    color: Colors.White.Primary,
-    fontSize: 26,
-    fontWeight: 'bold',
-    marginTop: 28,
-  },
-  componentMargin: {
-    marginTop: 24,
-  },
-});
