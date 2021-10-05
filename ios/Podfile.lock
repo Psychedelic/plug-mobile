@@ -351,6 +351,8 @@ PODS:
     - React-perflogger (= 0.65.1)
   - RNCClipboard (1.5.1):
     - React-Core
+  - RNCMaskedView (0.1.11):
+    - React
   - RNGestureHandler (1.10.3):
     - React-Core
   - RNScreens (3.8.0):
@@ -422,6 +424,7 @@ DEPENDENCIES:
   - React-runtimeexecutor (from `../node_modules/react-native/ReactCommon/runtimeexecutor`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCClipboard (from `../node_modules/@react-native-community/clipboard`)"
+  - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -517,6 +520,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNCClipboard:
     :path: "../node_modules/@react-native-community/clipboard"
+  RNCMaskedView:
+    :path: "../node_modules/@react-native-community/masked-view"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNScreens:
@@ -579,6 +584,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: 85187f19dd9c47a7c102f9994f9d14e4dc2110de
   ReactCommon: eafed38eec7b591c31751bfa7494801618460459
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
+  RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNScreens: 6e1ea5787989f92b0671049b808aef64fa1ef98c
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f

@@ -5,15 +5,7 @@ import { Colors, FontStyles } from '../../../../constants/theme';
 import TokenItem from './components/TokenItem';
 import Container from '../../../../components/common/Container';
 import Divider from '../../../../components/common/Divider';
-import Header from '../../../../components/common/Header';
-import UserIcon from '../../../../components/common/UserIcon';
-import AccountInfo from '../../../../components/common/AccountInfo';
-
-const header = {
-  left: <UserIcon size="small" icon="🔥" />,
-  center: <AccountInfo />,
-  right: <Text>😆</Text>,
-};
+import WalletHeader from '../../components/WalletHeader';
 
 const TOKENS = [
   {
@@ -43,7 +35,7 @@ const Tokens = () => {
 
   return (
     <Container>
-      <Header {...header} />
+      <WalletHeader />
       <Text style={styles.title}>Tokens</Text>
       <Divider />
       <ScrollView

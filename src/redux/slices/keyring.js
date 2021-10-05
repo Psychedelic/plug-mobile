@@ -13,8 +13,8 @@ export const keyringSlice = createSlice({
   initialState: {
     instance: null,
     state: {},
-    isInitialized: false,
-    isUnlocked: false,
+    isInitialized: true,
+    isUnlocked: true,
   },
   reducers: {},
   extraReducers: {

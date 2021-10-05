@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { createRef, useRef, useState } from 'react';
 import {
   View,
   RefreshControl,
@@ -6,7 +6,6 @@ import {
   Dimensions,
   Text,
   TouchableOpacity,
-  ScrollView,
 } from 'react-native';
 import { FontStyles, Colors } from '../../../../constants/theme';
 import Container from '../../../../components/common/Container';
@@ -14,28 +13,42 @@ import Divider from '../../../../components/common/Divider';
 import Header from '../../../../components/common/Header';
 import UserIcon from '../../../../components/common/UserIcon';
 import AccountInfo from '../../../../components/common/AccountInfo';
+import { ScrollView } from 'react-native-gesture-handler';
+import { Portal } from 'react-native-portalize';
+import Modal from '../../../../components/modal';
+import WalletHeader from '../../components/WalletHeader';
 
 const { width } = Dimensions.get('window');
 const itemSize = width / 2 - 30;
 
-const header = {
-  left: <UserIcon size="small" icon="🔥" />,
-  center: <AccountInfo />,
-  right: <Text>😆</Text>,
-};
+
+
 
 const NFTs = () => {
   const [refreshing, setRefresing] = useState(false);
+  const modalizeRef = useRef(null);
 
   const onRefresh = () => {
     setRefresing(true);
 
     setTimeout(() => setRefresing(false), 1000);
   };
+
+  const onOpen = () => { modalizeRef.current?.open() };
+
+  const header = {
+    left: <UserIcon size="small" icon="🔥" />,
+    center: <AccountInfo />,
+    right: <TouchableOpacity onPress={onOpen}><Text>😆</Text></TouchableOpacity>,
+  };
+
   return (
     <Container>
-      <Header {...header} />
+
+      <WalletHeader />
+
       <Text style={styles.title}>NFTs</Text>
+      
       <Divider />
 
       <ScrollView
