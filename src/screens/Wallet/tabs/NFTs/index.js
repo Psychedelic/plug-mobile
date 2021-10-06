@@ -6,23 +6,15 @@ import {
   Dimensions,
   Text,
   TouchableOpacity,
-  ScrollView,
 } from 'react-native';
 import { FontStyles, Colors } from '../../../../constants/theme';
 import Container from '../../../../components/common/Container';
 import Divider from '../../../../components/common/Divider';
-import Header from '../../../../components/common/Header';
-import UserIcon from '../../../../components/common/UserIcon';
-import AccountInfo from '../../../../components/common/AccountInfo';
+import { ScrollView } from 'react-native-gesture-handler';
+import WalletHeader from '../../components/WalletHeader';
 
 const { width } = Dimensions.get('window');
 const itemSize = width / 2 - 30;
-
-const header = {
-  left: <UserIcon size="small" icon="🔥" />,
-  center: <AccountInfo />,
-  right: <Text>😆</Text>,
-};
 
 const NFTs = () => {
   const [refreshing, setRefresing] = useState(false);
@@ -32,10 +24,13 @@ const NFTs = () => {
 
     setTimeout(() => setRefresing(false), 1000);
   };
+
   return (
     <Container>
-      <Header {...header} />
+      <WalletHeader />
+
       <Text style={styles.title}>NFTs</Text>
+
       <Divider />
 
       <ScrollView
