@@ -14,16 +14,14 @@ const Modal = ({ children, modalRef, ...props }) => {
         overlayStyle={overlayStyle}
         handleStyle={handleStyle}
         modalTopOffset={10}
-        threshold={15}
-      >
+        threshold={15}>
         {children}
       </Modalize>
     </Portal>
-  )
-}
+  );
+};
 
 export default Modal;
-
 
 const modalStyle = {
   zIndex: 5,
@@ -40,7 +38,7 @@ const modalStyle = {
   shadowRadius: 12,
 
   elevation: 4,
-}
+};
 
 const overlayStyle = {
   position: 'absolute',
@@ -50,7 +48,7 @@ const overlayStyle = {
   left: 0,
 
   backgroundColor: 'rgba(21, 22, 28, 0.6)',
-}
+};
 
 const handleStyle = {
   alignSelf: 'center',
@@ -62,4 +60,4 @@ const handleStyle = {
 
   borderRadius: 5,
   backgroundColor: Colors.Gray.Primary,
-}
+};
