@@ -1,31 +1,15 @@
 import React, { useState } from 'react';
 import { RefreshControl, ScrollView, Text, StyleSheet } from 'react-native';
-import Icon from '../../../../components/icons';
 import { Colors, FontStyles } from '../../../../constants/theme';
-import TokenItem from './components/TokenItem';
+import TokenItem from '../../../../components/tokens/TokenItem';
 import Container from '../../../../components/common/Container';
 import Divider from '../../../../components/common/Divider';
 import WalletHeader from '../../components/WalletHeader';
-
-const TOKENS = [
-  {
-    symbol: 'ICP',
-    name: 'ICP',
-    amount: 152.28,
-    value: 12183.29,
-    icon: <Icon name="dfinity" />,
-  },
-  {
-    symbol: 'XTC',
-    name: 'Cycles',
-    amount: 102.2913,
-    value: 102.3,
-    icon: <Icon name="xtc" />,
-  },
-];
+import useTokens from '../../../../hooks/useTokens';
 
 const Tokens = () => {
   const [refreshing, setRefresing] = useState(false);
+  const { tokens } = useTokens();
 
   const onRefresh = () => {
     setRefresing(true);
@@ -46,7 +30,7 @@ const Tokens = () => {
             tintColor={Colors.White.Primary}
           />
         }>
-        {TOKENS.map(token => (
+        {tokens.map(token => (
           <TokenItem key={token.symbol} {...token} />
         ))}
       </ScrollView>

@@ -1,13 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-
-import { FontStyles } from '../../../../../constants/theme';
-import UsdFormat from '../../../../../components/number/UsdFormat';
-import TokenFormat from '../../../../../components/number/TokenFormat';
-
+import { FontStyles } from '../../constants/theme';
+import UsdFormat from '../number/UsdFormat';
+import TokenFormat from '../number/TokenFormat';
 import TokenIcon from './TokenIcon';
 
-const TokenItem = ({ icon, name, amount, value, symbol }) => (
+const TokenItem = ({ icon, name, amount, value, symbol, onPress }) => (
   <View style={styles.root}>
     <TokenIcon icon={icon} symbol={symbol} />
     <View style={styles.leftContainer}>
@@ -20,7 +18,7 @@ const TokenItem = ({ icon, name, amount, value, symbol }) => (
     </View>
     <UsdFormat value={value} style={styles.value} />
   </View>
-);
+)
 
 export default TokenItem;
 

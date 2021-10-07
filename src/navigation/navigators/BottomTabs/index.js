@@ -1,6 +1,7 @@
 import React from 'react';
 import { Colors } from '../../../constants/theme';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import Touchable from '../../../components/animations/Touchable';
 import Icon from '../../../components/icons';
 
 const BottomTabs = ({ state, navigation }) => (
@@ -22,19 +23,21 @@ const BottomTabs = ({ state, navigation }) => (
       };
 
       return (
-        <TouchableOpacity key={index} style={styles.tab} onPress={onPress}>
-          <Text>
-            <Icon
-              name={index === 0 ? 'tokens' : 'nfts'}
-              color={isFocused ? Colors.White.Primary : Colors.White.Secondary}
-            />
-            ,
-          </Text>
-          <Text
-            style={[isFocused ? styles.selected : styles.default, styles.text]}>
-            {label}
-          </Text>
-        </TouchableOpacity>
+        <Touchable onPress={onPress}>
+          <View key={index} style={styles.tab}>
+            <Text>
+              <Icon
+                name={index === 0 ? 'tokens' : 'nfts'}
+                color={isFocused ? Colors.White.Primary : Colors.White.Secondary}
+              />
+              ,
+            </Text>
+            <Text
+              style={[isFocused ? styles.selected : styles.default, styles.text]}>
+              {label}
+            </Text>
+          </View>
+        </Touchable>
       );
     })}
   </View>

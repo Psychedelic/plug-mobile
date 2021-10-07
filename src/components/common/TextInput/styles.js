@@ -37,6 +37,8 @@ export default StyleSheet.create({
     backgroundColor: Colors.Black.Primary,
   },
   labledViewStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
     flexWrap: 'nowrap',
     paddingTop: 13,
     paddingLeft: 20,
