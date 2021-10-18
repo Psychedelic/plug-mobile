@@ -15,6 +15,7 @@ import AmountInput from '../../components/common/AmountInput';
 import RainbowButton from '../../components/buttons/RainbowButton';
 import ReviewSend from './components/ReviewSend';
 import { validatePrincipalId, validateAccountId } from '../../helpers/ids';
+import TokenSelector from '../../components/tokens/TokenSelector';
 
 const Send = ({ modalRef }) => {
   const [to, setTo] = useState(null);
@@ -28,7 +29,7 @@ const Send = ({ modalRef }) => {
     if (selectedContact) {
       setValidTo(true);
     }
-    else {
+    else if (to) {
       setValidTo(validatePrincipalId(to) || validateAccountId(to))
     }
   }, [to, selectedContact]);
@@ -85,6 +86,7 @@ const Send = ({ modalRef }) => {
           validTo && selectedToken &&
           <AmountSection
             selectedToken={selectedToken}
+            setSelectedToken={setSelectedToken}
             selectedContact={selectedContact}
             to={to}
             parentModalRef={modalRef}
@@ -134,7 +136,7 @@ const TokenSection = ({ onPress }) => {
   )
 }
 
-const AmountSection = ({ selectedToken, parentModalRef }) => {
+const AmountSection = ({ selectedToken, setSelectedToken, parentModalRef }) => {
   const [tokenAmount, setTokenAmount] = useState(null);
   const [usdAmount, setUsdAmount] = useState(null);
 
@@ -144,11 +146,17 @@ const AmountSection = ({ selectedToken, parentModalRef }) => {
     if (usdAmount) {
       setTokenAmount(String(usdAmount / selectedToken.value))
     }
+    else {
+      setTokenAmount(null);
+    }
   }, [usdAmount])
 
   useEffect(() => {
     if (tokenAmount) {
       setUsdAmount(String(tokenAmount * selectedToken.value))
+    }
+    else {
+      setUsdAmount(null);
     }
   }, [tokenAmount])
 
@@ -159,9 +167,34 @@ const AmountSection = ({ selectedToken, parentModalRef }) => {
     modalRef.current?.open();
   }
 
+  const onTokenChange = () => {
+    setSelectedToken(null);
+  }
+
+  const usdValue = selectedToken.value * selectedToken.amount;
+
+  const getButtonText = () => {
+    if (!tokenAmount || !usdAmount) {
+      return 'Enter an Amount'
+    }
+    if (usdValue < usdAmount || selectedToken.amount < tokenAmount) {
+      return 'Insufficient Funds'
+    }
+    return 'Review Send'
+  }
+
+
   return (
     <>
-      <TokenItem {...selectedToken} color='#292929' />
+      <TokenSelector
+        {...selectedToken}
+        onPress={onTokenChange}
+        usdValue={
+          selectedInput === 'USD'
+            ? usdValue
+            : null
+        }
+      />
 
       <AmountInput
         value={tokenAmount}
@@ -185,9 +218,14 @@ const AmountSection = ({ selectedToken, parentModalRef }) => {
       />
 
       <RainbowButton
-        text='Review Send'
+        text={getButtonText()}
         onPress={onReview}
-        disabled={!tokenAmount || !usdAmount}
+        disabled={
+          !tokenAmount
+          || !usdAmount
+          || usdAmount > usdValue
+          || tokenAmount > selectedToken.amount
+        }
       />
 
       <ReviewSend

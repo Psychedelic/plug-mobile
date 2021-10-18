@@ -13,7 +13,7 @@ const Touchable = ({
   onPress = () => null,
   onLongPress = () => null,
   hapticType = HapticFeedbackTypes.impactLight,
-  scale = scales.medium,
+  scale = scales.small,
   disabled = false,
   ...props
 }) => {

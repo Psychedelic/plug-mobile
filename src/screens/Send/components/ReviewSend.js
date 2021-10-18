@@ -51,7 +51,7 @@ const ReviewSend = ({ modalRef, token, amount,
           <TokenIcon {...token} color='#292929' />
         </Row>
 
-        <Row style={[styles.row, { paddingRight: 10 }]}>
+        <Row style={[styles.row, { paddingRight: 9 }]}>
           <View style={styles.to}>
             <Text style={FontStyles.Normal}>To</Text>
           </View>
@@ -63,7 +63,7 @@ const ReviewSend = ({ modalRef, token, amount,
             <Text style={FontStyles.Title2}>Frank</Text>
             <Text style={FontStyles.Subtitle3}>qweqwe...qwe</Text>
           </Column>
-          <UserIcon size='big' icon='🔥' />
+          <UserIcon size='medium' icon='🔥' />
         </Row>
 
 
