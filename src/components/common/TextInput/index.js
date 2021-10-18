@@ -9,6 +9,7 @@ const TextInput = ({
   onChangeText,
   placeholder,
   customStyle,
+  textStyle,
   ...props
 }) => {
   const {
@@ -25,7 +26,7 @@ const TextInput = ({
     <View style={[viewStyle, customStyle]}>
       {variant === 'innerLabel' && <Text style={innerLabelStyle}>{label}</Text>}
       <Input
-        style={inputStyle}
+        style={[inputStyle, textStyle]}
         placeholderTextColor={placeholderTextColor}
         onChangeText={onChangeText}
         autoCorrect={autoCorrect}

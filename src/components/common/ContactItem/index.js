@@ -7,19 +7,21 @@ import styles from './styles';
 import Touchable from '../../animations/Touchable';
 import animationScales from '../../../utils/animationScales';
 
-const ContactItem = ({ contact }) => {
+const ContactItem = ({ contact, onPress, ...props }) => {
   const { image, name, id } = contact;
 
   return (
-    <Touchable scale={animationScales.small}>
-      <View style={styles.root}>
-        <UserIcon icon={image} disabled />
-        <View style={styles.leftContainer}>
-          <Text style={FontStyles.Normal}>{name}</Text>
-          <Text style={FontStyles.NormalGray}>{shortAddress(id)}</Text>
+    <View {...props}>
+      <Touchable scale={animationScales.small} onPress={onPress}>
+        <View style={styles.root}>
+          <UserIcon icon={image} disabled />
+          <View style={styles.leftContainer}>
+            <Text style={FontStyles.Normal}>{name}</Text>
+            <Text style={FontStyles.NormalGray}>{shortAddress(id)}</Text>
+          </View>
         </View>
-      </View>
-    </Touchable>
+      </Touchable>
+    </View>
   )
 };
 

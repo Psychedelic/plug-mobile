@@ -4,6 +4,7 @@ import Button from '../Button';
 import { styles } from './styles';
 
 import { DisabledRainbow, Rainbow } from '../../../constants/theme';
+import Touchable from '../../animations/Touchable';
 
 const RainbowButton = ({
   text,
@@ -11,22 +12,25 @@ const RainbowButton = ({
   buttonStyle,
   textStyle,
   disabled,
+  onLongPress,
   ...props
 }) => {
   return (
-    <LinearGradient
-      style={[styles.button, buttonStyle]}
-      {...(disabled ? DisabledRainbow : Rainbow)}
-      {...props}>
-      <Button
-        buttonStyle={[styles.buttonRainbow]}
-        onPress={onPress}
-        text={text}
-        textStyle={[styles.textRainbow, textStyle]}
-        disabled={disabled}
-        {...props}
-      />
-    </LinearGradient>
+    <Touchable onPress={onPress} onLongPress={onLongPress} disabled={disabled}>
+      <LinearGradient
+        style={[styles.button, buttonStyle]}
+        {...(disabled ? DisabledRainbow : Rainbow)}
+        {...props}>
+        <Button
+          buttonStyle={[styles.buttonRainbow]}
+          text={text}
+          textStyle={[styles.textRainbow, textStyle]}
+          disabled={disabled}
+          disableAnimation
+          {...props}
+        />
+      </LinearGradient>
+    </Touchable>
   );
 };
 

@@ -3,7 +3,7 @@ import { Portal } from 'react-native-portalize';
 import { Colors } from '../../constants/theme';
 import { Modalize } from 'react-native-modalize';
 
-const Modal = ({ children, modalRef, ...props }) => {
+const Modal = ({ children, modalRef, onClose, ...props }) => {
   return (
     <Portal>
       <Modalize
@@ -13,7 +13,9 @@ const Modal = ({ children, modalRef, ...props }) => {
         modalStyle={modalStyle}
         overlayStyle={overlayStyle}
         handleStyle={handleStyle}
+        scrollViewProps={{ keyboardShouldPersistTaps: 'always'}}
         modalTopOffset={10}
+        onClose={onClose}
         threshold={15}>
         {children}
       </Modalize>

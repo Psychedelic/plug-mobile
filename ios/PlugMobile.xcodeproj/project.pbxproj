@@ -12,11 +12,11 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1E40A9331B28463D9C45BAE7 /* Oswald-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E801C124432C4832A0B2D9D5 /* Oswald-Regular.ttf */; };
+		3396CC5A0D649A320D896AB9 /* libPods-PlugMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D76BE5A342B4653D119841D /* libPods-PlugMobile.a */; };
+		685E38E25BE93731B37CCFEF /* libPods-PlugMobile-PlugMobileTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 15A1C956B743CC376512AEF8 /* libPods-PlugMobile-PlugMobileTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		9CAA3BBF96A74945884C0EB1 /* Oswald-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2305DDE041124F8DB2F00951 /* Oswald-Medium.ttf */; };
 		CD3B248E5C08463F8C9319A0 /* Oswald-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF9BCEC54AC74FA1B3E30252 /* Oswald-Bold.ttf */; };
-		D8AC0C5FB307FCB650947149 /* libPods-PlugMobile-PlugMobileTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FEE875E506C02C06A77ACB /* libPods-PlugMobile-PlugMobileTests.a */; };
-		DEFFD8074A8ED16F324BEEF4 /* libPods-PlugMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D332C596EECEFD96BF02914 /* libPods-PlugMobile.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,23 +33,23 @@
 		00E356EE1AD99517003FC87E /* PlugMobileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlugMobileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* PlugMobileTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlugMobileTests.m; sourceTree = "<group>"; };
-		0F3696533AEED1A69D0A0F7D /* Pods-PlugMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile.debug.xcconfig"; path = "Target Support Files/Pods-PlugMobile/Pods-PlugMobile.debug.xcconfig"; sourceTree = "<group>"; };
+		0E80990EFC23604CD70466F0 /* Pods-PlugMobile-PlugMobileTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile-PlugMobileTests.release.xcconfig"; path = "Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests.release.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* PlugMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlugMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = PlugMobile/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = PlugMobile/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = PlugMobile/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = PlugMobile/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = PlugMobile/main.m; sourceTree = "<group>"; };
+		15A1C956B743CC376512AEF8 /* libPods-PlugMobile-PlugMobileTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PlugMobile-PlugMobileTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2305DDE041124F8DB2F00951 /* Oswald-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-Medium.ttf"; path = "../assets/fonts/Oswald-Medium.ttf"; sourceTree = "<group>"; };
-		38395A4B83767BE54512E5A3 /* Pods-PlugMobile-PlugMobileTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile-PlugMobileTests.debug.xcconfig"; path = "Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests.debug.xcconfig"; sourceTree = "<group>"; };
+		2FD424AC4395633F3942B6D1 /* Pods-PlugMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile.debug.xcconfig"; path = "Target Support Files/Pods-PlugMobile/Pods-PlugMobile.debug.xcconfig"; sourceTree = "<group>"; };
+		3379453D90AAB74015886B78 /* Pods-PlugMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile.release.xcconfig"; path = "Target Support Files/Pods-PlugMobile/Pods-PlugMobile.release.xcconfig"; sourceTree = "<group>"; };
+		3D76BE5A342B4653D119841D /* libPods-PlugMobile.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PlugMobile.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = PlugMobile/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		9D332C596EECEFD96BF02914 /* libPods-PlugMobile.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PlugMobile.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A7FEE875E506C02C06A77ACB /* libPods-PlugMobile-PlugMobileTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PlugMobile-PlugMobileTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF9BCEC54AC74FA1B3E30252 /* Oswald-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-Bold.ttf"; path = "../assets/fonts/Oswald-Bold.ttf"; sourceTree = "<group>"; };
-		CBC3F8403A5850E308C376ED /* Pods-PlugMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile.release.xcconfig"; path = "Target Support Files/Pods-PlugMobile/Pods-PlugMobile.release.xcconfig"; sourceTree = "<group>"; };
+		C0BFEC5BF9A7C2CE2C6A1C5A /* Pods-PlugMobile-PlugMobileTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile-PlugMobileTests.debug.xcconfig"; path = "Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E801C124432C4832A0B2D9D5 /* Oswald-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-Regular.ttf"; path = "../assets/fonts/Oswald-Regular.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		FAE1DCC4680E4477FFFFEA5E /* Pods-PlugMobile-PlugMobileTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile-PlugMobileTests.release.xcconfig"; path = "Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8AC0C5FB307FCB650947149 /* libPods-PlugMobile-PlugMobileTests.a in Frameworks */,
+				685E38E25BE93731B37CCFEF /* libPods-PlugMobile-PlugMobileTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,7 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DEFFD8074A8ED16F324BEEF4 /* libPods-PlugMobile.a in Frameworks */,
+				3396CC5A0D649A320D896AB9 /* libPods-PlugMobile.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,8 +116,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				9D332C596EECEFD96BF02914 /* libPods-PlugMobile.a */,
-				A7FEE875E506C02C06A77ACB /* libPods-PlugMobile-PlugMobileTests.a */,
+				3D76BE5A342B4653D119841D /* libPods-PlugMobile.a */,
+				15A1C956B743CC376512AEF8 /* libPods-PlugMobile-PlugMobileTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -125,10 +125,10 @@
 		44379489DBCDBC0081695FF4 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				0F3696533AEED1A69D0A0F7D /* Pods-PlugMobile.debug.xcconfig */,
-				CBC3F8403A5850E308C376ED /* Pods-PlugMobile.release.xcconfig */,
-				38395A4B83767BE54512E5A3 /* Pods-PlugMobile-PlugMobileTests.debug.xcconfig */,
-				FAE1DCC4680E4477FFFFEA5E /* Pods-PlugMobile-PlugMobileTests.release.xcconfig */,
+				2FD424AC4395633F3942B6D1 /* Pods-PlugMobile.debug.xcconfig */,
+				3379453D90AAB74015886B78 /* Pods-PlugMobile.release.xcconfig */,
+				C0BFEC5BF9A7C2CE2C6A1C5A /* Pods-PlugMobile-PlugMobileTests.debug.xcconfig */,
+				0E80990EFC23604CD70466F0 /* Pods-PlugMobile-PlugMobileTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -172,12 +172,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "PlugMobileTests" */;
 			buildPhases = (
-				3755A9E41ACC2766E6CA72B4 /* [CP] Check Pods Manifest.lock */,
+				B2FDE8DC5009F53D28BFC415 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				486DE5E27A12CF23039AA302 /* [CP] Embed Pods Frameworks */,
-				A31C7988F105F6D28D60EE59 /* [CP] Copy Pods Resources */,
+				7FA73FA35C5B491E7928BE92 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -193,14 +192,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "PlugMobile" */;
 			buildPhases = (
-				A24C4104E80AE0BF1D4AE036 /* [CP] Check Pods Manifest.lock */,
+				DBF18A084DF9D323BFA4E590 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				F98743FA8CD25397E98E0167 /* [CP] Embed Pods Frameworks */,
-				8D9304884F4F9C6815FE12EA /* [CP] Copy Pods Resources */,
+				DAA185B92816099C985AEFAC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -284,7 +282,24 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		3755A9E41ACC2766E6CA72B4 /* [CP] Check Pods Manifest.lock */ = {
+		7FA73FA35C5B491E7928BE92 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B2FDE8DC5009F53D28BFC415 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -306,24 +321,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		486DE5E27A12CF23039AA302 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8D9304884F4F9C6815FE12EA /* [CP] Copy Pods Resources */ = {
+		DAA185B92816099C985AEFAC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -340,7 +338,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PlugMobile/Pods-PlugMobile-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A24C4104E80AE0BF1D4AE036 /* [CP] Check Pods Manifest.lock */ = {
+		DBF18A084DF9D323BFA4E590 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -360,40 +358,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A31C7988F105F6D28D60EE59 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F98743FA8CD25397E98E0167 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile/Pods-PlugMobile-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile/Pods-PlugMobile-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PlugMobile/Pods-PlugMobile-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -448,7 +412,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 38395A4B83767BE54512E5A3 /* Pods-PlugMobile-PlugMobileTests.debug.xcconfig */;
+			baseConfigurationReference = C0BFEC5BF9A7C2CE2C6A1C5A /* Pods-PlugMobile-PlugMobileTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = W6K8K762UL;
@@ -457,11 +421,15 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = PlugMobileTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -476,17 +444,21 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FAE1DCC4680E4477FFFFEA5E /* Pods-PlugMobile-PlugMobileTests.release.xcconfig */;
+			baseConfigurationReference = 0E80990EFC23604CD70466F0 /* Pods-PlugMobile-PlugMobileTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = W6K8K762UL;
 				INFOPLIST_FILE = PlugMobileTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -501,7 +473,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0F3696533AEED1A69D0A0F7D /* Pods-PlugMobile.debug.xcconfig */;
+			baseConfigurationReference = 2FD424AC4395633F3942B6D1 /* Pods-PlugMobile.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -509,10 +481,14 @@
 				DEVELOPMENT_TEAM = W6K8K762UL;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = PlugMobile/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -529,17 +505,21 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CBC3F8403A5850E308C376ED /* Pods-PlugMobile.release.xcconfig */;
+			baseConfigurationReference = 3379453D90AAB74015886B78 /* Pods-PlugMobile.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W6K8K762UL;
 				INFOPLIST_FILE = PlugMobile/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(SDKROOT)/usr/lib/swift",
+					"$(inherited)",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -602,7 +582,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -660,7 +640,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",

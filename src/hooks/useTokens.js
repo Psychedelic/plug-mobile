@@ -5,16 +5,16 @@ const TOKENS = [
   {
     symbol: 'ICP',
     name: 'ICP',
-    amount: 152.28,
-    value: 12183.29,
-    icon: <Icon name="dfinity" />,
+    amount: 100,
+    value: 43,
+    icon: "dfinity",
   },
   {
     symbol: 'XTC',
     name: 'Cycles',
-    amount: 102.2913,
-    value: 102.3,
-    icon: <Icon name="xtc" />,
+    amount: 100,
+    value: 100,
+    icon: "xtc",
   },
 ];
 

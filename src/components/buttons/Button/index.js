@@ -6,17 +6,17 @@ import styles from './styles';
 
 const Button = ({
   onPress,
+  onLongPress,
   text,
   textStyle,
   buttonStyle,
-  disabled,
+  disabled = false,
+  disableAnimation = false,
   ...props
 }) => {
   return (
-    <Touchable scale={animationScales.medium} disabled={disabled}>
+    <Touchable scale={animationScales.medium} disabled={disabled || disableAnimation} onPress={onPress} onLongPress={onLongPress}>
       <View
-        disabled={disabled}
-        onPress={onPress}
         style={[styles.button, buttonStyle]}
         {...props}>
         <Text style={[styles.text, textStyle, disabled && styles.disabled]}>

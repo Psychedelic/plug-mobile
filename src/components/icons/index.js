@@ -15,11 +15,16 @@ import SwapIcon from './svg/SwapIcon';
 import SendIcon from './svg/SendIcon';
 import DepositIcon from './svg/DepositIcon';
 import GroupedActionsIcon from './svg/GroupedActionsIcon';
+import SwapArrowsIcon from './svg/SwapArrowsIcon';
+import ArrowDownAccountIcon from './svg/ArrowDownAccountIcon';
+import ConfirmIcon from './svg/ConfirmIcon';
 
 export const IconTypes = {
   activityReceive: ActivityReceiveIcon,
   activitySend: ActivitySendIcon,
   arrowDown: ArrowDownIcon,
+  arrowDownAccount: ArrowDownAccountIcon,
+  confirm: ConfirmIcon,
   copy: CopyIcon,
   chevronLeft: ChevronLeftIcon,
   chevronRight: ChevronRightIcon,
@@ -29,6 +34,7 @@ export const IconTypes = {
   plus: PlusIcon,
   send: SendIcon,
   swap: SwapIcon,
+  swapArrows: SwapArrowsIcon,
   tokens: TokensIcon,
   nfts: NFTsIcon,
   dfinity: ICPIcon,
