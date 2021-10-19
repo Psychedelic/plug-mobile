@@ -6,6 +6,7 @@ import Header from '../../components/common/Header';
 import UserIcon from '../../components/common/UserIcon';
 import Icon from '../../components/icons';
 import Button from '../../components/buttons/Button';
+import Settings from '../Settings';
 
 import ActivityItem from './components/ActivityItem';
 import styles from './styles';
@@ -159,9 +160,7 @@ const ACTIVITY = [
 
 const header = {
   left: (
-    <Touchable>
-      <Icon name="gear" />
-    </Touchable>
+    <Settings />
   ),
   center: null,
   right: (
