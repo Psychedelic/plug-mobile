@@ -2,25 +2,37 @@ import React from 'react';
 import Touchable from '../../../components/animations/Touchable';
 import Row from '../../../components/layout/Row';
 import Column from '../../../components/layout/Column';
-import { Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import Icon from '../../../components/icons';
 import { FontStyles, Colors } from '../../../constants/theme';
 
-const SettingItem = ({ icon, name, description, onPress, border }) => (
+const SettingItem = ({ icon, name, description, onPress }) => (
   <Touchable onPress={onPress}>
     <Row
-      style={[
-        { paddingHorizontal: 20, paddingVertical: 20 },
-        border && { borderBottomColor: Colors.Gray.Secondary, borderBottomWidth: 1 }
-      ]}>
-      <Text style={{ paddingRight: 9, fontSize: 18 }}>{icon}</Text>
+      style={styles.container}>
+      <Text style={styles.icon}>{icon}</Text>
       <Column>
         <Text style={[FontStyles.Normal, { marginBottom: 5 }]}>{name}</Text>
         <Text style={FontStyles.NormalGray}>{description}</Text>
       </Column>
-      <Icon name='chevronRight' style={{ marginLeft: 'auto', alignSelf: 'center' }} />
+      <Icon name='chevronRight' style={styles.chevron} />
     </Row>
   </Touchable>
 );
 
 export default SettingItem;
+
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+  },
+  icon: {
+    paddingRight: 9,
+    fontSize: 18,
+  },
+  chevron: {
+    marginLeft: 'auto',
+    alignSelf: 'center',
+  }
+})
