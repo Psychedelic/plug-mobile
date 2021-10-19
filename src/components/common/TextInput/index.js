@@ -34,7 +34,7 @@ const TextInput = ({
         secureTextEntry={secureTextEntry}
         placeholder={placeholder}
         value={value}
-        keyboardAppearance='dark'
+        keyboardAppearance="dark"
         {...props}
       />
     </View>

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, Image, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, Image, View, Text } from 'react-native';
 import { Colors, FontStyles } from '../../../constants/theme';
 import ListItem from '../ListItem';
 import { BlurView } from '@react-native-community/blur';
 import KeyImg from '../../../assets/icons/key.png';
+import Touchable from '../../animations/Touchable';
 
 const SeedPhrase = ({ mnemonic, onReveal }) => {
   const [reveal, setReveal] = useState(false);

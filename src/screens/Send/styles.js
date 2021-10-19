@@ -6,6 +6,6 @@ export default StyleSheet.create({
     color: Colors.ActionBlue,
   },
   content: {
-    paddingHorizontal: 20
-  }
+    paddingHorizontal: 20,
+  },
 });

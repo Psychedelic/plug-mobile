@@ -5,42 +5,45 @@ import { Text, TextInput, View, StyleSheet } from 'react-native';
 import { Colors, FontStyles } from '../../../constants/theme';
 import animationScales from '../../../utils/animationScales';
 
-const AmountInput = ({ value, onChange,
-  selected, setSelected,
-  symbol, maxAmount,
-  autoFocus, customStyle,
+const AmountInput = ({
+  value,
+  onChange,
+  selected,
+  setSelected,
+  symbol,
+  maxAmount,
+  autoFocus,
+  customStyle,
 }) => {
   const inputRef = useRef();
 
   const handleMaxAmount = () => {
     onChange(String(maxAmount));
-  }
+  };
 
   const onPress = () => {
     inputRef?.current.focus();
     setSelected(symbol);
-  }
+  };
 
   return (
     <Touchable scale={animationScales.small} onPress={onPress}>
       <View style={[styles.container, customStyle]}>
-
         <TextInput
           ref={inputRef}
           underlineColorAndroid="transparent"
           style={styles.textInput}
-          placeholderTextColor='#373946'
+          placeholderTextColor="#373946"
           onChangeText={onChange}
           value={value}
           keyboardType="numeric"
-          placeholder='0.0'
+          placeholder="0.0"
           autoFocus={autoFocus}
-          keyboardAppearance='dark'
+          keyboardAppearance="dark"
           selectionColor={Colors.White.Primary}
           onFocus={() => setSelected(symbol)}
         />
-        {
-          selected &&
+        {selected && (
           <Button
             variant="gray"
             text="Max"
@@ -48,12 +51,12 @@ const AmountInput = ({ value, onChange,
             buttonStyle={{ width: 41, height: 24, borderRadius: 8 }}
             textStyle={{ fontSize: 14 }}
           />
-        }
+        )}
         <Text style={styles.symbol}>{symbol}</Text>
       </View>
     </Touchable>
-  )
-}
+  );
+};
 
 export default AmountInput;
 
@@ -75,5 +78,5 @@ const styles = StyleSheet.create({
     ...FontStyles.NormalGray,
     fontWeight: '500',
     marginLeft: 12,
-  }
-})
+  },
+});

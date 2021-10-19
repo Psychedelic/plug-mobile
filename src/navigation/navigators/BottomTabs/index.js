@@ -28,12 +28,17 @@ const BottomTabs = ({ state, navigation }) => (
             <Text>
               <Icon
                 name={index === 0 ? 'tokens' : 'nfts'}
-                color={isFocused ? Colors.White.Primary : Colors.White.Secondary}
+                color={
+                  isFocused ? Colors.White.Primary : Colors.White.Secondary
+                }
               />
               ,
             </Text>
             <Text
-              style={[isFocused ? styles.selected : styles.default, styles.text]}>
+              style={[
+                isFocused ? styles.selected : styles.default,
+                styles.text,
+              ]}>
               {label}
             </Text>
           </View>

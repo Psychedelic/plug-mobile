@@ -22,7 +22,7 @@ const ContactItem = ({ contact, onPress, ...props }) => {
         </View>
       </Touchable>
     </View>
-  )
+  );
 };
 
 export default ContactItem;

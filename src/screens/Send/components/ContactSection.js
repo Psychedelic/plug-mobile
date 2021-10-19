@@ -9,17 +9,15 @@ const ContactSection = ({ onPress }) => {
   return (
     <>
       <Text style={FontStyles.Subtitle3}>Contacts</Text>
-      {
-        contacts.map(contact => (
-          <ContactItem
-            onPress={() => onPress(contact)}
-            contact={contact}
-            style={{ marginTop: 15 }}
-          />
-        ))
-      }
+      {contacts.map(contact => (
+        <ContactItem
+          onPress={() => onPress(contact)}
+          contact={contact}
+          style={{ marginTop: 15 }}
+        />
+      ))}
     </>
-  )
-}
+  );
+};
 
 export default ContactSection;

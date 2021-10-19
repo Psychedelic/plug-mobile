@@ -31,7 +31,11 @@ const Tokens = () => {
           />
         }>
         {tokens.map(token => (
-          <TokenItem key={token.symbol} {...token} style={{ marginTop: 20, paddingHorizontal: 20, }} />
+          <TokenItem
+            key={token.symbol}
+            {...token}
+            style={{ marginTop: 20, paddingHorizontal: 20 }}
+          />
         ))}
       </ScrollView>
     </Container>

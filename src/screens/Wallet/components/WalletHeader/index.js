@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 import Header from '../../../../components/common/Header';
 import Modal from '../../../../components/modal';
 import GradientText from '../../../../components/common/GradientText';
@@ -21,7 +21,7 @@ const WalletHeader = () => {
   const openSend = () => {
     modalRef.current?.close();
     sendRef.current?.open();
-  }
+  };
 
   const BUTTONS = [
     {
@@ -33,7 +33,7 @@ const WalletHeader = () => {
       image: <Icon name="send" />,
       colors: ['#36C3E9', '#CF6ED3'],
       text: 'Send',
-      onPress: openSend
+      onPress: openSend,
     },
     {
       image: <Icon name="swap" />,

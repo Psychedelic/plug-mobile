@@ -13,7 +13,7 @@ const Modal = ({ children, modalRef, onClose, ...props }) => {
         modalStyle={modalStyle}
         overlayStyle={overlayStyle}
         handleStyle={handleStyle}
-        scrollViewProps={{ keyboardShouldPersistTaps: 'always'}}
+        scrollViewProps={{ keyboardShouldPersistTaps: 'always' }}
         modalTopOffset={10}
         onClose={onClose}
         threshold={15}>

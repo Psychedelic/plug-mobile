@@ -14,25 +14,23 @@ const Send = ({ modalRef }) => {
   const [to, setTo] = useState(null);
   const [validTo, setValidTo] = useState(false);
 
-  const [selectedContact, setSelectedContact] = useState(null)
+  const [selectedContact, setSelectedContact] = useState(null);
   const [selectedToken, setSelectedToken] = useState(null);
 
   useEffect(() => {
-
     if (selectedContact) {
       setValidTo(true);
-    }
-    else if (to) {
-      setValidTo(validatePrincipalId(to) || validateAccountId(to))
+    } else if (to) {
+      setValidTo(validatePrincipalId(to) || validateAccountId(to));
     }
   }, [to, selectedContact]);
 
-  const onContactPress = (contact) => {
+  const onContactPress = contact => {
     setTo(null);
     setSelectedContact(contact);
-  }
+  };
 
-  const onTokenPress = (token) => {
+  const onTokenPress = token => {
     setSelectedToken(token);
   };
 
@@ -41,42 +39,29 @@ const Send = ({ modalRef }) => {
     setValidTo(false);
     setSelectedToken(null);
     setSelectedContact(null);
-  }
+  };
 
-  const onChangeText = (text) => {
+  const onChangeText = text => {
     setSelectedContact(null);
     setTo(text);
-  }
+  };
 
   return (
     <Modal modalRef={modalRef} onClose={resetState}>
-      <Header
-        center={<Text style={FontStyles.Subtitle2}>Send</Text>}
-      />
-      <ScrollView style={styles.content} keyboardShouldPersistTaps='always'>
+      <Header center={<Text style={FontStyles.Subtitle2}>Send</Text>} />
+      <ScrollView style={styles.content} keyboardShouldPersistTaps="always">
         <TextInput
-          label='To:'
-          placeholder='Name, ICNS, or address'
-          variant='innerLabel'
+          label="To:"
+          placeholder="Name, ICNS, or address"
+          variant="innerLabel"
           value={selectedContact ? selectedContact.name : to}
           onChangeText={onChangeText}
           textStyle={validTo ? styles.valid : null}
           autoFocus
         />
-        {
-          !validTo &&
-          <ContactSection
-            onPress={onContactPress}
-          />
-        }
-        {
-          validTo && !selectedToken &&
-          <TokenSection
-            onPress={onTokenPress}
-          />
-        }
-        {
-          validTo && selectedToken &&
+        {!validTo && <ContactSection onPress={onContactPress} />}
+        {validTo && !selectedToken && <TokenSection onPress={onTokenPress} />}
+        {validTo && selectedToken && (
           <AmountSection
             selectedToken={selectedToken}
             setSelectedToken={setSelectedToken}
@@ -84,10 +69,10 @@ const Send = ({ modalRef }) => {
             to={to}
             parentModalRef={modalRef}
           />
-        }
+        )}
       </ScrollView>
     </Modal>
   );
-}
+};
 
 export default Send;

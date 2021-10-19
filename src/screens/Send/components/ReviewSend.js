@@ -11,9 +11,16 @@ import UserIcon from '../../../components/common/UserIcon';
 import Icon from '../../../components/icons';
 import Button from '../../../components/buttons/Button';
 
-const ReviewSend = ({ modalRef, token, amount,
-  value, to, contact, onClose, ...props }) => {
-
+const ReviewSend = ({
+  modalRef,
+  token,
+  amount,
+  value,
+  to,
+  contact,
+  onClose,
+  ...props
+}) => {
   const [confirmed, setConfirmed] = useState(false);
 
   const handleClose = () => {
@@ -28,33 +35,33 @@ const ReviewSend = ({ modalRef, token, amount,
         <Header
           center={
             <Text style={FontStyles.Subtitle2}>
-              {
-                confirmed
-                  ? 'Confirmed'
-                  : 'Review Send'
-              }
+              {confirmed ? 'Confirmed' : 'Review Send'}
             </Text>
           }
         />
 
-        {
-          confirmed
-          && <Icon name='confirm' style={{ alignSelf: 'center', marginBottom: 30 }} />
-        }
+        {confirmed && (
+          <Icon
+            name="confirm"
+            style={{ alignSelf: 'center', marginBottom: 30 }}
+          />
+        )}
 
         <Row style={styles.row}>
           <Column>
             <Text style={FontStyles.Title2}>${value}</Text>
-            <Text style={FontStyles.Subtitle3}>{amount} {token.symbol}</Text>
+            <Text style={FontStyles.Subtitle3}>
+              {amount} {token.symbol}
+            </Text>
           </Column>
-          <TokenIcon {...token} color='#292929' />
+          <TokenIcon {...token} color="#292929" />
         </Row>
 
         <Row style={[styles.row, { paddingRight: 9 }]}>
           <View style={styles.to}>
             <Text style={FontStyles.Normal}>To</Text>
           </View>
-          <Icon name='arrowDown' />
+          <Icon name="arrowDown" />
         </Row>
 
         <Row style={styles.row}>
@@ -62,30 +69,27 @@ const ReviewSend = ({ modalRef, token, amount,
             <Text style={FontStyles.Title2}>{contact.name}</Text>
             <Text style={FontStyles.Subtitle3}>{contact.id}</Text>
           </Column>
-          <UserIcon size='medium' icon='🔥' />
+          <UserIcon size="medium" icon="🔥" />
         </Row>
 
-        {
-          confirmed
-            ?
-            <Button
-              variant="gray"
-              text="View on Explorer"
-              buttonStyle={styles.button}
-              onPress={() => setConfirmed(!confirmed)}
-            />
-            :
-            <RainbowButton
-              text='􀎽 Hold to Send'
-              onLongPress={() => setConfirmed(!confirmed)}
-              buttonStyle={styles.button}
-            />
-        }
-
+        {confirmed ? (
+          <Button
+            variant="gray"
+            text="View on Explorer"
+            buttonStyle={styles.button}
+            onPress={() => setConfirmed(!confirmed)}
+          />
+        ) : (
+          <RainbowButton
+            text="􀎽 Hold to Send"
+            onLongPress={() => setConfirmed(!confirmed)}
+            buttonStyle={styles.button}
+          />
+        )}
       </View>
     </Modal>
-  )
-}
+  );
+};
 
 export default ReviewSend;
 
@@ -96,7 +100,7 @@ const styles = StyleSheet.create({
   row: {
     height: 55,
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   to: {
     borderRadius: 8,
@@ -104,10 +108,10 @@ const styles = StyleSheet.create({
     width: 41,
     height: 24,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   button: {
     marginBottom: 45,
-    marginTop: 25
-  }
-})
+    marginTop: 25,
+  },
+});

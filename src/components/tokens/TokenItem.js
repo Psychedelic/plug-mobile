@@ -5,7 +5,16 @@ import UsdFormat from '../number/UsdFormat';
 import TokenFormat from '../number/TokenFormat';
 import TokenIcon from './TokenIcon';
 
-const TokenItem = ({ icon, name, amount, value, symbol, onPress, color, style, }) => (
+const TokenItem = ({
+  icon,
+  name,
+  amount,
+  value,
+  symbol,
+  onPress,
+  color,
+  style,
+}) => (
   <View style={[styles.root, style]}>
     <TokenIcon icon={icon} symbol={symbol} color={color} />
     <View style={styles.leftContainer}>
@@ -18,7 +27,7 @@ const TokenItem = ({ icon, name, amount, value, symbol, onPress, color, style, }
     </View>
     <UsdFormat value={value * amount} style={styles.value} />
   </View>
-)
+);
 
 export default TokenItem;
 

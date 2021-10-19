@@ -11,18 +11,13 @@ const TokenSection = ({ onPress }) => {
   return (
     <>
       <Text style={FontStyles.Subtitle3}>Tokens</Text>
-      {
-        tokens.map(token => (
-          <Touchable
-            scale={animationScales.small}
-            onPress={() => onPress(token)}
-          >
-            <TokenItem {...token} color='#292929' style={{ marginTop: 20 }} />
-          </Touchable>
-        ))
-      }
+      {tokens.map(token => (
+        <Touchable scale={animationScales.small} onPress={() => onPress(token)}>
+          <TokenItem {...token} color="#292929" style={{ marginTop: 20 }} />
+        </Touchable>
+      ))}
     </>
-  )
-}
+  );
+};
 
 export default TokenSection;
