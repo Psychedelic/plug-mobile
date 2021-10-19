@@ -12,7 +12,7 @@ import Icon from '../../../components/icons';
 import Button from '../../../components/buttons/Button';
 
 const ReviewSend = ({ modalRef, token, amount,
-  value, to, onClose, ...props }) => {
+  value, to, contact, onClose, ...props }) => {
 
   const [confirmed, setConfirmed] = useState(false);
 
@@ -42,11 +42,10 @@ const ReviewSend = ({ modalRef, token, amount,
           && <Icon name='confirm' style={{ alignSelf: 'center', marginBottom: 30 }} />
         }
 
-
         <Row style={styles.row}>
           <Column>
-            <Text style={FontStyles.Title2}>$872.19</Text>
-            <Text style={FontStyles.Subtitle3}>20.12 ICP</Text>
+            <Text style={FontStyles.Title2}>${value}</Text>
+            <Text style={FontStyles.Subtitle3}>{amount} {token.symbol}</Text>
           </Column>
           <TokenIcon {...token} color='#292929' />
         </Row>
@@ -60,12 +59,11 @@ const ReviewSend = ({ modalRef, token, amount,
 
         <Row style={styles.row}>
           <Column>
-            <Text style={FontStyles.Title2}>Frank</Text>
-            <Text style={FontStyles.Subtitle3}>qweqwe...qwe</Text>
+            <Text style={FontStyles.Title2}>{contact.name}</Text>
+            <Text style={FontStyles.Subtitle3}>{contact.id}</Text>
           </Column>
           <UserIcon size='medium' icon='🔥' />
         </Row>
-
 
         {
           confirmed
