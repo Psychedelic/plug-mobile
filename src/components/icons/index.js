@@ -18,6 +18,7 @@ import GroupedActionsIcon from './svg/GroupedActionsIcon';
 import SwapArrowsIcon from './svg/SwapArrowsIcon';
 import ArrowDownAccountIcon from './svg/ArrowDownAccountIcon';
 import ConfirmIcon from './svg/ConfirmIcon';
+import ThreeDotsIcon from './svg/ThreeDotsIcon';
 
 export const IconTypes = {
   activityReceive: ActivityReceiveIcon,
@@ -36,6 +37,7 @@ export const IconTypes = {
   swap: SwapIcon,
   swapArrows: SwapArrowsIcon,
   tokens: TokensIcon,
+  threeDots: ThreeDotsIcon,
   nfts: NFTsIcon,
   dfinity: ICPIcon,
   xtc: XTCIcon,

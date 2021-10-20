@@ -21,35 +21,33 @@ const Touchable = ({
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      transform: [
-        {
-          scale: withTiming(pressed.value ? scale : 1, {
-            duration: 100,
-          }),
-        },
-      ],
-    };
+      transform: [{
+        scale: withTiming(pressed.value ? scale : 1, {
+          duration: 100,
+        })
+      }]
+    }
   });
 
   const handlePress = () => {
     haptics[hapticType]();
     onPress();
-  };
+  }
 
   const handleLongPress = () => {
     pressed.value = false;
     onLongPress();
-  };
+  }
 
   const handleOnPressIn = () => {
     if (!disabled) {
       pressed.value = true;
     }
-  };
+  }
 
   const handleOnPressOut = () => {
     pressed.value = false;
-  };
+  }
 
   return (
     <TouchableWithoutFeedback
@@ -58,10 +56,13 @@ const Touchable = ({
       onPressOut={handleOnPressOut}
       onLongPress={handleLongPress}
       disabled={disabled}
-      {...props}>
-      <Animated.View style={animatedStyle}>{children}</Animated.View>
+      {...props}
+    >
+      <Animated.View style={animatedStyle}>
+        {children}
+      </Animated.View>
     </TouchableWithoutFeedback>
-  );
-};
+  )
+}
 
 export default Touchable;
