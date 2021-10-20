@@ -60,4 +60,3 @@ const AmountInput = ({
 };
 
 export default AmountInput;
-
