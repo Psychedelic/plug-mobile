@@ -77,10 +77,25 @@ export const FontStyles = {
     fontWeight: '600',
     color: Colors.White.Primary,
   },
+  Title2: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: Colors.White.Primary,
+  },
   Subtitle: {
     fontSize: 20,
     fontWeight: '600',
     color: Colors.White.Primary,
+  },
+  Subtitle2: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: Colors.White.Primary,
+  },
+  Subtitle3: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: Colors.White.Secondary,
   },
   Normal: {
     fontSize: 16,

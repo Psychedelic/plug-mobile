@@ -27,7 +27,7 @@ export const variants = {
     secureTextEntry: true,
   },
   innerLabel: {
-    viewStyle: { ...styles.viewStyle, ...styles.labledViewStyle },
+    viewStyle: { ...styles.labledViewStyle },
     inputStyle: { ...styles.inputStyle, ...styles.labledInputStyle },
     innerLabelStyle: styles.innerLabelStyle,
     placeholderTextColor: Colors.White.Secondary,

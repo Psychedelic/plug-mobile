@@ -20,10 +20,10 @@ export default StyleSheet.create({
   },
   innerLabelStyle: {
     flex: 1,
-    color: '#FFFFFF',
+    color: Colors.White.Pure,
     fontSize: 18,
     fontWeight: '600',
-    paddingRight: 14,
+    minWidth: 5,
   },
   labledInputStyle: {
     flex: 12,
@@ -37,9 +37,10 @@ export default StyleSheet.create({
     backgroundColor: Colors.Black.Primary,
   },
   labledViewStyle: {
+    flexDirection: 'row',
+    alignItems: 'center',
     flexWrap: 'nowrap',
-    paddingTop: 13,
-    paddingLeft: 20,
-    paddingBottom: 13,
+    paddingTop: 5,
+    paddingBottom: 5,
   },
 });

@@ -1,19 +1,20 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import Icon from '../icons';
 
 const TokenIcon = ({ icon, symbol, color, customStyle, ...props }) => {
-  return (
-    icon ?? (
-      <View
-        style={[
-          styles.genericToken,
-          customStyle,
-          { backgroundColor: `rgb(${color.values.rgb.join(',')})` },
-        ]}
-        {...props}>
-        <Text style={styles.text}>{symbol}</Text>
-      </View>
-    )
+  return icon ? (
+    <Icon name={icon} color={color} />
+  ) : (
+    <View
+      style={[
+        styles.genericToken,
+        customStyle,
+        { backgroundColor: `rgb(${color.values.rgb.join(',')})` },
+      ]}
+      {...props}>
+      <Text style={styles.text}>{symbol}</Text>
+    </View>
   );
 };
 

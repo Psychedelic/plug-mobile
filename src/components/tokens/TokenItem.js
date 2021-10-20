@@ -1,15 +1,22 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-
-import { FontStyles } from '../../../../../constants/theme';
-import UsdFormat from '../../../../../components/number/UsdFormat';
-import TokenFormat from '../../../../../components/number/TokenFormat';
-
+import { FontStyles } from '../../constants/theme';
+import UsdFormat from '../number/UsdFormat';
+import TokenFormat from '../number/TokenFormat';
 import TokenIcon from './TokenIcon';
 
-const TokenItem = ({ icon, name, amount, value, symbol }) => (
-  <View style={styles.root}>
-    <TokenIcon icon={icon} symbol={symbol} />
+const TokenItem = ({
+  icon,
+  name,
+  amount,
+  value,
+  symbol,
+  onPress,
+  color,
+  style,
+}) => (
+  <View style={[styles.root, style]}>
+    <TokenIcon icon={icon} symbol={symbol} color={color} />
     <View style={styles.leftContainer}>
       <Text style={FontStyles.Normal}>{name}</Text>
       <TokenFormat
@@ -18,7 +25,7 @@ const TokenItem = ({ icon, name, amount, value, symbol }) => (
         style={FontStyles.NormalGray}
       />
     </View>
-    <UsdFormat value={value} style={styles.value} />
+    <UsdFormat value={value * amount} style={styles.value} />
   </View>
 );
 
@@ -29,8 +36,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     width: '100%',
-    marginTop: 20,
-    paddingHorizontal: 20,
   },
   leftContainer: {
     flexDirection: 'column',

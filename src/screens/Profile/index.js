@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import Container from '../../components/common/Container';
 import Divider from '../../components/common/Divider';
 import Header from '../../components/common/Header';
@@ -9,6 +9,7 @@ import Button from '../../components/buttons/Button';
 
 import ActivityItem from './components/ActivityItem';
 import styles from './styles';
+import Touchable from '../../components/animations/Touchable';
 
 const ACTIVITY = [
   {
@@ -158,15 +159,15 @@ const ACTIVITY = [
 
 const header = {
   left: (
-    <TouchableOpacity>
+    <Touchable>
       <Icon name="gear" />
-    </TouchableOpacity>
+    </Touchable>
   ),
   center: null,
   right: (
-    <TouchableOpacity>
+    <Touchable>
       <Icon name="chevronRight" />
-    </TouchableOpacity>
+    </Touchable>
   ),
 };
 
