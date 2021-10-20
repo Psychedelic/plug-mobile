@@ -70,14 +70,3 @@ const WalletHeader = () => {
 };
 
 export default WalletHeader;
-
-const ActionButton = ({ image, text, colors, onPress }) => (
-  <Touchable onPress={onPress}>
-    <View style={styles.button}>
-      {image}
-      <GradientText colors={colors} style={styles.text}>
-        {text}
-      </GradientText>
-    </View>
-  </Touchable>
-);
