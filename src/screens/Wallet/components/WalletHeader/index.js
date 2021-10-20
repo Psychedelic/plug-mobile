@@ -9,6 +9,7 @@ import styles from './styles';
 import Icon from '../../../../components/icons';
 import Send from '../../../Send';
 import Touchable from '../../../../components/animations/Touchable';
+import { Colors } from '../../../../constants/theme';
 
 const WalletHeader = () => {
   const modalRef = useRef(null);
@@ -26,18 +27,18 @@ const WalletHeader = () => {
   const BUTTONS = [
     {
       image: <Icon name="deposit" />,
-      colors: ['#FB5DC3', '#FDB943'],
+      colors: [Colors.Rainbow.Red, Colors.Rainbow.Yellow],
       text: 'Deposit',
     },
     {
       image: <Icon name="send" />,
-      colors: ['#36C3E9', '#CF6ED3'],
+      colors: [Colors.Rainbow.Blue, Colors.Rainbow.Purple],
       text: 'Send',
       onPress: openSend,
     },
     {
       image: <Icon name="swap" />,
-      colors: ['#09DF66', '#05DCC8'],
+      colors: [Colors.Rainbow.Green, Colors.Rainbow.Cyan],
       text: 'Swap',
     },
   ];
@@ -69,14 +70,3 @@ const WalletHeader = () => {
 };
 
 export default WalletHeader;
-
-const ActionButton = ({ image, text, colors, onPress }) => (
-  <Touchable onPress={onPress}>
-    <View style={styles.button}>
-      {image}
-      <GradientText colors={colors} style={styles.text}>
-        {text}
-      </GradientText>
-    </View>
-  </Touchable>
-);

@@ -1,9 +1,10 @@
 import React, { useRef } from 'react';
 import Touchable from '../../animations/Touchable';
 import Button from '../../buttons/Button';
-import { Text, TextInput, View, StyleSheet } from 'react-native';
-import { Colors, FontStyles } from '../../../constants/theme';
+import { Text, TextInput, View } from 'react-native';
+import { Colors } from '../../../constants/theme';
 import animationScales from '../../../utils/animationScales';
+import styles from './styles';
 
 const AmountInput = ({
   value,
@@ -59,24 +60,3 @@ const AmountInput = ({
 };
 
 export default AmountInput;
-
-const styles = StyleSheet.create({
-  textInput: {
-    ...FontStyles.Normal,
-    fontSize: 24,
-    marginRight: 'auto',
-  },
-  container: {
-    backgroundColor: Colors.Black.Primary,
-    flexDirection: 'row',
-    height: 63,
-    borderRadius: 15,
-    alignItems: 'center',
-    paddingHorizontal: 15,
-  },
-  symbol: {
-    ...FontStyles.NormalGray,
-    fontWeight: '500',
-    marginLeft: 12,
-  },
-});

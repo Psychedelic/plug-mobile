@@ -18,19 +18,19 @@ const AmountSection = ({
   const [selectedInput, setSelectedInput] = useState('USD');
 
   useEffect(() => {
-    if (usdAmount) {
-      setTokenAmount(String(usdAmount / selectedToken.value));
-    } else {
-      setTokenAmount(null);
-    }
+    setTokenAmount(
+      usdAmount
+        ? String(usdAmount / selectedToken.value)
+        : null
+    );
   }, [usdAmount, selectedToken.value]);
 
   useEffect(() => {
-    if (tokenAmount) {
-      setUsdAmount(String(tokenAmount * selectedToken.value));
-    } else {
-      setUsdAmount(null);
-    }
+    setUsdAmount(
+      tokenAmount
+        ? String(tokenAmount * selectedToken.value)
+        : null
+    );
   }, [tokenAmount, selectedToken.value]);
 
   const modalRef = useRef(null);
@@ -55,6 +55,13 @@ const AmountSection = ({
     }
     return 'Review Send';
   };
+
+  const isButtonDisabled = () => (
+    !tokenAmount ||
+    !usdAmount ||
+    usdAmount > usdValue ||
+    tokenAmount > selectedToken.amount
+  );
 
   return (
     <>
@@ -88,12 +95,7 @@ const AmountSection = ({
       <RainbowButton
         text={getButtonText()}
         onPress={onReview}
-        disabled={
-          !tokenAmount ||
-          !usdAmount ||
-          usdAmount > usdValue ||
-          tokenAmount > selectedToken.amount
-        }
+        disabled={isButtonDisabled()}
       />
 
       <ReviewSend
