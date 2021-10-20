@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { FontStyles } from '../../constants/theme';
+import { Colors, FontStyles } from '../../constants/theme';
 import UsdFormat from '../number/UsdFormat';
 import TokenFormat from '../number/TokenFormat';
 import TokenIcon from './TokenIcon';
@@ -19,7 +19,7 @@ const TokenSelector = ({
 }) => (
   <Touchable onPress={onPress}>
     <View style={[styles.root, style]}>
-      <TokenIcon icon={icon} symbol={symbol} color="#292929" />
+      <TokenIcon icon={icon} symbol={symbol} color={Colors.Gray.Tertiary} />
       <View style={styles.leftContainer}>
         <Text style={FontStyles.Normal}>{name}</Text>
 

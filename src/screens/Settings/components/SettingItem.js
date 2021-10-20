@@ -4,7 +4,7 @@ import Row from '../../../components/layout/Row';
 import Column from '../../../components/layout/Column';
 import { StyleSheet, Text } from 'react-native';
 import Icon from '../../../components/icons';
-import { FontStyles, Colors } from '../../../constants/theme';
+import { FontStyles } from '../../../constants/theme';
 
 const SettingItem = ({ icon, name, description, onPress }) => (
   <Touchable onPress={onPress}>

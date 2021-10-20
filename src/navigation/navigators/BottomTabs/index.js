@@ -27,7 +27,7 @@ const BottomTabs = ({ state, navigation }) => (
           <View key={index} style={styles.tab}>
             <Text>
               <Icon
-                name={index === 0 ? 'tokens' : 'nfts'}
+                name={!index ? 'tokens' : 'nfts'}
                 color={
                   isFocused ? Colors.White.Primary : Colors.White.Secondary
                 }

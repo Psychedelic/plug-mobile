@@ -10,6 +10,7 @@ import RainbowButton from '../../../components/buttons/RainbowButton';
 import UserIcon from '../../../components/common/UserIcon';
 import Icon from '../../../components/icons';
 import Button from '../../../components/buttons/Button';
+import { Colors } from '../../../constants/theme';
 
 const ReviewSend = ({
   modalRef,
@@ -54,7 +55,7 @@ const ReviewSend = ({
               {amount} {token.symbol}
             </Text>
           </Column>
-          <TokenIcon {...token} color="#292929" />
+          <TokenIcon {...token} color={Colors.Gray.Tertiary} />
         </Row>
 
         <Row style={[styles.row, { paddingRight: 9 }]}>
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
   },
   to: {
     borderRadius: 8,
-    backgroundColor: '#292929',
+    backgroundColor: Colors.Gray.Tertiary,
     width: 41,
     height: 24,
     alignItems: 'center',

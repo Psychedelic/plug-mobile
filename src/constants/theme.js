@@ -22,8 +22,17 @@ export const Colors = {
   Gray: {
     Primary: '#33343A',
     Secondary: '#23242A',
+    Tertiary: '#292929',
     Pure: '#616571',
   },
+  Rainbow: {
+    Red: '#FB5DC3',
+    Yellow: '#FDB943',
+    Blue: '#36C3E9',
+    Purple: '#CF6ED3',
+    Green: '#09DF66',
+    Cyan: '#05DCC8',
+  }
 };
 
 export const Rainbow = {
