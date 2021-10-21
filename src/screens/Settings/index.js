@@ -33,30 +33,23 @@ const Settings = () => {
 
         <View style={styles.container}>
           <View>
-            {
-              settingsItems.map((item, index) => (
-                <>
-                  <SettingItem {...item} />
-                  {
-                    index !== settingsItems.length
-                    && <Separator />
-                  }
-                </>
-              ))
-            }
+            {settingsItems.map((item, index) => (
+              <>
+                <SettingItem {...item} />
+                {index !== settingsItems.length && <Separator />}
+              </>
+            ))}
           </View>
           <View style={styles.infoContainer}>
-            {
-              infoItems.map(item => (
-                <InfoItem {...item} />
-              ))
-            }
+            {infoItems.map(item => (
+              <InfoItem {...item} />
+            ))}
           </View>
         </View>
       </Modal>
     </>
-  )
-}
+  );
+};
 
 export default Settings;
 
@@ -67,6 +60,6 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     paddingHorizontal: 20,
-    paddingVertical: 30
-  }
-})
+    paddingVertical: 30,
+  },
+});

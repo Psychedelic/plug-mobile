@@ -11,5 +11,3 @@ const ThreeDotsIcon = ({ color = '#E1E8FD', ...props }) => (
 );
 
 export default ThreeDotsIcon;
-
-

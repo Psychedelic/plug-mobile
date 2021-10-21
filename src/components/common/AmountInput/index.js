@@ -39,6 +39,7 @@ const AmountInput = ({
           value={value}
           keyboardType="numeric"
           placeholder="0.0"
+          blurOnSubmit={false}
           autoFocus={autoFocus}
           keyboardAppearance="dark"
           selectionColor={Colors.White.Primary}

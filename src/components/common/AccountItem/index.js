@@ -18,15 +18,16 @@ const AccountItem = ({ account, onPress, onMenu, ...props }) => {
           <UserIcon icon={icon} disabled />
           <View style={styles.leftContainer}>
             <Text style={FontStyles.Normal}>{name}</Text>
-            <Text style={FontStyles.NormalGray}>{shortAddress(principalId)}</Text>
+            <Text style={FontStyles.NormalGray}>
+              {shortAddress(principalId)}
+            </Text>
           </View>
 
           <View style={styles.threeDots}>
             <Touchable onPress={onMenu} scale={animationScales.large}>
-              <Icon name='threeDots' />
+              <Icon name="threeDots" />
             </Touchable>
           </View>
-
         </View>
       </Touchable>
     </View>

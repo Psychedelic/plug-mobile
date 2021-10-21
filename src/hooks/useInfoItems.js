@@ -1,4 +1,4 @@
-import { Linking } from "react-native";
+import { Linking } from 'react-native';
 
 const useInfoItems = () => {
   return [
@@ -18,7 +18,7 @@ const useInfoItems = () => {
       name: '👾  Join our Discord',
       onPress: () => Linking.openURL('https://discord.plugwallet.ooo'), //change later to magic linking
     },
-  ]
-}
+  ];
+};
 
 export default useInfoItems;

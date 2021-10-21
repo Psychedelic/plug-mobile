@@ -160,9 +160,7 @@ const ACTIVITY = [
 ];
 
 const header = {
-  left: (
-    <Settings />
-  ),
+  left: <Settings />,
   center: null,
   right: (
     <Touchable>
@@ -184,7 +182,7 @@ const Profile = () => {
         <Header {...header} />
         <ScrollView>
           <View style={styles.container}>
-            <UserIcon size="big" icon="🔥" />
+            <UserIcon size="large" icon="🔥" />
             <Button
               variant="gray"
               text="Change"
@@ -205,7 +203,7 @@ const Profile = () => {
 
       <Accounts modalRef={modalRef} />
     </>
-  )
+  );
 };
 
 export default Profile;

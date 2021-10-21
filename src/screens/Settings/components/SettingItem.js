@@ -8,14 +8,13 @@ import { FontStyles } from '../../../constants/theme';
 
 const SettingItem = ({ icon, name, description, onPress }) => (
   <Touchable onPress={onPress}>
-    <Row
-      style={styles.container}>
+    <Row style={styles.container}>
       <Text style={styles.icon}>{icon}</Text>
       <Column>
         <Text style={[FontStyles.Normal, { marginBottom: 5 }]}>{name}</Text>
         <Text style={FontStyles.NormalGray}>{description}</Text>
       </Column>
-      <Icon name='chevronRight' style={styles.chevron} />
+      <Icon name="chevronRight" style={styles.chevron} />
     </Row>
   </Touchable>
 );
@@ -34,5 +33,5 @@ const styles = StyleSheet.create({
   chevron: {
     marginLeft: 'auto',
     alignSelf: 'center',
-  }
-})
+  },
+});

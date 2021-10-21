@@ -14,12 +14,12 @@ const Modal = ({ children, modalRef, onClose, fullHeight, ...props }) => {
         overlayStyle={overlayStyle}
         handleStyle={handleStyle}
         scrollViewProps={
-          {
+          ({
             keyboardShouldPersistTaps: 'always',
           },
           fullHeight && {
-            contentContainerStyle: { height: '100%' }
-          }
+            contentContainerStyle: { height: '100%' },
+          })
         }
         modalTopOffset={10}
         onClose={onClose}

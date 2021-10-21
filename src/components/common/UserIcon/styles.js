@@ -7,7 +7,11 @@ export default StyleSheet.create({
     alignItems: 'center',
     borderRadius: 100,
   },
-  big: {
+  extralarge: {
+    width: 63,
+    height: 63,
+  },
+  large: {
     width: 48,
     height: 48,
   },
@@ -19,7 +23,10 @@ export default StyleSheet.create({
     width: 34,
     height: 34,
   },
-  textbig: {
+  textextralarge: {
+    fontSize: 40,
+  },
+  textlarge: {
     fontSize: 32,
   },
   textmedium: {
@@ -35,7 +42,11 @@ export default StyleSheet.create({
     alignItems: 'center',
     position: 'relative',
   },
-  backgroundbig: {
+  backgroundextralarge: {
+    width: 59,
+    height: 59,
+  },
+  backgroundlarge: {
     width: 43,
     height: 43,
   },
