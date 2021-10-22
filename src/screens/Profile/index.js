@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import Container from '../../components/common/Container';
 import Divider from '../../components/common/Divider';
@@ -11,6 +11,7 @@ import Settings from '../Settings';
 import ActivityItem from './components/ActivityItem';
 import styles from './styles';
 import Touchable from '../../components/animations/Touchable';
+import Accounts from '../Accounts';
 
 const ACTIVITY = [
   {
@@ -159,9 +160,7 @@ const ACTIVITY = [
 ];
 
 const header = {
-  left: (
-    <Settings />
-  ),
+  left: <Settings />,
   center: null,
   right: (
     <Touchable>
@@ -170,28 +169,41 @@ const header = {
   ),
 };
 
-const Profile = () => (
-  <Container>
-    <Header {...header} />
-    <ScrollView>
-      <View style={styles.container}>
-        <UserIcon size="big" icon="🔥" />
-        <Button
-          variant="gray"
-          text="Change"
-          buttonStyle={{ width: 90 }}
-          textStyle={{ fontSize: 16 }}
-        />
-      </View>
-      <Divider />
-      <Text style={styles.title}>Activity</Text>
-      <View>
-        {ACTIVITY.map((item, index) => (
-          <ActivityItem key={index} {...item} />
-        ))}
-      </View>
-    </ScrollView>
-  </Container>
-);
+const Profile = () => {
+  const modalRef = useRef(null);
+
+  const openAccounts = () => {
+    modalRef?.current.open();
+  };
+
+  return (
+    <>
+      <Container>
+        <Header {...header} />
+        <ScrollView>
+          <View style={styles.container}>
+            <UserIcon size="large" icon="🔥" />
+            <Button
+              variant="gray"
+              text="Change"
+              buttonStyle={{ width: 90 }}
+              textStyle={{ fontSize: 16 }}
+              onPress={openAccounts}
+            />
+          </View>
+          <Divider />
+          <Text style={styles.title}>Activity</Text>
+          <View>
+            {ACTIVITY.map((item, index) => (
+              <ActivityItem key={index} {...item} />
+            ))}
+          </View>
+        </ScrollView>
+      </Container>
+
+      <Accounts modalRef={modalRef} />
+    </>
+  );
+};
 
 export default Profile;

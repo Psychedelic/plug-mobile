@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { View } from 'react-native';
 import Header from '../../../../components/common/Header';
 import Modal from '../../../../components/modal';
-import GradientText from '../../../../components/common/GradientText';
 import UserIcon from '../../../../components/common/UserIcon';
 import AccountInfo from '../../../../components/common/AccountInfo';
 import styles from './styles';
@@ -10,6 +9,7 @@ import Icon from '../../../../components/icons';
 import Send from '../../../Send';
 import Touchable from '../../../../components/animations/Touchable';
 import { Colors } from '../../../../constants/theme';
+import ActionButton from '../ActionButton';
 
 const WalletHeader = () => {
   const modalRef = useRef(null);

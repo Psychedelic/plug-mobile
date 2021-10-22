@@ -33,6 +33,7 @@ const TextInput = ({
         autoCapitalize={autoCapitalize}
         secureTextEntry={secureTextEntry}
         placeholder={placeholder}
+        blurOnSubmit={false}
         value={value}
         keyboardAppearance="dark"
         {...props}

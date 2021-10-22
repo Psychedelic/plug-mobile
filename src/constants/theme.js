@@ -32,7 +32,7 @@ export const Colors = {
     Purple: '#CF6ED3',
     Green: '#09DF66',
     Cyan: '#05DCC8',
-  }
+  },
 };
 
 export const Rainbow = {

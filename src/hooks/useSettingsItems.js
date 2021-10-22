@@ -12,7 +12,7 @@ const useSettingsItems = () => {
       description: 'View your seed phrase & backup.',
       onPress: () => null,
     },
-  ]
-}
+  ];
+};
 
 export default useSettingsItems;
