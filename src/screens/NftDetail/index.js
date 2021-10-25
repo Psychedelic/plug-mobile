@@ -12,7 +12,19 @@ import { styles } from '../../components/buttons/RainbowButton/styles';
 import Button from '../../components/buttons/Button';
 import RainbowButton from '../../components/buttons/RainbowButton';
 
-const NftDetail = ({ modalRef, handleClose, nft, ...props }) => {
+
+const MOCK = {
+  index: 0,
+  canister: 'asdasdsa',
+  id: 1,
+  name: 'test',
+  url: 'test',
+  metadata: null,
+  standard: 'ICPUnks',
+  collection: 'Test',
+}
+
+const NftDetail = ({ modalRef, handleClose, nft = MOCK, ...props }) => {
 
   return (
     <Modal
@@ -58,13 +70,13 @@ const NftDetail = ({ modalRef, handleClose, nft, ...props }) => {
             }
           </Section>
         )}
-        {collection?.description && (
+        {/*collection?.description && (
           <Section title='📝 About' style={{ paddingBottom: 25 }}>
             <Text style={styles.description}>
               {collection.description}
             </Text>
           </Section>
-        )}
+        )*/}
       </View>
 
     </Modal>

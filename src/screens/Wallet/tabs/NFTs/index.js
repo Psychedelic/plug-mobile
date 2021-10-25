@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   RefreshControl,
@@ -12,12 +12,20 @@ import Container from '../../../../components/common/Container';
 import Divider from '../../../../components/common/Divider';
 import { ScrollView } from 'react-native-gesture-handler';
 import WalletHeader from '../../components/WalletHeader';
+import NftDetail from '../../../NftDetail';
+import Touchable from '../../../../components/animations/Touchable';
 
 const { width } = Dimensions.get('window');
 const itemSize = width / 2 - 30;
 
 const NFTs = () => {
   const [refreshing, setRefresing] = useState(false);
+
+  const detailRef = useRef(null);
+
+  const onOpen = () => {
+    detailRef?.current.open();
+  }
 
   const onRefresh = () => {
     setRefresing(true);
@@ -26,30 +34,35 @@ const NFTs = () => {
   };
 
   return (
-    <Container>
-      <WalletHeader />
+    <>
+      <Container>
+        <WalletHeader />
 
-      <Text style={styles.title}>NFTs</Text>
+        <Text style={styles.title}>NFTs</Text>
 
-      <Divider />
+        <Divider />
 
-      <ScrollView
-        contentContainerStyle={styles.container}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor={Colors.White.Primary}
-          />
-        }>
-        {[0, 1, 2, 3, 4, 5, 6, 7].map(item => (
-          <View key={item} style={styles.item}>
-            <TouchableOpacity style={styles.image} />
-            <Text style={styles.text}>Test {item}</Text>
-          </View>
-        ))}
-      </ScrollView>
-    </Container>
+        <ScrollView
+          contentContainerStyle={styles.container}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={Colors.White.Primary}
+            />
+          }>
+          {[0, 1, 2, 3, 4, 5, 6, 7].map(item => (
+            <View key={item} style={styles.item}>
+              <Touchable onPress={onOpen}>
+                <View style={styles.image} />
+              </Touchable>
+              <Text style={styles.text}>Test {item}</Text>
+            </View>
+          ))}
+        </ScrollView>
+      </Container>
+      <NftDetail modalRef={detailRef} />
+    </>
   );
 };
 

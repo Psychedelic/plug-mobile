@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { Colors } from '../../../constants/theme';
+import { StyleSheet } from 'react-native';
 
 const Section = ({ title, children, style }) => (
   <View style={[styles.section, style]}>
