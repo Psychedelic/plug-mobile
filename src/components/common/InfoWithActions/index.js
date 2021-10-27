@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import animationScales from '../../../utils/animationScales';
 import Touchable from '../../animations/Touchable';
 import Icon from '../../icons';
 import styles from './styles';
@@ -17,7 +18,7 @@ const InfoWithActions = ({ text, colors, actions }) => {
         <View style={styles.actionsContainer}>
           {actions.map(action => (
             <View style={styles.action}>
-              <Touchable onPress={action.onPress}>
+              <Touchable onPress={action.onPress} scale={animationScales.large}>
                 <Icon name={action.icon} color='white' />
               </Touchable>
             </View>

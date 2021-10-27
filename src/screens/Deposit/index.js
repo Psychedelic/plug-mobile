@@ -9,6 +9,7 @@ import { Text, View } from 'react-native';
 import styles from './styles';
 import { FontStyles } from '../../constants/theme';
 import Row from '../../components/layout/Row';
+import Clipboard from '@react-native-community/clipboard';
 import Header from '../../components/common/Header';
 
 const Deposit = ({ modalRef }) => {
@@ -37,7 +38,7 @@ const Deposit = ({ modalRef }) => {
           actions={[
             {
               icon: 'copy',
-              onPress: () => null
+              onPress: () => Clipboard.setString('principal here')
             },
           ]}
           colors={[
@@ -81,7 +82,7 @@ const Deposit = ({ modalRef }) => {
           actions={[
             {
               icon: 'copy',
-              onPress: () => null
+              onPress: () => Clipboard.setString('account here')
             },
           ]}
           colors={[
