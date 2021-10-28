@@ -8,14 +8,14 @@ import Touchable from '../../animations/Touchable';
 
 const SeedPhrase = ({ mnemonic, onReveal }) => {
   const [reveal, setReveal] = useState(false);
-
+  console.log('seedphrase', reveal);
   const revealSeedPhrase = () => {
     setReveal(true);
     onReveal();
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onPress={revealSeedPhrase}>
       {mnemonic.map((word, i) => (
         <View style={styles.item} key={word}>
           <ListItem number={i + 1} text={word} />
@@ -28,8 +28,8 @@ const SeedPhrase = ({ mnemonic, onReveal }) => {
             blurType={'dark'}
             reducedTransparencyFallbackColor="black"
           />
-          <Touchable>
-            <View onPress={revealSeedPhrase} style={styles.absolute}>
+          <Touchable onPress={revealSeedPhrase}>
+            <View style={styles.absolute}>
               <Image source={KeyImg} />
               <Text style={styles.reveal}>Reveal Seed Phrase</Text>
             </View>

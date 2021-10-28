@@ -8,6 +8,7 @@ import Header from '../../../../components/common/Header';
 import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
 import Back from '../../../../components/common/Back';
 import styles from './styles';
+import Routes from '../../../../navigation/Routes';
 
 const MNEMONIC = [
   'spread1',
@@ -23,12 +24,12 @@ const MNEMONIC = [
 ];
 
 const BackupSeedPhrase = ({ navigation }) => {
-  const { goBack } = navigation;
+  const { goBack, navigate } = navigation;
   const [revealed, setRevealed] = useState(false);
 
-  const onPress = () => null;
+  const onPress = () => navigate(Routes.TOKENS);
   const onReveal = () => setRevealed(true);
-
+  console.log('bu seedphrase');
   return (
     <Container>
       <Header
