@@ -11,12 +11,13 @@ import persistStore from 'redux-persist/es/persistStore';
 
 const PersistedApp = () => {
   const dispatch = useDispatch();
-
-  useEffect(() => {
+  const init = () => {
     dispatch(initKeyring());
-  }, [dispatch]);
+  };
   return (
-    <PersistGate loading={<Text>hello</Text>} persistor={persistStore(store)}>
+    <PersistGate
+      loading={<Text>hello</Text>}
+      persistor={persistStore(store, null, init)}>
       <ErrorBoundary>
         <Routes />
       </ErrorBoundary>

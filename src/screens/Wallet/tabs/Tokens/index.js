@@ -6,15 +6,16 @@ import Container from '../../../../components/common/Container';
 import Divider from '../../../../components/common/Divider';
 import WalletHeader from '../../components/WalletHeader';
 import useTokens from '../../../../hooks/useTokens';
+import useKeyring from '../../../../hooks/useKeyring';
 
 const Tokens = () => {
   const [refreshing, setRefresing] = useState(false);
+  const { getAssets } = useKeyring();
   const { tokens } = useTokens();
 
   const onRefresh = () => {
     setRefresing(true);
-
-    setTimeout(() => setRefresing(false), 1000);
+    getAssets().then(setRefresing(false));
   };
 
   return (
