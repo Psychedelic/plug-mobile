@@ -52,6 +52,7 @@
     "react-number-format": "^4.7.3",
     "react-redux": "^7.2.4",
     "redux-persist": "^6.0.0",
+    "rn-nodeify": "^10.3.0",
     "stream-browserify": "^3.0.0",
     "text-encoding-polyfill": "^0.6.7",
     "yup": "^0.32.9"
