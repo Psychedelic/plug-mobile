@@ -38,9 +38,14 @@ const useKeyring = () => {
     const { wallets, currentWalletId } = await instance.getState();
     let assets = wallets?.[currentWalletId]?.assets;
     if (assets?.every(asset => !asset.amount) || refresh) {
+      console.log('getting balance sync');
       assets = await instance.getBalance();
+      console.log('Fetched assets: ');
+      console.log(assets);
     } else {
       instance.getBalance();
+      console.log('Fetched assets: ');
+      console.log('assets');
     }
     dispatch(setAssets(assets));
     return assets;

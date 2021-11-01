@@ -13,17 +13,17 @@ const AuthNavigator = ({ isInitialized }) => (
   <NavigationContainer>
     <Host>
       <Stack.Navigator
+        initialRouteName={
+          isInitialized ? Routes.SWIPE_LAYOUT : Routes.CREATE_IMPORT_LAYOUT
+        }
         screenOptions={{
           headerShown: false,
         }}>
-        {isInitialized ? (
-          <Stack.Screen name={Routes.SWIPE_LAYOUT} component={SwipeNavigator} />
-        ) : (
-          <Stack.Screen
-            name={Routes.CREATE_IMPORT_LAYOUT}
-            component={CreateImportNavigator}
-          />
-        )}
+        <Stack.Screen name={Routes.SWIPE_LAYOUT} component={SwipeNavigator} />
+        <Stack.Screen
+          name={Routes.CREATE_IMPORT_LAYOUT}
+          component={CreateImportNavigator}
+        />
       </Stack.Navigator>
     </Host>
   </NavigationContainer>

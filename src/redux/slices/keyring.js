@@ -2,9 +2,14 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import PlugController from '@psychedelic/plug-controller';
 import { keyringStorage } from '../configureReducer';
 import RNCryptoJS from 'react-native-crypto-js';
+import { fetch } from 'react-native-fetch-api';
 
 export const initKeyring = createAsyncThunk('keyring/init', async () => {
-  let keyring = new PlugController.PlugKeyRing(keyringStorage, RNCryptoJS);
+  let keyring = new PlugController.PlugKeyRing(
+    keyringStorage,
+    RNCryptoJS,
+    fetch,
+  );
   await keyring.init();
   return keyring;
 });

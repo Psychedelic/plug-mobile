@@ -66,7 +66,7 @@ const WalletHeader = () => {
         <View style={styles.container}>
           <View style={styles.buttons}>
             {BUTTONS.map(button => (
-              <ActionButton {...button} />
+              <ActionButton {...button} key={button.text} />
             ))}
           </View>
         </View>
