@@ -9,10 +9,11 @@ import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
 import Back from '../../../../components/common/Back';
 import useKeyring from '../../../../hooks/useKeyring';
 import styles from './styles';
+import Routes from '../../../../navigation/Routes';
 
 const CreatePassword = ({ route, navigation }) => {
   const { createWallet } = useKeyring();
-  const { navigateTo } = route.params;
+  const { flow } = route.params;
   const { goBack } = navigation;
   const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
@@ -20,11 +21,15 @@ const CreatePassword = ({ route, navigation }) => {
   const toggleSwitch = () => setFaceId(previousState => !previousState);
 
   const handleCreate = async () => {
-    try {
-      const mnemonic = await createWallet(password);
-      navigation.navigate(navigateTo, { mnemonic });
-    } catch (e) {
-      console.log('Error:', e);
+    if (flow === 'import') {
+      navigation.navigate(Routes.IMPORT_SEED_PHRASE, { password });
+    } else {
+      try {
+        const mnemonic = await createWallet(password);
+        navigation.navigate(Routes.BACKUP_SEED_PHRASE, { mnemonic });
+      } catch (e) {
+        console.log('Error:', e);
+      }
     }
   };
 

@@ -18,9 +18,7 @@ const useKeyring = () => {
 
   const createWallet = async password => {
     const mnemonic = await generateMnemonic();
-    console.log('Generated mnemonic', mnemonic);
     const { wallet } = await instance.importMnemonic({ password, mnemonic });
-    console.log('Created wallet', wallet);
     await instance.unlock(password);
     dispatch(setCurrentWallet(wallet));
     return mnemonic;
@@ -38,14 +36,9 @@ const useKeyring = () => {
     const { wallets, currentWalletId } = await instance.getState();
     let assets = wallets?.[currentWalletId]?.assets;
     if (assets?.every(asset => !asset.amount) || refresh) {
-      console.log('getting balance sync');
       assets = await instance.getBalance();
-      console.log('Fetched assets: ');
-      console.log(assets);
     } else {
-      console.log('calling non wait getBalance');
       instance.getBalance();
-      console.log('Fetched assets (non wait): ', assets);
     }
     dispatch(setAssets(assets));
     return assets;

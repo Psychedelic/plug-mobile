@@ -11,11 +11,10 @@ import styles from './styles';
 function Welcome() {
   const navigation = useNavigation();
 
-  const onCreatePress = () =>
+  const onPress = flow => () =>
     navigation.navigate(Routes.CREATE_PASSWORD, {
-      navigateTo: Routes.BACKUP_SEED_PHRASE,
+      flow,
     });
-  const onImportPress = () => navigation.navigate(Routes.IMPORT_SEED_PHRASE);
 
   return (
     <Container>
@@ -25,12 +24,12 @@ function Welcome() {
         <RainbowButton
           buttonStyle={styles.componentMargin}
           text="Create Wallet"
-          onPress={onCreatePress}
+          onPress={onPress('create')}
         />
         <Button
           buttonStyle={styles.buttonMargin}
           text="Import Wallet"
-          onPress={onImportPress}
+          onPress={onPress('import')}
         />
       </View>
     </Container>
