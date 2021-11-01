@@ -7,11 +7,12 @@ import Divider from '../../../../components/common/Divider';
 import WalletHeader from '../../components/WalletHeader';
 import useTokens from '../../../../hooks/useTokens';
 import useKeyring from '../../../../hooks/useKeyring';
+import { useSelector } from 'react-redux';
 
 const Tokens = () => {
   const [refreshing, setRefresing] = useState(false);
   const { getAssets } = useKeyring();
-  const { tokens } = useTokens();
+  const { assets } = useSelector(state => state.keyring);
 
   const onRefresh = () => {
     setRefresing(true);
@@ -31,10 +32,11 @@ const Tokens = () => {
             tintColor={Colors.White.Primary}
           />
         }>
-        {tokens.map(token => (
+        {assets?.map(token => (
           <TokenItem
             key={token.symbol}
             {...token}
+            color={Colors.Gray.Tertiary}
             style={{ marginTop: 20, paddingHorizontal: 20 }}
           />
         ))}

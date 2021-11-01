@@ -43,9 +43,9 @@ const useKeyring = () => {
       console.log('Fetched assets: ');
       console.log(assets);
     } else {
+      console.log('calling non wait getBalance');
       instance.getBalance();
-      console.log('Fetched assets: ');
-      console.log('assets');
+      console.log('Fetched assets (non wait): ', assets);
     }
     dispatch(setAssets(assets));
     return assets;
