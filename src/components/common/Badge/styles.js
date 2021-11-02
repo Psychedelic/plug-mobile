@@ -10,6 +10,9 @@ export default StyleSheet.create({
     marginBottom: 10,
     justifyContent: 'center',
     minHeight: 52,
+    borderColor: Colors.Gray.Primary,
+    borderWidth: 1,
+    alignSelf: 'flex-start'
   },
   name: {
     ...FontStyles.SmallerGray,

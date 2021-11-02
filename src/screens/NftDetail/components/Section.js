@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { Colors } from '../../../constants/theme';
+import { Colors, FontStyles } from '../../../constants/theme';
 import { StyleSheet } from 'react-native';
 
 const Section = ({ title, children, style }) => (
   <View style={[styles.section, style]}>
-    <Text>{title}</Text>
+    <Text style={FontStyles.Subtitle}>{title}</Text>
     <View style={styles.content}>
       {children}
     </View>
@@ -16,12 +16,14 @@ export default Section;
 
 const styles = StyleSheet.create({
   section: {
-    borderBottomColor: Colors.Gray.Primary,
-    borderBottomWidth: 1,
+    borderTopColor: Colors.Gray.Primary,
+    borderTopWidth: 1,
     paddingHorizontal: 20,
     paddingVertical: 25,
   },
   content: {
     paddingTop: 20,
+    flexDirection: 'row',
+    flexWrap: 'wrap'
   }
 });

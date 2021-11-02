@@ -8,20 +8,32 @@ import Row from '../../components/layout/Row';
 import Touchable from '../../components/animations/Touchable';
 import Section from './components/Section';
 import Badge from '../../components/common/Badge';
-import { styles } from '../../components/buttons/RainbowButton/styles';
 import Button from '../../components/buttons/Button';
 import RainbowButton from '../../components/buttons/RainbowButton';
-
+import styles from './styles';
+import NftDisplayer from '../../components/common/NftDisplayer';
 
 const MOCK = {
-  index: 0,
-  canister: 'asdasdsa',
-  id: 1,
-  name: 'test',
-  url: 'test',
-  metadata: null,
-  standard: 'ICPUnks',
-  collection: 'Test',
+  "index": "9244",
+  "canister": "qcg3w-tyaaa-aaaah-qakea-cai",
+  "url": "https://api.openpay.mx/barcode/185017437691737?width=1&height=100",
+  "name": 'ICPunk #9244',
+  "metadata": {
+    "id": "9244",
+    "url": "/Token/9244",
+    "owner": { "_arr": { "0": 195, "1": 147, "2": 158, "3": 29, "4": 131, "5": 177, "6": 153, "7": 14, "8": 3, "9": 66, "10": 224, "11": 193, "12": 37, "13": 209, "14": 200, "15": 144, "16": 18, "17": 98, "18": 37, "19": 163, "20": 92, "21": 216, "22": 65, "23": 149, "24": 227, "25": 220, "26": 242, "27": 199, "28": 2 }, "_isPrincipal": true },
+    "desc": "",
+    "name": "ICPunk #9244",
+    "properties": [{ "value": "Yellow", "name": "Background" },
+    { "value": "Red Hoodie", "name": "Body" },
+    { "value": "Red", "name": "Nose" },
+    { "value": "None", "name": "Mouth" },
+    { "value": "None", "name": "Eyes" },
+    { "value": "Green Angry", "name": "Head" },
+    { "value": "Red Cap", "name": "Top" }]
+  },
+  "standard": "ICPunks",
+  "collection": "ICPunks"
 }
 
 const NftDetail = ({ modalRef, handleClose, nft = MOCK, ...props }) => {
@@ -36,20 +48,26 @@ const NftDetail = ({ modalRef, handleClose, nft = MOCK, ...props }) => {
       <View style={styles.content}>
 
 
+        <NftDisplayer url={nft.url} />
+
         <View style={styles.buttonContainer}>
-          <Button
-            variant="gray"
-            text="Marketplace"
-            onPress={() => null}
-          />
-          <RainbowButton
-            text="Send"
-            onPress={() => null}
-          />
+          <View style={{ flex: 1, marginRight: 10 }}>
+            <Button
+              variant="gray"
+              text="Marketplace"
+              onPress={() => null}
+            />
+          </View>
+          <View style={{ flex: 1, marginLeft: 10 }}>
+            <RainbowButton
+              text="Send"
+              onPress={() => null}
+            />
+          </View>
         </View>
 
 
-        <Section title='🧩 Collection'>
+        <Section title='🧩 Collection' style={{ borderTopWidth: 0 }}>
           <Badge value={nft?.collection} icon={null/*collection?.icon*/} />
           <Badge value={`#${nft?.index}`} />
         </Section>
