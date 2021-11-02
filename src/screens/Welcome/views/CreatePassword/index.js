@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, Image, Switch } from 'react-native';
 import Container from '../../../../components/common/Container';
 import TextInput from '../../../../components/common/TextInput';
@@ -7,6 +7,7 @@ import RainbowButton from '../../../../components/buttons/RainbowButton';
 import Header from '../../../../components/common/Header';
 import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
 import Back from '../../../../components/common/Back';
+import ReactNativeBiometrics from 'react-native-biometrics'
 //import useKeyring from '../../../../hooks/useKeyring';
 import styles from './styles';
 
@@ -16,17 +17,33 @@ const CreatePassword = ({ route, navigation }) => {
   const { goBack } = navigation;
   const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
-  const [faceId, setFaceId] = useState(false);
-  const toggleSwitch = () => setFaceId(previousState => !previousState);
+  const [biometrics, setBiometrics] = useState(false);
+  const toggleSwitch = () => setBiometrics(previousState => !previousState);
 
   const handleCreate = () => {
-    /*try {
-     const response = createWallet({ password });
-      console.log('response', response)
+    const handleWalletCreate = (password, biometricsKey = false) => {
+      /*try {
+       const response = createWallet({ password, biometricsKey });
+        console.log('response', response)
+      }
+      catch (e) {
+        console.log(e);
+      }*/
+    };
+
+    if (biometrics) {
+      ReactNativeBiometrics.createKeys('Secure your wallet with biometrics')
+        .then((resultObject) => {
+          const { publicKey: biometricsKey } = resultObject
+          handleWalletCreate(password, biometricsKey);
+        })
+        .catch((error) => {
+          // Handle biometrics error correctly
+          console.log(error);
+        });
+    } else {
+      handleWalletCreate(password, biometricsKey);
     }
-    catch (e) {
-      console.log(e);
-    }*/
 
     navigation.navigate(navigateTo);
   };
@@ -82,7 +99,7 @@ const CreatePassword = ({ route, navigation }) => {
 
         <View style={styles.switchContainer}>
           <Text style={styles.faceId}>Sign in with Face ID?</Text>
-          <Switch onValueChange={toggleSwitch} value={faceId} />
+          <Switch onValueChange={toggleSwitch} value={biometrics} />
         </View>
         <RainbowButton
           buttonStyle={styles.componentMargin}
