@@ -4,9 +4,10 @@ import { useSelector } from 'react-redux';
 const useKeyring = () => {
   const { instance } = useSelector(state => state.keyring);
 
-  const createWallet = async password => {
+  const createWallet = async ({ password, biometricsKey }) => {
     //const entropy = await getRandom(16);
-    //instance.create({ password, entropy });
+    //const key = biometricsKey ? biometricsKey : entropy;
+    //instance.create({ password, key });
   };
 
   const importWallet = params => {
