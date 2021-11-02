@@ -4,7 +4,6 @@ import styles from './styles';
 
 function Login({ setLoading }) {
   useEffect(() => {
-    console.log('login');
     setLoading(false);
   }, [setLoading]);
 

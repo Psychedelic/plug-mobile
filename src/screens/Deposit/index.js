@@ -14,23 +14,18 @@ import Header from '../../components/common/Header';
 
 const Deposit = ({ modalRef }) => {
   return (
-    <Modal
-      modalRef={modalRef}
-      adjustToContentHeight
-    >
+    <Modal modalRef={modalRef} adjustToContentHeight>
       <Header center={<Text style={FontStyles.Subtitle2}>Deposit</Text>} />
 
       <Column style={styles.container}>
-
         <GradientText
           colors={[Colors.Rainbow.Teal, Colors.Rainbow.Green]}
-          style={styles.title}
-        >
+          style={styles.title}>
           {'Principal ID'}
         </GradientText>
         <Text style={styles.text}>
-          Use when receiving from Plug accounts & users,
-          or other apps that support sending directly to Principal ID's.
+          Use when receiving from Plug accounts & users, or other apps that
+          support sending directly to Principal ID's.
         </Text>
 
         <InfoWithActions
@@ -38,16 +33,11 @@ const Deposit = ({ modalRef }) => {
           actions={[
             {
               icon: 'copy',
-              onPress: () => Clipboard.setString('principal here')
+              onPress: () => Clipboard.setString('principal here'),
             },
           ]}
-          colors={[
-            Colors.Rainbow.Teal,
-            Colors.Rainbow.Green
-          ]}
+          colors={[Colors.Rainbow.Teal, Colors.Rainbow.Green]}
         />
-
-
       </Column>
 
       <Row>
@@ -62,19 +52,16 @@ const Deposit = ({ modalRef }) => {
         </View>
       </Row>
 
-
       <Column style={styles.container}>
-
         <GradientText
           colors={[Colors.Rainbow.Purple, Colors.Rainbow.Blue]}
-          style={styles.title}
-        >
+          style={styles.title}>
           {'Account ID'}
         </GradientText>
 
         <Text style={styles.text}>
-          Use when receiving from exchanges,
-          or other apps that only support sending to Accounts ID's.
+          Use when receiving from exchanges, or other apps that only support
+          sending to Accounts ID's.
         </Text>
 
         <InfoWithActions
@@ -82,19 +69,14 @@ const Deposit = ({ modalRef }) => {
           actions={[
             {
               icon: 'copy',
-              onPress: () => Clipboard.setString('account here')
+              onPress: () => Clipboard.setString('account here'),
             },
           ]}
-          colors={[
-            Colors.Rainbow.Purple,
-            Colors.Rainbow.Blue
-          ]}
+          colors={[Colors.Rainbow.Purple, Colors.Rainbow.Blue]}
         />
-
       </Column>
-
-    </Modal >
+    </Modal>
   );
-}
+};
 
 export default Deposit;

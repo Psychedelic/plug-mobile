@@ -14,8 +14,8 @@ export default StyleSheet.create({
     ...FontStyles.NormalGray,
     marginVertical: 20,
   },
-  divider: {
-    width: '42%',
-    justifyContent: 'center',
+  letter: {
+    ...FontStyles.NormalGray,
+    marginBottom: 20,
   },
 });
