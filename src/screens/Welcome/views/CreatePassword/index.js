@@ -7,7 +7,7 @@ import RainbowButton from '../../../../components/buttons/RainbowButton';
 import Header from '../../../../components/common/Header';
 import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
 import Back from '../../../../components/common/Back';
-import ReactNativeBiometrics from 'react-native-biometrics'
+import * as Keychain from 'react-native-keychain';
 //import useKeyring from '../../../../hooks/useKeyring';
 import styles from './styles';
 
@@ -18,32 +18,22 @@ const CreatePassword = ({ route, navigation }) => {
   const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
   const [biometrics, setBiometrics] = useState(false);
+  const [biometryType, setBiometryType] = useState(false);
   const toggleSwitch = () => setBiometrics(previousState => !previousState);
 
-  const handleCreate = () => {
-    const handleWalletCreate = (password, biometricsKey = false) => {
-      /*try {
-       const response = createWallet({ password, biometricsKey });
-        console.log('response', response)
-      }
-      catch (e) {
-        console.log(e);
-      }*/
-    };
+  useEffect(() => {
+    setBiometryType(Keychain.getSupportedBiometryType());
+  }, []);
 
-    if (biometrics) {
-      ReactNativeBiometrics.createKeys('Secure your wallet with biometrics')
-        .then((resultObject) => {
-          const { publicKey: biometricsKey } = resultObject
-          handleWalletCreate(password, biometricsKey);
-        })
-        .catch((error) => {
-          // Handle biometrics error correctly
-          console.log(error);
-        });
-    } else {
-      handleWalletCreate(password, biometricsKey);
+  const handleCreate = async () => {
+    // Handle passwords that don't match
+    /*try {
+      const response = await createWallet({ password, biometryType });
+      console.log('response', response)
     }
+    catch (e) {
+      console.log(e);
+    }*/
 
     navigation.navigate(navigateTo);
   };
@@ -97,10 +87,12 @@ const CreatePassword = ({ route, navigation }) => {
 
         <Text style={styles.help}>Must be at least 12 characters</Text>
 
-        <View style={styles.switchContainer}>
-          <Text style={styles.faceId}>Sign in with Face ID?</Text>
-          <Switch onValueChange={toggleSwitch} value={biometrics} />
-        </View>
+        { biometryType && (
+          <View style={styles.switchContainer}>
+            <Text style={styles.faceId}>Sign in with Face ID?</Text>
+            <Switch onValueChange={toggleSwitch} value={biometrics} />
+          </View>
+        )}
         <RainbowButton
           buttonStyle={styles.componentMargin}
           text="Continue"
