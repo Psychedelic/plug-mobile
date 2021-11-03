@@ -2,10 +2,11 @@ import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   content: {
-    paddingVertical: 20,
+    paddingBottom: 20,
   },
   buttonContainer: {
     flexDirection: 'row',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    marginTop: 30,
   }
 })

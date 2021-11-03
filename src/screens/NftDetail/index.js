@@ -12,11 +12,13 @@ import Button from '../../components/buttons/Button';
 import RainbowButton from '../../components/buttons/RainbowButton';
 import styles from './styles';
 import NftDisplayer from '../../components/common/NftDisplayer';
+import { Image } from 'react-native';
+import WebView from 'react-native-webview';
 
 const MOCK = {
-  "index": "9244",
+  "index": "91244",
   "canister": "qcg3w-tyaaa-aaaah-qakea-cai",
-  "url": "https://api.openpay.mx/barcode/185017437691737?width=1&height=100",
+  "url": "https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
   "name": 'ICPunk #9244',
   "metadata": {
     "id": "9244",
@@ -46,7 +48,6 @@ const NftDetail = ({ modalRef, handleClose, nft = MOCK, ...props }) => {
     >
       <Header center={<Text style={FontStyles.Subtitle2}>{`#${nft.index}`}</Text>} />
       <View style={styles.content}>
-
 
         <NftDisplayer url={nft.url} />
 
