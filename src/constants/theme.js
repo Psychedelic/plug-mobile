@@ -31,7 +31,7 @@ export const Colors = {
     Blue: '#36C3E9',
     Purple: '#CF6ED3',
     Green: '#09DF66',
-    Cyan: '#05DCC8',
+    Teal: '#05DCC8',
   },
 };
 

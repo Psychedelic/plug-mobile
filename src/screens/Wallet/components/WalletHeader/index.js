@@ -10,10 +10,12 @@ import Send from '../../../Send';
 import Touchable from '../../../../components/animations/Touchable';
 import { Colors } from '../../../../constants/theme';
 import ActionButton from '../ActionButton';
+import Deposit from '../../../Deposit';
 
 const WalletHeader = () => {
   const modalRef = useRef(null);
   const sendRef = useRef(null);
+  const depositRef = useRef(null);
 
   const openModal = () => {
     modalRef.current?.open();
@@ -24,11 +26,17 @@ const WalletHeader = () => {
     sendRef.current?.open();
   };
 
+  const openDeposit = () => {
+    modalRef.current?.close();
+    depositRef.current?.open();
+  };
+
   const BUTTONS = [
     {
       image: <Icon name="deposit" />,
       colors: [Colors.Rainbow.Red, Colors.Rainbow.Yellow],
       text: 'Deposit',
+      onPress: openDeposit,
     },
     {
       image: <Icon name="send" />,
@@ -38,7 +46,7 @@ const WalletHeader = () => {
     },
     {
       image: <Icon name="swap" />,
-      colors: [Colors.Rainbow.Green, Colors.Rainbow.Cyan],
+      colors: [Colors.Rainbow.Green, Colors.Rainbow.Teal],
       text: 'Swap',
     },
   ];
@@ -65,6 +73,7 @@ const WalletHeader = () => {
       </Modal>
 
       <Send modalRef={sendRef} />
+      <Deposit modalRef={depositRef} />
     </>
   );
 };
