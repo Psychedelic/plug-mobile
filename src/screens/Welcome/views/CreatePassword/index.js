@@ -8,11 +8,11 @@ import Header from '../../../../components/common/Header';
 import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
 import Back from '../../../../components/common/Back';
 import * as Keychain from 'react-native-keychain';
-//import useKeyring from '../../../../hooks/useKeyring';
+import useKeyring from '../../../../hooks/useKeyring';
 import styles from './styles';
 
 const CreatePassword = ({ route, navigation }) => {
-  //const { createWallet } = useKeyring();
+  const { createWallet } = useKeyring();
   const { navigateTo } = route.params;
   const { goBack } = navigation;
   const [password, setPassword] = useState(null);
@@ -26,14 +26,15 @@ const CreatePassword = ({ route, navigation }) => {
   }, []);
 
   const handleCreate = async () => {
-    // Handle passwords that don't match
-    /*try {
+    /*
+    try {
       const response = await createWallet({ password, biometryType });
       console.log('response', response)
     }
     catch (e) {
       console.log(e);
-    }*/
+    }
+    */
 
     navigation.navigate(navigateTo);
   };
