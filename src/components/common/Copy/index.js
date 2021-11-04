@@ -7,7 +7,6 @@ import Touchable from '../../animations/Touchable';
 
 const Copy = ({ text, customStyle }) => {
   const copyToClipboard = () => {
-    console.log(text);
     Clipboard.setString(text);
   };
 

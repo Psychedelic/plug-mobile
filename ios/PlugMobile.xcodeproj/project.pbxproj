@@ -362,6 +362,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		A11FED6A445F01F79B82D481 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile/Pods-PlugMobile-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile/Pods-PlugMobile-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PlugMobile/Pods-PlugMobile-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		ED3EA48C686ED68D4E7B07D7 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
