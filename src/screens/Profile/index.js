@@ -182,7 +182,9 @@ const Profile = () => {
         <Header {...header} />
         <ScrollView>
           <View style={styles.container}>
-            <UserIcon size="large" icon="🔥" />
+            <Touchable onPress={openAccounts}>
+              <UserIcon size="large" icon="🔥" />
+            </Touchable>
             <Button
               variant="gray"
               text="Change"
