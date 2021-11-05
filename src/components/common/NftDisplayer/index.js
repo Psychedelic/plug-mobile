@@ -29,7 +29,7 @@ const NftDisplayer = ({ url, style, }) => {
   if (Tag === 'iframe') {
     return (
       <View
-        style={[style, styles.image]}
+        style={[styles.image, style]}
       >
         <WebView
           onLoad={hideSpinner}
@@ -56,7 +56,7 @@ const NftDisplayer = ({ url, style, }) => {
   if (Tag === 'video') {
     return (
       <View
-        style={[style, styles.image]}
+        style={[styles.image, style]}
       >
         <Video
           onLoad={hideSpinner}
@@ -82,7 +82,7 @@ const NftDisplayer = ({ url, style, }) => {
   return (
     <Image
       resizeMode='cover'
-      style={[style, styles.image]}
+      style={[styles.image, style]}
       source={{ uri: url }}
     />
   );

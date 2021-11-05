@@ -1,20 +1,18 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import TokenSelector from '../../../components/tokens/TokenSelector';
-import { Keyboard } from 'react-native';
 import RainbowButton from '../../../components/buttons/RainbowButton';
 import AmountInput from '../../../components/common/AmountInput';
-import ReviewSend from './ReviewSend';
 
 const AmountSection = ({
   selectedToken,
   setSelectedToken,
-  parentModalRef,
-  selectedContact,
-  to,
+  onReview,
+  tokenAmount,
+  setTokenAmount,
+  usdAmount,
+  setUsdAmount,
 }) => {
-  const [tokenAmount, setTokenAmount] = useState(null);
-  const [usdAmount, setUsdAmount] = useState(null);
-
+  
   const [selectedInput, setSelectedInput] = useState('USD');
 
   useEffect(() => {
@@ -26,13 +24,6 @@ const AmountSection = ({
       tokenAmount ? String(tokenAmount * selectedToken.value) : null,
     );
   }, [tokenAmount, selectedToken.value]);
-
-  const modalRef = useRef(null);
-
-  const onReview = () => {
-    Keyboard.dismiss();
-    modalRef.current?.open();
-  };
 
   const onTokenChange = () => {
     setSelectedToken(null);
@@ -91,16 +82,6 @@ const AmountSection = ({
         disabled={isButtonDisabled()}
       />
 
-      <ReviewSend
-        modalRef={modalRef}
-        adjustToContentHeight
-        token={selectedToken}
-        to={to}
-        contact={selectedContact}
-        amount={tokenAmount}
-        value={usdAmount}
-        onClose={() => parentModalRef.current?.close()}
-      />
     </>
   );
 };

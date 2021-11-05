@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Header from '../../components/common/Header';
 import { FontStyles } from '../../constants/theme';
 import TextInput from '../../components/common/TextInput';
@@ -9,6 +9,9 @@ import { validatePrincipalId, validateAccountId } from '../../helpers/ids';
 import AmountSection from './components/AmountSection';
 import ContactSection from './components/ContactSection';
 import TokenSection from './components/TokenSection';
+import { Keyboard } from 'react-native';
+import ReviewSend from './components/ReviewSend';
+
 
 const Send = ({ modalRef }) => {
   const [to, setTo] = useState(null);
@@ -16,6 +19,12 @@ const Send = ({ modalRef }) => {
 
   const [selectedContact, setSelectedContact] = useState(null);
   const [selectedToken, setSelectedToken] = useState(null);
+  const [selectedNft, setSelectedNft] = useState(null);
+
+  const [tokenAmount, setTokenAmount] = useState(null);
+  const [usdAmount, setUsdAmount] = useState(null);
+
+  const reviewRef = useRef(null);
 
   useEffect(() => {
     if (selectedContact) {
@@ -34,9 +43,15 @@ const Send = ({ modalRef }) => {
     setSelectedToken(token);
   };
 
+  const onNftPress = nft => {
+    setSelectedNft(nft);
+    onReview();
+  }
+
   const resetState = () => {
     setTo(null);
     setValidTo(false);
+    setSelectedNft(null);
     setSelectedToken(null);
     setSelectedContact(null);
   };
@@ -44,6 +59,11 @@ const Send = ({ modalRef }) => {
   const onChangeText = text => {
     setSelectedContact(null);
     setTo(text);
+  };
+
+  const onReview = () => {
+    Keyboard.dismiss();
+    reviewRef.current?.open();
   };
 
   return (
@@ -59,17 +79,46 @@ const Send = ({ modalRef }) => {
           textStyle={validTo ? styles.valid : null}
           autoFocus
         />
-        {!validTo && <ContactSection onPress={onContactPress} />}
-        {validTo && !selectedToken && <TokenSection onPress={onTokenPress} />}
-        {validTo && selectedToken && (
-          <AmountSection
+        {
+          !validTo
+          && <ContactSection
+            onPress={onContactPress}
+          />
+        }
+
+        {
+          (validTo && !selectedToken)
+          && <TokenSection
+            onTokenPress={onTokenPress}
+            onNftPress={onNftPress}
+          />
+        }
+
+        {
+          (validTo && selectedToken)
+          && <AmountSection
             selectedToken={selectedToken}
             setSelectedToken={setSelectedToken}
-            selectedContact={selectedContact}
-            to={to}
-            parentModalRef={modalRef}
+            tokenAmount={tokenAmount}
+            setTokenAmount={setTokenAmount}
+            usdAmount={usdAmount}
+            setUsdAmount={setUsdAmount}
+            onReview={onReview}
           />
-        )}
+        }
+
+        <ReviewSend
+          modalRef={reviewRef}
+          adjustToContentHeight
+          token={selectedToken}
+          to={to}
+          contact={selectedContact}
+          amount={tokenAmount}
+          value={usdAmount}
+          nft={selectedNft}
+          onClose={() => modalRef.current?.close()}
+        />
+
       </ScrollView>
     </Modal>
   );

@@ -5,7 +5,6 @@ import {
   StyleSheet,
   Dimensions,
   Text,
-  TouchableOpacity,
 } from 'react-native';
 import { FontStyles, Colors } from '../../../../constants/theme';
 import Container from '../../../../components/common/Container';
@@ -14,12 +13,16 @@ import { ScrollView } from 'react-native-gesture-handler';
 import WalletHeader from '../../components/WalletHeader';
 import NftDetail from '../../../NftDetail';
 import Touchable from '../../../../components/animations/Touchable';
+import useNfts from '../../../../hooks/useNfts';
+import NftDisplayer from '../../../../components/common/NftDisplayer';
 
 const { width } = Dimensions.get('window');
 const itemSize = width / 2 - 30;
 
 const NFTs = () => {
   const [refreshing, setRefresing] = useState(false);
+
+  const { nfts } = useNfts();
 
   const detailRef = useRef(null);
 
@@ -51,12 +54,15 @@ const NFTs = () => {
               tintColor={Colors.White.Primary}
             />
           }>
-          {[0, 1, 2, 3, 4, 5, 6, 7].map(item => (
-            <View key={item} style={styles.item}>
+          {nfts.map(item => (
+            <View key={item.name} style={styles.item}>
               <Touchable onPress={onOpen}>
-                <View style={styles.image} />
+                <NftDisplayer
+                  url={item.url}
+                  style={{ width: itemSize, height: itemSize }}
+                />
               </Touchable>
-              <Text style={styles.text}>Test {item}</Text>
+              <Text style={styles.text}>{item.name}</Text>
             </View>
           ))}
         </ScrollView>
@@ -78,12 +84,6 @@ const styles = StyleSheet.create({
   },
   item: {
     margin: 10,
-  },
-  image: {
-    width: itemSize,
-    height: itemSize,
-    backgroundColor: 'black',
-    borderRadius: 20,
   },
   text: {
     ...FontStyles.NormalGray,
