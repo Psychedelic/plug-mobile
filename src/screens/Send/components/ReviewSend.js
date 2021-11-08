@@ -11,10 +11,12 @@ import UserIcon from '../../../components/common/UserIcon';
 import Icon from '../../../components/icons';
 import Button from '../../../components/buttons/Button';
 import { Colors } from '../../../constants/theme';
+import NftDisplayer from '../../../components/common/NftDisplayer';
 
 const ReviewSend = ({
   modalRef,
   token,
+  nft,
   amount,
   value,
   to,
@@ -48,15 +50,30 @@ const ReviewSend = ({
           />
         )}
 
-        <Row style={styles.row}>
-          <Column>
-            <Text style={FontStyles.Title2}>${value}</Text>
-            <Text style={FontStyles.Subtitle3}>
-              {amount} {token.symbol}
-            </Text>
-          </Column>
-          <TokenIcon {...token} color={Colors.Gray.Tertiary} />
-        </Row>
+        {token && (
+          <Row style={styles.row}>
+            <Column>
+              <Text style={FontStyles.Title2}>${value}</Text>
+              <Text style={FontStyles.Subtitle3}>
+                {amount} {token.symbol}
+              </Text>
+            </Column>
+            <TokenIcon {...token} color={Colors.Gray.Tertiary} />
+          </Row>
+        )}
+
+        {nft && (
+          <Row style={styles.row}>
+            <Column>
+              <Text style={FontStyles.Title2}>{nft.name}</Text>
+              <Text style={FontStyles.Subtitle3}>Collection name here?</Text>
+            </Column>
+            <NftDisplayer
+              url={nft.url}
+              style={{ width: 41, height: 41, borderRadius: 7 }}
+            />
+          </Row>
+        )}
 
         <Row style={[styles.row, { paddingRight: 9 }]}>
           <View style={styles.to}>
@@ -67,8 +84,8 @@ const ReviewSend = ({
 
         <Row style={styles.row}>
           <Column>
-            <Text style={FontStyles.Title2}>{contact.name}</Text>
-            <Text style={FontStyles.Subtitle3}>{contact.id}</Text>
+            <Text style={FontStyles.Title2}>{contact?.name}</Text>
+            <Text style={FontStyles.Subtitle3}>{contact?.id}</Text>
           </Column>
           <UserIcon size="medium" icon="🔥" />
         </Row>
