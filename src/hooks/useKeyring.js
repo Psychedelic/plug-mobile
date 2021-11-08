@@ -5,7 +5,7 @@ import { setCurrentWallet, setAssets } from '../redux/slices/keyring';
 
 const generateMnemonic = async () => {
   try {
-    return await bip39.generateMnemonic(256);
+    return await bip39.generateMnemonic(128);
   } catch (e) {
     console.log(e);
     return false;
@@ -32,7 +32,6 @@ const useKeyring = () => {
   };
 
   const getAssets = async refresh => {
-    console.log('Getting assets');
     const { wallets, currentWalletId } = await instance.getState();
     let assets = wallets?.[currentWalletId]?.assets;
     if (assets?.every(asset => !asset.amount) || refresh) {

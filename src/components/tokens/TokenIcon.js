@@ -3,7 +3,6 @@ import { View, Text, StyleSheet } from 'react-native';
 import Icon from '../icons';
 
 const TokenIcon = ({ icon, symbol, color, customStyle, ...props }) => {
-  console.log('color', color);
   return icon ? (
     <Icon name={icon} color={color} />
   ) : (

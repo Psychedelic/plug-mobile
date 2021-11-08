@@ -8,7 +8,6 @@ import Touchable from '../../animations/Touchable';
 
 const SeedPhrase = ({ mnemonic, onReveal }) => {
   const [reveal, setReveal] = useState(false);
-  console.log('seedphrase', reveal);
   const revealSeedPhrase = () => {
     setReveal(true);
     onReveal();

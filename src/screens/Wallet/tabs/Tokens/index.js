@@ -16,20 +16,18 @@ const Tokens = () => {
 
   const onRefresh = async () => {
     setRefresing(true);
-    const refreshedAssets = await getAssets();
-    console.log('refreshed assets', refreshedAssets);
+    await getAssets();
     setRefresing(false);
   };
 
   useEffect(() => {
     const refresh = async () => {
       setRefresing(true);
-      const refreshedAssets = await getAssets();
-      console.log('refreshed assets', refreshedAssets);
+      await getAssets();
       setRefresing(false);
     };
     refresh();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Container>
