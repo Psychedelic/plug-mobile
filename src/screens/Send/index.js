@@ -12,7 +12,6 @@ import TokenSection from './components/TokenSection';
 import { Keyboard } from 'react-native';
 import ReviewSend from './components/ReviewSend';
 
-
 const Send = ({ modalRef }) => {
   const [to, setTo] = useState(null);
   const [validTo, setValidTo] = useState(false);
@@ -46,7 +45,7 @@ const Send = ({ modalRef }) => {
   const onNftPress = nft => {
     setSelectedNft(nft);
     onReview();
-  }
+  };
 
   const resetState = () => {
     setTo(null);
@@ -79,24 +78,14 @@ const Send = ({ modalRef }) => {
           textStyle={validTo ? styles.valid : null}
           autoFocus
         />
-        {
-          !validTo
-          && <ContactSection
-            onPress={onContactPress}
-          />
-        }
+        {!validTo && <ContactSection onPress={onContactPress} />}
 
-        {
-          (validTo && !selectedToken)
-          && <TokenSection
-            onTokenPress={onTokenPress}
-            onNftPress={onNftPress}
-          />
-        }
+        {validTo && !selectedToken && (
+          <TokenSection onTokenPress={onTokenPress} onNftPress={onNftPress} />
+        )}
 
-        {
-          (validTo && selectedToken)
-          && <AmountSection
+        {validTo && selectedToken && (
+          <AmountSection
             selectedToken={selectedToken}
             setSelectedToken={setSelectedToken}
             tokenAmount={tokenAmount}
@@ -105,7 +94,7 @@ const Send = ({ modalRef }) => {
             setUsdAmount={setUsdAmount}
             onReview={onReview}
           />
-        }
+        )}
 
         <ReviewSend
           modalRef={reviewRef}
@@ -118,7 +107,6 @@ const Send = ({ modalRef }) => {
           nft={selectedNft}
           onClose={() => modalRef.current?.close()}
         />
-
       </ScrollView>
     </Modal>
   );

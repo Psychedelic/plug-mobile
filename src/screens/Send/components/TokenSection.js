@@ -16,7 +16,9 @@ const TokenSection = ({ onTokenPress, onNftPress }) => {
     <>
       <Text style={FontStyles.Subtitle3}>Tokens</Text>
       {tokens.map(token => (
-        <Touchable scale={animationScales.small} onPress={() => onTokenPress(token)}>
+        <Touchable
+          scale={animationScales.small}
+          onPress={() => onTokenPress(token)}>
           <TokenItem
             {...token}
             color={Colors.Gray.Tertiary}
@@ -25,11 +27,10 @@ const TokenSection = ({ onTokenPress, onNftPress }) => {
         </Touchable>
       ))}
       {nfts.map(nft => (
-        <Touchable scale={animationScales.small} onPress={() => onNftPress(nft)}>
-          <NftItem
-            {...nft}
-            style={{ marginTop: 20 }}
-          />
+        <Touchable
+          scale={animationScales.small}
+          onPress={() => onNftPress(nft)}>
+          <NftItem {...nft} style={{ marginTop: 20 }} />
         </Touchable>
       ))}
     </>

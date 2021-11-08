@@ -1,4 +1,4 @@
-import { StyleSheet, useColorScheme } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Colors, FontStyles } from '../../../constants/theme';
 
 export default StyleSheet.create({
@@ -12,7 +12,7 @@ export default StyleSheet.create({
     minHeight: 52,
     borderColor: Colors.Gray.Primary,
     borderWidth: 1,
-    alignSelf: 'flex-start'
+    alignSelf: 'flex-start',
   },
   name: {
     ...FontStyles.SmallerGray,

@@ -12,18 +12,17 @@ const AmountSection = ({
   usdAmount,
   setUsdAmount,
 }) => {
-  
   const [selectedInput, setSelectedInput] = useState('USD');
 
   useEffect(() => {
     setTokenAmount(usdAmount ? String(usdAmount / selectedToken.value) : null);
-  }, [usdAmount, selectedToken.value]);
+  }, [usdAmount, selectedToken.value, setTokenAmount]);
 
   useEffect(() => {
     setUsdAmount(
       tokenAmount ? String(tokenAmount * selectedToken.value) : null,
     );
-  }, [tokenAmount, selectedToken.value]);
+  }, [tokenAmount, selectedToken.value, setUsdAmount]);
 
   const onTokenChange = () => {
     setSelectedToken(null);
@@ -81,7 +80,6 @@ const AmountSection = ({
         onPress={onReview}
         disabled={isButtonDisabled()}
       />
-
     </>
   );
 };

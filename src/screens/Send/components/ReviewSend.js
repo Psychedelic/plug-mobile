@@ -50,9 +50,8 @@ const ReviewSend = ({
           />
         )}
 
-        {
-          token
-          && <Row style={styles.row}>
+        {token && (
+          <Row style={styles.row}>
             <Column>
               <Text style={FontStyles.Title2}>${value}</Text>
               <Text style={FontStyles.Subtitle3}>
@@ -61,21 +60,20 @@ const ReviewSend = ({
             </Column>
             <TokenIcon {...token} color={Colors.Gray.Tertiary} />
           </Row>
-        }
+        )}
 
-        {
-          nft
-          && <Row style={styles.row}>
+        {nft && (
+          <Row style={styles.row}>
             <Column>
               <Text style={FontStyles.Title2}>{nft.name}</Text>
-              <Text style={FontStyles.Subtitle3}>
-                Collection name here?
-              </Text>
+              <Text style={FontStyles.Subtitle3}>Collection name here?</Text>
             </Column>
-            <NftDisplayer url={nft.url} style={{ width: 41, height: 41, borderRadius: 7 }} />
+            <NftDisplayer
+              url={nft.url}
+              style={{ width: 41, height: 41, borderRadius: 7 }}
+            />
           </Row>
-        }
-
+        )}
 
         <Row style={[styles.row, { paddingRight: 9 }]}>
           <View style={styles.to}>

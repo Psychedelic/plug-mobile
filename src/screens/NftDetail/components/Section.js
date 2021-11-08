@@ -6,9 +6,7 @@ import { StyleSheet } from 'react-native';
 const Section = ({ title, children, style }) => (
   <View style={[styles.section, style]}>
     <Text style={FontStyles.Subtitle}>{title}</Text>
-    <View style={styles.content}>
-      {children}
-    </View>
+    <View style={styles.content}>{children}</View>
   </View>
 );
 
@@ -24,6 +22,6 @@ const styles = StyleSheet.create({
   content: {
     paddingTop: 20,
     flexDirection: 'row',
-    flexWrap: 'wrap'
-  }
+    flexWrap: 'wrap',
+  },
 });

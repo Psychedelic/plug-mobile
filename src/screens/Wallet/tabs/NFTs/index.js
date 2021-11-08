@@ -28,7 +28,7 @@ const NFTs = () => {
 
   const onOpen = () => {
     detailRef?.current.open();
-  }
+  };
 
   const onRefresh = () => {
     setRefresing(true);
