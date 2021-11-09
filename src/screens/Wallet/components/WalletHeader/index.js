@@ -29,7 +29,7 @@ const WalletHeader = () => {
   const openDeposit = () => {
     modalRef.current?.close();
     depositRef.current?.open();
-  }
+  };
 
   const BUTTONS = [
     {

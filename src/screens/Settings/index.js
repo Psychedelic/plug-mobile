@@ -4,23 +4,43 @@ import Icon from '../../components/icons';
 import animationScales from '../../utils/animationScales';
 import Modal from '../../components/modal';
 import { View, Text, StyleSheet } from 'react-native';
-import useSettingsItems from '../../hooks/useSettingsItems';
 import useInfoItems from '../../hooks/useInfoItems';
 import Header from '../../components/common/Header';
 import { FontStyles } from '../../constants/theme';
 import SettingItem from './components/SettingItem';
 import InfoItem from './components/InfoItem';
 import Separator from '../../components/layout/Separator';
+import Contacts from '../Contacts';
 
 const Settings = () => {
   const modalRef = useRef(null);
+  const contactsRef = useRef(null);
 
-  const settingsItems = useSettingsItems();
+  //const settingsItems = useSettingsItems();
   const infoItems = useInfoItems();
 
   const openModal = () => {
     modalRef.current?.open();
   };
+
+  const openContacts = () => {
+    contactsRef.current?.open();
+  };
+
+  const settingsItems = [
+    {
+      icon: '📓',
+      name: 'Contacts',
+      description: 'Add, edit, remove contacts.',
+      onPress: openContacts,
+    },
+    {
+      icon: '🗝',
+      name: 'Seed Phrase',
+      description: 'View your seed phrase & backup.',
+      onPress: null,
+    },
+  ];
 
   return (
     <>
@@ -47,6 +67,8 @@ const Settings = () => {
           </View>
         </View>
       </Modal>
+
+      <Contacts modalRef={contactsRef} />
     </>
   );
 };
