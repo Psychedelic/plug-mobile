@@ -9,11 +9,11 @@ import { initKeyring } from './src/redux/slices/keyring';
 import ErrorBoundary from './src/components/common/ErrorBoundary';
 import persistStore from 'redux-persist/es/persistStore';
 import SplashScreen from 'react-native-splash-screen'
+// import './shim.js';
 
 const PersistedApp = () => {
   const dispatch = useDispatch();
-
-  useEffect(() => {
+  const init = () => {
     dispatch(initKeyring());
 
     setTimeout(() => {
@@ -21,8 +21,11 @@ const PersistedApp = () => {
     }, 1000)
 
   }, [dispatch]);
+
   return (
-    <PersistGate loading={<Text>hello</Text>} persistor={persistStore(store)}>
+    <PersistGate
+      loading={<Text>hello</Text>}
+      persistor={persistStore(store, null, init)}>
       <ErrorBoundary>
         <Routes />
       </ErrorBoundary>

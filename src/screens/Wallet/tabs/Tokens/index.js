@@ -1,21 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RefreshControl, ScrollView, Text, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
+
 import { Colors, FontStyles } from '../../../../constants/theme';
 import TokenItem from '../../../../components/tokens/TokenItem';
 import Container from '../../../../components/common/Container';
 import Divider from '../../../../components/common/Divider';
 import WalletHeader from '../../components/WalletHeader';
-import useTokens from '../../../../hooks/useTokens';
+import useKeyring from '../../../../hooks/useKeyring';
 
 const Tokens = () => {
   const [refreshing, setRefresing] = useState(false);
-  const { tokens } = useTokens();
+  const { getAssets } = useKeyring();
+  const { assets } = useSelector(state => state.keyring);
 
-  const onRefresh = () => {
+  const onRefresh = async () => {
     setRefresing(true);
-
-    setTimeout(() => setRefresing(false), 1000);
+    await getAssets();
+    setRefresing(false);
   };
+
+  useEffect(() => {
+    const refresh = async () => {
+      setRefresing(true);
+      await getAssets();
+      setRefresing(false);
+    };
+    refresh();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Container>
@@ -30,10 +42,11 @@ const Tokens = () => {
             tintColor={Colors.White.Primary}
           />
         }>
-        {tokens.map(token => (
+        {assets?.map(token => (
           <TokenItem
             key={token.symbol}
             {...token}
+            color={Colors.Gray.Tertiary}
             style={{ marginTop: 20, paddingHorizontal: 20 }}
           />
         ))}

@@ -8,31 +8,29 @@ import RainbowButton from '../../../../components/buttons/RainbowButton';
 import Header from '../../../../components/common/Header';
 import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
 import Back from '../../../../components/common/Back';
-//import useKeyring from '../../../hooks/useKeyring';
+import useKeyring from '../../../../hooks/useKeyring';
 import styles from './styles';
 
-const ImportSeedPhrase = ({ navigation }) => {
-  //const { importWallet } = useKeyring();
+const ImportSeedPhrase = ({ navigation, route }) => {
+  const { importWallet } = useKeyring();
   const { goBack } = navigation;
+  const { password } = route?.params || {};
   const [seedPhrase, setSeedPhrase] = useState(null);
   const [invalidSeedPhrase, setInvalidSeedPhrase] = useState(false);
 
-  const onPress = () => {
-    /*try {
-      importWallet({ mnemonic: seedPhrase });
-    }
-    catch (e) {
+  const onPress = async () => {
+    try {
+      await importWallet({ mnemonic: seedPhrase, password });
+      navigation.navigate(Routes.SWIPE_LAYOUT);
+    } catch (e) {
       console.log(e);
-    }*/
-    navigation.navigate(Routes.CREATE_PASSWORD, {
-      navigateTo: Routes.BACKUP_SEED_PHRASE,
-    });
+    }
   };
 
-  const validateMnemonic = () =>
-    seedPhrase === null ||
-    seedPhrase.trim().split(/\s+/g).length !== 12 ||
-    invalidSeedPhrase;
+  const isMnemonicValid =
+    seedPhrase !== null &&
+    seedPhrase.trim().split(/\s+/g).length === 12 &&
+    !invalidSeedPhrase;
 
   const onChangeText = e => {
     setSeedPhrase(e);
@@ -42,7 +40,7 @@ const ImportSeedPhrase = ({ navigation }) => {
   return (
     <Container>
       <Header
-        left={<Back onPress={() => goBack()} />}
+        left={<Back onPress={goBack} />}
         center={
           <View style={{ width: 70, height: 33 }}>
             <Image
@@ -80,7 +78,7 @@ const ImportSeedPhrase = ({ navigation }) => {
         <RainbowButton
           text="Continue"
           onPress={onPress}
-          disabled={validateMnemonic()}
+          disabled={!isMnemonicValid}
         />
       </View>
     </Container>
