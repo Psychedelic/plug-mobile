@@ -23,6 +23,7 @@
     "@reduxjs/toolkit": "^1.6.1",
     "assert-browserify": "^2.0.0",
     "crypto-browserify": "^3.12.0",
+    "emoji-datasource": "^7.0.2",
     "events-browserify": "^0.0.1",
     "formik": "^2.2.9",
     "js-sha256": "^0.9.0",
