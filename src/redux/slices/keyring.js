@@ -12,6 +12,12 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
     fetch,
   );
   await keyring.init();
+  if (keyring?.isUnlocked) {
+    const state = await keyring.getState();
+    if (!state.wallets.length) {
+      await keyring.lock();
+    }
+  }
   return keyring;
 });
 
@@ -40,6 +46,7 @@ export const keyringSlice = createSlice({
     isInitialized: false,
     isUnlocked: false,
     currentWallet: null,
+    password: '',
   },
   reducers: {
     setCurrentWallet: (state, action) => {
@@ -47,6 +54,9 @@ export const keyringSlice = createSlice({
     },
     setAssets: (state, action) => {
       state.assets = formatAssets(action.payload, 50) || DEFAULT_ASSETS;
+    },
+    setUnlocked: (state, action) => {
+      state.isUnlocked = action.payload;
     },
   },
   extraReducers: {
@@ -58,6 +68,7 @@ export const keyringSlice = createSlice({
   },
 });
 
-export const { setCurrentWallet, setAssets } = keyringSlice.actions;
+export const { setCurrentWallet, setAssets, setUnlocked } =
+  keyringSlice.actions;
 
 export default keyringSlice.reducer;

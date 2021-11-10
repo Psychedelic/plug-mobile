@@ -1,7 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
 //import getRandom from '../helpers/random';
 import bip39 from 'react-native-bip39';
-import { setCurrentWallet, setAssets } from '../redux/slices/keyring';
+import {
+  setCurrentWallet,
+  setAssets,
+  setUnlocked,
+} from '../redux/slices/keyring';
 
 const generateMnemonic = async () => {
   try {
@@ -18,32 +22,65 @@ const useKeyring = () => {
 
   const createWallet = async password => {
     const mnemonic = await generateMnemonic();
-    const { wallet } = await instance.importMnemonic({ password, mnemonic });
-    await instance.unlock(password);
+    const response = await instance?.importMnemonic({ password, mnemonic });
+    const { wallet } = response || {};
+    await instance?.unlock(password);
     dispatch(setCurrentWallet(wallet));
     return mnemonic;
   };
 
   const importWallet = async params => {
-    const { wallet, mnemonic } = await instance.importMnemonic(params);
-    await instance.unlock(params.password);
+    const response = await instance?.importMnemonic(params);
+    const { wallet, mnemonic } = response || {};
+    await instance?.unlock(params.password);
     dispatch(setCurrentWallet(wallet));
     return mnemonic;
   };
 
   const getAssets = async refresh => {
-    const { wallets, currentWalletId } = await instance.getState();
-    let assets = wallets?.[currentWalletId]?.assets;
+    const response = await instance?.getState();
+    const { wallets, currentWalletId } = response || {};
+    let assets = wallets?.[currentWalletId]?.assets || [];
     if (assets?.every(asset => !asset.amount) || refresh) {
-      assets = await instance.getBalance();
+      assets = await instance?.getBalance();
     } else {
-      instance.getBalance();
+      instance?.getBalance();
     }
     dispatch(setAssets(assets));
     return assets;
   };
 
-  return { keyring: instance, createWallet, importWallet, getAssets };
+  const getState = async () => {
+    const response = await instance?.getState();
+    if (!response.wallets.length) {
+      await instance?.lock();
+    } else {
+      const { wallets, currentWalletId } = response || {};
+      dispatch(setCurrentWallet(wallets[currentWalletId]));
+      return response;
+    }
+  };
+
+  const unlock = async password => {
+    let unlocked = false;
+    try {
+      unlocked = await instance.unlock(password);
+      dispatch(setUnlocked(unlocked));
+    } catch (e) {
+      unlocked = false;
+    }
+    setUnlocked(unlocked);
+    return unlocked;
+  };
+
+  return {
+    keyring: instance,
+    createWallet,
+    importWallet,
+    getAssets,
+    getState,
+    unlock,
+  };
 };
 
 export default useKeyring;
