@@ -27,7 +27,7 @@ const Tokens = () => {
       setRefresing(false);
     };
     refresh();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Container>

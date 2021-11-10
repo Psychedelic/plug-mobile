@@ -6,16 +6,15 @@ import { Host } from 'react-native-portalize';
 import Routes from '../Routes';
 import CreateImportNavigator from './CreateImportNavigator';
 import SwipeNavigator from './SwipeNavigator';
+import Login from '../../screens/Login';
 
 const Stack = createStackNavigator();
 
-const AuthNavigator = ({ isInitialized }) => (
+const AuthNavigator = ({ initialRoute }) => (
   <NavigationContainer>
     <Host>
       <Stack.Navigator
-        initialRouteName={
-          isInitialized ? Routes.SWIPE_LAYOUT : Routes.CREATE_IMPORT_LAYOUT
-        }
+        initialRouteName={initialRoute}
         screenOptions={{
           headerShown: false,
         }}>
@@ -24,6 +23,7 @@ const AuthNavigator = ({ isInitialized }) => (
           name={Routes.CREATE_IMPORT_LAYOUT}
           component={CreateImportNavigator}
         />
+        <Stack.Screen name={Routes.LOGIN_SCREEN} component={Login} />
       </Stack.Navigator>
     </Host>
   </NavigationContainer>

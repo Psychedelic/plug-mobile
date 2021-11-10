@@ -1,10 +1,16 @@
 import 'react-native-gesture-handler';
-import * as React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 import AuthNavigator from './navigators/AuthNavigator';
+import Routes from './Routes';
 
 export default function Navigation() {
-  const { isInitialized } = useSelector(state => state.keyring, shallowEqual);
-  return <AuthNavigator isInitialized={isInitialized} />;
+  const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
+  const initialRoute = isInitialized
+    ? isUnlocked
+      ? Routes.SWIPE_LAYOUT
+      : Routes.LOGIN_SCREEN
+    : Routes.WELCOME_SCREEN;
+  return <AuthNavigator initialRoute={initialRoute} />;
 }
