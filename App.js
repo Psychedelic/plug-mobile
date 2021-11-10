@@ -8,13 +8,20 @@ import { store } from './src/redux/configureStore';
 import { initKeyring } from './src/redux/slices/keyring';
 import ErrorBoundary from './src/components/common/ErrorBoundary';
 import persistStore from 'redux-persist/es/persistStore';
+import SplashScreen from 'react-native-splash-screen'
 // import './shim.js';
 
 const PersistedApp = () => {
   const dispatch = useDispatch();
   const init = () => {
     dispatch(initKeyring());
-  };
+
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 1000)
+
+  }, [dispatch]);
+
   return (
     <PersistGate
       loading={<Text>hello</Text>}
