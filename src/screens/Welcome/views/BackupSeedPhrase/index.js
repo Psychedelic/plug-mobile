@@ -8,25 +8,14 @@ import Header from '../../../../components/common/Header';
 import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
 import Back from '../../../../components/common/Back';
 import styles from './styles';
+import Routes from '../../../../navigation/Routes';
 
-const MNEMONIC = [
-  'spread1',
-  'young1',
-  'spread2',
-  'young2',
-  'spread3',
-  'young3',
-  'spread4',
-  'young4',
-  'spread5',
-  'young5',
-];
-
-const BackupSeedPhrase = ({ navigation }) => {
+const BackupSeedPhrase = ({ route, navigation }) => {
   const { goBack } = navigation;
+  const { mnemonic } = route?.params || {};
   const [revealed, setRevealed] = useState(false);
 
-  const onPress = () => null;
+  const onPress = () => navigation.navigate(Routes.SWIPE_LAYOUT);
   const onReveal = () => setRevealed(true);
 
   return (
@@ -54,9 +43,9 @@ const BackupSeedPhrase = ({ navigation }) => {
           Below is the seed phrase for your new wallet, write it down.
         </Text>
 
-        <SeedPhrase mnemonic={MNEMONIC} onReveal={onReveal} />
+        <SeedPhrase mnemonic={mnemonic.split(' ')} onReveal={onReveal} />
 
-        <Copy text={MNEMONIC.join(' ')} customStyle={{ marginTop: 30 }} />
+        <Copy text={mnemonic} customStyle={{ marginTop: 30 }} />
 
         <RainbowButton
           buttonStyle={styles.button}

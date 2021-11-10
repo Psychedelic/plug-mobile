@@ -1,13 +1,19 @@
 import React from 'react';
 import { FontStyles } from '../../../constants/theme';
 import { StyleSheet, View, Text } from 'react-native';
+import { useSelector } from 'react-redux';
+import shortAddress from '../../../helpers/short-address';
 
-const AccountInfo = () => (
-  <View style={styles.container}>
-    <Text style={FontStyles.Normal}>0xlnth.icp</Text>
-    <Text style={FontStyles.SmallGray}>jfodm...kfm</Text>
-  </View>
-);
+const AccountInfo = () => {
+  const { currentWallet } = useSelector(state => state.keyring);
+  const { principal, accountId } = currentWallet || {};
+  return (
+    <View style={styles.container}>
+      <Text style={FontStyles.Normal}>{shortAddress(principal)}</Text>
+      <Text style={FontStyles.SmallGray}>{shortAddress(accountId)}</Text>
+    </View>
+  );
+};
 
 export default AccountInfo;
 

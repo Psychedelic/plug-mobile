@@ -1,0 +1,73 @@
+diff --git a/node_modules/react-native-fetch-api/src/Body.js b/node_modules/react-native-fetch-api/src/Body.js
+index bcc594e..f526ac4 100644
+--- a/node_modules/react-native-fetch-api/src/Body.js
++++ b/node_modules/react-native-fetch-api/src/Body.js
+@@ -1,10 +1,10 @@
+ import { createBlobReader, drainStream, readArrayBufferAsText } from "./utils";
++import { ReadableStream } from "web-streams-polyfill";
+ 
+ class Body {
+     constructor(body) {
+         this.bodyUsed = false;
+         this._bodyInit = body;
+-
+         if (!body) {
+             this._bodyText = "";
+             return this;
+diff --git a/node_modules/react-native-fetch-api/src/Fetch.js b/node_modules/react-native-fetch-api/src/Fetch.js
+index 6879bcf..45418a8 100644
+--- a/node_modules/react-native-fetch-api/src/Fetch.js
++++ b/node_modules/react-native-fetch-api/src/Fetch.js
+@@ -4,6 +4,7 @@ import Request from "./Request";
+ import Response from "./Response";
+ import StreamBlobResponse from "./StreamBlobResponse";
+ import StreamArrayBufferResponse from "./StreamArrayBufferResponse";
++import { ReadableStream } from "web-streams-polyfill";
+ 
+ class AbortError extends Error {
+     constructor() {
+@@ -31,7 +32,7 @@ function createStream(cancel) {
+ 
+ class Fetch {
+     _nativeNetworkSubscriptions = new Set();
+-    _nativeResponseType = "blob";
++    _nativeResponseType = "base64";
+     _nativeRequestHeaders = {};
+     _nativeResponseHeaders = {};
+     _nativeRequestTimeout = 0;
+@@ -238,7 +239,6 @@ class Fetch {
+         if (this._nativeResponseType === "base64") {
+             ResponseClass = StreamArrayBufferResponse;
+         }
+-
+         try {
+             this._response = await new ResponseClass(
+                 this._nativeResponse,
+diff --git a/node_modules/react-native-fetch-api/src/StreamArrayBufferResponse.js b/node_modules/react-native-fetch-api/src/StreamArrayBufferResponse.js
+index 073c2eb..ccca67a 100644
+--- a/node_modules/react-native-fetch-api/src/StreamArrayBufferResponse.js
++++ b/node_modules/react-native-fetch-api/src/StreamArrayBufferResponse.js
+@@ -1,9 +1,10 @@
+ import { toByteArray } from "base64-js";
+ import Response from "./Response";
++import { ReadableStream } from "web-streams-polyfill";
+ 
+ class StreamArrayBufferResponse {
+     constructor(base64, stream, streamController, options) {
+-        const buffer = toByteArray(base64);
++        const buffer = toByteArray(base64 || '');
+         this._base64 = base64;
+         this._arrayBufferResponse = new Response(buffer, options);
+         this._streamResponse = new Response(stream, options);
+diff --git a/node_modules/react-native-fetch-api/src/StreamBlobResponse.js b/node_modules/react-native-fetch-api/src/StreamBlobResponse.js
+index 644f67d..b2b49f9 100644
+--- a/node_modules/react-native-fetch-api/src/StreamBlobResponse.js
++++ b/node_modules/react-native-fetch-api/src/StreamBlobResponse.js
+@@ -1,6 +1,7 @@
+ import BlobManager from "react-native/Libraries/Blob/BlobManager";
+ import Response from "./Response";
+ import { createBlobReader } from "./utils";
++import { ReadableStream } from "web-streams-polyfill";
+ 
+ class StreamBlobResponse {
+     constructor(blobData, stream, streamController, options) {

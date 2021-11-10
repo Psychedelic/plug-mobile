@@ -7,28 +7,30 @@ import RainbowButton from '../../../../components/buttons/RainbowButton';
 import Header from '../../../../components/common/Header';
 import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
 import Back from '../../../../components/common/Back';
-//import useKeyring from '../../../../hooks/useKeyring';
+import useKeyring from '../../../../hooks/useKeyring';
 import styles from './styles';
+import Routes from '../../../../navigation/Routes';
 
 const CreatePassword = ({ route, navigation }) => {
-  //const { createWallet } = useKeyring();
-  const { navigateTo } = route.params;
+  const { createWallet } = useKeyring();
+  const { flow } = route.params;
   const { goBack } = navigation;
   const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
   const [faceId, setFaceId] = useState(false);
   const toggleSwitch = () => setFaceId(previousState => !previousState);
 
-  const handleCreate = () => {
-    /*try {
-     const response = createWallet({ password });
-      console.log('response', response)
+  const handleCreate = async () => {
+    if (flow === 'import') {
+      navigation.navigate(Routes.IMPORT_SEED_PHRASE, { password });
+    } else {
+      try {
+        const mnemonic = await createWallet(password);
+        navigation.navigate(Routes.BACKUP_SEED_PHRASE, { mnemonic });
+      } catch (e) {
+        console.log('Error:', e);
+      }
     }
-    catch (e) {
-      console.log(e);
-    }*/
-
-    navigation.navigate(navigateTo);
   };
 
   return (
