@@ -54,15 +54,15 @@ const Settings = () => {
         <View style={styles.container}>
           <View>
             {settingsItems.map((item, index) => (
-              <>
+              <View key={item.name}>
                 <SettingItem {...item} />
                 {index !== settingsItems.length && <Separator />}
-              </>
+              </View>
             ))}
           </View>
           <View style={styles.infoContainer}>
             {infoItems.map(item => (
-              <InfoItem {...item} />
+              <InfoItem {...item} key={item.name} />
             ))}
           </View>
         </View>

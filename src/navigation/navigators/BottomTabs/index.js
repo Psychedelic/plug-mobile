@@ -23,7 +23,7 @@ const BottomTabs = ({ state, navigation }) => (
       };
 
       return (
-        <Touchable onPress={onPress}>
+        <Touchable onPress={onPress} key={route.name}>
           <View key={index} style={styles.tab}>
             <Text>
               <Icon

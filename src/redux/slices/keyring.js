@@ -1,31 +1,63 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import PlugController from '@psychedelic/plug-controller';
 import { keyringStorage } from '../configureReducer';
+import RNCryptoJS from 'react-native-crypto-js';
+import { fetch } from 'react-native-fetch-api';
+import { formatAssets } from '../../utils/assets';
 
 export const initKeyring = createAsyncThunk('keyring/init', async () => {
-  const keyring = new PlugController.PlugKeyRing(keyringStorage);
+  let keyring = new PlugController.PlugKeyRing(
+    keyringStorage,
+    RNCryptoJS,
+    fetch,
+  );
   await keyring.init();
   return keyring;
 });
+
+const DEFAULT_ASSETS = [
+  {
+    symbol: 'ICP',
+    name: 'ICP',
+    amount: 0,
+    value: 0,
+    icon: 'dfinity',
+  },
+  {
+    symbol: 'XTC',
+    name: 'Cycles',
+    amount: 0,
+    value: 0,
+    icon: 'xtc',
+  },
+];
 
 export const keyringSlice = createSlice({
   name: 'keyring',
   initialState: {
     instance: null,
-    state: {},
-    isInitialized: true,
-    isUnlocked: true,
+    assets: DEFAULT_ASSETS,
+    isInitialized: false,
+    isUnlocked: false,
+    currentWallet: null,
   },
-  reducers: {},
+  reducers: {
+    setCurrentWallet: (state, action) => {
+      state.currentWallet = action.payload;
+    },
+    setAssets: (state, action) => {
+      state.assets = formatAssets(action.payload, 50) || DEFAULT_ASSETS;
+    },
+  },
   extraReducers: {
     [initKeyring.fulfilled]: (state, action) => {
       state.instance = action.payload;
-      //state.isInitialized = action.payload.isInitialized;
-      //state.isUnlocked = action.payload.isUnlocked;
+      state.isInitialized = action.payload.isInitialized;
+      state.isUnlocked = action.payload.isUnlocked;
     },
   },
 });
 
-export const {} = keyringSlice.actions;
+export const { setCurrentWallet, setAssets } = keyringSlice.actions;
 
 export default keyringSlice.reducer;

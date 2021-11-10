@@ -29,7 +29,7 @@ const Accounts = ({ modalRef, handleClose, ...props }) => {
       <Header center={<Text style={FontStyles.Subtitle2}>Accounts</Text>} />
       <View style={styles.content}>
         {accounts.map(account => (
-          <AccountItem account={account} />
+          <AccountItem account={account} key={account.accountId} />
         ))}
 
         <Touchable onPress={onCreateAccount}>
