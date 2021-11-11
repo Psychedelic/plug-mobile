@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import Header from '../../../components/common/Header';
 import Modal from '../../../components/modal';
@@ -7,12 +7,18 @@ import { View, Text } from 'react-native';
 import UserIcon from '../../../components/common/UserIcon';
 import TextInput from '../../../components/common/TextInput';
 import RainbowButton from '../../../components/buttons/RainbowButton';
+import EmojiSelector from './EmojiSelector';
 
 const CreateAccount = ({ modalRef, handleClose, ...props }) => {
+  const editEmojiRef = useRef(null);
   const [accountName, setAccountName] = useState(null);
 
   const onCreate = () => {
     modalRef?.current.close();
+  };
+
+  const onEditEmoji = () => {
+    editEmojiRef?.current.open();
   };
 
   return (
@@ -29,7 +35,7 @@ const CreateAccount = ({ modalRef, handleClose, ...props }) => {
           icon="🔥"
           size="extralarge"
           style={styles.icon}
-          //missing emoji selector design
+          onPress={onEditEmoji}
         />
 
         <TextInput
@@ -46,6 +52,8 @@ const CreateAccount = ({ modalRef, handleClose, ...props }) => {
           onPress={onCreate}
           disabled={!accountName}
         />
+
+        <EmojiSelector modalRef={editEmojiRef} />
       </View>
     </Modal>
   );
