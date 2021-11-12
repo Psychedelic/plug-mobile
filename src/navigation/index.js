@@ -11,6 +11,6 @@ export default function Navigation() {
     ? isUnlocked
       ? Routes.SWIPE_LAYOUT
       : Routes.LOGIN_SCREEN
-    : Routes.WELCOME_SCREEN;
+    : Routes.CREATE_IMPORT_LAYOUT;
   return <AuthNavigator initialRoute={initialRoute} />;
 }
