@@ -24,4 +24,7 @@ export default StyleSheet.create({
   buttonMargin: {
     marginTop: 22,
   },
+  buttonStyling: {
+    minWidth: '84%',
+  },
 });

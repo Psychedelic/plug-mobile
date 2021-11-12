@@ -22,12 +22,12 @@ function Welcome() {
         <Image source={Plug} />
         <Text style={styles.title}>Welcome to Plug</Text>
         <RainbowButton
-          buttonStyle={styles.componentMargin}
+          buttonStyle={[styles.componentMargin, styles.buttonStyling]}
           text="Create Wallet"
           onPress={onPress('create')}
         />
         <Button
-          buttonStyle={styles.buttonMargin}
+          buttonStyle={[styles.buttonMargin, styles.buttonStyling]}
           text="Import Wallet"
           onPress={onPress('import')}
         />
