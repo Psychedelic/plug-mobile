@@ -55,13 +55,11 @@ const ImportSeedPhrase = ({ navigation, route }) => {
           </View>
         }
       />
-
       <View style={styles.container}>
         <Text style={styles.title}>Import Wallet</Text>
         <Text style={styles.subtitle}>
           Please enter your 12 word Secret Recovery Phrase.
         </Text>
-
         <TextInput
           value={seedPhrase}
           variant="multi"

@@ -47,6 +47,7 @@ export const keyringSlice = createSlice({
     isUnlocked: false,
     currentWallet: null,
     password: '',
+    contacts: [],
   },
   reducers: {
     setCurrentWallet: (state, action) => {
@@ -58,6 +59,17 @@ export const keyringSlice = createSlice({
     setUnlocked: (state, action) => {
       state.isUnlocked = action.payload;
     },
+    setContacts: (state, action) => {
+      state.contacts = action.payload;
+    },
+    addContact: (state, action) => {
+      state.contacts.push(action.payload);
+    },
+    removeContact: (state, action) => {
+      state.contacts = state.contacts.filter(
+        contact => contact.id !== action.id,
+      );
+    },
   },
   extraReducers: {
     [initKeyring.fulfilled]: (state, action) => {
@@ -68,7 +80,13 @@ export const keyringSlice = createSlice({
   },
 });
 
-export const { setCurrentWallet, setAssets, setUnlocked } =
-  keyringSlice.actions;
+export const {
+  setCurrentWallet,
+  setAssets,
+  setUnlocked,
+  addContact,
+  removeContact,
+  setContacts,
+} = keyringSlice.actions;
 
 export default keyringSlice.reducer;
