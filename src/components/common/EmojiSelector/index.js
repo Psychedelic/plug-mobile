@@ -43,15 +43,16 @@ const Categories = {
 };
 
 // Utils
-const charFromUtf16 = utf16 =>
+export const charFromUtf16 = utf16 =>
   String.fromCodePoint(...utf16.split('-').map(u => '0x' + u));
-const charFromEmojiObject = obj => charFromUtf16(obj.unified);
-const filteredEmojis = emoji.filter(e => !e.obsoleted_by);
-const emojiByCategory = category =>
+export const charFromEmojiObject = obj => charFromUtf16(obj.unified);
+export const filteredEmojis = emoji.filter(e => !e.obsoleted_by);
+export const emojiByCategory = category =>
   filteredEmojis.filter(e => e.category === category.name);
-const sortEmoji = list => list.sort((a, b) => a.sort_order - b.sort_order);
-const categoryKeys = Object.keys(Categories);
-const splitToRows = list => {
+export const sortEmoji = list =>
+  list.sort((a, b) => a.sort_order - b.sort_order);
+export const categoryKeys = Object.keys(Categories);
+export const splitToRows = list => {
   const result = [];
 
   while (list.length > 0) {
