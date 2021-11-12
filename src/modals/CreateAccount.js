@@ -1,15 +1,14 @@
 import React, { useState, useRef } from 'react';
-import { StyleSheet } from 'react-native';
-import Header from '../../../components/common/Header';
-import Modal from '../../../components/modal';
-import { FontStyles } from '../../../constants/theme';
-import { View, Text } from 'react-native';
-import UserIcon from '../../../components/common/UserIcon';
-import TextInput from '../../../components/common/TextInput';
-import RainbowButton from '../../../components/buttons/RainbowButton';
+import { StyleSheet, View, Text } from 'react-native';
+import Header from '../components/common/Header';
+import Modal from '../components/modal';
+import { FontStyles } from '../constants/theme';
+import UserIcon from '../components/common/UserIcon';
+import TextInput from '../components/common/TextInput';
+import RainbowButton from '../components/buttons/RainbowButton';
 import EmojiSelector from './EmojiSelector';
 
-const CreateAccount = ({ modalRef, handleClose, ...props }) => {
+const CreateAccount = ({ title, modalRef, handleClose, ...props }) => {
   const editEmojiRef = useRef(null);
   const [accountName, setAccountName] = useState(null);
 
@@ -27,9 +26,7 @@ const CreateAccount = ({ modalRef, handleClose, ...props }) => {
       modalRef={modalRef}
       onClose={handleClose}
       {...props}>
-      <Header
-        center={<Text style={FontStyles.Subtitle2}>Create account</Text>}
-      />
+      <Header center={<Text style={FontStyles.Subtitle2}>{title}</Text>} />
       <View style={styles.content}>
         <UserIcon
           icon="🔥"
