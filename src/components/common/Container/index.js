@@ -12,7 +12,7 @@ const MyStatusBar = ({ backgroundColor, ...props }) => (
 
 const Container = ({ children, customStyle }) => {
   return (
-    <View style={[styles.container, customStyle]}>
+    <View style={{ ...styles.container, ...customStyle }}>
       <MyStatusBar barStyle="light-content" backgroundColor="black" />
       <View style={styles.outerContainer} />
       <View style={styles.content}>{children}</View>
