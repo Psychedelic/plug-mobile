@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { AppState } from 'react-native';
 import { useDispatch } from 'react-redux';
@@ -23,9 +23,9 @@ const Navigator = ({ initialRoute }) => {
     timeoutId = null;
     dispatch(setUnlocked(false));
     navigation.navigate(Routes.LOGIN_SCREEN);
-  }
+  };
 
-  const handleAppStateChange = (nextAppState) => {
+  const handleAppStateChange = nextAppState => {
     if (nextAppState === 'background') {
       timeoutId = setTimeout(handleLockState, 5000);
     }
@@ -34,7 +34,7 @@ const Navigator = ({ initialRoute }) => {
       clearTimeout(timeoutId);
       timeoutId = null;
     }
-  }
+  };
 
   useEffect(() => {
     AppState.addEventListener('change', handleAppStateChange);
