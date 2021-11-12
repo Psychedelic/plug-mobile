@@ -13,6 +13,8 @@ import styles from './styles';
 import Touchable from '../../components/animations/Touchable';
 import Accounts from '../Accounts';
 
+import CreateAccount from '../../modals/CreateAccount';
+
 const ACTIVITY = [
   {
     amount: 0.00001234,
@@ -171,6 +173,11 @@ const header = {
 
 const Profile = () => {
   const modalRef = useRef(null);
+  const editProfileRef = useRef(null);
+
+  const editProfile = () => {
+    editProfileRef?.current.open();
+  };
 
   const openAccounts = () => {
     modalRef?.current.open();
@@ -183,7 +190,7 @@ const Profile = () => {
         <ScrollView>
           <View style={styles.container}>
             <Touchable onPress={openAccounts}>
-              <UserIcon size="large" icon="🔥" />
+              <UserIcon size="large" onPress={editProfile} icon="🔥" />
             </Touchable>
             <Button
               variant="gray"
@@ -203,6 +210,7 @@ const Profile = () => {
         </ScrollView>
       </Container>
 
+      <CreateAccount modalRef={editProfileRef} title="Edit Account" />
       <Accounts modalRef={modalRef} />
     </>
   );

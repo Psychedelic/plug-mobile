@@ -9,7 +9,8 @@ import Row from '../../components/layout/Row';
 import Touchable from '../../components/animations/Touchable';
 import useAccounts from '../../hooks/useAccounts';
 import AccountItem from '../../components/common/AccountItem';
-import CreateAccount from './components/CreateAccount';
+
+import CreateAccount from '../../modals/CreateAccount';
 
 const Accounts = ({ modalRef, handleClose, ...props }) => {
   const { accounts } = useAccounts();
@@ -39,7 +40,7 @@ const Accounts = ({ modalRef, handleClose, ...props }) => {
           </Row>
         </Touchable>
 
-        <CreateAccount modalRef={createAccountRef} />
+        <CreateAccount modalRef={createAccountRef} title="Create Account" />
       </View>
     </Modal>
   );
