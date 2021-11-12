@@ -16,13 +16,20 @@ function Login() {
   const navigation = useNavigation();
   const { unlock } = useKeyring();
 
+  const clearState = () => {
+    setPassword('');
+    setError(false);
+  };
+
   const handleImport = () => {
+    clearState();
     navigation.navigate(Routes.CREATE_IMPORT_LAYOUT);
   };
 
   const handleSubmit = async () => {
     const unlocked = await unlock(password);
     if (unlocked) {
+      clearState();
       navigation.navigate(Routes.SWIPE_LAYOUT);
     } else {
       setError(true);
