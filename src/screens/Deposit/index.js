@@ -11,8 +11,12 @@ import { FontStyles } from '../../constants/theme';
 import Row from '../../components/layout/Row';
 import Clipboard from '@react-native-community/clipboard';
 import Header from '../../components/common/Header';
+import { useSelector } from 'react-redux';
+import shortAddress from '../../helpers/short-address';
 
 const Deposit = ({ modalRef }) => {
+  const { currentWallet } = useSelector(state => state.keyring);
+  const { principal, accountId } = currentWallet || {};
   return (
     <Modal modalRef={modalRef} adjustToContentHeight>
       <Header center={<Text style={FontStyles.Subtitle2}>Deposit</Text>} />
@@ -29,7 +33,7 @@ const Deposit = ({ modalRef }) => {
         </Text>
 
         <InfoWithActions
-          text={'principal here'}
+          text={shortAddress(principal)}
           actions={[
             {
               icon: 'copy',
@@ -65,7 +69,7 @@ const Deposit = ({ modalRef }) => {
         </Text>
 
         <InfoWithActions
-          text={'account id here'}
+          text={shortAddress(accountId)}
           actions={[
             {
               icon: 'copy',
