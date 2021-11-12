@@ -75,9 +75,9 @@ PODS:
   - fmt (6.2.1)
   - glog (0.3.5)
   - libevent (2.1.12)
-  - MMKV (1.2.11):
-    - MMKVCore (~> 1.2.11)
-  - MMKVCore (1.2.11)
+  - MMKV (1.2.10):
+    - MMKVCore (~> 1.2.10)
+  - MMKVCore (1.2.10)
   - OpenSSL-Universal (1.1.180)
   - RCT-Folly (2021.06.28.00-v2):
     - boost
@@ -621,8 +621,8 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 5337263514dd6f09803962437687240c5dc39aa4
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
-  MMKV: 217b643c181c3d2f71983206ca1972d0a6e99881
-  MMKVCore: f9e4f56742fdebbd042f7a273e278927f182cee7
+  MMKV: 76033b9ace2006623308910a3afcc0e25eba3140
+  MMKVCore: b00e7a09ec77a1b916aef336eedd3b99ec249978
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
   RCT-Folly: a21c126816d8025b547704b777a2ba552f3d9fa9
   RCTRequired: 3cc065b52aa18db729268b9bd78a2feffb4d0f91
@@ -670,4 +670,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 9db727e7ddc650c6085f31185e2e00ab9f5aae7e
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.10.2
