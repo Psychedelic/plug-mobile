@@ -7,10 +7,11 @@ import RainbowButton from '../../../components/buttons/RainbowButton';
 import EmojiSelector from '../../../components/common/EmojiSelector';
 import { FontStyles } from '../../../constants/theme';
 
-const EditEmoji = ({ modalRef }) => {
-  const [selectedEmoji, setSelectedEmoji] = useState('🔥');
+const EditEmoji = ({ modalRef, onSave }) => {
+  const [selectedEmoji, setSelectedEmoji] = useState('');
 
-  const onSave = () => {
+  const handleSave = () => {
+    onSave(selectedEmoji);
     modalRef?.current.close();
   };
 
@@ -19,7 +20,7 @@ const EditEmoji = ({ modalRef }) => {
       <Header center={<Text style={FontStyles.Subtitle2}>Set Emoji</Text>} />
       <View style={styles.content}>
         <UserIcon icon={selectedEmoji} size="extralarge" style={styles.icon} />
-        <RainbowButton text="Save emoji" onPress={onSave} />
+        <RainbowButton text="Save emoji" onPress={handleSave} />
         <EmojiSelector onSelect={setSelectedEmoji} />
       </View>
     </Modal>

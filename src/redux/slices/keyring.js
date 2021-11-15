@@ -4,6 +4,7 @@ import { keyringStorage } from '../configureReducer';
 import RNCryptoJS from 'react-native-crypto-js';
 import { fetch } from 'react-native-fetch-api';
 import { formatAssets } from '../../utils/assets';
+import { create } from 'react-test-renderer';
 
 export const initKeyring = createAsyncThunk('keyring/init', async () => {
   let keyring = new PlugController.PlugKeyRing(
@@ -20,6 +21,20 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
   }
   return keyring;
 });
+
+export const createSubaccount = createAsyncThunk('keyring/createSubaccount', async (params, { getState }) => {
+  const state = getState();
+  const response = await state.instance?.createPrincipal(params);
+  return response;
+});
+
+export const editSubaccount = createAsyncThunk('keyring/editSubaccount', async (params, { getState }) => {
+  const state = getState();
+  await state.instance?.editPrincipal(
+    params.walletNumber,
+    { name: params.name, emoji: params.icon }
+  );
+})
 
 const DEFAULT_ASSETS = [
   {
@@ -46,6 +61,7 @@ export const keyringSlice = createSlice({
     isInitialized: false,
     isUnlocked: false,
     currentWallet: null,
+    wallets: [],
     password: '',
   },
   reducers: {
@@ -58,6 +74,10 @@ export const keyringSlice = createSlice({
     setUnlocked: (state, action) => {
       state.isUnlocked = action.payload;
     },
+    setWallets: (state, action) => {
+      console.log('set wallets', action.payload)
+      state.wallets = action.payload;
+    }
   },
   extraReducers: {
     [initKeyring.fulfilled]: (state, action) => {
@@ -65,10 +85,17 @@ export const keyringSlice = createSlice({
       state.isInitialized = action.payload.isInitialized;
       state.isUnlocked = action.payload.isUnlocked;
     },
+    [createSubaccount.fulfilled]: (state, action) => {
+      state.wallets = [...state.wallets, action.payload];
+    },
+    [editSubaccount.fulfilled]: (state, action) => {
+      const account = action.payload;
+      state.wallets = state.wallets.map(a => (a.walletNumber === account.walletNumber ? account : a));
+    }
   },
 });
 
-export const { setCurrentWallet, setAssets, setUnlocked } =
+export const { setCurrentWallet, setAssets, setUnlocked, setWallets } =
   keyringSlice.actions;
 
 export default keyringSlice.reducer;

@@ -54,7 +54,7 @@ const WalletHeader = () => {
   return (
     <>
       <Header
-        left={<UserIcon size="small" icon="🔥" />}
+        left={<UserIcon size="small" />}
         center={<AccountInfo />}
         right={
           <Touchable onPress={openModal}>

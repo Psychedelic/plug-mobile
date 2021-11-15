@@ -13,7 +13,7 @@ export const storage = {
     return Promise.resolve(true);
   },
   getItem: key => {
-    // mmkvStore.clearAll();
+     //mmkvStore.clearAll();
     if (key) {
       const value = mmkvStore.getString?.(key);
       return Promise.resolve(value);

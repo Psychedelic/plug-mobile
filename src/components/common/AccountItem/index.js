@@ -9,7 +9,7 @@ import animationScales from '../../../utils/animationScales';
 import Icon from '../../icons';
 
 const AccountItem = ({ account, onPress, onMenu, ...props }) => {
-  const { icon, name, principalId } = account;
+  const { icon, name, principal } = account;
 
   return (
     <View {...props} style={{ marginBottom: 20 }}>
@@ -19,7 +19,7 @@ const AccountItem = ({ account, onPress, onMenu, ...props }) => {
           <View style={styles.leftContainer}>
             <Text style={FontStyles.Normal}>{name}</Text>
             <Text style={FontStyles.NormalGray}>
-              {shortAddress(principalId)}
+              {shortAddress(principal)}
             </Text>
           </View>
 

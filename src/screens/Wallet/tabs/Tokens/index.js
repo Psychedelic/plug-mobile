@@ -11,7 +11,7 @@ import useKeyring from '../../../../hooks/useKeyring';
 
 const Tokens = () => {
   const [refreshing, setRefresing] = useState(false);
-  const { getAssets } = useKeyring();
+  const { getAssets, getState } = useKeyring();
   const { assets } = useSelector(state => state.keyring);
 
   const onRefresh = async () => {

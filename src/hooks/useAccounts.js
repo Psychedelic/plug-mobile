@@ -1,30 +1,25 @@
-import { useState } from 'react';
-
-const ACCOUNTS = [
-  {
-    principalId: '123123123123123',
-    name: 'Chris',
-    icon: '🔥',
-    accountId: '123123',
-    walletNumber: 0,
-  },
-  {
-    principalId: '34534534534535',
-    name: 'letsgoo 420',
-    icon: '🔥',
-    accountId: '123123',
-    walletNumber: 1,
-  },
-];
+import { useEffect, useState } from 'react';
+import useKeyring from './useKeyring';
+import { useDispatch, useSelector } from 'react-redux';
+import { createSubaccount } from '../redux/slices/keyring';
 
 const useAccounts = () => {
-  const [accounts, setAccounts] = useState(ACCOUNTS);
+  const dispatch = useDispatch();
+  const { wallets } = useSelector(state => state.keyring);
 
-  const onCreate = account => setAccounts([...accounts, account]);
-  const onDelete = account =>
-    setAccounts(accounts.filter(c => c.principalId !== account.principalId));
+  const onCreate = async (account) => {
+    dispatch(createSubaccount(account));
+  }
 
-  return { accounts, onCreate, onDelete };
+  const onEdit = async (account) => {
+    dispatch(editSubaccount(account));
+  }
+
+  const onDelete = account => { }
+  //setAccounts(accounts.filter(c => c.principalId !== account.principalId));
+
+
+  return { accounts: wallets, onCreate, onEdit, onDelete };
 };
 
 export default useAccounts;

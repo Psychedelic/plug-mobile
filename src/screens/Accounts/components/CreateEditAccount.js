@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import Header from '../../../components/common/Header';
 import Modal from '../../../components/modal';
@@ -8,18 +8,42 @@ import UserIcon from '../../../components/common/UserIcon';
 import TextInput from '../../../components/common/TextInput';
 import RainbowButton from '../../../components/buttons/RainbowButton';
 import EmojiSelector from './EmojiSelector';
+import useAccounts from '../../../hooks/useAccounts';
 
-const CreateAccount = ({ modalRef, handleClose, ...props }) => {
+const CreateEditAccount = ({ modalRef, handleClose, account, ...props }) => {
   const editEmojiRef = useRef(null);
   const [accountName, setAccountName] = useState(null);
+  const [emoji, setEmoji] = useState('')
 
-  const onCreate = () => {
-    modalRef?.current.close();
+  const { onCreate, onEdit } = useAccounts();
+
+  const onPress = () => {
+
+    console.log('onpress', account)
+    account
+      ? onEdit({
+        walletNumber: account.walletNumber,
+        name: accountName,
+        icon: emoji,
+      })
+      : onCreate({
+        name: accountName,
+        icon: emoji,
+      });
+
+    modalRef.current?.close();
   };
 
   const onEditEmoji = () => {
     editEmojiRef?.current.open();
   };
+
+  useEffect(() => {
+    if (account) {
+      setAccountName(account.name);
+      setEmoji(account.icon);
+    }
+  }, [account]);
 
   return (
     <Modal
@@ -32,7 +56,7 @@ const CreateAccount = ({ modalRef, handleClose, ...props }) => {
       />
       <View style={styles.content}>
         <UserIcon
-          icon="🔥"
+          icon={emoji}
           size="extralarge"
           style={styles.icon}
           onPress={onEditEmoji}
@@ -49,17 +73,20 @@ const CreateAccount = ({ modalRef, handleClose, ...props }) => {
 
         <RainbowButton
           text="Create account"
-          onPress={onCreate}
+          onPress={onPress}
           disabled={!accountName}
         />
 
-        <EmojiSelector modalRef={editEmojiRef} />
+        <EmojiSelector
+          modalRef={editEmojiRef}
+          onSave={setEmoji}
+        />
       </View>
     </Modal>
   );
 };
 
-export default CreateAccount;
+export default CreateEditAccount;
 
 const styles = StyleSheet.create({
   content: {
