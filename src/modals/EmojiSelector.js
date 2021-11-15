@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import Header from '../../../components/common/Header';
-import Modal from '../../../components/modal';
-import UserIcon from '../../../components/common/UserIcon';
-import RainbowButton from '../../../components/buttons/RainbowButton';
-import EmojiSelector from '../../../components/common/EmojiSelector';
-import { FontStyles } from '../../../constants/theme';
+import Header from '../components/common/Header';
+import Modal from '../components/modal';
+import UserIcon from '../components/common/UserIcon';
+import RainbowButton from '../components/buttons/RainbowButton';
+import EmojiSelector from '../components/common/EmojiSelector';
+import { FontStyles } from '../constants/theme';
 
 const EditEmoji = ({ modalRef, onSave }) => {
   const [selectedEmoji, setSelectedEmoji] = useState('');
@@ -29,9 +29,11 @@ const EditEmoji = ({ modalRef, onSave }) => {
 
 const styles = StyleSheet.create({
   content: {
+    flex: 1,
     paddingHorizontal: 20,
     paddingTop: 20,
     paddingBottom: 35,
+    justifyContent: 'space-between',
   },
   icon: {
     alignSelf: 'center',

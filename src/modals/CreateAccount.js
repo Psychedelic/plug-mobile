@@ -1,3 +1,4 @@
+<<<<<<< HEAD:src/modals/CreateEditAccount.js
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import Header from '../../../components/common/Header';
@@ -7,10 +8,24 @@ import { View, Text } from 'react-native';
 import UserIcon from '../../../components/common/UserIcon';
 import TextInput from '../../../components/common/TextInput';
 import RainbowButton from '../../../components/buttons/RainbowButton';
+=======
+import React, { useState, useRef } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import Header from '../components/common/Header';
+import Modal from '../components/modal';
+import { FontStyles } from '../constants/theme';
+import UserIcon from '../components/common/UserIcon';
+import TextInput from '../components/common/TextInput';
+import RainbowButton from '../components/buttons/RainbowButton';
+>>>>>>> 0f3af64147b233f5923b978113b28a7618718abb:src/modals/CreateAccount.js
 import EmojiSelector from './EmojiSelector';
 import useAccounts from '../../../hooks/useAccounts';
 
+<<<<<<< HEAD:src/modals/CreateEditAccount.js
 const CreateEditAccount = ({ modalRef, handleClose, account, ...props }) => {
+=======
+const CreateAccount = ({ title, modalRef, handleClose, ...props }) => {
+>>>>>>> 0f3af64147b233f5923b978113b28a7618718abb:src/modals/CreateAccount.js
   const editEmojiRef = useRef(null);
   const [accountName, setAccountName] = useState(null);
   const [emoji, setEmoji] = useState('')
@@ -51,9 +66,7 @@ const CreateEditAccount = ({ modalRef, handleClose, account, ...props }) => {
       modalRef={modalRef}
       onClose={handleClose}
       {...props}>
-      <Header
-        center={<Text style={FontStyles.Subtitle2}>Create account</Text>}
-      />
+      <Header center={<Text style={FontStyles.Subtitle2}>{title}</Text>} />
       <View style={styles.content}>
         <UserIcon
           icon={emoji}

@@ -12,7 +12,11 @@ export default function Navigation() {
     ? isUnlocked
       ? Routes.SWIPE_LAYOUT
       : Routes.LOGIN_SCREEN
+<<<<<<< HEAD
     : Routes.WELCOME_SCREEN;
 
+=======
+    : Routes.CREATE_IMPORT_LAYOUT;
+>>>>>>> 0f3af64147b233f5923b978113b28a7618718abb
   return <AuthNavigator initialRoute={initialRoute} />;
 }

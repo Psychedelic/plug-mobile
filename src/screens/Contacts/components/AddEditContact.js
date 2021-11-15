@@ -6,6 +6,9 @@ import RainbowButton from '../../../components/buttons/RainbowButton';
 import { View, Text } from 'react-native';
 import useContacts from '../../../hooks/useContacts';
 import { FontStyles } from '../../../constants/theme';
+import { validatePrincipalId, validateAccountId } from '../../../helpers/ids';
+import emojis from 'emoji-datasource';
+import { charFromEmojiObject } from '../../../components/common/EmojiSelector';
 
 const AddEditContact = ({ modalRef, contact, onClose }) => {
   const { onCreate, onEdit } = useContacts();
@@ -13,12 +16,20 @@ const AddEditContact = ({ modalRef, contact, onClose }) => {
   const [name, setName] = useState('');
   const [id, setId] = useState('');
 
-  const getName = () => (contact ? 'Edit Contact' : 'Add Contact');
+  const title = `${contact ? 'Edit' : 'Add'} Contact`;
+  const validId = validatePrincipalId(id) || validateAccountId(id);
 
-  const onPress = () => {
+  const handleSubmit = () => {
+    const randomEmoji = charFromEmojiObject(
+      emojis[Math.floor(Math.random() * emojis.length)],
+    );
     contact
-      ? onEdit({ id, name, image: '🔥' })
-      : onCreate({ id, name, image: '🔥' });
+      ? onEdit({ ...contact, id, name })
+      : onCreate({
+          id,
+          name,
+          image: randomEmoji,
+        });
 
     modalRef.current?.close();
   };
@@ -30,7 +41,7 @@ const AddEditContact = ({ modalRef, contact, onClose }) => {
     }
   }, [contact]);
 
-  const isButtonDisabled = () => !name || !id;
+  const isButtonDisabled = () => !name || !id || !validId;
 
   const handleClose = () => {
     setName('');
@@ -40,7 +51,7 @@ const AddEditContact = ({ modalRef, contact, onClose }) => {
 
   return (
     <Modal modalRef={modalRef} adjustToContentHeight onClose={handleClose}>
-      <Header center={<Text style={FontStyles.Subtitle2}>{getName()}</Text>} />
+      <Header center={<Text style={FontStyles.Subtitle2}>{title}</Text>} />
 
       <View
         style={{ paddingHorizontal: 20, paddingTop: 20, paddingBottom: 40 }}>
@@ -56,13 +67,13 @@ const AddEditContact = ({ modalRef, contact, onClose }) => {
           value={id}
           variant="text"
           onChangeText={setId}
-          placeholder="Principal or Canister ID"
+          placeholder="Principal or Account ID"
           customStyle={{ marginVertical: 20 }}
         />
 
         <RainbowButton
-          text={getName()}
-          onPress={onPress}
+          text={title}
+          onPress={handleSubmit}
           disabled={isButtonDisabled()}
         />
       </View>

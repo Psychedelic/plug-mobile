@@ -1,34 +1,25 @@
-import { useState, useEffect } from 'react';
-
-const CONTACTS = [
-  {
-    id: '123123123123123',
-    name: 'Chris',
-    image: '🔥',
-  },
-  {
-    id: '123123123',
-    name: 'Rocky',
-    image: '😁',
-  },
-];
+import { useState, useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addContact,
+  removeContact,
+  setContacts,
+} from '../redux/slices/keyring';
 
 const getFirstLetterFrom = value => value.slice(0, 1).toUpperCase();
 
 const useContacts = () => {
-  const [contacts, setContacts] = useState(CONTACTS);
-  const [groupedContacts, setGroupedContacts] = useState([]);
+  const { contacts } = useSelector(state => state.keyring);
+  const dispatch = useDispatch();
 
-  const onCreate = contact => {
-    setContacts([...contacts, contact]);
-  };
+  const onCreate = contact => dispatch(addContact(contact));
+  const onDelete = contact => dispatch(removeContact(contact));
   const onEdit = contact =>
-    setContacts(contacts.map(c => (c.id === contact.id ? contact : c)));
-  const onDelete = contact =>
-    setContacts(contacts.filter(c => c.id !== contact.id));
-
-  useEffect(() => {
-    setGroupedContacts(
+    dispatch(
+      setContacts(contacts.map(c => (c.id === contact.id ? contact : c))),
+    );
+  const groupedContacts = useMemo(
+    () =>
       contacts.reduce((list, contact) => {
         const { name } = contact;
         const listItem = list.find(
@@ -42,8 +33,8 @@ const useContacts = () => {
 
         return list;
       }, []),
-    );
-  }, [contacts]);
+    [contacts],
+  );
 
   return { contacts, groupedContacts, onCreate, onEdit, onDelete };
 };

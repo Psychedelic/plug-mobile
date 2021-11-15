@@ -7,6 +7,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     textAlign: 'center',
     padding: 30,
+    width: '100%',
     flex: 1,
   },
   title: {
@@ -22,5 +23,8 @@ export default StyleSheet.create({
   },
   buttonMargin: {
     marginTop: 22,
+  },
+  buttonStyling: {
+    minWidth: '84%',
   },
 });
