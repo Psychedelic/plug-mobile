@@ -4,7 +4,6 @@ import { keyringStorage } from '../configureReducer';
 import RNCryptoJS from 'react-native-crypto-js';
 import { fetch } from 'react-native-fetch-api';
 import { formatAssets } from '../../utils/assets';
-import { create } from 'react-test-renderer';
 
 export const initKeyring = createAsyncThunk('keyring/init', async () => {
   let keyring = new PlugController.PlugKeyRing(
@@ -23,17 +22,31 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
 });
 
 export const createSubaccount = createAsyncThunk('keyring/createSubaccount', async (params, { getState }) => {
-  const state = getState();
-  const response = await state.instance?.createPrincipal(params);
-  return response;
+  try {
+    const state = getState();
+    const response = await state.keyring.instance?.createPrincipal(params);
+    return response;
+  }
+  catch (e) {
+    console.log('createSubaccount', e);
+  }
 });
 
 export const editSubaccount = createAsyncThunk('keyring/editSubaccount', async (params, { getState }) => {
-  const state = getState();
-  await state.instance?.editPrincipal(
-    params.walletNumber,
-    { name: params.name, emoji: params.icon }
-  );
+  try {
+    const state = getState();
+    await state.keyring.instance?.editPrincipal(
+      params.walletNumber,
+      { name: params.name, emoji: params.icon }
+    );
+
+    const response = state.keyring.instance?.getState();
+    const { wallets } = response;
+    return wallets[params.walletNumber]; //tell rocky to make the edit return the edited account
+  }
+  catch (e) {
+    console.log('editSubaccount', e)
+  }
 })
 
 const DEFAULT_ASSETS = [
@@ -76,7 +89,6 @@ export const keyringSlice = createSlice({
       state.isUnlocked = action.payload;
     },
     setWallets: (state, action) => {
-      console.log('set wallets', action.payload)
       state.wallets = action.payload;
     },
     setContacts: (state, action) => {
@@ -101,6 +113,7 @@ export const keyringSlice = createSlice({
       state.wallets = [...state.wallets, action.payload];
     },
     [editSubaccount.fulfilled]: (state, action) => {
+      console.log('payload', action.payload);
       const account = action.payload;
       state.wallets = state.wallets.map(a => (a.walletNumber === account.walletNumber ? account : a));
     }

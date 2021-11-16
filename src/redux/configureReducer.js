@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import { MMKV } from 'react-native-mmkv';
 import KeyringReducer from './slices/keyring';
+import EmptyReducer from './slices/empty';
 
 const mmkvStore = new MMKV();
 
@@ -13,7 +14,7 @@ export const storage = {
     return Promise.resolve(true);
   },
   getItem: key => {
-     //mmkvStore.clearAll();
+    //mmkvStore.clearAll();
     if (key) {
       const value = mmkvStore.getString?.(key);
       return Promise.resolve(value);
@@ -60,6 +61,10 @@ const keyringPersistConfig = {
 
 const createRootReducer = combineReducers({
   keyring: persistReducer(keyringPersistConfig, KeyringReducer),
+  empty: persistReducer({
+    key: 'empty',
+    storage,
+  }, EmptyReducer),
 });
 
 export default createRootReducer;

@@ -7,25 +7,15 @@ import styles from './styles';
 import Touchable from '../../animations/Touchable';
 import animationScales from '../../../utils/animationScales';
 import Icon from '../../icons';
-import CreateAccount from '../../../modals/CreateAccount';
 
 const AccountItem = ({ account, onPress, onMenu, ...props }) => {
-<<<<<<< HEAD
   const { icon, name, principal } = account;
-=======
-  const { icon, name, principalId } = account;
-  const iconPress = useRef(null);
-
-  const onIconPress = () => {
-    iconPress?.current.open();
-  };
->>>>>>> 0f3af64147b233f5923b978113b28a7618718abb
 
   return (
     <View {...props} style={{ marginBottom: 20 }}>
-      <Touchable scale={animationScales.small} onPress={onPress}>
+      <Touchable scale={animationScales.small} onPress={onPress} onLongPress={onMenu}>
         <View style={styles.container}>
-          <UserIcon icon={icon} onPress={onIconPress} disabled />
+          <UserIcon icon={icon} disabled />
           <View style={styles.leftContainer}>
             <Text style={FontStyles.Normal}>{name}</Text>
             <Text style={FontStyles.NormalGray}>
@@ -40,7 +30,6 @@ const AccountItem = ({ account, onPress, onMenu, ...props }) => {
           </View>
         </View>
       </Touchable>
-      <CreateAccount modalRef={iconPress} title="Edit Account" />
     </View>
   );
 };

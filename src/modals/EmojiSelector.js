@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import Header from '../components/common/Header';
 import Modal from '../components/modal';
@@ -7,13 +7,20 @@ import RainbowButton from '../components/buttons/RainbowButton';
 import EmojiSelector from '../components/common/EmojiSelector';
 import { FontStyles } from '../constants/theme';
 
-const EditEmoji = ({ modalRef, onSave }) => {
+const EditEmoji = ({ modalRef, onSave, emoji }) => {
   const [selectedEmoji, setSelectedEmoji] = useState('');
 
   const handleSave = () => {
     onSave(selectedEmoji);
+    setSelectedEmoji('');
     modalRef?.current.close();
   };
+
+  useEffect(() => {
+    if (emoji) {
+      setSelectedEmoji(emoji);
+    }
+  }, [emoji]);
 
   return (
     <Modal adjustToContentHeight modalRef={modalRef}>
