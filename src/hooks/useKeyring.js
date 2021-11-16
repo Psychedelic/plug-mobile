@@ -1,11 +1,23 @@
 import { useDispatch, useSelector } from 'react-redux';
 //import getRandom from '../helpers/random';
+import * as Keychain from 'react-native-keychain';
 import bip39 from 'react-native-bip39';
 import {
   setCurrentWallet,
   setAssets,
   setUnlocked,
 } from '../redux/slices/keyring';
+
+const KEYCHAIN_USER = 'plug-user-name';
+const DEFAULT_KEYCHAIN_OPTIONS = {
+  service: 'ooo.plugwallet',
+  authenticationPromptTitle: 'Auth prompt title',
+  authenticationPrompt: { title: 'Auth prompt description' },
+	authenticationPromptDesc: 'Auth prompt description',
+	fingerprintPromptTitle: 'Fingerprint auth title',
+	fingerprintPromptDesc: 'Fingerprint auth description',
+	fingerprintPromptCancel: 'Fingerprint auth cancel',
+};
 
 const generateMnemonic = async () => {
   try {
@@ -20,7 +32,21 @@ const useKeyring = () => {
   const { instance } = useSelector(state => state.keyring);
   const dispatch = useDispatch();
 
-  const createWallet = async password => {
+  const createWallet = async (password, biometryType) => {
+    // Removes stored password in Keychain
+    await Keychain.resetGenericPassword();
+
+    if (biometryType) {
+      const accessControl = Keychain.ACCESS_CONTROL.BIOMETRY_ANY;
+      const access = Keychain.ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY;
+
+      Keychain.setGenericPassword(KEYCHAIN_USER, password, {
+        ...access,
+        ...accessControl,
+        ...DEFAULT_KEYCHAIN_OPTIONS,
+      });
+    }
+
     const mnemonic = await generateMnemonic();
     const response = await instance?.importMnemonic({ password, mnemonic });
     const { wallet } = response || {};

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import * as Keychain from 'react-native-keychain';
 import { useNavigation } from '@react-navigation/core';
 import { View, StatusBar, Text, Image } from 'react-native';
 import Plug from '../../assets/icons/plug-white.png';
@@ -26,14 +27,26 @@ function Login() {
     navigation.navigate(Routes.CREATE_IMPORT_LAYOUT);
   };
 
-  const handleSubmit = async () => {
-    const unlocked = await unlock(password);
+  const handleSubmit = async (loginPassword) => {
+    const unlocked = await unlock(loginPassword);
+
     if (unlocked) {
       clearState();
       navigation.navigate(Routes.SWIPE_LAYOUT);
     } else {
       setError(true);
     }
+  };
+
+  useEffect(() => {
+    unlockUsingBiometrics();
+  });
+
+  const unlockUsingBiometrics = async () => {
+    Keychain.getGenericPassword({ service: 'ooo.plugwallet' })
+      .then(({ password: biometricsPassword }) => {
+        handleSubmit(biometricsPassword);
+      });
   };
 
   return (
@@ -55,7 +68,7 @@ function Login() {
         )}
         <RainbowButton
           text="Submit"
-          onPress={handleSubmit}
+          onPress={() => { handleSubmit(password) }}
           buttonStyle={styles.buttonMargin}
         />
         <Button
