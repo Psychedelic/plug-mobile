@@ -370,6 +370,8 @@ PODS:
     - React
   - RNGestureHandler (1.10.3):
     - React-Core
+  - RNKeychain (8.0.0):
+    - React-Core
   - RNReactNativeHapticFeedback (1.13.0):
     - React-Core
   - RNReanimated (2.2.4):
@@ -478,6 +480,7 @@ DEPENDENCIES:
   - "RNCClipboard (from `../node_modules/@react-native-community/clipboard`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNKeychain (from `../node_modules/react-native-keychain`)
   - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -589,6 +592,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/masked-view"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNKeychain:
+    :path: "../node_modules/react-native-keychain"
   RNReactNativeHapticFeedback:
     :path: "../node_modules/react-native-haptic-feedback"
   RNReanimated:
@@ -660,6 +665,7 @@ SPEC CHECKSUMS:
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNKeychain: 4f63aada75ebafd26f4bc2c670199461eab85d94
   RNReactNativeHapticFeedback: b83bfb4b537bdd78eb4f6ffe63c6884f7b049ead
   RNReanimated: 65583befd5706cc9c86ae9a081786181ced37b93
   RNScreens: 4d79118be80f79fa1f4aa131909a1d6e86280af3
@@ -670,4 +676,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 9db727e7ddc650c6085f31185e2e00ab9f5aae7e
 
-COCOAPODS: 1.10.2
+COCOAPODS: 1.11.2
