@@ -27,11 +27,9 @@ const SeedPhrase = ({ mnemonic, onReveal }) => {
             blurType={'dark'}
             reducedTransparencyFallbackColor="black"
           />
-          <Touchable onPress={revealSeedPhrase}>
-            <View style={styles.absolute}>
-              <Image source={KeyImg} />
-              <Text style={styles.reveal}>Reveal Seed Phrase</Text>
-            </View>
+          <Touchable onPress={revealSeedPhrase} style={styles.absolute}>
+            <Image source={KeyImg} />
+            <Text style={styles.reveal}>Reveal Seed Phrase</Text>
           </Touchable>
         </>
       )}
