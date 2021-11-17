@@ -10,7 +10,7 @@ const UserIcon = ({ size = 'medium', icon, style, onPress }) => (
   <Touchable onPress={onPress}>
     <LinearGradient style={[styles.circle, styles[size], style]} {...Rainbow}>
       <View style={[styles.background, styles['background' + size]]}>
-        <Text style={styles['text' + size]}>{icon}</Text>
+        <Text style={styles['text' + size]}>{icon || '👽'}</Text>
       </View>
     </LinearGradient>
   </Touchable>

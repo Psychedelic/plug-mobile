@@ -46,7 +46,7 @@ const Navigator = ({ initialRoute }) => {
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name={Routes.SWIPE_LAYOUT} component={SwipeNavigator} />
+      <Stack.Screen name={Routes.SWIPE_LAYOUT} component={SwipeNavigator} options={{ gestureEnabled: false }} />
       <Stack.Screen
         name={Routes.CREATE_IMPORT_LAYOUT}
         component={CreateImportNavigator}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import Header from '../components/common/Header';
 import Modal from '../components/modal';
@@ -7,19 +7,27 @@ import RainbowButton from '../components/buttons/RainbowButton';
 import EmojiSelector from '../components/common/EmojiSelector';
 import { FontStyles } from '../constants/theme';
 
-const EditEmoji = ({ modalRef }) => {
-  const [selectedEmoji, setSelectedEmoji] = useState('🔥');
+const EditEmoji = ({ modalRef, onSave, emoji }) => {
+  const [selectedEmoji, setSelectedEmoji] = useState('');
 
-  const onSave = () => {
+  const handleSave = () => {
+    onSave(selectedEmoji);
+    setSelectedEmoji('');
     modalRef?.current.close();
   };
+
+  useEffect(() => {
+    if (emoji) {
+      setSelectedEmoji(emoji);
+    }
+  }, [emoji]);
 
   return (
     <Modal adjustToContentHeight modalRef={modalRef}>
       <Header center={<Text style={FontStyles.Subtitle2}>Set Emoji</Text>} />
       <View style={styles.content}>
         <UserIcon icon={selectedEmoji} size="extralarge" style={styles.icon} />
-        <RainbowButton text="Save emoji" onPress={onSave} />
+        <RainbowButton text="Save emoji" onPress={handleSave} />
         <EmojiSelector onSelect={setSelectedEmoji} />
       </View>
     </Modal>

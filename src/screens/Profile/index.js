@@ -7,13 +7,12 @@ import UserIcon from '../../components/common/UserIcon';
 import Icon from '../../components/icons';
 import Button from '../../components/buttons/Button';
 import Settings from '../Settings';
-
 import ActivityItem from './components/ActivityItem';
 import styles from './styles';
 import Touchable from '../../components/animations/Touchable';
 import Accounts from '../Accounts';
-
-import CreateAccount from '../../modals/CreateAccount';
+import { useNavigation } from '@react-navigation/core';
+import Routes from '../../navigation/Routes';
 
 const ACTIVITY = [
   {
@@ -161,23 +160,9 @@ const ACTIVITY = [
   },
 ];
 
-const header = {
-  left: <Settings />,
-  center: null,
-  right: (
-    <Touchable>
-      <Icon name="chevronRight" />
-    </Touchable>
-  ),
-};
-
 const Profile = () => {
   const modalRef = useRef(null);
-  const editProfileRef = useRef(null);
-
-  const editProfile = () => {
-    editProfileRef?.current.open();
-  };
+  const navigation = useNavigation();
 
   const openAccounts = () => {
     modalRef?.current.open();
@@ -186,12 +171,16 @@ const Profile = () => {
   return (
     <>
       <Container>
-        <Header {...header} />
+        <Header
+          left={<Settings />}
+          right={
+            <Touchable onPress={() => navigation.navigate(Routes.WALLET_SCREEN)}>
+              <Icon name="chevronRight" />
+            </Touchable>
+          } />
         <ScrollView>
           <View style={styles.container}>
-            <Touchable onPress={openAccounts}>
-              <UserIcon size="large" onPress={editProfile} icon="🔥" />
-            </Touchable>
+            <UserIcon size="large" onPress={openAccounts} />
             <Button
               variant="gray"
               text="Change"
@@ -210,8 +199,11 @@ const Profile = () => {
         </ScrollView>
       </Container>
 
-      <CreateAccount modalRef={editProfileRef} title="Edit Account" />
-      <Accounts modalRef={modalRef} />
+
+      <Accounts
+        modalRef={modalRef}
+      />
+
     </>
   );
 };

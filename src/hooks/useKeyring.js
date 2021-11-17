@@ -5,6 +5,7 @@ import {
   setCurrentWallet,
   setAssets,
   setUnlocked,
+  setWallets,
 } from '../redux/slices/keyring';
 
 const generateMnemonic = async () => {
@@ -56,16 +57,28 @@ const useKeyring = () => {
       await instance?.lock();
     } else {
       const { wallets, currentWalletId } = response || {};
+      dispatch(setWallets(wallets));
       dispatch(setCurrentWallet(wallets[currentWalletId]));
       return response;
     }
   };
+
+  const createSubAccount = async (params) => {
+    try {
+      const response = await instance?.createPrincipal(params);
+      return response;
+    }
+    catch (e) {
+      console.log(e)
+    }
+  }
 
   const unlock = async password => {
     let unlocked = false;
     try {
       unlocked = await instance.unlock(password);
       dispatch(setUnlocked(unlocked));
+      await getState();
     } catch (e) {
       unlocked = false;
     }
@@ -80,6 +93,7 @@ const useKeyring = () => {
     getAssets,
     getState,
     unlock,
+    createSubAccount,
   };
 };
 

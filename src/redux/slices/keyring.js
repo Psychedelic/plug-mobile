@@ -21,6 +21,34 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
   return keyring;
 });
 
+export const createSubaccount = createAsyncThunk('keyring/createSubaccount', async (params, { getState }) => {
+  try {
+    const state = getState();
+    const response = await state.keyring.instance?.createPrincipal(params);
+    return response;
+  }
+  catch (e) {
+    console.log('createSubaccount', e);
+  }
+});
+
+export const editSubaccount = createAsyncThunk('keyring/editSubaccount', async (params, { getState }) => {
+  try {
+    const state = getState();
+    await state.keyring.instance?.editPrincipal(
+      params.walletNumber,
+      { name: params.name, emoji: params.icon }
+    );
+
+    const response = state.keyring.instance?.getState();
+    const { wallets } = response;
+    return wallets[params.walletNumber]; //tell rocky to make the edit return the edited account
+  }
+  catch (e) {
+    console.log('editSubaccount', e)
+  }
+})
+
 const DEFAULT_ASSETS = [
   {
     symbol: 'ICP',
@@ -46,6 +74,7 @@ export const keyringSlice = createSlice({
     isInitialized: false,
     isUnlocked: false,
     currentWallet: null,
+    wallets: [],
     password: '',
     contacts: [],
   },
@@ -58,6 +87,9 @@ export const keyringSlice = createSlice({
     },
     setUnlocked: (state, action) => {
       state.isUnlocked = action.payload;
+    },
+    setWallets: (state, action) => {
+      state.wallets = action.payload;
     },
     setContacts: (state, action) => {
       state.contacts = action.payload;
@@ -77,6 +109,14 @@ export const keyringSlice = createSlice({
       state.isInitialized = action.payload.isInitialized;
       state.isUnlocked = action.payload.isUnlocked;
     },
+    [createSubaccount.fulfilled]: (state, action) => {
+      state.wallets = [...state.wallets, action.payload];
+    },
+    [editSubaccount.fulfilled]: (state, action) => {
+      console.log('payload', action.payload);
+      const account = action.payload;
+      state.wallets = state.wallets.map(a => (a.walletNumber === account.walletNumber ? account : a));
+    }
   },
 });
 
@@ -87,6 +127,7 @@ export const {
   addContact,
   removeContact,
   setContacts,
+  setWallets,
 } = keyringSlice.actions;
 
 export default keyringSlice.reducer;

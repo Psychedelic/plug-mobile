@@ -87,7 +87,7 @@ const ReviewSend = ({
             <Text style={FontStyles.Title2}>{contact?.name}</Text>
             <Text style={FontStyles.Subtitle3}>{contact?.id}</Text>
           </Column>
-          <UserIcon size="medium" icon="🔥" />
+          <UserIcon size="medium" />
         </Row>
 
         {confirmed ? (
