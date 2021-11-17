@@ -5,6 +5,7 @@ export default StyleSheet.create({
   title: {
     ...FontStyles.Title,
     marginTop: 20,
+    textAlign: 'center'
   },
   subtitle: {
     ...FontStyles.NormalGray,
@@ -14,8 +15,8 @@ export default StyleSheet.create({
   },
   container: {
     flex: 1,
-    alignItems: 'center',
     padding: 30,
+    width: '100%'
   },
   button: {
     marginTop: 30,
