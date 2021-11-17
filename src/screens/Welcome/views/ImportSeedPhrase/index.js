@@ -12,15 +12,16 @@ import useKeyring from '../../../../hooks/useKeyring';
 import styles from './styles';
 
 const ImportSeedPhrase = ({ navigation, route }) => {
-  const { importWallet } = useKeyring();
+  const { importWallet, saveBiometrics } = useKeyring();
   const { goBack } = navigation;
-  const { password } = route?.params || {};
+  const { password, biometryType } = route?.params || {};
   const [seedPhrase, setSeedPhrase] = useState(null);
   const [invalidSeedPhrase, setInvalidSeedPhrase] = useState(false);
 
   const onPress = async () => {
     try {
       await importWallet({ mnemonic: seedPhrase, password });
+      await saveBiometrics(password, biometryType);
       navigation.navigate(Routes.SWIPE_LAYOUT);
     } catch (e) {
       console.log(e);

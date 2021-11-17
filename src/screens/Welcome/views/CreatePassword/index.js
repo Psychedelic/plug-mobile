@@ -13,7 +13,7 @@ import styles from './styles';
 import Routes from '../../../../navigation/Routes';
 
 const CreatePassword = ({ route, navigation }) => {
-  const { createWallet } = useKeyring();
+  const { createWallet, saveBiometrics } = useKeyring();
   const { flow } = route.params;
   const { goBack } = navigation;
   const [password, setPassword] = useState(null);
@@ -31,11 +31,11 @@ const CreatePassword = ({ route, navigation }) => {
 
   const handleCreate = async () => {
     if (flow === 'import') {
-      // Add biometrics to this
-      navigation.navigate(Routes.IMPORT_SEED_PHRASE, { password });
+      navigation.navigate(Routes.IMPORT_SEED_PHRASE, { password, biometryType });
     } else {
       try {
         const mnemonic = await createWallet(password, biometryType);
+        await saveBiometrics(password, biometryType);
         navigation.navigate(Routes.BACKUP_SEED_PHRASE, { mnemonic });
       } catch (e) {
         console.log('Error:', e);
