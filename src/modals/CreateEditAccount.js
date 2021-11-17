@@ -42,6 +42,8 @@ const CreateEditAccount = ({ modalRef, account, ...props }) => {
     editEmojiRef?.current.open();
   };
 
+  const getName = () => `${account ? 'Edit' : 'Create'} Account`;
+
   useEffect(() => {
     if (account) {
       setAccountName(account.name);
@@ -56,11 +58,7 @@ const CreateEditAccount = ({ modalRef, account, ...props }) => {
       onClose={resetState}
       {...props}>
       <Header center={<Text style={FontStyles.Subtitle2}>
-        {
-          account
-            ? 'Edit Account'
-            : 'Create Account'
-        }
+        {getName()}
       </Text>} />
       <View style={styles.content}>
         <UserIcon
@@ -80,7 +78,7 @@ const CreateEditAccount = ({ modalRef, account, ...props }) => {
         />
 
         <RainbowButton
-          text={account ? 'Edit Account' : 'Create Account'}
+          text={getName()}
           onPress={onPress}
           disabled={!accountName}
         />

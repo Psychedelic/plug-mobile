@@ -34,7 +34,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
       {
         title: account.name,
         message: shortAddress(account.principal),
-        options: ['Cancel', 'Edit Account',],
+        options: ['Cancel', 'Edit Account'],
         cancelButtonIndex: 0,
         userInterfaceStyle: 'dark',
       },

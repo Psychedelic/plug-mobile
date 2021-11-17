@@ -64,8 +64,13 @@ const useKeyring = () => {
   };
 
   const createSubAccount = async (params) => {
-    const response = await instance?.createPrincipal(params);
-    return response;
+    try {
+      const response = await instance?.createPrincipal(params);
+      return response;
+    }
+    catch (e) {
+      console.log(e)
+    }
   }
 
   const unlock = async password => {
