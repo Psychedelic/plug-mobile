@@ -32,7 +32,16 @@ const useKeyring = () => {
   const { instance } = useSelector(state => state.keyring);
   const dispatch = useDispatch();
 
-  const createWallet = async (password, biometryType) => {
+  const createWallet = async (password) => {
+    const mnemonic = await generateMnemonic();
+    const response = await instance?.importMnemonic({ password, mnemonic });
+    const { wallet } = response || {};
+    await instance?.unlock(password);
+    dispatch(setCurrentWallet(wallet));
+    return mnemonic;
+  };
+
+  const saveBiometrics = async (password, biometryType) => {
     // Removes stored password in Keychain
     await Keychain.resetGenericPassword();
 
@@ -46,13 +55,6 @@ const useKeyring = () => {
         ...DEFAULT_KEYCHAIN_OPTIONS,
       });
     }
-
-    const mnemonic = await generateMnemonic();
-    const response = await instance?.importMnemonic({ password, mnemonic });
-    const { wallet } = response || {};
-    await instance?.unlock(password);
-    dispatch(setCurrentWallet(wallet));
-    return mnemonic;
   };
 
   const importWallet = async params => {
@@ -102,6 +104,7 @@ const useKeyring = () => {
   return {
     keyring: instance,
     createWallet,
+    saveBiometrics,
     importWallet,
     getAssets,
     getState,
