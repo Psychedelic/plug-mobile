@@ -6,11 +6,11 @@ import shortAddress from '../../../helpers/short-address';
 
 const AccountInfo = () => {
   const { currentWallet } = useSelector(state => state.keyring);
-  const { principal, accountId } = currentWallet || {};
+  const { principal, name } = currentWallet || {};
   return (
     <View style={styles.container}>
-      <Text style={FontStyles.Normal}>{shortAddress(principal)}</Text>
-      <Text style={FontStyles.SmallGray}>{shortAddress(accountId)}</Text>
+      <Text style={FontStyles.Normal}>{name}</Text>
+      <Text style={FontStyles.SmallGray}>{shortAddress(principal)}</Text>
     </View>
   );
 };
