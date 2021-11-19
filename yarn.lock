@@ -1100,10 +1100,8 @@
     cross-fetch "^3.1.4"
     crypto-js "^4.1.1"
 
-"@psychedelic/plug-controller@0.11.0-cap-custom":
+"@psychedelic/plug-controller@../plug-controller":
   version "0.11.0-cap-custom"
-  resolved "https://npm.pkg.github.com/download/@psychedelic/plug-controller/0.11.0-cap-custom/0c0924d76eb840488cd4241973979713ff4e5a13007125b342e007f53dc02afc#001e22ec520e3c6e661b2320e456deaf2ac00e2d"
-  integrity sha512-2pk5TUQkpdHkdpuzmg06XbjYm11rDhu1UPokylbL5MOk5kQdSa70AgmJfRBTHN4KwFkG1kSbUXGeYRqN05TBMw==
   dependencies:
     "@dfinity/agent" "0.9.3"
     "@dfinity/candid" "0.9.3"
@@ -1124,7 +1122,6 @@
     hdkey "^2.0.1"
     js-sha256 "^0.9.0"
     json-bigint "^1.0.0"
-    random-bigint "^0.0.1"
     random-color "^1.0.1"
     reflect-metadata "^0.1.13"
     secp256k1 "^4.0.2"
@@ -2196,7 +2193,7 @@ base@^0.11.1:
     mixin-deep "^1.2.0"
     pascalcase "^0.1.1"
 
-big-integer@1.6.x, big-integer@^1.6.36:
+big-integer@1.6.x, big-integer@^1.6.36, big-integer@^1.6.51:
   version "1.6.51"
   resolved "https://registry.yarnpkg.com/big-integer/-/big-integer-1.6.51.tgz#0df92a5d9880560d3ff2d5fd20245c889d130686"
   integrity sha512-GPEid2Y9QU1Exl1rpO9B2IPJGHPSupF5GnVIP0blYvNOMer2bTvSWs1jGOUg04hTmu67nmLsQ9TBo1puaotBHg==
@@ -3792,9 +3789,9 @@ flatted@^2.0.0:
   integrity sha512-r5wGx7YeOwNWNlCA0wQ86zKyDLMQr+/RB8xy74M4hTphfmjlijTSSXGuH8rnvKZnfT9i+75zmd8jcKdMR4O6jA==
 
 flow-parser@0.*:
-  version "0.165.0"
-  resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.165.0.tgz#327f4c2c6516face02cb2239bb3bf4b4bf0e8fd8"
-  integrity sha512-s9pW6fqJvYwdc2KfS0R76e2T1tgKpz4TzFyrnaHPdo/nEZbMiQQuB+uqUgg+sSPmHya0UV3Igc3Dy+NxSDN5sg==
+  version "0.165.1"
+  resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.165.1.tgz#e420c560d0c9bd0e546b9f1b79afed37174298c5"
+  integrity sha512-vz/5MZIePDCZO9FfnRaH398cc+XSwtgoUzR6pC5zbekpk5ttCaXOnxypho+hb0NzUyQNFV+6vpU8joRZ1llrCw==
 
 flow-parser@^0.121.0:
   version "0.121.0"
@@ -6587,11 +6584,6 @@ queue-microtask@^1.2.2:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/queue-microtask/-/queue-microtask-1.2.3.tgz#4929228bbc724dfac43e0efb058caf7b6cfb6243"
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
-
-random-bigint@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/random-bigint/-/random-bigint-0.0.1.tgz#684de0a93784ab7448a441393916f0e632c95df9"
-  integrity sha512-X+NTsf5Hzl/tRNLiNTD3N1LRU0eKdIE0+plNlV1CmXLTlnAxj6HipcTnOhWvFRoSytCz6l1f4KYFf/iH8NNSLw==
 
 random-color@^1.0.1:
   version "1.0.1"
