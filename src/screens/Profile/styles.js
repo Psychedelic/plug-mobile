@@ -14,4 +14,12 @@ export default StyleSheet.create({
     paddingHorizontal: Metrics.Padding,
     paddingBottom: Metrics.Padding,
   },
+  leftContainer: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  name: {
+    ...FontStyles.Subtitle,
+    marginLeft: 12
+  }
 });

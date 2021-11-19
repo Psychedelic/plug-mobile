@@ -13,6 +13,8 @@ import Touchable from '../../components/animations/Touchable';
 import Accounts from '../Accounts';
 import { useNavigation } from '@react-navigation/core';
 import Routes from '../../navigation/Routes';
+import { useSelector } from 'react-redux';
+import { FontStyles } from '../../constants/theme';
 
 const ACTIVITY = [
   {
@@ -163,6 +165,7 @@ const ACTIVITY = [
 const Profile = () => {
   const modalRef = useRef(null);
   const navigation = useNavigation();
+  const { currentWallet } = useSelector(state => state.keyring);
 
   const openAccounts = () => {
     modalRef?.current.open();
@@ -180,7 +183,12 @@ const Profile = () => {
           } />
         <ScrollView>
           <View style={styles.container}>
-            <UserIcon size="large" onPress={openAccounts} />
+
+            <View style={styles.leftContainer}>
+              <UserIcon size="large" onPress={openAccounts} />
+              <Text style={styles.name}>{currentWallet.name}</Text>
+            </View>
+
             <Button
               variant="gray"
               text="Change"
