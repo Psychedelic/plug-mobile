@@ -53,7 +53,13 @@ const Send = ({ modalRef }) => {
     setSelectedNft(null);
     setSelectedToken(null);
     setSelectedContact(null);
+    setUsdAmount(null);
+    setTokenAmount(null);
   };
+
+  const partialReset = () => {
+    setSelectedNft(null);
+  }
 
   const onChangeText = text => {
     setSelectedContact(null);
@@ -105,7 +111,8 @@ const Send = ({ modalRef }) => {
           amount={tokenAmount}
           value={usdAmount}
           nft={selectedNft}
-          onClose={() => modalRef.current?.close()}
+          onSuccess={() => modalRef.current?.close()}
+          onClose={partialReset}
         />
       </ScrollView>
     </Modal>
