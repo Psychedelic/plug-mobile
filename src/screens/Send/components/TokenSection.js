@@ -1,6 +1,6 @@
 import React from 'react';
 import useTokens from '../../../hooks/useTokens';
-import { Text } from 'react-native';
+import { View, Text } from 'react-native';
 import Touchable from '../../../components/animations/Touchable';
 import TokenItem from '../../../components/tokens/TokenItem';
 import animationScales from '../../../utils/animationScales';
@@ -26,13 +26,21 @@ const TokenSection = ({ onTokenPress, onNftPress }) => {
           />
         </Touchable>
       ))}
-      {nfts.map(nft => (
-        <Touchable
-          scale={animationScales.small}
-          onPress={() => onNftPress(nft)}>
-          <NftItem {...nft} style={{ marginTop: 20 }} />
-        </Touchable>
-      ))}
+      <Text style={[FontStyles.Subtitle3, { marginTop: 25 }]}>NFTs</Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'space-between',
+        }}>
+        {nfts.map(nft => (
+          <Touchable
+            scale={animationScales.small}
+            onPress={() => onNftPress(nft)}>
+            <NftItem {...nft} style={{ marginTop: 15 }} />
+          </Touchable>
+        ))}
+      </View>
     </>
   );
 };

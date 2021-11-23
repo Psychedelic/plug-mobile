@@ -3,18 +3,20 @@ import { FontStyles } from '../../../constants/theme';
 
 export default StyleSheet.create({
   root: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'flex-start',
-    width: '100%',
   },
   leftContainer: {
     flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    marginLeft: 10,
+    marginTop: 10,
   },
   value: {
     ...FontStyles.Normal,
     marginLeft: 'auto',
     alignSelf: 'flex-start',
+  },
+  nftName: {
+    color: '#616571',
+    fontSize: 15,
   },
 });
