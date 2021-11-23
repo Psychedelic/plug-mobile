@@ -103,7 +103,7 @@ export const keyringSlice = createSlice({
     },
     removeContact: (state, action) => {
       state.contacts = state.contacts.filter(
-        contact => contact.id !== action.id,
+        contact => contact.id !== action.payload.id,
       );
     },
   },
