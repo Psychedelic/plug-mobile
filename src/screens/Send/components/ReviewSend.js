@@ -12,6 +12,7 @@ import Icon from '../../../components/icons';
 import Button from '../../../components/buttons/Button';
 import { Colors } from '../../../constants/theme';
 import NftDisplayer from '../../../components/common/NftDisplayer';
+import shortAddress from '../../../helpers/short-address';
 
 const ReviewSend = ({
   modalRef,
@@ -22,13 +23,16 @@ const ReviewSend = ({
   to,
   contact,
   onClose,
+  onSuccess,
   ...props
 }) => {
   const [confirmed, setConfirmed] = useState(false);
 
   const handleClose = () => {
+    onClose();
+
     if (confirmed) {
-      onClose();
+      onSuccess();
     }
   };
 
@@ -85,7 +89,7 @@ const ReviewSend = ({
         <Row style={styles.row}>
           <Column>
             <Text style={FontStyles.Title2}>{contact?.name}</Text>
-            <Text style={FontStyles.Subtitle3}>{contact?.id}</Text>
+            <Text style={FontStyles.Subtitle3}>{shortAddress(contact?.id)}</Text>
           </Column>
           <UserIcon size="medium" />
         </Row>

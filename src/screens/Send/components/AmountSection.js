@@ -25,6 +25,8 @@ const AmountSection = ({
   }, [tokenAmount, selectedToken.value, setUsdAmount]);
 
   const onTokenChange = () => {
+    setTokenAmount(null);
+    setUsdAmount(null);
     setSelectedToken(null);
   };
 
