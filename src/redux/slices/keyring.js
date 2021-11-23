@@ -21,33 +21,37 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
   return keyring;
 });
 
-export const createSubaccount = createAsyncThunk('keyring/createSubaccount', async (params, { getState }) => {
-  try {
-    const state = getState();
-    const response = await state.keyring.instance?.createPrincipal(params);
-    return response;
-  }
-  catch (e) {
-    console.log('createSubaccount', e);
-  }
-});
+export const createSubaccount = createAsyncThunk(
+  'keyring/createSubaccount',
+  async (params, { getState }) => {
+    try {
+      const state = getState();
+      const response = await state.keyring.instance?.createPrincipal(params);
+      return response;
+    } catch (e) {
+      console.log('createSubaccount', e);
+    }
+  },
+);
 
-export const editSubaccount = createAsyncThunk('keyring/editSubaccount', async (params, { getState }) => {
-  try {
-    const state = getState();
-    await state.keyring.instance?.editPrincipal(
-      params.walletNumber,
-      { name: params.name, emoji: params.icon }
-    );
+export const editSubaccount = createAsyncThunk(
+  'keyring/editSubaccount',
+  async (params, { getState }) => {
+    try {
+      const state = getState();
+      await state.keyring.instance?.editPrincipal(params.walletNumber, {
+        name: params.name,
+        emoji: params.icon,
+      });
 
-    const response = state.keyring.instance?.getState();
-    const { wallets } = response;
-    return wallets[params.walletNumber]; //tell rocky to make the edit return the edited account
-  }
-  catch (e) {
-    console.log('editSubaccount', e)
-  }
-})
+      const response = state.keyring.instance?.getState();
+      const { wallets } = response;
+      return wallets[params.walletNumber]; //tell rocky to make the edit return the edited account
+    } catch (e) {
+      console.log('editSubaccount', e);
+    }
+  },
+);
 
 const DEFAULT_ASSETS = [
   {
@@ -115,8 +119,10 @@ export const keyringSlice = createSlice({
     [editSubaccount.fulfilled]: (state, action) => {
       console.log('payload', action.payload);
       const account = action.payload;
-      state.wallets = state.wallets.map(a => (a.walletNumber === account.walletNumber ? account : a));
-    }
+      state.wallets = state.wallets.map(a =>
+        a.walletNumber === account.walletNumber ? account : a,
+      );
+    },
   },
 });
 
