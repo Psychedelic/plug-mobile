@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import bip39 from 'react-native-bip39';
 import {
   setCurrentWallet,
-  setAssets,
   setUnlocked,
   setWallets,
 } from '../redux/slices/keyring';
@@ -39,23 +38,6 @@ const useKeyring = () => {
     return mnemonic;
   };
 
-  const getAssets = async refresh => {
-    const response = await instance?.getState();
-    const { wallets, currentWalletId } = response || {};
-    let assets = wallets?.[currentWalletId]?.assets || [];
-    console.log('assets?', assets);
-    if (assets?.every(asset => parseFloat(asset.amount) <= 0) || refresh) {
-      console.log('getting balance');
-      assets = await instance?.getBalance();
-      console.log('fetched', assets);
-    } else {
-      instance?.getBalance();
-    }
-    console.log('assets', assets);
-    dispatch(setAssets(assets));
-    return assets;
-  };
-
   const getState = async () => {
     const response = await instance?.getState();
     if (!response.wallets.length) {
@@ -67,16 +49,6 @@ const useKeyring = () => {
       return response;
     }
   };
-
-  const createSubAccount = async (params) => {
-    try {
-      const response = await instance?.createPrincipal(params);
-      return response;
-    }
-    catch (e) {
-      console.log(e)
-    }
-  }
 
   const unlock = async password => {
     let unlocked = false;
@@ -95,10 +67,8 @@ const useKeyring = () => {
     keyring: instance,
     createWallet,
     importWallet,
-    getAssets,
     getState,
     unlock,
-    createSubAccount,
   };
 };
 

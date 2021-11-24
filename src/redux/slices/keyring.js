@@ -23,6 +23,33 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
   return keyring;
 });
 
+export const getAssets = createAsyncThunk(
+  'keyring/getAssets',
+  async (refresh, { getState }) => {
+    try {
+      const { instance } = getState().keyring;
+      const response = await instance?.getState();
+      const { wallets, currentWalletId } = response || {};
+      let assets = wallets?.[currentWalletId]?.assets || [];
+      console.log('state assets', assets);
+      if (
+        !assets.length ||
+        assets?.every(asset => parseFloat(asset.amount) <= 0) ||
+        refresh
+      ) {
+        console.log('getting balance', instance);
+        assets = await instance?.getBalance();
+      } else {
+        instance?.getBalance();
+      }
+      console.log('returning', assets);
+      return assets;
+    } catch (e) {
+      console.log('getAssets', e);
+    }
+  },
+);
+
 export const createSubaccount = createAsyncThunk(
   'keyring/createSubaccount',
   async (params, { getState }) => {
@@ -77,6 +104,7 @@ export const keyringSlice = createSlice({
   initialState: {
     instance: null,
     assets: DEFAULT_ASSETS,
+    assetsLoading: false,
     isInitialized: false,
     isUnlocked: false,
     currentWallet: null,
@@ -87,9 +115,6 @@ export const keyringSlice = createSlice({
   reducers: {
     setCurrentWallet: (state, action) => {
       state.currentWallet = action.payload;
-    },
-    setAssets: (state, action) => {
-      state.assets = formatAssets(action.payload, 50) || DEFAULT_ASSETS;
     },
     setUnlocked: (state, action) => {
       state.isUnlocked = action.payload;
@@ -108,6 +133,9 @@ export const keyringSlice = createSlice({
         contact => contact.id !== action.payload.id,
       );
     },
+    setAssetsLoading: (state, action) => {
+      state.assetsLoading = action.payload;
+    },
   },
   extraReducers: {
     [initKeyring.fulfilled]: (state, action) => {
@@ -125,17 +153,21 @@ export const keyringSlice = createSlice({
         a.walletNumber === account.walletNumber ? account : a,
       );
     },
+    [getAssets.fulfilled]: (state, action) => {
+      state.assets = formatAssets(action.payload, 50) || DEFAULT_ASSETS;
+      state.assetsLoading = false;
+    },
   },
 });
 
 export const {
   setCurrentWallet,
-  setAssets,
   setUnlocked,
   addContact,
   removeContact,
   setContacts,
   setWallets,
+  setAssetsLoading,
 } = keyringSlice.actions;
 
 export default keyringSlice.reducer;

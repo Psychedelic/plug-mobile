@@ -1,32 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { RefreshControl, ScrollView, Text, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Colors, FontStyles } from '../../../../constants/theme';
 import TokenItem from '../../../../components/tokens/TokenItem';
 import Container from '../../../../components/common/Container';
 import Divider from '../../../../components/common/Divider';
 import WalletHeader from '../../components/WalletHeader';
-import useKeyring from '../../../../hooks/useKeyring';
+import { getAssets, setAssetsLoading } from '../../../../redux/slices/keyring';
 
 const Tokens = () => {
-  const [refreshing, setRefresing] = useState(false);
-  const { getAssets, getState } = useKeyring();
-  const { assets } = useSelector(state => state.keyring);
+  const { assets, assetsLoading } = useSelector(state => state.keyring);
+  const dispatch = useDispatch();
 
-  const onRefresh = async () => {
-    setRefresing(true);
-    await getAssets();
-    setRefresing(false);
+  const onRefresh = () => {
+    dispatch(setAssetsLoading(true));
+    dispatch(getAssets(true));
   };
 
   useEffect(() => {
-    const refresh = async () => {
-      setRefresing(true);
-      await getAssets();
-      setRefresing(false);
-    };
-    refresh();
+    dispatch(setAssetsLoading(true));
+    dispatch(getAssets(true));
   }, []);
   console.log('Token.assets', assets);
   return (
@@ -37,7 +31,7 @@ const Tokens = () => {
       <ScrollView
         refreshControl={
           <RefreshControl
-            refreshing={refreshing}
+            refreshing={assetsLoading}
             onRefresh={onRefresh}
             tintColor={Colors.White.Primary}
           />
