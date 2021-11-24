@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   emojiBoardRow: {
     flex: 1,
     flexDirection: 'row',
-    justifyElements: 'space-between',
+    justifyContent: 'space-between',
     marginBottom: 6,
   },
   emojiCategoryTytle: {

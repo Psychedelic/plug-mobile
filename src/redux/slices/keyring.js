@@ -18,6 +18,7 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
       await keyring.lock();
     }
   }
+  console.log('keyring', keyring);
   return keyring;
 });
 
