@@ -8,9 +8,9 @@ import { FontStyles, Colors } from '../../../constants/theme';
 import useNfts from '../../../hooks/useNfts';
 import NftItem from '../../../components/common/NftItem';
 
-const TokenSection = ({ onTokenPress, onNftPress }) => {
-  const { tokens } = useTokens();
-  const { nfts } = useNfts();
+const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }) => {
+  // const { tokens } = useTokens();
+  // const { nfts } = useNfts();
 
   return (
     <>

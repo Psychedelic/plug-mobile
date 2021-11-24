@@ -9,15 +9,15 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* PlugMobileTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* PlugMobileTests.m */; };
 		03F752A5273ACE6F006DB889 /* BridgingFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F752A4273ACE6F006DB889 /* BridgingFile.swift */; };
-		0B53D89342DEADD416592C92 /* libPods-PlugMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7CCDF1D86B2E3366F8B34BE /* libPods-PlugMobile.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1E40A9331B28463D9C45BAE7 /* Oswald-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E801C124432C4832A0B2D9D5 /* Oswald-Regular.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		8E2B41CE51AC38D234DA8A00 /* libPods-PlugMobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D88830C7A38461D624E84493 /* libPods-PlugMobile.a */; };
+		98BFDDA6D090413210C89737 /* libPods-PlugMobile-PlugMobileTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E2DEB4E89A088349D466B629 /* libPods-PlugMobile-PlugMobileTests.a */; };
 		9CAA3BBF96A74945884C0EB1 /* Oswald-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2305DDE041124F8DB2F00951 /* Oswald-Medium.ttf */; };
 		CD3B248E5C08463F8C9319A0 /* Oswald-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF9BCEC54AC74FA1B3E30252 /* Oswald-Bold.ttf */; };
-		DDF9BCEDB0C1DAE2387A99D5 /* libPods-PlugMobile-PlugMobileTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D924315A6D1EE2EBBECA69DD /* libPods-PlugMobile-PlugMobileTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,16 +43,16 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = PlugMobile/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = PlugMobile/main.m; sourceTree = "<group>"; };
 		2305DDE041124F8DB2F00951 /* Oswald-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-Medium.ttf"; path = "../assets/fonts/Oswald-Medium.ttf"; sourceTree = "<group>"; };
-		38F2E77E6AEBC889E56AB7BB /* Pods-PlugMobile-PlugMobileTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile-PlugMobileTests.release.xcconfig"; path = "Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests.release.xcconfig"; sourceTree = "<group>"; };
+		51C4D617CE4607C41D94CF2A /* Pods-PlugMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile.release.xcconfig"; path = "Target Support Files/Pods-PlugMobile/Pods-PlugMobile.release.xcconfig"; sourceTree = "<group>"; };
+		597D2C160118FE62A03858BB /* Pods-PlugMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile.debug.xcconfig"; path = "Target Support Files/Pods-PlugMobile/Pods-PlugMobile.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = PlugMobile/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		A02796503148A5CF5814CB78 /* Pods-PlugMobile-PlugMobileTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile-PlugMobileTests.debug.xcconfig"; path = "Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests.debug.xcconfig"; sourceTree = "<group>"; };
-		A1923F9B9E1E448B2F2E3729 /* Pods-PlugMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile.debug.xcconfig"; path = "Target Support Files/Pods-PlugMobile/Pods-PlugMobile.debug.xcconfig"; sourceTree = "<group>"; };
-		A87A08B586161F47D6B86F2A /* Pods-PlugMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile.release.xcconfig"; path = "Target Support Files/Pods-PlugMobile/Pods-PlugMobile.release.xcconfig"; sourceTree = "<group>"; };
+		AE0F8F5744699F8BB6EA3483 /* Pods-PlugMobile-PlugMobileTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile-PlugMobileTests.debug.xcconfig"; path = "Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests.debug.xcconfig"; sourceTree = "<group>"; };
 		AF9BCEC54AC74FA1B3E30252 /* Oswald-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-Bold.ttf"; path = "../assets/fonts/Oswald-Bold.ttf"; sourceTree = "<group>"; };
-		D924315A6D1EE2EBBECA69DD /* libPods-PlugMobile-PlugMobileTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PlugMobile-PlugMobileTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E7CCDF1D86B2E3366F8B34BE /* libPods-PlugMobile.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PlugMobile.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D88830C7A38461D624E84493 /* libPods-PlugMobile.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PlugMobile.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2DEB4E89A088349D466B629 /* libPods-PlugMobile-PlugMobileTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PlugMobile-PlugMobileTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E801C124432C4832A0B2D9D5 /* Oswald-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-Regular.ttf"; path = "../assets/fonts/Oswald-Regular.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		FCFF24F3C74FC7C3CAE76B8F /* Pods-PlugMobile-PlugMobileTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile-PlugMobileTests.release.xcconfig"; path = "Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DDF9BCEDB0C1DAE2387A99D5 /* libPods-PlugMobile-PlugMobileTests.a in Frameworks */,
+				98BFDDA6D090413210C89737 /* libPods-PlugMobile-PlugMobileTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,7 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B53D89342DEADD416592C92 /* libPods-PlugMobile.a in Frameworks */,
+				8E2B41CE51AC38D234DA8A00 /* libPods-PlugMobile.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,8 +119,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				E7CCDF1D86B2E3366F8B34BE /* libPods-PlugMobile.a */,
-				D924315A6D1EE2EBBECA69DD /* libPods-PlugMobile-PlugMobileTests.a */,
+				D88830C7A38461D624E84493 /* libPods-PlugMobile.a */,
+				E2DEB4E89A088349D466B629 /* libPods-PlugMobile-PlugMobileTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -128,10 +128,10 @@
 		44379489DBCDBC0081695FF4 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A1923F9B9E1E448B2F2E3729 /* Pods-PlugMobile.debug.xcconfig */,
-				A87A08B586161F47D6B86F2A /* Pods-PlugMobile.release.xcconfig */,
-				A02796503148A5CF5814CB78 /* Pods-PlugMobile-PlugMobileTests.debug.xcconfig */,
-				38F2E77E6AEBC889E56AB7BB /* Pods-PlugMobile-PlugMobileTests.release.xcconfig */,
+				597D2C160118FE62A03858BB /* Pods-PlugMobile.debug.xcconfig */,
+				51C4D617CE4607C41D94CF2A /* Pods-PlugMobile.release.xcconfig */,
+				AE0F8F5744699F8BB6EA3483 /* Pods-PlugMobile-PlugMobileTests.debug.xcconfig */,
+				FCFF24F3C74FC7C3CAE76B8F /* Pods-PlugMobile-PlugMobileTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -177,12 +177,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "PlugMobileTests" */;
 			buildPhases = (
-				54B7F64237DBE747D14211A8 /* [CP] Check Pods Manifest.lock */,
+				26203D4BFD9E7C396F17409B /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				8946F354321D17F774F52480 /* [CP] Embed Pods Frameworks */,
-				9F38D40FF893E80183BBF3C9 /* [CP] Copy Pods Resources */,
+				16237BD6E3A8806C153E38B8 /* [CP] Embed Pods Frameworks */,
+				E24572E77DB867643F9019AC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -198,14 +198,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "PlugMobile" */;
 			buildPhases = (
-				1387100A5031D4F100B7FC68 /* [CP] Check Pods Manifest.lock */,
+				5C0D686912BCC3D740CDB827 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				EE39EEA1EA4A412EC5058D80 /* [CP] Embed Pods Frameworks */,
-				CB691F94437884F6E4C681CB /* [CP] Copy Pods Resources */,
+				B6C8700CE3A5B1FBA4395E72 /* [CP] Embed Pods Frameworks */,
+				67A151F572264B5B2F869284 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -289,29 +289,24 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		1387100A5031D4F100B7FC68 /* [CP] Check Pods Manifest.lock */ = {
+		16237BD6E3A8806C153E38B8 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
+			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PlugMobile-checkManifestLockResult.txt",
+				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		54B7F64237DBE747D14211A8 /* [CP] Check Pods Manifest.lock */ = {
+		26203D4BFD9E7C396F17409B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -333,41 +328,29 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8946F354321D17F774F52480 /* [CP] Embed Pods Frameworks */ = {
+		5C0D686912BCC3D740CDB827 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PlugMobile-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		9F38D40FF893E80183BBF3C9 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CB691F94437884F6E4C681CB /* [CP] Copy Pods Resources */ = {
+		67A151F572264B5B2F869284 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -384,7 +367,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PlugMobile/Pods-PlugMobile-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EE39EEA1EA4A412EC5058D80 /* [CP] Embed Pods Frameworks */ = {
+		B6C8700CE3A5B1FBA4395E72 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -399,6 +382,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PlugMobile/Pods-PlugMobile-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E24572E77DB867643F9019AC /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -454,7 +454,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A02796503148A5CF5814CB78 /* Pods-PlugMobile-PlugMobileTests.debug.xcconfig */;
+			baseConfigurationReference = AE0F8F5744699F8BB6EA3483 /* Pods-PlugMobile-PlugMobileTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -487,7 +487,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 38F2E77E6AEBC889E56AB7BB /* Pods-PlugMobile-PlugMobileTests.release.xcconfig */;
+			baseConfigurationReference = FCFF24F3C74FC7C3CAE76B8F /* Pods-PlugMobile-PlugMobileTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -517,7 +517,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A1923F9B9E1E448B2F2E3729 /* Pods-PlugMobile.debug.xcconfig */;
+			baseConfigurationReference = 597D2C160118FE62A03858BB /* Pods-PlugMobile.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -550,7 +550,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A87A08B586161F47D6B86F2A /* Pods-PlugMobile.release.xcconfig */;
+			baseConfigurationReference = 51C4D617CE4607C41D94CF2A /* Pods-PlugMobile.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

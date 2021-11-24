@@ -22,16 +22,16 @@ const ReviewSend = ({
   value,
   to,
   contact,
+  onSend,
   onClose,
   onSuccess,
+  trxComplete,
   ...props
 }) => {
-  const [confirmed, setConfirmed] = useState(false);
-
   const handleClose = () => {
     onClose();
 
-    if (confirmed) {
+    if (trxComplete) {
       onSuccess();
     }
   };
@@ -42,12 +42,12 @@ const ReviewSend = ({
         <Header
           center={
             <Text style={FontStyles.Subtitle2}>
-              {confirmed ? 'Confirmed' : 'Review Send'}
+              {trxComplete ? 'Confirmed' : 'Review Send'}
             </Text>
           }
         />
 
-        {confirmed && (
+        {trxComplete && (
           <Icon
             name="confirm"
             style={{ alignSelf: 'center', marginBottom: 30 }}
@@ -94,17 +94,17 @@ const ReviewSend = ({
           <UserIcon size="medium" />
         </Row>
 
-        {confirmed ? (
+        {trxComplete ? (
           <Button
             variant="gray"
             text="View on Explorer"
             buttonStyle={styles.button}
-            onPress={() => setConfirmed(!confirmed)}
+            onPress={() => null}
           />
         ) : (
           <RainbowButton
             text="􀎽 Hold to Send"
-            onLongPress={() => setConfirmed(!confirmed)}
+            onLongPress={onSend}
             buttonStyle={styles.button}
           />
         )}

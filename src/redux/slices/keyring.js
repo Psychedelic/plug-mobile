@@ -5,6 +5,22 @@ import RNCryptoJS from 'react-native-crypto-js';
 import { fetch } from 'react-native-fetch-api';
 import { formatAssets } from '../../utils/assets';
 
+export const recursiveParseBigint = (obj) => Object.entries(obj).reduce(
+  (acum, [key, val]) => {
+    if (val instanceof Object) {
+      const res = Array.isArray(val)
+        ? val.map((el) => recursiveParseBigint(el))
+        : recursiveParseBigint(val);
+      return { ...acum, [key]: res };
+    }
+    if (typeof val === 'bigint') {
+      return { ...acum, [key]: parseInt(val.toString(), 10) };
+    }
+    return { ...acum, [key]: val };
+  },
+  { ...obj },
+);
+
 export const initKeyring = createAsyncThunk('keyring/init', async () => {
   let keyring = new PlugController.PlugKeyRing(
     keyringStorage,
@@ -47,7 +63,34 @@ export const editSubaccount = createAsyncThunk('keyring/editSubaccount', async (
   catch (e) {
     console.log('editSubaccount', e)
   }
-})
+});
+
+export const burnXtc = createAsyncThunk('keyring/burnXtc', async (params, { getState }) => {
+  try {
+    const state = getState();
+    const response = await state.keyring.instance?.burnXTC(params);
+    return recursiveParseBigint(response);
+  }
+  catch (e) {
+    console.log('burnXtc', e);
+  }
+});
+
+export const sendToken = createAsyncThunk('keyring/sendToken', async (params, { getState }) => {
+  try {
+    const { to, amount, canisterId, opts } = params;
+    const state = getState();
+    const { height, transactionId } = await state.keyring.instance?.send(to, BigInt(amount), canisterId, opts);
+
+    return {
+      height: parseInt(height?.toString?.(), 10),
+      transactionId: parseInt(transactionId?.toString?.(), 10),
+    };
+  }
+  catch (e) {
+    console.log('sendToken', e);
+  }
+});
 
 const DEFAULT_ASSETS = [
   {
