@@ -31,25 +31,24 @@ export const CURRENCIES = new Map([
   ],
 ]);
 
-export const formatAssetBySymbol = (_amount, symbol, icpPrice) => {
-  const amount = parseInt(_amount?.toString(), 10);
+export const formatAssetBySymbol = (amount, symbol, icpPrice) => {
   return (
     {
       ICP: {
-        amount: amount / E8S_PER_ICP,
-        value: (amount * icpPrice) / E8S_PER_ICP,
+        amount: amount,
+        value: amount * icpPrice,
         icon: TOKEN_IMAGES.ICP,
         symbol: 'ICP',
       },
       XTC: {
-        amount: amount / CYCLES_PER_TC,
-        value: (amount * USD_PER_TC) / CYCLES_PER_TC,
+        amount: amount,
+        value: amount * USD_PER_TC,
         icon: TOKEN_IMAGES.XTC,
         symbol: 'XTC',
       },
       WTC: {
-        amount: amount / CYCLES_PER_TC,
-        value: (amount * USD_PER_TC) / CYCLES_PER_TC,
+        amount: amount,
+        value: amount * USD_PER_TC,
         symbol: 'WTC',
       },
       default: { amount, value: amount },

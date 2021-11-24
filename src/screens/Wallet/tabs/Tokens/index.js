@@ -28,7 +28,7 @@ const Tokens = () => {
     };
     refresh();
   }, []);
-
+  console.log('Token.assets', assets);
   return (
     <Container>
       <WalletHeader />

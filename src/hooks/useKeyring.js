@@ -43,11 +43,15 @@ const useKeyring = () => {
     const response = await instance?.getState();
     const { wallets, currentWalletId } = response || {};
     let assets = wallets?.[currentWalletId]?.assets || [];
-    if (assets?.every(asset => !asset.amount) || refresh) {
+    console.log('assets?', assets);
+    if (assets?.every(asset => parseFloat(asset.amount) <= 0) || refresh) {
+      console.log('getting balance');
       assets = await instance?.getBalance();
+      console.log('fetched', assets);
     } else {
       instance?.getBalance();
     }
+    console.log('assets', assets);
     dispatch(setAssets(assets));
     return assets;
   };

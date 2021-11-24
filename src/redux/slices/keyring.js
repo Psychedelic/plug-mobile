@@ -12,13 +12,14 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
     fetch,
   );
   await keyring.init();
+  console.log('keyring init', keyring?.isInitialized, keyring?.isUnlocked);
   if (keyring?.isUnlocked) {
     const state = await keyring.getState();
+    console.log('state.wallets', state.wallets);
     if (!state.wallets.length) {
       await keyring.lock();
     }
   }
-  console.log('keyring', keyring);
   return keyring;
 });
 

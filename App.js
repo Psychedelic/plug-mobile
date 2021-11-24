@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Text } from 'react-native';
 import { Provider, useDispatch } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { Keyboard, Text, TouchableWithoutFeedback } from 'react-native';
 
 import Routes from './src/navigation';
 import { persistor, store } from './src/redux/configureReducer';
@@ -9,6 +9,7 @@ import { initKeyring } from './src/redux/slices/keyring';
 import ErrorBoundary from './src/components/common/ErrorBoundary';
 
 import SplashScreen from 'react-native-splash-screen';
+import KeyboardHider from './src/components/common/KeyboardHider';
 // import './shim.js';
 
 const PersistedApp = () => {
@@ -34,9 +35,11 @@ const PersistedApp = () => {
 const App = () => {
   console.log('renderin app');
   return (
-    <Provider store={store}>
-      <PersistedApp />
-    </Provider>
+    <KeyboardHider>
+      <Provider store={store}>
+        <PersistedApp />
+      </Provider>
+    </KeyboardHider>
   );
 };
 

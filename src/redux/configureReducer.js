@@ -32,30 +32,24 @@ export const persistor = onInit => persistStore(store, null, onInit);
 
 export const keyringStorage = {
   get: async key => {
-    console.log('getting', key);
     const state = {};
     // await AsyncStorage.clear();
     if (key) {
       return AsyncStorage.getItem(key).then(value => JSON.parse(value));
     } else {
       const allKeys = await AsyncStorage.getAllKeys();
-      console.log('all keys', allKeys);
       await Promise.all(
         allKeys.map(async k => {
-          console.log('getting', k);
           const val = await AsyncStorage.getItem(k);
-          console.log('val', val, JSON.parse(val));
           state[k] = JSON.parse(val)[0];
         }),
       );
-      console.log('state', state);
       return state;
     }
   },
   set: async values =>
     Promise.all(
       Object.entries(values).map(async ([key, val]) => {
-        console.log('setting', key, val, Flatted.stringify(val));
         await AsyncStorage.setItem(key, Flatted.stringify(val));
       }),
     ),
