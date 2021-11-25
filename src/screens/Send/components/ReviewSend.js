@@ -13,6 +13,7 @@ import Button from '../../../components/buttons/Button';
 import { Colors } from '../../../constants/theme';
 import NftDisplayer from '../../../components/common/NftDisplayer';
 import shortAddress from '../../../helpers/short-address';
+import { TRANSACTION_STATUS, setTransaction } from '../../../redux/slices/keyring';
 
 const ReviewSend = ({
   modalRef,
@@ -25,13 +26,16 @@ const ReviewSend = ({
   onSend,
   onClose,
   onSuccess,
-  trxComplete,
+  transaction,
   ...props
 }) => {
+
+  const transactionCompleted = transaction?.status === TRANSACTION_STATUS.success;
+
   const handleClose = () => {
     onClose();
 
-    if (trxComplete) {
+    if (transactionCompleted) {
       onSuccess();
     }
   };
@@ -42,12 +46,12 @@ const ReviewSend = ({
         <Header
           center={
             <Text style={FontStyles.Subtitle2}>
-              {trxComplete ? 'Confirmed' : 'Review Send'}
+              {transactionCompleted ? 'Confirmed' : 'Review Send'}
             </Text>
           }
         />
 
-        {trxComplete && (
+        {transactionCompleted && (
           <Icon
             name="confirm"
             style={{ alignSelf: 'center', marginBottom: 30 }}
@@ -94,7 +98,7 @@ const ReviewSend = ({
           <UserIcon size="medium" />
         </Row>
 
-        {trxComplete ? (
+        {transactionCompleted ? (
           <Button
             variant="gray"
             text="View on Explorer"

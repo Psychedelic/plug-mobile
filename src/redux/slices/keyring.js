@@ -69,10 +69,17 @@ export const burnXtc = createAsyncThunk('keyring/burnXtc', async (params, { getS
   try {
     const state = getState();
     const response = await state.keyring.instance?.burnXTC(params);
-    return recursiveParseBigint(response);
+    return {
+      response: recursiveParseBigint(response),
+      status: TRANSACTION_STATUS.success,
+    }
   }
   catch (e) {
     console.log('burnXtc', e);
+    return {
+      error: e.message,
+      status: TRANSACTION_STATUS.error,
+    }
   }
 });
 
@@ -83,12 +90,19 @@ export const sendToken = createAsyncThunk('keyring/sendToken', async (params, { 
     const { height, transactionId } = await state.keyring.instance?.send(to, BigInt(amount), canisterId, opts);
 
     return {
-      height: parseInt(height?.toString?.(), 10),
-      transactionId: parseInt(transactionId?.toString?.(), 10),
+      response: {
+        height: parseInt(height?.toString?.(), 10),
+        transactionId: parseInt(transactionId?.toString?.(), 10),
+      },
+      status: TRANSACTION_STATUS.success,
     };
   }
   catch (e) {
     console.log('sendToken', e);
+    return {
+      error: e.message,
+      status: TRANSACTION_STATUS.error
+    }
   }
 });
 
@@ -109,6 +123,17 @@ const DEFAULT_ASSETS = [
   },
 ];
 
+const DEFAULT_TRANSACTION = {
+  height: null,
+  transactionId: null,
+  status: null,
+};
+
+export const TRANSACTION_STATUS = {
+  success: 'success',
+  error: 'error',
+};
+
 export const keyringSlice = createSlice({
   name: 'keyring',
   initialState: {
@@ -120,6 +145,7 @@ export const keyringSlice = createSlice({
     wallets: [],
     password: '',
     contacts: [],
+    transaction: DEFAULT_TRANSACTION,
   },
   reducers: {
     setCurrentWallet: (state, action) => {
@@ -145,6 +171,9 @@ export const keyringSlice = createSlice({
         contact => contact.id !== action.payload.id,
       );
     },
+    setTransaction: (state, action) => {
+      state.transaction = action.payload;
+    },
   },
   extraReducers: {
     [initKeyring.fulfilled]: (state, action) => {
@@ -156,10 +185,15 @@ export const keyringSlice = createSlice({
       state.wallets = [...state.wallets, action.payload];
     },
     [editSubaccount.fulfilled]: (state, action) => {
-      console.log('payload', action.payload);
       const account = action.payload;
       state.wallets = state.wallets.map(a => (a.walletNumber === account.walletNumber ? account : a));
-    }
+    },
+    [sendToken.fulfilled]: (state, action) => {
+      state.transaction = action.payload;
+    },
+    [burnXtc.fulfilled]: (state, action) => {
+      state.transaction = action.payload;
+    },
   },
 });
 
@@ -171,6 +205,7 @@ export const {
   removeContact,
   setContacts,
   setWallets,
+  setTransaction,
 } = keyringSlice.actions;
 
 export default keyringSlice.reducer;

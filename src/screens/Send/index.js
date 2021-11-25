@@ -29,7 +29,8 @@ const Send = ({ modalRef }) => {
   const [address, setAddress] = useState(null);
   const [addressInfo, setAddressInfo] = useState(INITIAL_ADDRESS_INFO);
 
-  const { assets, principalId, accountId } = useSelector((state) => state.keyring);
+  const { assets, principalId, accountId, transaction, } = useSelector((state) => state.keyring);
+
   const { nfts } = useNfts();
 
   const [selectedContact, setSelectedContact] = useState(null);
@@ -212,7 +213,7 @@ const Send = ({ modalRef }) => {
           onSend={handleSend}
           onSuccess={() => modalRef.current?.close()}
           onClose={partialReset}
-          trxComplete={trxComplete}
+          transaction={transaction}
         />
       </ScrollView>
     </Modal>
