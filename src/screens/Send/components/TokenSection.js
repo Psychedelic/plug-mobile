@@ -17,6 +17,7 @@ const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }) => {
       <Text style={FontStyles.Subtitle3}>Tokens</Text>
       {tokens.map(token => (
         <Touchable
+          key={token.symbol}
           scale={animationScales.small}
           onPress={() => onTokenPress(token)}>
           <TokenItem
@@ -35,6 +36,7 @@ const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }) => {
         }}>
         {nfts.map(nft => (
           <Touchable
+            key={nft.url}
             scale={animationScales.small}
             onPress={() => onNftPress(nft)}>
             <NftItem {...nft} style={{ marginTop: 15 }} />
