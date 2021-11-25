@@ -154,7 +154,9 @@ export const keyringSlice = createSlice({
       );
     },
     [getAssets.fulfilled]: (state, action) => {
-      state.assets = formatAssets(action.payload, 50) || DEFAULT_ASSETS;
+      const formattedAssets = formatAssets(action.payload);
+      state.assets =
+        formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS;
       state.assetsLoading = false;
     },
   },
