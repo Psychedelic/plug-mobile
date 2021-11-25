@@ -11,9 +11,11 @@ import { getAssets, setAssetsLoading } from '../../../../redux/slices/keyring';
 
 const Tokens = () => {
   const { assets, assetsLoading } = useSelector(state => state.keyring);
+  const [refreshing, setRefresing] = useState(assetsLoading);
   const dispatch = useDispatch();
 
   const onRefresh = () => {
+    setRefresing(true);
     dispatch(setAssetsLoading(true));
     dispatch(getAssets(true));
   };
@@ -22,7 +24,11 @@ const Tokens = () => {
     dispatch(setAssetsLoading(true));
     dispatch(getAssets(true));
   }, []);
-  console.log('Token.assets', assets);
+
+  useEffect(() => {
+    setRefresing(assetsLoading);
+  }, [assetsLoading]);
+
   return (
     <Container>
       <WalletHeader />
@@ -31,7 +37,7 @@ const Tokens = () => {
       <ScrollView
         refreshControl={
           <RefreshControl
-            refreshing={assetsLoading}
+            refreshing={refreshing}
             onRefresh={onRefresh}
             tintColor={Colors.White.Primary}
           />

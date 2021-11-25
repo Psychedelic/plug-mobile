@@ -35,11 +35,9 @@ const PersistedApp = () => {
 const App = () => {
   console.log('renderin app');
   return (
-    <KeyboardHider>
-      <Provider store={store}>
-        <PersistedApp />
-      </Provider>
-    </KeyboardHider>
+    <Provider store={store}>
+      <PersistedApp />
+    </Provider>
   );
 };
 
