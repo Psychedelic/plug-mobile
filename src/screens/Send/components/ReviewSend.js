@@ -13,6 +13,7 @@ import Button from '../../../components/buttons/Button';
 import { Colors } from '../../../constants/theme';
 import NftDisplayer from '../../../components/common/NftDisplayer';
 import shortAddress from '../../../helpers/short-address';
+import { TRANSACTION_STATUS, setTransaction } from '../../../redux/slices/keyring';
 
 const ReviewSend = ({
   modalRef,
@@ -22,16 +23,19 @@ const ReviewSend = ({
   value,
   to,
   contact,
+  onSend,
   onClose,
   onSuccess,
+  transaction,
   ...props
 }) => {
-  const [confirmed, setConfirmed] = useState(false);
+
+  const transactionCompleted = transaction?.status === TRANSACTION_STATUS.success;
 
   const handleClose = () => {
     onClose();
 
-    if (confirmed) {
+    if (transactionCompleted) {
       onSuccess();
     }
   };
@@ -42,12 +46,12 @@ const ReviewSend = ({
         <Header
           center={
             <Text style={FontStyles.Subtitle2}>
-              {confirmed ? 'Confirmed' : 'Review Send'}
+              {transactionCompleted ? 'Confirmed' : 'Review Send'}
             </Text>
           }
         />
 
-        {confirmed && (
+        {transactionCompleted && (
           <Icon
             name="confirm"
             style={{ alignSelf: 'center', marginBottom: 30 }}
@@ -94,17 +98,17 @@ const ReviewSend = ({
           <UserIcon size="medium" />
         </Row>
 
-        {confirmed ? (
+        {transactionCompleted ? (
           <Button
             variant="gray"
             text="View on Explorer"
             buttonStyle={styles.button}
-            onPress={() => setConfirmed(!confirmed)}
+            onPress={() => null}
           />
         ) : (
           <RainbowButton
             text="􀎽 Hold to Send"
-            onLongPress={() => setConfirmed(!confirmed)}
+            onLongPress={onSend}
             buttonStyle={styles.button}
           />
         )}

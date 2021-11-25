@@ -8,15 +8,16 @@ import { FontStyles, Colors } from '../../../constants/theme';
 import useNfts from '../../../hooks/useNfts';
 import NftItem from '../../../components/common/NftItem';
 
-const TokenSection = ({ onTokenPress, onNftPress }) => {
-  const { tokens } = useTokens();
-  const { nfts } = useNfts();
+const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }) => {
+  // const { tokens } = useTokens();
+  // const { nfts } = useNfts();
 
   return (
     <>
       <Text style={FontStyles.Subtitle3}>Tokens</Text>
       {tokens.map(token => (
         <Touchable
+          key={token.symbol}
           scale={animationScales.small}
           onPress={() => onTokenPress(token)}>
           <TokenItem
@@ -35,6 +36,7 @@ const TokenSection = ({ onTokenPress, onNftPress }) => {
         }}>
         {nfts.map(nft => (
           <Touchable
+            key={nft.url}
             scale={animationScales.small}
             onPress={() => onNftPress(nft)}>
             <NftItem {...nft} style={{ marginTop: 15 }} />

@@ -10,7 +10,7 @@ const TokenIcon = ({ icon, symbol, color, customStyle, ...props }) => {
       style={[
         styles.genericToken,
         customStyle,
-        { backgroundColor: `rgb(${color.values.rgb.join(',')})` },
+        { backgroundColor: 'black' },//`rgb(${color.values.rgb.join(',')})` },
       ]}
       {...props}>
       <Text style={styles.text}>{symbol}</Text>

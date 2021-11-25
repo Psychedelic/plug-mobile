@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import { persistReducer } from 'redux-persist';
 import { MMKV } from 'react-native-mmkv';
 import KeyringReducer from './slices/keyring';
-import EmptyReducer from './slices/empty';
+import IcpReducer from './slices/icp';
 
 const mmkvStore = new MMKV();
 
@@ -61,10 +61,10 @@ const keyringPersistConfig = {
 
 const createRootReducer = combineReducers({
   keyring: persistReducer(keyringPersistConfig, KeyringReducer),
-  empty: persistReducer({
-    key: 'empty',
+  icp: persistReducer({
+    key: 'icp',
     storage,
-  }, EmptyReducer),
+  }, IcpReducer),
 });
 
 export default createRootReducer;

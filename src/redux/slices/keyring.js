@@ -5,6 +5,22 @@ import RNCryptoJS from 'react-native-crypto-js';
 import { fetch } from 'react-native-fetch-api';
 import { formatAssets } from '../../utils/assets';
 
+export const recursiveParseBigint = (obj) => Object.entries(obj).reduce(
+  (acum, [key, val]) => {
+    if (val instanceof Object) {
+      const res = Array.isArray(val)
+        ? val.map((el) => recursiveParseBigint(el))
+        : recursiveParseBigint(val);
+      return { ...acum, [key]: res };
+    }
+    if (typeof val === 'bigint') {
+      return { ...acum, [key]: parseInt(val.toString(), 10) };
+    }
+    return { ...acum, [key]: val };
+  },
+  { ...obj },
+);
+
 export const initKeyring = createAsyncThunk('keyring/init', async () => {
   let keyring = new PlugController.PlugKeyRing(
     keyringStorage,
@@ -47,7 +63,48 @@ export const editSubaccount = createAsyncThunk('keyring/editSubaccount', async (
   catch (e) {
     console.log('editSubaccount', e)
   }
-})
+});
+
+export const burnXtc = createAsyncThunk('keyring/burnXtc', async (params, { getState }) => {
+  try {
+    const state = getState();
+    const response = await state.keyring.instance?.burnXTC(params);
+    return {
+      response: recursiveParseBigint(response),
+      status: TRANSACTION_STATUS.success,
+    }
+  }
+  catch (e) {
+    console.log('burnXtc', e);
+    return {
+      error: e.message,
+      status: TRANSACTION_STATUS.error,
+    }
+  }
+});
+
+export const sendToken = createAsyncThunk('keyring/sendToken', async (params, { getState }) => {
+  try {
+    const { to, amount, canisterId, opts } = params;
+    const state = getState();
+    const { height, transactionId } = await state.keyring.instance?.send(to, BigInt(amount), canisterId, opts);
+
+    return {
+      response: {
+        height: parseInt(height?.toString?.(), 10),
+        transactionId: parseInt(transactionId?.toString?.(), 10),
+      },
+      status: TRANSACTION_STATUS.success,
+    };
+  }
+  catch (e) {
+    console.log('sendToken', e);
+    return {
+      error: e.message,
+      status: TRANSACTION_STATUS.error
+    }
+  }
+});
 
 const DEFAULT_ASSETS = [
   {
@@ -66,6 +123,17 @@ const DEFAULT_ASSETS = [
   },
 ];
 
+const DEFAULT_TRANSACTION = {
+  height: null,
+  transactionId: null,
+  status: null,
+};
+
+export const TRANSACTION_STATUS = {
+  success: 'success',
+  error: 'error',
+};
+
 export const keyringSlice = createSlice({
   name: 'keyring',
   initialState: {
@@ -77,6 +145,7 @@ export const keyringSlice = createSlice({
     wallets: [],
     password: '',
     contacts: [],
+    transaction: DEFAULT_TRANSACTION,
   },
   reducers: {
     setCurrentWallet: (state, action) => {
@@ -102,6 +171,9 @@ export const keyringSlice = createSlice({
         contact => contact.id !== action.payload.id,
       );
     },
+    setTransaction: (state, action) => {
+      state.transaction = action.payload;
+    },
   },
   extraReducers: {
     [initKeyring.fulfilled]: (state, action) => {
@@ -113,10 +185,15 @@ export const keyringSlice = createSlice({
       state.wallets = [...state.wallets, action.payload];
     },
     [editSubaccount.fulfilled]: (state, action) => {
-      console.log('payload', action.payload);
       const account = action.payload;
       state.wallets = state.wallets.map(a => (a.walletNumber === account.walletNumber ? account : a));
-    }
+    },
+    [sendToken.fulfilled]: (state, action) => {
+      state.transaction = action.payload;
+    },
+    [burnXtc.fulfilled]: (state, action) => {
+      state.transaction = action.payload;
+    },
   },
 });
 
@@ -128,6 +205,7 @@ export const {
   removeContact,
   setContacts,
   setWallets,
+  setTransaction,
 } = keyringSlice.actions;
 
 export default keyringSlice.reducer;

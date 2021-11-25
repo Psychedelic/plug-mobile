@@ -11,11 +11,12 @@ import Row from '../layout/Row';
 const TokenSelector = ({
   icon,
   name,
-  amount,
   symbol,
-  usdValue,
   onPress,
   style,
+  availableAmount,
+  availableUsdAmount,
+  selectedInput,
 }) => (
   <Touchable onPress={onPress}>
     <View style={[styles.root, style]}>
@@ -24,11 +25,11 @@ const TokenSelector = ({
         <Text style={FontStyles.Normal}>{name}</Text>
 
         <Row>
-          {usdValue ? (
-            <UsdFormat value={usdValue} style={FontStyles.NormalGray} />
+          {selectedInput === 'USD' ? (
+            <UsdFormat value={availableUsdAmount} style={FontStyles.NormalGray} />
           ) : (
             <TokenFormat
-              value={amount}
+              value={availableAmount}
               token={symbol}
               style={FontStyles.NormalGray}
             />
