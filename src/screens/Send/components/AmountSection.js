@@ -6,35 +6,40 @@ import AmountInput from '../../../components/common/AmountInput';
 const AmountSection = ({
   selectedToken,
   setSelectedToken,
+  tokenPrice,
   onReview,
   tokenAmount,
   setTokenAmount,
   usdAmount,
   setUsdAmount,
+  availableAmount,
+  availableUsdAmount,
 }) => {
   const [selectedInput, setSelectedInput] = useState('USD');
 
   useEffect(() => {
-    setTokenAmount(usdAmount ? String(usdAmount / selectedToken.value) : null);
-  }, [usdAmount, selectedToken.value, setTokenAmount]);
+    setTokenAmount(
+      usdAmount ? String(usdAmount / tokenPrice) : null,
+    );
+  }, [usdAmount, tokenPrice, setTokenAmount]);
 
   useEffect(() => {
     setUsdAmount(
-      tokenAmount ? String(tokenAmount * selectedToken.value) : null,
+      tokenAmount ? String(tokenAmount * tokenPrice) : null,
     );
-  }, [tokenAmount, selectedToken.value, setUsdAmount]);
+  }, [tokenAmount, tokenPrice, setUsdAmount]);
 
   const onTokenChange = () => {
+    setTokenAmount(null);
+    setUsdAmount(null);
     setSelectedToken(null);
   };
-
-  const usdValue = selectedToken.value * selectedToken.amount;
 
   const getButtonText = () => {
     if (!tokenAmount || !usdAmount) {
       return 'Enter an Amount';
     }
-    if (usdValue < usdAmount || selectedToken.amount < tokenAmount) {
+    if (availableUsdAmount < usdAmount || availableAmount < tokenAmount) {
       return 'Insufficient Funds';
     }
     return 'Review Send';
@@ -43,21 +48,23 @@ const AmountSection = ({
   const isButtonDisabled = () =>
     !tokenAmount ||
     !usdAmount ||
-    usdAmount > usdValue ||
-    tokenAmount > selectedToken.amount;
+    usdAmount > availableUsdAmount ||
+    tokenAmount > availableAmount;
 
   return (
     <>
       <TokenSelector
         {...selectedToken}
         onPress={onTokenChange}
-        usdValue={selectedInput === 'USD' ? usdValue : null}
+        availableAmount={availableAmount}
+        availableUsdAmount={availableUsdAmount}
+        selectedInput={selectedInput}
       />
 
       <AmountInput
         value={tokenAmount}
         onChange={setTokenAmount}
-        maxAmount={selectedToken.amount}
+        maxAmount={availableAmount}
         selected={selectedInput === selectedToken.symbol}
         setSelected={setSelectedInput}
         symbol={selectedToken.symbol}
@@ -67,7 +74,7 @@ const AmountSection = ({
       <AmountInput
         value={usdAmount}
         onChange={setUsdAmount}
-        maxAmount={selectedToken.value * selectedToken.amount}
+        maxAmount={availableUsdAmount}
         selected={selectedInput === 'USD'}
         setSelected={setSelectedInput}
         symbol="USD"

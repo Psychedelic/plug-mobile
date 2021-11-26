@@ -5,6 +5,23 @@ import RNCryptoJS from 'react-native-crypto-js';
 import { fetch } from 'react-native-fetch-api';
 import { formatAssets } from '../../utils/assets';
 
+export const recursiveParseBigint = obj =>
+  Object.entries(obj).reduce(
+    (acum, [key, val]) => {
+      if (val instanceof Object) {
+        const res = Array.isArray(val)
+          ? val.map(el => recursiveParseBigint(el))
+          : recursiveParseBigint(val);
+        return { ...acum, [key]: res };
+      }
+      if (typeof val === 'bigint') {
+        return { ...acum, [key]: parseInt(val.toString(), 10) };
+      }
+      return { ...acum, [key]: val };
+    },
+    { ...obj },
+  );
+
 export const initKeyring = createAsyncThunk('keyring/init', async () => {
   let keyring = new PlugController.PlugKeyRing(
     keyringStorage,
@@ -17,6 +34,7 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
     const state = await keyring.getState();
     console.log('state.wallets', state.wallets);
     if (!state.wallets.length) {
+      console.log('locking state');
       await keyring.lock();
     }
   }
@@ -82,6 +100,58 @@ export const editSubaccount = createAsyncThunk(
   },
 );
 
+export const burnXtc = createAsyncThunk(
+  'keyring/burnXtc',
+  async (params, { getState }) => {
+    try {
+      const state = getState();
+      const response = await state.keyring.instance?.burnXTC(params);
+      return {
+        response: recursiveParseBigint(response),
+        status: TRANSACTION_STATUS.success,
+      };
+    } catch (e) {
+      console.log('burnXtc', e);
+      return {
+        error: e.message,
+        status: TRANSACTION_STATUS.error,
+      };
+    }
+  },
+);
+
+export const sendToken = createAsyncThunk(
+  'keyring/sendToken',
+  async (params, { getState }) => {
+    try {
+      const { to, amount, canisterId, opts } = params;
+      const state = getState();
+      console.log('sending');
+      const { height, transactionId } = await state.keyring.instance?.send(
+        to,
+        amount.toString(),
+        canisterId,
+        opts,
+      );
+      console.log('sent');
+      return {
+        response: {
+          height: parseInt(height?.toString?.(), 10),
+          transactionId: parseInt(transactionId?.toString?.(), 10),
+        },
+        status: TRANSACTION_STATUS.success,
+      };
+    } catch (e) {
+      console.log('sendToken', e);
+      console.trace(e.stack);
+      return {
+        error: e.message,
+        status: TRANSACTION_STATUS.error,
+      };
+    }
+  },
+);
+
 const DEFAULT_ASSETS = [
   {
     symbol: 'ICP',
@@ -99,6 +169,17 @@ const DEFAULT_ASSETS = [
   },
 ];
 
+const DEFAULT_TRANSACTION = {
+  height: null,
+  transactionId: null,
+  status: null,
+};
+
+export const TRANSACTION_STATUS = {
+  success: 'success',
+  error: 'error',
+};
+
 export const keyringSlice = createSlice({
   name: 'keyring',
   initialState: {
@@ -111,6 +192,7 @@ export const keyringSlice = createSlice({
     wallets: [],
     password: '',
     contacts: [],
+    transaction: DEFAULT_TRANSACTION,
   },
   reducers: {
     setCurrentWallet: (state, action) => {
@@ -136,6 +218,9 @@ export const keyringSlice = createSlice({
     setAssetsLoading: (state, action) => {
       state.assetsLoading = action.payload;
     },
+    setTransaction: (state, action) => {
+      state.transaction = action.payload;
+    },
   },
   extraReducers: {
     [initKeyring.fulfilled]: (state, action) => {
@@ -147,11 +232,16 @@ export const keyringSlice = createSlice({
       state.wallets = [...state.wallets, action.payload];
     },
     [editSubaccount.fulfilled]: (state, action) => {
-      console.log('payload', action.payload);
       const account = action.payload;
       state.wallets = state.wallets.map(a =>
         a.walletNumber === account.walletNumber ? account : a,
       );
+    },
+    [sendToken.fulfilled]: (state, action) => {
+      state.transaction = action.payload;
+    },
+    [burnXtc.fulfilled]: (state, action) => {
+      state.transaction = action.payload;
     },
     [getAssets.fulfilled]: (state, action) => {
       const formattedAssets = formatAssets(action.payload);
@@ -170,6 +260,7 @@ export const {
   setContacts,
   setWallets,
   setAssetsLoading,
+  setTransaction,
 } = keyringSlice.actions;
 
 export default keyringSlice.reducer;

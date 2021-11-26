@@ -1,10 +1,11 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { persistReducer, persistStore, createTransform } from 'redux-persist';
 import thunk from 'redux-thunk';
 import Flatted from 'flatted';
 
 import KeyringReducer from './slices/keyring';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import IcpReducer from './slices/icp';
 
 export const transformCircular = createTransform(
   (inboundState, key) => Flatted.stringify(inboundState),
@@ -25,6 +26,13 @@ const keyringPersistConfig = {
 
 const rootReducer = combineReducers({
   keyring: persistReducer(keyringPersistConfig, KeyringReducer),
+  icp: persistReducer(
+    {
+      key: 'icp',
+      storage: AsyncStorage,
+    },
+    IcpReducer,
+  ),
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 export const store = createStore(persistedReducer, applyMiddleware(thunk));
@@ -55,16 +63,3 @@ export const keyringStorage = {
     ),
   clear: AsyncStorage.clear,
 };
-
-// const createRootReducer = combineReducers({
-//   keyring: persistReducer(keyringPersistConfig, KeyringReducer),
-//   empty: persistReducer(
-//     {
-//       key: 'empty',
-//       storage,
-//     },
-//     EmptyReducer,
-//   ),
-// });
-
-// export default createRootReducer
