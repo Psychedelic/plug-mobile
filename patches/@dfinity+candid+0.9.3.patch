@@ -1,5 +1,5 @@
 diff --git a/node_modules/@dfinity/candid/lib/cjs/idl.js b/node_modules/@dfinity/candid/lib/cjs/idl.js
-index d97a72b..9caed53 100644
+index d97a72b..36570a8 100644
 --- a/node_modules/@dfinity/candid/lib/cjs/idl.js
 +++ b/node_modules/@dfinity/candid/lib/cjs/idl.js
 @@ -457,8 +457,8 @@ class FixedIntClass extends PrimitiveType {
@@ -8,8 +8,8 @@ index d97a72b..9caed53 100644
      covariant(x) {
 -        const min = BigInt(2) ** BigInt(this._bits - 1) * BigInt(-1);
 -        const max = BigInt(2) ** BigInt(this._bits - 1) - BigInt(1);
-+        const min = Math.pow(2, this._bits - 1) * BigInt(-1);
-+        const max = Math.pow(2, this._bits - 1) - BigInt(-1);
++        const min = BigInt(Math.pow(2, this._bits - 1)) * BigInt(-1);
++        const max = BigInt(Math.pow(2, this._bits - 1)) - BigInt(-1);
          if (typeof x === 'bigint') {
              return x >= min && x <= max;
          }
@@ -22,3 +22,25 @@ index d97a72b..9caed53 100644
          if (typeof x === 'bigint' && x >= BigInt(0)) {
              return x < max;
          }
+diff --git a/node_modules/@dfinity/candid/lib/cjs/utils/leb128.js b/node_modules/@dfinity/candid/lib/cjs/utils/leb128.js
+index aacdb30..2678b6c 100644
+--- a/node_modules/@dfinity/candid/lib/cjs/utils/leb128.js
++++ b/node_modules/@dfinity/candid/lib/cjs/utils/leb128.js
+@@ -34,7 +34,7 @@ function lebEncode(value) {
+     const pipe = new buffer_pipe_1.default();
+     while (true) {
+         const i = Number(value & BigInt(0x7f));
+-        value /= BigInt(0x80);
++        value = BigInt(Math.floor(Number(value / BigInt(0x80))));
+         if (value === BigInt(0)) {
+             pipe.write([i]);
+             break;
+@@ -193,7 +193,7 @@ exports.readUIntLE = readUIntLE;
+  */
+ function readIntLE(pipe, byteLength) {
+     let val = readUIntLE(pipe, byteLength);
+-    const mul = BigInt(2) ** (BigInt(8) * BigInt(byteLength - 1) + BigInt(7));
++    const mul = BigInt(Math.pow(2, (8 * (byteLength - 1) + 7)));
+     if (val >= mul) {
+         val -= mul * BigInt(2);
+     }
