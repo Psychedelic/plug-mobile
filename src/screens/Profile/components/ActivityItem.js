@@ -49,7 +49,7 @@ const ActivityItem = ({
       </View>
       <View style={styles.rightContainer}>
         <TokenFormat value={amount} token={symbol} style={FontStyles.Normal} />
-        <UsdFormat value={value} style={FontStyles.SmallGray} />
+        <UsdFormat value={Number(value)} style={FontStyles.SmallGray} />
       </View>
     </View>
   );

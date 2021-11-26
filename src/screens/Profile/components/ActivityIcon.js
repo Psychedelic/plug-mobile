@@ -8,7 +8,11 @@ import { parseImageName } from './utils';
 
 const ActivityIcon = ({ image, type }) => (
   <View style={styles.root}>
-    {[ACTIVITY_TYPES.RECEIVE, ACTIVITY_TYPES.SEND].includes(type) && (
+    {[
+      ACTIVITY_TYPES.RECEIVE,
+      ACTIVITY_TYPES.SEND,
+      ACTIVITY_TYPES.BURN,
+    ].includes(type) && (
       <Icon name={ACTIVITY_IMAGES[type]} style={styles.activity} />
     )}
     <Icon name={image ? parseImageName(image) : 'dfinity'} />

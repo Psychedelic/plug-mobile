@@ -72,7 +72,9 @@ const Contacts = ({ modalRef }) => {
                 {item.contacts
                   .sort((a, b) => a.name.localeCompare(b.name))
                   .map(contact => (
-                    <View key={contact.id} style={{ marginBottom: 20 }}>
+                    <View
+                      style={{ marginBottom: 20 }}
+                      key={`${contact.id}_${contact.name}`}>
                       <ContactItem
                         contact={contact}
                         onLongPress={() => onLongPress(contact)}

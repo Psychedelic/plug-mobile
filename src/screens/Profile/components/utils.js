@@ -5,23 +5,22 @@ import moment from 'moment';
 import { Text } from 'react-native';
 
 export const parseImageName = name => name.replace('.svg', '').toLowerCase();
+const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
-export const getTitle = (type, symbol, swapData, plug) => {
+export const getTitle = (type, symbol, swapData, plug, t) => {
   switch (type) {
-    case ACTIVITY_TYPES.SEND:
-      return `Send ${symbol}`;
-    case ACTIVITY_TYPES.RECEIVE:
-      return `Receive ${symbol}`;
-    case ACTIVITY_TYPES.SWAP:
-      return `Swap ${symbol} for ${swapData.currency.name}`;
-    case ACTIVITY_TYPES.PLUG:
-      return `Plugged into ${plug.name}`;
-    case ACTIVITY_TYPES.BURN:
-      return `Burn ${symbol}`;
-    case ACTIVITY_TYPES.MINT:
-      return `Mint ${symbol}`;
+    case 'SEND':
+    case 'RECEIVE':
+    case 'BURN':
+      return `${capitalize(type?.toLowerCase())} ${symbol ?? ''}`;
+    case 'SWAP':
+      return `${t('activity.title.swap')} ${symbol} for ${
+        swapData.currency.name
+      }`;
+    case 'PLUG':
+      return `${t('activity.title.pluggedInto')} ${plug.name}`;
     default:
-      return '';
+      return `Executed: ${capitalize(type?.toLowerCase())} ${symbol ?? ''}`;
   }
 };
 

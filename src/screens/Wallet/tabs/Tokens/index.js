@@ -28,7 +28,6 @@ const Tokens = () => {
     };
     refresh();
   }, []);
-
   return (
     <Container>
       <WalletHeader />

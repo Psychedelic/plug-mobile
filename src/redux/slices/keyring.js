@@ -132,21 +132,24 @@ const DEFAULT_TRANSACTION = {
 export const TRANSACTION_STATUS = {
   success: 'success',
   error: 'error',
+}
+
+const DEFAULT_STATE = {
+  instance: null,
+  assets: DEFAULT_ASSETS,
+  isInitialized: false,
+  isUnlocked: false,
+  currentWallet: null,
+  wallets: [],
+  password: '',
+  contacts: [],
+  transaction: DEFAULT_TRANSACTION,
+  activity: [],
 };
 
 export const keyringSlice = createSlice({
   name: 'keyring',
-  initialState: {
-    instance: null,
-    assets: DEFAULT_ASSETS,
-    isInitialized: false,
-    isUnlocked: false,
-    currentWallet: null,
-    wallets: [],
-    password: '',
-    contacts: [],
-    transaction: DEFAULT_TRANSACTION,
-  },
+  initialState: DEFAULT_STATE,
   reducers: {
     setCurrentWallet: (state, action) => {
       state.currentWallet = action.payload;
@@ -173,6 +176,12 @@ export const keyringSlice = createSlice({
     },
     setTransaction: (state, action) => {
       state.transaction = action.payload;
+    },
+    setActivity: (state, action) => {
+      state.activity = action.payload;
+    },
+    reset: state => {
+      state = DEFAULT_STATE;
     },
   },
   extraReducers: {
@@ -206,6 +215,8 @@ export const {
   setContacts,
   setWallets,
   setTransaction,
+  setActivity,
+  reset,
 } = keyringSlice.actions;
 
 export default keyringSlice.reducer;
