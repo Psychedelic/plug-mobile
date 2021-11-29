@@ -25,8 +25,13 @@ const ActivityItem = ({
   hash,
   image,
   name,
+  canisterId,
+  details,
 }) => {
-  return type === ACTIVITY_TYPES.PLUG ? (
+
+  //const isTransaction = ['SEND', 'RECEIVE'].includes(type) && symbol === 'ICP';
+
+  return type === 'PLUG' ? (
     <View style={styles.container}>
       <Image style={styles.image} source={icon} />
       <View style={styles.leftContainer}>
@@ -42,14 +47,26 @@ const ActivityItem = ({
           {getTitle(type, symbol, swapData, plug)}
         </Text>
         <Text style={FontStyles.SmallGray}>
-          {getStatus(status, styles)}
-          {getDate(status, date)}
-          {getSubtitle(type, to, from)}
+          {getStatus(status, styles)}{moment(date).format('MMM Do')}
+          {getSubtitle(type, to, from, canisterId)}
         </Text>
       </View>
       <View style={styles.rightContainer}>
-        <TokenFormat value={amount} token={symbol} style={FontStyles.Normal} />
-        <UsdFormat value={Number(value)} style={FontStyles.SmallGray} />
+        {details?.tokenId ? (
+          <>
+            <Text style={FontStyles.Normal}>
+              {details?.tokenId?.length > 5 ? shortAddress(details?.tokenId) : `#${details?.tokenId}`}
+            </Text>
+            <Text style={FontStyles.SmallGray}>
+              {canisterInfo?.name || canisterId}
+            </Text>
+          </>
+        ) : (
+          <>
+            <TokenFormat value={amount} token={symbol} style={FontStyles.Normal} />
+            <UsdFormat value={Number(value)} style={FontStyles.SmallGray} />
+          </>
+        )}
       </View>
     </View>
   );

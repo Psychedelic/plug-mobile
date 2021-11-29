@@ -1,6 +1,6 @@
-export const CYCLES_PER_TC = 1_000_000_000_000;
+export const CYCLES_PER_TC = 1000000000000;
 export const USD_PER_TC = 1.42656;
-export const E8S_PER_ICP = 100_000_000;
+export const E8S_PER_ICP = 100000000;
 
 export const TOKEN_IMAGES = {
   XTC: 'xtc',
@@ -31,25 +31,24 @@ export const CURRENCIES = new Map([
   ],
 ]);
 
-export const formatAssetBySymbol = (_amount, symbol, icpPrice) => {
-  const amount = parseInt(_amount?.toString(), 10);
+export const formatAssetBySymbol = (amount, symbol, icpPrice) => {
   return (
     {
       ICP: {
-        amount: amount / E8S_PER_ICP,
-        value: (amount * icpPrice) / E8S_PER_ICP,
+        amount: amount,
+        value: amount * icpPrice,
         icon: TOKEN_IMAGES.ICP,
         symbol: 'ICP',
       },
       XTC: {
-        amount: amount / CYCLES_PER_TC,
-        value: (amount * USD_PER_TC) / CYCLES_PER_TC,
+        amount: amount,
+        value: amount * USD_PER_TC,
         icon: TOKEN_IMAGES.XTC,
         symbol: 'XTC',
       },
       WTC: {
-        amount: amount / CYCLES_PER_TC,
-        value: (amount * USD_PER_TC) / CYCLES_PER_TC,
+        amount: amount,
+        value: amount * USD_PER_TC,
         symbol: 'WTC',
       },
       default: { amount, value: amount },

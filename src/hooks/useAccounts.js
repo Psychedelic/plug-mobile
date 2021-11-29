@@ -5,11 +5,11 @@ const useAccounts = () => {
   const dispatch = useDispatch();
   const { wallets } = useSelector(state => state.keyring);
 
-  const onCreate = (account) => {
+  const onCreate = account => {
     dispatch(createSubaccount(account));
   };
 
-  const onEdit = (account) => {
+  const onEdit = account => {
     dispatch(editSubaccount(account));
   };
 

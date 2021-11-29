@@ -11,37 +11,35 @@ import ActivityItem from './components/ActivityItem';
 import styles from './styles';
 import Touchable from '../../components/animations/Touchable';
 import Accounts from '../Accounts';
-import useKeyring from '../../hooks/useKeyring';
 import { Colors } from '../../constants/theme';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
+import { getTransactions, setTransactionsLoading } from '../../redux/slices/keyring';
+import { useDispatch } from 'react-redux';
 
 const Profile = () => {
+  const dispatch = useDispatch();
   const modalRef = useRef(null);
   const navigation = useNavigation();
-  const { currentWallet } = useSelector(state => state.keyring);
-  const [refreshing, setRefresing] = useState(false);
-  const { activity } = useSelector(state => state.keyring);
-  const { getActivity } = useKeyring();
+  const { currentWallet, transactions, transactionsLoading } = useSelector(state => state.keyring);
+  const [refreshing, setRefresing] = useState(transactionsLoading);
 
   const openAccounts = () => {
     modalRef?.current.open();
   };
 
-  const onRefresh = async () => {
-    setRefresing(true);
-    await getActivity();
-    setRefresing(false);
+  const onRefresh = () => {
+    dispatch(setTransactionsLoading(true));
+    dispatch(getTransactions());
   };
 
   useEffect(() => {
-    const refresh = async () => {
-      setRefresing(true);
-      await getActivity();
-      setRefresing(false);
-    };
-    refresh();
+    onRefresh(); // move later to initial global loading
   }, []);
+
+  useEffect(() => {
+    setRefresing(transactionsLoading)
+  }, [transactionsLoading]);
 
   return (
     <>
@@ -79,7 +77,7 @@ const Profile = () => {
           <Divider />
           <Text style={styles.title}>Activity</Text>
           <View>
-            {activity?.map((item, index) => (
+            {transactions?.map((item, index) => (
               <ActivityItem key={index} {...item} />
             ))}
           </View>

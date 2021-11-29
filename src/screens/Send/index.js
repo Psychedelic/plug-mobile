@@ -5,20 +5,29 @@ import TextInput from '../../components/common/TextInput';
 import Modal from '../../components/modal';
 import { Text, ScrollView } from 'react-native';
 import styles from './styles';
-import { validatePrincipalId, validateAccountId, validateCanisterId } from '../../helpers/ids';
+import {
+  validatePrincipalId,
+  validateAccountId,
+  validateCanisterId,
+} from '../../helpers/ids';
 import AmountSection from './components/AmountSection';
 import ContactSection from './components/ContactSection';
 import TokenSection from './components/TokenSection';
 import { Keyboard } from 'react-native';
 import ReviewSend from './components/ReviewSend';
 import { useICPPrice } from '../../redux/slices/icp';
-import { CURRENCIES, E8S_PER_ICP, USD_PER_TC, CYCLES_PER_TC } from '../../utils/assets';
+import {
+  CURRENCIES,
+  E8S_PER_ICP,
+  USD_PER_TC,
+  CYCLES_PER_TC,
+} from '../../utils/assets';
 import { ADDRESS_TYPES } from '../../constants/addresses';
 import { useSelector } from 'react-redux';
 import XTC_OPTIONS from '../../constants/xtc';
 import useNfts from '../../hooks/useNfts';
 import { DEFAULT_FEE, XTC_FEE } from '../../constants/addresses';
-import { burnXtc, sendToken } from '../../redux/slices/keyring';
+import { burnXtc, sendToken, setTransaction } from '../../redux/slices/keyring';
 import { useDispatch } from 'react-redux';
 
 const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
@@ -29,7 +38,9 @@ const Send = ({ modalRef }) => {
   const [address, setAddress] = useState(null);
   const [addressInfo, setAddressInfo] = useState(INITIAL_ADDRESS_INFO);
 
-  const { assets, principalId, accountId, transaction, } = useSelector((state) => state.keyring);
+  const { assets, principalId, accountId, transaction } = useSelector(
+    state => state.keyring,
+  );
 
   const { nfts } = useNfts();
 
@@ -48,7 +59,6 @@ const Send = ({ modalRef }) => {
 
   const [trxComplete, setTrxComplete] = useState(false);
   const [sendError, setError] = useState(false);
-
 
   const reviewRef = useRef(null);
 
@@ -74,11 +84,12 @@ const Send = ({ modalRef }) => {
     setSelectedContact(null);
     setUsdAmount(null);
     setTokenAmount(null);
+    dispatch(setTransaction(null));
   };
 
   const partialReset = () => {
     setSelectedNft(null);
-  }
+  };
 
   const onChangeText = text => {
     setSelectedContact(null);
@@ -90,7 +101,7 @@ const Send = ({ modalRef }) => {
     reviewRef.current?.open();
   };
 
-  const parseSendResponse = (response) => {
+  const parseSendResponse = response => {
     const { error } = response || {};
     if (error) {
       setError(true);
@@ -118,49 +129,58 @@ const Send = ({ modalRef }) => {
   };
 
   const handleSend = () => {
-    const sendAmount = {
-      ICP: parseInt(tokenAmount * E8S_PER_ICP, 10),
-      XTC: parseInt(tokenAmount * CYCLES_PER_TC, 10),
-      WTC: parseInt(tokenAmount * CYCLES_PER_TC, 10),
-    }[selectedToken?.symbol] || tokenAmount;
-
     const to = address || selectedContact.id;
-
     if (sendingXTCtoCanister && destination === XTC_OPTIONS.BURN) {
-      dispatch(burnXtc({ to, amount: sendAmount }))
-    }
-    else {
-      dispatch(sendToken({ to, amount: sendAmount, canisterId: selectedToken?.canisterId }))
+      dispatch(burnXtc({ to, amount: tokenAmount }));
+    } else {
+      dispatch(
+        sendToken({
+          to,
+          amount: tokenAmount,
+          canisterId: selectedToken?.canisterId,
+        }),
+      );
       //parseSendResponse(response);
-    };
+    }
     setTrxComplete(true);
-  }
+  };
 
   useEffect(() => {
     if (selectedToken) {
-      const price = { ICP: icpPrice, XTC: USD_PER_TC, WTC: USD_PER_TC }[selectedToken?.symbol] || 1;
+      const price =
+        { ICP: icpPrice, XTC: USD_PER_TC, WTC: USD_PER_TC }[
+          selectedToken?.symbol
+        ] || 1;
       setSelectedTokenPrice(price);
-    };
+    }
   }, [selectedToken]);
 
   useEffect(() => {
     if (address || selectedContact) {
       const id = address || selectedContact.id;
       const isUserAddress = [principalId, accountId].includes(id);
-      let isValid = !isUserAddress && (validatePrincipalId(id) || validateAccountId(id));
-      const type = validatePrincipalId(id) ? ADDRESS_TYPES.PRINCIPAL : ADDRESS_TYPES.ACCOUNT;
+      let isValid =
+        !isUserAddress && (validatePrincipalId(id) || validateAccountId(id));
+      const type = validatePrincipalId(id)
+        ? ADDRESS_TYPES.PRINCIPAL
+        : ADDRESS_TYPES.ACCOUNT;
       // check for accountId if cycles selected
       if (type === ADDRESS_TYPES.ACCOUNT && selectedToken?.symbol !== 'ICP') {
         isValid = false;
       }
       setAddressInfo({ isValid, type });
-      setSendingXTCtoCanister(selectedToken?.symbol === 'XTC' && validateCanisterId(id));
+      setSendingXTCtoCanister(
+        selectedToken?.symbol === 'XTC' && validateCanisterId(id),
+      );
     }
   }, [address, selectedContact, selectedToken]);
 
   const isValidAddress = addressInfo.isValid;
 
-  const availableAmount = Math.max((selectedToken?.amount || 0) - getTransactionFee(), 0);
+  const availableAmount = Math.max(
+    (selectedToken?.amount || 0) - getTransactionFee(),
+    0,
+  );
   const availableUsdAmount = availableAmount * (selectedTokenPrice || 1);
 
   return (
@@ -183,7 +203,8 @@ const Send = ({ modalRef }) => {
             tokens={assets}
             nfts={nfts}
             onTokenPress={onTokenPress}
-            onNftPress={onNftPress} />
+            onNftPress={onNftPress}
+          />
         )}
 
         {isValidAddress && selectedToken && (

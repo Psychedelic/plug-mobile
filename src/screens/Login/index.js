@@ -9,6 +9,7 @@ import TextInput from '../../components/common/TextInput';
 import useKeyring from '../../hooks/useKeyring';
 import Routes from '../../navigation/Routes';
 import styles from './styles';
+import KeyboardHider from '../../components/common/KeyboardHider';
 
 function Login() {
   const [error, setError] = useState(false);
@@ -37,34 +38,36 @@ function Login() {
   };
 
   return (
-    <Container>
-      <View style={styles.container}>
-        <Image source={Plug} />
-        <Text style={styles.title}>Unlock Plug</Text>
-        <StatusBar barStyle="dark-content" />
-        <TextInput
-          style={styles.input}
-          onChangeText={setPassword}
-          value={password}
-          placeholder="Enter password"
-          variant="password"
-          autoFocus
-        />
-        {error && (
-          <Text style={styles.errorText}>The password is incorrect</Text>
-        )}
-        <RainbowButton
-          text="Submit"
-          onPress={handleSubmit}
-          buttonStyle={styles.buttonMargin}
-        />
-        <Button
-          text="Import new Account"
-          onPress={handleImport}
-          buttonStyle={styles.buttonMargin}
-        />
-      </View>
-    </Container>
+    <KeyboardHider>
+      <Container>
+        <View style={styles.container}>
+          <Image source={Plug} />
+          <Text style={styles.title}>Unlock Plug</Text>
+          <StatusBar barStyle="dark-content" />
+          <TextInput
+            style={styles.input}
+            onChangeText={setPassword}
+            value={password}
+            placeholder="Enter password"
+            variant="password"
+            autoFocus
+          />
+          {error && (
+            <Text style={styles.errorText}>The password is incorrect</Text>
+          )}
+          <RainbowButton
+            text="Submit"
+            onPress={handleSubmit}
+            buttonStyle={styles.buttonMargin}
+          />
+          <Button
+            text="Import new Account"
+            onPress={handleImport}
+            buttonStyle={styles.buttonMargin}
+          />
+        </View>
+      </Container>
+    </KeyboardHider>
   );
 }
 

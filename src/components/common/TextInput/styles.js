@@ -33,6 +33,13 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 56,
+    flexGrow: 0,
+    borderRadius: 15,
+    backgroundColor: Colors.Black.Primary,
+  },
+  viewInnerStyle: {
+    height: 56,
+    flexGrow: 0,
     borderRadius: 15,
     backgroundColor: Colors.Black.Primary,
   },
@@ -42,5 +49,9 @@ export default StyleSheet.create({
     flexWrap: 'nowrap',
     paddingTop: 5,
     paddingBottom: 5,
+  },
+  keyboardBG: {
+    height: '100%',
+    color: Colors.Black.Primary,
   },
 });

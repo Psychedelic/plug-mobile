@@ -3,10 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import bip39 from 'react-native-bip39';
 import {
   setCurrentWallet,
-  setAssets,
   setUnlocked,
   setWallets,
-  setActivity,
+  setTransactions,
 } from '../redux/slices/keyring';
 import { formatAssetBySymbol, TOKEN_IMAGES } from '../utils/assets';
 import { ACTIVITY_STATUS } from '../screens/Profile/components/constants';
@@ -27,6 +26,7 @@ const useKeyring = () => {
 
   const createWallet = async password => {
     const mnemonic = await generateMnemonic();
+    console.log(instance);
     const response = await instance?.importMnemonic({ password, mnemonic });
     const { wallet } = response || {};
     await instance?.unlock(password);
@@ -42,19 +42,6 @@ const useKeyring = () => {
     return mnemonic;
   };
 
-  const getAssets = async refresh => {
-    const response = await instance?.getState();
-    const { wallets, currentWalletId } = response || {};
-    let assets = wallets?.[currentWalletId]?.assets || [];
-    if (assets?.every(asset => !asset.amount) || refresh) {
-      assets = await instance?.getBalance();
-    } else {
-      instance?.getBalance();
-    }
-    dispatch(setAssets(assets));
-    return assets;
-  };
-
   const getState = async () => {
     const response = await instance?.getState();
     if (!response.wallets.length) {
@@ -66,16 +53,6 @@ const useKeyring = () => {
       return response;
     }
   };
-
-  const createSubAccount = async (params) => {
-    try {
-      const response = await instance?.createPrincipal(params);
-      return response;
-    }
-    catch (e) {
-      console.log(e)
-    }
-  }
 
   const unlock = async password => {
     let unlocked = false;
@@ -129,11 +106,9 @@ const useKeyring = () => {
     keyring: instance,
     createWallet,
     importWallet,
-    getAssets,
     getState,
     getActivity,
     unlock,
-    createSubAccount,
   };
 };
 
