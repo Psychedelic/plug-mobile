@@ -3,7 +3,9 @@ import PlugController from '@psychedelic/plug-controller';
 import { keyringStorage } from '../configureReducer';
 import RNCryptoJS from 'react-native-crypto-js';
 import { fetch } from 'react-native-fetch-api';
-import { formatAssets } from '../../utils/assets';
+import { formatAssets, formatAssetBySymbol } from '../../utils/assets';
+import { ACTIVITY_STATUS } from '../../screens/Profile/components/constants';
+import { TOKEN_IMAGES } from '../../utils/assets';
 
 export const recursiveParseBigint = obj =>
   Object.entries(obj).reduce(
@@ -154,16 +156,19 @@ export const sendToken = createAsyncThunk(
 
 export const getTransactions = createAsyncThunk(
   'keyring/getTransactions',
-  async (_params, { getState }) => {
+  async (params, { getState }) => {
     try {
+      const { icpPrice } = params;
       const state = getState();
       const response = await state.keyring.instance?.getTransactions();
+
+      console.log('acccc', response);
 
       const mapTransaction = (trx) => {
         const asset = formatAssetBySymbol(
           trx?.details?.amount,
           trx?.details?.currency?.symbol,
-          action?.payload?.icpPrice,
+          icpPrice,
         );
         const isOwnTx = [state.principalId, state.accountId].includes(trx?.caller);
         const getType = () => {
@@ -190,7 +195,7 @@ export const getTransactions = createAsyncThunk(
         };
         return transaction;
       };
-      const parsedTrx = response.map(mapTransaction) || [];
+      const parsedTrx = response.transactions?.map(mapTransaction) || [];
 
       return parsedTrx;
     } catch (e) {

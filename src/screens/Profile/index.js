@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
 import { getTransactions, setTransactionsLoading } from '../../redux/slices/keyring';
 import { useDispatch } from 'react-redux';
+import { useICPPrice } from '../../redux/slices/icp';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ const Profile = () => {
   const navigation = useNavigation();
   const { currentWallet, transactions, transactionsLoading } = useSelector(state => state.keyring);
   const [refreshing, setRefresing] = useState(transactionsLoading);
+  const icpPrice = useICPPrice();
 
   const openAccounts = () => {
     modalRef?.current.open();
@@ -30,7 +32,7 @@ const Profile = () => {
 
   const onRefresh = () => {
     dispatch(setTransactionsLoading(true));
-    dispatch(getTransactions());
+    dispatch(getTransactions({ icpPrice }));
   };
 
   useEffect(() => {
