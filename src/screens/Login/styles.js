@@ -8,7 +8,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    background: Colors.Black.primary,
+    backgroundColor: Colors.Black.primary,
     padding: 30,
     width: '100%',
     flex: 1,

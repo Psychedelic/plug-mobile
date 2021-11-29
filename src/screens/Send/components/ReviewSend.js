@@ -13,7 +13,10 @@ import Button from '../../../components/buttons/Button';
 import { Colors } from '../../../constants/theme';
 import NftDisplayer from '../../../components/common/NftDisplayer';
 import shortAddress from '../../../helpers/short-address';
-import { TRANSACTION_STATUS, setTransaction } from '../../../redux/slices/keyring';
+import {
+  TRANSACTION_STATUS,
+  setTransaction,
+} from '../../../redux/slices/keyring';
 
 const ReviewSend = ({
   modalRef,
@@ -29,8 +32,8 @@ const ReviewSend = ({
   transaction,
   ...props
 }) => {
-
-  const transactionCompleted = transaction?.status === TRANSACTION_STATUS.success;
+  const transactionCompleted =
+    transaction?.status === TRANSACTION_STATUS.success;
 
   const handleClose = () => {
     onClose();
@@ -93,7 +96,9 @@ const ReviewSend = ({
         <Row style={styles.row}>
           <Column>
             <Text style={FontStyles.Title2}>{contact?.name}</Text>
-            <Text style={FontStyles.Subtitle3}>{shortAddress(contact?.id)}</Text>
+            <Text style={FontStyles.Subtitle3}>
+              {shortAddress(contact?.id)}
+            </Text>
           </Column>
           <UserIcon size="medium" />
         </Row>

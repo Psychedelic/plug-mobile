@@ -10,6 +10,7 @@ import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
 import Back from '../../../../components/common/Back';
 import useKeyring from '../../../../hooks/useKeyring';
 import styles from './styles';
+import KeyboardHider from '../../../../components/common/KeyboardHider';
 
 const ImportSeedPhrase = ({ navigation, route }) => {
   const { importWallet } = useKeyring();
@@ -38,48 +39,50 @@ const ImportSeedPhrase = ({ navigation, route }) => {
   };
 
   return (
-    <Container>
-      <Header
-        left={<Back onPress={goBack} />}
-        center={
-          <View style={{ width: 70, height: 33 }}>
-            <Image
-              style={{
-                flex: 1,
-                width: null,
-                height: null,
-                resizeMode: 'contain',
-              }}
-              source={PlugLogo}
-            />
-          </View>
-        }
-      />
-      <View style={styles.container}>
-        <Text style={styles.title}>Import Wallet</Text>
-        <Text style={styles.subtitle}>
-          Please enter your 12 word Secret Recovery Phrase.
-        </Text>
-        <TextInput
-          value={seedPhrase}
-          variant="multi"
-          onChangeText={onChangeText}
-          placeholder="Secret Recovery Phrase"
-          customStyle={{
-            backgroundColor: Colors.Gray.Secondary,
-            marginTop: 30,
-            marginBottom: 30,
-          }}
-          multiline
+    <KeyboardHider>
+      <Container>
+        <Header
+          left={<Back onPress={goBack} />}
+          center={
+            <View style={{ width: 70, height: 33 }}>
+              <Image
+                style={{
+                  flex: 1,
+                  width: null,
+                  height: null,
+                  resizeMode: 'contain',
+                }}
+                source={PlugLogo}
+              />
+            </View>
+          }
         />
+        <View style={styles.container}>
+          <Text style={styles.title}>Import Wallet</Text>
+          <Text style={styles.subtitle}>
+            Please enter your 12 word Secret Recovery Phrase.
+          </Text>
+          <TextInput
+            value={seedPhrase}
+            variant="multi"
+            onChangeText={onChangeText}
+            placeholder="Secret Recovery Phrase"
+            customStyle={{
+              backgroundColor: Colors.Gray.Secondary,
+              marginTop: 30,
+              marginBottom: 30,
+            }}
+            multiline
+          />
 
-        <RainbowButton
-          text="Continue"
-          onPress={onPress}
-          disabled={!isMnemonicValid}
-        />
-      </View>
-    </Container>
+          <RainbowButton
+            text="Continue"
+            onPress={onPress}
+            disabled={!isMnemonicValid}
+          />
+        </View>
+      </Container>
+    </KeyboardHider>
   );
 };
 
