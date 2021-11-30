@@ -15,6 +15,8 @@ import NftDetail from '../../../NftDetail';
 import Touchable from '../../../../components/animations/Touchable';
 import useNfts from '../../../../hooks/useNfts';
 import NftDisplayer from '../../../../components/common/NftDisplayer';
+import { getNFTs } from '../../../../redux/slices/keyring';
+import { useDispatch, useSelector } from 'react-redux';
 
 const { width } = Dimensions.get('window');
 const itemSize = width / 2 - 30;
@@ -22,7 +24,8 @@ const itemSize = width / 2 - 30;
 const NFTs = () => {
   const [refreshing, setRefresing] = useState(false);
 
-  const { nfts } = useNfts();
+  const { collections } = useSelector(state => state.keyring);
+  const dispatch = useDispatch();
 
   const detailRef = useRef(null);
 
@@ -32,10 +35,11 @@ const NFTs = () => {
 
   const onRefresh = () => {
     setRefresing(true);
-
+    dispatch(getNFTs());
     setTimeout(() => setRefresing(false), 1000);
   };
-
+  console.log('Component Colelctions', collections);
+  const nfts = collections?.flatMap(collection => collection?.tokens || []) || [];
   return (
     <>
       <Container>

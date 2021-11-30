@@ -68,6 +68,28 @@ export const getAssets = createAsyncThunk(
   },
 );
 
+export const getNFTs = createAsyncThunk(
+  'keyring/getNFTs',
+  async (refresh, { getState }) => {
+    try {
+      const { instance } = getState().keyring;
+      const response = await instance?.getState();
+      const { wallets, currentWalletId } = response || {};
+      let collections = wallets?.[currentWalletId]?.collections || [];
+      console.log('state collections', collections);
+      if (!collections.length) {
+        collections = await instance.getNFTs(currentWalletId, refresh);
+      }
+      console.log('fetched collections', collections);
+      return (collections || [])?.map(collection =>
+        recursiveParseBigint(collection),
+      );
+    } catch (e) {
+      console.log('getNFTs', e);
+    }
+  },
+);
+
 export const createSubaccount = createAsyncThunk(
   'keyring/createSubaccount',
   async (params, { getState }) => {
@@ -189,6 +211,7 @@ export const keyringSlice = createSlice({
     isInitialized: false,
     isUnlocked: false,
     currentWallet: null,
+    collections: [],
     wallets: [],
     password: '',
     contacts: [],
@@ -248,6 +271,9 @@ export const keyringSlice = createSlice({
       state.assets =
         formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS;
       state.assetsLoading = false;
+    },
+    [getNFTs.fulfilled]: (state, action) => {
+      state.collections = action.payload;
     },
   },
 });
