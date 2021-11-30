@@ -14,7 +14,8 @@ export const ACTIVITY_STATUS = {
 };
 
 export const ACTIVITY_IMAGES = {
-  [ACTIVITY_TYPES.RECEIVE]: 'activityReceive',
-  [ACTIVITY_TYPES.SEND]: 'activitySend',
-  [ACTIVITY_TYPES.BURN]: 'activityReceive',
+  RECEIVE: 'activityReceive',
+  SEND: 'activitySend',
+  BURN: 'burnActivity',
+  MINT: 'mintActivity',
 };

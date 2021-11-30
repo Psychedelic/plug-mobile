@@ -27,6 +27,7 @@ const ActivityItem = ({
   name,
   canisterId,
   details,
+  canisterInfo,
 }) => {
 
   //const isTransaction = ['SEND', 'RECEIVE'].includes(type) && symbol === 'ICP';
