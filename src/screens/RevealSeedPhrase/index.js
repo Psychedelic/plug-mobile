@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Column from '../../components/layout/Column';
 import Modal from '../../components/modal';
 import { Text } from 'react-native';
-import { FontStyles } from '../../constants/theme';
 import Header from '../../components/common/Header';
 import styles from './styles';
 import SeedPhrase from '../../components/common/SeedPhrase';
@@ -10,6 +9,7 @@ import RainbowButton from '../../components/buttons/RainbowButton';
 import TextInput from '../../components/common/TextInput';
 import useKeyring from '../../hooks/useKeyring';
 import { useSelector } from 'react-redux';
+import Copy from '../../components/common/Copy';
 
 const RevealSeedPhrase = ({ modalRef }) => {
 
@@ -24,6 +24,7 @@ const RevealSeedPhrase = ({ modalRef }) => {
   const clearState = () => {
     setPassword('');
     setError(false);
+    setLoggedIn(false);
   };
 
   const handleSubmit = async () => {
@@ -36,12 +37,10 @@ const RevealSeedPhrase = ({ modalRef }) => {
     }
   };
 
-  console.log('insta', instance?.mnemonic)
-
   return (
     <>
       <Modal modalRef={modalRef} onClose={clearState} adjustToContentHeight>
-        <Header center={<Text style={styles.title}>Reveal Seed Phrase</Text>} />
+        <Header center={<Text style={styles.title}>Seed Phrase</Text>} />
 
         <Column style={styles.container}>
           {
@@ -72,10 +71,13 @@ const RevealSeedPhrase = ({ modalRef }) => {
 
               </>
               :
-              <SeedPhrase
-                mnemonic={instance?.mnemonic.split(' ') || []}
-                onReveal={() => null}
-              />
+              <>
+                <SeedPhrase
+                  mnemonic={instance?.state?.mnemonic.split(' ') || []}
+                  onReveal={() => null}
+                />
+                <Copy text={instance?.state?.mnemonic} customStyle={{ marginTop: 30, alignSelf: 'center' }} />
+              </>
           }
         </Column>
       </Modal>
