@@ -15,11 +15,11 @@ import NftDetail from '../../../NftDetail';
 import Touchable from '../../../../components/animations/Touchable';
 import useNfts from '../../../../hooks/useNfts';
 import NftDisplayer from '../../../../components/common/NftDisplayer';
-import { getNFTs } from '../../../../redux/slices/keyring';
+import { getNFTs, setSelectedNFT } from '../../../../redux/slices/keyring';
 import { useDispatch, useSelector } from 'react-redux';
 
 const { width } = Dimensions.get('window');
-const itemSize = width / 2 - 30;
+const itemSize = width / 2 - 40;
 
 const NFTs = () => {
   const [refreshing, setRefresing] = useState(false);
@@ -29,7 +29,8 @@ const NFTs = () => {
 
   const detailRef = useRef(null);
 
-  const onOpen = () => {
+  const onOpen = nft => () => {
+    dispatch(setSelectedNFT(nft));
     detailRef?.current.open();
   };
 
@@ -38,8 +39,9 @@ const NFTs = () => {
     dispatch(getNFTs());
     setTimeout(() => setRefresing(false), 1000);
   };
-  console.log('Component Colelctions', collections);
-  const nfts = collections?.flatMap(collection => collection?.tokens || []) || [];
+  const nfts =
+    collections?.flatMap(collection => collection?.tokens || []) || [];
+  console.log('Component nfts', nfts);
   return (
     <>
       <Container>
@@ -59,14 +61,16 @@ const NFTs = () => {
             />
           }>
           {nfts.map(item => (
-            <View key={item.name} style={styles.item}>
-              <Touchable onPress={onOpen}>
+            <View key={`${item.canisterId}_${item.index}`} style={styles.item}>
+              <Touchable onPress={onOpen(item)}>
                 <NftDisplayer
                   url={item.url}
                   style={{ width: itemSize, height: itemSize }}
                 />
               </Touchable>
-              <Text style={styles.text}>{item.name}</Text>
+              <Text style={styles.text}>
+                {item.name || `${item.collection} #${item.index}`}
+              </Text>
             </View>
           ))}
         </ScrollView>
@@ -90,7 +94,7 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   text: {
-    ...FontStyles.NormalGray,
+    ...FontStyles.SmallGray,
     marginTop: 10,
   },
   title: {

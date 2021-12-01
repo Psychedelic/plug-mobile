@@ -1,16 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { WebView } from 'react-native-webview';
-import MaskedView from '@react-native-community/masked-view'
-import { SquircleView } from 'react-native-figma-squircle'
-import Video from 'react-native-video';
-import { StyleSheet, ActivityIndicator, Image, View } from 'react-native';
+import MaskedView from '@react-native-community/masked-view';
+import { SquircleView } from 'react-native-figma-squircle';
+import { StyleSheet, ActivityIndicator, View } from 'react-native';
+import Image from 'react-native-remote-svg';
 import styles from './styles';
-
-const TYPE_MAP = {
-  'video/mp4': 'video',
-  'image/png': 'img',
-  'text/html': 'iframe',
-};
+import VideoNFTDisplay from './components/VideoNFTDisplay';
 
 const NftDisplayer = ({ url, style }) => {
   const [type, setType] = useState('img');
@@ -19,15 +14,18 @@ const NftDisplayer = ({ url, style }) => {
 
   useEffect(() => {
     fetch(url).then(response => {
-      setType(response.headers.get('Content-Type'));
+      const content = response.headers.get('Content-Type');
+      console.log('img content type', content, url);
+      setType(content);
     });
   }, [url]);
 
-  const hideSpinner = () => setLoading(false);
+  const hideSpinner = () => {
+    console.log('done loading');
+    setLoading(false);
+  };
 
-  const Tag = TYPE_MAP[type] || 'img';
-
-  if (Tag === 'iframe') {
+  if (type.includes('html')) {
     return (
       <View style={[styles.image, style]}>
         <WebView
@@ -51,29 +49,16 @@ const NftDisplayer = ({ url, style }) => {
     );
   }
 
-  if (Tag === 'video') {
+  if (type.includes('video')) {
     return (
-      <View style={[styles.image, style]}>
-        <Video
-          onLoad={hideSpinner}
-          source={{ uri: url }}
-          style={styles.image}
-        />
-        {loading && (
-          <ActivityIndicator
-            style={{
-              position: 'absolute',
-              top: 0,
-              bottom: 0,
-              right: 0,
-              left: 0,
-            }}
-          />
-        )}
-      </View>
+      <VideoNFTDisplay
+        url={url}
+        hideSpinner={hideSpinner}
+        style={styles.image}
+        loading={loading}
+      />
     );
   }
-
   return (
     <MaskedView
       style={[styles.image, style]}
@@ -85,12 +70,15 @@ const NftDisplayer = ({ url, style }) => {
             cornerSmoothing: 1,
           }}
         />
-      }
-    >
+      }>
       <Image
         resizeMode="cover"
-        style={StyleSheet.absoluteFill}
-        source={{ uri: url }}
+        style={{
+          ...StyleSheet.absoluteFill,
+          height: type.includes('svg') ? 500 : undefined,
+          width: type.includes('svg') ? 550 : undefined,
+        }}
+        source={{ uri: url, type }}
       />
     </MaskedView>
   );

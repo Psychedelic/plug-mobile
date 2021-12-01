@@ -1405,10 +1405,10 @@
     redux-thunk "^2.3.0"
     reselect "^4.0.0"
 
-"@sideway/address@^4.1.0":
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/@sideway/address/-/address-4.1.2.tgz#811b84333a335739d3969cfc434736268170cad1"
-  integrity sha512-idTz8ibqWFrPU8kMirL0CoPH/A29XOzzAzpyN3zQ4kAWnzmNfFmRaoMNN6VI8ske5M73HZyhIaW4OuSFIdM4oA==
+"@sideway/address@^4.1.3":
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/@sideway/address/-/address-4.1.3.tgz#d93cce5d45c5daec92ad76db492cc2ee3c64ab27"
+  integrity sha512-8ncEUtmnTsMmL7z1YPB47kPUq7LpKWJNFPsRzHiIajGC5uXlWGn+AmkYPcHNl8S4tcEGx+cnORnNYaw2wvL+LQ==
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
@@ -2687,9 +2687,9 @@ color-string@^0.3.0:
     color-name "^1.0.0"
 
 color-string@^1.6.0:
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/color-string/-/color-string-1.8.1.tgz#d1aac7fab890df2b54c8012ca939c0a1129c370e"
-  integrity sha512-AGfGNQbnXlYqPStIx3QB2XA3Wy8vjbreqklmCiGVwcoHSLN5KIpDZDflYnXlBliKHI8CTBX3PsCgG+xfZgqK8A==
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/color-string/-/color-string-1.8.2.tgz#08bd49fa5f3889c27b0c670052ed746dd7a671de"
+  integrity sha512-w5ZkKRdLsc5NOYsmnpS2DpyRW71npwZGwbRpLrJTuqjfTs2Bhrba7UiV59IX9siBlCPl2pne5NtiwnVWUzvYFA==
   dependencies:
     color-name "^1.0.0"
     simple-swizzle "^0.2.2"
@@ -3178,9 +3178,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.3.896:
-  version "1.4.5"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.5.tgz#912e8fd1645edee2f0f212558f40916eb538b1f9"
-  integrity sha512-YKaB+t8ul5crdh6OeqT2qXdxJGI0fAYb6/X8pDIyye+c3a7ndOCk5gVeKX+ABwivCGNS56vOAif3TN0qJMpEHw==
+  version "1.4.7"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.7.tgz#58e0b4ec9096ee1422e4d9e83ceeb05b0cf076eb"
+  integrity sha512-UPy2MsQw1OdcbxR7fvwWZH/rXcv+V26+uvQVHx0fGa1kqRfydtfOw+NMGAvZJ63hyaH4aEBxbhSEtqbpliSNWA==
 
 elliptic@^6.5.2, elliptic@^6.5.3:
   version "6.5.4"
@@ -4661,9 +4661,9 @@ istanbul-lib-source-maps@^4.0.0:
     source-map "^0.6.1"
 
 istanbul-reports@^3.0.2:
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/istanbul-reports/-/istanbul-reports-3.0.5.tgz#a2580107e71279ea6d661ddede929ffc6d693384"
-  integrity sha512-5+19PlhnGabNWB7kOFnuxT8H3T/iIyQzIbQMxXsURmmvKg86P2sbkrGOT77VnHw0Qr0gc2XzRaRfMZYYbSQCJQ==
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/istanbul-reports/-/istanbul-reports-3.1.0.tgz#57a32bff7ab4b315e401daa08fe2934e0c0b1ec2"
+  integrity sha512-rgeP8yMlXeH4mfd9K/sQXZv1lvcS7xo379zntcotPDdMwkcGYwMxGHGZYo0/+YW5B/nor2YGKz2BH5ume405ow==
   dependencies:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
@@ -5098,13 +5098,13 @@ jetifier@^1.6.2:
   integrity sha512-3Zi16h6L5tXDRQJTb221cnRoVG9/9OvreLdLU2/ZjRv/GILL+2Cemt0IKvkowwkDpvouAU1DQPOJ7qaiHeIdrw==
 
 joi@^17.2.1:
-  version "17.4.2"
-  resolved "https://registry.yarnpkg.com/joi/-/joi-17.4.2.tgz#02f4eb5cf88e515e614830239379dcbbe28ce7f7"
-  integrity sha512-Lm56PP+n0+Z2A2rfRvsfWVDXGEWjXxatPopkQ8qQ5mxCEhwHG+Ettgg5o98FFaxilOxozoa14cFhrE/hOzh/Nw==
+  version "17.4.3"
+  resolved "https://registry.yarnpkg.com/joi/-/joi-17.4.3.tgz#462941fd994f11fcb92f59ba9f004706b9a45d17"
+  integrity sha512-8W3oOogFRuy2aLAdlhMpzS4fNBIMiyIa3xBaBYMFgA272/d5sob1DAth6jjo+5VrOlzbEgmbBGbU4cLrffPKog==
   dependencies:
     "@hapi/hoek" "^9.0.0"
     "@hapi/topo" "^5.0.0"
-    "@sideway/address" "^4.1.0"
+    "@sideway/address" "^4.1.3"
     "@sideway/formula" "^3.0.0"
     "@sideway/pinpoint" "^2.0.0"
 
@@ -6823,6 +6823,11 @@ react-native-reanimated@^2.2.3:
     fbjs "^3.0.0"
     mockdate "^3.0.2"
     string-hash-64 "^1.0.3"
+
+react-native-remote-svg@^2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/react-native-remote-svg/-/react-native-remote-svg-2.0.6.tgz#5f8bc7cefc18f4d37cf02f8158d6b2a9f534891d"
+  integrity sha512-tQbDL+gtfGgG9Evz5TOn5Odmrn/EYsmsLqVZ0Do0VMJevfLBuQRioLiwRsI/BCgOHu1oQLZIIE5p7V/lN9jLrw==
 
 react-native-restart@^0.0.22:
   version "0.0.22"

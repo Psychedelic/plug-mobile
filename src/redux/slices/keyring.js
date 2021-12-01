@@ -216,6 +216,7 @@ export const keyringSlice = createSlice({
     password: '',
     contacts: [],
     transaction: DEFAULT_TRANSACTION,
+    selectedNFT: {},
   },
   reducers: {
     setCurrentWallet: (state, action) => {
@@ -243,6 +244,9 @@ export const keyringSlice = createSlice({
     },
     setTransaction: (state, action) => {
       state.transaction = action.payload;
+    },
+    setSelectedNFT: (state, action) => {
+      state.selectedNFT = action.payload;
     },
   },
   extraReducers: {
@@ -287,6 +291,7 @@ export const {
   setWallets,
   setAssetsLoading,
   setTransaction,
+  setSelectedNFT,
 } = keyringSlice.actions;
 
 export default keyringSlice.reducer;

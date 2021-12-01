@@ -10,18 +10,23 @@ import RainbowButton from '../../components/buttons/RainbowButton';
 import styles from './styles';
 import NftDisplayer from '../../components/common/NftDisplayer';
 import { Dimensions } from 'react-native';
+import { useSelector } from 'react-redux';
 
-const NftDetail = ({ modalRef, handleClose, nft, ...props }) => {
+const NftDetail = ({ modalRef, handleClose, ...props }) => {
+  const { selectedNFT } = useSelector(state => state.keyring);
   const imageSize = Dimensions.get('window').width - 40;
+  console.log('selectedNFT', selectedNFT);
 
   return (
     <Modal modalRef={modalRef} onClose={handleClose} {...props}>
       <Header
-        center={<Text style={FontStyles.Subtitle2}>{`#${nft?.index}`}</Text>}
+        center={
+          <Text style={FontStyles.Subtitle2}>{`#${selectedNFT?.index}`}</Text>
+        }
       />
       <View style={styles.content}>
         <NftDisplayer
-          url={nft?.url}
+          url={selectedNFT?.url}
           style={{ width: imageSize, height: imageSize }}
         />
 
@@ -35,20 +40,23 @@ const NftDetail = ({ modalRef, handleClose, nft, ...props }) => {
         </View>
 
         <Section title="🧩 Collection" style={{ borderTopWidth: 0 }}>
-          <Badge value={nft?.collection} icon={null /*collection?.icon*/} />
-          <Badge value={`#${nft?.index}`} />
+          <Badge
+            value={selectedNFT?.collection}
+            icon={null /*collection?.icon*/}
+          />
+          <Badge value={`#${selectedNFT?.index}`} />
         </Section>
 
-        {!!nft?.desc && (
+        {!!selectedNFT?.desc && (
           <Section title="📝 Description">
-            <Text>{nft?.desc}</Text>
+            <Text>{selectedNFT?.desc}</Text>
           </Section>
         )}
 
-        {nft?.metadata?.properties?.length && (
+        {selectedNFT?.metadata?.properties?.length && (
           <Section title="🎛 Attributes">
-            {nft?.metadata?.properties?.map(prop => (
-              <Badge name={prop.name} value={prop.value} />
+            {selectedNFT?.metadata?.properties?.map(prop => (
+              <Badge key={prop.name} name={prop.name} value={prop.value} />
             ))}
           </Section>
         )}
