@@ -3,7 +3,9 @@ import PlugController from '@psychedelic/plug-controller';
 import { keyringStorage } from '../configureReducer';
 import RNCryptoJS from 'react-native-crypto-js';
 import { fetch } from 'react-native-fetch-api';
-import { formatAssets } from '../../utils/assets';
+import { formatAssets, formatAssetBySymbol } from '../../utils/assets';
+import { ACTIVITY_STATUS } from '../../screens/Profile/components/constants';
+import { TOKEN_IMAGES } from '../../utils/assets';
 
 export const recursiveParseBigint = obj =>
   Object.entries(obj).reduce(
@@ -152,6 +154,59 @@ export const sendToken = createAsyncThunk(
   },
 );
 
+export const getTransactions = createAsyncThunk(
+  'keyring/getTransactions',
+  async (params, { getState }) => {
+    try {
+      const { icpPrice } = params;
+      const state = getState();
+      const response = await state.keyring.instance?.getTransactions();
+
+      console.log('acccc', response);
+
+      const mapTransaction = (trx) => {
+        const asset = formatAssetBySymbol(
+          trx?.details?.amount,
+          trx?.details?.currency?.symbol,
+          icpPrice,
+        );
+        const isOwnTx = [state.principalId, state.accountId].includes(trx?.caller);
+        const getType = () => {
+          const { type } = trx;
+          if (type.toUpperCase() === 'TRANSFER') {
+            return isOwnTx ? 'SEND' : 'RECEIVE';
+          }
+          return type.toUpperCase();
+        };
+        const transaction = {
+          ...asset,
+          type: getType(),
+          hash: trx?.hash,
+          to: trx?.details?.to,
+          from: trx?.details?.from || trx?.caller,
+          date: new Date(trx?.timestamp),
+          status: ACTIVITY_STATUS[trx?.details?.status],
+          image: TOKEN_IMAGES[trx?.details?.currency?.symbol] || trx?.canisterInfo?.icon || '',
+          symbol: trx?.details?.currency?.symbol ?? (trx?.canisterInfo ? 'NFT' : ''),
+          canisterId: trx?.details?.canisterId,
+          plug: null,
+          canisterInfo: trx?.canisterInfo,
+          details: { ...trx?.details, caller: trx?.caller },
+        };
+        return transaction;
+      };
+      const parsedTrx = response.transactions?.map(mapTransaction) || [];
+
+      return parsedTrx;
+    } catch (e) {
+      console.log('getTransactions', e);
+      return {
+        error: e.message,
+      };
+    }
+  },
+);
+
 const DEFAULT_ASSETS = [
   {
     symbol: 'ICP',
@@ -178,22 +233,26 @@ const DEFAULT_TRANSACTION = {
 export const TRANSACTION_STATUS = {
   success: 'success',
   error: 'error',
+}
+
+const DEFAULT_STATE = {
+  instance: null,
+  assets: DEFAULT_ASSETS,
+  assetsLoading: true,
+  isInitialized: false,
+  isUnlocked: false,
+  currentWallet: null,
+  wallets: [],
+  password: '',
+  contacts: [],
+  transaction: DEFAULT_TRANSACTION,
+  transactions: [],
+  transactionsLoading: true,
 };
 
 export const keyringSlice = createSlice({
   name: 'keyring',
-  initialState: {
-    instance: null,
-    assets: DEFAULT_ASSETS,
-    assetsLoading: false,
-    isInitialized: false,
-    isUnlocked: false,
-    currentWallet: null,
-    wallets: [],
-    password: '',
-    contacts: [],
-    transaction: DEFAULT_TRANSACTION,
-  },
+  initialState: DEFAULT_STATE,
   reducers: {
     setCurrentWallet: (state, action) => {
       state.currentWallet = action.payload;
@@ -220,6 +279,15 @@ export const keyringSlice = createSlice({
     },
     setTransaction: (state, action) => {
       state.transaction = action.payload;
+    },
+    setTransactions: (state, action) => {
+
+    },
+    setTransactionsLoading: (state, action) => {
+      state.transactionsLoading = action.payload;
+    },
+    reset: state => {
+      state = DEFAULT_STATE;
     },
   },
   extraReducers: {
@@ -249,6 +317,12 @@ export const keyringSlice = createSlice({
         formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS;
       state.assetsLoading = false;
     },
+    [getTransactions.fulfilled]: (state, action) => {
+      if (!action.payload.error) {
+        state.transactions = action.payload;
+        state.transactionsLoading = false;
+      }
+    }
   },
 });
 
@@ -261,6 +335,9 @@ export const {
   setWallets,
   setAssetsLoading,
   setTransaction,
+  setTransactions,
+  setTransactionsLoading,
+  reset,
 } = keyringSlice.actions;
 
 export default keyringSlice.reducer;
