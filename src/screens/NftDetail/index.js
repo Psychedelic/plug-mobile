@@ -15,7 +15,6 @@ import { useSelector } from 'react-redux';
 const NftDetail = ({ modalRef, handleClose, ...props }) => {
   const { selectedNFT } = useSelector(state => state.keyring);
   const imageSize = Dimensions.get('window').width - 40;
-  console.log('selectedNFT', selectedNFT);
 
   return (
     <Modal modalRef={modalRef} onClose={handleClose} {...props}>

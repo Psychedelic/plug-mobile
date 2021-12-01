@@ -41,7 +41,6 @@ const NFTs = () => {
   };
   const nfts =
     collections?.flatMap(collection => collection?.tokens || []) || [];
-  console.log('Component nfts', nfts);
   return (
     <>
       <Container>

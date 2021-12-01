@@ -43,13 +43,12 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
 
 export const getAssets = createAsyncThunk(
   'keyring/getAssets',
-  async (refresh, { getState }) => {
+  async ({ refresh, icpPrice }, { getState }) => {
     try {
       const { instance } = getState().keyring;
       const response = await instance?.getState();
       const { wallets, currentWalletId } = response || {};
       let assets = wallets?.[currentWalletId]?.assets || [];
-      console.log('state assets', assets);
       if (
         !assets.length ||
         assets?.every(asset => parseFloat(asset.amount) <= 0) ||
@@ -60,8 +59,7 @@ export const getAssets = createAsyncThunk(
       } else {
         instance?.getBalance();
       }
-      console.log('returning', assets);
-      return assets;
+      return { assets, icpPrice };
     } catch (e) {
       console.log('getAssets', e);
     }
@@ -76,11 +74,9 @@ export const getNFTs = createAsyncThunk(
       const response = await instance?.getState();
       const { wallets, currentWalletId } = response || {};
       let collections = wallets?.[currentWalletId]?.collections || [];
-      console.log('state collections', collections);
       if (!collections.length) {
         collections = await instance.getNFTs(currentWalletId, refresh);
       }
-      console.log('fetched collections', collections);
       return (collections || [])?.map(collection =>
         recursiveParseBigint(collection),
       );
@@ -148,14 +144,12 @@ export const sendToken = createAsyncThunk(
     try {
       const { to, amount, canisterId, opts } = params;
       const state = getState();
-      console.log('sending');
       const { height, transactionId } = await state.keyring.instance?.send(
         to,
         amount.toString(),
         canisterId,
         opts,
       );
-      console.log('sent');
       return {
         response: {
           height: parseInt(height?.toString?.(), 10),

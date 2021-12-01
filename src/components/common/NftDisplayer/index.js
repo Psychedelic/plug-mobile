@@ -15,13 +15,11 @@ const NftDisplayer = ({ url, style }) => {
   useEffect(() => {
     fetch(url).then(response => {
       const content = response.headers.get('Content-Type');
-      console.log('img content type', content, url);
       setType(content);
     });
   }, [url]);
 
   const hideSpinner = () => {
-    console.log('done loading');
     setLoading(false);
   };
 

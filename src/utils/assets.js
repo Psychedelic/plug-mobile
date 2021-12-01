@@ -56,7 +56,7 @@ export const formatAssetBySymbol = (amount, symbol, icpPrice) => {
   );
 };
 
-export const formatAssets = (assets = [], icpPrice) => {
+export const formatAssets = ({ assets = [], icpPrice }) => {
   const mappedAssets = assets.map(({ amount, name, symbol, canisterId }) => {
     const asset = formatAssetBySymbol(amount, symbol, icpPrice);
     return {
