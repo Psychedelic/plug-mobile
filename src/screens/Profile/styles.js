@@ -16,10 +16,10 @@ export default StyleSheet.create({
   },
   leftContainer: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   name: {
     ...FontStyles.Subtitle,
-    marginLeft: 12
-  }
+    marginLeft: 12,
+  },
 });

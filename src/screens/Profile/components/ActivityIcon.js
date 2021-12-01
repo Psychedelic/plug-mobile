@@ -10,14 +10,14 @@ const ActivityIcon = ({ image, type }) => {
   console.log('In ActivityIcon', type, ACTIVITY_IMAGES[type]);
   return (
     <View style={styles.root}>
-      {type && type !== 'RECEIVE' && (
+      {type && (
         <Icon
           name={ACTIVITY_IMAGES[type] || 'lightingActivity'}
           style={styles.activity}
         />
       )}
       {image.includes('https') ? (
-        <Image source={image} style={styles.canisterImg} />
+        <Image source={{ uri: image }} style={styles.canisterImg} />
       ) : (
         <Icon name={image ? parseImageName(image) : 'unknown'} />
       )}
@@ -43,5 +43,10 @@ const styles = StyleSheet.create({
     zIndex: 1,
     height: 19,
     width: 19,
+  },
+  canisterImg: {
+    height: 40,
+    width: 40,
+    borderRadius: 30,
   },
 });
