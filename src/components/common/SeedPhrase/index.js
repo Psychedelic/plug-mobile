@@ -6,7 +6,7 @@ import { BlurView } from '@react-native-community/blur';
 import KeyImg from '../../../assets/icons/key.png';
 import Touchable from '../../animations/Touchable';
 
-const SeedPhrase = ({ mnemonic, onReveal }) => {
+const SeedPhrase = ({ mnemonic, onReveal = () => null }) => {
   const [reveal, setReveal] = useState(false);
   const revealSeedPhrase = () => {
     setReveal(true);
