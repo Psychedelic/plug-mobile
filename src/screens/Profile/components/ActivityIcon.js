@@ -1,19 +1,29 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 
 import Icon from '../../../components/icons';
 
 import { ACTIVITY_IMAGES } from './constants';
 import { parseImageName } from './utils';
 
-const ActivityIcon = ({ image, type }) => (
-  <View style={styles.root}>
-    {type && (
-      <Icon name={ACTIVITY_IMAGES[type] || 'lightingActivity'} style={styles.activity} />
-    )}
-    <Icon name={image ? parseImageName(image) : 'unknown'} />
-  </View>
-);
+const ActivityIcon = ({ image, type }) => {
+  console.log('In ActivityIcon', type, ACTIVITY_IMAGES[type]);
+  return (
+    <View style={styles.root}>
+      {type && type !== 'RECEIVE' && (
+        <Icon
+          name={ACTIVITY_IMAGES[type] || 'lightingActivity'}
+          style={styles.activity}
+        />
+      )}
+      {image.includes('https') ? (
+        <Image source={image} style={styles.canisterImg} />
+      ) : (
+        <Icon name={image ? parseImageName(image) : 'unknown'} />
+      )}
+    </View>
+  );
+};
 
 export default ActivityIcon;
 

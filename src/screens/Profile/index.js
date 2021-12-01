@@ -14,15 +14,21 @@ import Accounts from '../Accounts';
 import { Colors } from '../../constants/theme';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
-import { getTransactions, setTransactionsLoading } from '../../redux/slices/keyring';
+import {
+  getTransactions,
+  setTransactionsLoading,
+} from '../../redux/slices/keyring';
 import { useDispatch } from 'react-redux';
 import { useICPPrice } from '../../redux/slices/icp';
+import Routes from '../../navigation/Routes';
 
 const Profile = () => {
   const dispatch = useDispatch();
   const modalRef = useRef(null);
   const navigation = useNavigation();
-  const { currentWallet, transactions, transactionsLoading } = useSelector(state => state.keyring);
+  const { currentWallet, transactions, transactionsLoading } = useSelector(
+    state => state.keyring,
+  );
   const [refreshing, setRefresing] = useState(transactionsLoading);
   const icpPrice = useICPPrice();
 
@@ -40,7 +46,7 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-    setRefresing(transactionsLoading)
+    setRefresing(transactionsLoading);
   }, [transactionsLoading]);
 
   return (
@@ -49,10 +55,12 @@ const Profile = () => {
         <Header
           left={<Settings />}
           right={
-            <Touchable onPress={() => navigation.navigate(Routes.WALLET_SCREEN)}>
+            <Touchable
+              onPress={() => navigation.navigate(Routes.WALLET_SCREEN)}>
               <Icon name="chevronRight" />
             </Touchable>
-          } />
+          }
+        />
         <ScrollView
           refreshControl={
             <RefreshControl
@@ -62,7 +70,6 @@ const Profile = () => {
             />
           }>
           <View style={styles.container}>
-
             <View style={styles.leftContainer}>
               <UserIcon size="large" onPress={openAccounts} />
               <Text style={styles.name}>{currentWallet.name}</Text>
@@ -86,11 +93,7 @@ const Profile = () => {
         </ScrollView>
       </Container>
 
-
-      <Accounts
-        modalRef={modalRef}
-      />
-
+      <Accounts modalRef={modalRef} />
     </>
   );
 };

@@ -5,10 +5,10 @@ import moment from 'moment';
 import { FontStyles } from '../../../constants/theme';
 import UsdFormat from '../../../components/number/UsdFormat';
 import TokenFormat from '../../../components/number/TokenFormat';
+import shortAddress from '../../../helpers/short-address';
 
 import ActivityIcon from './ActivityIcon';
-import { getDate, getStatus, getSubtitle, getTitle } from './utils';
-import { ACTIVITY_TYPES } from './constants';
+import { getStatus, getSubtitle, getTitle } from './utils';
 
 const ActivityItem = ({
   type,
@@ -29,7 +29,6 @@ const ActivityItem = ({
   details,
   canisterInfo,
 }) => {
-
   //const isTransaction = ['SEND', 'RECEIVE'].includes(type) && symbol === 'ICP';
 
   return type === 'PLUG' ? (
@@ -48,7 +47,8 @@ const ActivityItem = ({
           {getTitle(type, symbol, swapData, plug)}
         </Text>
         <Text style={FontStyles.SmallGray}>
-          {getStatus(status, styles)}{moment(date).format('MMM Do')}
+          {getStatus(status, styles)}
+          {moment(date).format('MMM Do')}
           {getSubtitle(type, to, from, canisterId)}
         </Text>
       </View>
@@ -56,7 +56,9 @@ const ActivityItem = ({
         {details?.tokenId ? (
           <>
             <Text style={FontStyles.Normal}>
-              {details?.tokenId?.length > 5 ? shortAddress(details?.tokenId) : `#${details?.tokenId}`}
+              {details?.tokenId?.length > 5
+                ? shortAddress(details?.tokenId)
+                : `#${details?.tokenId}`}
             </Text>
             <Text style={FontStyles.SmallGray}>
               {canisterInfo?.name || canisterId}
@@ -64,7 +66,11 @@ const ActivityItem = ({
           </>
         ) : (
           <>
-            <TokenFormat value={amount} token={symbol} style={FontStyles.Normal} />
+            <TokenFormat
+              value={amount}
+              token={symbol}
+              style={FontStyles.Normal}
+            />
             <UsdFormat value={Number(value)} style={FontStyles.SmallGray} />
           </>
         )}
