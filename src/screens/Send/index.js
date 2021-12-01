@@ -35,7 +35,7 @@ const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
 const Send = ({ modalRef }) => {
   const dispatch = useDispatch();
 
-  const [address, setAddress] = useState(null);
+  const [address, setAddress] = useState('6kuk7-ijj2d-3hjz4-cbscx-ijpuw-ld65n-lr7cy-p2pug-3msae-lw6cf-aae');
   const [addressInfo, setAddressInfo] = useState(INITIAL_ADDRESS_INFO);
 
   const { assets, principalId, accountId, transaction } = useSelector(

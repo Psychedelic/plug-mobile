@@ -95,10 +95,18 @@ const ReviewSend = ({
 
         <Row style={styles.row}>
           <Column>
-            <Text style={FontStyles.Title2}>{contact?.name}</Text>
-            <Text style={FontStyles.Subtitle3}>
-              {shortAddress(contact?.id)}
-            </Text>
+            {
+              contact
+                ?
+                <>
+                  <Text style={FontStyles.Title2}>{contact?.name}</Text>
+                  <Text style={FontStyles.Subtitle3}>
+                    {shortAddress(contact?.id)}
+                  </Text>
+                </>
+                :
+                <Text style={FontStyles.Title2}>{shortAddress(to)}</Text>
+            }
           </Column>
           <UserIcon size="medium" />
         </Row>
