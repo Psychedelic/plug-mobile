@@ -33,7 +33,7 @@ const Deposit = ({ modalRef }) => {
         </Text>
 
         <InfoWithActions
-          text={shortAddress(principal)}
+          text={shortAddress(principal, { leftSize: 10, rightSize: 15 })}
           actions={[
             {
               icon: 'copy',
@@ -69,7 +69,7 @@ const Deposit = ({ modalRef }) => {
         </Text>
 
         <InfoWithActions
-          text={shortAddress(accountId)}
+          text={shortAddress(accountId, { leftSize: 10, rightSize: 15 })}
           actions={[
             {
               icon: 'copy',

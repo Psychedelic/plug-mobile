@@ -10,6 +10,8 @@ import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
 import Back from '../../../../components/common/Back';
 import useKeyring from '../../../../hooks/useKeyring';
 import styles from './styles';
+import { useDispatch } from 'react-redux';
+import { reset } from '../../../../redux/slices/keyring';
 import KeyboardHider from '../../../../components/common/KeyboardHider';
 
 const ImportSeedPhrase = ({ navigation, route }) => {
@@ -18,9 +20,11 @@ const ImportSeedPhrase = ({ navigation, route }) => {
   const { password } = route?.params || {};
   const [seedPhrase, setSeedPhrase] = useState(null);
   const [invalidSeedPhrase, setInvalidSeedPhrase] = useState(false);
+  const dispatch = useDispatch();
 
   const onPress = async () => {
     try {
+      dispatch(reset());
       await importWallet({ mnemonic: seedPhrase, password });
       navigation.navigate(Routes.SWIPE_LAYOUT);
     } catch (e) {

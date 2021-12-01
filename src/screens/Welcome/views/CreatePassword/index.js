@@ -10,6 +10,8 @@ import Back from '../../../../components/common/Back';
 import useKeyring from '../../../../hooks/useKeyring';
 import styles from './styles';
 import Routes from '../../../../navigation/Routes';
+import { useDispatch } from 'react-redux';
+import { reset } from '../../../../redux/slices/keyring';
 import KeyboardHider from '../../../../components/common/KeyboardHider';
 
 const CreatePassword = ({ route, navigation }) => {
@@ -20,12 +22,14 @@ const CreatePassword = ({ route, navigation }) => {
   const [confirmPassword, setConfirmPassword] = useState(null);
   const [faceId, setFaceId] = useState(false);
   const toggleSwitch = () => setFaceId(previousState => !previousState);
+  const dispatch = useDispatch();
 
   const handleCreate = async () => {
     if (flow === 'import') {
       navigation.navigate(Routes.IMPORT_SEED_PHRASE, { password });
     } else {
       try {
+        dispatch(reset());
         const mnemonic = await createWallet(password);
         navigation.navigate(Routes.BACKUP_SEED_PHRASE, { mnemonic });
       } catch (e) {
