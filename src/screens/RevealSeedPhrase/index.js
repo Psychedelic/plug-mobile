@@ -72,10 +72,7 @@ const RevealSeedPhrase = ({ modalRef }) => {
               </>
               :
               <>
-                <SeedPhrase
-                  mnemonic={instance?.state?.mnemonic.split(' ') || []}
-                  onReveal={() => null}
-                />
+                <SeedPhrase mnemonic={instance?.state?.mnemonic.split(' ') || []} />
                 <Copy text={instance?.state?.mnemonic} customStyle={{ marginTop: 30, alignSelf: 'center' }} />
               </>
           }
