@@ -26,7 +26,6 @@ export const useICPPrice = (refetch = false, dependencies = []) => {
   const fetchICPPrice = async () => {
     try {
       const { data } = await getICPPrice();
-      console.log('icp price', data);
 
       dispatch(setICPPrice(data?.['internet-computer']?.usd ?? 1));
     } catch (error) {

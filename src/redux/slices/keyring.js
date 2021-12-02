@@ -148,7 +148,7 @@ export const sendToken = createAsyncThunk(
       const state = getState();
       const { height, transactionId } = await state.keyring.instance?.send(
         to,
-        amount.toString(),
+        Number(amount).toFixed(8).toString(),
         canisterId,
         opts,
       );
@@ -177,9 +177,7 @@ export const getTransactions = createAsyncThunk(
       const { icpPrice } = params;
       const state = getState();
       const response = await state.keyring.instance?.getTransactions();
-
-      console.log('acccc', response);
-
+      console.log('getTransactions', response.transactions[0]);
       const mapTransaction = trx => {
         const asset = formatAssetBySymbol(
           trx?.details?.amount,
@@ -191,7 +189,7 @@ export const getTransactions = createAsyncThunk(
         );
         const getType = () => {
           const { type } = trx;
-          if (type.toUpperCase() === 'TRANSFER') {
+          if (type.toUpperCase().includes('TRANSFER')) {
             return isOwnTx ? 'SEND' : 'RECEIVE';
           }
           return type.toUpperCase();
@@ -217,6 +215,8 @@ export const getTransactions = createAsyncThunk(
         };
         return transaction;
       };
+      // 100_000_000_000
+      //       1_000_000
       const parsedTrx = response.transactions?.map(mapTransaction) || [];
 
       return parsedTrx;

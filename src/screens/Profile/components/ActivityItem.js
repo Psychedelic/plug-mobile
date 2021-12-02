@@ -29,8 +29,6 @@ const ActivityItem = ({
   details,
   canisterInfo,
 }) => {
-  //const isTransaction = ['SEND', 'RECEIVE'].includes(type) && symbol === 'ICP';
-
   return type === 'PLUG' ? (
     <View style={styles.container}>
       <Image style={styles.image} source={icon} />
@@ -61,7 +59,7 @@ const ActivityItem = ({
                 : `#${details?.tokenId}`}
             </Text>
             <Text style={FontStyles.SmallGray}>
-              {canisterInfo?.name || canisterId}
+              {canisterInfo?.name || shortAddress(canisterId)}
             </Text>
           </>
         ) : (

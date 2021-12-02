@@ -5,7 +5,7 @@ import NumberFormat from 'react-number-format';
 const UsdFormat = ({ value, style }) => {
   return (
     <NumberFormat
-      value={value}
+      value={Number(value).toFixed(8)}
       displayType="text"
       thousandSeparator=","
       decimalScale={2}

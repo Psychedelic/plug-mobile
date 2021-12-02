@@ -16,12 +16,7 @@ import TokenSection from './components/TokenSection';
 import { Keyboard } from 'react-native';
 import ReviewSend from './components/ReviewSend';
 import { useICPPrice } from '../../redux/slices/icp';
-import {
-  CURRENCIES,
-  E8S_PER_ICP,
-  USD_PER_TC,
-  CYCLES_PER_TC,
-} from '../../utils/assets';
+import { USD_PER_TC } from '../../utils/assets';
 import { ADDRESS_TYPES } from '../../constants/addresses';
 import { useSelector } from 'react-redux';
 import XTC_OPTIONS from '../../constants/xtc';
