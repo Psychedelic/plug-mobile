@@ -18,6 +18,6 @@ export default StyleSheet.create({
     fontSize: 16,
     color: Colors.White.Primary,
     textAlign: 'left',
-    width: 70,
+    width: 90,
   },
 });

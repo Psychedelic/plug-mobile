@@ -11,6 +11,9 @@ import Back from '../../../../components/common/Back';
 import useKeyring from '../../../../hooks/useKeyring';
 import styles from './styles';
 import Routes from '../../../../navigation/Routes';
+import { useDispatch } from 'react-redux';
+import { reset } from '../../../../redux/slices/keyring';
+import KeyboardHider from '../../../../components/common/KeyboardHider';
 
 const CreatePassword = ({ route, navigation }) => {
   const { createWallet, saveBiometrics } = useKeyring();
@@ -18,8 +21,11 @@ const CreatePassword = ({ route, navigation }) => {
   const { goBack } = navigation;
   const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
+
+  const dispatch = useDispatch();
   const [biometrics, setBiometrics] = useState(false);
   const [biometryType, setBiometryType] = useState(false);
+  const toggleSwitch = () => setBiometrics(previousState => !previousState);
 
   useEffect(() => {
     Keychain.getSupportedBiometryType().then((deviceBiometry) => {
@@ -27,13 +33,13 @@ const CreatePassword = ({ route, navigation }) => {
     });
   }, []);
 
-  const toggleSwitch = () => setBiometrics(previousState => !previousState);
 
   const handleCreate = async () => {
     if (flow === 'import') {
       navigation.navigate(Routes.IMPORT_SEED_PHRASE, { password, biometryType });
     } else {
       try {
+        dispatch(reset());
         const mnemonic = await createWallet(password, biometryType);
         await saveBiometrics(password, biometryType);
         navigation.navigate(Routes.BACKUP_SEED_PHRASE, { mnemonic });
@@ -44,74 +50,74 @@ const CreatePassword = ({ route, navigation }) => {
   };
 
   return (
-    <Container>
-      <Header
-        left={<Back onPress={() => goBack()} />}
-        center={
-          <View style={{ width: 70, height: 33 }}>
-            <Image
-              style={{
-                flex: 1,
-                width: null,
-                height: null,
-                resizeMode: 'contain',
-              }}
-              source={PlugLogo}
-            />
-          </View>
-        }
-      />
-
-      <View style={styles.container}>
-        <Text style={styles.title}>Create Password</Text>
-        <Text style={styles.subtitle}>
-          Please create a secure password that you will remember.
-        </Text>
-
-        <TextInput
-          value={password}
-          variant="password"
-          onChangeText={setPassword}
-          placeholder="Password"
-          customStyle={{
-            backgroundColor: Colors.Gray.Secondary,
-            marginTop: 28,
-          }}
-        />
-
-        <TextInput
-          value={confirmPassword}
-          variant="password"
-          onChangeText={setConfirmPassword}
-          placeholder="Confirm Password"
-          customStyle={{
-            backgroundColor: Colors.Gray.Secondary,
-            marginTop: 22,
-          }}
-        />
-
-        <Text style={styles.help}>Must be at least 12 characters</Text>
-
-        { biometryType && (
-          <View style={styles.switchContainer}>
-            <Text style={styles.faceId}>Sign in with Face ID?</Text>
-            <Switch onValueChange={toggleSwitch} value={biometrics} />
-          </View>
-        )}
-
-        <RainbowButton
-          buttonStyle={styles.componentMargin}
-          text="Continue"
-          onPress={handleCreate}
-          disabled={
-            !password ||
-            !confirmPassword ||
-            password !== confirmPassword ||
-            password.length < 12
+    <KeyboardHider>
+      <Container>
+        <Header
+          left={<Back onPress={() => goBack()} />}
+          center={
+            <View style={{ width: 70, height: 33 }}>
+              <Image
+                style={{
+                  flex: 1,
+                  width: null,
+                  height: null,
+                  resizeMode: 'contain',
+                }}
+                source={PlugLogo}
+              />
+            </View>
           }
         />
-      </View>
-    </Container>
+        <View style={styles.container}>
+          <Text style={styles.title}>Create Password</Text>
+          <Text style={styles.subtitle}>
+            Please create a secure password that you will remember.
+          </Text>
+
+          <TextInput
+            value={password}
+            variant="password"
+            onChangeText={setPassword}
+            placeholder="Password"
+            customStyle={{
+              backgroundColor: Colors.Gray.Secondary,
+              marginTop: 28,
+            }}
+          />
+
+          <TextInput
+            value={confirmPassword}
+            variant="password"
+            onChangeText={setConfirmPassword}
+            placeholder="Confirm Password"
+            customStyle={{
+              backgroundColor: Colors.Gray.Secondary,
+              marginTop: 22,
+            }}
+          />
+
+          <Text style={styles.help}>Must be at least 12 characters</Text>
+
+          { biometryType && (
+            <View style={styles.switchContainer}>
+              <Text style={styles.faceId}>Sign in with Face ID?</Text>
+              <Switch onValueChange={toggleSwitch} value={biometrics} />
+            </View>
+          )}
+          <RainbowButton
+            buttonStyle={styles.componentMargin}
+            text="Continue"
+            onPress={handleCreate}
+            disabled={
+              !password ||
+                !confirmPassword ||
+                password !== confirmPassword ||
+                password.length < 12
+            }
+          />
+        </View>
+      </Container>
+    </KeyboardHider>
   );
 };
 

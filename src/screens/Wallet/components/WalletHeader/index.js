@@ -11,11 +11,15 @@ import Touchable from '../../../../components/animations/Touchable';
 import { Colors } from '../../../../constants/theme';
 import ActionButton from '../ActionButton';
 import Deposit from '../../../Deposit';
+import { useNavigation } from '@react-navigation/core';
+import Routes from '../../../../navigation/Routes';
 
 const WalletHeader = () => {
   const modalRef = useRef(null);
   const sendRef = useRef(null);
   const depositRef = useRef(null);
+
+  const navigation = useNavigation();
 
   const openModal = () => {
     modalRef.current?.open();
@@ -54,7 +58,7 @@ const WalletHeader = () => {
   return (
     <>
       <Header
-        left={<UserIcon size="small" icon="🔥" />}
+        left={<UserIcon size="small" onPress={() => navigation.navigate(Routes.PROFILE_SCREEN)} />}
         center={<AccountInfo />}
         right={
           <Touchable onPress={openModal}>

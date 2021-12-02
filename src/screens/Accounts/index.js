@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { StyleSheet, ActionSheetIOS } from 'react-native';
 import Header from '../../components/common/Header';
 import Modal from '../../components/modal';
 import { FontStyles } from '../../constants/theme';
@@ -7,31 +7,66 @@ import { View, Text } from 'react-native';
 import Icon from '../../components/icons';
 import Row from '../../components/layout/Row';
 import Touchable from '../../components/animations/Touchable';
-import useAccounts from '../../hooks/useAccounts';
 import AccountItem from '../../components/common/AccountItem';
+import CreateEditAccount from '../../modals/CreateEditAccount';
+import { useSelector } from 'react-redux';
+import shortAddress from '../../helpers/short-address';
 
-import CreateAccount from '../../modals/CreateAccount';
+const Accounts = ({ modalRef, onClose, ...props }) => {
+  const { wallets } = useSelector(state => state.keyring);
 
-const Accounts = ({ modalRef, handleClose, ...props }) => {
-  const { accounts } = useAccounts();
+  const [selectedAccount, setSelectedAccount] = useState(null);
 
-  const createAccountRef = useRef(null);
+  const createEditAccountRef = useRef(null);
 
   const onCreateAccount = () => {
-    createAccountRef?.current.open();
+    setSelectedAccount(null);
+    createEditAccountRef.current?.open();
+  };
+
+  const onEditAccount = account => {
+    setSelectedAccount(account);
+    createEditAccountRef.current?.open();
+  };
+
+  const onLongPress = account => {
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        title: account.name,
+        message: shortAddress(account.principal),
+        options: ['Cancel', 'Edit Account'],
+        cancelButtonIndex: 0,
+        userInterfaceStyle: 'dark',
+      },
+      buttonIndex => {
+        switch (buttonIndex) {
+          case 1:
+            onEditAccount(account);
+            break;
+        }
+      },
+    );
   };
 
   return (
     <Modal
       adjustToContentHeight
       modalRef={modalRef}
-      onClose={handleClose}
+      onClose={onClose}
       {...props}>
+
       <Header center={<Text style={FontStyles.Subtitle2}>Accounts</Text>} />
+
       <View style={styles.content}>
-        {accounts.map(account => (
-          <AccountItem account={account} key={account.accountId} />
-        ))}
+        {
+          wallets?.map(account => (
+            <AccountItem
+              account={account}
+              key={account.walletNumber}
+              onMenu={() => onLongPress(account)}
+            />
+          ))
+        }
 
         <Touchable onPress={onCreateAccount}>
           <Row align="center" style={{ marginBottom: 30, marginTop: 10 }}>
@@ -40,7 +75,11 @@ const Accounts = ({ modalRef, handleClose, ...props }) => {
           </Row>
         </Touchable>
 
-        <CreateAccount modalRef={createAccountRef} title="Create Account" />
+        <CreateEditAccount
+          modalRef={createEditAccountRef}
+          account={selectedAccount}
+        />
+
       </View>
     </Modal>
   );

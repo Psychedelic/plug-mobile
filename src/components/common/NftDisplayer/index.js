@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { WebView } from 'react-native-webview';
+import MaskedView from '@react-native-community/masked-view'
+import { SquircleView } from 'react-native-figma-squircle'
 import Video from 'react-native-video';
-import { ActivityIndicator, Image, View } from 'react-native';
+import { StyleSheet, ActivityIndicator, Image, View } from 'react-native';
 import styles from './styles';
 
 const TYPE_MAP = {
@@ -73,11 +75,24 @@ const NftDisplayer = ({ url, style }) => {
   }
 
   return (
-    <Image
-      resizeMode="cover"
+    <MaskedView
       style={[styles.image, style]}
-      source={{ uri: url }}
-    />
+      maskElement={
+        <SquircleView
+          style={StyleSheet.absoluteFill}
+          squircleParams={{
+            cornerRadius: 30,
+            cornerSmoothing: 1,
+          }}
+        />
+      }
+    >
+      <Image
+        resizeMode="cover"
+        style={StyleSheet.absoluteFill}
+        source={{ uri: url }}
+      />
+    </MaskedView>
   );
 };
 

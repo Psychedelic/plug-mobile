@@ -4,9 +4,13 @@ import * as Keychain from 'react-native-keychain';
 import bip39 from 'react-native-bip39';
 import {
   setCurrentWallet,
-  setAssets,
   setUnlocked,
+  setWallets,
+  setTransactions,
 } from '../redux/slices/keyring';
+import { formatAssetBySymbol, TOKEN_IMAGES } from '../utils/assets';
+import { ACTIVITY_STATUS } from '../screens/Profile/components/constants';
+import { recursiveParseBigInt } from '../utils/objects';
 
 const KEYCHAIN_USER = 'plug-user-name';
 const DEFAULT_KEYCHAIN_OPTIONS = {
@@ -34,6 +38,7 @@ const useKeyring = () => {
 
   const createWallet = async (password) => {
     const mnemonic = await generateMnemonic();
+    console.log(instance);
     const response = await instance?.importMnemonic({ password, mnemonic });
     const { wallet } = response || {};
     await instance?.unlock(password);
@@ -65,25 +70,13 @@ const useKeyring = () => {
     return mnemonic;
   };
 
-  const getAssets = async refresh => {
-    const response = await instance?.getState();
-    const { wallets, currentWalletId } = response || {};
-    let assets = wallets?.[currentWalletId]?.assets || [];
-    if (assets?.every(asset => !asset.amount) || refresh) {
-      assets = await instance?.getBalance();
-    } else {
-      instance?.getBalance();
-    }
-    dispatch(setAssets(assets));
-    return assets;
-  };
-
   const getState = async () => {
     const response = await instance?.getState();
     if (!response.wallets.length) {
       await instance?.lock();
     } else {
       const { wallets, currentWalletId } = response || {};
+      dispatch(setWallets(wallets));
       dispatch(setCurrentWallet(wallets[currentWalletId]));
       return response;
     }
@@ -94,6 +87,7 @@ const useKeyring = () => {
     try {
       unlocked = await instance.unlock(password);
       dispatch(setUnlocked(unlocked));
+      await getState();
     } catch (e) {
       unlocked = false;
     }
@@ -101,13 +95,48 @@ const useKeyring = () => {
     return unlocked;
   };
 
+  const getActivity = async () => {
+    try {
+      const response = await instance?.getTransactions();
+      const mapTransaction = trx => {
+        const asset = formatAssetBySymbol(
+          trx?.details?.amount,
+          trx?.details?.currency?.symbol,
+          50, // TODO: Use proper ICP price.
+        );
+        const transaction = recursiveParseBigInt({
+          ...asset,
+          type: trx?.type,
+          hash: trx?.hash,
+          to: trx?.details?.to,
+          from: trx?.details?.from,
+          date: new Date(trx?.timestamp),
+          status: ACTIVITY_STATUS[trx?.details?.status],
+          image: TOKEN_IMAGES[trx?.details?.currency?.symbol] || '',
+          symbol: trx?.details?.currency?.symbol,
+          canisterId: trx?.details?.canisterId,
+          plug: null,
+          canisterInfo: trx?.canisterInfo,
+          details: trx?.details,
+        });
+        return transaction;
+      };
+      const parsedTrx = response?.transactions?.map(mapTransaction) || [];
+      dispatch(setActivity(parsedTrx));
+      return parsedTrx;
+    } catch (e) {
+      console.log(e);
+      return [];
+    }
+  };
+
   return {
     keyring: instance,
     createWallet,
     saveBiometrics,
     importWallet,
-    getAssets,
     getState,
+    getActivity,
     unlock,
   };
 };

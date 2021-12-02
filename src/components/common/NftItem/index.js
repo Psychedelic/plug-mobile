@@ -8,10 +8,10 @@ const NftItem = ({ url, name, style }) => (
   <View style={[styles.root, style]}>
     <NftDisplayer
       url={url}
-      style={{ width: 41, height: 41, borderRadius: 7 }}
+      style={{ height: 155, aspectRatio: 1, borderRadius: 7 }}
     />
     <View style={styles.leftContainer}>
-      <Text style={FontStyles.Normal}>{name}</Text>
+      <Text style={styles.nftName}>{name}</Text>
     </View>
   </View>
 );

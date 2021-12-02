@@ -45,7 +45,7 @@ const BackupSeedPhrase = ({ route, navigation }) => {
 
         <SeedPhrase mnemonic={mnemonic.split(' ')} onReveal={onReveal} />
 
-        <Copy text={mnemonic} customStyle={{ marginTop: 30 }} />
+        <Copy text={mnemonic} customStyle={{ marginTop: 30, alignSelf: 'center' }} />
 
         <RainbowButton
           buttonStyle={styles.button}

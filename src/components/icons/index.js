@@ -19,12 +19,17 @@ import SwapArrowsIcon from './svg/SwapArrowsIcon';
 import ArrowDownAccountIcon from './svg/ArrowDownAccountIcon';
 import ConfirmIcon from './svg/ConfirmIcon';
 import ThreeDotsIcon from './svg/ThreeDotsIcon';
+import UnknownIcon from './svg/UnknownIcon';
+import LightingActivityIcon from './svg/LightingActivityIcon';
+import BurnActivityIcon from './svg/BurnActivityIcon';
+import MintActivityIcon from './svg/MintActivityIcon';
 
 export const IconTypes = {
   activityReceive: ActivityReceiveIcon,
   activitySend: ActivitySendIcon,
   arrowDown: ArrowDownIcon,
   arrowDownAccount: ArrowDownAccountIcon,
+  burnActivity: BurnActivityIcon,
   confirm: ConfirmIcon,
   copy: CopyIcon,
   chevronLeft: ChevronLeftIcon,
@@ -32,12 +37,15 @@ export const IconTypes = {
   deposit: DepositIcon,
   gear: GearIcon,
   groupedActions: GroupedActionsIcon,
+  lightingActivity: LightingActivityIcon,
+  mintActivity: MintActivityIcon,
   plus: PlusIcon,
   send: SendIcon,
   swap: SwapIcon,
   swapArrows: SwapArrowsIcon,
   tokens: TokensIcon,
   threeDots: ThreeDotsIcon,
+  unknown: UnknownIcon,
   nfts: NFTsIcon,
   dfinity: ICPIcon,
   xtc: XTCIcon,

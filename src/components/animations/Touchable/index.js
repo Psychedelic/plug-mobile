@@ -15,6 +15,7 @@ const Touchable = ({
   hapticType = HapticFeedbackTypes.impactLight,
   scale = scales.small,
   disabled = false,
+  style,
   ...props
 }) => {
   const pressed = useSharedValue(false);
@@ -59,7 +60,7 @@ const Touchable = ({
       onLongPress={handleLongPress}
       disabled={disabled}
       {...props}>
-      <Animated.View style={animatedStyle}>{children}</Animated.View>
+      <Animated.View style={[animatedStyle, style]}>{children}</Animated.View>
     </TouchableWithoutFeedback>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { Fragment, useRef, useState } from 'react';
 import Column from '../../components/layout/Column';
 import Modal from '../../components/modal';
 import { Text, View, ActionSheetIOS } from 'react-native';
@@ -67,20 +67,21 @@ const Contacts = ({ modalRef }) => {
           {groupedContacts
             .sort((a, b) => a.letter.localeCompare(b.letter))
             .map(item => (
-              <>
+              <Fragment key={item.letter}>
                 <Text style={styles.letter}>{item.letter}</Text>
                 {item.contacts
                   .sort((a, b) => a.name.localeCompare(b.name))
                   .map(contact => (
-                    <View style={{ marginBottom: 20 }}>
+                    <View
+                      style={{ marginBottom: 20 }}
+                      key={`${contact.id}_${contact.name}`}>
                       <ContactItem
-                        key={contact.id}
                         contact={contact}
                         onLongPress={() => onLongPress(contact)}
                       />
                     </View>
                   ))}
-              </>
+              </Fragment>
             ))}
         </Column>
       </Modal>
