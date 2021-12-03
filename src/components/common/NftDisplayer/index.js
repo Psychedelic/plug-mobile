@@ -2,10 +2,14 @@ import React, { useEffect, useState, useRef } from 'react';
 import { WebView } from 'react-native-webview';
 import MaskedView from '@react-native-community/masked-view';
 import { SquircleView } from 'react-native-figma-squircle';
-import { StyleSheet, ActivityIndicator, View } from 'react-native';
+import { StyleSheet, ActivityIndicator, View, Dimensions } from 'react-native';
 import Image from 'react-native-remote-svg';
 import styles from './styles';
 import VideoNFTDisplay from './components/VideoNFTDisplay';
+import { SvgCssUri } from 'react-native-svg';
+
+const { width } = Dimensions.get('window');
+const itemSize = width / 2 - 40;
 
 const NftDisplayer = ({ url, style }) => {
   const [type, setType] = useState('img');
@@ -69,15 +73,22 @@ const NftDisplayer = ({ url, style }) => {
           }}
         />
       }>
-      <Image
-        resizeMode="cover"
-        style={{
-          ...StyleSheet.absoluteFill,
-          height: type.includes('svg') ? 500 : undefined,
-          width: type.includes('svg') ? 550 : undefined,
-        }}
-        source={{ uri: url, type }}
-      />
+      {
+        type.includes('svg')
+          ?
+          <SvgCssUri
+            width="100%"
+            height="100%"
+            uri={url}
+          />
+          :
+          <Image
+            resizeMode="cover"
+            style={StyleSheet.absoluteFill}
+            source={{ uri: url, type }}
+          />
+      }
+
     </MaskedView>
   );
 };

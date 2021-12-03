@@ -242,6 +242,16 @@ export const keyringSlice = createSlice({
     setSelectedNFT: (state, action) => {
       state.selectedNFT = action.payload;
     },
+    setCollections: (state, action) => {
+      state.collections = action.payload;
+    },
+    removeNFT: (state, action) => {
+      const collections = state.collections.map((col) => ({
+        ...col,
+        tokens: col.tokens.filter((token) => token.id !== action.payload?.id),
+      }));
+      state.collections = collections.filter((col) => col.tokens.length);
+    },
   },
   extraReducers: {
     [initKeyring.fulfilled]: (state, action) => {

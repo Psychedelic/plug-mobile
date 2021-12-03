@@ -13,7 +13,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 import WalletHeader from '../../components/WalletHeader';
 import NftDetail from '../../../NftDetail';
 import Touchable from '../../../../components/animations/Touchable';
-import useNfts from '../../../../hooks/useNfts';
 import NftDisplayer from '../../../../components/common/NftDisplayer';
 import { getNFTs, setSelectedNFT } from '../../../../redux/slices/keyring';
 import { useDispatch, useSelector } from 'react-redux';

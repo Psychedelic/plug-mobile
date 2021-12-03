@@ -43,6 +43,8 @@ const ReviewSend = ({
     }
   };
 
+  console.log('nfffgt', nft);
+
   return (
     <Modal modalRef={modalRef} onClose={handleClose} {...props}>
       <View style={styles.content}>
@@ -76,12 +78,11 @@ const ReviewSend = ({
         {nft && (
           <Row style={styles.row}>
             <Column>
-              <Text style={FontStyles.Title2}>{nft.name}</Text>
-              <Text style={FontStyles.Subtitle3}>Collection name here?</Text>
+              <Text style={FontStyles.Title2}>{nft.name || `${nft.collection} #${nft.index}`}</Text>
             </Column>
             <NftDisplayer
               url={nft.url}
-              style={{ width: 41, height: 41, borderRadius: 7 }}
+              style={{ width: 41, height: 41, borderRadius: 20 }}
             />
           </Row>
         )}
