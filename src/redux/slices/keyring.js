@@ -362,6 +362,7 @@ export const keyringSlice = createSlice({
       );
     },
     [sendToken.fulfilled]: (state, action) => {
+      console.log('payload', action.payload);
       state.transaction = action.payload;
     },
     [burnXtc.fulfilled]: (state, action) => {

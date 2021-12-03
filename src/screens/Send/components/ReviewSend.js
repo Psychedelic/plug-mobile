@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Modal from '../../../components/modal';
 import { FontStyles } from '../../../constants/theme';
 import Header from '../../../components/common/Header';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Linking } from 'react-native';
 import Column from '../../../components/layout/Column';
 import Row from '../../../components/layout/Row';
 import TokenIcon from '../../../components/tokens/TokenIcon';
@@ -13,10 +13,9 @@ import Button from '../../../components/buttons/Button';
 import { Colors } from '../../../constants/theme';
 import NftDisplayer from '../../../components/common/NftDisplayer';
 import shortAddress from '../../../helpers/short-address';
-import {
-  TRANSACTION_STATUS,
-  setTransaction,
-} from '../../../redux/slices/keyring';
+import { TRANSACTION_STATUS, setTransaction } from '../../../redux/slices/keyring';
+import { getICRocksTransactionUrl } from '../../../constants/urls';
+import { useDispatch } from 'react-redux';
 
 const ReviewSend = ({
   modalRef,
@@ -32,18 +31,19 @@ const ReviewSend = ({
   transaction,
   ...props
 }) => {
+  const dispatch = useDispatch();
+
   const transactionCompleted =
     transaction?.status === TRANSACTION_STATUS.success;
 
   const handleClose = () => {
     onClose();
+    dispatch(setTransaction(null));
 
     if (transactionCompleted) {
       onSuccess();
     }
   };
-
-  console.log('nfffgt', nft);
 
   return (
     <Modal modalRef={modalRef} onClose={handleClose} {...props}>
@@ -113,11 +113,11 @@ const ReviewSend = ({
         </Row>
 
         {transactionCompleted ? (
-          selectedToken && <Button
+          token && token.symbol === 'ICP' && <Button
             variant="gray"
             text="View on Explorer"
             buttonStyle={styles.button}
-            onPress={() => null}
+            onPress={() => Linking.openURL(getICRocksTransactionUrl(transaction?.response.transactionId))}
           />
         ) : (
           <RainbowButton

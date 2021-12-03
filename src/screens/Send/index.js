@@ -117,7 +117,6 @@ const Send = ({ modalRef }) => {
     const to = address || selectedContact.id;
 
     if (selectedNft) {
-      console.log('sending nft')
       dispatch(transferNFT({ to, nft: selectedNft }));
     }
     else {
