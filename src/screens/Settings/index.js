@@ -11,16 +11,21 @@ import SettingItem from './components/SettingItem';
 import InfoItem from './components/InfoItem';
 import Separator from '../../components/layout/Separator';
 import Contacts from '../Contacts';
+import RevealSeedPhrase from '../RevealSeedPhrase';
 
 const Settings = () => {
   const modalRef = useRef(null);
   const contactsRef = useRef(null);
+  const revealSeedPhraseRef = useRef(null);
 
-  //const settingsItems = useSettingsItems();
   const infoItems = useInfoItems();
 
   const openModal = () => {
     modalRef.current?.open();
+  };
+
+  const openRevealSeedPhrase = () => {
+    revealSeedPhraseRef.current?.open();
   };
 
   const openContacts = () => {
@@ -38,7 +43,7 @@ const Settings = () => {
       icon: '🗝',
       name: 'Seed Phrase',
       description: 'View your seed phrase & backup.',
-      onPress: null,
+      onPress: openRevealSeedPhrase,
     },
   ];
 
@@ -69,6 +74,7 @@ const Settings = () => {
       </Modal>
 
       <Contacts modalRef={contactsRef} />
+      <RevealSeedPhrase modalRef={revealSeedPhraseRef} />
     </>
   );
 };
