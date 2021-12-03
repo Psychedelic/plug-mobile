@@ -17,6 +17,7 @@ import { useNavigation } from '@react-navigation/core';
 import { getTransactions, setTransactionsLoading } from '../../redux/slices/keyring';
 import { useDispatch } from 'react-redux';
 import { useICPPrice } from '../../redux/slices/icp';
+import Routes from '../../navigation/Routes';
 
 const Profile = () => {
   const dispatch = useDispatch();

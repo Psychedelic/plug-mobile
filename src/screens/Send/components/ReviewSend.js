@@ -113,7 +113,7 @@ const ReviewSend = ({
         </Row>
 
         {transactionCompleted ? (
-          <Button
+          selectedToken && <Button
             variant="gray"
             text="View on Explorer"
             buttonStyle={styles.button}

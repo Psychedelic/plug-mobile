@@ -21,7 +21,7 @@ import { ADDRESS_TYPES } from '../../constants/addresses';
 import { useSelector } from 'react-redux';
 import XTC_OPTIONS from '../../constants/xtc';
 import { DEFAULT_FEE, XTC_FEE } from '../../constants/addresses';
-import { burnXtc, sendToken, setTransaction } from '../../redux/slices/keyring';
+import { burnXtc, sendToken, setTransaction, transferNFT } from '../../redux/slices/keyring';
 import { useDispatch } from 'react-redux';
 
 const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
@@ -115,17 +115,23 @@ const Send = ({ modalRef }) => {
 
   const handleSend = () => {
     const to = address || selectedContact.id;
-    if (sendingXTCtoCanister && destination === XTC_OPTIONS.BURN) {
-      dispatch(burnXtc({ to, amount: tokenAmount }));
-    } else {
-      dispatch(
-        sendToken({
-          to,
-          amount: tokenAmount,
-          canisterId: selectedToken?.canisterId,
-        }),
-      );
-      //parseSendResponse(response);
+
+    if (selectedNft) {
+      console.log('sending nft')
+      dispatch(transferNFT({ to, nft: selectedNft }));
+    }
+    else {
+      if (sendingXTCtoCanister && destination === XTC_OPTIONS.BURN) {
+        dispatch(burnXtc({ to, amount: tokenAmount }));
+      } else {
+        dispatch(
+          sendToken({
+            to,
+            amount: tokenAmount,
+            canisterId: selectedToken?.canisterId,
+          }),
+        );
+      }
     }
   };
 

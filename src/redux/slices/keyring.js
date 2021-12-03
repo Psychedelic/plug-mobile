@@ -34,6 +34,7 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
   console.log('keyring init', keyring?.isInitialized, keyring?.isUnlocked);
   if (keyring?.isUnlocked) {
     const state = await keyring.getState();
+    console.log('state', state);
     console.log('state.wallets', state.wallets);
     if (!state.wallets.length) {
       console.log('locking state');
@@ -161,6 +162,31 @@ export const sendToken = createAsyncThunk(
       };
     } catch (e) {
       console.log('sendToken', e);
+      console.trace(e.stack);
+      return {
+        error: e.message,
+        status: TRANSACTION_STATUS.error,
+      };
+    }
+  },
+);
+
+export const transferNFT = createAsyncThunk(
+  'keyring/transferNFT',
+  async (params, { getState }) => {
+    try {
+      const { to, nft } = params;
+
+      const state = getState();
+      const response = await state.keyring.instance?.transferNFT({ to, token: nft });
+
+      return {
+        response: recursiveParseBigint(response),
+        nft,
+        status: TRANSACTION_STATUS.success,
+      };
+    } catch (e) {
+      console.log('transferNFT', e);
       console.trace(e.stack);
       return {
         error: e.message,
@@ -355,7 +381,25 @@ export const keyringSlice = createSlice({
         state.transactions = action.payload;
         state.transactionsLoading = false;
       }
-    }
+    },
+    [transferNFT.fulfilled]: (state, action) => {
+      const { nft, status, error } = action.payload;
+
+      if (!error) {
+        const collections = state.collections.map((col) => ({
+          ...col,
+          tokens: col.tokens.filter((token) => token.id !== nft.id),
+        }));
+
+        console.log('new collections', collections);
+
+        state.collections = collections.filter((col) => col.tokens.length);
+        state.transaction = {
+          status,
+        };
+        state.selectedNFT = {};
+      }
+    },
   },
 });
 

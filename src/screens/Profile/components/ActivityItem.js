@@ -9,6 +9,7 @@ import TokenFormat from '../../../components/number/TokenFormat';
 import ActivityIcon from './ActivityIcon';
 import { getDate, getStatus, getSubtitle, getTitle } from './utils';
 import { ACTIVITY_TYPES } from './constants';
+import shortAddress from '../../../helpers/short-address';
 
 const ActivityItem = ({
   type,
