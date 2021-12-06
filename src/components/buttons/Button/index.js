@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import animationScales from '../../../utils/animationScales';
 import Touchable from '../../animations/Touchable';
 import styles from './styles';
@@ -12,6 +12,7 @@ const Button = ({
   buttonStyle,
   disabled = false,
   disableAnimation = false,
+  loading = false,
   ...props
 }) => {
   return (
@@ -21,9 +22,17 @@ const Button = ({
       onPress={onPress}
       onLongPress={onLongPress}>
       <View style={[styles.button, buttonStyle]} {...props}>
-        <Text style={[styles.text, textStyle, disabled && styles.disabled]}>
-          {text}
-        </Text>
+        {
+          loading ? (
+            <ActivityIndicator
+              style={StyleSheet.absoluteFill}
+            />
+          )
+            :
+            <Text style={[styles.text, textStyle, disabled && styles.disabled]}>
+              {text}
+            </Text>
+        }
       </View>
     </Touchable>
   );
