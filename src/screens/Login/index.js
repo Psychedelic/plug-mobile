@@ -30,14 +30,14 @@ function Login() {
 
   const handleSubmit = async () => {
     setLoading(true);
-    /*const unlocked = await unlock(password);
+    const unlocked = await unlock(password);
     if (unlocked) {
       clearState();
       navigation.navigate(Routes.SWIPE_LAYOUT);
     } else {
       setError(true);
     }
-    setLoading(false);*/
+    setLoading(false);
   };
 
   return (
