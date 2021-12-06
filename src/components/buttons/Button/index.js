@@ -26,6 +26,7 @@ const Button = ({
           loading ? (
             <ActivityIndicator
               style={StyleSheet.absoluteFill}
+              color='white'
             />
           )
             :

@@ -15,6 +15,7 @@ function Login() {
   const [error, setError] = useState(false);
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
   const { unlock } = useKeyring();
 
   const clearState = () => {
@@ -28,13 +29,15 @@ function Login() {
   };
 
   const handleSubmit = async () => {
-    const unlocked = await unlock(password);
+    setLoading(true);
+    /*const unlocked = await unlock(password);
     if (unlocked) {
       clearState();
       navigation.navigate(Routes.SWIPE_LAYOUT);
     } else {
       setError(true);
     }
+    setLoading(false);*/
   };
 
   return (
@@ -58,11 +61,13 @@ function Login() {
           <RainbowButton
             text="Submit"
             onPress={handleSubmit}
+            loading={loading}
             buttonStyle={styles.buttonMargin}
           />
           <Button
             text="Import new Account"
             onPress={handleImport}
+            loading={loading}
             buttonStyle={styles.buttonMargin}
           />
         </View>
