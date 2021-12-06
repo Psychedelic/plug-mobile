@@ -60,6 +60,8 @@ const Send = ({ modalRef }) => {
   const [trxComplete, setTrxComplete] = useState(false);
   const [sendError, setError] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   const reviewRef = useRef(null);
 
   const onContactPress = contact => {
@@ -129,6 +131,7 @@ const Send = ({ modalRef }) => {
   };
 
   const handleSend = () => {
+    setLoading(true);
     const to = address || selectedContact.id;
     if (sendingXTCtoCanister && destination === XTC_OPTIONS.BURN) {
       dispatch(burnXtc({ to, amount: tokenAmount }));
@@ -143,13 +146,14 @@ const Send = ({ modalRef }) => {
       //parseSendResponse(response);
     }
     setTrxComplete(true);
+    setLoading(false);
   };
 
   useEffect(() => {
     if (selectedToken) {
       const price =
         { ICP: icpPrice, XTC: USD_PER_TC, WTC: USD_PER_TC }[
-          selectedToken?.symbol
+        selectedToken?.symbol
         ] || 1;
       setSelectedTokenPrice(price);
     }
@@ -235,6 +239,7 @@ const Send = ({ modalRef }) => {
           onSuccess={() => modalRef.current?.close()}
           onClose={partialReset}
           transaction={transaction}
+          loading={loading}
         />
       </ScrollView>
     </Modal>

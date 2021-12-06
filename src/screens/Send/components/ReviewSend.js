@@ -30,6 +30,7 @@ const ReviewSend = ({
   onClose,
   onSuccess,
   transaction,
+  loading,
   ...props
 }) => {
   const transactionCompleted =
@@ -121,6 +122,7 @@ const ReviewSend = ({
         ) : (
           <RainbowButton
             text="􀎽 Hold to Send"
+            loading={loading}
             onLongPress={onSend}
             buttonStyle={styles.button}
           />
