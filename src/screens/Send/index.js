@@ -16,18 +16,12 @@ import TokenSection from './components/TokenSection';
 import { Keyboard } from 'react-native';
 import ReviewSend from './components/ReviewSend';
 import { useICPPrice } from '../../redux/slices/icp';
-import {
-  CURRENCIES,
-  E8S_PER_ICP,
-  USD_PER_TC,
-  CYCLES_PER_TC,
-} from '../../utils/assets';
+import { USD_PER_TC } from '../../utils/assets';
 import { ADDRESS_TYPES } from '../../constants/addresses';
 import { useSelector } from 'react-redux';
 import XTC_OPTIONS from '../../constants/xtc';
-import useNfts from '../../hooks/useNfts';
 import { DEFAULT_FEE, XTC_FEE } from '../../constants/addresses';
-import { burnXtc, sendToken, setTransaction } from '../../redux/slices/keyring';
+import { burnXtc, sendToken, setTransaction, transferNFT } from '../../redux/slices/keyring';
 import { useDispatch } from 'react-redux';
 
 const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
@@ -38,11 +32,12 @@ const Send = ({ modalRef }) => {
   const [address, setAddress] = useState(null);
   const [addressInfo, setAddressInfo] = useState(INITIAL_ADDRESS_INFO);
 
-  const { assets, principalId, accountId, transaction } = useSelector(
+  const { assets, principalId, accountId, transaction, collections } = useSelector(
     state => state.keyring,
   );
 
-  const { nfts } = useNfts();
+  const nfts =
+    collections?.flatMap(collection => collection?.tokens || []) || [];
 
   const [selectedContact, setSelectedContact] = useState(null);
   const [selectedToken, setSelectedToken] = useState(null);
@@ -57,7 +52,6 @@ const Send = ({ modalRef }) => {
   const [destination, setDestination] = useState(XTC_OPTIONS.SEND);
   const [sendingXTCtoCanister, setSendingXTCtoCanister] = useState(false);
 
-  const [trxComplete, setTrxComplete] = useState(false);
   const [sendError, setError] = useState(false);
 
   const reviewRef = useRef(null);
@@ -101,15 +95,6 @@ const Send = ({ modalRef }) => {
     reviewRef.current?.open();
   };
 
-  const parseSendResponse = response => {
-    const { error } = response || {};
-    if (error) {
-      setError(true);
-    } else {
-      setTrxComplete(true);
-    }
-  };
-
   const getTransactionFee = () => {
     let currentFee;
 
@@ -130,26 +115,30 @@ const Send = ({ modalRef }) => {
 
   const handleSend = () => {
     const to = address || selectedContact.id;
-    if (sendingXTCtoCanister && destination === XTC_OPTIONS.BURN) {
-      dispatch(burnXtc({ to, amount: tokenAmount }));
-    } else {
-      dispatch(
-        sendToken({
-          to,
-          amount: tokenAmount,
-          canisterId: selectedToken?.canisterId,
-        }),
-      );
-      //parseSendResponse(response);
+
+    if (selectedNft) {
+      dispatch(transferNFT({ to, nft: selectedNft }));
     }
-    setTrxComplete(true);
+    else {
+      if (sendingXTCtoCanister && destination === XTC_OPTIONS.BURN) {
+        dispatch(burnXtc({ to, amount: tokenAmount }));
+      } else {
+        dispatch(
+          sendToken({
+            to,
+            amount: tokenAmount,
+            canisterId: selectedToken?.canisterId,
+          }),
+        );
+      }
+    }
   };
 
   useEffect(() => {
     if (selectedToken) {
       const price =
         { ICP: icpPrice, XTC: USD_PER_TC, WTC: USD_PER_TC }[
-          selectedToken?.symbol
+        selectedToken?.symbol
         ] || 1;
       setSelectedTokenPrice(price);
     }
