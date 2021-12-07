@@ -8,22 +8,19 @@ import Container from '../../../../components/common/Container';
 import Divider from '../../../../components/common/Divider';
 import WalletHeader from '../../components/WalletHeader';
 import { getAssets, setAssetsLoading } from '../../../../redux/slices/keyring';
+import { useICPPrice } from '../../../../redux/slices/icp';
 
 const Tokens = () => {
   const { assets, assetsLoading } = useSelector(state => state.keyring);
   const [refreshing, setRefresing] = useState(assetsLoading);
   const dispatch = useDispatch();
+  const icpPrice = useICPPrice();
 
   const onRefresh = () => {
     setRefresing(true);
     dispatch(setAssetsLoading(true));
-    dispatch(getAssets(true));
+    dispatch(getAssets({ refresh: true, icpPrice }));
   };
-
-  useEffect(() => {
-    dispatch(setAssetsLoading(true));
-    dispatch(getAssets(true));
-  }, []);
 
   useEffect(() => {
     setRefresing(assetsLoading);

@@ -12,7 +12,6 @@ const AccountInfo = () => {
 
   const copyToClipboard = async () => {
     Clipboard.setString(principal);
-    console.log(await Clipboard.getString());
   };
 
   return (

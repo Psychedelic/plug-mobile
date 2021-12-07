@@ -25,9 +25,6 @@ export const recursiveParseBigint = obj =>
   );
 
 export const initKeyring = createAsyncThunk('keyring/init', async (_, { getState }) => {
-
-  let assets = [];
-
   let keyring = new PlugController.PlugKeyRing(
     keyringStorage,
     RNCryptoJS,
@@ -38,16 +35,13 @@ export const initKeyring = createAsyncThunk('keyring/init', async (_, { getState
 
   if (keyring?.isUnlocked) {
     const state = await keyring.getState();
+    console.log('state', state);
     console.log('state.wallets', state.wallets);
 
     if (!state.wallets.length) {
       console.log('locking state');
       await keyring.lock();
     }
-
-    assets = await privateGetAssets(true, getState());
-
-
   }
   return keyring;
 });
@@ -82,6 +76,31 @@ export const getAssets = createAsyncThunk(
   async (refresh, { getState }) => {
     return await privateGetAssets(refresh, getState());
   },
+);
+
+const privateGetNfts = async (refresh, state) => {
+  try {
+    const { instance } = state.keyring;
+    const response = await instance?.getState();
+    const { wallets, currentWalletId } = response || {};
+    let collections = wallets?.[currentWalletId]?.collections || [];
+    if (!collections.length) {
+      collections = await instance.getNFTs(currentWalletId, refresh);
+    }
+    return (collections || [])?.map(collection =>
+      recursiveParseBigint(collection),
+    );
+  } catch (e) {
+    console.log('getNFTs', e);
+    return [];
+  }
+}
+
+export const getNFTs = createAsyncThunk(
+  'keyring/getNFTs',
+  async (refresh, { getState }) => {
+    return await privateGetNfts(refresh, getState());
+  }
 );
 
 export const createSubaccount = createAsyncThunk(
@@ -142,14 +161,12 @@ export const sendToken = createAsyncThunk(
     try {
       const { to, amount, canisterId, opts } = params;
       const state = getState();
-      console.log('sending');
       const { height, transactionId } = await state.keyring.instance?.send(
         to,
         amount.toString(),
         canisterId,
         opts,
       );
-      console.log('sent');
       return {
         response: {
           height: parseInt(height?.toString?.(), 10),
@@ -159,6 +176,31 @@ export const sendToken = createAsyncThunk(
       };
     } catch (e) {
       console.log('sendToken', e);
+      console.trace(e.stack);
+      return {
+        error: e.message,
+        status: TRANSACTION_STATUS.error,
+      };
+    }
+  },
+);
+
+export const transferNFT = createAsyncThunk(
+  'keyring/transferNFT',
+  async (params, { getState }) => {
+    try {
+      const { to, nft } = params;
+
+      const state = getState();
+      const response = await state.keyring.instance?.transferNFT({ to, token: nft });
+
+      return {
+        response: recursiveParseBigint(response),
+        nft,
+        status: TRANSACTION_STATUS.success,
+      };
+    } catch (e) {
+      console.log('transferNFT', e);
       console.trace(e.stack);
       return {
         error: e.message,
@@ -220,6 +262,33 @@ export const getTransactions = createAsyncThunk(
   },
 );
 
+export const unlock = createAsyncThunk(
+  'keyring/unlock',
+  async (params, { getState }) => {
+    const { password, icpPrice } = params;
+    let unlocked = false;
+    let transactions = [];
+    let assets = [];
+    let collections = [];
+
+    try {
+      const state = getState();
+      const { instance } = state.keyring;
+      unlocked = await instance?.unlock(password);
+      await instance?.getState();
+
+      if (unlocked) {
+        transactions = await privateGetTransactions({ icpPrice }, state);
+        assets = await privateGetAssets(true, state);
+        collections = await privateGetNfts(true, state);
+      }
+    } catch (e) {
+      unlocked = false;
+    }
+    return { unlocked, transactions, assets, collections };
+  }
+)
+
 const DEFAULT_ASSETS = [
   {
     symbol: 'ICP',
@@ -261,6 +330,7 @@ const DEFAULT_STATE = {
   transaction: DEFAULT_TRANSACTION,
   transactions: [],
   transactionsLoading: true,
+  selectedNFT: {},
 };
 
 export const keyringSlice = createSlice({
@@ -293,6 +363,19 @@ export const keyringSlice = createSlice({
     setTransaction: (state, action) => {
       state.transaction = action.payload;
     },
+    setSelectedNFT: (state, action) => {
+      state.selectedNFT = action.payload;
+    },
+    setCollections: (state, action) => {
+      state.collections = action.payload;
+    },
+    removeNFT: (state, action) => {
+      const collections = state.collections.map((col) => ({
+        ...col,
+        tokens: col.tokens.filter((token) => token.id !== action.payload?.id),
+      }));
+      state.collections = collections.filter((col) => col.tokens.length);
+    },
     setTransactions: (state, action) => {
 
     },
@@ -319,6 +402,7 @@ export const keyringSlice = createSlice({
       );
     },
     [sendToken.fulfilled]: (state, action) => {
+      console.log('payload', action.payload);
       state.transaction = action.payload;
     },
     [burnXtc.fulfilled]: (state, action) => {
@@ -330,12 +414,41 @@ export const keyringSlice = createSlice({
         formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS;
       state.assetsLoading = false;
     },
+    [getNFTs.fulfilled]: (state, action) => {
+      state.collections = action.payload;
+    },
     [getTransactions.fulfilled]: (state, action) => {
       if (!action.payload.error) {
         state.transactions = action.payload;
         state.transactionsLoading = false;
       }
-    }
+    },
+    [transferNFT.fulfilled]: (state, action) => {
+      const { nft, status, error } = action.payload;
+
+      if (!error) {
+        const collections = state.collections.map((col) => ({
+          ...col,
+          tokens: col.tokens.filter((token) => token.id !== nft.id),
+        }));
+
+        console.log('new collections', collections);
+
+        state.collections = collections.filter((col) => col.tokens.length);
+        state.transaction = {
+          status,
+        };
+        state.selectedNFT = {};
+      }
+    },
+    [unlock.fulfilled]: (state, action) => {
+      const { unlocked, transactions, assets, collections } = action.payload;
+      state.isUnlocked = unlocked;
+      state.transactions = transactions;
+      state.assets = assets;
+      state.collections = collections;
+      state.assetsLoading = false;
+    },
   },
 });
 
@@ -348,6 +461,7 @@ export const {
   setWallets,
   setAssetsLoading,
   setTransaction,
+  setSelectedNFT,
   setTransactions,
   setTransactionsLoading,
   reset,

@@ -1,14 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import moment from 'moment';
-
 import { FontStyles } from '../../../constants/theme';
 import UsdFormat from '../../../components/number/UsdFormat';
 import TokenFormat from '../../../components/number/TokenFormat';
-
 import ActivityIcon from './ActivityIcon';
-import { getDate, getStatus, getSubtitle, getTitle } from './utils';
-import { ACTIVITY_TYPES } from './constants';
+import { getStatus, getSubtitle, getTitle } from './utils';
 import shortAddress from '../../../helpers/short-address';
 
 const ActivityItem = ({

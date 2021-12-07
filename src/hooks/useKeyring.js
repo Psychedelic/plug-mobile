@@ -26,7 +26,6 @@ const useKeyring = () => {
 
   const createWallet = async password => {
     const mnemonic = await generateMnemonic();
-    console.log(instance);
     const response = await instance?.importMnemonic({ password, mnemonic });
     const { wallet } = response || {};
     await instance?.unlock(password);

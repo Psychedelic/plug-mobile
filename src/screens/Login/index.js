@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core';
 import { View, StatusBar, Text, Image } from 'react-native';
 import Plug from '../../assets/icons/plug-white.png';
@@ -6,16 +6,21 @@ import Container from '../../components/common/Container';
 import RainbowButton from '../../components/buttons/RainbowButton';
 import Button from '../../components/buttons/Button';
 import TextInput from '../../components/common/TextInput';
-import useKeyring from '../../hooks/useKeyring';
 import Routes from '../../navigation/Routes';
 import styles from './styles';
 import KeyboardHider from '../../components/common/KeyboardHider';
+import { unlock, setAssetsLoading } from '../../redux/slices/keyring';
+import { useDispatch, useSelector } from 'react-redux';
+import { useICPPrice } from '../../redux/slices/icp';
 
 function Login() {
   const [error, setError] = useState(false);
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
-  const { unlock } = useKeyring();
+  const dispatch = useDispatch();
+  const icpPrice = useICPPrice();
+
+  const { isUnlocked, assetsLoading } = useSelector((state) => state.keyring);
 
   const clearState = () => {
     setPassword('');
@@ -28,13 +33,18 @@ function Login() {
   };
 
   const handleSubmit = async () => {
-    const unlocked = await unlock(password);
-    if (unlocked) {
-      clearState();
-      navigation.navigate(Routes.SWIPE_LAYOUT);
-    } else {
-      setError(true);
-    }
+    dispatch(setAssetsLoading(true));
+    dispatch(unlock({ password, icpPrice }))
+      .unwrap()
+      .then((result) => {
+        console.log('resss', result);
+        if (result.unlocked) {
+          clearState();
+          navigation.navigate(Routes.SWIPE_LAYOUT);
+        } else {
+          setError(true);
+        }
+      })
   };
 
   return (
@@ -58,6 +68,7 @@ function Login() {
           <RainbowButton
             text="Submit"
             onPress={handleSubmit}
+            loading={assetsLoading}
             buttonStyle={styles.buttonMargin}
           />
           <Button
