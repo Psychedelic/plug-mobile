@@ -20,15 +20,20 @@ const ImportSeedPhrase = ({ navigation, route }) => {
   const { password } = route?.params || {};
   const [seedPhrase, setSeedPhrase] = useState(null);
   const [invalidSeedPhrase, setInvalidSeedPhrase] = useState(false);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   const onPress = async () => {
     try {
+      setLoading(true);
       dispatch(reset());
       await importWallet({ mnemonic: seedPhrase, password });
       navigation.navigate(Routes.SWIPE_LAYOUT);
     } catch (e) {
       console.log(e);
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -82,6 +87,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
           <RainbowButton
             text="Continue"
             onPress={onPress}
+            loading={loading}
             disabled={!isMnemonicValid}
           />
         </View>

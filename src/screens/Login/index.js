@@ -67,7 +67,6 @@ function Login() {
           <Button
             text="Import new Account"
             onPress={handleImport}
-            loading={loading}
             buttonStyle={styles.buttonMargin}
           />
         </View>

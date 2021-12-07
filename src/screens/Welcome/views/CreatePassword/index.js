@@ -20,6 +20,7 @@ const CreatePassword = ({ route, navigation }) => {
   const { goBack } = navigation;
   const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [faceId, setFaceId] = useState(false);
   const toggleSwitch = () => setFaceId(previousState => !previousState);
   const dispatch = useDispatch();
@@ -29,11 +30,16 @@ const CreatePassword = ({ route, navigation }) => {
       navigation.navigate(Routes.IMPORT_SEED_PHRASE, { password });
     } else {
       try {
+        setLoading(true);
         dispatch(reset());
         const mnemonic = await createWallet(password);
         navigation.navigate(Routes.BACKUP_SEED_PHRASE, { mnemonic });
-      } catch (e) {
+      }
+      catch (e) {
         console.log('Error:', e);
+      }
+      finally {
+        setLoading(false);
       }
     }
   };
@@ -95,6 +101,7 @@ const CreatePassword = ({ route, navigation }) => {
           <RainbowButton
             buttonStyle={styles.componentMargin}
             text="Continue"
+            loading={loading}
             onPress={handleCreate}
             disabled={
               !password ||
