@@ -13,6 +13,7 @@ const RainbowButton = ({
   textStyle,
   disabled,
   onLongPress,
+  loading = false,
   ...props
 }) => {
   return (
@@ -26,6 +27,7 @@ const RainbowButton = ({
           text={text}
           textStyle={[styles.textRainbow, textStyle]}
           disabled={disabled}
+          loading={loading}
           disableAnimation
           {...props}
         />

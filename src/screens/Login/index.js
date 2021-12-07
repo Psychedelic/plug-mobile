@@ -15,6 +15,7 @@ function Login() {
   const [error, setError] = useState(false);
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
   const { unlock } = useKeyring();
 
   const clearState = () => {
@@ -28,6 +29,7 @@ function Login() {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     const unlocked = await unlock(password);
     if (unlocked) {
       clearState();
@@ -35,6 +37,7 @@ function Login() {
     } else {
       setError(true);
     }
+    setLoading(false);
   };
 
   return (
@@ -58,6 +61,7 @@ function Login() {
           <RainbowButton
             text="Submit"
             onPress={handleSubmit}
+            loading={loading}
             buttonStyle={styles.buttonMargin}
           />
           <Button

@@ -54,6 +54,8 @@ const Send = ({ modalRef }) => {
 
   const [sendError, setError] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   const reviewRef = useRef(null);
 
   const onContactPress = contact => {
@@ -114,6 +116,7 @@ const Send = ({ modalRef }) => {
   };
 
   const handleSend = () => {
+    setLoading(true);
     const to = address || selectedContact.id;
 
     if (selectedNft) {
@@ -132,6 +135,8 @@ const Send = ({ modalRef }) => {
         );
       }
     }
+    setTrxComplete(true);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -224,6 +229,7 @@ const Send = ({ modalRef }) => {
           onSuccess={() => modalRef.current?.close()}
           onClose={partialReset}
           transaction={transaction}
+          loading={loading}
         />
       </ScrollView>
     </Modal>

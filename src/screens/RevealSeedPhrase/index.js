@@ -16,6 +16,7 @@ const RevealSeedPhrase = ({ modalRef }) => {
   const [password, setPassword] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { instance } = useSelector(state => state.keyring);
 
@@ -28,6 +29,7 @@ const RevealSeedPhrase = ({ modalRef }) => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     const unlocked = await unlock(password);
     if (unlocked) {
       clearState();
@@ -35,6 +37,7 @@ const RevealSeedPhrase = ({ modalRef }) => {
     } else {
       setError(true);
     }
+    setLoading(false);
   };
 
   return (
@@ -62,6 +65,7 @@ const RevealSeedPhrase = ({ modalRef }) => {
                 <RainbowButton
                   buttonStyle={{ marginTop: 20 }}
                   text="Continue"
+                  loading={loading}
                   onPress={handleSubmit}
                   disabled={
                     !password ||
