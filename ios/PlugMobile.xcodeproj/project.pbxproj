@@ -36,18 +36,21 @@
 		00E356F21AD99517003FC87E /* PlugMobileTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlugMobileTests.m; sourceTree = "<group>"; };
 		03F752A3273ACE6F006DB889 /* PlugMobile-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PlugMobile-Bridging-Header.h"; sourceTree = "<group>"; };
 		03F752A4273ACE6F006DB889 /* BridgingFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgingFile.swift; sourceTree = "<group>"; };
+		0EF098C289B63DC5A2A44F97 /* Pods-PlugMobile-PlugMobileTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile-PlugMobileTests.debug.xcconfig"; path = "Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* PlugMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlugMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = PlugMobile/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = PlugMobile/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = PlugMobile/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = PlugMobile/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = PlugMobile/main.m; sourceTree = "<group>"; };
+		15F41F3B421D95B80ACCA972 /* libPods-PlugMobile-PlugMobileTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PlugMobile-PlugMobileTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2305DDE041124F8DB2F00951 /* Oswald-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-Medium.ttf"; path = "../assets/fonts/Oswald-Medium.ttf"; sourceTree = "<group>"; };
 		3AC7E224997C6A9D2B970D61 /* Pods-PlugMobile-PlugMobileTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile-PlugMobileTests.release.xcconfig"; path = "Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests.release.xcconfig"; sourceTree = "<group>"; };
 		4A6658DCFBC3F9E12A642AF1 /* Pods-PlugMobile-PlugMobileTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile-PlugMobileTests.debug.xcconfig"; path = "Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests.debug.xcconfig"; sourceTree = "<group>"; };
 		50FCEE8152C00870164CA3BC /* Pods-PlugMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile.release.xcconfig"; path = "Target Support Files/Pods-PlugMobile/Pods-PlugMobile.release.xcconfig"; sourceTree = "<group>"; };
 		5B05B14638777F938D256507 /* libPods-PlugMobile.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PlugMobile.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = PlugMobile/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9C43CE9B42E9417D65E9A3A2 /* Pods-PlugMobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile.release.xcconfig"; path = "Target Support Files/Pods-PlugMobile/Pods-PlugMobile.release.xcconfig"; sourceTree = "<group>"; };
 		AF9BCEC54AC74FA1B3E30252 /* Oswald-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-Bold.ttf"; path = "../assets/fonts/Oswald-Bold.ttf"; sourceTree = "<group>"; };
 		DB697C250442C3AB83CE822E /* libPods-PlugMobile-PlugMobileTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PlugMobile-PlugMobileTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7B8FBE3383724EC3DB8FD46 /* Pods-PlugMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile.debug.xcconfig"; path = "Target Support Files/Pods-PlugMobile/Pods-PlugMobile.debug.xcconfig"; sourceTree = "<group>"; };
@@ -336,7 +339,7 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile/Pods-PlugMobile-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile/Pods-PlugMobile-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
@@ -370,7 +373,7 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);

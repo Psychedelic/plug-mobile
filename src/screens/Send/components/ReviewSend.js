@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Modal from '../../../components/modal';
 import { FontStyles } from '../../../constants/theme';
 import Header from '../../../components/common/Header';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Linking } from 'react-native';
 import Column from '../../../components/layout/Column';
 import Row from '../../../components/layout/Row';
 import TokenIcon from '../../../components/tokens/TokenIcon';
@@ -13,10 +13,9 @@ import Button from '../../../components/buttons/Button';
 import { Colors } from '../../../constants/theme';
 import NftDisplayer from '../../../components/common/NftDisplayer';
 import shortAddress from '../../../helpers/short-address';
-import {
-  TRANSACTION_STATUS,
-  setTransaction,
-} from '../../../redux/slices/keyring';
+import { TRANSACTION_STATUS, setTransaction } from '../../../redux/slices/keyring';
+import { getICRocksTransactionUrl } from '../../../constants/urls';
+import { useDispatch } from 'react-redux';
 
 const ReviewSend = ({
   modalRef,
@@ -33,11 +32,14 @@ const ReviewSend = ({
   loading,
   ...props
 }) => {
+  const dispatch = useDispatch();
+
   const transactionCompleted =
     transaction?.status === TRANSACTION_STATUS.success;
 
   const handleClose = () => {
     onClose();
+    dispatch(setTransaction(null));
 
     if (transactionCompleted) {
       onSuccess();
@@ -77,12 +79,11 @@ const ReviewSend = ({
         {nft && (
           <Row style={styles.row}>
             <Column>
-              <Text style={FontStyles.Title2}>{nft.name}</Text>
-              <Text style={FontStyles.Subtitle3}>Collection name here?</Text>
+              <Text style={FontStyles.Title2}>{nft.name || `${nft.collection} #${nft.index}`}</Text>
             </Column>
             <NftDisplayer
               url={nft.url}
-              style={{ width: 41, height: 41, borderRadius: 7 }}
+              style={{ width: 41, height: 41, borderRadius: 20 }}
             />
           </Row>
         )}
@@ -113,11 +114,11 @@ const ReviewSend = ({
         </Row>
 
         {transactionCompleted ? (
-          <Button
+          token && token.symbol === 'ICP' && <Button
             variant="gray"
             text="View on Explorer"
             buttonStyle={styles.button}
-            onPress={() => null}
+            onPress={() => Linking.openURL(getICRocksTransactionUrl(transaction?.response.transactionId))}
           />
         ) : (
           <RainbowButton
