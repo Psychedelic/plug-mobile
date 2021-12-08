@@ -25,7 +25,7 @@ const TokenItem = ({
         style={FontStyles.NormalGray}
       />
     </View>
-    <UsdFormat value={value * amount} style={styles.value} />
+    <UsdFormat value={value} style={styles.value} />
   </View>
 );
 

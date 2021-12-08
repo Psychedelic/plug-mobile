@@ -21,7 +21,12 @@ import { ADDRESS_TYPES } from '../../constants/addresses';
 import { useSelector } from 'react-redux';
 import XTC_OPTIONS from '../../constants/xtc';
 import { DEFAULT_FEE, XTC_FEE } from '../../constants/addresses';
-import { burnXtc, sendToken, setTransaction, transferNFT } from '../../redux/slices/keyring';
+import {
+  burnXtc,
+  sendToken,
+  setTransaction,
+  transferNFT,
+} from '../../redux/slices/keyring';
 import { useDispatch } from 'react-redux';
 
 const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
@@ -32,9 +37,8 @@ const Send = ({ modalRef }) => {
   const [address, setAddress] = useState(null);
   const [addressInfo, setAddressInfo] = useState(INITIAL_ADDRESS_INFO);
 
-  const { assets, principalId, accountId, transaction, collections } = useSelector(
-    state => state.keyring,
-  );
+  const { assets, principalId, accountId, transaction, collections } =
+    useSelector(state => state.keyring);
 
   const nfts =
     collections?.flatMap(collection => collection?.tokens || []) || [];
@@ -121,8 +125,7 @@ const Send = ({ modalRef }) => {
 
     if (selectedNft) {
       dispatch(transferNFT({ to, nft: selectedNft }));
-    }
-    else {
+    } else {
       if (sendingXTCtoCanister && destination === XTC_OPTIONS.BURN) {
         dispatch(burnXtc({ to, amount: tokenAmount }));
       } else {
@@ -135,7 +138,6 @@ const Send = ({ modalRef }) => {
         );
       }
     }
-    setTrxComplete(true);
     setLoading(false);
   };
 
@@ -143,7 +145,7 @@ const Send = ({ modalRef }) => {
     if (selectedToken) {
       const price =
         { ICP: icpPrice, XTC: USD_PER_TC, WTC: USD_PER_TC }[
-        selectedToken?.symbol
+          selectedToken?.symbol
         ] || 1;
       setSelectedTokenPrice(price);
     }
