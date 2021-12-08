@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import * as Keychain from 'react-native-keychain';
 import { useNavigation } from '@react-navigation/core';
 import { View, StatusBar, Text, Image } from 'react-native';
 import Plug from '../../assets/icons/plug-white.png';
@@ -38,6 +39,17 @@ function Login() {
       setError(true);
     }
     setLoading(false);
+  };
+
+  useEffect(() => {
+    unlockUsingBiometrics();
+  });
+
+  const unlockUsingBiometrics = async () => {
+    Keychain.getGenericPassword({ service: 'ooo.plugwallet' })
+      .then(({ password: biometricsPassword }) => {
+        handleSubmit(biometricsPassword);
+      });
   };
 
   return (
