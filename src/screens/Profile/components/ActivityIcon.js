@@ -7,7 +7,6 @@ import { ACTIVITY_IMAGES } from './constants';
 import { parseImageName } from './utils';
 
 const ActivityIcon = ({ image, type }) => {
-  console.log('Image', image, parseImageName(image));
   return (
     <View style={styles.root}>
       {type && (
