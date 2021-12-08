@@ -16,6 +16,7 @@ function Login() {
   const [error, setError] = useState(false);
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
   const { unlock } = useKeyring();
 
   const clearState = () => {
@@ -28,15 +29,16 @@ function Login() {
     navigation.navigate(Routes.CREATE_IMPORT_LAYOUT);
   };
 
-  const handleSubmit = async (loginPassword) => {
-    const unlocked = await unlock(loginPassword);
-
+  const handleSubmit = async () => {
+    setLoading(true);
+    const unlocked = await unlock(password);
     if (unlocked) {
       clearState();
       navigation.navigate(Routes.SWIPE_LAYOUT);
     } else {
       setError(true);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -71,6 +73,7 @@ function Login() {
           <RainbowButton
             text="Submit"
             onPress={handleSubmit}
+            loading={loading}
             buttonStyle={styles.buttonMargin}
           />
           <Button
