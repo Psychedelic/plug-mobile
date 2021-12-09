@@ -267,25 +267,32 @@ export const unlock = createAsyncThunk(
   async (params, { getState }) => {
     const { password, icpPrice } = params;
     let unlocked = false;
-    let transactions = [];
-    let assets = [];
-    let collections = [];
 
     try {
       const state = getState();
       const { instance } = state.keyring;
       unlocked = await instance?.unlock(password);
+
+      console.log('unlokedddd', unlocked)
+
       await instance?.getState();
 
       if (unlocked) {
-        transactions = await privateGetTransactions({ icpPrice }, state);
-        assets = await privateGetAssets(true, state);
-        collections = await privateGetNfts(true, state);
+
+        const [transactions, assets, collections] = await Promise.all([
+          privateGetTransactions({ icpPrice }, state),
+          privateGetAssets(true, state),
+          privateGetNfts(true, state)
+        ]);
+
+        console.log('asd', transactions, assets, collections);
+
+        return { unlocked, transactions, assets, collections };
       }
     } catch (e) {
-      unlocked = false;
+      console.log('unlock', e.message);
     }
-    return { unlocked, transactions, assets, collections };
+    return { unlocked };
   }
 )
 
@@ -444,9 +451,9 @@ export const keyringSlice = createSlice({
     [unlock.fulfilled]: (state, action) => {
       const { unlocked, transactions, assets, collections } = action.payload;
       state.isUnlocked = unlocked;
-      state.transactions = transactions;
-      state.assets = assets;
-      state.collections = collections;
+      state.transactions = transactions || [];
+      state.assets = assets || [];
+      state.collections = collections || [];
       state.assetsLoading = false;
     },
   },

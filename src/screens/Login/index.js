@@ -20,7 +20,7 @@ function Login() {
   const dispatch = useDispatch();
   const icpPrice = useICPPrice();
 
-  const { isUnlocked, assetsLoading } = useSelector((state) => state.keyring);
+  const { assetsLoading } = useSelector((state) => state.keyring);
 
   const clearState = () => {
     setPassword('');
