@@ -73,22 +73,15 @@ const NftDisplayer = ({ url, style }) => {
           }}
         />
       }>
-      {
-        type.includes('svg')
-          ?
-          <SvgCssUri
-            width="100%"
-            height="100%"
-            uri={url}
-          />
-          :
-          <Image
-            resizeMode="cover"
-            style={StyleSheet.absoluteFill}
-            source={{ uri: url, type }}
-          />
-      }
-
+      {type.includes('svg') ? (
+        <SvgCssUri width="100%" height="100%" uri={url} />
+      ) : (
+        <Image
+          resizeMode="cover"
+          style={StyleSheet.absoluteFill}
+          source={{ uri: url, type }}
+        />
+      )}
     </MaskedView>
   );
 };

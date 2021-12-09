@@ -53,7 +53,6 @@ export const IconTypes = {
 
 const Icon = ({ name, color, ...props }) => {
   const IconElement = IconTypes[name];
-
   return <IconElement {...props} name={name} color={color} />;
 };
 
