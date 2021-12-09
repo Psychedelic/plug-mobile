@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import PlugController from '@psychedelic/plug-controller';
+import PlugController from '@psychedelic/plug-mobile-controller';
 import { keyringStorage } from '../configureReducer';
 import RNCryptoJS from 'react-native-crypto-js';
 import { fetch } from 'react-native-fetch-api';
@@ -31,43 +31,33 @@ export const initKeyring = createAsyncThunk('keyring/init', async (_, { getState
     fetch,
   );
   await keyring.init();
-  console.log('keyring init', keyring?.isInitialized, keyring?.isUnlocked);
-
   if (keyring?.isUnlocked) {
     const state = await keyring.getState();
-    console.log('state', state);
-    console.log('state.wallets', state.wallets);
-
     if (!state.wallets.length) {
-      console.log('locking state');
       await keyring.lock();
     }
   }
   return keyring;
 });
 
-const privateGetAssets = async (refresh, state) => {
+const privateGetAssets = async ({ refresh, icpPrice }, state) => {
   try {
     const { instance } = state.keyring;
     const response = await instance?.getState();
     const { wallets, currentWalletId } = response || {};
     let assets = wallets?.[currentWalletId]?.assets || [];
-    console.log('state assets', assets);
     if (
       !assets.length ||
       assets?.every(asset => parseFloat(asset.amount) <= 0) ||
       refresh
     ) {
-      console.log('getting balance', instance);
       assets = await instance?.getBalance();
     } else {
       instance?.getBalance();
     }
-    console.log('returning', assets);
-    return assets;
+    return { assets, icpPrice };
   } catch (e) {
     console.log('getAssets', e);
-    return [];
   }
 }
 
@@ -176,7 +166,6 @@ export const sendToken = createAsyncThunk(
       };
     } catch (e) {
       console.log('sendToken', e);
-      console.trace(e.stack);
       return {
         error: e.message,
         status: TRANSACTION_STATUS.error,
@@ -192,7 +181,10 @@ export const transferNFT = createAsyncThunk(
       const { to, nft } = params;
 
       const state = getState();
-      const response = await state.keyring.instance?.transferNFT({ to, token: nft });
+      const response = await state.keyring.instance?.transferNFT({
+        to,
+        token: nft,
+      });
 
       return {
         response: recursiveParseBigint(response),
@@ -272,9 +264,6 @@ export const unlock = createAsyncThunk(
       const state = getState();
       const { instance } = state.keyring;
       unlocked = await instance?.unlock(password);
-
-      console.log('unlokedddd', unlocked)
-
       await instance?.getState();
 
       if (unlocked) {
@@ -284,8 +273,6 @@ export const unlock = createAsyncThunk(
           privateGetAssets(true, state),
           privateGetNfts(true, state)
         ]);
-
-        console.log('asd', transactions, assets, collections);
 
         return { unlocked, transactions, assets, collections };
       }
@@ -322,7 +309,7 @@ const DEFAULT_TRANSACTION = {
 export const TRANSACTION_STATUS = {
   success: 'success',
   error: 'error',
-}
+};
 
 const DEFAULT_STATE = {
   instance: null,
@@ -377,15 +364,13 @@ export const keyringSlice = createSlice({
       state.collections = action.payload;
     },
     removeNFT: (state, action) => {
-      const collections = state.collections.map((col) => ({
+      const collections = state.collections.map(col => ({
         ...col,
-        tokens: col.tokens.filter((token) => token.id !== action.payload?.id),
+        tokens: col.tokens.filter(token => token.id !== action.payload?.id),
       }));
-      state.collections = collections.filter((col) => col.tokens.length);
+      state.collections = collections.filter(col => col.tokens.length);
     },
-    setTransactions: (state, action) => {
-
-    },
+    setTransactions: (state, action) => { },
     setTransactionsLoading: (state, action) => {
       state.transactionsLoading = action.payload;
     },
@@ -409,7 +394,6 @@ export const keyringSlice = createSlice({
       );
     },
     [sendToken.fulfilled]: (state, action) => {
-      console.log('payload', action.payload);
       state.transaction = action.payload;
     },
     [burnXtc.fulfilled]: (state, action) => {
@@ -434,14 +418,12 @@ export const keyringSlice = createSlice({
       const { nft, status, error } = action.payload;
 
       if (!error) {
-        const collections = state.collections.map((col) => ({
+        const collections = state.collections.map(col => ({
           ...col,
-          tokens: col.tokens.filter((token) => token.id !== nft.id),
+          tokens: col.tokens.filter(token => token.id !== nft.id),
         }));
 
-        console.log('new collections', collections);
-
-        state.collections = collections.filter((col) => col.tokens.length);
+        state.collections = collections.filter(col => col.tokens.length);
         state.transaction = {
           status,
         };

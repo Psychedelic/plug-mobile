@@ -36,14 +36,20 @@
 		00E356F21AD99517003FC87E /* PlugMobileTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlugMobileTests.m; sourceTree = "<group>"; };
 		03F752A3273ACE6F006DB889 /* PlugMobile-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PlugMobile-Bridging-Header.h"; sourceTree = "<group>"; };
 		03F752A4273ACE6F006DB889 /* BridgingFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgingFile.swift; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		105AB960F43D3E08867AB3B9 /* libPods-PlugMobile-PlugMobileTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PlugMobile-PlugMobileTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+=======
+>>>>>>> c6bdb1b03e5ad58bff3d3f348644e17acb646e7d
 		13B07F961A680F5B00A75B9A /* PlugMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlugMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = PlugMobile/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = PlugMobile/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = PlugMobile/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = PlugMobile/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = PlugMobile/main.m; sourceTree = "<group>"; };
+<<<<<<< HEAD
 		22F9710AB3362F283F7C3B50 /* Pods-PlugMobile-PlugMobileTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile-PlugMobileTests.debug.xcconfig"; path = "Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests.debug.xcconfig"; sourceTree = "<group>"; };
+=======
+>>>>>>> c6bdb1b03e5ad58bff3d3f348644e17acb646e7d
 		2305DDE041124F8DB2F00951 /* Oswald-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-Medium.ttf"; path = "../assets/fonts/Oswald-Medium.ttf"; sourceTree = "<group>"; };
 		29E40FA9C4546532046CA23B /* Pods-PlugMobile-PlugMobileTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile-PlugMobileTests.release.xcconfig"; path = "Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests.release.xcconfig"; sourceTree = "<group>"; };
 		603F792175209198C5FA7298 /* Pods-PlugMobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlugMobile.debug.xcconfig"; path = "Target Support Files/Pods-PlugMobile/Pods-PlugMobile.debug.xcconfig"; sourceTree = "<group>"; };
@@ -181,8 +187,13 @@
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
+<<<<<<< HEAD
 				43DEC65092CF293B0F54D76B /* [CP] Embed Pods Frameworks */,
 				47FAF2E74CA0D15DFE2F8C77 /* [CP] Copy Pods Resources */,
+=======
+				C349DAE69199BA40FA461F72 /* [CP] Copy Pods Resources */,
+				3240DF1B1A2FC8694AA40ADD /* [CP] Copy Pods Resources */,
+>>>>>>> c6bdb1b03e5ad58bff3d3f348644e17acb646e7d
 			);
 			buildRules = (
 			);
@@ -204,8 +215,13 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+<<<<<<< HEAD
 				A040FBBEDF8F3ADBDE706C07 /* [CP] Embed Pods Frameworks */,
 				66D5E3A6770B51B63E4C1020 /* [CP] Copy Pods Resources */,
+=======
+				69D029F35FEDEB45844A056B /* [CP] Copy Pods Resources */,
+				C06E778168EC1198B71D73E7 /* [CP] Copy Pods Resources */,
+>>>>>>> c6bdb1b03e5ad58bff3d3f348644e17acb646e7d
 			);
 			buildRules = (
 			);
@@ -328,7 +344,11 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PlugMobile-PlugMobileTests/Pods-PlugMobile-PlugMobileTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+<<<<<<< HEAD
 		47FAF2E74CA0D15DFE2F8C77 /* [CP] Copy Pods Resources */ = {
+=======
+		69D029F35FEDEB45844A056B /* [CP] Copy Pods Resources */ = {
+>>>>>>> c6bdb1b03e5ad58bff3d3f348644e17acb646e7d
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -362,7 +382,11 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PlugMobile/Pods-PlugMobile-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+<<<<<<< HEAD
 		9EB9163B5F98F199B6AEB33A /* [CP] Check Pods Manifest.lock */ = {
+=======
+		C349DAE69199BA40FA461F72 /* [CP] Copy Pods Resources */ = {
+>>>>>>> c6bdb1b03e5ad58bff3d3f348644e17acb646e7d
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -522,7 +546,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = W6K8K762UL;
+				DEVELOPMENT_TEAM = DZVNACPGLK;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = PlugMobile/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -539,7 +563,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = PlugMobile;
+				PRODUCT_BUNDLE_IDENTIFIER = "PlugMobile-test";
 				PRODUCT_NAME = PlugMobile;
 				SWIFT_OBJC_BRIDGING_HEADER = "PlugMobile-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -555,7 +579,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = W6K8K762UL;
+				DEVELOPMENT_TEAM = DZVNACPGLK;
 				INFOPLIST_FILE = PlugMobile/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -571,7 +595,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = PlugMobile;
+				PRODUCT_BUNDLE_IDENTIFIER = "PlugMobile-test";
 				PRODUCT_NAME = PlugMobile;
 				SWIFT_OBJC_BRIDGING_HEADER = "PlugMobile-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

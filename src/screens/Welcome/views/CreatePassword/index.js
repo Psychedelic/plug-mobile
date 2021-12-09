@@ -28,15 +28,17 @@ const CreatePassword = ({ route, navigation }) => {
   const toggleSwitch = () => setBiometrics(previousState => !previousState);
 
   useEffect(() => {
-    Keychain.getSupportedBiometryType().then((deviceBiometry) => {
+    Keychain.getSupportedBiometryType().then(deviceBiometry => {
       setBiometryType(deviceBiometry);
     });
   }, []);
 
-
   const handleCreate = async () => {
     if (flow === 'import') {
-      navigation.navigate(Routes.IMPORT_SEED_PHRASE, { password, biometryType });
+      navigation.navigate(Routes.IMPORT_SEED_PHRASE, {
+        password,
+        biometryType,
+      });
     } else {
       try {
         setLoading(true);
@@ -44,11 +46,9 @@ const CreatePassword = ({ route, navigation }) => {
         const mnemonic = await createWallet(password, biometryType);
         await saveBiometrics(password, biometryType);
         navigation.navigate(Routes.BACKUP_SEED_PHRASE, { mnemonic });
-      }
-      catch (e) {
+      } catch (e) {
         console.log('Error:', e);
-      }
-      finally {
+      } finally {
         setLoading(false);
       }
     }
@@ -103,7 +103,7 @@ const CreatePassword = ({ route, navigation }) => {
 
           <Text style={styles.help}>Must be at least 12 characters</Text>
 
-          { biometryType && (
+          {biometryType && (
             <View style={styles.switchContainer}>
               <Text style={styles.faceId}>Sign in with Face ID?</Text>
               <Switch onValueChange={toggleSwitch} value={biometrics} />
@@ -116,9 +116,9 @@ const CreatePassword = ({ route, navigation }) => {
             onPress={handleCreate}
             disabled={
               !password ||
-                !confirmPassword ||
-                password !== confirmPassword ||
-                password.length < 12
+              !confirmPassword ||
+              password !== confirmPassword ||
+              password.length < 12
             }
           />
         </View>

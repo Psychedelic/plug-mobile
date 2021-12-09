@@ -33,9 +33,9 @@ function Login() {
     navigation.navigate(Routes.CREATE_IMPORT_LAYOUT);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (submittedPassword) => {
     dispatch(setAssetsLoading(true));
-    dispatch(unlock({ password, icpPrice }))
+    dispatch(unlock({ submittedPassword, icpPrice }))
       .unwrap()
       .then((result) => {
         console.log('resss', result);
@@ -50,13 +50,16 @@ function Login() {
 
   useEffect(() => {
     unlockUsingBiometrics();
-  });
+  }, []);
 
   const unlockUsingBiometrics = async () => {
-    Keychain.getGenericPassword({ service: 'ooo.plugwallet' })
-      .then(({ password: biometricsPassword }) => {
-        handleSubmit(biometricsPassword);
-      });
+    const biometrics = await Keychain.getGenericPassword({
+      service: 'ooo.plugwallet',
+    });
+    console.log('biometrics', biometrics);
+    if (biometrics?.password) {
+      await handleSubmit(biometrics.password);
+    }
   };
 
   return (
@@ -79,7 +82,7 @@ function Login() {
           )}
           <RainbowButton
             text="Submit"
-            onPress={handleSubmit}
+            onPress={() => handleSubmit(password)}
             loading={assetsLoading}
             buttonStyle={styles.buttonMargin}
           />

@@ -4,7 +4,7 @@ import { ACTIVITY_TYPES, ACTIVITY_STATUS } from './constants';
 import moment from 'moment';
 import { Text } from 'react-native';
 
-export const parseImageName = name => name.replace('.svg', '').toLowerCase();
+export const parseImageName = name => name.replace('.png', '').toLowerCase();
 const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
 export const getTitle = (type, symbol, swapData, plug) => {
@@ -29,16 +29,18 @@ export const getStatus = (status, styles) => {
   }
 };
 
-export const getSubtitle = (type, to, from) => (({
-  SEND: ` · To: ${shortAddress(to)}`,
-  BURN: ` · To: ${shortAddress(to)}`,
-  RECEIVE: ` · From: ${shortAddress(from)}`,
-})[type]);
+export const getSubtitle = (type, to, from) =>
+  ({
+    SEND: ` · To: ${shortAddress(to)}`,
+    BURN: ` · To: ${shortAddress(to)}`,
+    RECEIVE: ` · From: ${shortAddress(from)}`,
+  }[type]);
 
-export const getAddress = (type, to, from, canisterId) => (
-  {
+export const getAddress = (type, to, from, canisterId) =>
+  ({
     SEND: to,
     BURN: to,
     RECEIVE: from,
-  }
-)[type] || canisterId || '';
+  }[type] ||
+  canisterId ||
+  '');
