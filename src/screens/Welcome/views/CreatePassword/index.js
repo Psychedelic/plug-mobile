@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, Image, Switch } from 'react-native';
+import * as Keychain from 'react-native-keychain';
 import Container from '../../../../components/common/Container';
 import TextInput from '../../../../components/common/TextInput';
 import { Colors } from '../../../../constants/theme';
@@ -15,24 +16,33 @@ import { reset } from '../../../../redux/slices/keyring';
 import KeyboardHider from '../../../../components/common/KeyboardHider';
 
 const CreatePassword = ({ route, navigation }) => {
-  const { createWallet } = useKeyring();
+  const { createWallet, saveBiometrics } = useKeyring();
   const { flow } = route.params;
   const { goBack } = navigation;
   const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [faceId, setFaceId] = useState(false);
-  const toggleSwitch = () => setFaceId(previousState => !previousState);
   const dispatch = useDispatch();
+  const [biometrics, setBiometrics] = useState(false);
+  const [biometryType, setBiometryType] = useState(false);
+  const toggleSwitch = () => setBiometrics(previousState => !previousState);
+
+  useEffect(() => {
+    Keychain.getSupportedBiometryType().then((deviceBiometry) => {
+      setBiometryType(deviceBiometry);
+    });
+  }, []);
+
 
   const handleCreate = async () => {
     if (flow === 'import') {
-      navigation.navigate(Routes.IMPORT_SEED_PHRASE, { password });
+      navigation.navigate(Routes.IMPORT_SEED_PHRASE, { password, biometryType });
     } else {
       try {
         setLoading(true);
         dispatch(reset());
-        const mnemonic = await createWallet(password);
+        const mnemonic = await createWallet(password, biometryType);
+        await saveBiometrics(password, biometryType);
         navigation.navigate(Routes.BACKUP_SEED_PHRASE, { mnemonic });
       }
       catch (e) {
@@ -63,7 +73,6 @@ const CreatePassword = ({ route, navigation }) => {
             </View>
           }
         />
-
         <View style={styles.container}>
           <Text style={styles.title}>Create Password</Text>
           <Text style={styles.subtitle}>
@@ -94,10 +103,12 @@ const CreatePassword = ({ route, navigation }) => {
 
           <Text style={styles.help}>Must be at least 12 characters</Text>
 
-          <View style={styles.switchContainer}>
-            <Text style={styles.faceId}>Sign in with Face ID?</Text>
-            <Switch onValueChange={toggleSwitch} value={faceId} />
-          </View>
+          { biometryType && (
+            <View style={styles.switchContainer}>
+              <Text style={styles.faceId}>Sign in with Face ID?</Text>
+              <Switch onValueChange={toggleSwitch} value={biometrics} />
+            </View>
+          )}
           <RainbowButton
             buttonStyle={styles.componentMargin}
             text="Continue"
@@ -105,9 +116,9 @@ const CreatePassword = ({ route, navigation }) => {
             onPress={handleCreate}
             disabled={
               !password ||
-              !confirmPassword ||
-              password !== confirmPassword ||
-              password.length < 12
+                !confirmPassword ||
+                password !== confirmPassword ||
+                password.length < 12
             }
           />
         </View>
