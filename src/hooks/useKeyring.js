@@ -21,6 +21,7 @@ const DEFAULT_KEYCHAIN_OPTIONS = {
 	fingerprintPromptTitle: 'Fingerprint auth title',
 	fingerprintPromptDesc: 'Fingerprint auth description',
 	fingerprintPromptCancel: 'Fingerprint auth cancel',
+  storage: Keychain.STORAGE_TYPE.RSA,
 };
 
 const generateMnemonic = async () => {
