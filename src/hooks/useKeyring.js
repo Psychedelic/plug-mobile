@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 //import getRandom from '../helpers/random';
 import * as Keychain from 'react-native-keychain';
@@ -14,13 +15,14 @@ import { recursiveParseBigInt } from '../utils/objects';
 
 const KEYCHAIN_USER = 'plug-user-name';
 const DEFAULT_KEYCHAIN_OPTIONS = {
-  service: 'ooo.plugwallet',
+  service: Platform.OS === 'ios' ? undefined : 'ooo.plugwallet',
   authenticationPromptTitle: 'Auth prompt title',
   authenticationPrompt: { title: 'Auth prompt description' },
 	authenticationPromptDesc: 'Auth prompt description',
 	fingerprintPromptTitle: 'Fingerprint auth title',
 	fingerprintPromptDesc: 'Fingerprint auth description',
 	fingerprintPromptCancel: 'Fingerprint auth cancel',
+  storage: Keychain.STORAGE_TYPE.RSA,
 };
 
 const generateMnemonic = async () => {
