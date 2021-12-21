@@ -28,7 +28,6 @@ const NftDetail = ({ modalRef, handleClose, ...props }) => {
           url={selectedNFT?.url}
           style={{ width: imageSize, height: imageSize }}
         />
-
         <View style={styles.buttonContainer}>
           <View style={{ flex: 1, marginRight: 10 }}>
             <Button variant="gray" text="Marketplace" onPress={() => null} />
