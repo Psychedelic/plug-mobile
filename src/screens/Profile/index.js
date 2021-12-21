@@ -18,6 +18,7 @@ import { getTransactions, setTransactionsLoading } from '../../redux/slices/keyr
 import { useDispatch } from 'react-redux';
 import { useICPPrice } from '../../redux/slices/icp';
 import Routes from '../../navigation/Routes';
+import EmptyState from '../../components/common/EmptyState';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -61,7 +62,9 @@ const Profile = () => {
               onRefresh={onRefresh}
               tintColor={Colors.White.Primary}
             />
-          }>
+          }
+          contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+        >
           <View style={styles.container}>
 
             <View style={styles.leftContainer}>
@@ -79,14 +82,22 @@ const Profile = () => {
           </View>
           <Divider />
           <Text style={styles.title}>Activity</Text>
-          <View>
-            {transactions?.map((item, index) => (
-              <ActivityItem key={index} {...item} />
-            ))}
+          <View style={{ flex: 1 }}>
+            {
+              transactions?.length > 0
+                ?
+                transactions?.map((item, index) => (
+                  <ActivityItem key={index} {...item} />
+                ))
+                :
+                <EmptyState
+                  title={'You have no activity yet'}
+                  text={`When you do, they'll show here, where you will see their traits and send them.`}
+                />
+            }
           </View>
         </ScrollView>
       </Container>
-
 
       <Accounts
         modalRef={modalRef}

@@ -8,6 +8,10 @@ export default StyleSheet.create({
     paddingHorizontal: Metrics.Padding,
     ...FontStyles.Title,
   },
+  scroll:{
+    flexGrow: 1,
+     justifyContent: 'center',
+  },
   container: {
     justifyContent: 'space-between',
     flexDirection: 'row',
