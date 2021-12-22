@@ -62,15 +62,12 @@ const Profile = () => {
               onRefresh={onRefresh}
               tintColor={Colors.White.Primary}
             />
-          }
-        >
+          }>
           <View style={styles.container}>
-
             <View style={styles.leftContainer}>
               <UserIcon size="large" onPress={openAccounts} />
               <Text style={styles.name}>{currentWallet.name}</Text>
             </View>
-
             <Button
               variant="gray"
               text="Change"
@@ -90,7 +87,7 @@ const Profile = () => {
                 ))
                 :
                 <EmptyState
-                  style={{ marginTop: 60 }}
+                  style={styles.emptyState}
                   title={'You have no activity yet'}
                   text={`When you do, they'll show here, where you will see their traits and send them.`}
                 />
@@ -98,11 +95,9 @@ const Profile = () => {
           </View>
         </ScrollView>
       </Container>
-
       <Accounts
         modalRef={modalRef}
       />
-
     </>
   );
 };

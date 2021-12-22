@@ -77,7 +77,7 @@ const NFTs = () => {
               ))
               :
               <EmptyState
-                style={{ marginTop: 120 }}
+                style={styles.emptyState}
                 title={`You don't own any NFTs yet`}
                 text={`When you do, they'll show here, where you will see their traits and send them.`}
               />
@@ -110,5 +110,8 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingBottom: 20,
     ...FontStyles.Title,
+  },
+  emptyState: {
+    marginTop: 120,
   },
 });
