@@ -18,6 +18,7 @@ import { getTransactions, setTransactionsLoading } from '../../redux/slices/keyr
 import { useDispatch } from 'react-redux';
 import { useICPPrice } from '../../redux/slices/icp';
 import Routes from '../../navigation/Routes';
+import EmptyState from '../../components/common/EmptyState';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -63,12 +64,10 @@ const Profile = () => {
             />
           }>
           <View style={styles.container}>
-
             <View style={styles.leftContainer}>
               <UserIcon size="large" onPress={openAccounts} />
               <Text style={styles.name}>{currentWallet.name}</Text>
             </View>
-
             <Button
               variant="gray"
               text="Change"
@@ -80,18 +79,25 @@ const Profile = () => {
           <Divider />
           <Text style={styles.title}>Activity</Text>
           <View>
-            {transactions?.map((item, index) => (
-              <ActivityItem key={index} {...item} />
-            ))}
+            {
+              transactions?.length > 0
+                ?
+                transactions?.map((item, index) => (
+                  <ActivityItem key={index} {...item} />
+                ))
+                :
+                <EmptyState
+                  style={styles.emptyState}
+                  title={'You have no activity yet'}
+                  text={`When you do, they'll show here, where you will see their traits and send them.`}
+                />
+            }
           </View>
         </ScrollView>
       </Container>
-
-
       <Accounts
         modalRef={modalRef}
       />
-
     </>
   );
 };

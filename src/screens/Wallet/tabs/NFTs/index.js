@@ -16,6 +16,7 @@ import Touchable from '../../../../components/animations/Touchable';
 import NftDisplayer from '../../../../components/common/NftDisplayer';
 import { getNFTs, setSelectedNFT } from '../../../../redux/slices/keyring';
 import { useDispatch, useSelector } from 'react-redux';
+import EmptyState from '../../../../components/common/EmptyState';
 
 const { width } = Dimensions.get('window');
 const itemSize = width / 2 - 40;
@@ -58,19 +59,29 @@ const NFTs = () => {
               tintColor={Colors.White.Primary}
             />
           }>
-          {nfts.map(item => (
-            <View key={`${item.canisterId}_${item.index}`} style={styles.item}>
-              <Touchable onPress={onOpen(item)}>
-                <NftDisplayer
-                  url={item.url}
-                  style={{ width: itemSize, height: itemSize }}
-                />
-              </Touchable>
-              <Text style={styles.text}>
-                {item.name || `${item.collection} #${item.index}`}
-              </Text>
-            </View>
-          ))}
+          {
+            nfts?.length > 0
+              ?
+              nfts.map(item => (
+                <View key={`${item.canisterId}_${item.index}`} style={styles.item}>
+                  <Touchable onPress={onOpen(item)}>
+                    <NftDisplayer
+                      url={item.url}
+                      style={{ width: itemSize, height: itemSize }}
+                    />
+                  </Touchable>
+                  <Text style={styles.text}>
+                    {item.name || `${item.collection} #${item.index}`}
+                  </Text>
+                </View>
+              ))
+              :
+              <EmptyState
+                style={styles.emptyState}
+                title={`You don't own any NFTs yet`}
+                text={`When you do, they'll show here, where you will see their traits and send them.`}
+              />
+          }
         </ScrollView>
       </Container>
       <NftDetail modalRef={detailRef} />
@@ -99,5 +110,8 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
     paddingBottom: 20,
     ...FontStyles.Title,
+  },
+  emptyState: {
+    marginTop: 120,
   },
 });

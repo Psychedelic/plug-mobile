@@ -8,6 +8,10 @@ export default StyleSheet.create({
     paddingHorizontal: Metrics.Padding,
     ...FontStyles.Title,
   },
+  scroll: {
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
   container: {
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -21,5 +25,8 @@ export default StyleSheet.create({
   name: {
     ...FontStyles.Subtitle,
     marginLeft: 12
-  }
+  },
+  emptyState: {
+    marginTop: 60,
+  },
 });
