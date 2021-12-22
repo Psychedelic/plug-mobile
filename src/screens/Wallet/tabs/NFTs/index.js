@@ -2,14 +2,10 @@ import React, { useState, useRef } from 'react';
 import { RefreshControl, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-<<<<<<< HEAD
-import { getNFTs, setSelectedNFT } from '../../../../redux/slices/keyring';
 import EmptyState from '../../../../components/common/EmptyState';
-=======
-import { getNFTs } from '../../../../redux/slices/keyring';
->>>>>>> 3632d74 (Fix chaging size at nft display)
 import Container from '../../../../components/common/Container';
 import Divider from '../../../../components/common/Divider';
+import { getNFTs } from '../../../../redux/slices/keyring';
 import { ScrollView } from 'react-native-gesture-handler';
 import WalletHeader from '../../components/WalletHeader';
 import { Colors } from '../../../../constants/theme';
