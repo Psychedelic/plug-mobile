@@ -50,7 +50,7 @@ const NftDisplayer = ({ url, style, type, isDetailView }) => {
         <SquircleView
           style={StyleSheet.absoluteFill}
           squircleParams={{
-            cornerRadius: 30,
+            cornerRadius: 20,
             cornerSmoothing: 1,
           }}
         />

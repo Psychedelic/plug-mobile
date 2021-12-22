@@ -2,6 +2,9 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 const videoDetailSize = Dimensions.get('window').width - 40;
 
+const { width } = Dimensions.get('window');
+const itemSize = width / 2 - 40;
+
 const commonStyle = {
   borderRadius: 20,
   alignSelf: 'center',
@@ -14,8 +17,8 @@ const commonDetailContainer = {
 
 const commonCotainer = {
   ...commonStyle,
-  height: 165,
-  width: 165,
+  width: itemSize,
+  height: itemSize,
 };
 
 export default StyleSheet.create({
