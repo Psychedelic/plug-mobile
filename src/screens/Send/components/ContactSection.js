@@ -7,7 +7,7 @@ import { FontStyles } from '../../../constants/theme';
 const ContactSection = ({ onPress }) => {
   const { contacts } = useContacts();
   return (
-    contacts.length > 0 &&
+    contacts?.length > 0 &&
     (
       <>
         <Text style={FontStyles.Subtitle3}>Contacts</Text>
