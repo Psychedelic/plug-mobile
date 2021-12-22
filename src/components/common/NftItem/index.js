@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { FontStyles } from '../../../constants/theme';
 import NftDisplayer from '../NftDisplayer';
+
 import styles from './styles';
 
 const NftItem = ({ url, name, style }) => (

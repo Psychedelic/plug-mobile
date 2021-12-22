@@ -324,9 +324,6 @@ export const keyringSlice = createSlice({
     setTransaction: (state, action) => {
       state.transaction = action.payload;
     },
-    setSelectedNFT: (state, action) => {
-      state.selectedNFT = action.payload;
-    },
     setCollections: (state, action) => {
       state.collections = action.payload;
     },
@@ -409,7 +406,6 @@ export const {
   setWallets,
   setAssetsLoading,
   setTransaction,
-  setSelectedNFT,
   setTransactions,
   setTransactionsLoading,
   reset,
