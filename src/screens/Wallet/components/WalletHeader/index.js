@@ -58,7 +58,12 @@ const WalletHeader = () => {
   return (
     <>
       <Header
-        left={<UserIcon size="small" onPress={() => navigation.navigate(Routes.PROFILE_SCREEN)} />}
+        left={
+          <UserIcon
+            size="small"
+            onPress={() => navigation.navigate(Routes.PROFILE_SCREEN)}
+          />
+        }
         center={<AccountInfo />}
         right={
           <Touchable onPress={openModal}>
@@ -75,7 +80,6 @@ const WalletHeader = () => {
           </View>
         </View>
       </Modal>
-
       <Send modalRef={sendRef} />
       <Deposit modalRef={depositRef} />
     </>
