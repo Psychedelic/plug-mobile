@@ -9,7 +9,7 @@ import Image from 'react-native-remote-svg';
 import VideoNFTDisplay from './components/VideoNFTDisplay';
 import styles from './styles';
 
-const NftDisplayer = ({ url, style, type }) => {
+const NftDisplayer = ({ url, style, type, isDetailView }) => {
   const [loading, setLoading] = useState(true);
   const webViewRef = useRef(null);
 
@@ -35,6 +35,7 @@ const NftDisplayer = ({ url, style, type }) => {
       hideSpinner={hideSpinner}
       style={styles.image}
       loading={loading}
+      isDetailView={isDetailView}
     />
   );
 

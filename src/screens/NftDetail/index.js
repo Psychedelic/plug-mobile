@@ -1,4 +1,4 @@
-import { View, Text, Dimensions } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import React, { useState, useEffect } from 'react';
 
 import RainbowButton from '../../components/buttons/RainbowButton';
@@ -12,7 +12,6 @@ import Section from './components/Section';
 import styles from './styles';
 
 const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
-  const imageSize = Dimensions.get('window').width - 40;
   const [type, setType] = useState(null);
 
   useEffect(() => {
@@ -32,14 +31,19 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
         }
       />
       <View style={styles.content}>
-        <NftDisplayer
-          url={selectedNFT?.url}
-          type={type}
-          style={{
-            width: imageSize,
-            height: imageSize,
-          }}
-        />
+        <View style={styles.nftDisplayerContainer}>
+          {type ? (
+            <NftDisplayer
+              url={selectedNFT?.url}
+              type={type}
+              style={styles.video}
+              isDetailView
+            />
+          ) : (
+            <ActivityIndicator style={styles.activityIndicator} />
+          )}
+        </View>
+
         <View style={styles.buttonContainer}>
           <View style={{ flex: 1, marginRight: 10 }}>
             <Button variant="gray" text="Marketplace" onPress={() => null} />

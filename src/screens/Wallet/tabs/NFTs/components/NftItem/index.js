@@ -29,7 +29,9 @@ function NftItem({ item, onOpen }) {
           <ActivityIndicator style={sharedStyles.activityIndicator} />
         )}
       </Touchable>
-      <Text style={sharedStyles.text}>{name || `${collection} #${index}`}</Text>
+      <Text numberOfLines={1} ellipsizeMode="tail" style={sharedStyles.text}>
+        {name || `${collection} #${index}`}
+      </Text>
     </View>
   );
 }

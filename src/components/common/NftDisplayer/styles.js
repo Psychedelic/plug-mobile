@@ -1,18 +1,38 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const videoDetailSize = Dimensions.get('window').width - 40;
 
 const commonStyle = {
   borderRadius: 20,
   alignSelf: 'center',
 };
 
+const commonDetailContainer = {
+  height: videoDetailSize,
+  width: videoDetailSize,
+};
+
+const commonCotainer = {
+  ...commonStyle,
+  height: 165,
+  width: 165,
+};
+
 export default StyleSheet.create({
   image: {
     ...commonStyle,
   },
+  container: {
+    ...commonCotainer,
+  },
+  containerDetail: {
+    ...commonDetailContainer,
+  },
   video: {
-    ...commonStyle,
-    height: 165,
-    width: 165,
+    ...commonCotainer,
+  },
+  videoDetail: {
+    ...commonDetailContainer,
   },
   activityIndicator: {
     position: 'absolute',

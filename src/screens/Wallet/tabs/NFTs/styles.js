@@ -24,6 +24,7 @@ export default StyleSheet.create({
   text: {
     ...FontStyles.SmallGray,
     marginTop: 10,
+    maxWidth: itemSize,
   },
   title: {
     paddingLeft: 20,
