@@ -3,6 +3,7 @@ import useContacts from '../../../hooks/useContacts';
 import ContactItem from '../../../components/common/ContactItem';
 import { Text } from 'react-native';
 import { FontStyles } from '../../../constants/theme';
+import styles from '../styles';
 
 const ContactSection = ({ onPress }) => {
   const { contacts } = useContacts();
@@ -16,7 +17,7 @@ const ContactSection = ({ onPress }) => {
             <ContactItem
               onPress={() => onPress(contact)}
               contact={contact}
-              style={{ marginTop: 15 }}
+              style={styles.contactItem}
             />
           ))
         }

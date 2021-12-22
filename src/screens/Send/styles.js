@@ -8,4 +8,7 @@ export default StyleSheet.create({
   content: {
     paddingHorizontal: 20,
   },
+  contactItem: {
+    marginTop: 15,
+  },
 });
