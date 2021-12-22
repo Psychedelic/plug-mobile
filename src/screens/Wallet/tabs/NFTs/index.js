@@ -2,8 +2,12 @@ import React, { useState, useRef } from 'react';
 import { RefreshControl, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
+<<<<<<< HEAD
 import { getNFTs, setSelectedNFT } from '../../../../redux/slices/keyring';
 import EmptyState from '../../../../components/common/EmptyState';
+=======
+import { getNFTs } from '../../../../redux/slices/keyring';
+>>>>>>> 3632d74 (Fix chaging size at nft display)
 import Container from '../../../../components/common/Container';
 import Divider from '../../../../components/common/Divider';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -17,6 +21,7 @@ const NFTs = () => {
   const detailRef = useRef(null);
   const dispatch = useDispatch();
   const [refreshing, setRefresing] = useState(false);
+  const [selectedNft, setSelectedNft] = useState(null);
   const { collections } = useSelector(state => state.keyring);
 
   const renderNFT = (item, index) => (
@@ -24,7 +29,7 @@ const NFTs = () => {
   );
 
   const onOpen = nft => () => {
-    dispatch(setSelectedNFT(nft));
+    setSelectedNft(nft);
     detailRef?.current.open();
   };
 
@@ -33,6 +38,7 @@ const NFTs = () => {
     dispatch(getNFTs());
     setTimeout(() => setRefresing(false), 1000);
   };
+
   const nfts =
     collections?.flatMap(collection => collection?.tokens || []) || [];
 
@@ -62,7 +68,7 @@ const NFTs = () => {
           )}
         </ScrollView>
       </Container>
-      <NftDetail modalRef={detailRef} />
+      <NftDetail modalRef={detailRef} selectedNFT={selectedNft} />
     </>
   );
 };

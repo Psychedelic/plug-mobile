@@ -1,20 +1,28 @@
-import React from 'react';
-import Header from '../../components/common/Header';
-import Modal from '../../components/modal';
-import { FontStyles } from '../../constants/theme';
-import { View, Text } from 'react-native';
-import Section from './components/Section';
-import Badge from '../../components/common/Badge';
-import Button from '../../components/buttons/Button';
-import RainbowButton from '../../components/buttons/RainbowButton';
-import styles from './styles';
-import NftDisplayer from '../../components/common/NftDisplayer';
-import { Dimensions } from 'react-native';
-import { useSelector } from 'react-redux';
+import { View, Text, Dimensions } from 'react-native';
+import React, { useState, useEffect } from 'react';
 
-const NftDetail = ({ modalRef, handleClose, ...props }) => {
-  const { selectedNFT } = useSelector(state => state.keyring);
+import RainbowButton from '../../components/buttons/RainbowButton';
+import NftDisplayer from '../../components/common/NftDisplayer';
+import Button from '../../components/buttons/Button';
+import Header from '../../components/common/Header';
+import { FontStyles } from '../../constants/theme';
+import Badge from '../../components/common/Badge';
+import Modal from '../../components/modal';
+import Section from './components/Section';
+import styles from './styles';
+
+const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
   const imageSize = Dimensions.get('window').width - 40;
+  const [type, setType] = useState(null);
+
+  useEffect(() => {
+    const getType = async () =>
+      await fetch(selectedNFT?.url).then(res =>
+        setType(res.headers.get('Content-Type')),
+      );
+    getType();
+    return () => setType(null);
+  }, [selectedNFT?.url]);
 
   return (
     <Modal modalRef={modalRef} onClose={handleClose} {...props}>
@@ -26,7 +34,11 @@ const NftDetail = ({ modalRef, handleClose, ...props }) => {
       <View style={styles.content}>
         <NftDisplayer
           url={selectedNFT?.url}
-          style={{ width: imageSize, height: imageSize }}
+          type={type}
+          style={{
+            width: imageSize,
+            height: imageSize,
+          }}
         />
         <View style={styles.buttonContainer}>
           <View style={{ flex: 1, marginRight: 10 }}>
@@ -36,7 +48,6 @@ const NftDetail = ({ modalRef, handleClose, ...props }) => {
             <RainbowButton text="Send" onPress={() => null} />
           </View>
         </View>
-
         <Section title="🧩 Collection" style={{ borderTopWidth: 0 }}>
           <Badge
             value={selectedNFT?.collection}
@@ -44,13 +55,11 @@ const NftDetail = ({ modalRef, handleClose, ...props }) => {
           />
           <Badge value={`#${selectedNFT?.index}`} />
         </Section>
-
         {!!selectedNFT?.desc && (
           <Section title="📝 Description">
             <Text>{selectedNFT?.desc}</Text>
           </Section>
         )}
-
         {selectedNFT?.metadata?.properties?.length && (
           <Section title="🎛 Attributes">
             {selectedNFT?.metadata?.properties?.map(prop => (

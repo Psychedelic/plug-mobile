@@ -1,27 +1,17 @@
 import { StyleSheet, ActivityIndicator, View } from 'react-native';
 import MaskedView from '@react-native-community/masked-view';
-import React, { useEffect, useState, useRef } from 'react';
 import { SquircleView } from 'react-native-figma-squircle';
+import React, { useState, useRef } from 'react';
 import { WebView } from 'react-native-webview';
 import { SvgCssUri } from 'react-native-svg';
 import Image from 'react-native-remote-svg';
 
-import useFileDownload from '../../../hooks/useFileDownload';
 import VideoNFTDisplay from './components/VideoNFTDisplay';
 import styles from './styles';
 
-const NftDisplayer = ({ url, style }) => {
-  const [type, setType] = useState('img');
+const NftDisplayer = ({ url, style, type }) => {
   const [loading, setLoading] = useState(true);
   const webViewRef = useRef(null);
-  const newUrl = useFileDownload(url);
-
-  useEffect(() => {
-    fetch(url).then(response => {
-      const content = response.headers.get('Content-Type');
-      setType(content);
-    });
-  }, [url]);
 
   const hideSpinner = () => {
     setLoading(false);
@@ -33,25 +23,15 @@ const NftDisplayer = ({ url, style }) => {
         onLoad={hideSpinner}
         ref={webViewRef}
         source={{ uri: url }}
-        style={{ flex: 1, ...styles.image }}
+        style={styles.webView}
       />
-      {loading && (
-        <ActivityIndicator
-          style={{
-            position: 'absolute',
-            top: 0,
-            bottom: 0,
-            right: 0,
-            left: 0,
-          }}
-        />
-      )}
+      {loading && <ActivityIndicator style={styles.activityIndicator} />}
     </View>
   );
 
   const videoBody = (
     <VideoNFTDisplay
-      url={newUrl}
+      url={url}
       hideSpinner={hideSpinner}
       style={styles.image}
       loading={loading}

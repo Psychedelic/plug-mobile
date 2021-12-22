@@ -5,6 +5,11 @@ import { FontStyles } from '../../../../constants/theme';
 const { width } = Dimensions.get('window');
 const itemSize = width / 2 - 40;
 
+const commonContainerSize = {
+  width: itemSize,
+  height: itemSize,
+};
+
 export default StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -26,7 +31,16 @@ export default StyleSheet.create({
     ...FontStyles.Title,
   },
   nftDisplayer: {
-    width: itemSize,
-    height: itemSize,
+    ...commonContainerSize,
+  },
+  activityIndicator: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+  },
+  touchable: {
+    ...commonContainerSize,
   },
 });
