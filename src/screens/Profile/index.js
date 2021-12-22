@@ -63,7 +63,6 @@ const Profile = () => {
               tintColor={Colors.White.Primary}
             />
           }
-          contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
         >
           <View style={styles.container}>
 
@@ -82,7 +81,7 @@ const Profile = () => {
           </View>
           <Divider />
           <Text style={styles.title}>Activity</Text>
-          <View style={{ flex: 1 }}>
+          <View>
             {
               transactions?.length > 0
                 ?
@@ -91,6 +90,7 @@ const Profile = () => {
                 ))
                 :
                 <EmptyState
+                  style={{ marginTop: 60 }}
                   title={'You have no activity yet'}
                   text={`When you do, they'll show here, where you will see their traits and send them.`}
                 />
