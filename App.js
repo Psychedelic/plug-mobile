@@ -1,15 +1,15 @@
+import { Text } from 'react-native';
 import React, { useState } from 'react';
 import { Provider, useDispatch } from 'react-redux';
+import SplashScreen from 'react-native-splash-screen';
 import { PersistGate } from 'redux-persist/integration/react';
-import { Keyboard, Text, TouchableWithoutFeedback } from 'react-native';
 
-import Routes from './src/navigation';
+import ErrorBoundary from './src/components/common/ErrorBoundary';
 import { persistor, store } from './src/redux/configureReducer';
 import { initKeyring } from './src/redux/slices/keyring';
-import ErrorBoundary from './src/components/common/ErrorBoundary';
+import Routes from './src/navigation';
 
-import SplashScreen from 'react-native-splash-screen';
-import KeyboardHider from './src/components/common/KeyboardHider';
+// import KeyboardHider from './src/components/common/KeyboardHider';
 // import './shim.js';
 
 const PersistedApp = () => {

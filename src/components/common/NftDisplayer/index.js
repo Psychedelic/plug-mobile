@@ -1,70 +1,39 @@
-import { StyleSheet, ActivityIndicator, View } from 'react-native';
-import MaskedView from '@react-native-community/masked-view';
-import { SquircleView } from 'react-native-figma-squircle';
-import React, { useState, useRef } from 'react';
-import { WebView } from 'react-native-webview';
-import { SvgCssUri } from 'react-native-svg';
-import Image from 'react-native-remote-svg';
+import React, { useState } from 'react';
+import { ActivityIndicator } from 'react-native';
 
-import VideoNFTDisplay from './components/VideoNFTDisplay';
+import ImageDisplayer from './components/ImageDisplayer';
+import VideoDisplayer from './components/VideoDisplayer';
+import HTMLDisplayer from './components/HTMLDisplayer';
 import styles from './styles';
 
 const NftDisplayer = ({ url, style, type, isDetailView }) => {
   const [loading, setLoading] = useState(true);
-  const webViewRef = useRef(null);
 
   const hideSpinner = () => {
     setLoading(false);
   };
 
-  const htmlBody = (
-    <View style={[styles.image, style]}>
-      <WebView
-        onLoad={hideSpinner}
-        ref={webViewRef}
-        source={{ uri: url }}
-        style={styles.webView}
+  return type ? (
+    type?.includes('video') ? (
+      <VideoDisplayer
+        url={url}
+        loading={loading}
+        style={styles.image}
+        hideSpinner={hideSpinner}
+        isDetailView={isDetailView}
       />
-      {loading && <ActivityIndicator style={styles.activityIndicator} />}
-    </View>
-  );
-
-  const videoBody = (
-    <VideoNFTDisplay
-      url={url}
-      hideSpinner={hideSpinner}
-      style={styles.image}
-      loading={loading}
-      isDetailView={isDetailView}
-    />
-  );
-
-  return type?.includes('video') ? (
-    videoBody
-  ) : type?.includes('html') ? (
-    htmlBody
+    ) : type?.includes('html') ? (
+      <HTMLDisplayer
+        url={url}
+        style={style}
+        loading={loading}
+        hideSpinner={hideSpinner}
+      />
+    ) : (
+      <ImageDisplayer style={style} type={type} url={url} />
+    )
   ) : (
-    <MaskedView
-      style={[styles.image, style]}
-      maskElement={
-        <SquircleView
-          style={StyleSheet.absoluteFill}
-          squircleParams={{
-            cornerRadius: 20,
-            cornerSmoothing: 1,
-          }}
-        />
-      }>
-      {type?.includes('svg') ? (
-        <SvgCssUri width="100%" height="100%" uri={url} />
-      ) : (
-        <Image
-          resizeMode="cover"
-          style={StyleSheet.absoluteFill}
-          source={{ uri: url, type }}
-        />
-      )}
-    </MaskedView>
+    <ActivityIndicator style={styles.activityIndicator} />
   );
 };
 
