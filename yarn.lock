@@ -1086,6 +1086,11 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
+"@juanelas/base64@^1.0.1":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@juanelas/base64/-/base64-1.0.4.tgz#e457b9e8e10170f3d2ad685b7a82655bc4397c8b"
+  integrity sha512-KUidDSb+K7Rkoy2uJ/HdCnt4soNRlhNXONU8r8Cgic6Qq3E9BPg4kMSYXchM37WpYvGEGq2NUq/kCegMSLhtIg==
+
 "@psychedelic/cap-js@0.0.5":
   version "0.0.5"
   resolved "https://npm.pkg.github.com/download/@psychedelic/cap-js/0.0.5/5623abd851cdf8c36d6a2c2dc961f0ba9b1b9ca4e5db4c0f25e56d5afbc85de4#2eb444e86b24098a8162f67d3f1c4734cc2a3fa0"
@@ -1097,10 +1102,10 @@
     axios "^0.24.0"
     cross-fetch "^3.1.4"
 
-"@psychedelic/dab-js@0.3.0-comp":
-  version "0.3.0-comp"
-  resolved "https://npm.pkg.github.com/download/@psychedelic/dab-js/0.3.0-comp/686dd0fb70e743963cb7ed94e1b831613e19196029d219405c92e21336b3802f#d10d4c64b401ef594a235cbd14a57388ba0b793c"
-  integrity sha512-kPEeVzHhe39n+GAS2NhZeGelhbushg7IU6LzGzfSkUd7qxcKpOA0m4XplC/8ze3HejQ8J3q0Q7cv46R6kttEOw==
+"@psychedelic/dab-js@0.4.3":
+  version "0.4.3"
+  resolved "https://npm.pkg.github.com/download/@psychedelic/dab-js/0.4.3/4225683948415af50ed1e8c6fcf54d33fc1dcb3907ce818db1b6f253ed41cbf2#039efce39acbeedaf141cdad9b3f29010ff507d5"
+  integrity sha512-GiZgpPsYybqrnit7dwYAREZ5zdFYVAQnc3uMzXxDqg01eBoqqEWST0cSHGUMawSNnQ0IRwI4OMsRoPQv/41pkw==
   dependencies:
     "@dfinity/agent" "0.9.3"
     "@dfinity/candid" "0.9.3"
@@ -1111,20 +1116,21 @@
     cross-fetch "^3.1.4"
     crypto-js "^4.1.1"
 
-"@psychedelic/plug-mobile-controller@0.1.0":
-  version "0.1.0"
-  resolved "https://npm.pkg.github.com/download/@psychedelic/plug-mobile-controller/0.1.0/da4fec6c62236ac759b408216cd9cc07d1f3b79ea260630df514cc86b15dfbe6#ed59af89ce4f5f457badc7808d13cd4146926906"
-  integrity sha512-1dpVLZDM/HnIvOA64GSVsTKFmdzXIjyNbKMJHwk+Iodl3Fjtm9asAj6FQRHhQYsJqJGZ7Dgr/7vMrUlfK/plhw==
+"@psychedelic/plug-mobile-controller@0.1.3":
+  version "0.1.3"
+  resolved "https://npm.pkg.github.com/download/@psychedelic/plug-mobile-controller/0.1.3/b7657729d6edff1e7510f7e6561a13363e98ec50d720303ab30313f21ccb9a1d#0037fc9f8caf376dc1dfa73ea250ac68db0d11d5"
+  integrity sha512-/JmB+STfWBSAY/4KviIP+o1j/EjYE7+Qm96uVnxXUp9v6opeZJ/yirLLTYppvD+9npmRAwVwYmqE8OL8GodKzQ==
   dependencies:
     "@dfinity/agent" "0.9.3"
     "@dfinity/candid" "0.9.3"
     "@dfinity/identity" "0.9.3"
     "@dfinity/principal" "0.9.3"
     "@psychedelic/cap-js" "0.0.5"
-    "@psychedelic/dab-js" "0.3.0-comp"
+    "@psychedelic/dab-js" "0.4.3"
     "@types/secp256k1" "^4.0.3"
     axios "^0.21.1"
     babel-jest "^25.5.1"
+    bigint-conversion "^2.2.1"
     bip39 "^3.0.4"
     buffer-crc32 "^0.2.13"
     create-hmac "^1.1.7"
@@ -2237,6 +2243,13 @@ big-integer@1.6.x:
   version "1.6.51"
   resolved "https://registry.yarnpkg.com/big-integer/-/big-integer-1.6.51.tgz#0df92a5d9880560d3ff2d5fd20245c889d130686"
   integrity sha512-GPEid2Y9QU1Exl1rpO9B2IPJGHPSupF5GnVIP0blYvNOMer2bTvSWs1jGOUg04hTmu67nmLsQ9TBo1puaotBHg==
+
+bigint-conversion@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/bigint-conversion/-/bigint-conversion-2.2.1.tgz#08c9f17a826943c7e56d4bfa9f0fc7fe8050a940"
+  integrity sha512-9TvqpV+VZ04fPKv4KPLQRk5ZAFhgHX4F7bYQY263/BbJBFzEGbtBeTQV9oNuAGaqj88PXdov1OcSNQtq9K9MPA==
+  dependencies:
+    "@juanelas/base64" "^1.0.1"
 
 bignumber.js@^9.0.0:
   version "9.0.2"
@@ -6745,6 +6758,11 @@ react-native-crypto@^2.0.1:
     pbkdf2 "3.0.8"
     public-encrypt "^4.0.0"
     randomfill "^1.0.3"
+
+react-native-device-info@^8.4.8:
+  version "8.4.8"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-8.4.8.tgz#fc92ae423e47db6cfbf30c30012e09cee63727fa"
+  integrity sha512-92676ZWHZHsPM/EW1ulgb2MuVfjYfMWRTWMbLcrCsipkcMaZ9Traz5mpsnCS7KZpsOksnvUinzDIjsct2XGc6Q==
 
 react-native-fetch-api@^2.0.0:
   version "2.0.0"
