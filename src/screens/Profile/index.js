@@ -41,9 +41,6 @@ const Profile = () => {
     setRefresing(transactionsLoading)
   }, [transactionsLoading]);
 
-  console.log('refreshing', refreshing)
-  console.log('transactionsLoading', transactionsLoading)
-
   return (
     <>
       <Container>
