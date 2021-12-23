@@ -33,8 +33,7 @@ const Profile = () => {
   };
 
   const onRefresh = () => {
-    console.log('entra')
-    //dispatch(setTransactionsLoading(true));
+    dispatch(setTransactionsLoading(true));
     dispatch(getTransactions({ icpPrice }));
   };
 

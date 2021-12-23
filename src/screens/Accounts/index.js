@@ -12,9 +12,11 @@ import CreateEditAccount from '../../modals/CreateEditAccount';
 import { useDispatch, useSelector } from 'react-redux';
 import shortAddress from '../../helpers/short-address';
 import { reset, setCurrentPrincipal } from '../../redux/slices/keyring';
+import { useICPPrice } from '../../redux/slices/icp';
 
 const Accounts = ({ modalRef, onClose, ...props }) => {
   const { wallets } = useSelector(state => state.keyring);
+  const icpPrice = useICPPrice();
   const dispatch = useDispatch();
 
   const [selectedAccount, setSelectedAccount] = useState(null);
@@ -32,9 +34,8 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
   };
 
   const onChangeAccount = walletNumber => {
-    console.log('changing account', walletNumber)
     dispatch(reset());
-    dispatch(setCurrentPrincipal(walletNumber));
+    dispatch(setCurrentPrincipal({ walletNumber, icpPrice }));
   }
 
   const onLongPress = account => {

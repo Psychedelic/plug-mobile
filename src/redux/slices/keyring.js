@@ -35,7 +35,6 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
   if (keyring?.isUnlocked) {
     const state = await keyring.getState();
     if (!state.wallets.length) {
-      console.log('locking', state.wallets);
       await keyring.lock();
     }
   }
@@ -165,14 +164,12 @@ export const editSubaccount = createAsyncThunk(
   'keyring/editSubaccount',
   async (params, { getState }) => {
     try {
-      console.log('params', params);
       const { walletNumber, name, icon } = params;
       const { instance } = getState().keyring;
       const edited = await instance?.editPrincipal(walletNumber, {
         name,
         emoji: icon,
       });
-      console.log('edited', edited);
       return edited;
     } catch (e) {
       console.log('editSubaccount', e);
@@ -319,18 +316,24 @@ export const getTransactions = createAsyncThunk(
 
 export const setCurrentPrincipal = createAsyncThunk(
   'keyring/setCurrentPrincipal',
-  async (walletNumber, { getState }) => {
-    const { instance } = getState().keyring;
-    await instance?.setCurrentPrincipal(walletNumber);
+  async ({ walletNumber, icpPrice }, { getState }) => {
+    try {
+      const state = getState();
+      const { instance } = state.keyring;
+      await instance?.setCurrentPrincipal(walletNumber);
 
-    const response = await instance?.getState();
-    const { wallets } = response || {};
-    const wallet = wallets[walletNumber];
-    const [transactions, assets] = await Promise.all([
-      privateGetTransactions({ icpPrice }, state),
-      privateGetAssets({ refresh: true, icpPrice }, state),
-    ]);
-    return { wallet, transactions, assets };
+      const response = await instance?.getState();
+      const { wallets } = response || {};
+      const wallet = wallets[walletNumber];
+      const [transactions, assets] = await Promise.all([
+        privateGetTransactions({ icpPrice }, state),
+        privateGetAssets({ refresh: true, icpPrice }, state),
+      ]);
+      return { wallet, transactions, assets };
+    }
+    catch (e) {
+      console.log('setCurrentPrincipal', e.message);
+    }
   },
 );
 
@@ -389,7 +392,6 @@ export const keyringSlice = createSlice({
       state.isUnlocked = action.payload;
     },
     setWallets: (state, action) => {
-      console.log('wallets state', action.payload);
       state.wallets = action.payload;
     },
     setContacts: (state, action) => {

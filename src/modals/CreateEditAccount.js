@@ -18,7 +18,6 @@ const CreateEditAccount = ({ modalRef, account, ...props }) => {
   const { onCreate, onEdit } = useAccounts();
 
   const onPress = () => {
-    console.log('acccccc', account)
     account
       ? onEdit({
         walletNumber: account.walletNumber,
