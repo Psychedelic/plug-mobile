@@ -9,11 +9,13 @@ import Row from '../../components/layout/Row';
 import Touchable from '../../components/animations/Touchable';
 import AccountItem from '../../components/common/AccountItem';
 import CreateEditAccount from '../../modals/CreateEditAccount';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import shortAddress from '../../helpers/short-address';
+import { reset, setCurrentPrincipal } from '../../redux/slices/keyring';
 
 const Accounts = ({ modalRef, onClose, ...props }) => {
   const { wallets } = useSelector(state => state.keyring);
+  const dispatch = useDispatch();
 
   const [selectedAccount, setSelectedAccount] = useState(null);
 
@@ -28,6 +30,11 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
     setSelectedAccount(account);
     createEditAccountRef.current?.open();
   };
+
+  const onChangeAccount = walletNumber => {
+    dispatch(reset());
+    dispatch(setCurrentPrincipal(walletNumber));
+  }
 
   const onLongPress = account => {
     ActionSheetIOS.showActionSheetWithOptions(
@@ -48,6 +55,8 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
     );
   };
 
+  console.log('wallets', wallets)
+
   return (
     <Modal
       adjustToContentHeight
@@ -62,8 +71,9 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
           wallets?.map(account => (
             <AccountItem
               account={account}
-              key={account.walletNumber}
+              key={account?.walletNumber}
               onMenu={() => onLongPress(account)}
+              onPress={() => onChangeAccount(account?.walletNumber)}
             />
           ))
         }

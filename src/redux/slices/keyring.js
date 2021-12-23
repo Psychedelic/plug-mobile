@@ -302,6 +302,21 @@ export const getTransactions = createAsyncThunk(
   },
 );
 
+export const setCurrentPrincipal = createAsyncThunk(
+  'keyring/setCurrentPrincipal',
+  async (walletNumber, { getState }) => {
+    const { instance } = getState().keyring;
+    await instance?.keyring.setCurrentPrincipal(walletNumber);
+    await instance?.keyring.getState();
+
+    const [transactions, assets] = await Promise.all([
+      privateGetTransactions({ icpPrice }, state),
+      privateGetAssets({ refresh: true, icpPrice }, state),
+    ]);
+    return { walletNumber, transactions, assets };
+  },
+);
+
 const DEFAULT_ASSETS = [
   {
     symbol: 'ICP',
@@ -458,6 +473,14 @@ export const keyringSlice = createSlice({
     [importWallet.fulfilled]: (state, action) => {
       const { wallet, assets, transactions } = action.payload;
       state.currentWallet = wallet;
+      const formattedAssets = formatAssets(assets);
+      state.assets =
+        formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS;
+      state.transactions = transactions || [];
+    },
+    [setCurrentPrincipal.fulfilled]: (state, action) => {
+      const { assets, transactions, walletNumber } = action.payload;
+      state.currentWallet = walletNumber;
       const formattedAssets = formatAssets(assets);
       state.assets =
         formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS;
