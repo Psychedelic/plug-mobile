@@ -386,7 +386,6 @@ export const keyringSlice = createSlice({
       }));
       state.collections = collections.filter(col => col.tokens.length);
     },
-    setTransactions: (state, action) => { },
     setTransactionsLoading: (state, action) => {
       state.transactionsLoading = action.payload;
     },
@@ -475,7 +474,6 @@ export const {
   setWallets,
   setAssetsLoading,
   setTransaction,
-  setTransactions,
   setTransactionsLoading,
   reset,
 } = keyringSlice.actions;
