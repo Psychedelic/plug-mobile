@@ -41,7 +41,7 @@ export const persistor = onInit => persistStore(store, null, onInit);
 export const keyringStorage = {
   get: async key => {
     const state = {};
-    // await AsyncStorage.clear();
+     //await AsyncStorage.clear();
     if (key) {
       return AsyncStorage.getItem(key).then(value => JSON.parse(value));
     } else {

@@ -33,13 +33,17 @@ const Profile = () => {
   };
 
   const onRefresh = () => {
-    dispatch(setTransactionsLoading(true));
+    console.log('entra')
+    //dispatch(setTransactionsLoading(true));
     dispatch(getTransactions({ icpPrice }));
   };
 
   useEffect(() => {
     setRefresing(transactionsLoading)
   }, [transactionsLoading]);
+
+  console.log('refreshing', refreshing)
+  console.log('transactionsLoading', transactionsLoading)
 
   return (
     <>

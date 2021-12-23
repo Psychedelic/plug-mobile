@@ -32,6 +32,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
   };
 
   const onChangeAccount = walletNumber => {
+    console.log('changing account', walletNumber)
     dispatch(reset());
     dispatch(setCurrentPrincipal(walletNumber));
   }

@@ -9,7 +9,7 @@ import animationScales from '../../../utils/animationScales';
 import Icon from '../../icons';
 
 const AccountItem = ({ account, onPress, onMenu, ...props }) => {
-  const { icon, name, principal } = account;
+  const { icon, name, principal } = account || {};
 
   return (
     <View {...props} style={{ marginBottom: 20 }}>
