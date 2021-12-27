@@ -61,8 +61,8 @@ const Profile = () => {
           }>
           <View style={styles.container}>
             <View style={styles.leftContainer}>
-              <UserIcon size="large" onPress={openAccounts} />
-              <Text style={styles.name}>{currentWallet.name}</Text>
+              <UserIcon icon={currentWallet?.icon} size="large" onPress={openAccounts} />
+              <Text style={styles.name}>{currentWallet?.name}</Text>
             </View>
             <Button
               variant="gray"

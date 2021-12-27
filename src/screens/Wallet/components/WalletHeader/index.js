@@ -13,11 +13,13 @@ import ActionButton from '../ActionButton';
 import Deposit from '../../../Deposit';
 import { useNavigation } from '@react-navigation/core';
 import Routes from '../../../../navigation/Routes';
+import { useSelector } from 'react-redux';
 
 const WalletHeader = () => {
   const modalRef = useRef(null);
   const sendRef = useRef(null);
   const depositRef = useRef(null);
+  const { currentWallet } = useSelector(state => state.keyring);
 
   const navigation = useNavigation();
 
@@ -58,7 +60,7 @@ const WalletHeader = () => {
   return (
     <>
       <Header
-        left={<UserIcon size="small" onPress={() => navigation.navigate(Routes.PROFILE_SCREEN)} />}
+        left={<UserIcon icon={currentWallet?.icon} size="small" onPress={() => navigation.navigate(Routes.PROFILE_SCREEN)} />}
         center={<AccountInfo />}
         right={
           <Touchable onPress={openModal}>
