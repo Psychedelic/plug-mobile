@@ -84,7 +84,6 @@ const WalletHeader = () => {
           </View>
         </View>
       </Modal>
-
       <Send modalRef={sendRef} />
       <Deposit modalRef={depositRef} />
     </>

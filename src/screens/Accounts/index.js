@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { StyleSheet, ActionSheetIOS } from 'react-native';
+import { StyleSheet, ActionSheetIOS, ActivityIndicator } from 'react-native';
 import Header from '../../components/common/Header';
 import Modal from '../../components/modal';
 import { FontStyles } from '../../constants/theme';
@@ -18,6 +18,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
   const { wallets } = useSelector(state => state.keyring);
   const icpPrice = useICPPrice();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   const [selectedAccount, setSelectedAccount] = useState(null);
 
@@ -34,8 +35,15 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
   };
 
   const onChangeAccount = walletNumber => {
+    setLoading(true);
     dispatch(reset());
-    dispatch(setCurrentPrincipal({ walletNumber, icpPrice }));
+    console.log('walletNumber', walletNumber);
+    dispatch(setCurrentPrincipal({ walletNumber, icpPrice }))
+      .unwrap()
+      .then((_result) => {
+        setLoading(false);
+        modalRef.current?.close();
+      });
   }
 
   const onLongPress = account => {
@@ -61,12 +69,22 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
     <Modal
       adjustToContentHeight
       modalRef={modalRef}
-      onClose={onClose}
       {...props}>
 
       <Header center={<Text style={FontStyles.Subtitle2}>Accounts</Text>} />
 
       <View style={styles.content}>
+        {
+          loading
+          && (
+            <View style={styles.loading}>
+              <ActivityIndicator
+                style={StyleSheet.absoluteFill}
+                color='white'
+              />
+            </View>
+          )
+        }
         {
           wallets?.map(account => (
             <AccountItem
@@ -101,5 +119,11 @@ const styles = StyleSheet.create({
   content: {
     paddingHorizontal: 20,
     paddingVertical: 20,
+    zIndex: 0,
+  },
+  loading: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    zIndex: 1,
   },
 });
