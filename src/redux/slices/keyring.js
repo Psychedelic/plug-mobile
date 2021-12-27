@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import PlugController from '@psychedelic/plug-mobile-controller';
-import { keyringStorage } from '../configureReducer';
 import RNCryptoJS from 'react-native-crypto-js';
 import { fetch } from 'react-native-fetch-api';
-import { formatAssets, formatAssetBySymbol } from '../../utils/assets';
+
 import { ACTIVITY_STATUS } from '../../screens/Profile/components/constants';
-import { TOKEN_IMAGES } from '../../utils/assets';
+import { formatAssets, formatAssetBySymbol } from '../../utils/assets';
 import { generateMnemonic } from '../../utils/crypto';
+import { keyringStorage } from '../configureReducer';
+import { TOKEN_IMAGES } from '../../utils/assets';
 
 export const recursiveParseBigint = obj =>
   Object.entries(obj).reduce(
@@ -50,13 +51,15 @@ export const createWallet = createAsyncThunk(
     const { wallet } = response || {};
     await instance?.unlock(password);
     return { wallet, mnemonic };
-  }
-)
+  },
+);
 
 export const importWallet = createAsyncThunk(
   'keyring/importWallet',
   async (params, { getState }) => {
-    const { instance } = getState().keyring;
+    const state = getState();
+    const { icpPrice } = params;
+    const { instance } = state.keyring;
     const response = await instance?.importMnemonic(params);
     const { wallet, mnemonic } = response || {};
     await instance?.unlock(params.password);
@@ -67,8 +70,8 @@ export const importWallet = createAsyncThunk(
     ]);
 
     return { mnemonic, wallet, transactions, assets };
-  }
-)
+  },
+);
 
 export const unlock = createAsyncThunk(
   'keyring/unlock',
@@ -93,7 +96,7 @@ export const unlock = createAsyncThunk(
       console.log('unlock', e.message);
     }
     return { unlocked };
-  }
+  },
 );
 
 const privateGetAssets = async (params, state) => {
@@ -113,11 +116,10 @@ const privateGetAssets = async (params, state) => {
       instance?.getBalance();
     }
     return { assets, icpPrice };
-  }
-  catch (e) {
+  } catch (e) {
     console.log('getAssets', e);
   }
-}
+};
 
 export const getAssets = createAsyncThunk(
   'keyring/getAssets',
@@ -305,7 +307,7 @@ const privateGetTransactions = async (params, state) => {
       error: e.message,
     };
   }
-}
+};
 
 export const getTransactions = createAsyncThunk(
   'keyring/getTransactions',
@@ -330,8 +332,7 @@ export const setCurrentPrincipal = createAsyncThunk(
         privateGetAssets({ refresh: true, icpPrice }, state),
       ]);
       return { wallet, transactions, assets };
-    }
-    catch (e) {
+    } catch (e) {
       console.log('setCurrentPrincipal', e.message);
     }
   },
@@ -485,7 +486,8 @@ export const keyringSlice = createSlice({
       }
     },
     [unlock.fulfilled]: (state, action) => {
-      const { unlocked, transactions, assets, wallets, currentWalletId } = action.payload;
+      const { unlocked, transactions, assets, wallets, currentWalletId } =
+        action.payload;
       state.isUnlocked = unlocked;
       state.transactions = transactions || [];
       const formattedAssets = formatAssets(assets);
