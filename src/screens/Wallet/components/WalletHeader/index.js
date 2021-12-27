@@ -1,19 +1,20 @@
+import { useNavigation } from '@react-navigation/core';
+import { useSelector } from 'react-redux';
 import React, { useRef } from 'react';
 import { View } from 'react-native';
-import Header from '../../../../components/common/Header';
-import Modal from '../../../../components/modal';
-import UserIcon from '../../../../components/common/UserIcon';
+
 import AccountInfo from '../../../../components/common/AccountInfo';
-import styles from './styles';
-import Icon from '../../../../components/icons';
-import Send from '../../../Send';
 import Touchable from '../../../../components/animations/Touchable';
+import UserIcon from '../../../../components/common/UserIcon';
+import Header from '../../../../components/common/Header';
 import { Colors } from '../../../../constants/theme';
+import Routes from '../../../../navigation/Routes';
+import Modal from '../../../../components/modal';
+import Icon from '../../../../components/icons';
 import ActionButton from '../ActionButton';
 import Deposit from '../../../Deposit';
-import { useNavigation } from '@react-navigation/core';
-import Routes from '../../../../navigation/Routes';
-import { useSelector } from 'react-redux';
+import Send from '../../../Send';
+import styles from './styles';
 
 const WalletHeader = () => {
   const modalRef = useRef(null);
@@ -60,7 +61,13 @@ const WalletHeader = () => {
   return (
     <>
       <Header
-        left={<UserIcon icon={currentWallet?.icon} size="small" onPress={() => navigation.navigate(Routes.PROFILE_SCREEN)} />}
+        left={
+          <UserIcon
+            icon={currentWallet?.icon}
+            size="small"
+            onPress={() => navigation.navigate(Routes.PROFILE_SCREEN)}
+          />
+        }
         center={<AccountInfo />}
         right={
           <Touchable onPress={openModal}>

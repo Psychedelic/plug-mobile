@@ -19,7 +19,7 @@
     "@babel/plugin-transform-exponentiation-operator": "^7.16.0",
     "@dfinity/agent": "^0.10.0",
     "@dfinity/principal": "^0.10.0",
-    "@psychedelic/plug-mobile-controller": "0.1.2",
+    "@psychedelic/plug-mobile-controller": "0.1.5",
     "@react-native-async-storage/async-storage": "^1.15.11",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/clipboard": "^1.5.1",
