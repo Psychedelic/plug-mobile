@@ -1,5 +1,5 @@
-import { View, Text, ActivityIndicator } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import { View, Text } from 'react-native';
+import React, { useState } from 'react';
 
 import RainbowButton from '../../components/buttons/RainbowButton';
 import NftDisplayer from '../../components/common/NftDisplayer';
@@ -7,6 +7,7 @@ import Button from '../../components/buttons/Button';
 import Header from '../../components/common/Header';
 import { FontStyles } from '../../constants/theme';
 import Badge from '../../components/common/Badge';
+import useGetType from '../../hooks/useGetType';
 import Modal from '../../components/modal';
 import Section from './components/Section';
 import styles from './styles';
@@ -14,14 +15,7 @@ import styles from './styles';
 const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
   const [type, setType] = useState(null);
 
-  useEffect(() => {
-    const getType = async () =>
-      await fetch(selectedNFT?.url).then(res =>
-        setType(res.headers.get('Content-Type')),
-      );
-    getType();
-    return () => setType(null);
-  }, [selectedNFT?.url]);
+  useGetType(selectedNFT?.url, setType);
 
   return (
     <Modal modalRef={modalRef} onClose={handleClose} {...props}>
@@ -32,18 +26,13 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
       />
       <View style={styles.content}>
         <View style={styles.nftDisplayerContainer}>
-          {type ? (
-            <NftDisplayer
-              url={selectedNFT?.url}
-              type={type}
-              style={styles.video}
-              isDetailView
-            />
-          ) : (
-            <ActivityIndicator style={styles.activityIndicator} />
-          )}
+          <NftDisplayer
+            url={selectedNFT?.url}
+            type={type}
+            style={styles.video}
+            isDetailView
+          />
         </View>
-
         <View style={styles.buttonContainer}>
           <View style={{ flex: 1, marginRight: 10 }}>
             <Button variant="gray" text="Marketplace" onPress={() => null} />
