@@ -1,10 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import PlugController from '@psychedelic/plug-mobile-controller';
-import { keyringStorage } from '../configureReducer';
 import RNCryptoJS from 'react-native-crypto-js';
 import { fetch } from 'react-native-fetch-api';
-import { formatAssets, formatAssetBySymbol } from '../../utils/assets';
+
 import { ACTIVITY_STATUS } from '../../screens/Profile/components/constants';
+import { getPrivateAssetsAndTransactions } from '../../utils/keyringUtils';
+import { formatAssets, formatAssetBySymbol } from '../../utils/assets';
+import { generateMnemonic } from '../../utils/crypto';
+import { keyringStorage } from '../configureReducer';
 import { TOKEN_IMAGES } from '../../utils/assets';
 
 export const recursiveParseBigint = obj =>
@@ -40,22 +43,35 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
   return keyring;
 });
 
+export const createWallet = createAsyncThunk(
+  'keyring/createWallet',
+  async (password, { getState }) => {
+    const { instance } = getState().keyring;
+    const mnemonic = await generateMnemonic();
+    const response = await instance?.importMnemonic({ password, mnemonic });
+    const { wallet } = response || {};
+    await instance?.unlock(password);
+    return { wallet, mnemonic };
+  },
+);
+
 export const importWallet = createAsyncThunk(
   'keyring/importWallet',
   async (params, { getState }) => {
-    const { instance } = getState().keyring;
+    const state = getState();
+    const { icpPrice } = params;
+    const { instance } = state.keyring;
     const response = await instance?.importMnemonic(params);
     const { wallet, mnemonic } = response || {};
     await instance?.unlock(params.password);
-
-    const [transactions, assets] = await Promise.all([
-      privateGetTransactions({ icpPrice }, state),
-      privateGetAssets({ refresh: true, icpPrice }, state),
-    ]);
+    const [transactions, assets] = await getPrivateAssetsAndTransactions(
+      icpPrice,
+      state,
+    );
 
     return { mnemonic, wallet, transactions, assets };
-  }
-)
+  },
+);
 
 export const unlock = createAsyncThunk(
   'keyring/unlock',
@@ -67,23 +83,23 @@ export const unlock = createAsyncThunk(
       const state = getState();
       const { instance } = state.keyring;
       unlocked = await instance?.unlock(password);
-      await instance?.getState();
+      const { wallets, currentWalletId } = await instance?.getState();
 
       if (unlocked) {
-        const [transactions, assets] = await Promise.all([
-          privateGetTransactions({ icpPrice }, state),
-          privateGetAssets({ refresh: true, icpPrice }, state),
-        ]);
-        return { unlocked, transactions, assets };
+        const [transactions, assets] = await getPrivateAssetsAndTransactions(
+          icpPrice,
+          state,
+        );
+        return { unlocked, transactions, assets, wallets, currentWalletId };
       }
     } catch (e) {
       console.log('unlock', e.message);
     }
     return { unlocked };
-  }
+  },
 );
 
-const privateGetAssets = async (params, state) => {
+export const privateGetAssets = async (params, state) => {
   try {
     const { refresh, icpPrice } = params;
     const { instance } = state.keyring;
@@ -100,11 +116,10 @@ const privateGetAssets = async (params, state) => {
       instance?.getBalance();
     }
     return { assets, icpPrice };
-  }
-  catch (e) {
+  } catch (e) {
     console.log('getAssets', e);
   }
-}
+};
 
 export const getAssets = createAsyncThunk(
   'keyring/getAssets',
@@ -137,8 +152,9 @@ export const createSubaccount = createAsyncThunk(
   'keyring/createSubaccount',
   async (params, { getState }) => {
     try {
-      const state = getState();
-      const response = await state.keyring.instance?.createPrincipal(params);
+      const { instance } = getState().keyring;
+      await instance?.getState();
+      const response = await instance?.createPrincipal(params);
       return response;
     } catch (e) {
       console.log('createSubaccount', e);
@@ -150,15 +166,13 @@ export const editSubaccount = createAsyncThunk(
   'keyring/editSubaccount',
   async (params, { getState }) => {
     try {
-      const state = getState();
-      await state.keyring.instance?.editPrincipal(params.walletNumber, {
-        name: params.name,
-        emoji: params.icon,
+      const { walletNumber, name, icon } = params;
+      const { instance } = getState().keyring;
+      const edited = await instance?.editPrincipal(walletNumber, {
+        name,
+        emoji: icon,
       });
-
-      const response = state.keyring.instance?.getState();
-      const { wallets } = response;
-      return wallets[params.walletNumber]; //tell rocky to make the edit return the edited account
+      return edited;
     } catch (e) {
       console.log('editSubaccount', e);
     }
@@ -242,7 +256,7 @@ export const transferNFT = createAsyncThunk(
   },
 );
 
-const privateGetTransactions = async (params, state) => {
+export const privateGetTransactions = async (params, state) => {
   try {
     const { icpPrice } = params;
     const response = await state.keyring.instance?.getTransactions();
@@ -293,12 +307,34 @@ const privateGetTransactions = async (params, state) => {
       error: e.message,
     };
   }
-}
+};
 
 export const getTransactions = createAsyncThunk(
   'keyring/getTransactions',
   async (params, { getState }) => {
     return privateGetTransactions(params, getState());
+  },
+);
+
+export const setCurrentPrincipal = createAsyncThunk(
+  'keyring/setCurrentPrincipal',
+  async ({ walletNumber, icpPrice }, { getState }) => {
+    try {
+      const state = getState();
+      const { instance } = state.keyring;
+      await instance?.setCurrentPrincipal(walletNumber);
+
+      const response = await instance?.getState();
+      const { wallets } = response || {};
+      const wallet = wallets[walletNumber];
+      const [transactions, assets] = await getPrivateAssetsAndTransactions(
+        icpPrice,
+        state,
+      );
+      return { wallet, transactions, assets };
+    } catch (e) {
+      console.log('setCurrentPrincipal', e.message);
+    }
   },
 );
 
@@ -333,7 +369,7 @@ export const TRANSACTION_STATUS = {
 const DEFAULT_STATE = {
   instance: null,
   assets: DEFAULT_ASSETS,
-  assetsLoading: true,
+  assetsLoading: false,
   isInitialized: false,
   isUnlocked: false,
   currentWallet: null,
@@ -342,7 +378,7 @@ const DEFAULT_STATE = {
   contacts: [],
   transaction: DEFAULT_TRANSACTION,
   transactions: [],
-  transactionsLoading: true,
+  transactionsLoading: false,
   selectedNFT: {},
 };
 
@@ -400,13 +436,17 @@ export const keyringSlice = createSlice({
       state.isUnlocked = action.payload.isUnlocked;
     },
     [createSubaccount.fulfilled]: (state, action) => {
-      state.wallets = [...state.wallets, action.payload];
+      if (action.payload) {
+        state.wallets = [...state.wallets, action.payload];
+      }
     },
     [editSubaccount.fulfilled]: (state, action) => {
       const account = action.payload;
-      state.wallets = state.wallets.map(a =>
-        a.walletNumber === account.walletNumber ? account : a,
-      );
+      if (account) {
+        state.wallets = state.wallets.map(a =>
+          a.walletNumber === account.walletNumber ? account : a,
+        );
+      }
     },
     [sendToken.fulfilled]: (state, action) => {
       state.transaction = action.payload;
@@ -446,21 +486,42 @@ export const keyringSlice = createSlice({
       }
     },
     [unlock.fulfilled]: (state, action) => {
-      const { unlocked, transactions, assets } = action.payload;
+      const { unlocked, transactions, assets, wallets, currentWalletId } =
+        action.payload;
       state.isUnlocked = unlocked;
       state.transactions = transactions || [];
       const formattedAssets = formatAssets(assets);
       state.assets =
         formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS;
       state.assetsLoading = false;
+      state.currentWallet = wallets[currentWalletId];
+      state.wallets = wallets;
+    },
+    [createWallet.fulfilled]: (state, action) => {
+      const { wallet } = action.payload;
+      state.currentWallet = wallet;
+      state.wallets = [wallet];
     },
     [importWallet.fulfilled]: (state, action) => {
       const { wallet, assets, transactions } = action.payload;
+      state.wallets = [wallet];
       state.currentWallet = wallet;
       const formattedAssets = formatAssets(assets);
       state.assets =
         formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS;
       state.transactions = transactions || [];
+      state.transactionsLoading = false;
+      state.assetsLoading = false;
+    },
+    [setCurrentPrincipal.fulfilled]: (state, action) => {
+      const { assets, transactions, wallet } = action.payload;
+      state.currentWallet = wallet;
+      const formattedAssets = formatAssets(assets);
+      state.assets =
+        formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS;
+      state.transactions = transactions || [];
+      state.transactionsLoading = false;
+      state.assetsLoading = false;
     },
   },
 });

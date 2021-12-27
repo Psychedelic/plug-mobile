@@ -12,11 +12,11 @@ import useKeyring from '../../../../hooks/useKeyring';
 import styles from './styles';
 import Routes from '../../../../navigation/Routes';
 import { useDispatch } from 'react-redux';
-import { reset } from '../../../../redux/slices/keyring';
+import { reset, createWallet } from '../../../../redux/slices/keyring';
 import KeyboardHider from '../../../../components/common/KeyboardHider';
 
 const CreatePassword = ({ route, navigation }) => {
-  const { createWallet, saveBiometrics } = useKeyring();
+  const { saveBiometrics } = useKeyring();
   const { flow } = route.params;
   const { goBack } = navigation;
   const [password, setPassword] = useState(null);
@@ -43,9 +43,16 @@ const CreatePassword = ({ route, navigation }) => {
       try {
         setLoading(true);
         dispatch(reset());
-        const mnemonic = await createWallet(password, biometryType);
-        await saveBiometrics(password, biometryType);
-        navigation.navigate(Routes.BACKUP_SEED_PHRASE, { mnemonic });
+        dispatch(createWallet(password))
+          .unwrap()
+          .then(async result => {
+            if (result?.mnemonic) {
+              await saveBiometrics(password, biometryType);
+              navigation.navigate(Routes.BACKUP_SEED_PHRASE, {
+                mnemonic: result.mnemonic,
+              });
+            }
+          });
       } catch (e) {
         console.log('Error:', e);
       } finally {

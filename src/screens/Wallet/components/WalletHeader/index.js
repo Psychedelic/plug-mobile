@@ -1,4 +1,5 @@
 import { useNavigation } from '@react-navigation/core';
+import { useSelector } from 'react-redux';
 import React, { useRef } from 'react';
 import { View } from 'react-native';
 
@@ -19,6 +20,7 @@ const WalletHeader = () => {
   const modalRef = useRef(null);
   const sendRef = useRef(null);
   const depositRef = useRef(null);
+  const { currentWallet } = useSelector(state => state.keyring);
 
   const navigation = useNavigation();
 
@@ -61,6 +63,7 @@ const WalletHeader = () => {
       <Header
         left={
           <UserIcon
+            icon={currentWallet?.icon}
             size="small"
             onPress={() => navigation.navigate(Routes.PROFILE_SCREEN)}
           />

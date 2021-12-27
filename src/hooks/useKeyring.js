@@ -16,10 +16,10 @@ const DEFAULT_KEYCHAIN_OPTIONS = {
   service: 'ooo.plugwallet',
   authenticationPromptTitle: 'Auth prompt title',
   authenticationPrompt: { title: 'Auth prompt description' },
-	authenticationPromptDesc: 'Auth prompt description',
-	fingerprintPromptTitle: 'Fingerprint auth title',
-	fingerprintPromptDesc: 'Fingerprint auth description',
-	fingerprintPromptCancel: 'Fingerprint auth cancel',
+  authenticationPromptDesc: 'Auth prompt description',
+  fingerprintPromptTitle: 'Fingerprint auth title',
+  fingerprintPromptDesc: 'Fingerprint auth description',
+  fingerprintPromptCancel: 'Fingerprint auth cancel',
   storage: Keychain.STORAGE_TYPE.RSA,
 };
 
@@ -36,7 +36,7 @@ const useKeyring = () => {
   const { instance } = useSelector(state => state.keyring);
   const dispatch = useDispatch();
 
-  const createWallet = async (password) => {
+  const createWallet = async password => {
     const mnemonic = await generateMnemonic();
     const response = await instance?.importMnemonic({ password, mnemonic });
     const { wallet } = response || {};
