@@ -31,13 +31,15 @@ const ImportSeedPhrase = ({ navigation, route }) => {
     try {
       setLoading(true);
       dispatch(reset());
-      dispatch(importWallet({ icpPrice, mnemonic: seedPhrase, password }));
-      await saveBiometrics(password, biometryType);
-      navigation.navigate(Routes.SWIPE_LAYOUT);
+      dispatch(importWallet({ icpPrice, mnemonic: seedPhrase, password }))
+        .unwrap()
+        .then(async () => {
+          await saveBiometrics(password, biometryType);
+          setLoading(false);
+          navigation.navigate(Routes.SWIPE_LAYOUT);
+        });
     } catch (e) {
       console.log(e);
-    } finally {
-      setLoading(false);
     }
   };
 

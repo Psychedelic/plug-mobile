@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { View, Text } from 'react-native';
 import { FontStyles } from '../../../constants/theme';
 import UserIcon from '../UserIcon';
@@ -13,14 +13,15 @@ const AccountItem = ({ account, onPress, onMenu, ...props }) => {
 
   return (
     <View {...props} style={{ marginBottom: 20 }}>
-      <Touchable scale={animationScales.small} onPress={onPress} onLongPress={onMenu}>
+      <Touchable
+        scale={animationScales.small}
+        onPress={onPress}
+        onLongPress={onMenu}>
         <View style={styles.container}>
           <UserIcon icon={icon} disabled />
           <View style={styles.leftContainer}>
             <Text style={FontStyles.Normal}>{name}</Text>
-            <Text style={FontStyles.NormalGray}>
-              {shortAddress(principal)}
-            </Text>
+            <Text style={FontStyles.NormalGray}>{shortAddress(principal)}</Text>
           </View>
 
           <View style={styles.threeDots}>

@@ -504,6 +504,7 @@ export const keyringSlice = createSlice({
     },
     [importWallet.fulfilled]: (state, action) => {
       const { wallet, assets, transactions } = action.payload;
+      state.wallets = [wallet];
       state.currentWallet = wallet;
       const formattedAssets = formatAssets(assets);
       state.assets =

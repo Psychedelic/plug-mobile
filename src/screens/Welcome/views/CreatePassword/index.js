@@ -45,10 +45,12 @@ const CreatePassword = ({ route, navigation }) => {
         dispatch(reset());
         dispatch(createWallet(password))
           .unwrap()
-          .then(async (result) => {
+          .then(async result => {
             if (result?.mnemonic) {
               await saveBiometrics(password, biometryType);
-              navigation.navigate(Routes.BACKUP_SEED_PHRASE, { mnemonic: result.mnemonic });
+              navigation.navigate(Routes.BACKUP_SEED_PHRASE, {
+                mnemonic: result.mnemonic,
+              });
             }
           });
       } catch (e) {

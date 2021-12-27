@@ -1,18 +1,20 @@
+import { ActionSheetIOS, ActivityIndicator } from 'react-native';
 import React, { useRef, useState } from 'react';
-import { StyleSheet, ActionSheetIOS, ActivityIndicator } from 'react-native';
-import Header from '../../components/common/Header';
-import Modal from '../../components/modal';
-import { FontStyles } from '../../constants/theme';
-import { View, Text } from 'react-native';
-import Icon from '../../components/icons';
-import Row from '../../components/layout/Row';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { reset, setCurrentPrincipal } from '../../redux/slices/keyring';
 import Touchable from '../../components/animations/Touchable';
 import AccountItem from '../../components/common/AccountItem';
 import CreateEditAccount from '../../modals/CreateEditAccount';
-import { useDispatch, useSelector } from 'react-redux';
 import shortAddress from '../../helpers/short-address';
-import { reset, setCurrentPrincipal } from '../../redux/slices/keyring';
 import { useICPPrice } from '../../redux/slices/icp';
+import Header from '../../components/common/Header';
+import { FontStyles } from '../../constants/theme';
+import Row from '../../components/layout/Row';
+import Modal from '../../components/modal';
+import { View, Text } from 'react-native';
+import Icon from '../../components/icons';
+import styles from './styles';
 
 const Accounts = ({ modalRef, onClose, ...props }) => {
   const { wallets } = useSelector(state => state.keyring);
@@ -39,7 +41,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
     dispatch(reset());
     dispatch(setCurrentPrincipal({ walletNumber, icpPrice }))
       .unwrap()
-      .then(_result => {
+      .then(() => {
         setLoading(false);
         modalRef.current?.close();
       });
@@ -67,11 +69,16 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
   return (
     <Modal adjustToContentHeight modalRef={modalRef} {...props}>
       <Header center={<Text style={FontStyles.Subtitle2}>Accounts</Text>} />
-
       <View style={styles.content}>
         {loading && (
           <View style={styles.loading}>
-            <ActivityIndicator style={StyleSheet.absoluteFill} color="white" />
+            <ActivityIndicator
+              style={[
+                styles.activityIndicator,
+                { marginBottom: wallets.length * 30 },
+              ]}
+              color="white"
+            />
           </View>
         )}
         {wallets?.map(account => (
@@ -82,14 +89,12 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
             onPress={() => onChangeAccount(account?.walletNumber)}
           />
         ))}
-
         <Touchable onPress={onCreateAccount}>
           <Row align="center" style={{ marginBottom: 30, marginTop: 10 }}>
             <Icon name="plus" />
             <Text style={FontStyles.Normal}> Create account</Text>
           </Row>
         </Touchable>
-
         <CreateEditAccount
           modalRef={createEditAccountRef}
           account={selectedAccount}
@@ -100,16 +105,3 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
 };
 
 export default Accounts;
-
-const styles = StyleSheet.create({
-  content: {
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-    zIndex: 0,
-  },
-  loading: {
-    ...StyleSheet.absoluteFill,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    zIndex: 1,
-  },
-});
