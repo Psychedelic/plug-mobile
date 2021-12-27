@@ -49,7 +49,7 @@ export const createWallet = createAsyncThunk(
     const response = await instance?.importMnemonic({ password, mnemonic });
     const { wallet } = response || {};
     await instance?.unlock(password);
-    return wallet;
+    return { wallet, mnemonic };
   }
 )
 

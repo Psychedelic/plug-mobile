@@ -57,8 +57,6 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
     );
   };
 
-  console.log('wallets', wallets)
-
   return (
     <Modal
       adjustToContentHeight
