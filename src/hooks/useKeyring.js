@@ -6,7 +6,6 @@ import {
   setCurrentWallet,
   setUnlocked,
   setWallets,
-  setTransactions,
 } from '../redux/slices/keyring';
 import { formatAssetBySymbol, TOKEN_IMAGES } from '../utils/assets';
 import { ACTIVITY_STATUS } from '../screens/Profile/components/constants';

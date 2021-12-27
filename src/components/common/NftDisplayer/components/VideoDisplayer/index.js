@@ -2,16 +2,10 @@ import React from 'react';
 import Video from 'react-native-video';
 import { ActivityIndicator, View } from 'react-native';
 
-import useFileDownload from '../../../../hooks/useFileDownload';
-import sharedStyles from '../styles';
+import useFileDownload from '../../../../../hooks/useFileDownload';
+import sharedStyles from '../../styles';
 
-const VideoNFTDisplay = ({
-  hideSpinner,
-  style,
-  url,
-  loading,
-  isDetailView,
-}) => {
+const VideoDisplayer = ({ hideSpinner, style, url, loading, isDetailView }) => {
   const newUrl = useFileDownload(url);
 
   return (
@@ -36,4 +30,4 @@ const VideoNFTDisplay = ({
   );
 };
 
-export default VideoNFTDisplay;
+export default VideoDisplayer;
