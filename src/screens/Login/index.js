@@ -7,17 +7,20 @@ import Container from '../../components/common/Container';
 import RainbowButton from '../../components/buttons/RainbowButton';
 import Button from '../../components/buttons/Button';
 import TextInput from '../../components/common/TextInput';
-import useKeyring from '../../hooks/useKeyring';
 import Routes from '../../navigation/Routes';
 import styles from './styles';
 import KeyboardHider from '../../components/common/KeyboardHider';
+import { unlock, setAssetsLoading } from '../../redux/slices/keyring';
+import { useDispatch, useSelector } from 'react-redux';
+import { useICPPrice } from '../../redux/slices/icp';
 
 function Login() {
   const [error, setError] = useState(false);
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
-  const [loading, setLoading] = useState(false);
-  const { unlock } = useKeyring();
+  const dispatch = useDispatch();
+  const icpPrice = useICPPrice();
+  const { assetsLoading } = useSelector((state) => state.keyring);
 
   const clearState = () => {
     setPassword('');
@@ -29,20 +32,23 @@ function Login() {
     navigation.navigate(Routes.CREATE_IMPORT_LAYOUT);
   };
 
-  const handleSubmit = async submittedPass => {
-    setLoading(true);
-    const unlocked = await unlock(submittedPass);
-    if (unlocked) {
-      clearState();
-      navigation.navigate(Routes.SWIPE_LAYOUT);
-    } else {
-      setError(true);
-    }
-    setLoading(false);
+  const handleSubmit = async (submittedPassword) => {
+    dispatch(setAssetsLoading(true));
+    dispatch(unlock({ password: submittedPassword, icpPrice }))
+      .unwrap()
+      .then((result) => {
+        if (result.unlocked) {
+          clearState();
+          navigation.navigate(Routes.SWIPE_LAYOUT);
+        } else {
+          setError(true);
+        }
+      })
   };
 
   useEffect(() => {
     unlockUsingBiometrics();
+    dispatch(setAssetsLoading(false));
   }, []);
 
   const unlockUsingBiometrics = async () => {
@@ -76,7 +82,7 @@ function Login() {
           <RainbowButton
             text="Submit"
             onPress={() => handleSubmit(password)}
-            loading={loading}
+            loading={assetsLoading}
             buttonStyle={styles.buttonMargin}
           />
           <Button

@@ -23,11 +23,6 @@ const Tokens = () => {
   };
 
   useEffect(() => {
-    dispatch(setAssetsLoading(true));
-    dispatch(getAssets({ refresh: true, icpPrice }));
-  }, []);
-
-  useEffect(() => {
     setRefresing(assetsLoading);
   }, [assetsLoading]);
 

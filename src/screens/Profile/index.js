@@ -38,10 +38,6 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    onRefresh(); // move later to initial global loading
-  }, []);
-
-  useEffect(() => {
     setRefresing(transactionsLoading)
   }, [transactionsLoading]);
 

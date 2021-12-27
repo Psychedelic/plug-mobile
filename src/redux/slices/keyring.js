@@ -40,27 +40,76 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
   return keyring;
 });
 
+export const importWallet = createAsyncThunk(
+  'keyring/importWallet',
+  async (params, { getState }) => {
+    const { instance } = getState().keyring;
+    const response = await instance?.importMnemonic(params);
+    const { wallet, mnemonic } = response || {};
+    await instance?.unlock(params.password);
+
+    const [transactions, assets] = await Promise.all([
+      privateGetTransactions({ icpPrice }, state),
+      privateGetAssets({ refresh: true, icpPrice }, state),
+    ]);
+
+    return { mnemonic, wallet, transactions, assets };
+  }
+)
+
+export const unlock = createAsyncThunk(
+  'keyring/unlock',
+  async (params, { getState }) => {
+    const { password, icpPrice } = params;
+    let unlocked = false;
+
+    try {
+      const state = getState();
+      const { instance } = state.keyring;
+      unlocked = await instance?.unlock(password);
+      await instance?.getState();
+
+      if (unlocked) {
+        const [transactions, assets] = await Promise.all([
+          privateGetTransactions({ icpPrice }, state),
+          privateGetAssets({ refresh: true, icpPrice }, state),
+        ]);
+        return { unlocked, transactions, assets };
+      }
+    } catch (e) {
+      console.log('unlock', e.message);
+    }
+    return { unlocked };
+  }
+);
+
+const privateGetAssets = async (params, state) => {
+  try {
+    const { refresh, icpPrice } = params;
+    const { instance } = state.keyring;
+    const response = await instance?.getState();
+    const { wallets, currentWalletId } = response || {};
+    let assets = wallets?.[currentWalletId]?.assets || [];
+    if (
+      !assets.length ||
+      assets?.every(asset => parseFloat(asset.amount) <= 0) ||
+      refresh
+    ) {
+      assets = await instance?.getBalance();
+    } else {
+      instance?.getBalance();
+    }
+    return { assets, icpPrice };
+  }
+  catch (e) {
+    console.log('getAssets', e);
+  }
+}
+
 export const getAssets = createAsyncThunk(
   'keyring/getAssets',
-  async ({ refresh, icpPrice }, { getState }) => {
-    try {
-      const { instance } = getState().keyring;
-      const response = await instance?.getState();
-      const { wallets, currentWalletId } = response || {};
-      let assets = wallets?.[currentWalletId]?.assets || [];
-      if (
-        !assets.length ||
-        assets?.every(asset => parseFloat(asset.amount) <= 0) ||
-        refresh
-      ) {
-        assets = await instance?.getBalance();
-      } else {
-        instance?.getBalance();
-      }
-      return { assets, icpPrice };
-    } catch (e) {
-      console.log('getAssets', e);
-    }
+  async (params, { getState }) => {
+    return privateGetAssets(params, getState());
   },
 );
 
@@ -193,60 +242,63 @@ export const transferNFT = createAsyncThunk(
   },
 );
 
+const privateGetTransactions = async (params, state) => {
+  try {
+    const { icpPrice } = params;
+    const response = await state.keyring.instance?.getTransactions();
+
+    const mapTransaction = trx => {
+      const asset = formatAssetBySymbol(
+        trx?.details?.amount,
+        trx?.details?.currency?.symbol,
+        icpPrice,
+      );
+      const isOwnTx = [state.principalId, state.accountId].includes(
+        trx?.caller,
+      );
+      const getType = () => {
+        const { type } = trx;
+        if (type.toUpperCase() === 'TRANSFER') {
+          return isOwnTx ? 'SEND' : 'RECEIVE';
+        }
+        return type.toUpperCase();
+      };
+      const transaction = {
+        ...asset,
+        type: getType(),
+        hash: trx?.hash,
+        to: trx?.details?.to,
+        from: trx?.details?.from || trx?.caller,
+        date: new Date(trx?.timestamp),
+        status: ACTIVITY_STATUS[trx?.details?.status],
+        image:
+          TOKEN_IMAGES[trx?.details?.currency?.symbol] ||
+          trx?.canisterInfo?.icon ||
+          '',
+        symbol:
+          trx?.details?.currency?.symbol ?? (trx?.canisterInfo ? 'NFT' : ''),
+        canisterId: trx?.details?.canisterId,
+        plug: null,
+        canisterInfo: trx?.canisterInfo,
+        details: { ...trx?.details, caller: trx?.caller },
+      };
+      return transaction;
+    };
+    const parsedTrx = response.transactions?.map(mapTransaction) || [];
+
+    return parsedTrx;
+  } catch (e) {
+    console.log('getTransactions', e);
+    return {
+      error: e.message,
+    };
+  }
+}
+
 export const getTransactions = createAsyncThunk(
   'keyring/getTransactions',
   async (params, { getState }) => {
-    try {
-      const { icpPrice } = params;
-      const state = getState();
-      const response = await state.keyring.instance?.getTransactions();
-
-      const mapTransaction = trx => {
-        const asset = formatAssetBySymbol(
-          trx?.details?.amount,
-          trx?.details?.currency?.symbol,
-          icpPrice,
-        );
-        const isOwnTx = [state.principalId, state.accountId].includes(
-          trx?.caller,
-        );
-        const getType = () => {
-          const { type } = trx;
-          if (type.toUpperCase() === 'TRANSFER') {
-            return isOwnTx ? 'SEND' : 'RECEIVE';
-          }
-          return type.toUpperCase();
-        };
-        const transaction = {
-          ...asset,
-          type: getType(),
-          hash: trx?.hash,
-          to: trx?.details?.to,
-          from: trx?.details?.from || trx?.caller,
-          date: new Date(trx?.timestamp),
-          status: ACTIVITY_STATUS[trx?.details?.status],
-          image:
-            TOKEN_IMAGES[trx?.details?.currency?.symbol] ||
-            trx?.canisterInfo?.icon ||
-            '',
-          symbol:
-            trx?.details?.currency?.symbol ?? (trx?.canisterInfo ? 'NFT' : ''),
-          canisterId: trx?.details?.canisterId,
-          plug: null,
-          canisterInfo: trx?.canisterInfo,
-          details: { ...trx?.details, caller: trx?.caller },
-        };
-        return transaction;
-      };
-      const parsedTrx = response.transactions?.map(mapTransaction) || [];
-
-      return parsedTrx;
-    } catch (e) {
-      console.log('getTransactions', e);
-      return {
-        error: e.message,
-      };
-    }
+    return privateGetTransactions(params, getState());
   },
 );
 
@@ -334,7 +386,6 @@ export const keyringSlice = createSlice({
       }));
       state.collections = collections.filter(col => col.tokens.length);
     },
-    setTransactions: (state, action) => {},
     setTransactionsLoading: (state, action) => {
       state.transactionsLoading = action.payload;
     },
@@ -394,6 +445,23 @@ export const keyringSlice = createSlice({
         state.selectedNFT = {};
       }
     },
+    [unlock.fulfilled]: (state, action) => {
+      const { unlocked, transactions, assets } = action.payload;
+      state.isUnlocked = unlocked;
+      state.transactions = transactions || [];
+      const formattedAssets = formatAssets(assets);
+      state.assets =
+        formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS;
+      state.assetsLoading = false;
+    },
+    [importWallet.fulfilled]: (state, action) => {
+      const { wallet, assets, transactions } = action.payload;
+      state.currentWallet = wallet;
+      const formattedAssets = formatAssets(assets);
+      state.assets =
+        formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS;
+      state.transactions = transactions || [];
+    },
   },
 });
 
@@ -406,7 +474,6 @@ export const {
   setWallets,
   setAssetsLoading,
   setTransaction,
-  setTransactions,
   setTransactionsLoading,
   reset,
 } = keyringSlice.actions;

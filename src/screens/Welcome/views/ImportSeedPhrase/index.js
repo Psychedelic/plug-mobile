@@ -13,9 +13,10 @@ import styles from './styles';
 import { useDispatch } from 'react-redux';
 import { reset } from '../../../../redux/slices/keyring';
 import KeyboardHider from '../../../../components/common/KeyboardHider';
+import { importWallet } from '../../../../redux/slices/keyring';
 
 const ImportSeedPhrase = ({ navigation, route }) => {
-  const { importWallet, saveBiometrics } = useKeyring();
+  const { saveBiometrics } = useKeyring();
   const { goBack } = navigation;
   const { password, biometryType } = route?.params || {};
   const [seedPhrase, setSeedPhrase] = useState(null);
@@ -27,7 +28,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
     try {
       setLoading(true);
       dispatch(reset());
-      await importWallet({ mnemonic: seedPhrase, password });
+      dispatch(importWallet({ mnemonic: seedPhrase, password }));
       await saveBiometrics(password, biometryType);
       navigation.navigate(Routes.SWIPE_LAYOUT);
     } catch (e) {

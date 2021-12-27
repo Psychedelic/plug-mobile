@@ -37,4 +37,7 @@ export default StyleSheet.create({
   touchable: {
     ...commonContainerSize,
   },
+  emptyState: {
+    marginTop: 120,
+  },
 });
