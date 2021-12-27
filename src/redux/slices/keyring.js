@@ -4,6 +4,7 @@ import RNCryptoJS from 'react-native-crypto-js';
 import { fetch } from 'react-native-fetch-api';
 
 import { ACTIVITY_STATUS } from '../../screens/Profile/components/constants';
+import { getPrivateAssetsAndTransactions } from '../../utils/keyringUtils';
 import { formatAssets, formatAssetBySymbol } from '../../utils/assets';
 import { generateMnemonic } from '../../utils/crypto';
 import { keyringStorage } from '../configureReducer';
@@ -63,11 +64,10 @@ export const importWallet = createAsyncThunk(
     const response = await instance?.importMnemonic(params);
     const { wallet, mnemonic } = response || {};
     await instance?.unlock(params.password);
-
-    const [transactions, assets] = await Promise.all([
-      privateGetTransactions({ icpPrice }, state),
-      privateGetAssets({ refresh: true, icpPrice }, state),
-    ]);
+    const [transactions, assets] = await getPrivateAssetsAndTransactions(
+      icpPrice,
+      state,
+    );
 
     return { mnemonic, wallet, transactions, assets };
   },
@@ -86,10 +86,10 @@ export const unlock = createAsyncThunk(
       const { wallets, currentWalletId } = await instance?.getState();
 
       if (unlocked) {
-        const [transactions, assets] = await Promise.all([
-          privateGetTransactions({ icpPrice }, state),
-          privateGetAssets({ refresh: true, icpPrice }, state),
-        ]);
+        const [transactions, assets] = await getPrivateAssetsAndTransactions(
+          icpPrice,
+          state,
+        );
         return { unlocked, transactions, assets, wallets, currentWalletId };
       }
     } catch (e) {
@@ -99,7 +99,7 @@ export const unlock = createAsyncThunk(
   },
 );
 
-const privateGetAssets = async (params, state) => {
+export const privateGetAssets = async (params, state) => {
   try {
     const { refresh, icpPrice } = params;
     const { instance } = state.keyring;
@@ -256,7 +256,7 @@ export const transferNFT = createAsyncThunk(
   },
 );
 
-const privateGetTransactions = async (params, state) => {
+export const privateGetTransactions = async (params, state) => {
   try {
     const { icpPrice } = params;
     const response = await state.keyring.instance?.getTransactions();
@@ -327,10 +327,10 @@ export const setCurrentPrincipal = createAsyncThunk(
       const response = await instance?.getState();
       const { wallets } = response || {};
       const wallet = wallets[walletNumber];
-      const [transactions, assets] = await Promise.all([
-        privateGetTransactions({ icpPrice }, state),
-        privateGetAssets({ refresh: true, icpPrice }, state),
-      ]);
+      const [transactions, assets] = await getPrivateAssetsAndTransactions(
+        icpPrice,
+        state,
+      );
       return { wallet, transactions, assets };
     } catch (e) {
       console.log('setCurrentPrincipal', e.message);

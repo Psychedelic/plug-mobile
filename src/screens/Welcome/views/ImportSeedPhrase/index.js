@@ -1,21 +1,24 @@
-import React, { useState } from 'react';
 import { Text, View, Image } from 'react-native';
+import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+
+import RainbowButton from '../../../../components/buttons/RainbowButton';
+import KeyboardHider from '../../../../components/common/KeyboardHider';
+import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
+import { importWallet } from '../../../../redux/slices/keyring';
 import Container from '../../../../components/common/Container';
 import TextInput from '../../../../components/common/TextInput';
-import { Colors } from '../../../../constants/theme';
-import Routes from '../../../../navigation/Routes';
-import RainbowButton from '../../../../components/buttons/RainbowButton';
+import { useICPPrice } from '../../../../redux/slices/icp';
 import Header from '../../../../components/common/Header';
-import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
+import { reset } from '../../../../redux/slices/keyring';
 import Back from '../../../../components/common/Back';
 import useKeyring from '../../../../hooks/useKeyring';
+import { Colors } from '../../../../constants/theme';
+import Routes from '../../../../navigation/Routes';
 import styles from './styles';
-import { useDispatch } from 'react-redux';
-import { reset } from '../../../../redux/slices/keyring';
-import KeyboardHider from '../../../../components/common/KeyboardHider';
-import { importWallet } from '../../../../redux/slices/keyring';
 
 const ImportSeedPhrase = ({ navigation, route }) => {
+  const icpPrice = useICPPrice();
   const { saveBiometrics } = useKeyring();
   const { goBack } = navigation;
   const { password, biometryType } = route?.params || {};
@@ -28,13 +31,12 @@ const ImportSeedPhrase = ({ navigation, route }) => {
     try {
       setLoading(true);
       dispatch(reset());
-      dispatch(importWallet({ mnemonic: seedPhrase, password }));
+      dispatch(importWallet({ icpPrice, mnemonic: seedPhrase, password }));
       await saveBiometrics(password, biometryType);
       navigation.navigate(Routes.SWIPE_LAYOUT);
     } catch (e) {
       console.log(e);
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   };

@@ -37,14 +37,13 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
   const onChangeAccount = walletNumber => {
     setLoading(true);
     dispatch(reset());
-    console.log('walletNumber', walletNumber);
     dispatch(setCurrentPrincipal({ walletNumber, icpPrice }))
       .unwrap()
-      .then((_result) => {
+      .then(_result => {
         setLoading(false);
         modalRef.current?.close();
       });
-  }
+  };
 
   const onLongPress = account => {
     ActionSheetIOS.showActionSheetWithOptions(
@@ -66,35 +65,23 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
   };
 
   return (
-    <Modal
-      adjustToContentHeight
-      modalRef={modalRef}
-      {...props}>
-
+    <Modal adjustToContentHeight modalRef={modalRef} {...props}>
       <Header center={<Text style={FontStyles.Subtitle2}>Accounts</Text>} />
 
       <View style={styles.content}>
-        {
-          loading
-          && (
-            <View style={styles.loading}>
-              <ActivityIndicator
-                style={StyleSheet.absoluteFill}
-                color='white'
-              />
-            </View>
-          )
-        }
-        {
-          wallets?.map(account => (
-            <AccountItem
-              account={account}
-              key={account?.walletNumber}
-              onMenu={() => onLongPress(account)}
-              onPress={() => onChangeAccount(account?.walletNumber)}
-            />
-          ))
-        }
+        {loading && (
+          <View style={styles.loading}>
+            <ActivityIndicator style={StyleSheet.absoluteFill} color="white" />
+          </View>
+        )}
+        {wallets?.map(account => (
+          <AccountItem
+            account={account}
+            key={account?.walletNumber}
+            onMenu={() => onLongPress(account)}
+            onPress={() => onChangeAccount(account?.walletNumber)}
+          />
+        ))}
 
         <Touchable onPress={onCreateAccount}>
           <Row align="center" style={{ marginBottom: 30, marginTop: 10 }}>
@@ -107,7 +94,6 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
           modalRef={createEditAccountRef}
           account={selectedAccount}
         />
-
       </View>
     </Modal>
   );
