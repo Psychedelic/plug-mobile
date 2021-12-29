@@ -2,7 +2,7 @@ import { View, Text } from 'react-native';
 import React, { useState } from 'react';
 
 import RainbowButton from '../../components/buttons/RainbowButton';
-import NftDisplayer from '../../components/common/NftDisplayer';
+import NftDisplayer, { NFT_QUALITY } from '../../components/common/NftDisplayer';
 import Button from '../../components/buttons/Button';
 import Header from '../../components/common/Header';
 import { FontStyles } from '../../constants/theme';
@@ -30,6 +30,7 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
             url={selectedNFT?.url}
             type={type}
             style={styles.video}
+            quality={NFT_QUALITY.HIGH}
             isDetailView
           />
         </View>
