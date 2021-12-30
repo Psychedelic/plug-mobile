@@ -81,10 +81,10 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
             />
           </View>
         )}
-        {wallets?.map(account => (
+        {wallets?.map((account, index) => (
           <AccountItem
             account={account}
-            key={account?.walletNumber}
+            key={index}
             onMenu={() => onLongPress(account)}
             onPress={() => onChangeAccount(account?.walletNumber)}
           />
