@@ -5,7 +5,7 @@ import { ActivityIndicator, View } from 'react-native';
 import useFileDownload from '../../../../../hooks/useFileDownload';
 import sharedStyles from '../../styles';
 
-const VideoDisplayer = ({ hideSpinner, style, url, loading, isDetailView, quality }) => {
+const VideoDisplayer = ({ hideSpinner, style, url, loading, isDetailView }) => {
   const newUrl = useFileDownload(url);
 
   return (
@@ -25,7 +25,7 @@ const VideoDisplayer = ({ hideSpinner, style, url, loading, isDetailView, qualit
           source={{ uri: newUrl }}
           selectedVideoTrack={{
             type: 'resolution',
-            value: quality,
+            value: 480,
           }}
           style={[sharedStyles.video, isDetailView && sharedStyles.videoDetail]}
         />

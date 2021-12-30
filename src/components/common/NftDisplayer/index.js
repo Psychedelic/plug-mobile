@@ -6,12 +6,7 @@ import VideoDisplayer from './components/VideoDisplayer';
 import HTMLDisplayer from './components/HTMLDisplayer';
 import styles from './styles';
 
-export const NFT_QUALITY = {
-  LOW: 144,
-  HIGH: 720,
-};
-
-const NftDisplayer = ({ url, style, type, isDetailView, quality = NFT_QUALITY.LOW }) => {
+const NftDisplayer = ({ url, style, type, isDetailView }) => {
   const [loading, setLoading] = useState(true);
 
   const hideSpinner = () => {
@@ -26,7 +21,6 @@ const NftDisplayer = ({ url, style, type, isDetailView, quality = NFT_QUALITY.LO
         style={styles.image}
         hideSpinner={hideSpinner}
         isDetailView={isDetailView}
-        quality={quality}
       />
     ) : type?.includes('html') ? (
       <HTMLDisplayer
