@@ -23,6 +23,10 @@ const VideoDisplayer = ({ hideSpinner, style, url, loading, isDetailView }) => {
           onLoad={hideSpinner}
           resizeMode="cover"
           source={{ uri: newUrl }}
+          selectedVideoTrack={{
+            type: 'resolution',
+            value: 480,
+          }}
           style={[sharedStyles.video, isDetailView && sharedStyles.videoDetail]}
         />
       )}
