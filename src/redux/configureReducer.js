@@ -1,15 +1,17 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { applyMiddleware, combineReducers, createStore } from 'redux';
+import { applyMiddleware, combineReducers, createStore, compose } from 'redux';
 import { persistReducer, persistStore, createTransform } from 'redux-persist';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import thunk from 'redux-thunk';
 import Flatted from 'flatted';
 
+import Reactotron from '../../reactotronConfig';
 import KeyringReducer from './slices/keyring';
 import IcpReducer from './slices/icp';
 
+// PERSIST
 export const transformCircular = createTransform(
-  (inboundState, key) => Flatted.stringify(inboundState),
-  (outboundState, key) => Flatted.parse(outboundState),
+  inboundState => Flatted.stringify(inboundState),
+  outboundState => Flatted.parse(outboundState),
 );
 
 const persistConfig = {
@@ -17,6 +19,7 @@ const persistConfig = {
   storage: AsyncStorage,
   transforms: [transformCircular],
 };
+
 const keyringPersistConfig = {
   key: 'keyring',
   storage: AsyncStorage,
@@ -24,19 +27,38 @@ const keyringPersistConfig = {
   transforms: [transformCircular],
 };
 
+const icpPersistConfig = {
+  key: 'icp',
+  storage: AsyncStorage,
+};
+
+// REDUCER
+
 const rootReducer = combineReducers({
   keyring: persistReducer(keyringPersistConfig, KeyringReducer),
-  icp: persistReducer(
-    {
-      key: 'icp',
-      storage: AsyncStorage,
-    },
-    IcpReducer,
-  ),
+  icp: persistReducer(icpPersistConfig, IcpReducer),
 });
+
+const middlewares = [thunk];
+const enhancers = [];
+
+enhancers.push(applyMiddleware(...middlewares));
+
+if (__DEV__) {
+  enhancers.push(Reactotron.createEnhancer(true));
+}
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
-export const store = createStore(persistedReducer, applyMiddleware(thunk));
+
+export const store = createStore(persistedReducer, compose(...enhancers));
+
 export const persistor = onInit => persistStore(store, null, onInit);
+
+if (__DEV__ && Reactotron.setReduxStore) {
+  Reactotron.setReduxStore(store);
+}
+
+// KEYRING STORAGE
 
 export const keyringStorage = {
   get: async key => {

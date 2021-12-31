@@ -9,9 +9,6 @@ import { persistor, store } from './src/redux/configureReducer';
 import { initKeyring } from './src/redux/slices/keyring';
 import Routes from './src/navigation';
 
-// import KeyboardHider from './src/components/common/KeyboardHider';
-// import './shim.js';
-
 const PersistedApp = () => {
   const dispatch = useDispatch();
   const [isReady, setIsReady] = useState(false);
@@ -32,13 +29,14 @@ const PersistedApp = () => {
   );
 };
 
-const App = () => {
-  console.log('renderin app');
-  return (
-    <Provider store={store}>
-      <PersistedApp />
-    </Provider>
-  );
-};
+const App = () => (
+  <Provider store={store}>
+    <PersistedApp />
+  </Provider>
+);
+
+if (__DEV__) {
+  import('./reactotronConfig');
+}
 
 export default App;

@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import getICPPrice from '../../services/ICPPrice';
 import { createSlice } from '@reduxjs/toolkit';
+import { useEffect } from 'react';
+
+import getICPPrice from '../../services/ICPPrice';
 
 export const walletSlice = createSlice({
   name: 'wallet',
