@@ -60,16 +60,14 @@ export const importWallet = createAsyncThunk(
   async (params, { getState }) => {
     const state = getState();
     const { icpPrice } = params;
-    const { instance } = state.keyring;
+    const instance = state.keyring?.instance;
     const response = await instance?.importMnemonic(params);
     const { wallet, mnemonic } = response || {};
     await instance?.unlock(params.password);
-    const [transactions, assets] = await getPrivateAssetsAndTransactions(
-      icpPrice,
-      state,
-    );
 
-    return { mnemonic, wallet, transactions, assets };
+    const assets = privateGetAssets({ refresh: true, icpPrice });
+
+    return { mnemonic, wallet, assets };
   },
 );
 
@@ -81,16 +79,13 @@ export const unlock = createAsyncThunk(
 
     try {
       const state = getState();
-      const { instance } = state.keyring;
+      const instance = state.keyring?.instance;
       unlocked = await instance?.unlock(password);
       const { wallets, currentWalletId } = await instance?.getState();
 
       if (unlocked) {
-        const [transactions, assets] = await getPrivateAssetsAndTransactions(
-          icpPrice,
-          state,
-        );
-        return { unlocked, transactions, assets, wallets, currentWalletId };
+        const assets = privateGetAssets({ refresh: true, icpPrice });
+        return { unlocked, assets, wallets, currentWalletId };
       }
     } catch (e) {
       console.log('unlock', e.message);
