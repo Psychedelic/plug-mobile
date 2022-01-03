@@ -3,7 +3,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '12.1'
 
-target 'PlugMobile' do
+target 'Plug' do
 
   config = use_native_modules!
 
@@ -14,7 +14,7 @@ target 'PlugMobile' do
   )
 
 
-  target 'PlugMobileTests' do
+  target 'PlugTests' do
     inherit! :complete
     # Pods for testing
   end
