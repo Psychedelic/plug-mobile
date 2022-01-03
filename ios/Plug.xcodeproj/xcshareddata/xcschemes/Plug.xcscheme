@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "PlugMobile.app"
-               BlueprintName = "PlugMobile"
-               ReferencedContainer = "container:PlugMobile.xcodeproj">
+               BuildableName = "Plug.app"
+               BlueprintName = "Plug"
+               ReferencedContainer = "container:Plug.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "PlugMobileTests.xctest"
-               BlueprintName = "PlugMobileTests"
-               ReferencedContainer = "container:PlugMobile.xcodeproj">
+               BuildableName = "PlugTests.xctest"
+               BlueprintName = "PlugTests"
+               ReferencedContainer = "container:Plug.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "PlugMobile.app"
-            BlueprintName = "PlugMobile"
-            ReferencedContainer = "container:PlugMobile.xcodeproj">
+            BuildableName = "Plug.app"
+            BlueprintName = "Plug"
+            ReferencedContainer = "container:Plug.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "PlugMobile.app"
-            BlueprintName = "PlugMobile"
-            ReferencedContainer = "container:PlugMobile.xcodeproj">
+            BuildableName = "Plug.app"
+            BlueprintName = "Plug"
+            ReferencedContainer = "container:Plug.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

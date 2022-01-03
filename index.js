@@ -4,4 +4,4 @@ import App from './App';
 import 'text-encoding-polyfill';
 import './shim';
 
-AppRegistry.registerComponent('PlugMobile', () => App);
+AppRegistry.registerComponent('Plug', () => App);
