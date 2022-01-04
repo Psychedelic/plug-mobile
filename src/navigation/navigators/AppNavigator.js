@@ -11,8 +11,13 @@ const Stack = createStackNavigator();
 const AppNavigator = () => (
   <NavigationContainer>
     <Host>
-      <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: false }}>
-        <Stack.Screen name={Routes.SWIPE_LAYOUT} component={SwipeNavigator} options={{ gestureEnabled: false }} />
+      <Stack.Navigator
+        screenOptions={{ headerShown: false, gestureEnabled: false }}>
+        <Stack.Screen
+          name={Routes.SWIPE_LAYOUT}
+          component={SwipeNavigator}
+          options={{ gestureEnabled: false }}
+        />
       </Stack.Navigator>
     </Host>
   </NavigationContainer>

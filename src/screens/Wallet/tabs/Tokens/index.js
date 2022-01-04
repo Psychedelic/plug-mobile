@@ -31,7 +31,7 @@ const Tokens = () => {
   }, [assetsLoading]);
 
   useEffect(() => {
-    getTransactions({ icpPrice });
+    dispatch(getTransactions({ icpPrice }));
   }, []);
 
   return (
