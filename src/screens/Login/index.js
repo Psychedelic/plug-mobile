@@ -1,18 +1,19 @@
+import { View, StatusBar, Text, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/core';
+import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import * as Keychain from 'react-native-keychain';
-import { useNavigation } from '@react-navigation/core';
-import { View, StatusBar, Text, Image } from 'react-native';
-import Plug from '../../assets/icons/plug-white.png';
-import Container from '../../components/common/Container';
+
+import { login, setAssetsLoading } from '../../redux/slices/keyring';
 import RainbowButton from '../../components/buttons/RainbowButton';
-import Button from '../../components/buttons/Button';
+import KeyboardHider from '../../components/common/KeyboardHider';
 import TextInput from '../../components/common/TextInput';
+import Container from '../../components/common/Container';
+import Plug from '../../assets/icons/plug-white.png';
+import { useICPPrice } from '../../redux/slices/icp';
+import Button from '../../components/buttons/Button';
 import Routes from '../../navigation/Routes';
 import styles from './styles';
-import KeyboardHider from '../../components/common/KeyboardHider';
-import { unlock, setAssetsLoading } from '../../redux/slices/keyring';
-import { useDispatch, useSelector } from 'react-redux';
-import { useICPPrice } from '../../redux/slices/icp';
 
 function Login() {
   const [error, setError] = useState(false);
@@ -34,16 +35,12 @@ function Login() {
 
   const handleSubmit = async submittedPassword => {
     dispatch(setAssetsLoading(true));
-    dispatch(unlock({ password: submittedPassword, icpPrice }))
-      .unwrap()
-      .then(result => {
-        if (result.unlocked) {
-          clearState();
-          navigation.navigate(Routes.SWIPE_LAYOUT);
-        } else {
-          setError(true);
-        }
-      });
+    try {
+      dispatch(login({ password: submittedPassword, icpPrice }));
+      clearState();
+    } catch (e) {
+      setError(true);
+    }
   };
 
   useEffect(() => {

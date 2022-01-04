@@ -9,6 +9,8 @@ import { formatAssets, formatAssetBySymbol } from '../../utils/assets';
 import { generateMnemonic } from '../../utils/crypto';
 import { keyringStorage } from '../configureReducer';
 import { TOKEN_IMAGES } from '../../utils/assets';
+import { navigationRef } from '../../navigation/helper';
+import Routes from '../../navigation/Routes';
 
 export const recursiveParseBigint = obj =>
   Object.entries(obj).reduce(
@@ -73,33 +75,27 @@ export const importWallet = createAsyncThunk(
 export const unlock = createAsyncThunk(
   'keyring/unlock',
   async (params, { getState }) => {
-    const { password, icpPrice } = params;
-    let unlocked = false;
-
-    try {
-      const state = getState();
-      const instance = state.keyring?.instance;
-      unlocked = await instance?.unlock(password);
-      const { wallets, currentWalletId } = await instance?.getState();
-
-      if (unlocked) {
-        const assets = await privateGetAssets(
-          { refresh: true, icpPrice },
-          state,
-        );
-        return { unlocked, assets, wallets, currentWalletId };
-      }
-    } catch (e) {
-      console.log('unlock', e.message);
-    }
-    return { unlocked };
+    const state = getState();
+    return await privateUnlock(params, state);
   },
 );
+
+const privateUnlock = async (params, state) => {
+  let unlocked = false;
+
+  try {
+    const instance = state.keyring?.instance;
+    unlocked = await instance?.unlock(params.password);
+  } catch (e) {
+    console.log('Private Unlock:', e.message);
+  }
+  return { unlocked };
+};
 
 export const privateGetAssets = async (params, state) => {
   try {
     const { refresh, icpPrice } = params;
-    const { instance } = state.keyring;
+    const instance = state.keyring?.instance;
     const response = await instance?.getState();
     const { wallets, currentWalletId } = response || {};
     let assets = wallets?.[currentWalletId]?.assets || [];
@@ -112,7 +108,7 @@ export const privateGetAssets = async (params, state) => {
     } else {
       instance?.getBalance();
     }
-    return { assets, icpPrice };
+    return { assets, wallets, currentWalletId, icpPrice };
   } catch (e) {
     console.log('getAssets', e);
   }
@@ -313,6 +309,24 @@ export const getTransactions = createAsyncThunk(
   },
 );
 
+export const login = createAsyncThunk(
+  'keyring/login',
+  async (params, { getState, dispatch }) => {
+    const state = getState();
+    const { icpPrice } = params;
+
+    await privateUnlock(params, state);
+    await privateGetAssets({ refresh: true, icpPrice }, state);
+    // Promise.all(
+    //   dispatch(unlock(params)),
+    //   dispatch(getAssets({ refresh: true, icpPrice })),
+    // ).then(() => {
+    //   navigationRef?.current?.navigate(Routes.SWIPE_LAYOUT);
+    // });
+    navigationRef?.current?.navigate(Routes.SWIPE_LAYOUT);
+  },
+);
+
 export const setCurrentPrincipal = createAsyncThunk(
   'keyring/setCurrentPrincipal',
   async ({ walletNumber, icpPrice }, { getState }) => {
@@ -452,7 +466,10 @@ export const keyringSlice = createSlice({
       state.transaction = action.payload;
     },
     [getAssets.fulfilled]: (state, action) => {
-      const formattedAssets = formatAssets(action.payload);
+      const { assets, wallets, currentWalletId, icpPrice } = action.payload;
+      const formattedAssets = formatAssets({ assets, icpPrice });
+      state.currentWallet = wallets[currentWalletId];
+      state.wallets = wallets;
       state.assets =
         formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS;
       state.assetsLoading = false;
@@ -483,16 +500,8 @@ export const keyringSlice = createSlice({
       }
     },
     [unlock.fulfilled]: (state, action) => {
-      const { unlocked, transactions, assets, wallets, currentWalletId } =
-        action.payload;
+      const { unlocked } = action.payload;
       state.isUnlocked = unlocked;
-      state.transactions = transactions || [];
-      const formattedAssets = formatAssets(assets);
-      state.assets =
-        formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS;
-      state.assetsLoading = false;
-      state.currentWallet = wallets[currentWalletId];
-      state.wallets = wallets;
     },
     [createWallet.fulfilled]: (state, action) => {
       const { wallet } = action.payload;
@@ -500,13 +509,12 @@ export const keyringSlice = createSlice({
       state.wallets = [wallet];
     },
     [importWallet.fulfilled]: (state, action) => {
-      const { wallet, assets, transactions } = action.payload;
+      const { wallet, assets } = action.payload;
       state.wallets = [wallet];
       state.currentWallet = wallet;
       const formattedAssets = formatAssets(assets);
       state.assets =
         formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS;
-      state.transactions = transactions || [];
       state.transactionsLoading = false;
       state.assetsLoading = false;
     },
