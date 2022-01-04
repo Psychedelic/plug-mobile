@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react';
 import { RefreshControl, ScrollView, Text, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 
 import { Colors, FontStyles } from '../../../../constants/theme';
 import TokenItem from '../../../../components/tokens/TokenItem';
 import Container from '../../../../components/common/Container';
 import Divider from '../../../../components/common/Divider';
 import WalletHeader from '../../components/WalletHeader';
-import { getAssets, setAssetsLoading } from '../../../../redux/slices/keyring';
+import {
+  getAssets,
+  getTransactions,
+  setAssetsLoading,
+} from '../../../../redux/slices/keyring';
 import { useICPPrice } from '../../../../redux/slices/icp';
 
 const Tokens = () => {
@@ -25,6 +29,10 @@ const Tokens = () => {
   useEffect(() => {
     setRefresing(assetsLoading);
   }, [assetsLoading]);
+
+  useEffect(() => {
+    getTransactions({ icpPrice });
+  }, []);
 
   return (
     <Container>

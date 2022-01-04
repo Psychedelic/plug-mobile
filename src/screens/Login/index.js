@@ -20,7 +20,7 @@ function Login() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const icpPrice = useICPPrice();
-  const { assetsLoading } = useSelector((state) => state.keyring);
+  const { assetsLoading } = useSelector(state => state.keyring);
 
   const clearState = () => {
     setPassword('');
@@ -32,18 +32,18 @@ function Login() {
     navigation.navigate(Routes.CREATE_IMPORT_LAYOUT);
   };
 
-  const handleSubmit = async (submittedPassword) => {
+  const handleSubmit = async submittedPassword => {
     dispatch(setAssetsLoading(true));
     dispatch(unlock({ password: submittedPassword, icpPrice }))
       .unwrap()
-      .then((result) => {
+      .then(result => {
         if (result.unlocked) {
           clearState();
           navigation.navigate(Routes.SWIPE_LAYOUT);
         } else {
           setError(true);
         }
-      })
+      });
   };
 
   useEffect(() => {
