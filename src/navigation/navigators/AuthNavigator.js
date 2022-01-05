@@ -1,16 +1,17 @@
-import React, { useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { AppState } from 'react-native';
-import { useDispatch } from 'react-redux';
 import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/core';
 import { Host } from 'react-native-portalize';
+import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { AppState } from 'react-native';
 
-import Routes from '../Routes';
 import CreateImportNavigator from './CreateImportNavigator';
-import SwipeNavigator from './SwipeNavigator';
-import Login from '../../screens/Login';
 import { setUnlocked } from '../../redux/slices/keyring';
+import SwipeNavigator from './SwipeNavigator';
+import { navigationRef } from '../helper';
+import Login from '../../screens/Login';
+import Routes from '../Routes';
 
 const Stack = createStackNavigator();
 
@@ -61,7 +62,7 @@ const Navigator = ({ initialRoute }) => {
 };
 
 const AuthNavigator = ({ initialRoute }) => (
-  <NavigationContainer>
+  <NavigationContainer ref={navigationRef}>
     <Host>
       <Navigator initialRoute={initialRoute} />
     </Host>

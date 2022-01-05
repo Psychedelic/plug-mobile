@@ -1,17 +1,9 @@
-import { createRef } from 'react';
+import { createNavigationContainerRef } from '@react-navigation/native';
 
-export const navigationRef = createRef();
+export const navigationRef = createNavigationContainerRef();
 
-export const getRoute = state => {
-  const route = state.routes[state.index];
-  return route.state ? getRoute(route.state) : route;
-};
-
-export const getActiveRoute = () =>
-  getRoute(navigationRef.current.getRootState());
-
-const useNavigation = () => navigationRef.current;
-export default useNavigation;
-
-export const navigateToRoute = route => () =>
-  navigationRef.current?.navigate(route);
+export function navigate(route, params) {
+  if (navigationRef.isReady()) {
+    navigationRef.navigate(route, params);
+  }
+}
