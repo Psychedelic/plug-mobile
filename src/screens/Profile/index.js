@@ -77,6 +77,7 @@ const Profile = () => {
         </View>
         <Divider />
         <ScrollView
+          showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
