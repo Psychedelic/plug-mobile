@@ -35,7 +35,13 @@ function Login() {
 
   const handleSubmit = async submittedPassword => {
     dispatch(setAssetsLoading(true));
-    dispatch(login({ password: submittedPassword, icpPrice, onError: () => setError(true) }));
+    dispatch(
+      login({
+        password: submittedPassword,
+        icpPrice,
+        onError: () => setError(true),
+      }),
+    );
     clearState();
   };
 
