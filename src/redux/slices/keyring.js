@@ -12,7 +12,6 @@ import { TOKEN_IMAGES } from '../../utils/assets';
 import { navigate } from '../../navigation/helper';
 import Routes from '../../navigation/Routes';
 
-
 export const recursiveParseBigint = obj =>
   Object.entries(obj).reduce(
     (acum, [key, val]) => {
