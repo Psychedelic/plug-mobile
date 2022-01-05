@@ -58,6 +58,24 @@ const Profile = () => {
             </Touchable>
           }
         />
+        <View style={styles.container}>
+          <View style={styles.leftContainer}>
+            <UserIcon
+              icon={currentWallet?.icon}
+              size="large"
+              onPress={openAccounts}
+            />
+            <Text style={styles.name}>{currentWallet?.name}</Text>
+          </View>
+          <Button
+            variant="gray"
+            text="Change"
+            buttonStyle={styles.buttonStyle}
+            textStyle={styles.buttonTextStyle}
+            onPress={openAccounts}
+          />
+        </View>
+        <Divider />
         <ScrollView
           refreshControl={
             <RefreshControl
@@ -66,24 +84,6 @@ const Profile = () => {
               tintColor={Colors.White.Primary}
             />
           }>
-          <View style={styles.container}>
-            <View style={styles.leftContainer}>
-              <UserIcon
-                icon={currentWallet?.icon}
-                size="large"
-                onPress={openAccounts}
-              />
-              <Text style={styles.name}>{currentWallet?.name}</Text>
-            </View>
-            <Button
-              variant="gray"
-              text="Change"
-              buttonStyle={styles.buttonStyle}
-              textStyle={styles.buttonTextStyle}
-              onPress={openAccounts}
-            />
-          </View>
-          <Divider />
           <Text style={styles.title}>Activity</Text>
           <View>
             {transactions?.length > 0 ? (
