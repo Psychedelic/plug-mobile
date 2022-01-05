@@ -35,21 +35,8 @@ function Login() {
 
   const handleSubmit = async submittedPassword => {
     dispatch(setAssetsLoading(true));
-    try {
-      dispatch(login({ password: submittedPassword, icpPrice }))
-        .unwrap()
-        .then(unlocked => {
-          if (unlocked) {
-            clearState();
-            navigation.navigate(Routes.SWIPE_LAYOUT);
-          } else {
-            navigation.navigate(Routes.LOGIN_SCREEN);
-          }
-        });
-    } catch (e) {
-      setError(true);
-      console.log('Login error: ', e);
-    }
+    dispatch(login({ password: submittedPassword, icpPrice, onError: () => setError(true) }));
+    clearState();
   };
 
   useEffect(() => {

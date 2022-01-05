@@ -9,6 +9,9 @@ import { formatAssets, formatAssetBySymbol } from '../../utils/assets';
 import { generateMnemonic } from '../../utils/crypto';
 import { keyringStorage } from '../configureReducer';
 import { TOKEN_IMAGES } from '../../utils/assets';
+import { navigate } from '../../navigation/helper';
+import Routes from '../../navigation/Routes';
+
 
 export const recursiveParseBigint = obj =>
   Object.entries(obj).reduce(
@@ -311,11 +314,15 @@ export const login = createAsyncThunk(
   'keyring/login',
   async (params, { getState, dispatch }) => {
     const state = getState();
-    const { icpPrice } = params;
+    const { icpPrice, onError } = params;
     const { unlocked } = await privateUnlock(params, state);
 
     if (unlocked) {
       await privateGetAssets({ refresh: true, icpPrice }, state);
+      navigate(Routes.SWIPE_LAYOUT);
+    } else {
+      dispatch(setAssetsLoading(false));
+      onError();
     }
     return unlocked;
   },
