@@ -46,10 +46,6 @@ const Profile = () => {
     setRefresing(transactionsLoading);
   }, [transactionsLoading]);
 
-  useEffect(() => {
-    getTransactions({ icpPrice });
-  }, []);
-
   return (
     <>
       <Container>
