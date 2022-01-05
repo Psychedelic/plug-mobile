@@ -20,13 +20,19 @@ export default StyleSheet.create({
   },
   leftContainer: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   name: {
     ...FontStyles.Subtitle,
-    marginLeft: 12
+    marginLeft: 12,
   },
   emptyState: {
     marginTop: 60,
+  },
+  buttonStyle: {
+    width: 90,
+  },
+  buttonTextStyle: {
+    fontSize: 16,
   },
 });

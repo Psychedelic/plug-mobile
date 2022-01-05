@@ -1,30 +1,35 @@
-import React, { useEffect, useRef, useState } from 'react';
 import { RefreshControl, ScrollView, Text, View } from 'react-native';
-import Container from '../../components/common/Container';
-import Divider from '../../components/common/Divider';
-import Header from '../../components/common/Header';
-import UserIcon from '../../components/common/UserIcon';
-import Icon from '../../components/icons';
-import Button from '../../components/buttons/Button';
-import Settings from '../Settings';
-import ActivityItem from './components/ActivityItem';
-import styles from './styles';
-import Touchable from '../../components/animations/Touchable';
-import Accounts from '../Accounts';
-import { Colors } from '../../constants/theme';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/core';
-import { getTransactions, setTransactionsLoading } from '../../redux/slices/keyring';
-import { useDispatch } from 'react-redux';
-import { useICPPrice } from '../../redux/slices/icp';
-import Routes from '../../navigation/Routes';
+import { useSelector, useDispatch } from 'react-redux';
+
+import Touchable from '../../components/animations/Touchable';
 import EmptyState from '../../components/common/EmptyState';
+import Container from '../../components/common/Container';
+import UserIcon from '../../components/common/UserIcon';
+import Divider from '../../components/common/Divider';
+import Button from '../../components/buttons/Button';
+import ActivityItem from './components/ActivityItem';
+import { useICPPrice } from '../../redux/slices/icp';
+import Header from '../../components/common/Header';
+import { Colors } from '../../constants/theme';
+import Routes from '../../navigation/Routes';
+import Icon from '../../components/icons';
+import Settings from '../Settings';
+import Accounts from '../Accounts';
+import {
+  getTransactions,
+  setTransactionsLoading,
+} from '../../redux/slices/keyring';
+import styles from './styles';
 
 const Profile = () => {
   const dispatch = useDispatch();
   const modalRef = useRef(null);
   const navigation = useNavigation();
-  const { currentWallet, transactions, transactionsLoading } = useSelector(state => state.keyring);
+  const { currentWallet, transactions, transactionsLoading } = useSelector(
+    state => state.keyring,
+  );
   const [refreshing, setRefresing] = useState(transactionsLoading);
   const icpPrice = useICPPrice();
 
@@ -38,8 +43,12 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    setRefresing(transactionsLoading)
+    setRefresing(transactionsLoading);
   }, [transactionsLoading]);
+
+  useEffect(() => {
+    getTransactions({ icpPrice });
+  }, []);
 
   return (
     <>
@@ -47,10 +56,12 @@ const Profile = () => {
         <Header
           left={<Settings />}
           right={
-            <Touchable onPress={() => navigation.navigate(Routes.WALLET_SCREEN)}>
+            <Touchable
+              onPress={() => navigation.navigate(Routes.WALLET_SCREEN)}>
               <Icon name="chevronRight" />
             </Touchable>
-          } />
+          }
+        />
         <ScrollView
           refreshControl={
             <RefreshControl
@@ -61,39 +72,39 @@ const Profile = () => {
           }>
           <View style={styles.container}>
             <View style={styles.leftContainer}>
-              <UserIcon icon={currentWallet?.icon} size="large" onPress={openAccounts} />
+              <UserIcon
+                icon={currentWallet?.icon}
+                size="large"
+                onPress={openAccounts}
+              />
               <Text style={styles.name}>{currentWallet?.name}</Text>
             </View>
             <Button
               variant="gray"
               text="Change"
-              buttonStyle={{ width: 90 }}
-              textStyle={{ fontSize: 16 }}
+              buttonStyle={styles.buttonStyle}
+              textStyle={styles.buttonTextStyle}
               onPress={openAccounts}
             />
           </View>
           <Divider />
           <Text style={styles.title}>Activity</Text>
           <View>
-            {
-              transactions?.length > 0
-                ?
-                transactions?.map((item, index) => (
-                  <ActivityItem key={index} {...item} />
-                ))
-                :
-                <EmptyState
-                  style={styles.emptyState}
-                  title={'You have no activity yet'}
-                  text={`When you do, they'll show here, where you will see their traits and send them.`}
-                />
-            }
+            {transactions?.length > 0 ? (
+              transactions?.map((item, index) => (
+                <ActivityItem key={index} {...item} />
+              ))
+            ) : (
+              <EmptyState
+                style={styles.emptyState}
+                title="You have no activity yet"
+                text="When you do, they'll show here, where you will see their traits and send them."
+              />
+            )}
           </View>
         </ScrollView>
       </Container>
-      <Accounts
-        modalRef={modalRef}
-      />
+      <Accounts modalRef={modalRef} />
     </>
   );
 };
