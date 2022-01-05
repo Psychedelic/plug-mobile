@@ -182,7 +182,10 @@ const Send = ({ modalRef }) => {
   return (
     <Modal modalRef={modalRef} onClose={resetState}>
       <Header center={<Text style={FontStyles.Subtitle2}>Send</Text>} />
-      <ScrollView style={styles.content} keyboardShouldPersistTaps="always">
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.content}
+        keyboardShouldPersistTaps="always">
         <TextInput
           label="To:"
           placeholder="Name, ICNS, or address"

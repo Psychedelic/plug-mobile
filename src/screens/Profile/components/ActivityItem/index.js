@@ -1,12 +1,14 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import moment from 'moment';
-import { FontStyles } from '../../../constants/theme';
-import UsdFormat from '../../../components/number/UsdFormat';
-import TokenFormat from '../../../components/number/TokenFormat';
-import ActivityIcon from './ActivityIcon';
-import { getStatus, getSubtitle, getTitle } from './utils';
-import shortAddress from '../../../helpers/short-address';
+import React from 'react';
+
+import TokenFormat from '../../../../components/number/TokenFormat';
+import UsdFormat from '../../../../components/number/UsdFormat';
+import { getStatus, getSubtitle, getTitle } from '../utils';
+import shortAddress from '../../../../helpers/short-address';
+import { FontStyles } from '../../../../constants/theme';
+import ActivityIcon from '../ActivityIcon';
+import styles from './styles';
 
 const ActivityItem = ({
   type,
@@ -27,7 +29,6 @@ const ActivityItem = ({
   details,
   canisterInfo,
 }) => {
-
   //const isTransaction = ['SEND', 'RECEIVE'].includes(type) && symbol === 'ICP';
 
   return type === 'PLUG' ? (
@@ -46,7 +47,8 @@ const ActivityItem = ({
           {getTitle(type, symbol, swapData, plug)}
         </Text>
         <Text style={FontStyles.SmallGray}>
-          {getStatus(status, styles)}{moment(date).format('MMM Do')}
+          {getStatus(status, styles)}
+          {moment(date).format('MMM Do')}
           {getSubtitle(type, to, from, canisterId)}
         </Text>
       </View>
@@ -54,15 +56,24 @@ const ActivityItem = ({
         {details?.tokenId ? (
           <>
             <Text style={FontStyles.Normal}>
-              {details?.tokenId?.length > 5 ? shortAddress(details?.tokenId) : `#${details?.tokenId}`}
+              {details?.tokenId?.length > 5
+                ? shortAddress(details?.tokenId)
+                : `#${details?.tokenId}`}
             </Text>
-            <Text style={FontStyles.SmallGray}>
+            <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={[FontStyles.SmallGray, styles.canisterName]}>
               {canisterInfo?.name || canisterId}
             </Text>
           </>
         ) : (
           <>
-            <TokenFormat value={amount} token={symbol} style={FontStyles.Normal} />
+            <TokenFormat
+              value={amount}
+              token={symbol}
+              style={FontStyles.Normal}
+            />
             <UsdFormat value={Number(value)} style={FontStyles.SmallGray} />
           </>
         )}
@@ -72,19 +83,3 @@ const ActivityItem = ({
 };
 
 export default ActivityItem;
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    padding: 20,
-  },
-  leftContainer: {
-    justifyContent: 'space-evenly',
-  },
-  rightContainer: {
-    marginLeft: 'auto',
-    alignItems: 'flex-end',
-    justifyContent: 'space-evenly',
-  },
-});

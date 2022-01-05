@@ -1,8 +1,8 @@
-import React from 'react';
-import shortAddress from '../../../helpers/short-address';
-import { ACTIVITY_TYPES, ACTIVITY_STATUS } from './constants';
-import moment from 'moment';
 import { Text } from 'react-native';
+import React from 'react';
+
+import shortAddress from '../../../helpers/short-address';
+import { ACTIVITY_STATUS } from './constants';
 
 export const parseImageName = name => name.replace('.png', '').toLowerCase();
 const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);

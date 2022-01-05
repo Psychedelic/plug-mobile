@@ -40,6 +40,7 @@ const Tokens = () => {
       <Text style={styles.title}>Tokens</Text>
       <Divider />
       <ScrollView
+        showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}

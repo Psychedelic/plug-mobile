@@ -1,5 +1,3 @@
-import { validateAccountId } from './ids';
-
 const defaultConfig = {
   leftSize: 5,
   rightSize: 3,
@@ -17,10 +15,6 @@ const shortAddress = (address, config = defaultConfig) => {
 
   let leftSize = config.leftSize || defaultConfig.leftSize;
   let rightSize = config.rightSize || defaultConfig.rightSize;
-  // if (validateAccountId(address)) {
-  //   leftSize = 4;
-  //   rightSize = 4;
-  // }
 
   if (address.length <= leftSize + rightSize) {
     return address;

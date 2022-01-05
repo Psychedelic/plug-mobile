@@ -45,6 +45,7 @@ const NFTs = () => {
         <Text style={styles.title}>NFTs</Text>
         <Divider />
         <ScrollView
+          showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.container}
           refreshControl={
             <RefreshControl

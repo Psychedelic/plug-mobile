@@ -113,7 +113,7 @@ const EmojiBoard = ({ onSelect, currentCategory }) => {
 
   return (
     <View style={styles.emojiBoard}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {rowsToDisplay.map((row, index) => (
           <View
             style={styles.emojiBoardRow}
