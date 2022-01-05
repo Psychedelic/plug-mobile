@@ -1,13 +1,14 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import moment from 'moment';
 import React from 'react';
 
-import TokenFormat from '../../../components/number/TokenFormat';
-import UsdFormat from '../../../components/number/UsdFormat';
-import { getStatus, getSubtitle, getTitle } from './utils';
-import shortAddress from '../../../helpers/short-address';
-import { FontStyles } from '../../../constants/theme';
-import ActivityIcon from './ActivityIcon';
+import TokenFormat from '../../../../components/number/TokenFormat';
+import UsdFormat from '../../../../components/number/UsdFormat';
+import { getStatus, getSubtitle, getTitle } from '../utils';
+import shortAddress from '../../../../helpers/short-address';
+import { FontStyles } from '../../../../constants/theme';
+import ActivityIcon from '../ActivityIcon';
+import styles from './styles';
 
 const ActivityItem = ({
   type,
@@ -82,22 +83,3 @@ const ActivityItem = ({
 };
 
 export default ActivityItem;
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    padding: 20,
-  },
-  leftContainer: {
-    justifyContent: 'space-evenly',
-  },
-  rightContainer: {
-    marginLeft: 'auto',
-    alignItems: 'flex-end',
-    justifyContent: 'space-evenly',
-  },
-  canisterName: {
-    maxWidth: '50%',
-  },
-});

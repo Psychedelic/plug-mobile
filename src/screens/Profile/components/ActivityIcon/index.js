@@ -1,10 +1,10 @@
-import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
+import React from 'react';
 
-import Icon from '../../../components/icons';
-
-import { ACTIVITY_IMAGES } from './constants';
-import { parseImageName } from './utils';
+import Icon from '../../../../components/icons';
+import { ACTIVITY_IMAGES } from '../constants';
+import { parseImageName } from '../utils';
+import styles from './styles';
 
 const ActivityIcon = ({ image, type }) => {
   return (
@@ -28,25 +28,3 @@ const ActivityIcon = ({ image, type }) => {
 };
 
 export default ActivityIcon;
-
-const styles = StyleSheet.create({
-  root: {
-    height: 41,
-    width: 41,
-    borderRadius: 26,
-    position: 'relative',
-    marginRight: 12,
-  },
-  activity: {
-    position: 'absolute',
-    right: -5,
-    top: -5,
-    borderRadius: 26,
-    zIndex: 1,
-    height: 19,
-    width: 19,
-  },
-  activityImage: {
-    borderRadius: 22,
-  },
-});
