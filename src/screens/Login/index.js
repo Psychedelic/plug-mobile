@@ -36,16 +36,19 @@ function Login() {
   const handleSubmit = async submittedPassword => {
     dispatch(setAssetsLoading(true));
     try {
-      dispatch(login({ password: submittedPassword, icpPrice })).unwrap().then((unlocked) => {
-        if (unlocked){
-          clearState();
-          navigation.navigate(Routes.SWIPE_LAYOUT);
-        } else {
-          navigation.navigate(Routes.LOGIN_SCREEN);
-        }
-      });
+      dispatch(login({ password: submittedPassword, icpPrice }))
+        .unwrap()
+        .then(unlocked => {
+          if (unlocked) {
+            clearState();
+            navigation.navigate(Routes.SWIPE_LAYOUT);
+          } else {
+            navigation.navigate(Routes.LOGIN_SCREEN);
+          }
+        });
     } catch (e) {
       setError(true);
+      console.log('Login error: ', e);
     }
   };
 
@@ -58,7 +61,7 @@ function Login() {
     const biometrics = await Keychain.getGenericPassword({
       service: 'ooo.plugwallet',
     });
-    console.log('biometrics', biometrics);
+    console.log('Has biometrics: ', biometrics);
     if (biometrics?.password) {
       await handleSubmit(biometrics.password);
     }
