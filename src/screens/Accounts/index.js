@@ -1,8 +1,12 @@
-import { ActionSheetIOS, ActivityIndicator } from 'react-native';
-import React, { useRef, useState } from 'react';
+import { ActionSheetIOS, ActivityIndicator, View, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import React, { useRef, useState } from 'react';
 
-import { reset, setCurrentPrincipal } from '../../redux/slices/keyring';
+import {
+  reset,
+  setCurrentPrincipal,
+  getNFTs,
+} from '../../redux/slices/keyring';
 import Touchable from '../../components/animations/Touchable';
 import AccountItem from '../../components/common/AccountItem';
 import CreateEditAccount from '../../modals/CreateEditAccount';
@@ -12,7 +16,6 @@ import Header from '../../components/common/Header';
 import { FontStyles } from '../../constants/theme';
 import Row from '../../components/layout/Row';
 import Modal from '../../components/modal';
-import { View, Text } from 'react-native';
 import Icon from '../../components/icons';
 import styles from './styles';
 
@@ -43,6 +46,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
       .unwrap()
       .then(() => {
         setLoading(false);
+        dispatch(getNFTs());
         modalRef.current?.close();
       });
   };

@@ -65,7 +65,7 @@ export const keyringStorage = {
     const state = {};
     // await AsyncStorage.clear();
     if (key) {
-      return AsyncStorage.getItem(key).then(value => JSON.parse(value));
+      return AsyncStorage.getItem(key).then(value => JSON.parse(`${value}`));
     } else {
       const allKeys = await AsyncStorage.getAllKeys();
       await Promise.all(
