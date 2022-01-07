@@ -11,11 +11,11 @@ import {
   getAssets,
   getTransactions,
   setAssetsLoading,
-} from '../../../../redux/slices/keyring';
+} from '../../../../redux/slices/user';
 import { useICPPrice } from '../../../../redux/slices/icp';
 
 const Tokens = () => {
-  const { assets, assetsLoading } = useSelector(state => state.keyring);
+  const { assets, assetsLoading } = useSelector(state => state.user);
   const [refreshing, setRefresing] = useState(assetsLoading);
   const dispatch = useDispatch();
   const icpPrice = useICPPrice();

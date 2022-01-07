@@ -7,6 +7,7 @@ import Flatted from 'flatted';
 import Reactotron from '../../reactotronConfig';
 import KeyringReducer from './slices/keyring';
 import IcpReducer from './slices/icp';
+import UserReducer from './slices/user';
 
 // PERSIST
 export const transformCircular = createTransform(
@@ -14,29 +15,34 @@ export const transformCircular = createTransform(
   outboundState => Flatted.parse(outboundState),
 );
 
+// investigar Flatter, posiblemente sacarlo.
+
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   transforms: [transformCircular],
 };
 
-const keyringPersistConfig = {
-  key: 'keyring',
-  storage: AsyncStorage,
-  blacklist: 'instance',
-  transforms: [transformCircular],
-};
+// hacer un nuevo state sacando las cosas del keyring asi se puede persistir.
+// hacer action de init, tengo un keyring? no => inicializar.
 
 const icpPersistConfig = {
   key: 'icp',
   storage: AsyncStorage,
 };
 
+const userPersistConfig = {
+  key: 'user',
+  storage: AsyncStorage,
+  transforms: [transformCircular],
+};
+
 // REDUCER
 
 const rootReducer = combineReducers({
-  keyring: persistReducer(keyringPersistConfig, KeyringReducer),
+  keyring: KeyringReducer,
   icp: persistReducer(icpPersistConfig, IcpReducer),
+  user: persistReducer(userPersistConfig, UserReducer),
 });
 
 const middlewares = [thunk];

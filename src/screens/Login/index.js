@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import * as Keychain from 'react-native-keychain';
 
-import { login, setAssetsLoading } from '../../redux/slices/keyring';
+import { login } from '../../redux/slices/keyring';
+import { setAssetsLoading } from '../../redux/slices/user';
 import RainbowButton from '../../components/buttons/RainbowButton';
 import KeyboardHider from '../../components/common/KeyboardHider';
 import TextInput from '../../components/common/TextInput';
@@ -21,7 +22,7 @@ function Login() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const icpPrice = useICPPrice();
-  const { assetsLoading } = useSelector(state => state.keyring);
+  const { assetsLoading } = useSelector(state => state.user);
 
   const clearState = () => {
     setPassword('');

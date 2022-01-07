@@ -2,11 +2,8 @@ import { ActionSheetIOS, ActivityIndicator, View, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useRef, useState } from 'react';
 
-import {
-  reset,
-  setCurrentPrincipal,
-  getNFTs,
-} from '../../redux/slices/keyring';
+import { reset, setCurrentPrincipal } from '../../redux/slices/keyring';
+import { getNFTs } from '../../redux/slices/user';
 import Touchable from '../../components/animations/Touchable';
 import AccountItem from '../../components/common/AccountItem';
 import CreateEditAccount from '../../modals/CreateEditAccount';

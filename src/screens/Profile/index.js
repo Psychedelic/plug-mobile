@@ -20,15 +20,16 @@ import Accounts from '../Accounts';
 import {
   getTransactions,
   setTransactionsLoading,
-} from '../../redux/slices/keyring';
+} from '../../redux/slices/user';
 import styles from './styles';
 
 const Profile = () => {
   const dispatch = useDispatch();
   const modalRef = useRef(null);
   const navigation = useNavigation();
-  const { currentWallet, transactions, transactionsLoading } = useSelector(
-    state => state.keyring,
+  const { currentWallet } = useSelector(state => state.keyring);
+  const { transactions, transactionsLoading } = useSelector(
+    state => state.user,
   );
   const [refreshing, setRefresing] = useState(transactionsLoading);
   const icpPrice = useICPPrice();

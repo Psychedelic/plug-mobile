@@ -1,7 +1,4 @@
-import {
-  privateGetTransactions,
-  privateGetAssets,
-} from '../redux/slices/keyring';
+import { privateGetTransactions, privateGetAssets } from '../redux/slices/user';
 
 export const getPrivateAssetsAndTransactions = async (icpPrice, state) =>
   Promise.all([
