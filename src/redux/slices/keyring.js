@@ -318,7 +318,7 @@ export const login = createAsyncThunk(
 
     if (unlocked) {
       await privateGetAssets({ refresh: true, icpPrice }, state);
-      navigate(Routes.SWIPE_LAYOUT);
+      //navigate(Routes.SWIPE_LAYOUT);
     } else {
       dispatch(setAssetsLoading(false));
       onError();

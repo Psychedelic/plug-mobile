@@ -42,7 +42,14 @@ function Login() {
         icpPrice,
         onError: () => setError(true),
       }),
-    );
+    ).unwrap().then((unlocked) => {
+      if(unlocked) {
+        navigation.navigate(Routes.SWIPE_LAYOUT);
+      } else {
+        dispatch(setAssetsLoading(false));
+        setError(true);
+      }
+    });
     clearState();
   };
 

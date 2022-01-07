@@ -48,21 +48,30 @@ const useKeyring = () => {
 
   const saveBiometrics = async (password, biometryType) => {
     // Removes stored password in Keychain
+    console.log('SAVING BIOMETRICS', password, biometryType);
     await Keychain.resetGenericPassword();
 
     if (biometryType) {
       const accessControl = Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET;
-      const access = Keychain.ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY;
+      const accessible = Keychain.ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY;
 
-      await Keychain.setGenericPassword(KEYCHAIN_USER, password, {
-        ...access,
-        ...accessControl,
-        ...DEFAULT_KEYCHAIN_OPTIONS,
-      });
+      const optionKeychain = {
+        accessControl,
+        accessible,
+        service: DEFAULT_KEYCHAIN_OPTIONS.service,
+        storage: DEFAULT_KEYCHAIN_OPTIONS.storage,
+      }
+
+      const authenticationPrompt = {
+        title: DEFAULT_KEYCHAIN_OPTIONS.authenticationPromptTitle,
+        description: DEFAULT_KEYCHAIN_OPTIONS.authenticationPromptDesc
+      }
+
+      await Keychain.setGenericPassword(KEYCHAIN_USER, password, optionKeychain);
 
       // To get biometrics prompt
       if (Platform.OS === 'ios') {
-        await Keychain.getGenericPassword();
+        await Keychain.getGenericPassword({authenticationPrompt, service: DEFAULT_KEYCHAIN_OPTIONS.service, accessControl});
       }
     }
   };
