@@ -8,10 +8,12 @@ import { generateMnemonic } from '../../utils/crypto';
 import { keyringStorage } from '../configureReducer';
 import {
   privateGetAssets,
+  setAssetsLoading,
   setAssetsAndLoading,
-  privateGetTransactions,
   setAssetsAndTransactions,
 } from './user';
+import { navigate } from '../../navigation/helper';
+import Routes from '../../navigation/Routes';
 
 export const initKeyring = createAsyncThunk('keyring/init', async () => {
   let keyring = new PlugController.PlugKeyRing(
@@ -59,34 +61,43 @@ export const importWallet = createAsyncThunk(
 
 export const unlock = createAsyncThunk(
   'keyring/unlock',
+  async (params, { getState }) => {
+    const state = getState();
+    return await privateUnlock(params, state);
+  },
+);
+
+const privateUnlock = async (params, state) => {
+  let unlocked = false;
+
+  try {
+    const instance = state.keyring?.instance;
+    unlocked = await instance?.unlock(params.password);
+  } catch (e) {
+    console.log('Private Unlock:', e.message);
+  }
+  return { unlocked };
+};
+
+export const login = createAsyncThunk(
+  'keyring/login',
   async (params, { getState, dispatch }) => {
-    const { password, icpPrice } = params;
-    let unlocked = false;
+    const state = getState();
+    const instance = state.keyring?.instance;
+    const { icpPrice, onError } = params;
+    const { unlocked } = await privateUnlock(params, state);
+    const { wallets, currentWalletId } = await instance?.getState();
 
-    try {
-      const state = getState();
-      const instance = state.keyring?.instance;
-      unlocked = await instance?.unlock(password);
-      const { wallets, currentWalletId } = await instance?.getState();
-
-      if (unlocked) {
-        const assets = await privateGetAssets(
-          { refresh: true, icpPrice },
-          state,
-        );
-        const transactions = await privateGetTransactions({ icpPrice }, state);
-        dispatch(setAssetsAndTransactions({ assets, transactions }));
-
-        return {
-          wallets,
-          currentWalletId,
-          unlocked,
-        };
-      }
-    } catch (e) {
-      console.log('unlock', e.message);
+    if (unlocked) {
+      dispatch(setCurrentWallet(wallets[currentWalletId]));
+      dispatch(setWallets(wallets));
+      await privateGetAssets({ refresh: true, icpPrice }, state);
+      navigate(Routes.SWIPE_LAYOUT);
+    } else {
+      dispatch(setAssetsLoading(false));
+      onError();
     }
-    return { unlocked };
+    return unlocked;
   },
 );
 
@@ -190,10 +201,8 @@ export const keyringSlice = createSlice({
       }
     },
     [unlock.fulfilled]: (state, action) => {
-      const { unlocked, wallets, currentWalletId } = action.payload;
+      const { unlocked } = action.payload;
       state.isUnlocked = unlocked;
-      state.currentWallet = wallets[currentWalletId];
-      state.wallets = wallets;
     },
     [createWallet.fulfilled]: (state, action) => {
       const { wallet } = action.payload;
