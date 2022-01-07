@@ -15,16 +15,11 @@ export const transformCircular = createTransform(
   outboundState => Flatted.parse(outboundState),
 );
 
-// investigar Flatter, posiblemente sacarlo.
-
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   transforms: [transformCircular],
 };
-
-// hacer un nuevo state sacando las cosas del keyring asi se puede persistir.
-// hacer action de init, tengo un keyring? no => inicializar.
 
 const icpPersistConfig = {
   key: 'icp',
