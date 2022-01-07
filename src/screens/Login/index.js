@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import * as Keychain from 'react-native-keychain';
 
+import { DEFAULT_KEYCHAIN_OPTIONS } from '../../constants/keychain';
 import { login, setAssetsLoading } from '../../redux/slices/keyring';
 import RainbowButton from '../../components/buttons/RainbowButton';
 import KeyboardHider from '../../components/common/KeyboardHider';
@@ -51,9 +52,7 @@ function Login() {
   }, []);
 
   const unlockUsingBiometrics = async () => {
-    const biometrics = await Keychain.getGenericPassword({
-      service: 'ooo.plugwallet',
-    });
+    const biometrics = await Keychain.getGenericPassword(DEFAULT_KEYCHAIN_OPTIONS);
     console.log('Has biometrics: ', biometrics);
     if (biometrics?.password) {
       await handleSubmit(biometrics.password);

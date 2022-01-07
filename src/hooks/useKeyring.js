@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 //import getRandom from '../helpers/random';
 import * as Keychain from 'react-native-keychain';
@@ -50,14 +51,19 @@ const useKeyring = () => {
     await Keychain.resetGenericPassword();
 
     if (biometryType) {
-      const accessControl = Keychain.ACCESS_CONTROL.BIOMETRY_ANY;
+      const accessControl = Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET;
       const access = Keychain.ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY;
 
-      Keychain.setGenericPassword(KEYCHAIN_USER, password, {
+      await Keychain.setGenericPassword(KEYCHAIN_USER, password, {
         ...access,
         ...accessControl,
         ...DEFAULT_KEYCHAIN_OPTIONS,
       });
+
+      // To get biometrics prompt
+      if (Platform.OS === 'ios') {
+        await Keychain.getGenericPassword();
+      }
     }
   };
 
