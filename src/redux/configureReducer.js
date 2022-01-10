@@ -71,8 +71,10 @@ export const keyringStorage = {
       const allKeys = await AsyncStorage.getAllKeys();
       await Promise.all(
         allKeys.map(async k => {
-          const val = await AsyncStorage.getItem(k);
-          state[k] = JSON.parse(val)[0];
+          if (!k.includes('@REACTOTRON')) {
+            const val = await AsyncStorage.getItem(k);
+            state[k] = JSON.parse(val)[0];
+          }
         }),
       );
       return state;

@@ -12,8 +12,6 @@ import {
   setAssetsAndLoading,
   setAssetsAndTransactions,
 } from './user';
-import { navigate } from '../../navigation/helper';
-import Routes from '../../navigation/Routes';
 
 export const initKeyring = createAsyncThunk('keyring/init', async () => {
   let keyring = new PlugController.PlugKeyRing(
