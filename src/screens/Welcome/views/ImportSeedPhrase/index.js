@@ -4,13 +4,12 @@ import React, { useState } from 'react';
 
 import RainbowButton from '../../../../components/buttons/RainbowButton';
 import KeyboardHider from '../../../../components/common/KeyboardHider';
+import { reset, importWallet } from '../../../../redux/slices/keyring';
 import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
-import { importWallet } from '../../../../redux/slices/keyring';
 import Container from '../../../../components/common/Container';
 import TextInput from '../../../../components/common/TextInput';
 import { useICPPrice } from '../../../../redux/slices/icp';
 import Header from '../../../../components/common/Header';
-import { reset } from '../../../../redux/slices/keyring';
 import Back from '../../../../components/common/Back';
 import useKeyring from '../../../../hooks/useKeyring';
 import { Colors } from '../../../../constants/theme';

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import EmptyState from '../../../../components/common/EmptyState';
 import Container from '../../../../components/common/Container';
 import Divider from '../../../../components/common/Divider';
-import { getNFTs } from '../../../../redux/slices/keyring';
+import { getNFTs } from '../../../../redux/slices/user';
 import { ScrollView } from 'react-native-gesture-handler';
 import WalletHeader from '../../components/WalletHeader';
 import { Colors } from '../../../../constants/theme';
@@ -18,7 +18,7 @@ const NFTs = () => {
   const dispatch = useDispatch();
   const [refreshing, setRefresing] = useState(false);
   const [selectedNft, setSelectedNft] = useState(null);
-  const { collections } = useSelector(state => state.keyring);
+  const { collections } = useSelector(state => state.user);
 
   const renderNFT = (item, index) => (
     <NftItem key={index} item={item} onOpen={onOpen} />
