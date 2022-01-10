@@ -4,15 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import * as Keychain from 'react-native-keychain';
 
-import { login } from '../../redux/slices/keyring';
-import { setAssetsLoading } from '../../redux/slices/user';
 import RainbowButton from '../../components/buttons/RainbowButton';
 import KeyboardHider from '../../components/common/KeyboardHider';
+import { DEFAULT_KEYCHAIN_OPTIONS } from '../../redux/constants';
+import { setAssetsLoading } from '../../redux/slices/user';
 import TextInput from '../../components/common/TextInput';
 import Container from '../../components/common/Container';
 import Plug from '../../assets/icons/plug-white.png';
 import { useICPPrice } from '../../redux/slices/icp';
 import Button from '../../components/buttons/Button';
+import { login } from '../../redux/slices/keyring';
 import Routes from '../../navigation/Routes';
 import styles from './styles';
 
@@ -40,9 +41,18 @@ function Login() {
       login({
         password: submittedPassword,
         icpPrice,
-        onError: () => setError(true),
+        onError: () => {
+          dispatch(setAssetsLoading(false));
+          setError(true);
+        },
       }),
-    );
+    )
+      .unwrap()
+      .then(unlocked => {
+        if (unlocked) {
+          navigation.navigate(Routes.SWIPE_LAYOUT);
+        }
+      });
     clearState();
   };
 
@@ -52,9 +62,9 @@ function Login() {
   }, []);
 
   const unlockUsingBiometrics = async () => {
-    const biometrics = await Keychain.getGenericPassword({
-      service: 'ooo.plugwallet',
-    });
+    const biometrics = await Keychain.getGenericPassword(
+      DEFAULT_KEYCHAIN_OPTIONS,
+    );
     console.log('Has biometrics: ', biometrics);
     if (biometrics?.password) {
       await handleSubmit(biometrics.password);
