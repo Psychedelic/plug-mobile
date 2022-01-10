@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Modal from '../../../components/modal';
 import { FontStyles } from '../../../constants/theme';
 import Header from '../../../components/common/Header';
@@ -13,7 +13,8 @@ import Button from '../../../components/buttons/Button';
 import { Colors } from '../../../constants/theme';
 import NftDisplayer from '../../../components/common/NftDisplayer';
 import shortAddress from '../../../helpers/short-address';
-import { TRANSACTION_STATUS, setTransaction } from '../../../redux/slices/keyring';
+import { setTransaction } from '../../../redux/slices/user';
+import { TRANSACTION_STATUS } from '../../../redux/constants';
 import { getICRocksTransactionUrl } from '../../../constants/urls';
 import { useDispatch } from 'react-redux';
 
@@ -79,7 +80,9 @@ const ReviewSend = ({
         {nft && (
           <Row style={styles.row}>
             <Column>
-              <Text style={FontStyles.Title2}>{nft.name || `${nft.collection} #${nft.index}`}</Text>
+              <Text style={FontStyles.Title2}>
+                {nft.name || `${nft.collection} #${nft.index}`}
+              </Text>
             </Column>
             <NftDisplayer
               url={nft.url}
@@ -97,29 +100,34 @@ const ReviewSend = ({
 
         <Row style={styles.row}>
           <Column>
-            {
-              contact
-                ?
-                <>
-                  <Text style={FontStyles.Title2}>{contact?.name}</Text>
-                  <Text style={FontStyles.Subtitle3}>
-                    {shortAddress(contact?.id)}
-                  </Text>
-                </>
-                :
-                <Text style={FontStyles.Title2}>{shortAddress(to)}</Text>
-            }
+            {contact ? (
+              <>
+                <Text style={FontStyles.Title2}>{contact?.name}</Text>
+                <Text style={FontStyles.Subtitle3}>
+                  {shortAddress(contact?.id)}
+                </Text>
+              </>
+            ) : (
+              <Text style={FontStyles.Title2}>{shortAddress(to)}</Text>
+            )}
           </Column>
           <UserIcon size="medium" />
         </Row>
 
         {transactionCompleted ? (
-          token && token.symbol === 'ICP' && <Button
-            variant="gray"
-            text="View on Explorer"
-            buttonStyle={styles.button}
-            onPress={() => Linking.openURL(getICRocksTransactionUrl(transaction?.response.transactionId))}
-          />
+          token &&
+          token.symbol === 'ICP' && (
+            <Button
+              variant="gray"
+              text="View on Explorer"
+              buttonStyle={styles.button}
+              onPress={() =>
+                Linking.openURL(
+                  getICRocksTransactionUrl(transaction?.response.transactionId),
+                )
+              }
+            />
+          )
         ) : (
           <RainbowButton
             text="􀎽 Hold to Send"

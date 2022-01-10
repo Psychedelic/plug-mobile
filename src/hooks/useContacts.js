@@ -1,15 +1,11 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  addContact,
-  removeContact,
-  setContacts,
-} from '../redux/slices/keyring';
+import { addContact, removeContact, setContacts } from '../redux/slices/user';
 
 const getFirstLetterFrom = value => value.slice(0, 1).toUpperCase();
 
 const useContacts = () => {
-  const { contacts } = useSelector(state => state.keyring);
+  const { contacts } = useSelector(state => state.user);
   const dispatch = useDispatch();
 
   const onCreate = contact => dispatch(addContact(contact));

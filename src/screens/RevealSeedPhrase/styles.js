@@ -17,4 +17,11 @@ export default StyleSheet.create({
     marginTop: 5,
     color: 'red',
   },
+  buttonStyle: {
+    marginTop: 20,
+  },
+  copyStyle: {
+    marginTop: 30,
+    alignSelf: 'center',
+  },
 });

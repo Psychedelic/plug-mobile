@@ -26,7 +26,7 @@ import {
   sendToken,
   setTransaction,
   transferNFT,
-} from '../../redux/slices/keyring';
+} from '../../redux/slices/user';
 import { useDispatch } from 'react-redux';
 
 const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
@@ -37,8 +37,8 @@ const Send = ({ modalRef }) => {
   const [address, setAddress] = useState(null);
   const [addressInfo, setAddressInfo] = useState(INITIAL_ADDRESS_INFO);
 
-  const { assets, principalId, accountId, transaction, collections } =
-    useSelector(state => state.keyring);
+  const { principalId, accountId } = useSelector(state => state.keyring);
+  const { assets, transaction, collections } = useSelector(state => state.user);
 
   const nfts =
     collections?.flatMap(collection => collection?.tokens || []) || [];
