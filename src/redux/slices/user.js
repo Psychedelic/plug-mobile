@@ -174,6 +174,17 @@ export const privateGetTransactions = async (params, state) => {
         }
         return type.toUpperCase();
       };
+      const getSymbol = () => {
+        if ('tokenRegistryInfo' in trx.details) {
+          return trx.details.tokenRegistryInfo.symbol;
+        }
+        if ('nftRegistryInfo' in trx.details) {
+          return 'NFT';
+        }
+        return trx?.details?.currency?.symbol ?? '';
+      };
+      const canisterInfo =
+        trx?.details?.tokenRegistryInfo || trx?.details?.nftRegistryInfo;
       const transaction = {
         ...asset,
         type: getType(),
@@ -182,20 +193,16 @@ export const privateGetTransactions = async (params, state) => {
         from: trx?.details?.from || trx?.caller,
         date: new Date(trx?.timestamp),
         status: ACTIVITY_STATUS[trx?.details?.status],
-        image:
-          TOKEN_IMAGES[trx?.details?.currency?.symbol] ||
-          trx?.canisterInfo?.icon ||
-          '',
-        symbol:
-          trx?.details?.currency?.symbol ?? (trx?.canisterInfo ? 'NFT' : ''),
+        image: TOKEN_IMAGES[getSymbol()] || canisterInfo?.icon || '',
+        symbol: getSymbol(),
         canisterId: trx?.details?.canisterId,
         plug: null,
-        canisterInfo: trx?.canisterInfo,
+        canisterInfo,
         details: { ...trx?.details, caller: trx?.caller },
       };
       return transaction;
     };
-    const parsedTrx = response.transactions?.map(mapTransaction) || [];
+    const parsedTrx = response?.transactions?.map(mapTransaction) || [];
 
     return parsedTrx;
   } catch (e) {
