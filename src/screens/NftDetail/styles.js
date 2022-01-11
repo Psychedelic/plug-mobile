@@ -1,6 +1,8 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-const imageSize = Dimensions.get('window').width - 40;
+import { WINDOW_WIDTH } from '../../constants/platform';
+
+const imageSize = WINDOW_WIDTH - 40;
 
 export default StyleSheet.create({
   content: {

@@ -7,9 +7,9 @@ import React, { useEffect } from 'react';
 import { AppState } from 'react-native';
 
 import CreateImportNavigator from './CreateImportNavigator';
+import { navigationRef } from '../../helpers/navigation';
 import { setUnlocked } from '../../redux/slices/keyring';
 import SwipeNavigator from './SwipeNavigator';
-import { navigationRef } from '../helper';
 import Login from '../../screens/Login';
 import Routes from '../Routes';
 

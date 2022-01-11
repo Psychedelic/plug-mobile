@@ -5,7 +5,7 @@ import { fetch } from 'react-native-fetch-api';
 
 import { getPrivateAssetsAndTransactions } from '../../utils/keyringUtils';
 import { generateMnemonic } from '../../utils/crypto';
-import { keyringStorage } from '../configureReducer';
+import { keyringStorage } from '../store';
 import {
   privateGetAssets,
   setAssetsLoading,

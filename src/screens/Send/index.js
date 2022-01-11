@@ -1,33 +1,31 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { Text, ScrollView, Keyboard } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { DEFAULT_FEE, XTC_FEE, ADDRESS_TYPES } from '../../constants/addresses';
+import TextInput from '../../components/common/TextInput';
+import ContactSection from './components/ContactSection';
+import AmountSection from './components/AmountSection';
+import TokenSection from './components/TokenSection';
+import { useICPPrice } from '../../redux/slices/icp';
 import Header from '../../components/common/Header';
 import { FontStyles } from '../../constants/theme';
-import TextInput from '../../components/common/TextInput';
-import Modal from '../../components/modal';
-import { Text, ScrollView } from 'react-native';
-import styles from './styles';
-import {
-  validatePrincipalId,
-  validateAccountId,
-  validateCanisterId,
-} from '../../helpers/ids';
-import AmountSection from './components/AmountSection';
-import ContactSection from './components/ContactSection';
-import TokenSection from './components/TokenSection';
-import { Keyboard } from 'react-native';
 import ReviewSend from './components/ReviewSend';
-import { useICPPrice } from '../../redux/slices/icp';
 import { USD_PER_TC } from '../../utils/assets';
-import { ADDRESS_TYPES } from '../../constants/addresses';
-import { useSelector } from 'react-redux';
 import XTC_OPTIONS from '../../constants/xtc';
-import { DEFAULT_FEE, XTC_FEE } from '../../constants/addresses';
+import Modal from '../../components/modal';
 import {
   burnXtc,
   sendToken,
   setTransaction,
   transferNFT,
 } from '../../redux/slices/user';
-import { useDispatch } from 'react-redux';
+import {
+  validatePrincipalId,
+  validateAccountId,
+  validateCanisterId,
+} from '../../helpers/ids';
+import styles from './styles';
 
 const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
 
@@ -37,7 +35,7 @@ const Send = ({ modalRef }) => {
   const [address, setAddress] = useState(null);
   const [addressInfo, setAddressInfo] = useState(INITIAL_ADDRESS_INFO);
 
-  const { principalId, accountId } = useSelector(state => state.keyring);
+  const { currentWallet } = useSelector(state => state.keyring);
   const { assets, transaction, collections } = useSelector(state => state.user);
 
   const nfts =
@@ -53,10 +51,9 @@ const Send = ({ modalRef }) => {
 
   const icpPrice = useICPPrice();
 
+  // TODO: Check if destionation and setDestination are necessary
   const [destination, setDestination] = useState(XTC_OPTIONS.SEND);
   const [sendingXTCtoCanister, setSendingXTCtoCanister] = useState(false);
-
-  const [sendError, setError] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -154,7 +151,10 @@ const Send = ({ modalRef }) => {
   useEffect(() => {
     if (address || selectedContact) {
       const id = address || selectedContact.id;
-      const isUserAddress = [principalId, accountId].includes(id);
+      const isUserAddress = [
+        currentWallet?.principal,
+        currentWallet?.accountId,
+      ].includes(id);
       let isValid =
         !isUserAddress && (validatePrincipalId(id) || validateAccountId(id));
       const type = validatePrincipalId(id)
@@ -205,7 +205,6 @@ const Send = ({ modalRef }) => {
             onNftPress={onNftPress}
           />
         )}
-
         {isValidAddress && selectedToken && (
           <AmountSection
             selectedToken={selectedToken}
@@ -220,7 +219,6 @@ const Send = ({ modalRef }) => {
             onReview={onReview}
           />
         )}
-
         <ReviewSend
           modalRef={reviewRef}
           adjustToContentHeight

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import TokenSelector from '../../../components/tokens/TokenSelector';
+
 import RainbowButton from '../../../components/buttons/RainbowButton';
+import TokenSelector from '../../../components/tokens/TokenSelector';
 import AmountInput from '../../../components/common/AmountInput';
 
 const AmountSection = ({
@@ -18,15 +19,11 @@ const AmountSection = ({
   const [selectedInput, setSelectedInput] = useState('USD');
 
   useEffect(() => {
-    setTokenAmount(
-      usdAmount ? String(usdAmount / tokenPrice) : null,
-    );
+    setTokenAmount(usdAmount ? String(usdAmount / tokenPrice) : null);
   }, [usdAmount, tokenPrice, setTokenAmount]);
 
   useEffect(() => {
-    setUsdAmount(
-      tokenAmount ? String(tokenAmount * tokenPrice) : null,
-    );
+    setUsdAmount(tokenAmount ? String(tokenAmount * tokenPrice) : null);
   }, [tokenAmount, tokenPrice, setUsdAmount]);
 
   const onTokenChange = () => {
@@ -60,7 +57,6 @@ const AmountSection = ({
         availableUsdAmount={availableUsdAmount}
         selectedInput={selectedInput}
       />
-
       <AmountInput
         value={tokenAmount}
         onChange={setTokenAmount}
@@ -81,7 +77,6 @@ const AmountSection = ({
         autoFocus
         customStyle={{ marginBottom: 25 }}
       />
-
       <RainbowButton
         text={getButtonText()}
         onPress={onReview}

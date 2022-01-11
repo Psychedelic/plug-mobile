@@ -6,8 +6,8 @@ import Flatted from 'flatted';
 
 import Reactotron from '../../reactotronConfig';
 import KeyringReducer from './slices/keyring';
-import IcpReducer from './slices/icp';
 import UserReducer from './slices/user';
+import IcpReducer from './slices/icp';
 
 // PERSIST
 export const transformCircular = createTransform(

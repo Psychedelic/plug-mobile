@@ -1,13 +1,14 @@
 import React from 'react';
-import { View, Text, Dimensions, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+
+import NftDisplayer from '../../../components/common/NftDisplayer';
 import Touchable from '../../../components/animations/Touchable';
+import { FontStyles, Colors } from '../../../constants/theme';
 import TokenItem from '../../../components/tokens/TokenItem';
 import animationScales from '../../../utils/animationScales';
-import { FontStyles, Colors } from '../../../constants/theme';
-import NftDisplayer from '../../../components/common/NftDisplayer';
+import { WINDOW_WIDTH } from '../../../constants/platform';
 
-const { width } = Dimensions.get('window');
-const itemSize = width / 2 - 40;
+const itemSize = WINDOW_WIDTH / 2 - 40;
 
 const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }) => {
   return (

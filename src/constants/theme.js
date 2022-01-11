@@ -1,8 +1,8 @@
-import { Dimensions } from 'react-native';
+import { WINDOW_HEIGHT, WINDOW_WIDTH } from '../constants/platform';
 
 export const Metrics = {
-  ScreenWidth: Dimensions.get('window').width,
-  ScreenHeight: Dimensions.get('window').height,
+  ScreenWidth: WINDOW_HEIGHT,
+  ScreenHeight: WINDOW_WIDTH,
   Padding: 16,
   Margin: 16,
   BorderRadius: 8,

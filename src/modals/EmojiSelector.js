@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import Header from '../components/common/Header';
-import Modal from '../components/modal';
-import UserIcon from '../components/common/UserIcon';
+
 import RainbowButton from '../components/buttons/RainbowButton';
 import EmojiSelector from '../components/common/EmojiSelector';
+import UserIcon from '../components/common/UserIcon';
+import Header from '../components/common/Header';
 import { FontStyles } from '../constants/theme';
+import Modal from '../components/modal';
 
 const EditEmoji = ({ modalRef, onSave, emoji }) => {
   const [selectedEmoji, setSelectedEmoji] = useState('');
