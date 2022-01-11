@@ -1,6 +1,7 @@
-import { Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Keychain from 'react-native-keychain';
+
+import { isIos } from '../constants/platform';
 import {
   setCurrentWallet,
   setUnlocked,
@@ -50,7 +51,7 @@ const useKeyring = () => {
       );
 
       // To get biometrics prompt
-      if (Platform.OS === 'ios') {
+      if (isIos) {
         await Keychain.getGenericPassword({
           authenticationPrompt,
           service: DEFAULT_KEYCHAIN_OPTIONS.service,
