@@ -9,7 +9,7 @@ import { AppState } from 'react-native';
 import CreateImportNavigator from './CreateImportNavigator';
 import { setUnlocked } from '../../redux/slices/keyring';
 import SwipeNavigator from './SwipeNavigator';
-import { navigationRef } from '../helper';
+import { navigationRef } from '../../helpers/navigation';
 import Login from '../../screens/Login';
 import Routes from '../Routes';
 

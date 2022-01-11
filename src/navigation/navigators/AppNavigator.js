@@ -1,10 +1,10 @@
-import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Host } from 'react-native-portalize';
+import React from 'react';
 
+import { navigationRef } from '../../helpers/navigation';
 import SwipeNavigator from './SwipeNavigator';
-import { navigationRef } from '../helper';
 import Routes from '../Routes';
 
 const Stack = createStackNavigator();

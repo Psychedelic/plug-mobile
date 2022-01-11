@@ -5,8 +5,8 @@ import SplashScreen from 'react-native-splash-screen';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import ErrorBoundary from './src/components/common/ErrorBoundary';
-import { persistor, store } from './src/redux/configureReducer';
 import { initKeyring } from './src/redux/slices/keyring';
+import { persistor, store } from './src/redux/store';
 import Routes from './src/navigation';
 
 const PersistedApp = () => {

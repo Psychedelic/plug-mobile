@@ -1,33 +1,33 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet } from 'react-native';
-import Header from '../components/common/Header';
-import Modal from '../components/modal';
-import { FontStyles } from '../constants/theme';
-import { View, Text } from 'react-native';
-import UserIcon from '../components/common/UserIcon';
-import TextInput from '../components/common/TextInput';
+import { StyleSheet, View, Text } from 'react-native';
+
 import RainbowButton from '../components/buttons/RainbowButton';
-import EmojiSelector from './EmojiSelector';
+import TextInput from '../components/common/TextInput';
+import UserIcon from '../components/common/UserIcon';
+import Header from '../components/common/Header';
+import { FontStyles } from '../constants/theme';
 import useAccounts from '../hooks/useAccounts';
+import EmojiSelector from './EmojiSelector';
+import Modal from '../components/modal';
 
 const CreateEditAccount = ({ modalRef, account, ...props }) => {
   const editEmojiRef = useRef(null);
   const [accountName, setAccountName] = useState('');
-  const [emoji, setEmoji] = useState('')
+  const [emoji, setEmoji] = useState('');
 
   const { onCreate, onEdit } = useAccounts();
 
   const onPress = () => {
     account
       ? onEdit({
-        walletNumber: account.walletNumber,
-        name: accountName,
-        icon: emoji,
-      })
+          walletNumber: account.walletNumber,
+          name: accountName,
+          icon: emoji,
+        })
       : onCreate({
-        name: accountName,
-        icon: emoji,
-      });
+          name: accountName,
+          icon: emoji,
+        });
 
     resetState();
     modalRef.current?.close();
@@ -57,9 +57,7 @@ const CreateEditAccount = ({ modalRef, account, ...props }) => {
       modalRef={modalRef}
       onClose={resetState}
       {...props}>
-      <Header center={<Text style={FontStyles.Subtitle2}>
-        {getName()}
-      </Text>} />
+      <Header center={<Text style={FontStyles.Subtitle2}>{getName()}</Text>} />
       <View style={styles.content}>
         <UserIcon
           icon={emoji}

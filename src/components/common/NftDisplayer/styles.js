@@ -1,9 +1,10 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 
-const videoDetailSize = Dimensions.get('window').width - 40;
+import { WINDOW_WIDTH } from '../../../constants/platform';
 
-const { width } = Dimensions.get('window');
-const itemSize = width / 2 - 40;
+const videoDetailSize = WINDOW_WIDTH - 40;
+
+const itemSize = WINDOW_WIDTH / 2 - 40;
 
 const commonStyle = {
   borderRadius: 20,

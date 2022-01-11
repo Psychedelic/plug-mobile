@@ -1,22 +1,22 @@
 import React from 'react';
-import Modal from '../../../components/modal';
-import { FontStyles } from '../../../constants/theme';
-import Header from '../../../components/common/Header';
+import { useDispatch } from 'react-redux';
 import { StyleSheet, Text, View, Linking } from 'react-native';
+
+import RainbowButton from '../../../components/buttons/RainbowButton';
+import NftDisplayer from '../../../components/common/NftDisplayer';
+import { getICRocksTransactionUrl } from '../../../constants/urls';
+import { Colors, FontStyles } from '../../../constants/theme';
+import { TRANSACTION_STATUS } from '../../../redux/constants';
+import TokenIcon from '../../../components/tokens/TokenIcon';
+import { setTransaction } from '../../../redux/slices/user';
+import UserIcon from '../../../components/common/UserIcon';
+import shortAddress from '../../../helpers/short-address';
+import Button from '../../../components/buttons/Button';
+import Header from '../../../components/common/Header';
 import Column from '../../../components/layout/Column';
 import Row from '../../../components/layout/Row';
-import TokenIcon from '../../../components/tokens/TokenIcon';
-import RainbowButton from '../../../components/buttons/RainbowButton';
-import UserIcon from '../../../components/common/UserIcon';
+import Modal from '../../../components/modal';
 import Icon from '../../../components/icons';
-import Button from '../../../components/buttons/Button';
-import { Colors } from '../../../constants/theme';
-import NftDisplayer from '../../../components/common/NftDisplayer';
-import shortAddress from '../../../helpers/short-address';
-import { setTransaction } from '../../../redux/slices/user';
-import { TRANSACTION_STATUS } from '../../../redux/constants';
-import { getICRocksTransactionUrl } from '../../../constants/urls';
-import { useDispatch } from 'react-redux';
 
 const ReviewSend = ({
   modalRef,
@@ -130,7 +130,7 @@ const ReviewSend = ({
           )
         ) : (
           <RainbowButton
-            text="􀎽 Hold to Send"
+            text="􀎽 Hold to Send" // TODO: Check this title
             loading={loading}
             onLongPress={onSend}
             buttonStyle={styles.button}

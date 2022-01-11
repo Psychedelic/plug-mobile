@@ -1,9 +1,9 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet } from 'react-native';
 
+import { WINDOW_WIDTH } from '../../../../constants/platform';
 import { FontStyles } from '../../../../constants/theme';
 
-const { width } = Dimensions.get('window');
-const itemSize = width / 2 - 40;
+const itemSize = WINDOW_WIDTH / 2 - 40;
 
 const commonContainerSize = {
   width: itemSize,
@@ -13,7 +13,7 @@ const commonContainerSize = {
 export default StyleSheet.create({
   container: {
     flexDirection: 'row',
-    width: width,
+    width: WINDOW_WIDTH,
     flexWrap: 'wrap',
     paddingHorizontal: 10,
     paddingVertical: 10,
