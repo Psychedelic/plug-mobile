@@ -42,8 +42,8 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
     dispatch(setCurrentPrincipal({ walletNumber, icpPrice }))
       .unwrap()
       .then(() => {
-        setLoading(false);
         dispatch(getNFTs());
+        setLoading(false);
         modalRef.current?.close();
       });
   };
