@@ -90,6 +90,7 @@ export const login = createAsyncThunk(
       dispatch(setCurrentWallet(wallets[currentWalletId]));
       dispatch(setWallets(wallets));
       await privateGetAssets({ refresh: true, icpPrice }, state);
+      dispatch(setAssetsLoading(false));
     } else {
       dispatch(setAssetsLoading(false));
       onError();

@@ -4,7 +4,9 @@ function useGetType(url, setType) {
   useEffect(() => {
     const getType = async () =>
       await fetch(url).then(res => setType(res.headers.get('Content-Type')));
-    getType();
+    if (url) {
+      getType();
+    }
     return () => setType(null);
   }, [url]);
 }
