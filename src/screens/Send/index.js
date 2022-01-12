@@ -3,6 +3,7 @@ import { Text, ScrollView, Keyboard } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { DEFAULT_FEE, XTC_FEE, ADDRESS_TYPES } from '../../constants/addresses';
+import { TRANSACTION_STATUS } from '../../redux/constants';
 import TextInput from '../../components/common/TextInput';
 import ContactSection from './components/ContactSection';
 import AmountSection from './components/AmountSection';
@@ -121,7 +122,13 @@ const Send = ({ modalRef }) => {
     const to = address || selectedContact.id;
 
     if (selectedNft) {
-      dispatch(transferNFT({ to, nft: selectedNft }));
+      dispatch(transferNFT({ to, nft: selectedNft }))
+        .unwrap()
+        .then(response => {
+          if (response.status === TRANSACTION_STATUS.success) {
+            setLoading(false);
+          }
+        });
     } else {
       if (sendingXTCtoCanister && destination === XTC_OPTIONS.BURN) {
         dispatch(burnXtc({ to, amount: tokenAmount }));
@@ -132,10 +139,15 @@ const Send = ({ modalRef }) => {
             amount: tokenAmount,
             canisterId: selectedToken?.canisterId,
           }),
-        );
+        )
+          .unwrap()
+          .then(response => {
+            if (response.status === TRANSACTION_STATUS.success) {
+              setLoading(false);
+            }
+          });
       }
     }
-    setLoading(false);
   };
 
   useEffect(() => {
