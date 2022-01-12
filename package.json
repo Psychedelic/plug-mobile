@@ -66,6 +66,7 @@
     "react-native-restart": "^0.0.22",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.8.0",
+    "react-native-sensitive-info": "^6.0.0-alpha.9",
     "react-native-splash-screen": "^3.2.0",
     "react-native-svg": "^12.1.1",
     "react-native-tab-view": "^3.1.1",
