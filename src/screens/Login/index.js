@@ -2,7 +2,6 @@ import { View, StatusBar, Text, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
-import * as Keychain from 'react-native-keychain';
 
 import RainbowButton from '../../components/buttons/RainbowButton';
 import KeyboardHider from '../../components/common/KeyboardHider';
@@ -14,6 +13,7 @@ import Plug from '../../assets/icons/plug-white.png';
 import { useICPPrice } from '../../redux/slices/icp';
 import Button from '../../components/buttons/Button';
 import { login } from '../../redux/slices/keyring';
+import Keychain from '../../modules/keychain';
 import Routes from '../../navigation/Routes';
 import styles from './styles';
 
@@ -62,12 +62,14 @@ function Login() {
   }, []);
 
   const unlockUsingBiometrics = async () => {
-    const biometrics = await Keychain.getGenericPassword(
-      DEFAULT_KEYCHAIN_OPTIONS,
-    );
-    console.log('Has biometrics: ', biometrics);
-    if (biometrics?.password) {
-      await handleSubmit(biometrics.password);
+    const isAvailable = await Keychain.isSensorAvailable();
+
+    if (isAvailable) {
+      const biometrics = await Keychain.getPassword();
+
+      if (biometrics) {
+        await handleSubmit(biometrics);
+      }
     }
   };
 
