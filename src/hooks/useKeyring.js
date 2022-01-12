@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from 'react-redux';
-import * as Keychain from 'react-native-keychain';
 
 import { isIos } from '../constants/platform';
 import {
@@ -7,58 +6,15 @@ import {
   setUnlocked,
   setWallets,
 } from '../redux/slices/keyring';
-
-const KEYCHAIN_USER = 'plug-user-name';
-const DEFAULT_KEYCHAIN_OPTIONS = {
-  service: 'ooo.plugwallet',
-  authenticationPromptTitle: 'Auth prompt title',
-  authenticationPrompt: { title: 'Auth prompt description' },
-  authenticationPromptDesc: 'Auth prompt description',
-  fingerprintPromptTitle: 'Fingerprint auth title',
-  fingerprintPromptDesc: 'Fingerprint auth description',
-  fingerprintPromptCancel: 'Fingerprint auth cancel',
-  storage: Keychain.STORAGE_TYPE.RSA,
-};
+import Keychain from '../modules/keychain';
 
 const useKeyring = () => {
   const { instance } = useSelector(state => state.keyring);
   const dispatch = useDispatch();
 
-  const saveBiometrics = async (password, biometryType) => {
-    // Removes stored password in Keychain
-    await Keychain.resetGenericPassword();
-
-    if (biometryType) {
-      const accessControl = Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET;
-      const accessible = Keychain.ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY;
-
-      const optionKeychain = {
-        accessControl,
-        accessible,
-        service: DEFAULT_KEYCHAIN_OPTIONS.service,
-        storage: DEFAULT_KEYCHAIN_OPTIONS.storage,
-      };
-
-      const authenticationPrompt = {
-        title: DEFAULT_KEYCHAIN_OPTIONS.authenticationPromptTitle,
-        description: DEFAULT_KEYCHAIN_OPTIONS.authenticationPromptDesc,
-      };
-
-      await Keychain.setGenericPassword(
-        KEYCHAIN_USER,
-        password,
-        optionKeychain,
-      );
-
-      // To get biometrics prompt
-      if (isIos) {
-        await Keychain.getGenericPassword({
-          authenticationPrompt,
-          service: DEFAULT_KEYCHAIN_OPTIONS.service,
-          accessControl,
-        });
-      }
-    }
+  const saveBiometrics = async (password) => {
+    await Keychain.resetPassword();
+    await Keychain.setPassword(password);
   };
 
   const getState = async () => {
