@@ -53,7 +53,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = createStore(persistedReducer, compose(...enhancers));
 
-export const persistor = onInit => persistStore(store, null, onInit);
+export const persistor = persistStore(store);
 
 if (__DEV__ && Reactotron.setReduxStore) {
   Reactotron.setReduxStore(store);
