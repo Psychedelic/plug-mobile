@@ -1,6 +1,6 @@
 import { Text } from 'react-native';
-import React, { useState } from 'react';
-import { Provider, useDispatch } from 'react-redux';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { PersistGate } from 'redux-persist/integration/react';
 
@@ -10,21 +10,21 @@ import { persistor, store } from './src/redux/store';
 import Routes from './src/navigation';
 
 const PersistedApp = () => {
+  const { instance } = useSelector(state => state.keyring);
   const dispatch = useDispatch();
-  const [isReady, setIsReady] = useState(false);
-  const init = () => {
-    console.log('init');
-    dispatch(initKeyring());
 
-    setTimeout(() => {
-      setIsReady(true);
+  useEffect(() => {
+    if (instance) {
       SplashScreen.hide();
-    }, 5000);
-  };
+    } else {
+      console.log('init');
+      dispatch(initKeyring());
+    }
+  }, [instance]);
 
   return (
-    <PersistGate loading={<Text>hello</Text>} persistor={persistor(init)}>
-      <ErrorBoundary>{isReady && <Routes />}</ErrorBoundary>
+    <PersistGate loading={null} persistor={persistor}>
+      <ErrorBoundary>{!!instance && <Routes />}</ErrorBoundary>
     </PersistGate>
   );
 };
