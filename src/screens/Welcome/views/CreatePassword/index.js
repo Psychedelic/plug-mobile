@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Image, Switch } from 'react-native';
-import * as Keychain from 'react-native-keychain';
 import Container from '../../../../components/common/Container';
 import TextInput from '../../../../components/common/TextInput';
 import { Colors } from '../../../../constants/theme';
@@ -14,6 +13,7 @@ import Routes from '../../../../navigation/Routes';
 import { useDispatch } from 'react-redux';
 import { reset, createWallet } from '../../../../redux/slices/keyring';
 import KeyboardHider from '../../../../components/common/KeyboardHider';
+import Keychain from '../../../../modules/keychain';
 
 const CreatePassword = ({ route, navigation }) => {
   const { saveBiometrics } = useKeyring();
@@ -24,20 +24,21 @@ const CreatePassword = ({ route, navigation }) => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const [biometrics, setBiometrics] = useState(false);
-  const [biometryType, setBiometryType] = useState(false);
+  const [biometryAvailable, setBiometryAvailable] = useState(false);
   const toggleSwitch = () => setBiometrics(previousState => !previousState);
 
   useEffect(() => {
-    Keychain.getSupportedBiometryType().then(deviceBiometry => {
-      setBiometryType(deviceBiometry);
+    Keychain.isSensorAvailable().then((isAvailable) => {
+      setBiometryAvailable(isAvailable);
     });
   }, []);
 
   const handleCreate = async () => {
     if (flow === 'import') {
+      const shouldSaveBiometrics = biometryAvailable && biometrics;
       navigation.navigate(Routes.IMPORT_SEED_PHRASE, {
         password,
-        biometryType,
+        shouldSaveBiometrics,
       });
     } else {
       try {
@@ -47,7 +48,9 @@ const CreatePassword = ({ route, navigation }) => {
           .unwrap()
           .then(async result => {
             if (result?.mnemonic) {
-              await saveBiometrics(password, biometryType);
+              if (biometryAvailable && biometrics) {
+                await saveBiometrics(password);
+              }
               navigation.navigate(Routes.BACKUP_SEED_PHRASE, {
                 mnemonic: result.mnemonic,
               });
@@ -110,7 +113,7 @@ const CreatePassword = ({ route, navigation }) => {
 
           <Text style={styles.help}>Must be at least 12 characters</Text>
 
-          {biometryType && (
+          {biometryAvailable && (
             <View style={styles.switchContainer}>
               <Text style={styles.faceId}>Sign in with Face ID?</Text>
               <Switch onValueChange={toggleSwitch} value={biometrics} />

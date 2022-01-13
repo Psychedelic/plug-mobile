@@ -20,7 +20,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
   const icpPrice = useICPPrice();
   const { saveBiometrics } = useKeyring();
   const { goBack } = navigation;
-  const { password, biometryType } = route?.params || {};
+  const { password, shouldSaveBiometrics } = route?.params || {};
   const [seedPhrase, setSeedPhrase] = useState(null);
   const [invalidSeedPhrase, setInvalidSeedPhrase] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -33,7 +33,9 @@ const ImportSeedPhrase = ({ navigation, route }) => {
       dispatch(importWallet({ icpPrice, mnemonic: seedPhrase, password }))
         .unwrap()
         .then(async () => {
-          await saveBiometrics(password, biometryType);
+          if (shouldSaveBiometrics) {
+            await saveBiometrics(password);
+          }
           setLoading(false);
           navigation.navigate(Routes.SWIPE_LAYOUT);
         });
