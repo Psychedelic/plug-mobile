@@ -7,8 +7,7 @@ const TokenFormat = ({ value, token, style }) => (
     value={value}
     displayType="text"
     thousandSeparator=","
-    decimalScale={5}
-    fixedDecimalScale
+    decimalScale={8}
     suffix={` ${token}`}
     renderText={textValue => <Text style={style}>{textValue}</Text>}
   />
