@@ -5,6 +5,7 @@ import { StyleSheet, Text, View, Linking } from 'react-native';
 import RainbowButton from '../../../components/buttons/RainbowButton';
 import NftDisplayer from '../../../components/common/NftDisplayer';
 import { getICRocksTransactionUrl } from '../../../constants/urls';
+import TokenFormat from '../../../components/number/TokenFormat';
 import { Colors, FontStyles } from '../../../constants/theme';
 import { TRANSACTION_STATUS } from '../../../redux/constants';
 import TokenIcon from '../../../components/tokens/TokenIcon';
@@ -70,13 +71,12 @@ const ReviewSend = ({
             <Column>
               <Text style={FontStyles.Title2}>${value}</Text>
               <Text style={FontStyles.Subtitle3}>
-                {amount} {token.symbol}
+                <TokenFormat value={amount} token={token.symbol} />
               </Text>
             </Column>
             <TokenIcon {...token} color={Colors.Gray.Tertiary} />
           </Row>
         )}
-
         {nft && (
           <Row style={styles.row}>
             <Column>
@@ -90,14 +90,12 @@ const ReviewSend = ({
             />
           </Row>
         )}
-
         <Row style={[styles.row, { paddingRight: 9 }]}>
           <View style={styles.to}>
             <Text style={FontStyles.Normal}>To</Text>
           </View>
           <Icon name="arrowDown" />
         </Row>
-
         <Row style={styles.row}>
           <Column>
             {contact ? (
@@ -113,7 +111,6 @@ const ReviewSend = ({
           </Column>
           <UserIcon size="medium" />
         </Row>
-
         {transactionCompleted ? (
           token &&
           token.symbol === 'ICP' && (
@@ -130,8 +127,9 @@ const ReviewSend = ({
           )
         ) : (
           <RainbowButton
-            text="􀎽 Hold to Send" // TODO: Check this title
+            text="Hold to Send" // TODO: Check this title
             loading={loading}
+            disabled={loading}
             onLongPress={onSend}
             buttonStyle={styles.button}
           />
