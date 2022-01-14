@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import RainbowButton from '../../../components/buttons/RainbowButton';
 import TokenSelector from '../../../components/tokens/TokenSelector';
@@ -18,13 +18,15 @@ const AmountSection = ({
 }) => {
   const [selectedInput, setSelectedInput] = useState('USD');
 
-  useEffect(() => {
-    setTokenAmount(usdAmount ? String(usdAmount / tokenPrice) : null);
-  }, [usdAmount, tokenPrice, setTokenAmount]);
+  const handleSetTokenAmount = amount => {
+    setTokenAmount(amount);
+    setUsdAmount(`${amount ? amount * tokenPrice : 0}`);
+  };
 
-  useEffect(() => {
-    setUsdAmount(tokenAmount ? String(tokenAmount * tokenPrice) : null);
-  }, [tokenAmount, tokenPrice, setUsdAmount]);
+  const handleSetUsdAmount = amount => {
+    setUsdAmount(amount);
+    setTokenAmount(`${amount ? amount / tokenPrice : 0}`);
+  };
 
   const onTokenChange = () => {
     setTokenAmount(null);
@@ -59,17 +61,16 @@ const AmountSection = ({
       />
       <AmountInput
         value={tokenAmount}
-        onChange={setTokenAmount}
+        onChange={handleSetTokenAmount}
         maxAmount={availableAmount}
         selected={selectedInput === selectedToken.symbol}
         setSelected={setSelectedInput}
         symbol={selectedToken.symbol}
         customStyle={{ marginBottom: 25, marginTop: 25 }}
       />
-
       <AmountInput
         value={usdAmount}
-        onChange={setUsdAmount}
+        onChange={handleSetUsdAmount}
         maxAmount={availableUsdAmount}
         selected={selectedInput === 'USD'}
         setSelected={setSelectedInput}
