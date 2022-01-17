@@ -7,7 +7,7 @@ const UsdFormat = ({ value, style }) => (
     value={value}
     displayType="text"
     thousandSeparator=","
-    decimalScale={8}
+    decimalScale={2}
     prefix="$"
     renderText={textValue => <Text style={style}>{textValue}</Text>}
   />
