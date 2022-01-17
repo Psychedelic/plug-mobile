@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { StyleSheet, Text, View, Linking } from 'react-native';
 
@@ -15,6 +15,7 @@ import shortAddress from '../../../helpers/short-address';
 import Button from '../../../components/buttons/Button';
 import Header from '../../../components/common/Header';
 import Column from '../../../components/layout/Column';
+import useGetType from '../../../hooks/useGetType';
 import Row from '../../../components/layout/Row';
 import Modal from '../../../components/modal';
 import Icon from '../../../components/icons';
@@ -35,6 +36,9 @@ const ReviewSend = ({
   ...props
 }) => {
   const dispatch = useDispatch();
+  const [nftType, setNftType] = useState(null);
+
+  useGetType(nft?.url, setNftType);
 
   const transactionCompleted =
     transaction?.status === TRANSACTION_STATUS.success;
@@ -58,14 +62,12 @@ const ReviewSend = ({
             </Text>
           }
         />
-
         {transactionCompleted && (
           <Icon
             name="confirm"
             style={{ alignSelf: 'center', marginBottom: 30 }}
           />
         )}
-
         {token && (
           <Row style={styles.row}>
             <Column>
@@ -84,10 +86,7 @@ const ReviewSend = ({
                 {nft.name || `${nft.collection} #${nft.index}`}
               </Text>
             </Column>
-            <NftDisplayer
-              url={nft.url}
-              style={{ width: 41, height: 41, borderRadius: 20 }}
-            />
+            <NftDisplayer url={nft.url} type={nftType} isSend />
           </Row>
         )}
         <Row style={[styles.row, { paddingRight: 9 }]}>

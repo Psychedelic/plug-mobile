@@ -26,7 +26,7 @@ const RainbowButton = ({
           buttonStyle={[styles.buttonRainbow]}
           text={text}
           textStyle={[styles.textRainbow, textStyle]}
-          disabled={disabled}
+          disabled={disabled || loading}
           loading={loading}
           disableAnimation
           {...props}

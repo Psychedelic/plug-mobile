@@ -5,7 +5,14 @@ import { ActivityIndicator, View } from 'react-native';
 import useFileDownload from '../../../../../hooks/useFileDownload';
 import sharedStyles from '../../styles';
 
-const VideoDisplayer = ({ hideSpinner, style, url, loading, isDetailView }) => {
+const VideoDisplayer = ({
+  hideSpinner,
+  style,
+  url,
+  loading,
+  isDetailView,
+  isSendView,
+}) => {
   const newUrl = useFileDownload(url);
 
   return (
@@ -13,6 +20,7 @@ const VideoDisplayer = ({ hideSpinner, style, url, loading, isDetailView }) => {
       style={[
         sharedStyles.container,
         isDetailView && sharedStyles.containerDetail,
+        isSendView && sharedStyles.containerSend,
         style,
       ]}>
       {loading && !newUrl ? (
@@ -27,7 +35,11 @@ const VideoDisplayer = ({ hideSpinner, style, url, loading, isDetailView }) => {
             type: 'resolution',
             value: 480,
           }}
-          style={[sharedStyles.video, isDetailView && sharedStyles.videoDetail]}
+          style={[
+            sharedStyles.video,
+            isDetailView && sharedStyles.videoDetail,
+            isSendView && sharedStyles.videoSend,
+          ]}
         />
       )}
     </View>
