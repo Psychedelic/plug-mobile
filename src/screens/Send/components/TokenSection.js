@@ -1,16 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-import NftDisplayer from '../../../components/common/NftDisplayer';
 import Touchable from '../../../components/animations/Touchable';
+import NftItem from '../../Wallet/tabs/NFTs/components/NftItem';
 import { FontStyles, Colors } from '../../../constants/theme';
 import TokenItem from '../../../components/tokens/TokenItem';
 import animationScales from '../../../utils/animationScales';
-import { WINDOW_WIDTH } from '../../../constants/platform';
-
-const itemSize = WINDOW_WIDTH / 2 - 40;
 
 const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }) => {
+  const handleOnOpenNFT = nft => () => {
+    onNftPress(nft);
+  };
+
   return (
     <>
       <Text style={FontStyles.Subtitle3}>Tokens</Text>
@@ -33,24 +34,8 @@ const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }) => {
           flexWrap: 'wrap',
           justifyContent: 'space-between',
         }}>
-        {nfts.map(item => (
-          /* <Touchable
-              key={nft.url}
-              scale={animationScales.small}
-              onPress={() => onNftPress(nft)}>
-              <NftItem {...nft} style={{ marginTop: 15 }} />
-           </Touchable>*/
-          <View key={`${item.canisterId}_${item.index}`} style={styles.nft}>
-            <Touchable onPress={() => onNftPress(item)}>
-              <NftDisplayer
-                url={item.url}
-                style={{ width: itemSize, height: itemSize }}
-              />
-            </Touchable>
-            <Text style={styles.nftText}>
-              {item.name || `${item.collection} #${item.index}`}
-            </Text>
-          </View>
+        {nfts.map((item, index) => (
+          <NftItem key={index} item={item} onOpen={handleOnOpenNFT} />
         ))}
       </View>
     </>

@@ -208,7 +208,6 @@ const Send = ({ modalRef }) => {
           autoFocus
         />
         {!isValidAddress && <ContactSection onPress={onContactPress} />}
-
         {isValidAddress && !selectedToken && (
           <TokenSection
             tokens={assets}

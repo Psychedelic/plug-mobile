@@ -6,7 +6,7 @@ import VideoDisplayer from './components/VideoDisplayer';
 import HTMLDisplayer from './components/HTMLDisplayer';
 import styles from './styles';
 
-const NftDisplayer = ({ url, style, type, isDetailView }) => {
+const NftDisplayer = ({ url, style, type, isDetailView, isSend }) => {
   const [loading, setLoading] = useState(true);
 
   const hideSpinner = () => {
@@ -21,6 +21,7 @@ const NftDisplayer = ({ url, style, type, isDetailView }) => {
         style={styles.image}
         hideSpinner={hideSpinner}
         isDetailView={isDetailView}
+        isSendView={isSend}
       />
     ) : type?.includes('html') ? (
       <HTMLDisplayer
@@ -33,7 +34,9 @@ const NftDisplayer = ({ url, style, type, isDetailView }) => {
       <ImageDisplayer style={style} type={type} url={url} />
     )
   ) : (
-    <ActivityIndicator style={styles.activityIndicator} />
+    <ActivityIndicator
+      style={isSend ? styles.sendActivityIndicator : styles.activityIndicator}
+    />
   );
 };
 
