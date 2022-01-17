@@ -31,6 +31,7 @@
     "@react-navigation/stack": "^6.0.11",
     "@reduxjs/toolkit": "^1.6.1",
     "assert-browserify": "^2.0.0",
+    "babel-plugin-transform-exponentiation-operator": "^6.24.1",
     "big-integer": "1.6.40",
     "console-browserify": "^1.2.0",
     "crypto-browserify": "^3.12.0",
