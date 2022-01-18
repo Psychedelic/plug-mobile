@@ -1,9 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
+import { Text, TextInput, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+
+import animationScales from '../../../utils/animationScales';
+import { Rainbow, Colors } from '../../../constants/theme';
 import Touchable from '../../animations/Touchable';
 import Button from '../../buttons/Button';
-import { Text, TextInput, View } from 'react-native';
-import { Colors } from '../../../constants/theme';
-import animationScales from '../../../utils/animationScales';
 import styles from './styles';
 
 const AmountInput = ({
@@ -17,6 +19,16 @@ const AmountInput = ({
   customStyle,
 }) => {
   const inputRef = useRef();
+  const [isFocused, setIsFocused] = useState(false);
+
+  const handleOnFocus = () => {
+    setIsFocused(true);
+    setSelected(symbol);
+  };
+
+  const handleOnBlur = () => {
+    setIsFocused(false);
+  };
 
   const handleMaxAmount = () => {
     onChange(String(maxAmount));
@@ -29,6 +41,12 @@ const AmountInput = ({
 
   return (
     <Touchable scale={animationScales.small} onPress={onPress}>
+      {isFocused && (
+        <LinearGradient
+          style={[styles.focusedGradient, customStyle]}
+          {...Rainbow}
+        />
+      )}
       <View style={[styles.container, customStyle]}>
         <TextInput
           ref={inputRef}
@@ -43,15 +61,16 @@ const AmountInput = ({
           autoFocus={autoFocus}
           keyboardAppearance="dark"
           selectionColor={Colors.White.Primary}
-          onFocus={() => setSelected(symbol)}
+          onFocus={handleOnFocus}
+          onBlur={handleOnBlur}
         />
         {selected && (
           <Button
             variant="gray"
             text="Max"
             onPress={() => handleMaxAmount()}
-            buttonStyle={{ width: 41, height: 24, borderRadius: 8 }}
-            textStyle={{ fontSize: 14 }}
+            buttonStyle={styles.buttonStyle}
+            textStyle={styles.buttonTextStyle}
           />
         )}
         <Text style={styles.symbol}>{symbol}</Text>
