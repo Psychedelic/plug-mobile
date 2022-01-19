@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { FontStyles, Colors } from '../../constants/theme';
+
+import { FontStyles } from '../../constants/theme';
 
 export default StyleSheet.create({
   container: {
@@ -9,13 +10,6 @@ export default StyleSheet.create({
   },
   title: {
     ...FontStyles.Subtitle2,
-  },
-  input: {
-    backgroundColor: Colors.Gray.Secondary,
-  },
-  errorText: {
-    marginTop: 5,
-    color: 'red',
   },
   buttonStyle: {
     marginTop: 20,

@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { Text } from 'react-native';
 
 import RainbowButton from '../../components/buttons/RainbowButton';
+import PasswordInput from '../../components/common/PasswordInput';
 import SeedPhrase from '../../components/common/SeedPhrase';
-import TextInput from '../../components/common/TextInput';
 import Column from '../../components/layout/Column';
 import Header from '../../components/common/Header';
 import useKeyring from '../../hooks/useKeyring';
@@ -47,7 +47,7 @@ const RevealSeedPhrase = ({ modalRef }) => {
         <Column style={styles.container}>
           {!loggedIn ? (
             <>
-              <TextInput
+              {/* <TextInput
                 value={password}
                 variant="password"
                 onChangeText={setPassword}
@@ -56,7 +56,12 @@ const RevealSeedPhrase = ({ modalRef }) => {
               />
               {error && (
                 <Text style={styles.errorText}>The password is incorrect</Text>
-              )}
+              )} */}
+              <PasswordInput
+                error={error}
+                password={password}
+                onChange={setPassword}
+              />
               <RainbowButton
                 buttonStyle={styles.buttonStyle}
                 text="Continue"
