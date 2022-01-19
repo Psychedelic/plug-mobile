@@ -11,8 +11,8 @@ const Copy = ({ text, customStyle }) => {
   };
 
   return (
-    <Touchable>
-      <View onPress={copyToClipboard} style={[styles.container, customStyle]}>
+    <Touchable onPress={copyToClipboard}>
+      <View style={[styles.container, customStyle]}>
         <Icon name="copy" />
         <Text style={styles.text}>Copy to clipboard</Text>
       </View>
