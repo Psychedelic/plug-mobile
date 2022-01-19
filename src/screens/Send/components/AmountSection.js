@@ -19,13 +19,13 @@ const AmountSection = ({
   const [selectedInput, setSelectedInput] = useState('USD');
 
   const handleSetTokenAmount = amount => {
-    setTokenAmount((amount ? Number(amount) : 0).toFixed?.(8));
-    setUsdAmount((amount ? Number(amount) * tokenPrice : 0).toFixed(2));
+    setTokenAmount(amount);
+    setUsdAmount(`${amount ? amount * tokenPrice : 0}`);
   };
 
   const handleSetUsdAmount = amount => {
-    setUsdAmount((amount ? Number(amount) : 0).toFixed?.(2));
-    setTokenAmount((amount ? Number(amount) / tokenPrice : 0).toFixed(8));
+    setUsdAmount(amount);
+    setTokenAmount(`${amount ? amount / tokenPrice : 0}`);
   };
 
   const onTokenChange = () => {
@@ -60,7 +60,7 @@ const AmountSection = ({
         selectedInput={selectedInput}
       />
       <AmountInput
-        value={Number(tokenAmount).toFixed(8)}
+        value={tokenAmount}
         onChange={handleSetTokenAmount}
         maxAmount={availableAmount}
         selected={selectedInput === selectedToken.symbol}
@@ -70,14 +70,13 @@ const AmountSection = ({
         customStyle={{ marginBottom: 25, marginTop: 25 }}
       />
       <AmountInput
-        value={Number(usdAmount).toFixed(2)}
+        value={usdAmount}
         onChange={handleSetUsdAmount}
         maxAmount={availableUsdAmount}
         selected={selectedInput === 'USD'}
         setSelected={setSelectedInput}
         symbol="USD"
         autoFocus
-        formatValue={value => Number(value).toFixed(2)}
         customStyle={{ marginBottom: 25 }}
       />
       <RainbowButton

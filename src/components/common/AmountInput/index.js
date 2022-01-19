@@ -15,7 +15,6 @@ const AmountInput = ({
   maxAmount,
   autoFocus,
   customStyle,
-  formatValue,
 }) => {
   const inputRef = useRef();
 
@@ -37,7 +36,7 @@ const AmountInput = ({
           style={styles.textInput}
           placeholderTextColor="#373946"
           onChangeText={onChange}
-          value={formatValue ? formatValue(value) : value}
+          value={value}
           keyboardType="numeric"
           placeholder="0.0"
           blurOnSubmit={false}
