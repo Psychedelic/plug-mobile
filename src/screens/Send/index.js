@@ -138,6 +138,7 @@ const Send = ({ modalRef }) => {
             to,
             amount: tokenAmount,
             canisterId: selectedToken?.canisterId,
+            icpPrice,
           }),
         )
           .unwrap()

@@ -28,9 +28,9 @@ const DEFAULT_STATE = {
 
 export const sendToken = createAsyncThunk(
   'keyring/sendToken',
-  async (params, { getState }) => {
+  async (params, { getState, dispatch }) => {
     try {
-      const { to, amount, canisterId, opts } = params;
+      const { to, amount, canisterId, opts, icpPrice } = params;
       const state = getState();
       const { height, transactionId } = await state.keyring.instance?.send(
         to,
@@ -38,6 +38,9 @@ export const sendToken = createAsyncThunk(
         canisterId,
         opts,
       );
+      if (transactionId) {
+        dispatch(getAssets({ refresh: true, icpPrice }));
+      }
       return {
         response: {
           height: parseInt(height?.toString?.(), 10),
