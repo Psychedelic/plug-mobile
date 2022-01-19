@@ -28,7 +28,7 @@ const Navigator = ({ initialRoute }) => {
 
   const handleAppStateChange = nextAppState => {
     if (nextAppState === 'background') {
-      timeoutId = setTimeout(handleLockState, 5000);
+      timeoutId = setTimeout(handleLockState, 120000);
     }
 
     if (nextAppState === 'active' && timeoutId) {
@@ -38,7 +38,11 @@ const Navigator = ({ initialRoute }) => {
   };
 
   useEffect(() => {
-    AppState.addEventListener('change', handleAppStateChange);
+    const subscription = AppState.addEventListener('change', handleAppStateChange);
+
+    return () => {
+      subscription.remove();
+    }
   }, []);
 
   return (
