@@ -8,6 +8,7 @@ import Container from '../../../../components/common/Container';
 import Divider from '../../../../components/common/Divider';
 import { useICPPrice } from '../../../../redux/slices/icp';
 import WalletHeader from '../../components/WalletHeader';
+import Row from '../../../../components/layout/Row';
 import Send from '../../../../screens/Send';
 import {
   getAssets,
@@ -18,6 +19,9 @@ import {
 function Tokens() {
   const { assets, assetsLoading } = useSelector(state => state.user);
   const [refreshing, setRefresing] = useState(assetsLoading);
+  const usdSum = Number(
+    assets.reduce((total, token) => total + Number(token?.value), 0),
+  ).toFixed(2);
   const dispatch = useDispatch();
   const icpPrice = useICPPrice();
   const sendRef = useRef(null);
@@ -37,13 +41,18 @@ function Tokens() {
   }, [assetsLoading]);
 
   useEffect(() => {
+    dispatch(setAssetsLoading(true));
+    dispatch(getAssets({ refresh: true, icpPrice }));
     dispatch(getTransactions({ icpPrice }));
   }, []);
 
   return (
     <Container>
       <WalletHeader />
-      <Text style={styles.title}>Tokens</Text>
+      <Row style={styles.rowStyle}>
+        <Text style={styles.title}>Tokens</Text>
+        <Text style={styles.title}>{`$${usdSum}`}</Text>
+      </Row>
       <Divider />
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -80,5 +89,9 @@ const styles = StyleSheet.create({
   tokenItem: {
     marginTop: 20,
     paddingHorizontal: 20,
+  },
+  rowStyle: {
+    justifyContent: 'space-between',
+    paddingRight: 20,
   },
 });
