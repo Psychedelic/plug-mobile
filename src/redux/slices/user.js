@@ -32,7 +32,6 @@ export const sendToken = createAsyncThunk(
     try {
       const { to, amount, canisterId, opts } = params;
       const state = getState();
-      console.log('SEND:', Number(amount).toFixed(8));
       const { height, transactionId } = await state.keyring.instance?.send(
         to,
         Number(amount).toFixed(8), // TODO: Use token decimals when possible

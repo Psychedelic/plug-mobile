@@ -66,7 +66,6 @@ const AmountSection = ({
         selected={selectedInput === selectedToken.symbol}
         setSelected={setSelectedInput}
         symbol={selectedToken.symbol}
-        formatValue={value => Number(value).toFixed(8)}
         customStyle={{ marginBottom: 25, marginTop: 25 }}
       />
       <AmountInput
