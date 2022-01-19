@@ -47,16 +47,6 @@ const RevealSeedPhrase = ({ modalRef }) => {
         <Column style={styles.container}>
           {!loggedIn ? (
             <>
-              {/* <TextInput
-                value={password}
-                variant="password"
-                onChangeText={setPassword}
-                placeholder="Enter Password"
-                customStyle={styles.input}
-              />
-              {error && (
-                <Text style={styles.errorText}>The password is incorrect</Text>
-              )} */}
               <PasswordInput
                 error={error}
                 password={password}
