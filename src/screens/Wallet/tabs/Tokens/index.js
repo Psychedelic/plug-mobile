@@ -43,9 +43,6 @@ function Tokens() {
   useEffect(() => {
     dispatch(setAssetsLoading(true));
     dispatch(getAssets({ refresh: true, icpPrice }));
-  }, []);
-
-  useEffect(() => {
     dispatch(getTransactions({ icpPrice }));
   }, []);
 
