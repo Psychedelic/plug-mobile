@@ -38,11 +38,14 @@ const Navigator = ({ initialRoute }) => {
   };
 
   useEffect(() => {
-    const subscription = AppState.addEventListener('change', handleAppStateChange);
+    const subscription = AppState.addEventListener(
+      'change',
+      handleAppStateChange,
+    );
 
     return () => {
       subscription.remove();
-    }
+    };
   }, []);
 
   return (
