@@ -1,11 +1,12 @@
-import React from 'react';
 import { View, Text } from 'react-native';
-import { FontStyles } from '../../../constants/theme';
-import UserIcon from '../UserIcon';
-import shortAddress from '../../../helpers/short-address';
-import styles from './styles';
-import Touchable from '../../animations/Touchable';
+import React from 'react';
+
 import animationScales from '../../../utils/animationScales';
+import shortAddress from '../../../helpers/short-address';
+import { FontStyles } from '../../../constants/theme';
+import Touchable from '../../animations/Touchable';
+import UserIcon from '../UserIcon';
+import styles from './styles';
 
 const ContactItem = ({ contact, onPress, onLongPress, ...props }) => {
   const { image, name, id } = contact;

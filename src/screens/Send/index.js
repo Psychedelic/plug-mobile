@@ -208,7 +208,9 @@ const Send = ({ modalRef }) => {
           textStyle={isValidAddress ? styles.valid : null}
           autoFocus
         />
-        {!isValidAddress && <ContactSection onPress={onContactPress} />}
+        {!isValidAddress && (
+          <ContactSection filterText={address} onPress={onContactPress} />
+        )}
         {isValidAddress && !selectedToken && (
           <TokenSection
             tokens={assets}
