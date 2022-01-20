@@ -1,26 +1,25 @@
-import React, { useState, useEffect } from 'react';
 import { Text, View, Image, Switch } from 'react-native';
-import Container from '../../../../components/common/Container';
-import TextInput from '../../../../components/common/TextInput';
-import { Colors } from '../../../../constants/theme';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+
 import RainbowButton from '../../../../components/buttons/RainbowButton';
-import Header from '../../../../components/common/Header';
+import PasswordInput from '../../../../components/common/PasswordInput';
+import KeyboardHider from '../../../../components/common/KeyboardHider';
+import { reset, createWallet } from '../../../../redux/slices/keyring';
 import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
+import Container from '../../../../components/common/Container';
+import Header from '../../../../components/common/Header';
 import Back from '../../../../components/common/Back';
 import useKeyring from '../../../../hooks/useKeyring';
-import styles from './styles';
-import Routes from '../../../../navigation/Routes';
-import { useDispatch } from 'react-redux';
-import { reset, createWallet } from '../../../../redux/slices/keyring';
-import KeyboardHider from '../../../../components/common/KeyboardHider';
 import Keychain from '../../../../modules/keychain';
+import Routes from '../../../../navigation/Routes';
+import styles from './styles';
 
 const CreatePassword = ({ route, navigation }) => {
   const { saveBiometrics } = useKeyring();
   const { flow } = route.params;
   const { goBack } = navigation;
   const [password, setPassword] = useState(null);
-  const [confirmPassword, setConfirmPassword] = useState(null);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const [biometrics, setBiometrics] = useState(false);
@@ -28,7 +27,7 @@ const CreatePassword = ({ route, navigation }) => {
   const toggleSwitch = () => setBiometrics(previousState => !previousState);
 
   useEffect(() => {
-    Keychain.isSensorAvailable().then((isAvailable) => {
+    Keychain.isSensorAvailable().then(isAvailable => {
       setBiometryAvailable(isAvailable);
     });
   }, []);
@@ -88,31 +87,12 @@ const CreatePassword = ({ route, navigation }) => {
           <Text style={styles.subtitle}>
             Please create a secure password that you will remember.
           </Text>
-
-          <TextInput
-            value={password}
-            variant="password"
-            onChangeText={setPassword}
-            placeholder="Password"
-            customStyle={{
-              backgroundColor: Colors.Gray.Secondary,
-              marginTop: 28,
-            }}
+          <PasswordInput
+            password={password}
+            onChange={setPassword}
+            customStyle={styles.passwordInput}
           />
-
-          <TextInput
-            value={confirmPassword}
-            variant="password"
-            onChangeText={setConfirmPassword}
-            placeholder="Confirm Password"
-            customStyle={{
-              backgroundColor: Colors.Gray.Secondary,
-              marginTop: 22,
-            }}
-          />
-
           <Text style={styles.help}>Must be at least 12 characters</Text>
-
           {biometryAvailable && (
             <View style={styles.switchContainer}>
               <Text style={styles.faceId}>Sign in with Face ID?</Text>
@@ -120,16 +100,11 @@ const CreatePassword = ({ route, navigation }) => {
             </View>
           )}
           <RainbowButton
-            buttonStyle={styles.componentMargin}
             text="Continue"
             loading={loading}
             onPress={handleCreate}
-            disabled={
-              !password ||
-              !confirmPassword ||
-              password !== confirmPassword ||
-              password.length < 12
-            }
+            buttonStyle={styles.rainbowButton}
+            disabled={!password || password.length < 12}
           />
         </View>
       </Container>

@@ -4,6 +4,7 @@ import NFTsIcon from './svg/NFTsIcon';
 import XTCIcon from './svg/XTCIcon';
 import ICPIcon from './svg/ICPIcon';
 import ArrowDownIcon from './svg/ArrowDownIcon';
+import PasswordEyeIcon from './svg/PasswordEyeIcon';
 import ChevronLeftIcon from './svg/ChevronLeftIcon';
 import ChevronRightIcon from './svg/ChevronRightIcon';
 import GearIcon from './svg/GearIcon';
@@ -23,8 +24,11 @@ import UnknownIcon from './svg/UnknownIcon';
 import LightingActivityIcon from './svg/LightingActivityIcon';
 import BurnActivityIcon from './svg/BurnActivityIcon';
 import MintActivityIcon from './svg/MintActivityIcon';
+import PasswordEyeClosedIcon from './svg/PasswordEyeClosedIcon';
 
 export const IconTypes = {
+  passwordEyeIcon: PasswordEyeIcon,
+  passwordEyeClosedIcon: PasswordEyeClosedIcon,
   activityReceive: ActivityReceiveIcon,
   activitySend: ActivitySendIcon,
   arrowDown: ArrowDownIcon,

@@ -5,7 +5,7 @@ export default StyleSheet.create({
   title: {
     ...FontStyles.Title,
     marginTop: 20,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   subtitle: {
     ...FontStyles.NormalGray,
@@ -22,7 +22,6 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: 30,
-    marginBottom: 35,
   },
   faceId: {
     ...FontStyles.NormalGray,
@@ -32,5 +31,11 @@ export default StyleSheet.create({
     ...FontStyles.SmallGray,
     alignSelf: 'flex-start',
     marginTop: 12,
+  },
+  rainbowButton: {
+    marginTop: 35,
+  },
+  passwordInput: {
+    marginTop: 28,
   },
 });
