@@ -13,7 +13,6 @@ import './reactotronConfig';
 const PersistedApp = () => {
   const { instance } = useSelector(state => state.keyring);
   const dispatch = useDispatch();
-  console.tron.log('TuVieja');
 
   useEffect(() => {
     if (instance) {
