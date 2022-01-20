@@ -6,6 +6,6 @@
 
 [Change!] Show the screenshots of the views you modified.
 
-## Shorcut Card
+## Notion Ticket
 
-[Change!] Link to the associated Trello card.
+[Change!] Link to the associated Notion ticket.
