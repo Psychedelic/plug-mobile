@@ -143,7 +143,7 @@ const Send = ({ modalRef }) => {
         )
           .unwrap()
           .then(response => {
-            if (response.status === TRANSACTION_STATUS.success) {
+            if (response.status) {
               setLoading(false);
             }
           });
