@@ -1,7 +1,6 @@
-import { Text } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
 import SplashScreen from 'react-native-splash-screen';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import ErrorBoundary from './src/components/common/ErrorBoundary';
