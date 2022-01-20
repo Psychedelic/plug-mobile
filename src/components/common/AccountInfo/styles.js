@@ -16,6 +16,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.White.Secondary,
     position: 'absolute',
     top: 48,
+    left: -3,
   },
   pointer: {
     height: 10,
