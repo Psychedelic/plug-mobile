@@ -35,4 +35,7 @@ export default StyleSheet.create({
   rainbowButton: {
     marginTop: 35,
   },
+  passwordInput: {
+    marginTop: 28,
+  },
 });

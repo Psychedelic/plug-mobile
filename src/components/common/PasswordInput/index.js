@@ -7,7 +7,13 @@ import Icon from '../../icons/index';
 import TextInput from '../TextInput';
 import styles from './styles';
 
-function PasswordInput({ onChange, password, customStyle, error }) {
+function PasswordInput({
+  onChange,
+  password,
+  customStyle,
+  error,
+  placeholder = 'Enter Password',
+}) {
   const [showPassword, setShowPassword] = useState(false);
 
   const toggleShowPassowrd = () => {
@@ -20,7 +26,7 @@ function PasswordInput({ onChange, password, customStyle, error }) {
         value={password}
         variant={`${showPassword ? 'text' : 'password'}`}
         onChangeText={onChange}
-        placeholder="Enter Password"
+        placeholder={placeholder}
         customStyle={[styles.input, customStyle]}
       />
       {error && <Text style={styles.errorText}>The password is incorrect</Text>}
@@ -30,6 +36,7 @@ function PasswordInput({ onChange, password, customStyle, error }) {
         onPress={toggleShowPassowrd}>
         <Icon
           name={`${showPassword ? 'passwordEyeClosedIcon' : 'passwordEyeIcon'}`}
+          style={customStyle}
         />
       </Touchable>
     </View>
