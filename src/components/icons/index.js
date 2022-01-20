@@ -24,9 +24,11 @@ import UnknownIcon from './svg/UnknownIcon';
 import LightingActivityIcon from './svg/LightingActivityIcon';
 import BurnActivityIcon from './svg/BurnActivityIcon';
 import MintActivityIcon from './svg/MintActivityIcon';
+import PasswordEyeClosedIcon from './svg/PasswordEyeClosedIcon';
 
 export const IconTypes = {
   passwordEyeIcon: PasswordEyeIcon,
+  passwordEyeClosedIcon: PasswordEyeClosedIcon,
   activityReceive: ActivityReceiveIcon,
   activitySend: ActivitySendIcon,
   arrowDown: ArrowDownIcon,

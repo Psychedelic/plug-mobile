@@ -28,7 +28,7 @@ const CreatePassword = ({ route, navigation }) => {
   const toggleSwitch = () => setBiometrics(previousState => !previousState);
 
   useEffect(() => {
-    Keychain.isSensorAvailable().then((isAvailable) => {
+    Keychain.isSensorAvailable().then(isAvailable => {
       setBiometryAvailable(isAvailable);
     });
   }, []);
@@ -88,7 +88,6 @@ const CreatePassword = ({ route, navigation }) => {
           <Text style={styles.subtitle}>
             Please create a secure password that you will remember.
           </Text>
-
           <TextInput
             value={password}
             variant="password"
@@ -99,7 +98,6 @@ const CreatePassword = ({ route, navigation }) => {
               marginTop: 28,
             }}
           />
-
           <TextInput
             value={confirmPassword}
             variant="password"
@@ -110,9 +108,7 @@ const CreatePassword = ({ route, navigation }) => {
               marginTop: 22,
             }}
           />
-
           <Text style={styles.help}>Must be at least 12 characters</Text>
-
           {biometryAvailable && (
             <View style={styles.switchContainer}>
               <Text style={styles.faceId}>Sign in with Face ID?</Text>
@@ -120,7 +116,7 @@ const CreatePassword = ({ route, navigation }) => {
             </View>
           )}
           <RainbowButton
-            buttonStyle={styles.componentMargin}
+            buttonStyle={styles.rainbowButton}
             text="Continue"
             loading={loading}
             onPress={handleCreate}

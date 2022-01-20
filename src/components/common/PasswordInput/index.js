@@ -29,7 +29,7 @@ function PasswordInput({ onChange, password, customStyle, error }) {
         style={styles.eyeContainer}
         onPress={toggleShowPassowrd}>
         <Icon
-          name={`${showPassword ? 'passwordEyeIcon' : 'passwordEyeClosedIcon'}`}
+          name={`${showPassword ? 'passwordEyeClosedIcon' : 'passwordEyeIcon'}`}
         />
       </Touchable>
     </View>

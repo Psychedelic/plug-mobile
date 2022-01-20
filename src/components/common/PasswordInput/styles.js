@@ -14,6 +14,6 @@ export default StyleSheet.create({
   eyeContainer: {
     position: 'absolute',
     right: 20,
-    top: 20,
+    top: 17,
   },
 });
