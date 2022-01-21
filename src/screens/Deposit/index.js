@@ -37,7 +37,7 @@ const Deposit = ({ modalRef }) => {
           actions={[
             {
               icon: 'copy',
-              onPress: () => Clipboard.setString('principal here'),
+              onPress: () => Clipboard.setString(`${principal}`),
             },
           ]}
           colors={[Colors.Rainbow.Teal, Colors.Rainbow.Green]}
@@ -73,7 +73,7 @@ const Deposit = ({ modalRef }) => {
           actions={[
             {
               icon: 'copy',
-              onPress: () => Clipboard.setString('account here'),
+              onPress: () => Clipboard.setString(`${accountId}`),
             },
           ]}
           colors={[Colors.Rainbow.Purple, Colors.Rainbow.Blue]}
