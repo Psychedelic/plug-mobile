@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native';
+import { View, Text, Share } from 'react-native';
 import { useSelector } from 'react-redux';
 import React, { useState } from 'react';
 
@@ -21,6 +21,16 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
 
   useGetType(selectedNFT?.url, setType);
 
+  const handleShare = () => {
+    /* TODO: Change the link for the correct NFT View Page when it's ready */
+    const nftName = `${selectedNFT?.collection} #${selectedNFT?.index}`;
+    Share.share({
+      message: `${nftName}: ${selectedNFT?.url}`,
+      url: selectedNFT?.url,
+      title: nftName,
+    });
+  };
+
   return (
     <Modal modalRef={modalRef} onClose={handleClose} {...props}>
       <Header
@@ -42,7 +52,8 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
             <Button variant="gray" text="Marketplace" onPress={() => null} />
           </View>
           <View style={{ flex: 1, marginLeft: 10 }}>
-            <RainbowButton text="Send" onPress={() => null} />
+            {/* TODO: Change Share to Send when send NFT flow from detail is done */}
+            <RainbowButton text="Share" onPress={handleShare} />
           </View>
         </View>
         <Section title="🧩 Collection" style={{ borderTopWidth: 0 }}>
