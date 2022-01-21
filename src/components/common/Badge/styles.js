@@ -28,7 +28,6 @@ export default StyleSheet.create({
   icon: {
     width: 30,
     height: 30,
-    objectFit: 'cover',
   },
   iconContainer: {
     backgroundColor: Colors.Gray.Primary,

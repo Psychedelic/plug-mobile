@@ -8,7 +8,11 @@ const Badge = ({ name, value, icon }) => (
     <View style={styles.valueContainer}>
       {icon && (
         <View style={styles.iconContainer}>
-          <Image source={{ uri: icon }} style={styles.icon} />
+          <Image
+            source={{ uri: icon }}
+            style={styles.icon}
+            resizeMode="contain"
+          />
         </View>
       )}
       <Text style={styles.value}>{value}</Text>
