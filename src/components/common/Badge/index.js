@@ -8,7 +8,7 @@ const Badge = ({ name, value, icon }) => (
     <View style={styles.valueContainer}>
       {icon && (
         <View style={styles.iconContainer}>
-          <Image src={icon} style={styles.icon} />
+          <Image source={{ uri: icon }} style={styles.icon} />
         </View>
       )}
       <Text style={styles.value}>{value}</Text>

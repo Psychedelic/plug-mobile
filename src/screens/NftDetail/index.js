@@ -1,4 +1,5 @@
 import { View, Text } from 'react-native';
+import { useSelector } from 'react-redux';
 import React, { useState } from 'react';
 
 import RainbowButton from '../../components/buttons/RainbowButton';
@@ -14,6 +15,9 @@ import styles from './styles';
 
 const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
   const [type, setType] = useState(null);
+  const selectedCollection = useSelector(state => state.user.collections).find(
+    collection => collection.name === selectedNFT?.collection,
+  );
 
   useGetType(selectedNFT?.url, setType);
 
@@ -44,13 +48,15 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
         <Section title="🧩 Collection" style={{ borderTopWidth: 0 }}>
           <Badge
             value={selectedNFT?.collection}
-            icon={null /*collection?.icon*/}
+            icon={selectedCollection?.icon}
           />
           <Badge value={`#${selectedNFT?.index}`} />
         </Section>
-        {!!selectedNFT?.desc && (
+        {!!selectedCollection?.description && (
           <Section title="📝 Description">
-            <Text>{selectedNFT?.desc}</Text>
+            <Text style={FontStyles.NormalGray}>
+              {selectedCollection?.description}
+            </Text>
           </Section>
         )}
         {selectedNFT?.metadata?.properties?.length && (
@@ -60,13 +66,6 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
             ))}
           </Section>
         )}
-        {/*collection?.description && (
-          <Section title='📝 About' style={{ paddingBottom: 25 }}>
-            <Text style={styles.description}>
-              {collection.description}
-            </Text>
-          </Section>
-        )*/}
       </View>
     </Modal>
   );
