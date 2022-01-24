@@ -47,6 +47,10 @@ const Profile = () => {
     setRefresing(transactionsLoading);
   }, [transactionsLoading]);
 
+  useEffect(() => {
+    onRefresh();
+  }, []);
+
   return (
     <>
       <Container>

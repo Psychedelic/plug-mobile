@@ -218,15 +218,19 @@ export const privateGetTransactions = async (params, state) => {
 
 export const transferNFT = createAsyncThunk(
   'keyring/transferNFT',
-  async (params, { getState }) => {
+  async (params, { getState, dispatch }) => {
     try {
-      const { to, nft } = params;
+      const { to, nft, icpPrice } = params;
 
       const state = getState();
       const response = await state.keyring.instance?.transferNFT({
         to,
         token: nft,
       });
+      if (response) {
+        dispatch(setTransactionsLoading(true));
+        dispatch(getTransactions({ icpPrice }));
+      }
 
       return {
         response: recursiveParseBigint(response),
