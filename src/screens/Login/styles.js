@@ -1,8 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Colors } from '../../constants/theme';
 
-// login
-
 export default StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -14,13 +12,7 @@ export default StyleSheet.create({
     flex: 1,
   },
   input: {
-    paddingHorizontal: 20,
-    paddingVertical: 13,
-    backgroundColor: Colors.Gray.Primary,
-    borderRadius: 15,
-    minWidth: '84%',
-    fontSize: 18,
-    color: Colors.White.Pure,
+    width: '84%',
   },
   title: {
     justifyContent: 'center',

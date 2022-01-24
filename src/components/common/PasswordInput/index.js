@@ -13,6 +13,7 @@ function PasswordInput({
   customStyle,
   error,
   placeholder = 'Enter Password',
+  autoFocus,
 }) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -23,6 +24,7 @@ function PasswordInput({
   return (
     <View>
       <TextInput
+        autoFocus={autoFocus}
         value={password}
         variant={`${showPassword ? 'text' : 'password'}`}
         onChangeText={onChange}
