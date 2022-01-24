@@ -122,7 +122,7 @@ const Send = ({ modalRef }) => {
     const to = address || selectedContact.id;
 
     if (selectedNft) {
-      dispatch(transferNFT({ to, nft: selectedNft }))
+      dispatch(transferNFT({ to, nft: selectedNft, icpPrice }))
         .unwrap()
         .then(response => {
           if (response.status === TRANSACTION_STATUS.success) {
