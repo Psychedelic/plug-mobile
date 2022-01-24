@@ -162,14 +162,14 @@ export const privateGetTransactions = async (params, state) => {
     const response = await state.keyring.instance?.getTransactions();
 
     const mapTransaction = trx => {
+      const { principal, accountId } = state.keyring?.currentWallet;
       const asset = formatAssetBySymbol(
         trx?.details?.amount,
         trx?.details?.currency?.symbol,
         icpPrice,
       );
-      const isOwnTx = [state.principalId, state.accountId].includes(
-        trx?.caller,
-      );
+      const isOwnTx = [principal, accountId].includes(trx?.caller);
+
       const getType = () => {
         const { type } = trx;
         if (type.toUpperCase() === 'TRANSFER') {
@@ -177,6 +177,7 @@ export const privateGetTransactions = async (params, state) => {
         }
         return type.toUpperCase();
       };
+
       const getSymbol = () => {
         if ('tokenRegistryInfo' in trx.details) {
           return trx.details.tokenRegistryInfo.symbol;
@@ -186,6 +187,7 @@ export const privateGetTransactions = async (params, state) => {
         }
         return trx?.details?.currency?.symbol ?? '';
       };
+
       const canisterInfo =
         trx?.details?.tokenRegistryInfo || trx?.details?.nftRegistryInfo;
       const transaction = {
