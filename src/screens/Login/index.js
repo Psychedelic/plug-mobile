@@ -5,9 +5,8 @@ import React, { useState, useEffect } from 'react';
 
 import RainbowButton from '../../components/buttons/RainbowButton';
 import KeyboardHider from '../../components/common/KeyboardHider';
-import { DEFAULT_KEYCHAIN_OPTIONS } from '../../redux/constants';
+import PasswordInput from '../../components/common/PasswordInput';
 import { setAssetsLoading } from '../../redux/slices/user';
-import TextInput from '../../components/common/TextInput';
 import Container from '../../components/common/Container';
 import Plug from '../../assets/icons/plug-white.png';
 import { useICPPrice } from '../../redux/slices/icp';
@@ -80,17 +79,13 @@ function Login() {
           <Image source={Plug} />
           <Text style={styles.title}>Unlock Plug</Text>
           <StatusBar barStyle="dark-content" />
-          <TextInput
-            style={styles.input}
-            onChangeText={setPassword}
-            value={password}
-            placeholder="Enter password"
-            variant="password"
+          <PasswordInput
             autoFocus
+            error={error}
+            password={password}
+            onChange={setPassword}
+            customStyle={styles.input}
           />
-          {error && (
-            <Text style={styles.errorText}>The password is incorrect</Text>
-          )}
           <RainbowButton
             text="Submit"
             onPress={() => handleSubmit(password)}
