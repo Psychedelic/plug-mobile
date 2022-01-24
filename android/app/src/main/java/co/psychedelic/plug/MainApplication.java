@@ -12,6 +12,8 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.facebook.react.bridge.JSIModulePackage;
+import com.swmansion.reanimated.ReanimatedJSIModulePackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -21,6 +23,8 @@ public class MainApplication extends Application implements ReactApplication {
         public boolean getUseDeveloperSupport() {
           return BuildConfig.DEBUG;
         }
+
+        @Override protected JSIModulePackage getJSIModulePackage() { return new ReanimatedJSIModulePackage(); }
 
         @Override
         protected List<ReactPackage> getPackages() {
