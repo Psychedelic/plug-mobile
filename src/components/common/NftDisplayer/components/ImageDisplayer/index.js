@@ -1,4 +1,4 @@
-import MaskedView from '@react-native-community/masked-view';
+import MaskedView from '@react-native-masked-view/masked-view';
 import { SquircleView } from 'react-native-figma-squircle';
 import { SvgCssUri } from 'react-native-svg';
 import Image from 'react-native-remote-svg';
