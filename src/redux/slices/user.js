@@ -24,6 +24,7 @@ const DEFAULT_STATE = {
   transactionsLoading: false,
   selectedNFT: {},
   collections: [],
+  usingBiometrics: false,
 };
 
 export const sendToken = createAsyncThunk(
@@ -254,6 +255,9 @@ export const keyringSlice = createSlice({
   name: 'user',
   initialState: DEFAULT_STATE,
   reducers: {
+    setUsingBiometrics: (state, action) => {
+      state.usingBiometrics = action.payload;
+    },
     setContacts: (state, action) => {
       state.contacts = action.payload;
     },
@@ -336,6 +340,7 @@ export const keyringSlice = createSlice({
 });
 
 export const {
+  setUsingBiometrics,
   setContacts,
   addContact,
   removeContact,
