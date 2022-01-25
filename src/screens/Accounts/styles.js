@@ -14,4 +14,8 @@ export default StyleSheet.create({
   activityIndicator: {
     ...StyleSheet.absoluteFill,
   },
+  row: {
+    marginBottom: 30,
+    marginTop: 10,
+  },
 });

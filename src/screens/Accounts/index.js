@@ -3,21 +3,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useRef, useState } from 'react';
 
 import { reset, setCurrentPrincipal } from '../../redux/slices/keyring';
-import { getNFTs } from '../../redux/slices/user';
+import CreateEditAccount from '../../modals/CreateEditAccount';
 import Touchable from '../../components/animations/Touchable';
 import AccountItem from '../../components/common/AccountItem';
-import CreateEditAccount from '../../modals/CreateEditAccount';
 import shortAddress from '../../helpers/short-address';
 import { useICPPrice } from '../../redux/slices/icp';
 import Header from '../../components/common/Header';
 import { FontStyles } from '../../constants/theme';
+import { getNFTs } from '../../redux/slices/user';
 import Row from '../../components/layout/Row';
 import Modal from '../../components/modal';
 import Icon from '../../components/icons';
 import styles from './styles';
 
 const Accounts = ({ modalRef, onClose, ...props }) => {
-  const { wallets } = useSelector(state => state.keyring);
+  const { wallets, currentWallet } = useSelector(state => state.keyring);
   const icpPrice = useICPPrice();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -67,6 +67,23 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
     );
   };
 
+  const renderAccountItem = (account, index) => {
+    const handleOnPress = () => {
+      if (currentWallet.principal !== account.principal) {
+        onChangeAccount(account?.walletNumber);
+      }
+    };
+
+    return (
+      <AccountItem
+        key={index}
+        account={account}
+        onPress={handleOnPress}
+        onMenu={() => onLongPress(account)}
+      />
+    );
+  };
+
   return (
     <Modal adjustToContentHeight modalRef={modalRef} {...props}>
       <Header center={<Text style={FontStyles.Subtitle2}>Accounts</Text>} />
@@ -82,16 +99,9 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
             />
           </View>
         )}
-        {wallets?.map((account, index) => (
-          <AccountItem
-            account={account}
-            key={index}
-            onMenu={() => onLongPress(account)}
-            onPress={() => onChangeAccount(account?.walletNumber)}
-          />
-        ))}
+        {wallets?.map(renderAccountItem)}
         <Touchable onPress={onCreateAccount}>
-          <Row align="center" style={{ marginBottom: 30, marginTop: 10 }}>
+          <Row align="center" style={styles.row}>
             <Icon name="plus" />
             <Text style={FontStyles.Normal}> Create account</Text>
           </Row>

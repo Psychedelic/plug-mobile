@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { View, Text } from 'react-native';
 
-import RainbowButton from '../components/buttons/RainbowButton';
-import TextInput from '../components/common/TextInput';
-import UserIcon from '../components/common/UserIcon';
-import Header from '../components/common/Header';
-import { FontStyles } from '../constants/theme';
-import useAccounts from '../hooks/useAccounts';
-import EmojiSelector from './EmojiSelector';
-import Modal from '../components/modal';
+import RainbowButton from '../../components/buttons/RainbowButton';
+import TextInput from '../../components/common/TextInput';
+import UserIcon from '../../components/common/UserIcon';
+import Header from '../../components/common/Header';
+import { FontStyles } from '../../constants/theme';
+import useAccounts from '../../hooks/useAccounts';
+import EmojiSelector from '../EmojiSelector';
+import Modal from '../../components/modal';
+import styles from './styles';
 
 const CreateEditAccount = ({ modalRef, account, ...props }) => {
   const editEmojiRef = useRef(null);
   const [accountName, setAccountName] = useState('');
+  const [editTouched, setEditTouched] = useState(false);
   const [emoji, setEmoji] = useState('');
 
   const { onCreate, onEdit } = useAccounts();
@@ -40,6 +42,7 @@ const CreateEditAccount = ({ modalRef, account, ...props }) => {
 
   const onEditEmoji = () => {
     editEmojiRef?.current.open();
+    setEditTouched(true);
   };
 
   const getName = () => `${account ? 'Edit' : 'Create'} Account`;
@@ -59,13 +62,21 @@ const CreateEditAccount = ({ modalRef, account, ...props }) => {
       {...props}>
       <Header center={<Text style={FontStyles.Subtitle2}>{getName()}</Text>} />
       <View style={styles.content}>
-        <UserIcon
-          icon={emoji}
-          size="extralarge"
-          style={styles.icon}
-          onPress={onEditEmoji}
-        />
-
+        <View>
+          <UserIcon
+            icon={emoji}
+            size="extralarge"
+            style={styles.icon}
+            onPress={onEditEmoji}
+          />
+          {!editTouched && (
+            <View style={styles.toolTip}>
+              <Text style={[FontStyles.Small, styles.toolTipText]}>
+                👈 Edit
+              </Text>
+            </View>
+          )}
+        </View>
         <TextInput
           placeholder="Account name"
           variant="text"
@@ -74,13 +85,11 @@ const CreateEditAccount = ({ modalRef, account, ...props }) => {
           autoFocus
           customStyle={styles.input}
         />
-
         <RainbowButton
           text={getName()}
           onPress={onPress}
           disabled={!accountName}
         />
-
         <EmojiSelector
           modalRef={editEmojiRef}
           onSave={setEmoji}
@@ -92,18 +101,3 @@ const CreateEditAccount = ({ modalRef, account, ...props }) => {
 };
 
 export default CreateEditAccount;
-
-const styles = StyleSheet.create({
-  content: {
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 35,
-  },
-  icon: {
-    alignSelf: 'center',
-    marginBottom: 25,
-  },
-  input: {
-    marginBottom: 25,
-  },
-});
