@@ -1,4 +1,5 @@
 import { ActionSheetIOS, ActivityIndicator, View, Text } from 'react-native';
+import Clipboard from '@react-native-community/clipboard';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useRef, useState } from 'react';
 
@@ -53,7 +54,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
       {
         title: account.name,
         message: shortAddress(account.principal),
-        options: ['Cancel', 'Edit Account'],
+        options: ['Cancel', 'Edit Account', 'Copy Address'],
         cancelButtonIndex: 0,
         userInterfaceStyle: 'dark',
       },
@@ -61,6 +62,9 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
         switch (buttonIndex) {
           case 1:
             onEditAccount(account);
+            break;
+          case 2:
+            Clipboard.setString(account.principal);
             break;
         }
       },
