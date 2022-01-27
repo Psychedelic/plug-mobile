@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { StyleSheet, Text, View, Linking } from 'react-native';
+import { Text, View, Linking } from 'react-native';
 
-import RainbowButton from '../../../components/buttons/RainbowButton';
-import NftDisplayer from '../../../components/common/NftDisplayer';
-import { getICRocksTransactionUrl } from '../../../constants/urls';
-import TokenFormat from '../../../components/number/TokenFormat';
-import { Colors, FontStyles } from '../../../constants/theme';
-import { TRANSACTION_STATUS } from '../../../redux/constants';
-import TokenIcon from '../../../components/tokens/TokenIcon';
-import { setTransaction } from '../../../redux/slices/user';
-import UserIcon from '../../../components/common/UserIcon';
-import shortAddress from '../../../helpers/short-address';
-import Button from '../../../components/buttons/Button';
-import Header from '../../../components/common/Header';
-import Column from '../../../components/layout/Column';
-import useGetType from '../../../hooks/useGetType';
-import Row from '../../../components/layout/Row';
-import Modal from '../../../components/modal';
-import Icon from '../../../components/icons';
+import RainbowButton from '../../../../components/buttons/RainbowButton';
+import NftDisplayer from '../../../../components/common/NftDisplayer';
+import { getICRocksTransactionUrl } from '../../../../constants/urls';
+import TokenFormat from '../../../../components/number/TokenFormat';
+import { Colors, FontStyles } from '../../../../constants/theme';
+import { TRANSACTION_STATUS } from '../../../../redux/constants';
+import TokenIcon from '../../../../components/tokens/TokenIcon';
+import { setTransaction } from '../../../../redux/slices/user';
+import UserIcon from '../../../../components/common/UserIcon';
+import shortAddress from '../../../../helpers/short-address';
+import Button from '../../../../components/buttons/Button';
+import Header from '../../../../components/common/Header';
+import Column from '../../../../components/layout/Column';
+import useGetType from '../../../../hooks/useGetType';
+import Row from '../../../../components/layout/Row';
+import Modal from '../../../../components/modal';
+import Icon from '../../../../components/icons';
+import styles from './styles';
 
 const ReviewSend = ({
   modalRef,
@@ -62,12 +63,7 @@ const ReviewSend = ({
             </Text>
           }
         />
-        {transactionCompleted && (
-          <Icon
-            name="confirm"
-            style={{ alignSelf: 'center', marginBottom: 30 }}
-          />
-        )}
+        {transactionCompleted && <Icon name="confirm" style={styles.icon} />}
         {token && (
           <Row style={styles.row}>
             <Column>
@@ -89,7 +85,7 @@ const ReviewSend = ({
             <NftDisplayer url={nft.url} type={nftType} isSend />
           </Row>
         )}
-        <Row style={[styles.row, { paddingRight: 9 }]}>
+        <Row style={[styles.row, styles.toRow]}>
           <View style={styles.to}>
             <Text style={FontStyles.Normal}>To</Text>
           </View>
@@ -139,26 +135,3 @@ const ReviewSend = ({
 };
 
 export default ReviewSend;
-
-const styles = StyleSheet.create({
-  content: {
-    paddingHorizontal: 20,
-  },
-  row: {
-    height: 55,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  to: {
-    borderRadius: 8,
-    backgroundColor: Colors.Gray.Tertiary,
-    width: 41,
-    height: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  button: {
-    marginBottom: 45,
-    marginTop: 25,
-  },
-});

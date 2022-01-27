@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 
-import RainbowButton from '../../../components/buttons/RainbowButton';
-import TokenSelector from '../../../components/tokens/TokenSelector';
-import AmountInput from '../../../components/common/AmountInput';
-import { formatSendAmount } from '../utils';
+import RainbowButton from '../../../../components/buttons/RainbowButton';
+import TokenSelector from '../../../../components/tokens/TokenSelector';
+import AmountInput from '../../../../components/common/AmountInput';
+import { formatSendAmount } from '../../utils';
+import styles from './styles';
 
 const USD_MAX_DECIMALS = 2;
 const ICP_MAX_DECIMALS = 8;
@@ -81,17 +82,17 @@ const AmountSection = ({
         selected={selectedInput === selectedToken.symbol}
         setSelected={setSelectedInput}
         symbol={selectedToken.symbol}
-        customStyle={{ marginBottom: 25, marginTop: 25 }}
+        customStyle={styles.firstInput}
       />
       <AmountInput
+        autoFocus
         value={usdAmount}
         onChange={handleSetUsdAmount}
         maxAmount={availableUsdAmount}
         selected={selectedInput === 'USD'}
         setSelected={setSelectedInput}
         symbol="USD"
-        autoFocus
-        customStyle={{ marginBottom: 25 }}
+        customStyle={styles.secondInput}
       />
       <RainbowButton
         text={getButtonText()}
