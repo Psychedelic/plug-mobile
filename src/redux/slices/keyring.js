@@ -11,6 +11,7 @@ import {
   setAssetsLoading,
   setAssetsAndLoading,
   setAssetsAndTransactions,
+  getNFTs,
 } from './user';
 
 export const initKeyring = createAsyncThunk('keyring/init', async () => {
@@ -50,6 +51,8 @@ export const importWallet = createAsyncThunk(
     const response = await instance?.importMnemonic(params);
     const { wallet } = response || {};
     await instance?.unlock(params.password);
+    dispatch(setAssetsLoading(true));
+    dispatch(getNFTs());
     const assets = await privateGetAssets({ refresh: true, icpPrice }, state);
     dispatch(setAssetsAndLoading({ assets }));
 
