@@ -3,6 +3,10 @@ import React, { useState } from 'react';
 import RainbowButton from '../../../components/buttons/RainbowButton';
 import TokenSelector from '../../../components/tokens/TokenSelector';
 import AmountInput from '../../../components/common/AmountInput';
+import { formatSendAmount } from '../utils';
+
+const USD_MAX_DECIMALS = 2;
+const ICP_MAX_DECIMALS = 8;
 
 const AmountSection = ({
   selectedToken,
@@ -19,13 +23,24 @@ const AmountSection = ({
   const [selectedInput, setSelectedInput] = useState('USD');
 
   const handleSetTokenAmount = amount => {
-    setTokenAmount(amount);
-    setUsdAmount(`${amount ? amount * tokenPrice : 0}`);
+    // TODO: Set the correct MAX decimals for the selected token.
+    const formattedAmount = formatSendAmount(amount, ICP_MAX_DECIMALS);
+    setTokenAmount(formattedAmount);
+    setUsdAmount(
+      Number(`${formattedAmount ? formattedAmount * tokenPrice : 0}`).toFixed(
+        USD_MAX_DECIMALS,
+      ),
+    );
   };
 
   const handleSetUsdAmount = amount => {
-    setUsdAmount(amount);
-    setTokenAmount(`${amount ? amount / tokenPrice : 0}`);
+    const formattedAmount = formatSendAmount(amount, USD_MAX_DECIMALS);
+    setUsdAmount(formattedAmount);
+    setTokenAmount(
+      Number(`${formattedAmount ? formattedAmount / tokenPrice : 0}`).toFixed(
+        ICP_MAX_DECIMALS,
+      ),
+    );
   };
 
   const onTokenChange = () => {
