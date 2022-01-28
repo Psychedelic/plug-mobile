@@ -6,6 +6,9 @@ import {
   setUnlocked,
   setWallets,
 } from '../redux/slices/keyring';
+import {
+  setUsingBiometrics,
+} from '../redux/slices/user';
 import Keychain from '../modules/keychain';
 
 const useKeyring = () => {
@@ -13,8 +16,13 @@ const useKeyring = () => {
   const dispatch = useDispatch();
 
   const saveBiometrics = async (password) => {
-    await Keychain.resetPassword();
-    await Keychain.setPassword(password);
+    try {
+      await Keychain.resetPassword();
+      await Keychain.setPassword(password);
+      dispatch(setUsingBiometrics(true))
+    } catch {
+      dispatch(setUsingBiometrics(false))
+    }
   };
 
   const getState = async () => {

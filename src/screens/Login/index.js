@@ -22,7 +22,7 @@ function Login() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const icpPrice = useICPPrice();
-  const { assetsLoading } = useSelector(state => state.user);
+  const { assetsLoading, usingBiometrics } = useSelector(state => state.user);
 
   const clearState = () => {
     setPassword('');
@@ -56,9 +56,11 @@ function Login() {
   };
 
   useEffect(() => {
-    unlockUsingBiometrics();
+    if (usingBiometrics) {
+      unlockUsingBiometrics();
+    }
     dispatch(setAssetsLoading(false));
-  }, []);
+  }, [usingBiometrics]);
 
   const unlockUsingBiometrics = async () => {
     const isAvailable = await Keychain.isSensorAvailable();
