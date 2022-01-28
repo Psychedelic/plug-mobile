@@ -52,17 +52,16 @@ const AddEditContact = ({ modalRef, contact, onClose }) => {
   return (
     <Modal modalRef={modalRef} adjustToContentHeight onClose={handleClose}>
       <Header center={<Text style={FontStyles.Subtitle2}>{title}</Text>} />
-
       <View
         style={{ paddingHorizontal: 20, paddingTop: 20, paddingBottom: 40 }}>
         <TextInput
+          autoFocus
           value={name}
           variant="text"
-          onChangeText={setName}
+          maxLenght={22}
           placeholder="Name"
-          autoFocus
+          onChangeText={setName}
         />
-
         <TextInput
           value={id}
           variant="text"
@@ -70,7 +69,6 @@ const AddEditContact = ({ modalRef, contact, onClose }) => {
           placeholder="Principal or Account ID"
           customStyle={{ marginVertical: 20 }}
         />
-
         <RainbowButton
           text={title}
           onPress={handleSubmit}
