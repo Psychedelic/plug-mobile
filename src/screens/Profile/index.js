@@ -70,7 +70,9 @@ const Profile = () => {
               size="large"
               onPress={openAccounts}
             />
-            <Text style={styles.name}>{currentWallet?.name}</Text>
+            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.name}>
+              {currentWallet?.name}
+            </Text>
           </View>
           <Button
             variant="gray"

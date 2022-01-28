@@ -10,6 +10,7 @@ const TextInput = ({
   placeholder,
   customStyle,
   textStyle,
+  maxLenght,
   ...props
 }) => {
   const {
@@ -34,6 +35,7 @@ const TextInput = ({
         secureTextEntry={secureTextEntry}
         placeholder={placeholder}
         blurOnSubmit={false}
+        maxLength={maxLenght}
         value={value}
         keyboardAppearance="dark"
         {...props}

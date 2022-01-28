@@ -21,10 +21,12 @@ export default StyleSheet.create({
   leftContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
   },
   name: {
     ...FontStyles.Subtitle,
     marginLeft: 12,
+    maxWidth: '75%',
   },
   emptyState: {
     marginTop: 60,
