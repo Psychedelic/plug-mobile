@@ -55,7 +55,6 @@ const Contacts = ({ modalRef }) => {
     <>
       <Modal modalRef={modalRef} adjustToContentHeight>
         <Header center={<Text style={FontStyles.Subtitle2}>Contacts</Text>} />
-
         <Column style={styles.container}>
           <Touchable onPress={onAddContact}>
             <Row align="center" style={{ marginBottom: 30, marginTop: 10 }}>
@@ -63,7 +62,6 @@ const Contacts = ({ modalRef }) => {
               <Text style={FontStyles.Normal}> Add contact</Text>
             </Row>
           </Touchable>
-
           {groupedContacts
             .sort((a, b) => a.letter.localeCompare(b.letter))
             .map(item => (
@@ -85,7 +83,6 @@ const Contacts = ({ modalRef }) => {
             ))}
         </Column>
       </Modal>
-
       <AddEditContact
         modalRef={addEditContactRef}
         contact={selectedContact}
