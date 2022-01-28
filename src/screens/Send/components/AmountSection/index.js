@@ -62,7 +62,9 @@ const AmountSection = ({
 
   const isButtonDisabled = () =>
     !tokenAmount ||
+    tokenAmount <= 0 ||
     !usdAmount ||
+    usdAmount <= 0 ||
     usdAmount > availableUsdAmount ||
     tokenAmount > availableAmount;
 
