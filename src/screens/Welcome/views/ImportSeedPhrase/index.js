@@ -90,12 +90,11 @@ const ImportSeedPhrase = ({ navigation, route }) => {
             }}
             multiline
           />
-
           <RainbowButton
             text="Continue"
             onPress={onPress}
             loading={loading}
-            disabled={!isMnemonicValid}
+            disabled={!isMnemonicValid || loading}
           />
         </View>
       </Container>
