@@ -45,7 +45,8 @@ const CreateEditAccount = ({ modalRef, account, ...props }) => {
     setEditTouched(true);
   };
 
-  const getName = () => `${account ? 'Edit' : 'Create'} Account`;
+  const getName = isSave =>
+    isSave ? 'Save' : `${account ? 'Edit' : 'Create'} Account`;
 
   useEffect(() => {
     if (account) {
@@ -87,7 +88,7 @@ const CreateEditAccount = ({ modalRef, account, ...props }) => {
           onChangeText={setAccountName}
         />
         <RainbowButton
-          text={getName()}
+          text={getName(account)}
           onPress={onPress}
           disabled={!accountName}
         />
