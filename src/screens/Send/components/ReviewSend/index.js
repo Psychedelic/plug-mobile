@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Text, View, Linking } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
 import RainbowButton from '../../../../components/buttons/RainbowButton';
 import NftDisplayer from '../../../../components/common/NftDisplayer';
@@ -20,6 +20,7 @@ import Row from '../../../../components/layout/Row';
 import Modal from '../../../../components/modal';
 import Icon from '../../../../components/icons';
 import styles from './styles';
+import SaveContact from '../SaveContact';
 
 const ReviewSend = ({
   modalRef,
@@ -38,8 +39,19 @@ const ReviewSend = ({
 }) => {
   const dispatch = useDispatch();
   const [nftType, setNftType] = useState(null);
+  const contacts = useSelector(state => state.user.contacts, shallowEqual);
+  const [selectedContact, setSelectedContact] = useState(contact || null);
+
+  const saveContactRef = useRef(null);
+  const handleSaveContact = () => {
+    saveContactRef.current?.open();
+  };
 
   useGetType(nft?.url, setNftType);
+
+  useEffect(() => {
+    setSelectedContact(contacts.find(c => c.id === to));
+  }, [contacts]);
 
   const transactionCompleted =
     transaction?.status === TRANSACTION_STATUS.success;
@@ -93,15 +105,22 @@ const ReviewSend = ({
         </Row>
         <Row style={styles.row}>
           <Column>
-            {contact ? (
+            {selectedContact ? (
               <>
-                <Text style={FontStyles.Title2}>{contact?.name}</Text>
+                <Text style={FontStyles.Title2}>{selectedContact?.name}</Text>
                 <Text style={FontStyles.Subtitle3}>
-                  {shortAddress(contact?.id)}
+                  {shortAddress(selectedContact?.id)}
                 </Text>
               </>
             ) : (
-              <Text style={FontStyles.Title2}>{shortAddress(to)}</Text>
+              <>
+                <Text style={FontStyles.Title2}>{shortAddress(to)}</Text>
+                <Text
+                  style={[FontStyles.Normal, styles.valid]}
+                  onPress={handleSaveContact}>
+                  Save as contact
+                </Text>
+              </>
             )}
           </Column>
           <UserIcon size="medium" />
@@ -130,6 +149,7 @@ const ReviewSend = ({
           />
         )}
       </View>
+      <SaveContact modalRef={saveContactRef} id={to} />
     </Modal>
   );
 };

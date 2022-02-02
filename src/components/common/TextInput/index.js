@@ -1,6 +1,9 @@
 import React from 'react';
 import { Text, View, TextInput as Input } from 'react-native';
+
+import Icon from '../../icons';
 import { variants } from './constants';
+import Touchable from '../../animations/Touchable';
 
 const TextInput = ({
   label,
@@ -11,6 +14,7 @@ const TextInput = ({
   customStyle,
   textStyle,
   maxLenght,
+  saveContactRef,
   ...props
 }) => {
   const {
@@ -22,6 +26,10 @@ const TextInput = ({
     autoCapitalize,
     secureTextEntry,
   } = variants[variant];
+
+  const handleAddContact = () => {
+    saveContactRef?.current.open();
+  };
 
   return (
     <View style={[viewStyle, customStyle]}>
@@ -40,6 +48,11 @@ const TextInput = ({
         keyboardAppearance="dark"
         {...props}
       />
+      {saveContactRef && (
+        <Touchable onPress={handleAddContact}>
+          <Icon name="plus" />
+        </Touchable>
+      )}
     </View>
   );
 };
