@@ -27,8 +27,8 @@ const ImportSeedPhrase = ({ navigation, route }) => {
   const dispatch = useDispatch();
 
   const onPress = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
       dispatch(reset());
       dispatch(importWallet({ icpPrice, mnemonic: seedPhrase, password }))
         .unwrap()
