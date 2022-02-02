@@ -30,4 +30,8 @@ export default StyleSheet.create({
   toRow: {
     paddingRight: 9,
   },
+  valid: {
+    marginTop: 4,
+    color: Colors.ActionBlue,
+  },
 });
