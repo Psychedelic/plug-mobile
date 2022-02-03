@@ -13,13 +13,13 @@ import styles from './styles';
 
 function FaceId({ modalRef }) {
   const { saveBiometrics, unlock, resetBiometrics } = useKeyring();
+  const hasBiometrics = useSelector(state => state.user.usingBiometrics);
+  const [useBiometrics, setUseBiometrics] = useState(hasBiometrics);
+
   const [password, setPassword] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const hasBiometrics = useSelector(state => state.user.usingBiometrics);
-  const [useBiometrics, setUseBiometrics] = useState(hasBiometrics);
 
   const toggleSwitch = async () => {
     // Inverse logic to avoid race condition of setState.
@@ -35,7 +35,7 @@ function FaceId({ modalRef }) {
   const handleOnClose = () => {
     setPassword(null);
     setError(false);
-    setLoggedIn(null);
+    setLoggedIn(false);
     setLoading(false);
   };
 
