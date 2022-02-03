@@ -1,17 +1,22 @@
 import React from 'react';
-import Touchable from '../../../components/animations/Touchable';
-import Row from '../../../components/layout/Row';
-import Column from '../../../components/layout/Column';
 import { StyleSheet, Text } from 'react-native';
-import Icon from '../../../components/icons';
-import { FontStyles } from '../../../constants/theme';
 
-const SettingItem = ({ icon, name, description, onPress }) => (
+import Touchable from '../../../components/animations/Touchable';
+import Column from '../../../components/layout/Column';
+import { FontStyles } from '../../../constants/theme';
+import Row from '../../../components/layout/Row';
+import Icon from '../../../components/icons';
+
+const SettingItem = ({ icon, name, description, onPress, iconName }) => (
   <Touchable onPress={onPress}>
     <Row style={styles.container}>
-      <Text style={styles.icon}>{icon}</Text>
-      <Column>
-        <Text style={[FontStyles.Normal, { marginBottom: 5 }]}>{name}</Text>
+      {iconName ? (
+        <Icon name={iconName} style={styles.iconName} />
+      ) : (
+        <Text style={styles.icon}>{icon}</Text>
+      )}
+      <Column style={{ marginLeft: 9 }}>
+        <Text style={[FontStyles.Normal, styles.name]}>{name}</Text>
         <Text style={FontStyles.NormalGray}>{description}</Text>
       </Column>
       <Icon name="chevronRight" style={styles.chevron} />
@@ -27,11 +32,16 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
   },
   icon: {
-    paddingRight: 9,
     fontSize: 18,
   },
   chevron: {
     marginLeft: 'auto',
     alignSelf: 'center',
+  },
+  iconName: {
+    marginRight: 5,
+  },
+  name: {
+    marginBottom: 5,
   },
 });
