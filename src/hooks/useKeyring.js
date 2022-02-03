@@ -1,28 +1,30 @@
 import { useDispatch, useSelector } from 'react-redux';
 
-import { isIos } from '../constants/platform';
 import {
   setCurrentWallet,
   setUnlocked,
   setWallets,
 } from '../redux/slices/keyring';
-import {
-  setUsingBiometrics,
-} from '../redux/slices/user';
+import { setUsingBiometrics } from '../redux/slices/user';
 import Keychain from '../modules/keychain';
 
 const useKeyring = () => {
   const { instance } = useSelector(state => state.keyring);
   const dispatch = useDispatch();
 
-  const saveBiometrics = async (password) => {
+  const saveBiometrics = async password => {
     try {
       await Keychain.resetPassword();
       await Keychain.setPassword(password);
-      dispatch(setUsingBiometrics(true))
+      dispatch(setUsingBiometrics(true));
     } catch {
-      dispatch(setUsingBiometrics(false))
+      dispatch(setUsingBiometrics(false));
     }
+  };
+
+  const resetBiometrics = async () => {
+    await Keychain.resetPassword();
+    dispatch(setUsingBiometrics(false));
   };
 
   const getState = async () => {
@@ -53,6 +55,7 @@ const useKeyring = () => {
   return {
     keyring: instance,
     saveBiometrics,
+    resetBiometrics,
     getState,
     unlock,
   };
