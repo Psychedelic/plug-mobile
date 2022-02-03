@@ -7,10 +7,12 @@ import Touchable from '../../animations/Touchable';
 
 const TextInput = ({
   label,
+  ref,
   value,
   variant,
   onChangeText,
   placeholder,
+  onSubmitEditing,
   customStyle,
   textStyle,
   maxLenght,
@@ -42,9 +44,11 @@ const TextInput = ({
         autoCapitalize={autoCapitalize}
         secureTextEntry={secureTextEntry}
         placeholder={placeholder}
+        onSubmitEditing={onSubmitEditing}
         blurOnSubmit={false}
         maxLength={maxLenght}
         value={value}
+        ref={ref}
         keyboardAppearance="dark"
         {...props}
       />

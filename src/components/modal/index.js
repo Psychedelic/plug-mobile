@@ -1,7 +1,8 @@
 import React from 'react';
 import { Portal } from 'react-native-portalize';
-import { Colors } from '../../constants/theme';
 import { Modalize } from 'react-native-modalize';
+
+import { Colors } from '../../constants/theme';
 
 const Modal = ({ children, modalRef, onClose, fullHeight, ...props }) => {
   return (
@@ -16,6 +17,7 @@ const Modal = ({ children, modalRef, onClose, fullHeight, ...props }) => {
         scrollViewProps={
           ({
             keyboardShouldPersistTaps: 'always',
+            keyboardDismissMode: 'none',
           },
           fullHeight && {
             contentContainerStyle: { height: '100%' },
