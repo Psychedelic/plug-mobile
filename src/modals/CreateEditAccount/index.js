@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Keyboard } from 'react-native';
 
 import RainbowButton from '../../components/buttons/RainbowButton';
 import TextInput from '../../components/common/TextInput';
@@ -11,7 +11,7 @@ import EmojiSelector from '../EmojiSelector';
 import Modal from '../../components/modal';
 import styles from './styles';
 
-const CreateEditAccount = ({ modalRef, account, ...props }) => {
+const CreateEditAccount = ({ modalRef, account }) => {
   const editEmojiRef = useRef(null);
   const [accountName, setAccountName] = useState('');
   const [editTouched, setEditTouched] = useState(false);
@@ -41,6 +41,7 @@ const CreateEditAccount = ({ modalRef, account, ...props }) => {
   };
 
   const onEditEmoji = () => {
+    Keyboard.dismiss();
     editEmojiRef?.current.open();
     setEditTouched(true);
   };
@@ -56,11 +57,7 @@ const CreateEditAccount = ({ modalRef, account, ...props }) => {
   }, [account]);
 
   return (
-    <Modal
-      adjustToContentHeight
-      modalRef={modalRef}
-      onClose={resetState}
-      {...props}>
+    <Modal adjustToContentHeight modalRef={modalRef} onClose={resetState}>
       <Header center={<Text style={FontStyles.Subtitle2}>{getName()}</Text>} />
       <View style={styles.content}>
         <View>
