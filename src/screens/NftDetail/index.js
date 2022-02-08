@@ -1,6 +1,6 @@
 import { View, Text, Share } from 'react-native';
+import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import React, { useState } from 'react';
 
 import RainbowButton from '../../components/buttons/RainbowButton';
 import NftDisplayer from '../../components/common/NftDisplayer';
@@ -12,6 +12,7 @@ import useGetType from '../../hooks/useGetType';
 import Modal from '../../components/modal';
 import Section from './components/Section';
 import styles from './styles';
+import Send from '../Send';
 
 const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
   const [type, setType] = useState(null);
@@ -31,54 +32,62 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
     });
   };
 
+  const sendRef = useRef(null);
+
+  const handleSend = () => {
+    sendRef.current?.open();
+  };
+
   return (
-    <Modal modalRef={modalRef} onClose={handleClose} {...props}>
-      <Header
-        center={
-          <Text style={FontStyles.Subtitle2}>{`#${selectedNFT?.index}`}</Text>
-        }
-      />
-      <View style={styles.content}>
-        <View style={styles.nftDisplayerContainer}>
-          <NftDisplayer
-            url={selectedNFT?.url}
-            type={type}
-            style={styles.video}
-            isDetailView
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <View style={{ flex: 1, marginRight: 10 }}>
-            <Button variant="gray" text="Marketplace" onPress={() => null} />
+    <>
+      <Modal modalRef={modalRef} onClose={handleClose} {...props}>
+        <Header
+          center={
+            <Text style={FontStyles.Subtitle2}>{`#${selectedNFT?.index}`}</Text>
+          }
+        />
+        <View style={styles.content}>
+          <View style={styles.nftDisplayerContainer}>
+            <NftDisplayer
+              url={selectedNFT?.url}
+              type={type}
+              style={styles.video}
+              isDetailView
+            />
           </View>
-          <View style={{ flex: 1, marginLeft: 10 }}>
-            {/* TODO: Change Share to Send when send NFT flow from detail is done */}
-            <RainbowButton text="Share" onPress={handleShare} />
+          <View style={styles.buttonContainer}>
+            <View style={{ flex: 1, marginRight: 10 }}>
+              <Button variant="gray" text="Share" onPress={handleShare} />
+            </View>
+            <View style={{ flex: 1, marginLeft: 10 }}>
+              <RainbowButton text="Send" onPress={handleSend} />
+            </View>
           </View>
+          <Section title="🧩 Collection" style={{ borderTopWidth: 0 }}>
+            <Badge
+              value={selectedNFT?.collection}
+              icon={selectedCollection?.icon}
+            />
+            <Badge value={`#${selectedNFT?.index}`} />
+          </Section>
+          {!!selectedCollection?.description && (
+            <Section title="📝 Description">
+              <Text style={FontStyles.NormalGray}>
+                {selectedCollection?.description}
+              </Text>
+            </Section>
+          )}
+          {selectedNFT?.metadata?.properties?.length && (
+            <Section title="🎛 Attributes">
+              {selectedNFT?.metadata?.properties?.map(prop => (
+                <Badge key={prop.name} name={prop.name} value={prop.value} />
+              ))}
+            </Section>
+          )}
         </View>
-        <Section title="🧩 Collection" style={{ borderTopWidth: 0 }}>
-          <Badge
-            value={selectedNFT?.collection}
-            icon={selectedCollection?.icon}
-          />
-          <Badge value={`#${selectedNFT?.index}`} />
-        </Section>
-        {!!selectedCollection?.description && (
-          <Section title="📝 Description">
-            <Text style={FontStyles.NormalGray}>
-              {selectedCollection?.description}
-            </Text>
-          </Section>
-        )}
-        {selectedNFT?.metadata?.properties?.length && (
-          <Section title="🎛 Attributes">
-            {selectedNFT?.metadata?.properties?.map(prop => (
-              <Badge key={prop.name} name={prop.name} value={prop.value} />
-            ))}
-          </Section>
-        )}
-      </View>
-    </Modal>
+      </Modal>
+      <Send modalRef={sendRef} nft={selectedNFT} />
+    </>
   );
 };
 

@@ -31,36 +31,30 @@ import styles from './styles';
 
 const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
 
-const Send = ({ modalRef }) => {
+const Send = ({ modalRef, nft }) => {
   const dispatch = useDispatch();
-
-  const [address, setAddress] = useState(null);
-  const [addressInfo, setAddressInfo] = useState(INITIAL_ADDRESS_INFO);
-
+  const icpPrice = useICPPrice();
   const { currentWallet } = useSelector(state => state.keyring);
   const { assets, transaction, collections } = useSelector(state => state.user);
 
-  const nfts =
-    collections?.flatMap(collection => collection?.tokens || []) || [];
-
-  const [selectedContact, setSelectedContact] = useState(null);
-  const [selectedToken, setSelectedToken] = useState(null);
-  const [selectedNft, setSelectedNft] = useState(null);
-  const [selectedTokenPrice, setSelectedTokenPrice] = useState(null);
-
-  const [tokenAmount, setTokenAmount] = useState(null);
-  const [usdAmount, setUsdAmount] = useState(null);
-
-  const icpPrice = useICPPrice();
-
-  // TODO: Check if destionation and setDestination are necessary
-  const [destination] = useState(XTC_OPTIONS.SEND);
-  const [sendingXTCtoCanister, setSendingXTCtoCanister] = useState(false);
-
-  const [loading, setLoading] = useState(false);
-
   const reviewRef = useRef(null);
   const saveContactRef = useRef(null);
+
+  const nfts =
+    collections?.flatMap(collection => collection?.tokens || []) || [];
+  const [address, setAddress] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [usdAmount, setUsdAmount] = useState(null);
+  const [destination] = useState(XTC_OPTIONS.SEND);
+  const [selectedNft, setSelectedNft] = useState(null);
+  const [tokenAmount, setTokenAmount] = useState(null);
+  const [selectedToken, setSelectedToken] = useState(null);
+  const [selectedContact, setSelectedContact] = useState(null);
+  const [selectedTokenPrice, setSelectedTokenPrice] = useState(null);
+  const [addressInfo, setAddressInfo] = useState(INITIAL_ADDRESS_INFO);
+  const [sendingXTCtoCanister, setSendingXTCtoCanister] = useState(false);
+
+  const isValidAddress = addressInfo.isValid;
 
   const onContactPress = contact => {
     setAddress(null);
@@ -71,8 +65,8 @@ const Send = ({ modalRef }) => {
     setSelectedToken(token);
   };
 
-  const onNftPress = nft => {
-    setSelectedNft(nft);
+  const onNftPress = pressedNFT => {
+    setSelectedNft(pressedNFT);
     onReview();
   };
 
@@ -115,7 +109,6 @@ const Send = ({ modalRef }) => {
         currentFee = 0.0;
         break;
     }
-
     return currentFee;
   };
 
@@ -154,6 +147,15 @@ const Send = ({ modalRef }) => {
   };
 
   useEffect(() => {
+    if (nft) {
+      setSelectedNft(nft);
+    }
+    if (selectedNft && (address || selectedContact)) {
+      onReview();
+    }
+  }, [nft, selectedNft, address, selectedContact]);
+
+  useEffect(() => {
     if (selectedToken) {
       const price =
         { ICP: icpPrice, XTC: USD_PER_TC, WTC: USD_PER_TC }[
@@ -185,8 +187,6 @@ const Send = ({ modalRef }) => {
       );
     }
   }, [address, selectedContact, selectedToken]);
-
-  const isValidAddress = addressInfo.isValid;
 
   const availableAmount = Math.max(
     (selectedToken?.amount || 0) - getTransactionFee(),
