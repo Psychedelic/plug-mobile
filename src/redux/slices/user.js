@@ -35,7 +35,7 @@ export const sendToken = createAsyncThunk(
       const state = getState();
       const { height, transactionId } = await state.keyring.instance?.send(
         to,
-        Number(amount),
+        amount,
         canisterId,
         opts,
       );
