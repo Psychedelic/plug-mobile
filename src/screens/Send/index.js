@@ -11,6 +11,7 @@ import TokenSection from './components/TokenSection';
 import { useICPPrice } from '../../redux/slices/icp';
 import Header from '../../components/common/Header';
 import { FontStyles } from '../../constants/theme';
+import SaveContact from './components/SaveContact';
 import ReviewSend from './components/ReviewSend';
 import { USD_PER_TC } from '../../utils/assets';
 import XTC_OPTIONS from '../../constants/xtc';
@@ -59,6 +60,7 @@ const Send = ({ modalRef }) => {
   const [loading, setLoading] = useState(false);
 
   const reviewRef = useRef(null);
+  const saveContactRef = useRef(null);
 
   const onContactPress = contact => {
     setAddress(null);
@@ -122,7 +124,7 @@ const Send = ({ modalRef }) => {
     const to = address || selectedContact.id;
 
     if (selectedNft) {
-      dispatch(transferNFT({ to, nft: selectedNft }))
+      dispatch(transferNFT({ to, nft: selectedNft, icpPrice }))
         .unwrap()
         .then(response => {
           if (response.status === TRANSACTION_STATUS.success) {
@@ -207,6 +209,9 @@ const Send = ({ modalRef }) => {
           onChangeText={onChangeText}
           textStyle={isValidAddress ? styles.valid : null}
           autoFocus
+          saveContactRef={
+            selectedContact || !address ? undefined : saveContactRef
+          }
         />
         {!isValidAddress && (
           <ContactSection filterText={address} onPress={onContactPress} />
@@ -248,6 +253,7 @@ const Send = ({ modalRef }) => {
           transaction={transaction}
           loading={loading}
         />
+        <SaveContact id={address} modalRef={saveContactRef} />
       </ScrollView>
     </Modal>
   );

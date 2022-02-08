@@ -25,8 +25,10 @@ import LightingActivityIcon from './svg/LightingActivityIcon';
 import BurnActivityIcon from './svg/BurnActivityIcon';
 import MintActivityIcon from './svg/MintActivityIcon';
 import PasswordEyeClosedIcon from './svg/PasswordEyeClosedIcon';
+import FaceIdIcon from './svg/FaceIdIcon';
 
 export const IconTypes = {
+  faceIdIcon: FaceIdIcon,
   passwordEyeIcon: PasswordEyeIcon,
   passwordEyeClosedIcon: PasswordEyeClosedIcon,
   activityReceive: ActivityReceiveIcon,

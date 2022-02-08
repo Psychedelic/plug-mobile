@@ -1,12 +1,17 @@
-import { RefreshControl, ScrollView, Text, View } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigation } from '@react-navigation/core';
 import { useSelector, useDispatch } from 'react-redux';
+import {
+  Text,
+  View,
+  ScrollView,
+  RefreshControl,
+  TouchableOpacity,
+} from 'react-native';
 
-import Touchable from '../../components/animations/Touchable';
 import EmptyState from '../../components/common/EmptyState';
 import Container from '../../components/common/Container';
 import UserIcon from '../../components/common/UserIcon';
+import { useDebounce } from '../../hooks/useDebounce';
 import Divider from '../../components/common/Divider';
 import Button from '../../components/buttons/Button';
 import ActivityItem from './components/ActivityItem';
@@ -23,16 +28,17 @@ import {
 } from '../../redux/slices/user';
 import styles from './styles';
 
-const Profile = () => {
+const Profile = ({ navigation }) => {
   const dispatch = useDispatch();
   const modalRef = useRef(null);
-  const navigation = useNavigation();
+  const icpPrice = useICPPrice();
+  const { debounce } = useDebounce();
   const { currentWallet } = useSelector(state => state.keyring);
   const { transactions, transactionsLoading } = useSelector(
     state => state.user,
   );
   const [refreshing, setRefresing] = useState(transactionsLoading);
-  const icpPrice = useICPPrice();
+  const [navigated, setNavigated] = useState(false);
 
   const openAccounts = () => {
     modalRef?.current.open();
@@ -47,16 +53,31 @@ const Profile = () => {
     setRefresing(transactionsLoading);
   }, [transactionsLoading]);
 
+  useEffect(() => {
+    onRefresh();
+  }, []);
+
+  useEffect(() => {
+    setNavigated(false);
+    return () => setNavigated(true);
+  });
+
+  const hanldeGoToWallet = () => {
+    if (!navigated) {
+      setNavigated(true);
+      navigation.navigate(Routes.WALLET_SCREEN);
+    }
+  };
+
   return (
     <>
       <Container>
         <Header
           left={<Settings />}
           right={
-            <Touchable
-              onPress={() => navigation.navigate(Routes.WALLET_SCREEN)}>
+            <TouchableOpacity onPress={() => debounce(hanldeGoToWallet)}>
               <Icon name="chevronRight" />
-            </Touchable>
+            </TouchableOpacity>
           }
         />
         <View style={styles.container}>
@@ -66,7 +87,9 @@ const Profile = () => {
               size="large"
               onPress={openAccounts}
             />
-            <Text style={styles.name}>{currentWallet?.name}</Text>
+            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.name}>
+              {currentWallet?.name}
+            </Text>
           </View>
           <Button
             variant="gray"

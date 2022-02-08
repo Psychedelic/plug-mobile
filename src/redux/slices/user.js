@@ -24,6 +24,7 @@ const DEFAULT_STATE = {
   transactionsLoading: false,
   selectedNFT: {},
   collections: [],
+  usingBiometrics: false,
 };
 
 export const sendToken = createAsyncThunk(
@@ -34,7 +35,7 @@ export const sendToken = createAsyncThunk(
       const state = getState();
       const { height, transactionId } = await state.keyring.instance?.send(
         to,
-        Number(amount).toFixed(8), // TODO: Use token decimals when possible
+        Number(amount),
         canisterId,
         opts,
       );
@@ -162,14 +163,14 @@ export const privateGetTransactions = async (params, state) => {
     const response = await state.keyring.instance?.getTransactions();
 
     const mapTransaction = trx => {
+      const { principal, accountId } = state.keyring?.currentWallet;
       const asset = formatAssetBySymbol(
         trx?.details?.amount,
         trx?.details?.currency?.symbol,
         icpPrice,
       );
-      const isOwnTx = [state.principalId, state.accountId].includes(
-        trx?.caller,
-      );
+      const isOwnTx = [principal, accountId].includes(trx?.caller);
+
       const getType = () => {
         const { type } = trx;
         if (type.toUpperCase() === 'TRANSFER') {
@@ -177,6 +178,7 @@ export const privateGetTransactions = async (params, state) => {
         }
         return type.toUpperCase();
       };
+
       const getSymbol = () => {
         if ('tokenRegistryInfo' in trx.details) {
           return trx.details.tokenRegistryInfo.symbol;
@@ -186,6 +188,7 @@ export const privateGetTransactions = async (params, state) => {
         }
         return trx?.details?.currency?.symbol ?? '';
       };
+
       const canisterInfo =
         trx?.details?.tokenRegistryInfo || trx?.details?.nftRegistryInfo;
       const transaction = {
@@ -218,15 +221,19 @@ export const privateGetTransactions = async (params, state) => {
 
 export const transferNFT = createAsyncThunk(
   'keyring/transferNFT',
-  async (params, { getState }) => {
+  async (params, { getState, dispatch }) => {
     try {
-      const { to, nft } = params;
+      const { to, nft, icpPrice } = params;
 
       const state = getState();
       const response = await state.keyring.instance?.transferNFT({
         to,
         token: nft,
       });
+      if (response) {
+        dispatch(setTransactionsLoading(true));
+        dispatch(getTransactions({ icpPrice }));
+      }
 
       return {
         response: recursiveParseBigint(response),
@@ -248,6 +255,9 @@ export const keyringSlice = createSlice({
   name: 'user',
   initialState: DEFAULT_STATE,
   reducers: {
+    setUsingBiometrics: (state, action) => {
+      state.usingBiometrics = action.payload;
+    },
     setContacts: (state, action) => {
       state.contacts = action.payload;
     },
@@ -330,6 +340,7 @@ export const keyringSlice = createSlice({
 });
 
 export const {
+  setUsingBiometrics,
   setContacts,
   addContact,
   removeContact,

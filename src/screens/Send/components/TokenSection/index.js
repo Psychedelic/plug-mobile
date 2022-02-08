@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 
-import NftItem from '../../Wallet/tabs/NFTs/components/NftItem';
-import { FontStyles, Colors } from '../../../constants/theme';
-import TokenItem from '../../../components/tokens/TokenItem';
+import NftItem from '../../../Wallet/tabs/NFTs/components/NftItem';
+import { FontStyles, Colors } from '../../../../constants/theme';
+import TokenItem from '../../../../components/tokens/TokenItem';
+import styles from './styles';
 
 const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }) => {
   const handleOnOpenNFT = nft => () => {
@@ -23,12 +24,7 @@ const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }) => {
         />
       ))}
       <Text style={styles.title}>NFTs</Text>
-      <View
-        style={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          justifyContent: 'space-between',
-        }}>
+      <View style={styles.nftsContainer}>
         {nfts.map((item, index) => (
           <NftItem key={index} item={item} onOpen={handleOnOpenNFT} />
         ))}
@@ -38,20 +34,3 @@ const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }) => {
 };
 
 export default TokenSection;
-
-const styles = StyleSheet.create({
-  token: {
-    marginTop: 20,
-  },
-  title: {
-    ...FontStyles.Subtitle3,
-    marginTop: 25,
-  },
-  nftText: {
-    ...FontStyles.SmallGray,
-    marginTop: 10,
-  },
-  nft: {
-    margin: 10,
-  },
-});
