@@ -54,7 +54,7 @@ const Send = ({ modalRef }) => {
   const icpPrice = useICPPrice();
 
   // TODO: Check if destionation and setDestination are necessary
-  const [destination, setDestination] = useState(XTC_OPTIONS.SEND);
+  const [destination] = useState(XTC_OPTIONS.SEND);
   const [sendingXTCtoCanister, setSendingXTCtoCanister] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -242,7 +242,7 @@ const Send = ({ modalRef }) => {
           modalRef={reviewRef}
           adjustToContentHeight
           token={selectedToken}
-          to={address}
+          to={selectedContact ? selectedContact?.id : address}
           contact={selectedContact}
           amount={tokenAmount}
           value={usdAmount}

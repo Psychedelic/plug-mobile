@@ -19,8 +19,8 @@ import useGetType from '../../../../hooks/useGetType';
 import Row from '../../../../components/layout/Row';
 import Modal from '../../../../components/modal';
 import Icon from '../../../../components/icons';
-import styles from './styles';
 import SaveContact from '../SaveContact';
+import styles from './styles';
 
 const ReviewSend = ({
   modalRef,
@@ -41,7 +41,6 @@ const ReviewSend = ({
   const [nftType, setNftType] = useState(null);
   const contacts = useSelector(state => state.user.contacts, shallowEqual);
   const [selectedContact, setSelectedContact] = useState(contact || null);
-
   const saveContactRef = useRef(null);
   const handleSaveContact = () => {
     saveContactRef.current?.open();
@@ -51,7 +50,7 @@ const ReviewSend = ({
 
   useEffect(() => {
     setSelectedContact(contacts.find(c => c.id === to));
-  }, [contacts]);
+  }, [contacts, to]);
 
   const transactionCompleted =
     transaction?.status === TRANSACTION_STATUS.success;
