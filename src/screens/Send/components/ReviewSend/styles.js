@@ -5,6 +5,7 @@ import { Colors } from '../../../../constants/theme';
 export default StyleSheet.create({
   content: {
     paddingHorizontal: 20,
+    paddingBottom: 45,
   },
   row: {
     height: 55,
@@ -20,7 +21,6 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   button: {
-    marginBottom: 45,
     marginTop: 25,
   },
   icon: {
