@@ -39,8 +39,11 @@ export const sendToken = createAsyncThunk(
         canisterId,
         opts,
       );
-      if (transactionId) {
+      if (transactionId || height) {
+        dispatch(setAssetsLoading(true));
+        dispatch(setTransactionsLoading(true));
         dispatch(getAssets({ refresh: true, icpPrice }));
+        dispatch(getTransactions({ icpPrice }));
       }
       return {
         response: {
@@ -231,6 +234,7 @@ export const transferNFT = createAsyncThunk(
         token: nft,
       });
       if (response) {
+        dispatch(getNFTs());
         dispatch(setTransactionsLoading(true));
         dispatch(getTransactions({ icpPrice }));
       }

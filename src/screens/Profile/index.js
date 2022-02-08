@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import {
   Text,
   View,
@@ -36,6 +36,7 @@ const Profile = ({ navigation }) => {
   const { currentWallet } = useSelector(state => state.keyring);
   const { transactions, transactionsLoading } = useSelector(
     state => state.user,
+    shallowEqual,
   );
   const [refreshing, setRefresing] = useState(transactionsLoading);
   const [navigated, setNavigated] = useState(false);
