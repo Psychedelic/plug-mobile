@@ -7058,10 +7058,10 @@ react-native-screens@^3.4.0, react-native-screens@^3.8.0:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
-react-native-sensitive-info@5.5.8:
-  version "5.5.8"
-  resolved "https://registry.yarnpkg.com/react-native-sensitive-info/-/react-native-sensitive-info-5.5.8.tgz#6ebb67eed83d1c2867bd435630ef2c41eef204ed"
-  integrity sha512-p99oaEW4QG1RdUNrkvd/c6Qdm856dQw/Rk81f9fA6Y3DlPs6ADNdU+jbPuTz3CcOUJwuKBDNenX6LR9KfmGFEg==
+react-native-sensitive-info@^6.0.0-alpha.9:
+  version "6.0.0-alpha.9"
+  resolved "https://registry.yarnpkg.com/react-native-sensitive-info/-/react-native-sensitive-info-6.0.0-alpha.9.tgz#b488fab715d36efdf80b377a21545cfe888ab8d2"
+  integrity sha512-W2R1gUHgBAmy+wVl0BvA7s01SqqTitnG4Sdj2zmck0OS5a54kq+pTnXRqDljMa2NQs4Mue2IHyvd+Tf0X1ZL6Q==
 
 react-native-splash-screen@^3.2.0:
   version "3.3.0"
