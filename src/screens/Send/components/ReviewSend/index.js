@@ -1,10 +1,10 @@
-import { Text, View, Linking } from 'react-native';
+import { Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/core';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
 import RainbowButton from '../../../../components/buttons/RainbowButton';
 import NftDisplayer from '../../../../components/common/NftDisplayer';
-import { getICRocksTransactionUrl } from '../../../../constants/urls';
 import TokenFormat from '../../../../components/number/TokenFormat';
 import { Colors, FontStyles } from '../../../../constants/theme';
 import { TRANSACTION_STATUS } from '../../../../redux/constants';
@@ -17,6 +17,7 @@ import Header from '../../../../components/common/Header';
 import Column from '../../../../components/layout/Column';
 import useGetType from '../../../../hooks/useGetType';
 import Row from '../../../../components/layout/Row';
+import Routes from '../../../../navigation/Routes';
 import Modal from '../../../../components/modal';
 import Icon from '../../../../components/icons';
 import SaveContact from '../SaveContact';
@@ -38,6 +39,7 @@ const ReviewSend = ({
   ...props
 }) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const [nftType, setNftType] = useState(null);
   const contacts = useSelector(state => state.user.contacts, shallowEqual);
   const [selectedContact, setSelectedContact] = useState(contact || null);
@@ -64,8 +66,17 @@ const ReviewSend = ({
     }
   };
 
+  const handleGoToActivity = () => {
+    handleClose();
+    navigation.navigate(Routes.PROFILE_SCREEN);
+  };
+
   return (
-    <Modal modalRef={modalRef} onClose={handleClose} {...props}>
+    <Modal
+      modalRef={modalRef}
+      onClose={handleClose}
+      {...props}
+      adjustToContentHeight={!transactionCompleted}>
       <View style={styles.content}>
         <Header
           center={
@@ -129,13 +140,9 @@ const ReviewSend = ({
           token.symbol === 'ICP' && (
             <Button
               variant="gray"
-              text="View on Explorer"
+              text="View in Activity"
               buttonStyle={styles.button}
-              onPress={() =>
-                Linking.openURL(
-                  getICRocksTransactionUrl(transaction?.response.transactionId),
-                )
-              }
+              onPress={handleGoToActivity}
             />
           )
         ) : (
