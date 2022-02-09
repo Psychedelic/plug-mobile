@@ -9,41 +9,31 @@ const KEYCHAIN_CONSTANTS = {
 };
 
 const KEYCHAIN_OPTIONS = {
-  touchId: true,
+  touchID: true,
   showModal: true,
   keychainService: KEYCHAIN_CONSTANTS.keychainService,
   sharedPreferencesName: KEYCHAIN_CONSTANTS.sharedPreferencesName,
   kSecAccessControl: KEYCHAIN_CONSTANTS.kSecAccessControl,
-  kSecUseOperationPrompt: KEYCHAIN_CONSTANTS.kSecUseOperationPrompt, 
-}
+  kSecUseOperationPrompt: KEYCHAIN_CONSTANTS.kSecUseOperationPrompt,
+};
 
 export default {
   async setPassword(password) {
     const { tokenKey } = KEYCHAIN_CONSTANTS;
 
-    return RNSInfo.setItem(
-      tokenKey,
-      password,
-      KEYCHAIN_OPTIONS,
-    );
+    return RNSInfo.setItem(tokenKey, password, KEYCHAIN_OPTIONS);
   },
 
   async getPassword() {
     const { tokenKey } = KEYCHAIN_CONSTANTS;
-
-    return RNSInfo.getItem(
-      tokenKey,
-      KEYCHAIN_OPTIONS
-    );
+    const password = await RNSInfo.getItem(tokenKey, KEYCHAIN_OPTIONS);
+    return password;
   },
 
   async resetPassword() {
     const { tokenKey } = KEYCHAIN_CONSTANTS;
 
-    return RNSInfo.deleteItem(
-      tokenKey,
-      KEYCHAIN_OPTIONS
-    );
+    return RNSInfo.deleteItem(tokenKey, KEYCHAIN_OPTIONS);
   },
 
   async isSensorAvailable() {
