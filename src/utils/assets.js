@@ -5,6 +5,7 @@ export const E8S_PER_ICP = 100000000;
 export const TOKEN_IMAGES = {
   XTC: 'xtc',
   ICP: 'dfinity',
+  WICP: 'wicp',
 };
 
 export const CURRENCIES = new Map([
@@ -50,6 +51,12 @@ export const formatAssetBySymbol = (amount, symbol, icpPrice) => {
         amount: amount,
         value: amount * USD_PER_TC,
         symbol: 'WTC',
+      },
+      WICP: {
+        amount: amount,
+        value: amount * icpPrice,
+        icon: TOKEN_IMAGES.WICP,
+        symbol: 'WICP',
       },
       default: { amount, value: amount },
     }[symbol || 'default'] || { amount, value: amount }
