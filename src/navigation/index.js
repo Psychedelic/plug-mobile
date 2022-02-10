@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import { useSelector } from 'react-redux';
+
 import AuthNavigator from './navigators/AuthNavigator';
 import Routes from './Routes';
 

@@ -92,6 +92,7 @@ function Login() {
             text="Submit"
             onPress={() => handleSubmit(password)}
             loading={assetsLoading}
+            disabled={!password || password.length < 12}
             buttonStyle={styles.buttonMargin}
           />
           <Button

@@ -298,7 +298,7 @@ export const keyringSlice = createSlice({
     setTransactionsLoading: (state, action) => {
       state.transactionsLoading = action.payload;
     },
-    reset: state => {
+    resetUserState: state => {
       state = DEFAULT_STATE;
     },
   },
@@ -355,7 +355,7 @@ export const {
   setCollections,
   removeNFT,
   setTransactionsLoading,
-  reset,
+  resetUserState,
 } = keyringSlice.actions;
 
 export default keyringSlice.reducer;
