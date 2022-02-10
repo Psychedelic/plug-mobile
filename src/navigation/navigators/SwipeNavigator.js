@@ -12,6 +12,9 @@ const renderTabBar = () => null;
 const SwipeNavigator = () => (
   <View style={{ flex: 1 }}>
     <Swipe.Navigator
+      screenOptions={{
+        tabBarBounces: false,
+      }}
       initialRouteName={Routes.WALLET_SCREEN}
       tabBar={renderTabBar}>
       <Swipe.Screen component={ProfileScreen} name={Routes.PROFILE_SCREEN} />

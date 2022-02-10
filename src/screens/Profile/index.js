@@ -66,7 +66,7 @@ const Profile = ({ navigation }) => {
   const hanldeGoToWallet = () => {
     if (!navigated) {
       setNavigated(true);
-      navigation.navigate(Routes.WALLET_SCREEN);
+      navigation.jumpTo(Routes.WALLET_SCREEN);
     }
   };
 
