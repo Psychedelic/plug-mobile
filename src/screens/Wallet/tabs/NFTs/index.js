@@ -31,8 +31,11 @@ const NFTs = () => {
 
   const onRefresh = () => {
     setRefresing(true);
-    dispatch(getNFTs());
-    setTimeout(() => setRefresing(false), 1000);
+    dispatch(getNFTs())
+      .unwrap()
+      .then(() => {
+        setRefresing(false);
+      });
   };
 
   const nfts =
