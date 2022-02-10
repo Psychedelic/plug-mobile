@@ -11,7 +11,7 @@ import EmojiSelector from '../EmojiSelector';
 import Modal from '../../components/modal';
 import styles from './styles';
 
-const CreateEditAccount = ({ modalRef, account }) => {
+const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
   const editEmojiRef = useRef(null);
   const [accountName, setAccountName] = useState('');
   const [editTouched, setEditTouched] = useState(false);
@@ -56,9 +56,29 @@ const CreateEditAccount = ({ modalRef, account }) => {
     }
   }, [account]);
 
+  const closeModal = () => {
+    accountsModalRef?.current.close();
+  };
+
+  const handleBack = () => {
+    modalRef?.current.close();
+  };
+
   return (
     <Modal adjustToContentHeight modalRef={modalRef} onClose={resetState}>
-      <Header center={<Text style={FontStyles.Subtitle2}>{getName()}</Text>} />
+      <Header
+        right={
+          <Text style={[FontStyles.Normal, styles.valid]} onPress={closeModal}>
+            Close
+          </Text>
+        }
+        left={
+          <Text style={[FontStyles.Normal, styles.valid]} onPress={handleBack}>
+            Back
+          </Text>
+        }
+        center={<Text style={FontStyles.Subtitle2}>{getName()}</Text>}
+      />
       <View style={styles.content}>
         <View>
           <UserIcon

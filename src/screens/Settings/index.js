@@ -2,11 +2,11 @@ import React, { useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 import Touchable from '../../components/animations/Touchable';
+import { FontStyles, Colors } from '../../constants/theme';
 import Separator from '../../components/layout/Separator';
 import animationScales from '../../utils/animationScales';
 import useInfoItems from '../../hooks/useInfoItems';
 import Header from '../../components/common/Header';
-import { FontStyles } from '../../constants/theme';
 import SettingItem from './components/SettingItem';
 import RevealSeedPhrase from '../RevealSeedPhrase';
 import InfoItem from './components/InfoItem';
@@ -25,6 +25,10 @@ const Settings = () => {
 
   const openModal = () => {
     modalRef.current?.open();
+  };
+
+  const closeModal = () => {
+    modalRef.current?.close();
   };
 
   const openRevealSeedPhrase = () => {
@@ -66,7 +70,16 @@ const Settings = () => {
         <Icon name="gear" />
       </Touchable>
       <Modal modalRef={modalRef} fullHeight>
-        <Header center={<Text style={FontStyles.Subtitle2}>Settings</Text>} />
+        <Header
+          center={<Text style={FontStyles.Subtitle2}>Settings</Text>}
+          right={
+            <Text
+              style={[FontStyles.Normal, styles.valid]}
+              onPress={closeModal}>
+              Close
+            </Text>
+          }
+        />
         <View style={styles.container}>
           <View>
             {settingsItems.map((item, index) => (
@@ -100,5 +113,8 @@ const styles = StyleSheet.create({
   infoContainer: {
     paddingHorizontal: 20,
     paddingVertical: 30,
+  },
+  valid: {
+    color: Colors.ActionBlue,
   },
 });
