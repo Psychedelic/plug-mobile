@@ -12,6 +12,7 @@ import {
   setAssetsAndLoading,
   setAssetsAndTransactions,
   getNFTs,
+  resetUserState,
 } from './user';
 
 export const initKeyring = createAsyncThunk('keyring/init', async () => {
@@ -32,7 +33,9 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
 
 export const createWallet = createAsyncThunk(
   'keyring/createWallet',
-  async (password, { getState }) => {
+  async (password, { getState, dispatch }) => {
+    dispatch(reset());
+    dispatch(resetUserState());
     const { instance } = getState().keyring;
     const mnemonic = await generateMnemonic();
     const response = await instance?.importMnemonic({ password, mnemonic });
@@ -45,6 +48,8 @@ export const createWallet = createAsyncThunk(
 export const importWallet = createAsyncThunk(
   'keyring/importWallet',
   async (params, { getState, dispatch }) => {
+    dispatch(reset());
+    dispatch(resetUserState());
     const state = getState();
     const { icpPrice } = params;
     const instance = state.keyring?.instance;
@@ -182,7 +187,7 @@ export const keyringSlice = createSlice({
       state.wallets = action.payload;
     },
     reset: state => {
-      state = DEFAULT_STATE;
+      state = { ...DEFAULT_STATE, instance: state.instance };
     },
   },
   extraReducers: {
@@ -212,11 +217,13 @@ export const keyringSlice = createSlice({
       const { wallet } = action.payload;
       state.currentWallet = wallet;
       state.wallets = [wallet];
+      state.isInitialized = true;
     },
     [importWallet.fulfilled]: (state, action) => {
       const { wallet } = action.payload;
       state.wallets = [wallet];
       state.currentWallet = wallet;
+      state.isInitialized = true;
     },
     [setCurrentPrincipal.fulfilled]: (state, action) => {
       const { wallet } = action.payload;
