@@ -1,23 +1,36 @@
 import React from 'react';
-import Plug from '../../assets/icons/plug-white.png';
+import { useSelector } from 'react-redux';
 import { View, Text, Image } from 'react-native';
-import Button from '../../components/buttons/Button';
+import { useNavigation } from '@react-navigation/native';
+
 import RainbowButton from '../../components/buttons/RainbowButton';
 import Container from '../../components/common/Container';
-import { useNavigation } from '@react-navigation/native';
+import Plug from '../../assets/icons/plug-white.png';
+import Button from '../../components/buttons/Button';
+import { FontStyles } from '../../constants/theme';
 import Routes from '../../navigation/Routes';
 import styles from './styles';
 
 function Welcome() {
   const navigation = useNavigation();
+  const { isInitialized } = useSelector(state => state.keyring);
 
   const onPress = flow => () =>
     navigation.navigate(Routes.CREATE_PASSWORD, {
       flow,
     });
 
+  const handleBack = () => {
+    navigation.navigate(Routes.LOGIN_SCREEN);
+  };
+
   return (
     <Container>
+      {isInitialized && (
+        <Text style={[FontStyles.Normal, styles.valid]} onPress={handleBack}>
+          Back
+        </Text>
+      )}
       <View style={styles.container}>
         <Image source={Plug} />
         <Text style={styles.title}>Welcome to Plug</Text>

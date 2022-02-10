@@ -36,9 +36,20 @@ function SaveContact({ modalRef, onClose, id }) {
     modalRef.current?.close();
   };
 
+  const closeModal = () => {
+    modalRef.current?.close();
+  };
+
   return (
     <Modal modalRef={modalRef} adjustToContentHeight onClose={handleClose}>
-      <Header center={<Text style={FontStyles.Subtitle2}>{title}</Text>} />
+      <Header
+        right={
+          <Text style={[FontStyles.Normal, styles.valid]} onPress={closeModal}>
+            Close
+          </Text>
+        }
+        center={<Text style={FontStyles.Subtitle2}>{title}</Text>}
+      />
       <View style={styles.container}>
         <TextInput
           autoFocus

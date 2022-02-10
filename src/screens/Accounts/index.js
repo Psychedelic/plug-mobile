@@ -112,6 +112,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
         </Touchable>
         <CreateEditAccount
           modalRef={createEditAccountRef}
+          accountsModalRef={modalRef}
           account={selectedAccount}
         />
       </View>

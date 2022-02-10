@@ -5,10 +5,10 @@ import { Text, Switch, View } from 'react-native';
 import RainbowButton from '../../../../components/buttons/RainbowButton';
 import PasswordInput from '../../../../components/common/PasswordInput';
 import Column from '../../../../components/layout/Column';
-
 import Header from '../../../../components/common/Header';
-import Modal from '../../../../components/modal';
+import { FontStyles } from '../../../../constants/theme';
 import useKeyring from '../../../../hooks/useKeyring';
+import Modal from '../../../../components/modal';
 import styles from './styles';
 
 function FaceId({ modalRef }) {
@@ -50,9 +50,20 @@ function FaceId({ modalRef }) {
     setLoading(false);
   };
 
+  const closeModal = () => {
+    modalRef.current?.close();
+  };
+
   return (
     <Modal modalRef={modalRef} onClose={handleOnClose} adjustToContentHeight>
-      <Header center={<Text style={styles.title}>Face ID</Text>} />
+      <Header
+        right={
+          <Text style={[FontStyles.Normal, styles.valid]} onPress={closeModal}>
+            Close
+          </Text>
+        }
+        center={<Text style={styles.title}>Face ID</Text>}
+      />
       <Column style={styles.container}>
         {!loggedIn ? (
           <>

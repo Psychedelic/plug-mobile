@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { FontStyles } from '../../../../constants/theme';
+import { FontStyles, Colors } from '../../../../constants/theme';
 
 const commonPadding = 20;
 
@@ -25,5 +25,8 @@ export default StyleSheet.create({
   },
   buttonStyle: {
     marginTop: commonPadding,
+  },
+  valid: {
+    color: Colors.ActionBlue,
   },
 });

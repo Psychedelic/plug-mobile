@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+
 import { Colors } from '../../constants/theme';
 
 export default StyleSheet.create({
@@ -26,5 +27,10 @@ export default StyleSheet.create({
   },
   buttonStyling: {
     minWidth: '84%',
+  },
+  valid: {
+    color: Colors.ActionBlue,
+    marginTop: 23,
+    marginLeft: 30,
   },
 });
