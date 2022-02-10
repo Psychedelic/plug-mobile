@@ -1,11 +1,12 @@
+import React, { useRef, useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core';
 import { useSelector } from 'react-redux';
-import React, { useRef } from 'react';
 import { View } from 'react-native';
 
 import AccountInfo from '../../../../components/common/AccountInfo';
 import Touchable from '../../../../components/animations/Touchable';
 import UserIcon from '../../../../components/common/UserIcon';
+import { useDebounce } from '../../../../hooks/useDebounce';
 import Header from '../../../../components/common/Header';
 import { Colors } from '../../../../constants/theme';
 import Routes from '../../../../navigation/Routes';
@@ -20,6 +21,8 @@ const WalletHeader = () => {
   const modalRef = useRef(null);
   const sendRef = useRef(null);
   const depositRef = useRef(null);
+  const { debounce } = useDebounce();
+  const [navigated, setNavigated] = useState(false);
   const { currentWallet } = useSelector(state => state.keyring);
 
   const navigation = useNavigation();
@@ -58,6 +61,18 @@ const WalletHeader = () => {
     },
   ];
 
+  useEffect(() => {
+    setNavigated(false);
+    return () => setNavigated(true);
+  });
+
+  const handleGoToProfile = () => {
+    if (!navigated) {
+      setNavigated(true);
+      navigation.jumpTo(Routes.PROFILE_SCREEN);
+    }
+  };
+
   return (
     <>
       <Header
@@ -65,7 +80,7 @@ const WalletHeader = () => {
           <UserIcon
             icon={currentWallet?.icon}
             size="small"
-            onPress={() => navigation.navigate(Routes.PROFILE_SCREEN)}
+            onPress={() => debounce(handleGoToProfile)}
           />
         }
         center={<AccountInfo />}
