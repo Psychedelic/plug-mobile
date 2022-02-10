@@ -80,7 +80,7 @@ function Login() {
         <View style={styles.container}>
           <Image source={Plug} />
           <Text style={styles.title}>Unlock Plug</Text>
-          <StatusBar barStyle="dark-content" />
+          <StatusBar barStyle="light-content" />
           <PasswordInput
             autoFocus
             error={error}
