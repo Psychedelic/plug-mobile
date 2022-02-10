@@ -91,19 +91,27 @@ export const login = createAsyncThunk(
     const state = getState();
     const instance = state.keyring?.instance;
     const { icpPrice, onError } = params;
-    const { unlocked } = await privateUnlock(params, state);
-    const { wallets, currentWalletId } = await instance?.getState();
-
-    if (unlocked) {
-      dispatch(setCurrentWallet(wallets[currentWalletId]));
-      dispatch(setWallets(wallets));
-      await privateGetAssets({ refresh: true, icpPrice }, state);
-      dispatch(setAssetsLoading(false));
-    } else {
+    const handleError = () => {
       dispatch(setAssetsLoading(false));
       onError();
+    };
+
+    try {
+      const { unlocked } = await privateUnlock(params, state);
+      const { wallets, currentWalletId } = await instance?.getState();
+      if (unlocked) {
+        dispatch(setCurrentWallet(wallets[currentWalletId]));
+        dispatch(setWallets(wallets));
+        await privateGetAssets({ refresh: true, icpPrice }, state);
+        dispatch(setAssetsLoading(false));
+      } else {
+        handleError();
+      }
+      return unlocked;
+    } catch (e) {
+      console.log('Error at login: ', e);
+      handleError();
     }
-    return unlocked;
   },
 );
 
