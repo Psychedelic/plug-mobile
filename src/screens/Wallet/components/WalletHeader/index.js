@@ -76,13 +76,13 @@ const WalletHeader = () => {
   return (
     <>
       <Header
-        left={
-          <UserIcon
-            icon={currentWallet?.icon}
-            size="small"
-            onPress={() => debounce(handleGoToProfile)}
-          />
-        }
+        // left={
+        //   <UserIcon
+        //     icon={currentWallet?.icon}
+        //     size="small"
+        //     onPress={() => debounce(handleGoToProfile)}
+        //   />
+        // }
         center={<AccountInfo />}
         right={
           <Touchable onPress={openModal}>
