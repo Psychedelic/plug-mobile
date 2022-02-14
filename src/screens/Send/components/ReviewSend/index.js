@@ -143,16 +143,18 @@ const ReviewSend = ({
           </Column>
           <UserIcon size="medium" />
         </Row>
-        <Row style={styles.row}>
-          <Text style={FontStyles.Subtitle3}>
-            {`Total Fee: ${transactionFee} ${
-              token?.symbol
-            } ($${formatSendAmount(
-              transactionFee * tokenPrice,
-              USD_MAX_DECIMALS + 1,
-            )})`}
-          </Text>
-        </Row>
+        {token && (
+          <Row style={styles.row}>
+            <Text style={FontStyles.Subtitle3}>
+              {`Total Fee: ${transactionFee} ${
+                token?.symbol
+              } ($${formatSendAmount(
+                transactionFee * tokenPrice,
+                USD_MAX_DECIMALS + 1,
+              )})`}
+            </Text>
+          </Row>
+        )}
         {transactionCompleted ? (
           token &&
           token.symbol === 'ICP' && (
