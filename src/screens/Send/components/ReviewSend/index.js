@@ -145,7 +145,9 @@ const ReviewSend = ({
         </Row>
         <Row style={styles.row}>
           <Text style={FontStyles.Subtitle3}>
-            {`Total Fee: ${transactionFee} ${token?.symbol} (${formatSendAmount(
+            {`Total Fee: ${transactionFee} ${
+              token?.symbol
+            } ($${formatSendAmount(
               transactionFee * tokenPrice,
               USD_MAX_DECIMALS + 1,
             )})`}

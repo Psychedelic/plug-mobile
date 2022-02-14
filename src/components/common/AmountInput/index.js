@@ -64,7 +64,7 @@ const AmountInput = ({
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
         />
-        {selected && (
+        {selected && maxAmount && (
           <Button
             variant="gray"
             text="Max"

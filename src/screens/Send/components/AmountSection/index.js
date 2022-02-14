@@ -79,6 +79,7 @@ const AmountSection = ({
         selectedInput={selectedInput}
       />
       <AmountInput
+        autoFocus
         value={tokenAmount}
         onChange={handleSetTokenAmount}
         maxAmount={availableAmount}
@@ -88,10 +89,8 @@ const AmountSection = ({
         customStyle={styles.firstInput}
       />
       <AmountInput
-        autoFocus
         value={usdAmount}
         onChange={handleSetUsdAmount}
-        maxAmount={availableUsdAmount}
         selected={selectedInput === 'USD'}
         setSelected={setSelectedInput}
         symbol="USD"
