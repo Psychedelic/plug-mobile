@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 import RainbowButton from '../../../../components/buttons/RainbowButton';
 import TokenSelector from '../../../../components/tokens/TokenSelector';
 import AmountInput from '../../../../components/common/AmountInput';
-import { formatSendAmount } from '../../utils';
 import styles from './styles';
-
-const USD_MAX_DECIMALS = 2;
-const ICP_MAX_DECIMALS = 8;
+import {
+  formatSendAmount,
+  ICP_MAX_DECIMALS,
+  USD_MAX_DECIMALS,
+} from '../../utils';
 
 const AmountSection = ({
   selectedToken,
@@ -78,6 +79,7 @@ const AmountSection = ({
         selectedInput={selectedInput}
       />
       <AmountInput
+        autoFocus
         value={tokenAmount}
         onChange={handleSetTokenAmount}
         maxAmount={availableAmount}
@@ -87,10 +89,8 @@ const AmountSection = ({
         customStyle={styles.firstInput}
       />
       <AmountInput
-        autoFocus
         value={usdAmount}
         onChange={handleSetUsdAmount}
-        maxAmount={availableUsdAmount}
         selected={selectedInput === 'USD'}
         setSelected={setSelectedInput}
         symbol="USD"
