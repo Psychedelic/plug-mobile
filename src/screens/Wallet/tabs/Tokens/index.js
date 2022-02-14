@@ -7,7 +7,6 @@ import TokenItem from '../../../../components/tokens/TokenItem';
 import Container from '../../../../components/common/Container';
 import Divider from '../../../../components/common/Divider';
 import { useICPPrice } from '../../../../redux/slices/icp';
-import WalletHeader from '../../components/WalletHeader';
 import Row from '../../../../components/layout/Row';
 import Send from '../../../../screens/Send';
 import {
@@ -47,8 +46,12 @@ function Tokens() {
   }, []);
 
   return (
-    <Container>
-      <WalletHeader />
+    <Container
+      outerContainerStyle={{
+        marginTop: 0,
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
+      }}>
       <Row style={styles.rowStyle}>
         <Text style={styles.title}>Tokens</Text>
         <Text style={styles.title}>{`$${usdSum}`}</Text>

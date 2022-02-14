@@ -7,6 +7,7 @@ import React, { useEffect } from 'react';
 import { AppState } from 'react-native';
 
 import ImportSeedPhrase from '../screens/Welcome/views/ImportSeedPhrase';
+import WalletHeader from '../screens/Wallet/components/WalletHeader';
 import BackupSeedPhrase from '../screens/Welcome/views/BackupSeedPhrase';
 import CreatePassword from '../screens/Welcome/views/CreatePassword';
 import SwipeNavigator from './navigators/SwipeNavigator';
@@ -17,6 +18,10 @@ import Login from '../screens/Login';
 import Routes from './Routes';
 
 const Stack = createStackNavigator();
+
+export const commonNavigatorOptions = {
+  headerShown: false,
+};
 
 const Navigator = () => {
   const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
@@ -60,29 +65,36 @@ const Navigator = () => {
   return (
     <NavigationContainer ref={navigationRef}>
       <Host>
-        <Stack.Navigator
-          initialRouteName={initialRoute}
-          screenOptions={{
-            headerShown: false,
-          }}>
+        <Stack.Navigator initialRouteName={initialRoute}>
           <Stack.Screen name={Routes.WELCOME_SCREEN} component={Welcome} />
           <Stack.Screen
             name={Routes.CREATE_PASSWORD}
             component={CreatePassword}
+            options={commonNavigatorOptions}
           />
           <Stack.Screen
             name={Routes.BACKUP_SEED_PHRASE}
             component={BackupSeedPhrase}
+            options={commonNavigatorOptions}
           />
           <Stack.Screen
             name={Routes.IMPORT_SEED_PHRASE}
             component={ImportSeedPhrase}
+            options={commonNavigatorOptions}
           />
-          <Stack.Screen name={Routes.LOGIN_SCREEN} component={Login} />
+          <Stack.Screen
+            name={Routes.LOGIN_SCREEN}
+            component={Login}
+            options={commonNavigatorOptions}
+          />
           <Stack.Screen
             name={Routes.SWIPE_LAYOUT}
             component={SwipeNavigator}
-            options={{ gestureEnabled: false }}
+            options={{
+              gestureEnabled: false,
+              header: props => <WalletHeader {...props} />,
+              headerShown: true,
+            }}
           />
         </Stack.Navigator>
       </Host>

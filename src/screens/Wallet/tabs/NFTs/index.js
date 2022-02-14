@@ -1,13 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { RefreshControl, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import EmptyState from '../../../../components/common/EmptyState';
 import Container from '../../../../components/common/Container';
 import Divider from '../../../../components/common/Divider';
 import { getNFTs } from '../../../../redux/slices/user';
-import { ScrollView } from 'react-native-gesture-handler';
-import WalletHeader from '../../components/WalletHeader';
 import { Colors } from '../../../../constants/theme';
 import NftItem from './components/NftItem/index';
 import NftDetail from '../../../NftDetail';
@@ -43,8 +42,12 @@ const NFTs = () => {
 
   return (
     <>
-      <Container>
-        <WalletHeader />
+      <Container
+        outerContainerStyle={{
+          marginTop: 0,
+          borderTopLeftRadius: 0,
+          borderTopRightRadius: 0,
+        }}>
         <Text style={styles.title}>NFTs</Text>
         <Divider />
         <ScrollView

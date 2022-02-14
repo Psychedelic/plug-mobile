@@ -1,8 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core';
 import { useSelector } from 'react-redux';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 
+import Settings from '../../../Settings';
 import AccountInfo from '../../../../components/common/AccountInfo';
 import Touchable from '../../../../components/animations/Touchable';
 import UserIcon from '../../../../components/common/UserIcon';
@@ -75,21 +76,31 @@ const WalletHeader = () => {
 
   return (
     <>
-      <Header
-        left={
-          <UserIcon
-            icon={currentWallet?.icon}
-            size="small"
-            onPress={() => debounce(handleGoToProfile)}
-          />
-        }
-        center={<AccountInfo />}
-        right={
-          <Touchable onPress={openModal}>
-            <Icon name="groupedActions" />
-          </Touchable>
-        }
-      />
+      <View
+        style={{
+          backgroundColor: Colors.Black.Pure,
+          paddingTop: 42,
+        }}>
+        <Header
+          left={
+            <UserIcon
+              icon={currentWallet?.icon}
+              size="small"
+              onPress={() => debounce(handleGoToProfile)}
+            />
+          }
+          center={<AccountInfo />}
+          right={
+            <Touchable onPress={openModal}>
+              <Icon name="groupedActions" />
+            </Touchable>
+          }
+          style={{
+            borderTopLeftRadius: 40,
+            borderTopRightRadius: 40,
+          }}
+        />
+      </View>
       <Modal modalRef={modalRef} adjustToContentHeight>
         <View style={styles.container}>
           <View style={styles.buttons}>

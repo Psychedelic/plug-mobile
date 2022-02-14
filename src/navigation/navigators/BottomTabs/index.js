@@ -11,10 +11,10 @@ const BottomTabs = ({ state, navigation }) => {
 
   return (
     <View style={styles.root}>
-      {tabs.map((route, index) => {
-        const isTokens = index === 0;
+      {state.routes.map((route, index) => {
+        const isTokens = index === 1;
         const label = route.name;
-        const isFocused = state.index === index + 1;
+        const isFocused = state.index === index;
 
         const onPress = () => {
           const event = navigation.emit({
