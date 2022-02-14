@@ -3,17 +3,23 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  View,
 } from 'react-native';
+
+import { isIos } from '../../../constants/platform';
+
+const containerStyle = { flex: 1 };
 
 const KeyboardHider = ({ children }) => {
   const handleClose = () => {
     Keyboard.dismiss();
   };
+
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+    <KeyboardAvoidingView
+      style={containerStyle}
+      behavior={isIos ? 'padding' : 'height'}>
       <TouchableWithoutFeedback onPress={handleClose}>
-        <View style={{ flex: 1 }}>{children}</View>
+        <>{children}</>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );

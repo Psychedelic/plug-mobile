@@ -79,8 +79,9 @@ const ImportSeedPhrase = ({ navigation, route }) => {
             Please enter your 12 word Secret Recovery Phrase.
           </Text>
           <TextInput
-            value={seedPhrase}
+            multiline
             variant="multi"
+            value={seedPhrase}
             onChangeText={onChangeText}
             placeholder="Secret Recovery Phrase"
             customStyle={{
@@ -88,7 +89,6 @@ const ImportSeedPhrase = ({ navigation, route }) => {
               marginTop: 30,
               marginBottom: 30,
             }}
-            multiline
           />
           <RainbowButton
             text="Continue"
