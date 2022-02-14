@@ -2,9 +2,10 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Text, ScrollView, Keyboard } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { DEFAULT_FEE, XTC_FEE, ADDRESS_TYPES } from '../../constants/addresses';
+import { getAvailableAmount, getUsdAvailableAmount } from './utils';
 import { TRANSACTION_STATUS } from '../../redux/constants';
 import TextInput from '../../components/common/TextInput';
+import { ADDRESS_TYPES } from '../../constants/addresses';
 import ContactSection from './components/ContactSection';
 import AmountSection from './components/AmountSection';
 import TokenSection from './components/TokenSection';
@@ -22,12 +23,12 @@ import {
   setTransaction,
   transferNFT,
 } from '../../redux/slices/user';
+import styles from './styles';
 import {
   validatePrincipalId,
   validateAccountId,
   validateCanisterId,
 } from '../../helpers/ids';
-import styles from './styles';
 
 const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
 
@@ -93,23 +94,6 @@ const Send = ({ modalRef, nft }) => {
   const onReview = () => {
     Keyboard.dismiss();
     reviewRef.current?.open();
-  };
-
-  const getTransactionFee = () => {
-    let currentFee;
-
-    switch (selectedToken?.symbol) {
-      case 'ICP':
-        currentFee = DEFAULT_FEE;
-        break;
-      case 'XTC':
-        currentFee = XTC_FEE;
-        break;
-      default:
-        currentFee = 0.0;
-        break;
-    }
-    return currentFee;
   };
 
   const handleSend = () => {
@@ -188,11 +172,11 @@ const Send = ({ modalRef, nft }) => {
     }
   }, [address, selectedContact, selectedToken]);
 
-  const availableAmount = Math.max(
-    (selectedToken?.amount || 0) - getTransactionFee(),
-    0,
+  const availableAmount = getAvailableAmount(selectedToken?.amount);
+  const availableUsdAmount = getUsdAvailableAmount(
+    availableAmount,
+    selectedTokenPrice,
   );
-  const availableUsdAmount = availableAmount * (selectedTokenPrice || 1);
 
   return (
     <Modal modalRef={modalRef} onClose={resetState}>
@@ -245,6 +229,7 @@ const Send = ({ modalRef, nft }) => {
           to={selectedContact ? selectedContact?.id : address}
           contact={selectedContact}
           amount={tokenAmount}
+          tokenPrice={selectedTokenPrice}
           value={usdAmount}
           nft={selectedNft}
           onSend={handleSend}

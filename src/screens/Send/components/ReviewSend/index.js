@@ -20,6 +20,11 @@ import Row from '../../../../components/layout/Row';
 import Routes from '../../../../navigation/Routes';
 import Modal from '../../../../components/modal';
 import Icon from '../../../../components/icons';
+import {
+  formatSendAmount,
+  getTransactionFee,
+  USD_MAX_DECIMALS,
+} from '../../utils';
 import SaveContact from '../SaveContact';
 import styles from './styles';
 
@@ -35,6 +40,7 @@ const ReviewSend = ({
   onClose,
   onSuccess,
   transaction,
+  tokenPrice,
   loading,
   ...props
 }) => {
@@ -44,6 +50,8 @@ const ReviewSend = ({
   const contacts = useSelector(state => state.user.contacts, shallowEqual);
   const [selectedContact, setSelectedContact] = useState(contact || null);
   const saveContactRef = useRef(null);
+  const transactionFee = getTransactionFee(token?.symbol);
+
   const handleSaveContact = () => {
     saveContactRef.current?.open();
   };
@@ -134,6 +142,14 @@ const ReviewSend = ({
             )}
           </Column>
           <UserIcon size="medium" />
+        </Row>
+        <Row style={styles.row}>
+          <Text style={FontStyles.Subtitle3}>
+            {`Total Fee: ${transactionFee} ${token?.symbol} (${formatSendAmount(
+              transactionFee * tokenPrice,
+              USD_MAX_DECIMALS + 1,
+            )})`}
+          </Text>
         </Row>
         {transactionCompleted ? (
           token &&
