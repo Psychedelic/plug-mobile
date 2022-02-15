@@ -10,4 +10,7 @@ export default StyleSheet.create({
     fontSize: 16,
     marginTop: 4,
   },
+  disabled: {
+    opacity: 0.3,
+  },
 });

@@ -58,6 +58,7 @@ const WalletHeader = () => {
       image: <Icon name="swap" />,
       colors: [Colors.Rainbow.Green, Colors.Rainbow.Teal],
       text: 'Swap',
+      disabled: true,
     },
   ];
 
