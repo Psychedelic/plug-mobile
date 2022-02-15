@@ -7,12 +7,18 @@ import Icon from '../../../components/icons';
 import styles from './styles';
 
 const BottomTabs = ({ state, navigation }) => {
+  const getTabStatus = index => ({
+    isProfile: index === 0,
+    isTokens: index === 1,
+    isNFTs: index === 2,
+    isFocused: state.index === index,
+  });
+
   return (
     <View style={styles.root}>
       {state.routes.map((route, index) => {
-        const isTokens = index === 1;
+        const { isProfile, isTokens, isFocused } = getTabStatus(index);
         const label = route.name;
-        const isFocused = state.index === index;
 
         const onPress = () => {
           const event = navigation.emit({
@@ -31,7 +37,7 @@ const BottomTabs = ({ state, navigation }) => {
             <View key={index} style={styles.tab}>
               <Text>
                 <Icon
-                  name={isTokens ? 'tokens' : 'nfts'}
+                  name={isProfile ? 'tokens' : isTokens ? 'tokens' : 'nfts'}
                   color={
                     isFocused ? Colors.White.Primary : Colors.White.Secondary
                   }
