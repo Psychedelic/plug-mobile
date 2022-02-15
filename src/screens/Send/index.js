@@ -15,6 +15,7 @@ import { FontStyles } from '../../constants/theme';
 import SaveContact from './components/SaveContact';
 import ReviewSend from './components/ReviewSend';
 import { USD_PER_TC } from '../../utils/assets';
+import Keychain from '../../modules/keychain';
 import XTC_OPTIONS from '../../constants/xtc';
 import Modal from '../../components/modal';
 import {
@@ -56,6 +57,7 @@ const Send = ({ modalRef, nft }) => {
   const [sendingXTCtoCanister, setSendingXTCtoCanister] = useState(false);
 
   const isValidAddress = addressInfo.isValid;
+  const to = address || selectedContact?.id;
 
   const onContactPress = contact => {
     setAddress(null);
@@ -96,37 +98,56 @@ const Send = ({ modalRef, nft }) => {
     reviewRef.current?.open();
   };
 
-  const handleSend = () => {
-    setLoading(true);
-    const to = address || selectedContact.id;
+  const handleSendNFT = () => {
+    dispatch(transferNFT({ to, nft: selectedNft, icpPrice }))
+      .unwrap()
+      .then(response => {
+        if (response.status === TRANSACTION_STATUS.success) {
+          setLoading(false);
+        }
+      });
+  };
 
-    if (selectedNft) {
-      dispatch(transferNFT({ to, nft: selectedNft, icpPrice }))
+  const handleSendToken = () => {
+    if (sendingXTCtoCanister && destination === XTC_OPTIONS.BURN) {
+      dispatch(burnXtc({ to, amount: tokenAmount }));
+    } else {
+      dispatch(
+        sendToken({
+          to,
+          amount: tokenAmount,
+          canisterId: selectedToken?.canisterId,
+          icpPrice,
+        }),
+      )
         .unwrap()
         .then(response => {
-          if (response.status === TRANSACTION_STATUS.success) {
+          if (response.status) {
             setLoading(false);
           }
         });
-    } else {
-      if (sendingXTCtoCanister && destination === XTC_OPTIONS.BURN) {
-        dispatch(burnXtc({ to, amount: tokenAmount }));
+    }
+  };
+
+  const handleSend = async () => {
+    setLoading(true);
+    const isBiometricsAvailable = await Keychain.isSensorAvailable();
+
+    const send = () => {
+      if (selectedNft) {
+        handleSendNFT();
       } else {
-        dispatch(
-          sendToken({
-            to,
-            amount: tokenAmount,
-            canisterId: selectedToken?.canisterId,
-            icpPrice,
-          }),
-        )
-          .unwrap()
-          .then(response => {
-            if (response.status) {
-              setLoading(false);
-            }
-          });
+        handleSendToken();
       }
+    };
+
+    if (isBiometricsAvailable) {
+      const biometrics = await Keychain.getPassword();
+      if (biometrics) {
+        send();
+      }
+    } else {
+      send();
     }
   };
 
