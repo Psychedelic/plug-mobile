@@ -1,12 +1,11 @@
 const Routes = {
-  LOGIN_SCREEN: 'LoginScreen',
-  PROFILE_SCREEN: 'ProfileScreen',
-  SWIPE_LAYOUT: 'SwipeLayout',
-  WALLET_SCREEN: 'WalletScreen',
-  TOKENS: 'Tokens',
+  // Tabs Screens:
   NFTS: 'NFTs',
-
-  CREATE_IMPORT_LAYOUT: 'CreateImportLayout',
+  TOKENS: 'Tokens',
+  PROFILE_SCREEN: 'Profile',
+  SWIPE_LAYOUT: 'SwipeLayout',
+  // Auth Screens:
+  LOGIN_SCREEN: 'LoginScreen',
   WELCOME_SCREEN: 'WelcomeScreen',
   CREATE_PASSWORD: 'CreatePassword',
   IMPORT_SEED_PHRASE: 'ImportSeedPhrase',

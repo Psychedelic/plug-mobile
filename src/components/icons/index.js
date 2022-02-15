@@ -17,6 +17,7 @@ import ArrowDownIcon from './svg/ArrowDownIcon';
 import DepositIcon from './svg/DepositIcon';
 import ConfirmIcon from './svg/ConfirmIcon';
 import UnknownIcon from './svg/UnknownIcon';
+import ProfileIcon from './svg/ProfileIcon';
 import FaceIdIcon from './svg/FaceIdIcon';
 import TokensIcon from './svg/TokensIcon';
 import NFTsIcon from './svg/NFTsIcon';
@@ -40,6 +41,7 @@ export const IconTypes = {
   swap: SwapIcon,
   dfinity: ICPIcon,
   tokens: TokensIcon,
+  profile: ProfileIcon,
   unknown: UnknownIcon,
   confirm: ConfirmIcon,
   deposit: DepositIcon,

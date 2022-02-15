@@ -1,79 +1,63 @@
 import React from 'react';
-import { Colors } from '../../../constants/theme';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
+
 import Touchable from '../../../components/animations/Touchable';
+import { Colors } from '../../../constants/theme';
 import Icon from '../../../components/icons';
+import styles from './styles';
 
-const BottomTabs = ({ state, navigation }) => (
-  <View style={styles.root}>
-    {state.routes.map((route, index) => {
-      const label = route.name;
-      const isFocused = state.index === index;
+const BottomTabs = ({ state, navigation }) => {
+  const getTabStatus = index => ({
+    isProfile: index === 0,
+    isTokens: index === 1,
+    isNFTs: index === 2,
+    isFocused: state.index === index,
+  });
 
-      const onPress = () => {
-        const event = navigation.emit({
-          type: 'tabPress',
-          target: route.key,
-          canPreventDefault: true,
-        });
+  return (
+    <View style={styles.root}>
+      {state.routes.map((route, index) => {
+        const { isProfile, isTokens, isFocused } = getTabStatus(index);
+        const iconName = isProfile ? 'profile' : isTokens ? 'tokens' : 'nfts';
+        const iconSize = '20';
+        const label = route.name;
 
-        if (!isFocused && !event.defaultPrevented) {
-          navigation.navigate({ name: route.name, merge: true });
-        }
-      };
+        const onPress = () => {
+          const event = navigation.emit({
+            type: 'tabPress',
+            target: route.key,
+            canPreventDefault: true,
+          });
 
-      return (
-        <Touchable onPress={onPress} key={route.name}>
-          <View key={index} style={styles.tab}>
-            <Text>
+          if (!isFocused && !event.defaultPrevented) {
+            navigation.navigate({ name: route.name, merge: true });
+          }
+        };
+
+        return (
+          <Touchable onPress={onPress} key={route.name}>
+            <View key={index} style={styles.tab}>
               <Icon
-                name={!index ? 'tokens' : 'nfts'}
+                name={iconName}
+                width={iconSize}
+                height={iconSize}
                 color={
                   isFocused ? Colors.White.Primary : Colors.White.Secondary
                 }
               />
-              ,
-            </Text>
-            <Text
-              style={[
-                isFocused ? styles.selected : styles.default,
-                styles.text,
-              ]}>
-              {label}
-            </Text>
-          </View>
-        </Touchable>
-      );
-    })}
-  </View>
-);
+              <Text
+                style={[
+                  isFocused ? styles.selected : styles.default,
+                  styles.text,
+                ]}>
+                {label}
+              </Text>
+            </View>
+          </Touchable>
+        );
+      })}
+    </View>
+  );
+};
 
 export default BottomTabs;
-
-const styles = StyleSheet.create({
-  root: {
-    height: 94,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.Black.Primary,
-  },
-  tab: {
-    width: 150,
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingBottom: 20,
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginTop: 4,
-  },
-  selected: {
-    color: Colors.White.Primary,
-  },
-  default: {
-    color: Colors.White.Secondary,
-  },
-});
