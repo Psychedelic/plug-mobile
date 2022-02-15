@@ -18,6 +18,8 @@ const BottomTabs = ({ state, navigation }) => {
     <View style={styles.root}>
       {state.routes.map((route, index) => {
         const { isProfile, isTokens, isFocused } = getTabStatus(index);
+        const iconName = isProfile ? 'profile' : isTokens ? 'tokens' : 'nfts';
+        const iconSize = '20';
         const label = route.name;
 
         const onPress = () => {
@@ -35,15 +37,14 @@ const BottomTabs = ({ state, navigation }) => {
         return (
           <Touchable onPress={onPress} key={route.name}>
             <View key={index} style={styles.tab}>
-              <Text>
-                <Icon
-                  name={isProfile ? 'profile' : isTokens ? 'tokens' : 'nfts'}
-                  color={
-                    isFocused ? Colors.White.Primary : Colors.White.Secondary
-                  }
-                />
-                ,
-              </Text>
+              <Icon
+                name={iconName}
+                width={iconSize}
+                height={iconSize}
+                color={
+                  isFocused ? Colors.White.Primary : Colors.White.Secondary
+                }
+              />
               <Text
                 style={[
                   isFocused ? styles.selected : styles.default,

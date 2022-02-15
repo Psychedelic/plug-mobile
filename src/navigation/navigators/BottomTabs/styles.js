@@ -19,7 +19,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   text: {
-    fontSize: 20,
+    fontSize: 18,
     marginTop: 4,
     fontWeight: 'bold',
   },
