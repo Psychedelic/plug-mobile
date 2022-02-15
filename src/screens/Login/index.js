@@ -89,7 +89,7 @@ function Login() {
             customStyle={styles.input}
           />
           <RainbowButton
-            text="Submit"
+            text="Unlock Wallet"
             onPress={() => handleSubmit(password)}
             loading={assetsLoading}
             disabled={!password || password.length < 12}
