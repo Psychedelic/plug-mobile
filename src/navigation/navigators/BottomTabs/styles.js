@@ -12,7 +12,7 @@ export default StyleSheet.create({
   },
   tab: {
     bottom: 0,
-    width: 150,
+    width: 130,
     height: '100%',
     paddingBottom: 20,
     alignItems: 'center',
@@ -28,9 +28,5 @@ export default StyleSheet.create({
   },
   default: {
     color: Colors.White.Secondary,
-  },
-  profileTab: {
-    width: 150,
-    paddingLeft: 20,
   },
 });
