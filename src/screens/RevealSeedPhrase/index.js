@@ -7,7 +7,7 @@ import PasswordInput from '../../components/common/PasswordInput';
 import SeedPhrase from '../../components/common/SeedPhrase';
 import Column from '../../components/layout/Column';
 import Header from '../../components/common/Header';
-import useKeyring from '../../hooks/useKeyring';
+import { unlock } from '../../redux/slices/keyring';
 import Copy from '../../components/common/Copy';
 import Modal from '../../components/modal';
 import styles from './styles';
@@ -19,8 +19,6 @@ const RevealSeedPhrase = ({ modalRef }) => {
   const [loading, setLoading] = useState(false);
 
   const { instance } = useSelector(state => state.keyring);
-
-  const { unlock } = useKeyring();
 
   const clearState = () => {
     setPassword('');

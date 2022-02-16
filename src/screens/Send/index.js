@@ -15,7 +15,7 @@ import { FontStyles } from '../../constants/theme';
 import SaveContact from './components/SaveContact';
 import ReviewSend from './components/ReviewSend';
 import { USD_PER_TC } from '../../utils/assets';
-import Keychain from '../../modules/keychain';
+import useKeychain from '../../hooks/useKeychain';
 import XTC_OPTIONS from '../../constants/xtc';
 import Modal from '../../components/modal';
 import {
@@ -36,8 +36,11 @@ const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
 const Send = ({ modalRef, nft }) => {
   const dispatch = useDispatch();
   const icpPrice = useICPPrice();
+  const { isSensorAvailable, getPassword } = useKeychain();
   const { currentWallet } = useSelector(state => state.keyring);
-  const { assets, transaction, collections } = useSelector(state => state.user);
+  const { assets, transaction, collections, usingBiometrics } = useSelector(
+    state => state.user,
+  );
 
   const reviewRef = useRef(null);
   const saveContactRef = useRef(null);
@@ -131,7 +134,7 @@ const Send = ({ modalRef, nft }) => {
 
   const handleSend = async () => {
     setLoading(true);
-    const isBiometricsAvailable = await Keychain.isSensorAvailable();
+    const isBiometricsAvailable = await isSensorAvailable();
 
     const send = () => {
       if (selectedNft) {
@@ -141,8 +144,8 @@ const Send = ({ modalRef, nft }) => {
       }
     };
 
-    if (isBiometricsAvailable) {
-      const biometrics = await Keychain.getPassword();
+    if (isBiometricsAvailable && usingBiometrics) {
+      const biometrics = await getPassword();
       if (biometrics) {
         send();
       }

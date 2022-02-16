@@ -1,4 +1,7 @@
 import RNSInfo from 'react-native-sensitive-info';
+import { useDispatch } from 'react-redux';
+
+import { setUsingBiometrics } from '../redux/slices/user';
 
 const KEYCHAIN_CONSTANTS = {
   tokenKey: 'plug-accss-token',
@@ -17,26 +20,56 @@ const KEYCHAIN_OPTIONS = {
   kSecUseOperationPrompt: KEYCHAIN_CONSTANTS.kSecUseOperationPrompt,
 };
 
-export default {
-  async setPassword(password) {
+const useKeychain = () => {
+  const dispatch = useDispatch();
+
+  // Core Keychain functions:
+  const setPassword = async password => {
     const { tokenKey } = KEYCHAIN_CONSTANTS;
 
     return RNSInfo.setItem(tokenKey, password, KEYCHAIN_OPTIONS);
-  },
+  };
 
-  async getPassword() {
+  const getPassword = async () => {
     const { tokenKey } = KEYCHAIN_CONSTANTS;
     const password = await RNSInfo.getItem(tokenKey, KEYCHAIN_OPTIONS);
     return password;
-  },
+  };
 
-  async resetPassword() {
+  const resetPassword = async () => {
     const { tokenKey } = KEYCHAIN_CONSTANTS;
 
     return RNSInfo.deleteItem(tokenKey, KEYCHAIN_OPTIONS);
-  },
+  };
 
-  async isSensorAvailable() {
+  const isSensorAvailable = async () => {
     return RNSInfo.isSensorAvailable();
-  },
+  };
+
+  // Statefull Keychain functions:
+  const saveBiometrics = async password => {
+    try {
+      await resetPassword();
+      await setPassword(password);
+      dispatch(setUsingBiometrics(true));
+    } catch {
+      dispatch(setUsingBiometrics(false));
+    }
+  };
+
+  const resetBiometrics = async () => {
+    await resetPassword();
+    dispatch(setUsingBiometrics(false));
+  };
+
+  return {
+    saveBiometrics,
+    resetBiometrics,
+    setPassword,
+    getPassword,
+    resetPassword,
+    isSensorAvailable,
+  };
 };
+
+export default useKeychain;
