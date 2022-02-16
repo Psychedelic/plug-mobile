@@ -55,7 +55,7 @@ const Navigator = () => {
     ? isUnlocked
       ? Routes.SWIPE_LAYOUT
       : Routes.LOGIN_SCREEN
-    : Routes.CREATE_IMPORT_LAYOUT;
+    : Routes.WELCOME_SCREEN;
 
   return (
     <NavigationContainer ref={navigationRef}>
