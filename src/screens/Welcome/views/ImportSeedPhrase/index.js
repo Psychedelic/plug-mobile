@@ -10,15 +10,15 @@ import Container from '../../../../components/common/Container';
 import TextInput from '../../../../components/common/TextInput';
 import { useICPPrice } from '../../../../redux/slices/icp';
 import Header from '../../../../components/common/Header';
+import useKeychain from '../../../../hooks/useKeychain';
 import Back from '../../../../components/common/Back';
-import useKeyring from '../../../../hooks/useKeyring';
 import { Colors } from '../../../../constants/theme';
 import Routes from '../../../../navigation/Routes';
 import styles from './styles';
 
 const ImportSeedPhrase = ({ navigation, route }) => {
   const icpPrice = useICPPrice();
-  const { saveBiometrics } = useKeyring();
+  const { saveBiometrics } = useKeychain();
   const { goBack } = navigation;
   const { password, shouldSaveBiometrics } = route?.params || {};
   const [seedPhrase, setSeedPhrase] = useState(null);

@@ -5,14 +5,15 @@ import { Text, Switch, View } from 'react-native';
 import RainbowButton from '../../../../components/buttons/RainbowButton';
 import PasswordInput from '../../../../components/common/PasswordInput';
 import Column from '../../../../components/layout/Column';
+import { unlock } from '../../../../redux/slices/keyring';
 import Header from '../../../../components/common/Header';
 import { FontStyles } from '../../../../constants/theme';
-import useKeyring from '../../../../hooks/useKeyring';
+import useKeychain from '../../../../hooks/useKeychain';
 import Modal from '../../../../components/modal';
 import styles from './styles';
 
 function FaceId({ modalRef }) {
-  const { saveBiometrics, unlock, resetBiometrics } = useKeyring();
+  const { saveBiometrics, resetBiometrics } = useKeychain();
   const hasBiometrics = useSelector(state => state.user.usingBiometrics);
   const [useBiometrics, setUseBiometrics] = useState(hasBiometrics);
 

@@ -9,14 +9,13 @@ import { reset, createWallet } from '../../../../redux/slices/keyring';
 import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
 import Container from '../../../../components/common/Container';
 import Header from '../../../../components/common/Header';
+import useKeychain from '../../../../hooks/useKeychain';
 import Back from '../../../../components/common/Back';
-import useKeyring from '../../../../hooks/useKeyring';
-import Keychain from '../../../../modules/keychain';
 import Routes from '../../../../navigation/Routes';
 import styles from './styles';
 
 const CreatePassword = ({ route, navigation }) => {
-  const { saveBiometrics } = useKeyring();
+  const { isSensorAvailable, saveBiometrics } = useKeychain();
   const { flow } = route.params;
   const { goBack } = navigation;
   const [password, setPassword] = useState(null);
@@ -27,7 +26,7 @@ const CreatePassword = ({ route, navigation }) => {
   const toggleSwitch = () => setBiometrics(previousState => !previousState);
 
   useEffect(() => {
-    Keychain.isSensorAvailable().then(isAvailable => {
+    isSensorAvailable().then(isAvailable => {
       setBiometryAvailable(isAvailable);
     });
   }, []);
