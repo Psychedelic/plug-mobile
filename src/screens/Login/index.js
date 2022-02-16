@@ -1,4 +1,4 @@
-import { View, StatusBar, Text, Image } from 'react-native';
+import { View, StatusBar, Text, Image, Keyboard } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
@@ -18,6 +18,7 @@ import styles from './styles';
 
 function Login() {
   const [error, setError] = useState(false);
+  const [disableInput, setDisableInput] = useState(false);
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ function Login() {
   const clearState = () => {
     setPassword('');
     setError(false);
+    setDisableInput(false);
   };
 
   const handleGoToWelcome = () => {
@@ -35,6 +37,9 @@ function Login() {
   };
 
   const handleSubmit = async submittedPassword => {
+    setError(false);
+    Keyboard.dismiss();
+    setDisableInput(true);
     dispatch(setAssetsLoading(true));
     dispatch(
       login({
@@ -43,6 +48,7 @@ function Login() {
         onError: () => {
           dispatch(setAssetsLoading(false));
           setError(true);
+          setDisableInput(false);
         },
       }),
     )
@@ -50,9 +56,9 @@ function Login() {
       .then(unlocked => {
         if (unlocked) {
           navigation.navigate(Routes.SWIPE_LAYOUT);
+          clearState();
         }
       });
-    clearState();
   };
 
   useEffect(() => {
@@ -84,6 +90,7 @@ function Login() {
           <PasswordInput
             autoFocus
             error={error}
+            disabled={disableInput}
             password={password}
             onChange={setPassword}
             customStyle={styles.input}
