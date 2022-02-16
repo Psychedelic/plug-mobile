@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { WINDOW_WIDTH } from '../../../constants/platform';
 
 const videoDetailSize = WINDOW_WIDTH - 40;
-const viewSendSize = 45;
+const viewSendSize = 54;
 
 const itemSize = WINDOW_WIDTH / 2 - 40;
 
@@ -57,6 +57,9 @@ export default StyleSheet.create({
   webView: {
     ...commonStyle,
     flex: 1,
+  },
+  webViewSend: {
+    borderRadius: 10,
   },
   containerSend: {
     ...commonSendContainer,

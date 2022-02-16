@@ -33,7 +33,7 @@ import {
 
 const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
 
-const Send = ({ modalRef, nft }) => {
+const Send = ({ modalRef, nft, onSuccess }) => {
   const dispatch = useDispatch();
   const icpPrice = useICPPrice();
   const { isSensorAvailable, getPassword } = useKeychain();
@@ -257,7 +257,10 @@ const Send = ({ modalRef, nft }) => {
           value={usdAmount}
           nft={selectedNft}
           onSend={handleSend}
-          onSuccess={() => modalRef.current?.close()}
+          onSuccess={() => {
+            modalRef.current?.close();
+            onSuccess();
+          }}
           onClose={partialReset}
           transaction={transaction}
           loading={loading}

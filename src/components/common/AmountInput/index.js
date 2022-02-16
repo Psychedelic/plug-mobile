@@ -13,6 +13,7 @@ const AmountInput = ({
   onChange,
   selected,
   setSelected,
+  customPlaceholder,
   symbol,
   maxAmount,
   autoFocus,
@@ -56,7 +57,7 @@ const AmountInput = ({
           onChangeText={onChange}
           value={value}
           keyboardType="numeric"
-          placeholder="0.00"
+          placeholder={customPlaceholder || '0.00'}
           blurOnSubmit={false}
           autoFocus={autoFocus}
           keyboardAppearance="dark"

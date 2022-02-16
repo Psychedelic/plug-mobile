@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 
 import sharedStyles from '../../styles';
 
-function HTMLDisplayer({ loading, hideSpinner, url, style }) {
+function HTMLDisplayer({ loading, hideSpinner, url, style, isSendView }) {
   const webViewRef = useRef(null);
 
   return (

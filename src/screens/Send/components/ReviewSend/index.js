@@ -71,6 +71,7 @@ const ReviewSend = ({
 
     if (transactionCompleted) {
       onSuccess();
+      navigation.navigate(Routes.TOKENS);
     }
   };
 
@@ -108,8 +109,9 @@ const ReviewSend = ({
         {nft && (
           <Row style={styles.row}>
             <Column>
-              <Text style={FontStyles.Title2}>
-                {nft.name || `${nft.collection} #${nft.index}`}
+              <Text style={FontStyles.Title2}>{`#${nft.index}`}</Text>
+              <Text style={FontStyles.Subtitle3}>
+                {nft.name || `${nft.collection}`}
               </Text>
             </Column>
             <NftDisplayer url={nft.url} type={nftType} isSend />

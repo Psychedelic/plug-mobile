@@ -86,7 +86,11 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
           )}
         </View>
       </Modal>
-      <Send modalRef={sendRef} nft={selectedNFT} />
+      <Send
+        modalRef={sendRef}
+        nft={selectedNFT}
+        onSuccess={() => modalRef.current?.close()}
+      />
     </>
   );
 };
