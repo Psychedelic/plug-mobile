@@ -31,7 +31,7 @@ const NftDisplayer = ({ url, style, type, isDetailView, isSend }) => {
         hideSpinner={hideSpinner}
       />
     ) : (
-      <ImageDisplayer style={style} type={type} url={url} />
+      <ImageDisplayer style={style} type={type} url={url} isSendView={isSend} />
     )
   ) : (
     <ActivityIndicator

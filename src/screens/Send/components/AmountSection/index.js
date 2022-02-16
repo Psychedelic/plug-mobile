@@ -83,6 +83,7 @@ const AmountSection = ({
         value={tokenAmount}
         onChange={handleSetTokenAmount}
         maxAmount={availableAmount}
+        customPlaceholder="0.00000000"
         selected={selectedInput === selectedToken.symbol}
         setSelected={setSelectedInput}
         symbol={selectedToken.symbol}

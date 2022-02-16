@@ -7,7 +7,11 @@ import React from 'react';
 
 import sharedStyles from '../../styles';
 
-function ImageDisplayer({ style, type, url }) {
+function ImageDisplayer({ style, type, url, isSendView }) {
+  const imageStyle = isSendView
+    ? { width: 54, height: 54 }
+    : { width: '100%', height: '100%' };
+
   return (
     <MaskedView
       style={[sharedStyles.image, style]}
@@ -15,17 +19,17 @@ function ImageDisplayer({ style, type, url }) {
         <SquircleView
           style={StyleSheet.absoluteFill}
           squircleParams={{
-            cornerRadius: 20,
+            cornerRadius: isSendView ? 10 : 20,
             cornerSmoothing: 1,
           }}
         />
       }>
       {type?.includes('svg') ? (
-        <SvgCssUri width="100%" height="100%" uri={url} />
+        <SvgCssUri {...imageStyle} uri={url} />
       ) : (
         <Image
           resizeMode="cover"
-          style={StyleSheet.absoluteFill}
+          style={imageStyle}
           source={{ uri: url, type }}
         />
       )}
