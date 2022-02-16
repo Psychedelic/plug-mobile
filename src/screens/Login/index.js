@@ -29,9 +29,9 @@ function Login() {
     setError(false);
   };
 
-  const handleImport = () => {
+  const handleGoToWelcome = () => {
     clearState();
-    navigation.navigate(Routes.CREATE_IMPORT_LAYOUT);
+    navigation.navigate(Routes.WELCOME_SCREEN);
   };
 
   const handleSubmit = async submittedPassword => {
@@ -97,7 +97,7 @@ function Login() {
           />
           <Button
             text="Import new Account"
-            onPress={handleImport}
+            onPress={handleGoToWelcome}
             buttonStyle={styles.buttonMargin}
           />
         </View>
