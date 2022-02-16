@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View } from 'react-native';
 
 import scales from '../../../utils/animationScales';
@@ -14,6 +14,7 @@ function PasswordInput({
   error,
   placeholder = 'Enter Password',
   autoFocus,
+  disabled,
 }) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -21,24 +22,32 @@ function PasswordInput({
     setShowPassword(!showPassword);
   };
 
+  useEffect(() => {
+    if (disabled) {
+      setShowPassword(false);
+    }
+  }, [disabled]);
+
   return (
-    <View>
+    <View style={disabled && styles.disabledContainer}>
       <TextInput
-        autoFocus={autoFocus}
         value={password}
-        variant={`${showPassword ? 'text' : 'password'}`}
+        autoFocus={autoFocus}
         onChangeText={onChange}
         placeholder={placeholder}
+        disabled={disabled}
         customStyle={[styles.input, customStyle]}
+        variant={`${showPassword ? 'text' : 'password'}`}
       />
       {error && <Text style={styles.errorText}>The password is incorrect</Text>}
       <Touchable
+        disabled={disabled}
         scale={scales.medium}
         style={styles.eyeContainer}
         onPress={toggleShowPassowrd}>
         <Icon
-          name={`${showPassword ? 'passwordEyeClosedIcon' : 'passwordEyeIcon'}`}
           style={customStyle}
+          name={`${showPassword ? 'passwordEyeClosedIcon' : 'passwordEyeIcon'}`}
         />
       </Touchable>
     </View>

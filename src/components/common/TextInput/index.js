@@ -15,6 +15,7 @@ const TextInput = ({
   onSubmitEditing,
   customStyle,
   textStyle,
+  disabled,
   maxLenght,
   saveContactRef,
   ...props
@@ -48,6 +49,7 @@ const TextInput = ({
         blurOnSubmit={false}
         maxLength={maxLenght}
         value={value}
+        editable={!disabled}
         ref={ref}
         keyboardAppearance="dark"
         {...props}

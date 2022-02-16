@@ -16,4 +16,7 @@ export default StyleSheet.create({
     right: 20,
     top: 17,
   },
+  disabledContainer: {
+    opacity: 0.3,
+  },
 });
