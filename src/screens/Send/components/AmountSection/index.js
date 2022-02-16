@@ -29,9 +29,9 @@ const AmountSection = ({
     const formattedAmount = formatSendAmount(amount, ICP_MAX_DECIMALS);
     setTokenAmount(formattedAmount);
     setUsdAmount(
-      Number(`${formattedAmount ? formattedAmount * tokenPrice : 0}`).toFixed(
-        USD_MAX_DECIMALS,
-      ),
+      amount
+        ? Number(formattedAmount * tokenPrice).toFixed(USD_MAX_DECIMALS)
+        : null,
     );
   };
 
@@ -39,9 +39,9 @@ const AmountSection = ({
     const formattedAmount = formatSendAmount(amount, USD_MAX_DECIMALS);
     setUsdAmount(formattedAmount);
     setTokenAmount(
-      Number(`${formattedAmount ? formattedAmount / tokenPrice : 0}`).toFixed(
-        ICP_MAX_DECIMALS,
-      ),
+      amount
+        ? Number(formattedAmount / tokenPrice).toFixed(ICP_MAX_DECIMALS)
+        : null,
     );
   };
 
