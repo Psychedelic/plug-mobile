@@ -58,6 +58,9 @@ export default StyleSheet.create({
     ...commonStyle,
     flex: 1,
   },
+  webViewSend: {
+    borderRadius: 10,
+  },
   containerSend: {
     ...commonSendContainer,
   },
