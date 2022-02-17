@@ -73,6 +73,7 @@ const Send = ({ modalRef, nft, onSuccess }) => {
   }, []);
 
   const onContactPress = contact => {
+    Keyboard.dismiss();
     setAddress(null);
     setSelectedContact(contact);
   };
