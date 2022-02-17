@@ -225,14 +225,14 @@ const Send = ({ modalRef, nft, onSuccess }) => {
         keyboardShouldPersistTaps="always">
         <TextInput
           label="To:"
-          placeholder="Name, ICNS, or address"
+          placeholder="Name or address"
           variant="innerLabel"
           value={selectedContact ? selectedContact.name : address}
           onChangeText={onChangeText}
           textStyle={isValidAddress ? styles.valid : null}
           autoFocus
           saveContactRef={
-            selectedContact || !address ? undefined : saveContactRef
+            !selectedContact || isValidAddress ? saveContactRef : undefined
           }
         />
         {!isValidAddress && (

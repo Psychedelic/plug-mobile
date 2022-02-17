@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import RainbowButton from '../../../../components/buttons/RainbowButton';
 import TokenSelector from '../../../../components/tokens/TokenSelector';
 import AmountInput from '../../../../components/common/AmountInput';
+import { toFixedNoRounding } from '../../../../utils/number';
 import styles from './styles';
 import {
   formatSendAmount,
@@ -30,7 +31,7 @@ const AmountSection = ({
     setTokenAmount(formattedAmount);
     setUsdAmount(
       amount
-        ? formatSendAmount(formattedAmount * tokenPrice, USD_MAX_DECIMALS)
+        ? toFixedNoRounding(formattedAmount * tokenPrice, USD_MAX_DECIMALS)
         : null,
     );
   };
@@ -40,7 +41,7 @@ const AmountSection = ({
     setUsdAmount(formattedAmount);
     setTokenAmount(
       amount
-        ? formatSendAmount(formattedAmount / tokenPrice, ICP_MAX_DECIMALS)
+        ? toFixedNoRounding(formattedAmount / tokenPrice, ICP_MAX_DECIMALS)
         : null,
     );
   };
