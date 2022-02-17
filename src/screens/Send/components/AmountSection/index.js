@@ -30,7 +30,7 @@ const AmountSection = ({
     setTokenAmount(formattedAmount);
     setUsdAmount(
       amount
-        ? Number(formattedAmount * tokenPrice).toFixed(USD_MAX_DECIMALS)
+        ? formatSendAmount(formattedAmount * tokenPrice, USD_MAX_DECIMALS)
         : null,
     );
   };
@@ -40,7 +40,7 @@ const AmountSection = ({
     setUsdAmount(formattedAmount);
     setTokenAmount(
       amount
-        ? Number(formattedAmount / tokenPrice).toFixed(ICP_MAX_DECIMALS)
+        ? formatSendAmount(formattedAmount / tokenPrice, ICP_MAX_DECIMALS)
         : null,
     );
   };

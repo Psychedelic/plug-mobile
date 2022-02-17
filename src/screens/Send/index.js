@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Text, ScrollView, Keyboard } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { getAvailableAmount, getUsdAvailableAmount } from './utils';
 import { TRANSACTION_STATUS } from '../../redux/constants';
 import TextInput from '../../components/common/TextInput';
 import { ADDRESS_TYPES } from '../../constants/addresses';
@@ -30,6 +29,13 @@ import {
   validateAccountId,
   validateCanisterId,
 } from '../../helpers/ids';
+import {
+  getAvailableAmount,
+  getUsdAvailableAmount,
+  formatSendAmount,
+  USD_MAX_DECIMALS,
+  ICP_MAX_DECIMALS,
+} from './utils';
 
 const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
 
@@ -200,10 +206,13 @@ const Send = ({ modalRef, nft, onSuccess }) => {
     }
   }, [address, selectedContact, selectedToken]);
 
-  const availableAmount = getAvailableAmount(selectedToken?.amount);
-  const availableUsdAmount = getUsdAvailableAmount(
-    availableAmount,
-    selectedTokenPrice,
+  const availableAmount = formatSendAmount(
+    getAvailableAmount(selectedToken?.amount),
+    ICP_MAX_DECIMALS,
+  );
+  const availableUsdAmount = formatSendAmount(
+    getUsdAvailableAmount(availableAmount, selectedTokenPrice),
+    USD_MAX_DECIMALS,
   );
 
   return (
