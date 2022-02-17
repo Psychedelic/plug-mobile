@@ -9,7 +9,7 @@ import { ADDRESS_TYPES } from '../../constants/addresses';
 import ContactSection from './components/ContactSection';
 import AmountSection from './components/AmountSection';
 import TokenSection from './components/TokenSection';
-import { useICPPrice } from '../../redux/slices/icp';
+import { getICPPrice } from '../../redux/slices/icp';
 import Header from '../../components/common/Header';
 import { FontStyles } from '../../constants/theme';
 import SaveContact from './components/SaveContact';
@@ -35,8 +35,8 @@ const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
 
 const Send = ({ modalRef, nft, onSuccess }) => {
   const dispatch = useDispatch();
-  const icpPrice = useICPPrice();
   const { isSensorAvailable, getPassword } = useKeychain();
+  const { icpPrice } = useSelector(state => state.icp);
   const { currentWallet } = useSelector(state => state.keyring);
   const { assets, transaction, collections, usingBiometrics } = useSelector(
     state => state.user,
@@ -61,6 +61,10 @@ const Send = ({ modalRef, nft, onSuccess }) => {
 
   const isValidAddress = addressInfo.isValid;
   const to = address || selectedContact?.id;
+
+  useEffect(() => {
+    dispatch(getICPPrice());
+  }, []);
 
   const onContactPress = contact => {
     setAddress(null);

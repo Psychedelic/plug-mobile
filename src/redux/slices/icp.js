@@ -1,8 +1,13 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { createSlice } from '@reduxjs/toolkit';
-import { useEffect } from 'react';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import getICPPrice from '../../services/ICPPrice';
+import getICPPriceService from '../../services/ICPPrice';
+
+export const getICPPrice = createAsyncThunk('wallet/getICPPrice', async () => {
+  const { data } = await getICPPriceService();
+  const icpPrice = data?.['internet-computer']?.usd ?? 1;
+
+  return icpPrice;
+});
 
 export const walletSlice = createSlice({
   name: 'wallet',
@@ -14,32 +19,13 @@ export const walletSlice = createSlice({
       state.icpPrice = action.payload;
     },
   },
+  extraReducers: {
+    [getICPPrice.fulfilled]: (state, action) => {
+      state.icpPrice = action.payload;
+    },
+  },
 });
 
 export const { setICPPrice } = walletSlice.actions;
-
-export const selectICPPrice = store => store.icp.icpPrice;
-
-export const useICPPrice = (refetch = false, dependencies = []) => {
-  const dispatch = useDispatch();
-  const icpPrice = useSelector(selectICPPrice);
-
-  const fetchICPPrice = async () => {
-    try {
-      const { data } = await getICPPrice();
-      dispatch(setICPPrice(data?.['internet-computer']?.usd ?? 1));
-    } catch (error) {
-      console.warn(error);
-    }
-  };
-
-  useEffect(() => {
-    if (!icpPrice || refetch) {
-      fetchICPPrice();
-    }
-  }, dependencies);
-
-  return icpPrice;
-};
 
 export default walletSlice.reducer;
