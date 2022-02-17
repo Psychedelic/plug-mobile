@@ -62,14 +62,13 @@ const ReviewSend = ({
     setSelectedContact(contacts.find(c => c.id === to));
   }, [contacts, to]);
 
-  const transactionCompleted =
-    transaction?.status === TRANSACTION_STATUS.success;
+  const success = transaction?.status === TRANSACTION_STATUS.success;
 
   const handleClose = () => {
     onClose();
     dispatch(setTransaction(null));
 
-    if (transactionCompleted) {
+    if (success) {
       onSuccess();
       navigation.navigate(Routes.TOKENS);
     }
@@ -80,21 +79,30 @@ const ReviewSend = ({
     navigation.navigate(Routes.PROFILE_SCREEN);
   };
 
+  const { title, ReviewIcon } = {
+    [TRANSACTION_STATUS.success]: {
+      title: 'Confirmed',
+      ReviewIcon: <Icon name="confirm" style={styles.icon} />,
+    },
+    [TRANSACTION_STATUS.error]: {
+      title: 'An error occurred',
+      ReviewIcon: <Icon name="confirm" style={styles.icon} />,
+    },
+    pending: {
+      title: 'Review Send',
+      ReviewIcon: null,
+    },
+  }[transaction?.status || 'pending'];
+  console.log('transaction', transaction);
   return (
     <Modal
       modalRef={modalRef}
       onClose={handleClose}
       {...props}
-      adjustToContentHeight={!transactionCompleted}>
+      adjustToContentHeight={!success}>
       <View style={styles.content}>
-        <Header
-          center={
-            <Text style={FontStyles.Subtitle2}>
-              {transactionCompleted ? 'Confirmed' : 'Review Send'}
-            </Text>
-          }
-        />
-        {transactionCompleted && <Icon name="confirm" style={styles.icon} />}
+        <Header center={<Text style={FontStyles.Subtitle2}>{title}</Text>} />
+        {ReviewIcon}
         {token && (
           <Row style={styles.row}>
             <Column>
@@ -157,7 +165,7 @@ const ReviewSend = ({
             </Text>
           </Row>
         )}
-        {transactionCompleted ? (
+        {success ? (
           token &&
           token.symbol === 'ICP' && (
             <Button
@@ -169,7 +177,11 @@ const ReviewSend = ({
           )
         ) : (
           <RainbowButton
-            text="Hold to Send" // TODO: Check this title
+            text={`Hold to ${
+              transaction?.status === TRANSACTION_STATUS.error
+                ? 'Retry'
+                : 'Send'
+            }`}
             loading={loading}
             disabled={loading}
             onLongPress={onSend}

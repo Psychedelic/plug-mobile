@@ -80,10 +80,12 @@ const Send = ({ modalRef, nft, onSuccess }) => {
 
   const onTokenPress = token => {
     setSelectedToken(token);
+    setSelectedNft(null);
   };
 
   const onNftPress = pressedNFT => {
     setSelectedNft(pressedNFT);
+    setSelectedToken(null);
     onReview();
   };
 
@@ -116,9 +118,8 @@ const Send = ({ modalRef, nft, onSuccess }) => {
     dispatch(transferNFT({ to, nft: selectedNft, icpPrice }))
       .unwrap()
       .then(response => {
-        if (response.status === TRANSACTION_STATUS.success) {
-          setLoading(false);
-        }
+        setLoading(false);
+        console.log('Send NFT response', response);
       });
   };
 
