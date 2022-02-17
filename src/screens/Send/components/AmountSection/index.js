@@ -62,14 +62,27 @@ const AmountSection = ({
     return 'Review Send';
   };
 
-  const isButtonDisabled = () =>
-    !tokenAmount ||
-    tokenAmount <= 0 ||
-    !usdAmount ||
-    usdAmount <= 0 ||
-    usdAmount > availableUsdAmount ||
-    tokenAmount > availableAmount;
+  console.tron.log({
+    tokenAmount,
+    availableAmount,
+    usdAmount,
+    availableUsdAmount,
+  });
 
+  const isButtonDisabled = () => {
+    const newTokenAmount = Number(tokenAmount);
+    const newUsdAmount = Number(usdAmount);
+    const newAvailableUsdAmount = Number(availableUsdAmount);
+
+    return (
+      !newTokenAmount ||
+      newTokenAmount <= 0 ||
+      !newUsdAmount ||
+      newUsdAmount <= 0 ||
+      newUsdAmount > newAvailableUsdAmount ||
+      newTokenAmount > availableAmount
+    );
+  };
   return (
     <>
       <TokenSelector
