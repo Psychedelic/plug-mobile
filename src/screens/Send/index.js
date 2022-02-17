@@ -232,7 +232,7 @@ const Send = ({ modalRef, nft, onSuccess }) => {
           textStyle={isValidAddress ? styles.valid : null}
           autoFocus
           saveContactRef={
-            selectedContact || isValidAddress ? saveContactRef : undefined
+            !selectedContact || isValidAddress ? saveContactRef : undefined
           }
         />
         {!isValidAddress && (
