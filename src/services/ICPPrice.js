@@ -5,9 +5,10 @@ const api = axios.create({
   timeout: 15000,
 });
 
-export default async () => api.get('/simple/price', {
-  params: {
-    ids: 'internet-computer',
-    vs_currencies: 'usd',
-  },
-});
+export default async () =>
+  api.get('/simple/price', {
+    params: {
+      ids: 'internet-computer',
+      vs_currencies: 'usd',
+    },
+  });

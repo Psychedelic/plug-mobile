@@ -8,7 +8,7 @@ import CreateEditAccount from '../../modals/CreateEditAccount';
 import Touchable from '../../components/animations/Touchable';
 import AccountItem from '../../components/common/AccountItem';
 import shortAddress from '../../helpers/short-address';
-import { useICPPrice } from '../../redux/slices/icp';
+import { getICPPrice } from '../../redux/slices/icp';
 import Header from '../../components/common/Header';
 import { FontStyles } from '../../constants/theme';
 import { getNFTs } from '../../redux/slices/user';
@@ -16,16 +16,21 @@ import Row from '../../components/layout/Row';
 import Modal from '../../components/modal';
 import Icon from '../../components/icons';
 import styles from './styles';
+import { useEffect } from 'react';
 
 const Accounts = ({ modalRef, onClose, ...props }) => {
   const { wallets, currentWallet } = useSelector(state => state.keyring);
-  const icpPrice = useICPPrice();
+  const { icpPrice } = useSelector(state => state.icp);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
   const [selectedAccount, setSelectedAccount] = useState(null);
 
   const createEditAccountRef = useRef(null);
+
+  useEffect(() => {
+    dispatch(getICPPrice());
+  }, []);
 
   const onCreateAccount = () => {
     setSelectedAccount(null);

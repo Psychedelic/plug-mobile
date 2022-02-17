@@ -9,7 +9,7 @@ import PasswordInput from '../../components/common/PasswordInput';
 import { setAssetsLoading } from '../../redux/slices/user';
 import Container from '../../components/common/Container';
 import Plug from '../../assets/icons/plug-white.png';
-import { useICPPrice } from '../../redux/slices/icp';
+import { getICPPrice } from '../../redux/slices/icp';
 import Button from '../../components/buttons/Button';
 import { login } from '../../redux/slices/keyring';
 import useKeychain from '../../hooks/useKeychain';
@@ -17,14 +17,26 @@ import Routes from '../../navigation/Routes';
 import styles from './styles';
 
 function Login() {
-  const [error, setError] = useState(false);
-  const [disableInput, setDisableInput] = useState(false);
-  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const { getPassword, isSensorAvailable } = useKeychain();
-  const dispatch = useDispatch();
-  const icpPrice = useICPPrice();
+  const { icpPrice } = useSelector(state => state.icp);
   const { assetsLoading, usingBiometrics } = useSelector(state => state.user);
+
+  const [error, setError] = useState(false);
+  const [password, setPassword] = useState('');
+  const [disableInput, setDisableInput] = useState(false);
+
+  useEffect(() => {
+    dispatch(getICPPrice());
+  }, []);
+
+  useEffect(() => {
+    if (usingBiometrics) {
+      unlockUsingBiometrics();
+    }
+    dispatch(setAssetsLoading(false));
+  }, [usingBiometrics]);
 
   const clearState = () => {
     setPassword('');
@@ -73,13 +85,6 @@ function Login() {
       }
     }
   };
-
-  useEffect(() => {
-    if (usingBiometrics) {
-      unlockUsingBiometrics();
-    }
-    dispatch(setAssetsLoading(false));
-  }, [usingBiometrics]);
 
   return (
     <KeyboardHider>

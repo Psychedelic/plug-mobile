@@ -1,6 +1,6 @@
+import React, { useState, useEffect } from 'react';
 import { Text, View, Image } from 'react-native';
-import { useDispatch } from 'react-redux';
-import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import RainbowButton from '../../../../components/buttons/RainbowButton';
 import KeyboardHider from '../../../../components/common/KeyboardHider';
@@ -8,7 +8,7 @@ import { reset, importWallet } from '../../../../redux/slices/keyring';
 import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
 import Container from '../../../../components/common/Container';
 import TextInput from '../../../../components/common/TextInput';
-import { useICPPrice } from '../../../../redux/slices/icp';
+import { getICPPrice } from '../../../../redux/slices/icp';
 import Header from '../../../../components/common/Header';
 import useKeychain from '../../../../hooks/useKeychain';
 import Back from '../../../../components/common/Back';
@@ -17,14 +17,19 @@ import Routes from '../../../../navigation/Routes';
 import styles from './styles';
 
 const ImportSeedPhrase = ({ navigation, route }) => {
-  const icpPrice = useICPPrice();
-  const { saveBiometrics } = useKeychain();
   const { goBack } = navigation;
+  const dispatch = useDispatch();
+  const { saveBiometrics } = useKeychain();
+  const { icpPrice } = useSelector(state => state.icp);
   const { password, shouldSaveBiometrics } = route?.params || {};
+
+  const [loading, setLoading] = useState(false);
   const [seedPhrase, setSeedPhrase] = useState(null);
   const [invalidSeedPhrase, setInvalidSeedPhrase] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getICPPrice());
+  }, []);
 
   const onPress = async () => {
     setLoading(true);

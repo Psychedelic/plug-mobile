@@ -8,7 +8,7 @@ import UserIcon from '../../components/common/UserIcon';
 import Divider from '../../components/common/Divider';
 import Button from '../../components/buttons/Button';
 import ActivityItem from './components/ActivityItem';
-import { useICPPrice } from '../../redux/slices/icp';
+import { getICPPrice } from '../../redux/slices/icp';
 import Header from '../../components/common/Header';
 import { Colors } from '../../constants/theme';
 import Settings from '../Settings';
@@ -22,8 +22,8 @@ import styles from './styles';
 const Profile = ({ navigation }) => {
   const dispatch = useDispatch();
   const modalRef = useRef(null);
-  const icpPrice = useICPPrice();
   const { currentWallet } = useSelector(state => state.keyring);
+  const { icpPrice } = useSelector(state => state.icp);
   const { transactions, transactionsLoading } = useSelector(
     state => state.user,
     shallowEqual,
@@ -45,6 +45,7 @@ const Profile = ({ navigation }) => {
 
   useEffect(() => {
     onRefresh();
+    dispatch(getICPPrice());
   }, []);
 
   return (
