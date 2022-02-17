@@ -62,13 +62,6 @@ const AmountSection = ({
     return 'Review Send';
   };
 
-  console.tron.log({
-    tokenAmount,
-    availableAmount,
-    usdAmount,
-    availableUsdAmount,
-  });
-
   const isButtonDisabled = () => {
     const newTokenAmount = Number(tokenAmount);
     const newUsdAmount = Number(usdAmount);
