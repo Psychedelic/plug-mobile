@@ -169,10 +169,10 @@ const Send = ({ modalRef, nft, onSuccess }) => {
     if (nft) {
       setSelectedNft(nft);
     }
-    if (selectedNft && (address || selectedContact)) {
+    if (selectedNft && (isValidAddress || selectedContact)) {
       onReview();
     }
-  }, [nft, selectedNft, address, selectedContact]);
+  }, [nft, selectedNft, isValidAddress, selectedContact]);
 
   useEffect(() => {
     if (selectedToken) {
@@ -216,6 +216,14 @@ const Send = ({ modalRef, nft, onSuccess }) => {
     USD_MAX_DECIMALS,
   );
 
+  const getSaveContactRef = () => {
+    if (selectedContact || !isValidAddress) {
+      return null;
+    } else {
+      return saveContactRef;
+    }
+  };
+
   return (
     <Modal modalRef={modalRef} onClose={resetState}>
       <Header center={<Text style={FontStyles.Subtitle2}>Send</Text>} />
@@ -231,9 +239,7 @@ const Send = ({ modalRef, nft, onSuccess }) => {
           onChangeText={onChangeText}
           textStyle={isValidAddress ? styles.valid : null}
           autoFocus
-          saveContactRef={
-            !selectedContact || isValidAddress ? saveContactRef : undefined
-          }
+          saveContactRef={getSaveContactRef()}
         />
         {!isValidAddress && (
           <ContactSection filterText={address} onPress={onContactPress} />
@@ -273,7 +279,9 @@ const Send = ({ modalRef, nft, onSuccess }) => {
           onSend={handleSend}
           onSuccess={() => {
             modalRef.current?.close();
-            onSuccess();
+            if (onSuccess) {
+              onSuccess();
+            }
           }}
           onClose={partialReset}
           transaction={transaction}
