@@ -1,25 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import {
-  Text,
-  View,
-  ScrollView,
-  RefreshControl,
-  TouchableOpacity,
-} from 'react-native';
+import { Text, View, ScrollView, RefreshControl } from 'react-native';
 
 import EmptyState from '../../components/common/EmptyState';
 import Container from '../../components/common/Container';
 import UserIcon from '../../components/common/UserIcon';
-import { useDebounce } from '../../hooks/useDebounce';
 import Divider from '../../components/common/Divider';
 import Button from '../../components/buttons/Button';
 import ActivityItem from './components/ActivityItem';
 import { useICPPrice } from '../../redux/slices/icp';
 import Header from '../../components/common/Header';
 import { Colors } from '../../constants/theme';
-import Routes from '../../navigation/Routes';
-import Icon from '../../components/icons';
 import Settings from '../Settings';
 import Accounts from '../Accounts';
 import {
@@ -32,14 +23,12 @@ const Profile = ({ navigation }) => {
   const dispatch = useDispatch();
   const modalRef = useRef(null);
   const icpPrice = useICPPrice();
-  const { debounce } = useDebounce();
   const { currentWallet } = useSelector(state => state.keyring);
   const { transactions, transactionsLoading } = useSelector(
     state => state.user,
     shallowEqual,
   );
   const [refreshing, setRefresing] = useState(transactionsLoading);
-  const [navigated, setNavigated] = useState(false);
 
   const openAccounts = () => {
     modalRef?.current.open();
@@ -58,29 +47,10 @@ const Profile = ({ navigation }) => {
     onRefresh();
   }, []);
 
-  useEffect(() => {
-    setNavigated(false);
-    return () => setNavigated(true);
-  });
-
-  const hanldeGoToWallet = () => {
-    if (!navigated) {
-      setNavigated(true);
-      navigation.jumpTo(Routes.TOKENS);
-    }
-  };
-
   return (
     <>
       <Container>
-        <Header
-          left={<Settings />}
-          right={
-            <TouchableOpacity onPress={() => debounce(hanldeGoToWallet)}>
-              <Icon name="chevronRight" />
-            </TouchableOpacity>
-          }
-        />
+        <Header left={<Settings />} />
         <View style={styles.container}>
           <View style={styles.leftContainer}>
             <UserIcon
