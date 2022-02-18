@@ -93,7 +93,7 @@ const ReviewSend = ({
       ReviewIcon: null,
     },
   }[transaction?.status || 'pending'];
-  console.log('transaction', transaction);
+
   return (
     <Modal
       modalRef={modalRef}
