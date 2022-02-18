@@ -1,6 +1,6 @@
 import { Text, View, Image, Switch } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import RainbowButton from '../../../../components/buttons/RainbowButton';
 import PasswordInput from '../../../../components/common/PasswordInput';
@@ -16,6 +16,7 @@ import styles from './styles';
 
 const CreatePassword = ({ route, navigation }) => {
   const { isSensorAvailable, saveBiometrics } = useKeychain();
+  const { icpPrice } = useSelector(state => state.icp);
   const { flow } = route.params;
   const { goBack } = navigation;
   const [password, setPassword] = useState(null);
@@ -32,6 +33,7 @@ const CreatePassword = ({ route, navigation }) => {
   }, []);
 
   const handleCreate = async () => {
+    setLoading(true);
     if (flow === 'import') {
       const shouldSaveBiometrics = biometryAvailable && biometrics;
       navigation.navigate(Routes.IMPORT_SEED_PHRASE, {
@@ -40,9 +42,8 @@ const CreatePassword = ({ route, navigation }) => {
       });
     } else {
       try {
-        setLoading(true);
         dispatch(reset());
-        dispatch(createWallet(password))
+        dispatch(createWallet({ password, icpPrice }))
           .unwrap()
           .then(async result => {
             if (result?.mnemonic) {

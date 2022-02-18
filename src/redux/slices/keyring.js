@@ -13,6 +13,8 @@ import {
   setAssetsAndTransactions,
   getNFTs,
   resetUserState,
+  setTransactionsLoading,
+  getTransactions,
 } from './user';
 
 export const initKeyring = createAsyncThunk('keyring/init', async () => {
@@ -33,14 +35,23 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
 
 export const createWallet = createAsyncThunk(
   'keyring/createWallet',
-  async (password, { getState, dispatch }) => {
+  async ({ password, icpPrice }, { getState, dispatch }) => {
     dispatch(reset());
     dispatch(resetUserState());
+    const state = getState();
     const { instance } = getState().keyring;
     const mnemonic = await generateMnemonic();
     const response = await instance?.importMnemonic({ password, mnemonic });
     const { wallet } = response || {};
     await instance?.unlock(password);
+
+    dispatch(setAssetsLoading(true));
+    dispatch(getNFTs());
+    const assets = await privateGetAssets({ refresh: true, icpPrice }, state);
+    dispatch(setAssetsAndLoading({ assets }));
+    dispatch(setTransactionsLoading(true));
+    dispatch(getTransactions({ icpPrice }));
+
     return { wallet, mnemonic };
   },
 );
@@ -60,6 +71,8 @@ export const importWallet = createAsyncThunk(
     dispatch(getNFTs());
     const assets = await privateGetAssets({ refresh: true, icpPrice }, state);
     dispatch(setAssetsAndLoading({ assets }));
+    dispatch(setTransactionsLoading(true));
+    dispatch(getTransactions({ icpPrice }));
 
     return { wallet };
   },
