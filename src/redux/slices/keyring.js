@@ -13,6 +13,8 @@ import {
   setAssetsAndTransactions,
   getNFTs,
   resetUserState,
+  setTransactionsLoading,
+  getTransactions,
 } from './user';
 
 export const initKeyring = createAsyncThunk('keyring/init', async () => {
@@ -33,14 +35,27 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
 
 export const createWallet = createAsyncThunk(
   'keyring/createWallet',
-  async (password, { getState, dispatch }) => {
+  async ({ password, icpPrice }, { getState, dispatch }) => {
+    // Reset previous state:
     dispatch(reset());
     dispatch(resetUserState());
+
+    // Create Wallet and unlock
+    const state = getState();
     const { instance } = getState().keyring;
     const mnemonic = await generateMnemonic();
     const response = await instance?.importMnemonic({ password, mnemonic });
     const { wallet } = response || {};
     await instance?.unlock(password);
+
+    // Get new data:
+    dispatch(setAssetsLoading(true));
+    dispatch(getNFTs());
+    const assets = await privateGetAssets({ refresh: true, icpPrice }, state);
+    dispatch(setAssetsAndLoading({ assets }));
+    dispatch(setTransactionsLoading(true));
+    dispatch(getTransactions({ icpPrice }));
+
     return { wallet, mnemonic };
   },
 );
@@ -48,18 +63,25 @@ export const createWallet = createAsyncThunk(
 export const importWallet = createAsyncThunk(
   'keyring/importWallet',
   async (params, { getState, dispatch }) => {
+    // Reset previous state:
     dispatch(reset());
     dispatch(resetUserState());
+
+    // Import Wallet and unlock
     const state = getState();
     const { icpPrice } = params;
     const instance = state.keyring?.instance;
     const response = await instance?.importMnemonic(params);
     const { wallet } = response || {};
     await instance?.unlock(params.password);
+
+    // Get new data:
     dispatch(setAssetsLoading(true));
     dispatch(getNFTs());
     const assets = await privateGetAssets({ refresh: true, icpPrice }, state);
     dispatch(setAssetsAndLoading({ assets }));
+    dispatch(setTransactionsLoading(true));
+    dispatch(getTransactions({ icpPrice }));
 
     return { wallet };
   },

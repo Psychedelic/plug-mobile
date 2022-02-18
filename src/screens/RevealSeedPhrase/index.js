@@ -4,6 +4,7 @@ import { Text } from 'react-native';
 
 import RainbowButton from '../../components/buttons/RainbowButton';
 import PasswordInput from '../../components/common/PasswordInput';
+import { isValidPassword } from '../../constants/general';
 import SeedPhrase from '../../components/common/SeedPhrase';
 import Column from '../../components/layout/Column';
 import Header from '../../components/common/Header';
@@ -55,7 +56,7 @@ const RevealSeedPhrase = ({ modalRef }) => {
                 text="Continue"
                 loading={loading}
                 onPress={handleSubmit}
-                disabled={!password || password.length < 12}
+                disabled={isValidPassword(password)}
               />
             </>
           ) : (
