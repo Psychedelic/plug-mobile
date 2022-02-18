@@ -36,8 +36,11 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
 export const createWallet = createAsyncThunk(
   'keyring/createWallet',
   async ({ password, icpPrice }, { getState, dispatch }) => {
+    // Reset previous state:
     dispatch(reset());
     dispatch(resetUserState());
+
+    // Create Wallet and unlock
     const state = getState();
     const { instance } = getState().keyring;
     const mnemonic = await generateMnemonic();
@@ -45,6 +48,7 @@ export const createWallet = createAsyncThunk(
     const { wallet } = response || {};
     await instance?.unlock(password);
 
+    // Get new data:
     dispatch(setAssetsLoading(true));
     dispatch(getNFTs());
     const assets = await privateGetAssets({ refresh: true, icpPrice }, state);
@@ -59,14 +63,19 @@ export const createWallet = createAsyncThunk(
 export const importWallet = createAsyncThunk(
   'keyring/importWallet',
   async (params, { getState, dispatch }) => {
+    // Reset previous state:
     dispatch(reset());
     dispatch(resetUserState());
+
+    // Import Wallet and unlock
     const state = getState();
     const { icpPrice } = params;
     const instance = state.keyring?.instance;
     const response = await instance?.importMnemonic(params);
     const { wallet } = response || {};
     await instance?.unlock(params.password);
+
+    // Get new data:
     dispatch(setAssetsLoading(true));
     dispatch(getNFTs());
     const assets = await privateGetAssets({ refresh: true, icpPrice }, state);
