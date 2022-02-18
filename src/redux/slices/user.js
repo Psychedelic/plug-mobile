@@ -118,6 +118,7 @@ export const privateGetAssets = async (params, state) => {
     const response = await instance?.getState();
     const { wallets, currentWalletId } = response || {};
     let assets = wallets?.[currentWalletId]?.assets || [];
+    console.log('private get assets', assets);
     if (
       !assets.length ||
       assets?.every(asset => parseFloat(asset.amount) <= 0) ||
@@ -127,6 +128,7 @@ export const privateGetAssets = async (params, state) => {
     } else {
       instance?.getBalance();
     }
+    console.log('should return pretty quick');
     return { assets, icpPrice };
   } catch (e) {
     console.log('getAssets', e);
