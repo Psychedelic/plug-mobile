@@ -33,7 +33,6 @@ const CreatePassword = ({ route, navigation }) => {
     isSensorAvailable().then(isAvailable => {
       setBiometryAvailable(isAvailable);
     });
-    return () => setLoading(false);
   }, []);
 
   const handleCreate = async () => {
