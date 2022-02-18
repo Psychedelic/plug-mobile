@@ -332,13 +332,12 @@ export const keyringSlice = createSlice({
           ...col,
           tokens: col.tokens.filter(token => token.id !== nft.id),
         }));
-
         state.collections = collections.filter(col => col.tokens.length);
-        state.transaction = {
-          status,
-        };
         state.selectedNFT = {};
       }
+      state.transaction = {
+        status,
+      };
     },
   },
 });

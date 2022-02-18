@@ -57,7 +57,7 @@ const Send = ({ modalRef, nft, onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [usdAmount, setUsdAmount] = useState(null);
   const [destination] = useState(XTC_OPTIONS.SEND);
-  const [selectedNft, setSelectedNft] = useState(null);
+  const [selectedNft, setSelectedNft] = useState(nft);
   const [tokenAmount, setTokenAmount] = useState(null);
   const [selectedToken, setSelectedToken] = useState(null);
   const [selectedContact, setSelectedContact] = useState(null);
@@ -80,10 +80,12 @@ const Send = ({ modalRef, nft, onSuccess }) => {
 
   const onTokenPress = token => {
     setSelectedToken(token);
+    setSelectedNft(null);
   };
 
   const onNftPress = pressedNFT => {
     setSelectedNft(pressedNFT);
+    setSelectedToken(null);
     onReview();
   };
 
@@ -115,10 +117,8 @@ const Send = ({ modalRef, nft, onSuccess }) => {
   const handleSendNFT = () => {
     dispatch(transferNFT({ to, nft: selectedNft, icpPrice }))
       .unwrap()
-      .then(response => {
-        if (response.status === TRANSACTION_STATUS.success) {
-          setLoading(false);
-        }
+      .then(() => {
+        setLoading(false);
       });
   };
 
@@ -166,13 +166,16 @@ const Send = ({ modalRef, nft, onSuccess }) => {
   };
 
   useEffect(() => {
-    if (nft) {
+    if (!selectedToken && nft) {
       setSelectedNft(nft);
     }
+  }, [nft]);
+
+  useEffect(() => {
     if (selectedNft && (isValidAddress || selectedContact)) {
       onReview();
     }
-  }, [nft, selectedNft, isValidAddress, selectedContact]);
+  }, [selectedNft, isValidAddress, selectedContact]);
 
   useEffect(() => {
     if (selectedToken) {
