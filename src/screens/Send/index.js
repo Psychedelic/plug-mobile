@@ -166,10 +166,10 @@ const Send = ({ modalRef, nft, onSuccess }) => {
   };
 
   useEffect(() => {
-    if (!selectedNft && !selectedToken && nft) {
+    if (!selectedToken && nft) {
       setSelectedNft(nft);
     }
-  });
+  }, [nft]);
 
   useEffect(() => {
     if (selectedNft && (isValidAddress || selectedContact)) {
