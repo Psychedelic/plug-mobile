@@ -4,6 +4,7 @@ import { Text, Switch, View } from 'react-native';
 
 import RainbowButton from '../../../../components/buttons/RainbowButton';
 import PasswordInput from '../../../../components/common/PasswordInput';
+import { isValidPassword } from '../../../../constants/general';
 import Column from '../../../../components/layout/Column';
 import { unlock } from '../../../../redux/slices/keyring';
 import Header from '../../../../components/common/Header';
@@ -78,7 +79,7 @@ function FaceId({ modalRef }) {
               loading={loading}
               onPress={handleSubmit}
               buttonStyle={styles.buttonStyle}
-              disabled={!password || password.length < 12}
+              disabled={isValidPassword(password)}
             />
           </>
         ) : (

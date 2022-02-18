@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import RainbowButton from '../../components/buttons/RainbowButton';
 import KeyboardHider from '../../components/common/KeyboardHider';
 import PasswordInput from '../../components/common/PasswordInput';
+import { isValidPassword } from '../../constants/general';
 import { setAssetsLoading } from '../../redux/slices/user';
 import Container from '../../components/common/Container';
 import Plug from '../../assets/icons/plug-white.png';
@@ -105,7 +106,7 @@ function Login() {
             text="Unlock Wallet"
             onPress={() => handleSubmit(password)}
             loading={assetsLoading}
-            disabled={!password || password.length < 12}
+            disabled={isValidPassword(password)}
             buttonStyle={styles.buttonMargin}
           />
           <Button
