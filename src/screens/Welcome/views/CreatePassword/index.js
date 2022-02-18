@@ -7,6 +7,7 @@ import PasswordInput from '../../../../components/common/PasswordInput';
 import KeyboardHider from '../../../../components/common/KeyboardHider';
 import { reset, createWallet } from '../../../../redux/slices/keyring';
 import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
+import { isValidPassword } from '../../../../constants/general';
 import Container from '../../../../components/common/Container';
 import Header from '../../../../components/common/Header';
 import useKeychain from '../../../../hooks/useKeychain';
@@ -16,20 +17,23 @@ import styles from './styles';
 
 const CreatePassword = ({ route, navigation }) => {
   const { isSensorAvailable, saveBiometrics } = useKeychain();
+  const dispatch = useDispatch();
+
   const { icpPrice } = useSelector(state => state.icp);
   const { flow } = route.params;
   const { goBack } = navigation;
-  const [password, setPassword] = useState(null);
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
+  const [password, setPassword] = useState(null);
   const [biometrics, setBiometrics] = useState(false);
   const [biometryAvailable, setBiometryAvailable] = useState(false);
+
   const toggleSwitch = () => setBiometrics(previousState => !previousState);
 
   useEffect(() => {
     isSensorAvailable().then(isAvailable => {
       setBiometryAvailable(isAvailable);
     });
+    return () => setLoading(false);
   }, []);
 
   const handleCreate = async () => {
@@ -40,6 +44,7 @@ const CreatePassword = ({ route, navigation }) => {
         password,
         shouldSaveBiometrics,
       });
+      setLoading(false);
     } else {
       try {
         dispatch(reset());
@@ -53,12 +58,11 @@ const CreatePassword = ({ route, navigation }) => {
               navigation.navigate(Routes.BACKUP_SEED_PHRASE, {
                 mnemonic: result.mnemonic,
               });
+              setLoading(false);
             }
           });
       } catch (e) {
         console.log('Error:', e);
-      } finally {
-        setLoading(false);
       }
     }
   };
@@ -69,16 +73,8 @@ const CreatePassword = ({ route, navigation }) => {
         <Header
           left={<Back onPress={() => goBack()} />}
           center={
-            <View style={{ width: 70, height: 33 }}>
-              <Image
-                style={{
-                  flex: 1,
-                  width: null,
-                  height: null,
-                  resizeMode: 'contain',
-                }}
-                source={PlugLogo}
-              />
+            <View style={styles.plugLogoContainer}>
+              <Image style={styles.plugLogo} source={PlugLogo} />
             </View>
           }
         />
@@ -104,7 +100,7 @@ const CreatePassword = ({ route, navigation }) => {
             loading={loading}
             onPress={handleCreate}
             buttonStyle={styles.rainbowButton}
-            disabled={!password || password.length < 12}
+            disabled={isValidPassword(password) || loading}
           />
         </View>
       </Container>
