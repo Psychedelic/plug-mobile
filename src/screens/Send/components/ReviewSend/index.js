@@ -166,8 +166,7 @@ const ReviewSend = ({
           </Row>
         )}
         {success ? (
-          token &&
-          token.symbol === 'ICP' && (
+          token && (
             <Button
               variant="gray"
               text="View in Activity"
