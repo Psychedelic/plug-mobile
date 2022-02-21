@@ -13,13 +13,13 @@ import InfoItem from './components/InfoItem';
 import Modal from '../../components/modal';
 import Icon from '../../components/icons';
 import Contacts from '../Contacts';
-import FaceId from './components/FaceId';
+import BiometricUnlock from './components/BiometricUnlock';
 
 const Settings = () => {
   const modalRef = useRef(null);
   const contactsRef = useRef(null);
   const revealSeedPhraseRef = useRef(null);
-  const faceIdRef = useRef(null);
+  const biometricUnlockRef = useRef(null);
 
   const infoItems = useInfoItems();
 
@@ -35,8 +35,8 @@ const Settings = () => {
     revealSeedPhraseRef.current?.open();
   };
 
-  const openFaceId = () => {
-    faceIdRef.current?.open();
+  const openBiometricUnlock = () => {
+    biometricUnlockRef.current?.open();
   };
 
   const openContacts = () => {
@@ -58,9 +58,9 @@ const Settings = () => {
     },
     {
       iconName: 'faceIdIcon',
-      name: 'Face ID',
-      description: 'Turn Face ID on or off.',
-      onPress: openFaceId,
+      name: 'Biometric Unlock',
+      description: 'Turn Biometrics on or off.',
+      onPress: openBiometricUnlock,
     },
   ];
 
@@ -98,7 +98,7 @@ const Settings = () => {
       </Modal>
       <Contacts modalRef={contactsRef} />
       <RevealSeedPhrase modalRef={revealSeedPhraseRef} />
-      <FaceId modalRef={faceIdRef} />
+      <BiometricUnlock modalRef={biometricUnlockRef} />
     </>
   );
 };

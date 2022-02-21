@@ -90,7 +90,7 @@ const CreatePassword = ({ route, navigation }) => {
           <Text style={styles.help}>Must be at least 12 characters</Text>
           {biometryAvailable && (
             <View style={styles.switchContainer}>
-              <Text style={styles.faceId}>Sign in with Face ID?</Text>
+              <Text style={styles.faceId}>Sign in with biometrics?</Text>
               <Switch onValueChange={toggleSwitch} value={biometrics} />
             </View>
           )}
