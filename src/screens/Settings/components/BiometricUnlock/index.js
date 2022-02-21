@@ -64,7 +64,7 @@ function FaceId({ modalRef }) {
             Close
           </Text>
         }
-        center={<Text style={styles.title}>Face ID</Text>}
+        center={<Text style={styles.title}>Biometric Unlock</Text>}
       />
       <Column style={styles.container}>
         {!loggedIn ? (
