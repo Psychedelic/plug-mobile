@@ -171,7 +171,7 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
     if (!selectedToken && nft) {
       setSelectedNft(nft);
     }
-  }, [nft]);
+  }, [nft, isValidAddress]);
 
   useEffect(() => {
     if (!selectedNft && token) {
@@ -235,9 +235,27 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
     }
   };
 
+  const handleBack = () => {
+    onChangeText('');
+    setAddress(null);
+    setSelectedContact(null);
+    setAddressInfo(INITIAL_ADDRESS_INFO);
+  };
+
   return (
     <Modal modalRef={modalRef} onClose={resetState}>
-      <Header center={<Text style={FontStyles.Subtitle2}>Send</Text>} />
+      <Header
+        left={
+          isValidAddress && (
+            <Text
+              style={[FontStyles.Normal, styles.valid]}
+              onPress={handleBack}>
+              Back
+            </Text>
+          )
+        }
+        center={<Text style={FontStyles.Subtitle2}>Send</Text>}
+      />
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.content}
