@@ -12,6 +12,7 @@ import CreatePassword from '../screens/Welcome/views/CreatePassword';
 import SwipeNavigator from './navigators/SwipeNavigator';
 import { navigationRef } from '../helpers/navigation';
 import { setUnlocked } from '../redux/slices/keyring';
+import { Colors } from '../constants/theme';
 import Welcome from '../screens/Welcome';
 import Login from '../screens/Login';
 import Routes from './Routes';
@@ -64,6 +65,7 @@ const Navigator = () => {
           initialRouteName={initialRoute}
           screenOptions={{
             headerShown: false,
+            cardStyle: { backgroundColor: Colors.Black.Primary },
           }}>
           <Stack.Screen name={Routes.WELCOME_SCREEN} component={Welcome} />
           <Stack.Screen
