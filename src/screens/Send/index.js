@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Text, ScrollView, Keyboard } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { TRANSACTION_STATUS } from '../../redux/constants';
 import TextInput from '../../components/common/TextInput';
 import { ADDRESS_TYPES } from '../../constants/addresses';
 import ContactSection from './components/ContactSection';
@@ -44,9 +43,8 @@ const Send = ({ modalRef, nft, onSuccess }) => {
   const { isSensorAvailable, getPassword } = useKeychain();
   const { icpPrice } = useSelector(state => state.icp);
   const { currentWallet } = useSelector(state => state.keyring);
-  const { assets, transaction, collections, usingBiometrics } = useSelector(
-    state => state.user,
-  );
+  const { assets, transaction, collections, usingBiometrics, contacts } =
+    useSelector(state => state.user);
 
   const reviewRef = useRef(null);
   const saveContactRef = useRef(null);
@@ -67,6 +65,10 @@ const Send = ({ modalRef, nft, onSuccess }) => {
 
   const isValidAddress = addressInfo.isValid;
   const to = address || selectedContact?.id;
+
+  useEffect(() => {
+    setSelectedContact(contacts.find(c => c.id === address));
+  }, [contacts, address]);
 
   useEffect(() => {
     dispatch(getICPPrice());
