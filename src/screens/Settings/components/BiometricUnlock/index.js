@@ -13,7 +13,7 @@ import useKeychain from '../../../../hooks/useKeychain';
 import Modal from '../../../../components/modal';
 import styles from './styles';
 
-function FaceId({ modalRef }) {
+function BiometricUnlock({ modalRef }) {
   const { saveBiometrics, resetBiometrics } = useKeychain();
   const hasBiometrics = useSelector(state => state.user.usingBiometrics);
   const [useBiometrics, setUseBiometrics] = useState(hasBiometrics);
@@ -93,4 +93,4 @@ function FaceId({ modalRef }) {
   );
 }
 
-export default FaceId;
+export default BiometricUnlock;
