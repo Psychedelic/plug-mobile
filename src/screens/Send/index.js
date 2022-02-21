@@ -38,7 +38,7 @@ import {
 
 const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
 
-const Send = ({ modalRef, nft, onSuccess }) => {
+const Send = ({ modalRef, nft, token, onSuccess }) => {
   const dispatch = useDispatch();
   const { isSensorAvailable, getPassword } = useKeychain();
   const { icpPrice } = useSelector(state => state.icp);
@@ -80,8 +80,8 @@ const Send = ({ modalRef, nft, onSuccess }) => {
     setSelectedContact(contact);
   };
 
-  const onTokenPress = token => {
-    setSelectedToken(token);
+  const onTokenPress = pressedToken => {
+    setSelectedToken(pressedToken);
     setSelectedNft(null);
   };
 
@@ -172,6 +172,12 @@ const Send = ({ modalRef, nft, onSuccess }) => {
       setSelectedNft(nft);
     }
   }, [nft]);
+
+  useEffect(() => {
+    if (!selectedNft && token) {
+      setSelectedToken(token);
+    }
+  }, [token]);
 
   useEffect(() => {
     if (selectedNft && (isValidAddress || selectedContact)) {
