@@ -236,7 +236,6 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
   };
 
   const handleBack = () => {
-    onChangeText('');
     setAddress(null);
     setSelectedContact(null);
     setAddressInfo(INITIAL_ADDRESS_INFO);
