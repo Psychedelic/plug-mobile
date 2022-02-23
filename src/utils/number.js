@@ -1,11 +1,41 @@
-export const toFixedNoRounding = (amount, n) => {
-  const reg = new RegExp('^-?\\d+(?:\\.\\d{0,' + n + '})?', 'g');
-  const newAmount = amount.toString().match(reg)[0];
-  const dot = newAmount.indexOf('.');
-  if (dot === -1) {
-    // integer, insert decimal dot and pad up zeros
-    return newAmount + '.' + '0'.repeat(n);
+/* eslint-disable radix */
+export function toFixedNoRounding(amount, n) {
+  amount = toFixed(amount);
+  const v = (typeof amount === 'string' ? amount : amount.toString()).split(
+    '.',
+  );
+
+  if (n <= 0) {
+    return v[0];
   }
-  const b = n - (newAmount.length - dot) + 1;
-  return b > 0 ? newAmount + '0'.repeat(b) : newAmount;
-};
+
+  let f = v[1] || '';
+  if (f.length > n) {
+    return `${v[0]}.${f.substr(0, n)}`;
+  }
+
+  while (f.length < n) {
+    f += '0';
+  }
+
+  return `${v[0]}.${f}`;
+}
+
+function toFixed(amount) {
+  if (Math.abs(amount) < 1.0) {
+    var e = parseInt(amount.toString().split('e-')[1]);
+    if (e) {
+      amount *= Math.pow(10, e - 1);
+      amount = '0.' + new Array(e).join('0') + amount.toString().substring(2);
+    }
+  } else {
+    var e = parseInt(amount.toString().split('+')[1]);
+    if (e > 20) {
+      e -= 20;
+      amount /= Math.pow(10, e);
+      amount += new Array(e + 1).join('0');
+    }
+  }
+
+  return amount;
+}
