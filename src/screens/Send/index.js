@@ -67,7 +67,10 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
   const to = address || selectedContact?.id;
 
   useEffect(() => {
-    setSelectedContact(contacts.find(c => c.id === address));
+    const savedContact = contacts.find(c => c.id === address);
+    if (savedContact) {
+      setSelectedContact(savedContact);
+    }
   }, [contacts, address]);
 
   useEffect(() => {
