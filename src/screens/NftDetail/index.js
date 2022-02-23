@@ -15,6 +15,7 @@ import styles from './styles';
 import Send from '../Send';
 
 const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
+  const isCapCrowns = selectedNFT?.collection === 'CAP Crowns';
   const [type, setType] = useState(null);
   const selectedCollection = useSelector(state => state.user.collections).find(
     collection => collection.name === selectedNFT?.collection,
@@ -60,7 +61,11 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
               <Button variant="gray" text="Share" onPress={handleShare} />
             </View>
             <View style={{ flex: 1, marginLeft: 10 }}>
-              <RainbowButton text="Send" onPress={handleSend} />
+              <RainbowButton
+                text="Send"
+                onPress={handleSend}
+                disabled={isCapCrowns}
+              />
             </View>
           </View>
           <Section title="🧩 Collection" style={{ borderTopWidth: 0 }}>
