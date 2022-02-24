@@ -41,6 +41,6 @@ export default StyleSheet.create({
     marginTop: 120,
   },
   disabledContainer: {
-    opacity: 0.3,
+    opacity: 0.5,
   },
 });
