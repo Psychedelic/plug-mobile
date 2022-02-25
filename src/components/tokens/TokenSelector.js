@@ -26,7 +26,10 @@ const TokenSelector = ({
 
         <Row>
           {selectedInput === 'USD' ? (
-            <UsdFormat value={availableUsdAmount} style={FontStyles.NormalGray} />
+            <UsdFormat
+              value={availableUsdAmount}
+              style={FontStyles.NormalGray}
+            />
           ) : (
             <TokenFormat
               value={availableAmount}

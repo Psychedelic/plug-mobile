@@ -16,8 +16,9 @@ export const formatSendAmount = (amount, maxDecimals) => {
   return formattedAmount;
 };
 
-export const getAvailableAmount = amount => {
-  return Math.max((amount || 0) - getTransactionFee(), 0);
+export const getAvailableAmount = (amount, symbol) => {
+  const fee = getTransactionFee(symbol);
+  return Math.max((amount || 0) - fee, 0);
 };
 
 export const getUsdAvailableAmount = (availableAmount, selectedTokenPrice) =>

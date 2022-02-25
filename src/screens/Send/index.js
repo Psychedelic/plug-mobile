@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { Text, ScrollView, Keyboard } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -221,13 +221,21 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
     }
   }, [address, selectedContact, selectedToken]);
 
-  const availableAmount = formatSendAmount(
-    getAvailableAmount(selectedToken?.amount),
-    ICP_MAX_DECIMALS,
+  const availableAmount = useMemo(
+    () =>
+      formatSendAmount(
+        getAvailableAmount(selectedToken?.amount, selectedToken?.symbol),
+        ICP_MAX_DECIMALS,
+      ),
+    [selectedToken],
   );
-  const availableUsdAmount = formatSendAmount(
-    getUsdAvailableAmount(availableAmount, selectedTokenPrice),
-    USD_MAX_DECIMALS,
+  const availableUsdAmount = useMemo(
+    () =>
+      formatSendAmount(
+        getUsdAvailableAmount(availableAmount, selectedTokenPrice),
+        USD_MAX_DECIMALS,
+      ),
+    [availableAmount, selectedTokenPrice],
   );
 
   const getSaveContactRef = () => {
