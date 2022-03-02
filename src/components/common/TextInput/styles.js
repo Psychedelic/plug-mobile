@@ -1,6 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { Colors } from '../../../constants/theme';
 
+const commonBorderRadius = 15;
+const inputHeight = 60;
+
 export default StyleSheet.create({
   inputStyle: {
     paddingTop: 13,
@@ -53,5 +56,16 @@ export default StyleSheet.create({
   keyboardBG: {
     height: '100%',
     color: Colors.Black.Primary,
+  },
+  focusedGradient: {
+    borderRadius: commonBorderRadius,
+    height: inputHeight,
+    width: '101%',
+    top: -2,
+    left: -2,
+    position: 'absolute',
+  },
+  multiLineGradient: {
+    height: 94,
   },
 });

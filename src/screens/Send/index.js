@@ -274,6 +274,7 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
           label="To:"
           placeholder="Name or address"
           variant="innerLabel"
+          hideGradient
           value={selectedContact ? selectedContact.name : address}
           onChangeText={onChangeText}
           textStyle={isValidAddress ? styles.valid : null}

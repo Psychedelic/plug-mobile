@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
+import LinearGradient from 'react-native-linear-gradient';
 import { Text, View, TextInput as Input } from 'react-native';
 
-import Icon from '../../icons';
-import { variants } from './constants';
+import animationScales from '../../../utils/animationScales';
+import { Rainbow } from '../../../constants/theme';
 import Touchable from '../../animations/Touchable';
+import { variants } from './constants';
+import Icon from '../../icons';
+import styles from './styles';
 
 const TextInput = ({
   label,
@@ -11,6 +15,7 @@ const TextInput = ({
   value,
   variant,
   onChangeText,
+  hideGradient,
   placeholder,
   onSubmitEditing,
   customStyle,
@@ -29,37 +34,63 @@ const TextInput = ({
     autoCapitalize,
     secureTextEntry,
   } = variants[variant];
+  const [isFocused, setIsFocused] = useState(false);
+  const isMultiline = variant === 'multi';
+
+  const handleOnFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleOnBlur = () => {
+    setIsFocused(false);
+  };
 
   const handleAddContact = () => {
     saveContactRef?.current.open();
   };
 
   return (
-    <View style={[viewStyle, customStyle]}>
-      {variant === 'innerLabel' && <Text style={innerLabelStyle}>{label}</Text>}
-      <Input
-        style={[inputStyle, textStyle]}
-        placeholderTextColor={placeholderTextColor}
-        onChangeText={onChangeText}
-        autoCorrect={autoCorrect}
-        autoCapitalize={autoCapitalize}
-        secureTextEntry={secureTextEntry}
-        placeholder={placeholder}
-        onSubmitEditing={onSubmitEditing}
-        blurOnSubmit={false}
-        maxLength={maxLenght}
-        value={value}
-        editable={!disabled}
-        ref={ref}
-        keyboardAppearance="dark"
-        {...props}
-      />
-      {saveContactRef && (
-        <Touchable onPress={handleAddContact}>
-          <Icon name="plus" />
-        </Touchable>
+    <Touchable scale={animationScales.small}>
+      {isFocused && !hideGradient && (
+        <LinearGradient
+          style={[
+            styles.focusedGradient,
+            isMultiline && styles.multiLineGradient,
+            customStyle,
+          ]}
+          {...Rainbow}
+        />
       )}
-    </View>
+      <View style={[viewStyle, customStyle]}>
+        {variant === 'innerLabel' && (
+          <Text style={innerLabelStyle}>{label}</Text>
+        )}
+        <Input
+          style={[inputStyle, textStyle]}
+          placeholderTextColor={placeholderTextColor}
+          onChangeText={onChangeText}
+          autoCorrect={autoCorrect}
+          autoCapitalize={autoCapitalize}
+          secureTextEntry={secureTextEntry}
+          placeholder={placeholder}
+          onSubmitEditing={onSubmitEditing}
+          blurOnSubmit={false}
+          maxLength={maxLenght}
+          value={value}
+          editable={!disabled}
+          ref={ref}
+          onFocus={handleOnFocus}
+          onBlur={handleOnBlur}
+          keyboardAppearance="dark"
+          {...props}
+        />
+        {saveContactRef && (
+          <Touchable onPress={handleAddContact}>
+            <Icon name="plus" />
+          </Touchable>
+        )}
+      </View>
+    </Touchable>
   );
 };
 

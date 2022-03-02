@@ -12,7 +12,6 @@ import { getICPPrice } from '../../../../redux/slices/icp';
 import Header from '../../../../components/common/Header';
 import useKeychain from '../../../../hooks/useKeychain';
 import Back from '../../../../components/common/Back';
-import { Colors } from '../../../../constants/theme';
 import Routes from '../../../../navigation/Routes';
 import styles from './styles';
 
@@ -65,16 +64,8 @@ const ImportSeedPhrase = ({ navigation, route }) => {
         <Header
           left={<Back onPress={goBack} />}
           center={
-            <View style={{ width: 70, height: 33 }}>
-              <Image
-                style={{
-                  flex: 1,
-                  width: null,
-                  height: null,
-                  resizeMode: 'contain',
-                }}
-                source={PlugLogo}
-              />
+            <View style={styles.plugLogoContainer}>
+              <Image style={styles.plugLogo} source={PlugLogo} />
             </View>
           }
         />
@@ -89,11 +80,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
             value={seedPhrase}
             onChangeText={onChangeText}
             placeholder="Secret Recovery Phrase"
-            customStyle={{
-              backgroundColor: Colors.Gray.Secondary,
-              marginTop: 30,
-              marginBottom: 30,
-            }}
+            customStyle={styles.input}
           />
           <RainbowButton
             text="Continue"
