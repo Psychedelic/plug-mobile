@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { View, Text } from 'react-native';
+import emojis from 'emoji-datasource';
+
 import Modal from '../../../components/modal';
+import useContacts from '../../../hooks/useContacts';
+import { FontStyles } from '../../../constants/theme';
 import Header from '../../../components/common/Header';
 import TextInput from '../../../components/common/TextInput';
 import RainbowButton from '../../../components/buttons/RainbowButton';
-import { View, Text } from 'react-native';
-import useContacts from '../../../hooks/useContacts';
-import { FontStyles } from '../../../constants/theme';
 import { validatePrincipalId, validateAccountId } from '../../../helpers/ids';
-import emojis from 'emoji-datasource';
 import { charFromEmojiObject } from '../../../components/common/EmojiSelector';
 
 const AddEditContact = ({ modalRef, contact, onClose }) => {
@@ -38,14 +39,15 @@ const AddEditContact = ({ modalRef, contact, onClose }) => {
     if (contact) {
       setName(contact.name);
       setId(contact.id);
+    } else {
+      setName('');
+      setId('');
     }
   }, [contact]);
 
   const isButtonDisabled = () => !name || !id || !validId;
 
   const handleClose = () => {
-    setName('');
-    setId('');
     onClose();
   };
 
