@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Text, Switch, View } from 'react-native';
 
 import RainbowButton from '../../../../components/buttons/RainbowButton';
@@ -14,6 +14,7 @@ import Modal from '../../../../components/modal';
 import styles from './styles';
 
 function BiometricUnlock({ modalRef }) {
+  const dispatch = useDispatch();
   const { saveBiometrics, resetBiometrics } = useKeychain();
   const hasBiometrics = useSelector(state => state.user.usingBiometrics);
   const [useBiometrics, setUseBiometrics] = useState(hasBiometrics);
@@ -43,13 +44,19 @@ function BiometricUnlock({ modalRef }) {
 
   const handleSubmit = async () => {
     setLoading(true);
-    const unlocked = await unlock(password);
-    if (unlocked) {
-      setLoggedIn(true);
-    } else {
-      setError(true);
-    }
-    setLoading(false);
+    dispatch(
+      unlock({
+        password,
+        onError: () => {
+          setError(true);
+          setLoading(false);
+        },
+        onSuccess: () => {
+          setLoggedIn(true);
+          setLoading(false);
+        },
+      }),
+    );
   };
 
   const closeModal = () => {

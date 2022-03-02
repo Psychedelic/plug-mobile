@@ -97,11 +97,23 @@ export const unlock = createAsyncThunk(
 
 const privateUnlock = async (params, state) => {
   let unlocked = false;
-
+  const { password, onError, onSuccess } = params;
   try {
     const instance = state.keyring?.instance;
-    unlocked = await instance?.unlock(params.password);
+    unlocked = await instance?.unlock(password);
+    if (unlocked) {
+      if (onSuccess) {
+        onSuccess();
+      }
+    } else {
+      if (onError) {
+        onError();
+      }
+    }
   } catch (e) {
+    if (onError) {
+      onError();
+    }
     console.log('Private Unlock:', e.message);
   }
   return { unlocked };
