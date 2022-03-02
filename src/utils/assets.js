@@ -36,24 +36,24 @@ export const formatAssetBySymbol = (amount, symbol, icpPrice) => {
   return (
     {
       ICP: {
-        amount: amount,
+        amount,
         value: amount * icpPrice,
         icon: TOKEN_IMAGES.ICP,
         symbol: 'ICP',
       },
       XTC: {
-        amount: amount,
+        amount,
         value: amount * USD_PER_TC,
         icon: TOKEN_IMAGES.XTC,
         symbol: 'XTC',
       },
       WTC: {
-        amount: amount,
+        amount,
         value: amount * USD_PER_TC,
         symbol: 'WTC',
       },
       WICP: {
-        amount: amount,
+        amount,
         value: amount * icpPrice,
         icon: TOKEN_IMAGES.WICP,
         symbol: 'WICP',
