@@ -100,7 +100,7 @@ function Login() {
             disabled={disableInput}
             password={password}
             onChange={setPassword}
-            customStyle={styles.input}
+            inputStyle={styles.input}
           />
           <RainbowButton
             text="Unlock Wallet"
