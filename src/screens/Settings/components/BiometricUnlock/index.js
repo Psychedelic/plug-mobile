@@ -91,7 +91,7 @@ function BiometricUnlock({ modalRef }) {
           </>
         ) : (
           <View style={styles.optionContainer}>
-            <Text style={styles.option}>Sign in with Face ID?</Text>
+            <Text style={styles.option}>Sign in with biometrics?</Text>
             <Switch onValueChange={toggleSwitch} value={useBiometrics} />
           </View>
         )}
