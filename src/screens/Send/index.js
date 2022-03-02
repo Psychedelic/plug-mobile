@@ -164,6 +164,8 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
       const biometrics = await getPassword();
       if (biometrics) {
         send();
+      } else {
+        setLoading(false);
       }
     } else {
       send();
