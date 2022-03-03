@@ -6,14 +6,9 @@ import { TOKEN_IMAGES } from '../../utils/assets';
 import {
   DEFAULT_ASSETS,
   TRANSACTION_STATUS,
+  DEFAULT_TRANSACTION,
   recursiveParseBigint,
-} from '../constants';
-
-const DEFAULT_TRANSACTION = {
-  height: null,
-  transactionId: null,
-  status: null,
-};
+} from '../utils';
 
 const DEFAULT_STATE = {
   assets: DEFAULT_ASSETS,
