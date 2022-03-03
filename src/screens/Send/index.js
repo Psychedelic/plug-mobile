@@ -247,9 +247,6 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
       return saveContactRef;
     }
   };
-  console.log('////////////////////////////////');
-  console.log('isValidAddress', isValidAddress);
-  console.log('selectedToken', selectedToken);
 
   const handleBack = () => {
     setAddress(null);
