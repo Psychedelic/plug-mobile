@@ -1,16 +1,17 @@
 import React, { Fragment, useRef, useState } from 'react';
-import Column from '../../components/layout/Column';
-import Modal from '../../components/modal';
 import { Text, View, ActionSheetIOS } from 'react-native';
-import { FontStyles } from '../../constants/theme';
-import Row from '../../components/layout/Row';
-import Header from '../../components/common/Header';
+
 import ContactItem from '../../components/common/ContactItem';
-import useContacts from '../../hooks/useContacts';
-import styles from './styles';
 import Touchable from '../../components/animations/Touchable';
-import Icon from '../../components/icons';
 import AddEditContact from './components/AddEditContact';
+import Header from '../../components/common/Header';
+import Column from '../../components/layout/Column';
+import { FontStyles } from '../../constants/theme';
+import useContacts from '../../hooks/useContacts';
+import Row from '../../components/layout/Row';
+import Modal from '../../components/modal';
+import Icon from '../../components/icons';
+import styles from './styles';
 
 const Contacts = ({ modalRef }) => {
   const addEditContactRef = useRef(null);

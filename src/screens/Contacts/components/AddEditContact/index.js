@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
+import { useSelector } from 'react-redux';
 import emojis from 'emoji-datasource';
 
-import Modal from '../../../components/modal';
-import useContacts from '../../../hooks/useContacts';
-import { FontStyles } from '../../../constants/theme';
-import Header from '../../../components/common/Header';
-import { validatePrincipalId } from '../../../helpers/ids';
-import TextInput from '../../../components/common/TextInput';
-import RainbowButton from '../../../components/buttons/RainbowButton';
-import { charFromEmojiObject } from '../../../components/common/EmojiSelector';
+import { charFromEmojiObject } from '../../../../components/common/EmojiSelector';
+import RainbowButton from '../../../../components/buttons/RainbowButton';
+import TextInput from '../../../../components/common/TextInput';
+import { validatePrincipalId } from '../../../../helpers/ids';
+import Header from '../../../../components/common/Header';
+import { FontStyles } from '../../../../constants/theme';
+import useContacts from '../../../../hooks/useContacts';
+import Modal from '../../../../components/modal';
+import styles from './styles';
 
 const AddEditContact = ({ modalRef, contact, onClose }) => {
+  const { contacts } = useSelector(state => state.user);
   const { onCreate, onEdit } = useContacts();
 
   const [name, setName] = useState('');
@@ -19,6 +22,7 @@ const AddEditContact = ({ modalRef, contact, onClose }) => {
 
   const title = `${contact ? 'Edit' : 'Add'} Contact`;
   const validId = validatePrincipalId(id);
+  const savedContact = contacts.find(c => c.id === id);
 
   const handleSubmit = () => {
     const randomEmoji = charFromEmojiObject(
@@ -35,27 +39,33 @@ const AddEditContact = ({ modalRef, contact, onClose }) => {
     modalRef.current?.close();
   };
 
+  const clearState = () => {
+    setName('');
+    setId('');
+  };
+
   useEffect(() => {
     if (contact) {
       setName(contact.name);
       setId(contact.id);
     } else {
-      setName('');
-      setId('');
+      clearState();
     }
   }, [contact]);
 
-  const isButtonDisabled = () => !name || !id || !validId;
+  const isButtonDisabled = () => !name || !id || !validId || !!savedContact;
 
   const handleClose = () => {
     onClose();
+    if (!contact) {
+      clearState();
+    }
   };
 
   return (
     <Modal modalRef={modalRef} adjustToContentHeight onClose={handleClose}>
       <Header center={<Text style={FontStyles.Subtitle2}>{title}</Text>} />
-      <View
-        style={{ paddingHorizontal: 20, paddingTop: 20, paddingBottom: 40 }}>
+      <View style={styles.container}>
         <TextInput
           autoFocus
           value={name}
@@ -69,11 +79,17 @@ const AddEditContact = ({ modalRef, contact, onClose }) => {
           variant="text"
           onChangeText={setId}
           placeholder="Principal ID"
-          customStyle={{ marginVertical: 20 }}
+          customStyle={styles.marginedContainer}
         />
+        {savedContact && (
+          <Text style={styles.savedContactText}>
+            {`Contact already saved as ${savedContact?.name}!`}
+          </Text>
+        )}
         <RainbowButton
           text={title}
           onPress={handleSubmit}
+          buttonStyle={styles.marginedContainer}
           disabled={isButtonDisabled()}
         />
       </View>
