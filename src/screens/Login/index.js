@@ -110,7 +110,7 @@ function Login() {
             buttonStyle={styles.buttonMargin}
           />
           <Button
-            text="Import new Account"
+            text="Access Wallet"
             onPress={handleGoToWelcome}
             buttonStyle={styles.buttonMargin}
           />
