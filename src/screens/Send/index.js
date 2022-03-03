@@ -182,7 +182,7 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
     if (!selectedNft && token) {
       setSelectedToken(token);
     }
-  }, [token]);
+  }, [token, isValidAddress]);
 
   useEffect(() => {
     if (selectedNft && (isValidAddress || selectedContact)) {
@@ -247,6 +247,9 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
       return saveContactRef;
     }
   };
+  console.log('////////////////////////////////');
+  console.log('isValidAddress', isValidAddress);
+  console.log('selectedToken', selectedToken);
 
   const handleBack = () => {
     setAddress(null);
