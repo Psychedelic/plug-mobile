@@ -6,9 +6,9 @@ import Modal from '../../../components/modal';
 import useContacts from '../../../hooks/useContacts';
 import { FontStyles } from '../../../constants/theme';
 import Header from '../../../components/common/Header';
+import { validatePrincipalId } from '../../../helpers/ids';
 import TextInput from '../../../components/common/TextInput';
 import RainbowButton from '../../../components/buttons/RainbowButton';
-import { validatePrincipalId, validateAccountId } from '../../../helpers/ids';
 import { charFromEmojiObject } from '../../../components/common/EmojiSelector';
 
 const AddEditContact = ({ modalRef, contact, onClose }) => {
@@ -18,7 +18,7 @@ const AddEditContact = ({ modalRef, contact, onClose }) => {
   const [id, setId] = useState('');
 
   const title = `${contact ? 'Edit' : 'Add'} Contact`;
-  const validId = validatePrincipalId(id) || validateAccountId(id);
+  const validId = validatePrincipalId(id);
 
   const handleSubmit = () => {
     const randomEmoji = charFromEmojiObject(
@@ -68,7 +68,7 @@ const AddEditContact = ({ modalRef, contact, onClose }) => {
           value={id}
           variant="text"
           onChangeText={setId}
-          placeholder="Principal or Account ID"
+          placeholder="Principal ID"
           customStyle={{ marginVertical: 20 }}
         />
         <RainbowButton
