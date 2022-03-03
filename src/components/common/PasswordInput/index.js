@@ -66,9 +66,6 @@ function PasswordInput({
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
         />
-        {error && (
-          <Text style={styles.errorText}>The password is incorrect</Text>
-        )}
         <Touchable
           disabled={disabled}
           scale={animationScales.medium}
@@ -82,6 +79,7 @@ function PasswordInput({
           />
         </Touchable>
       </View>
+      {error && <Text style={styles.errorText}>The password is incorrect</Text>}
     </Touchable>
   );
 }
