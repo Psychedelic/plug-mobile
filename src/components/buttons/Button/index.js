@@ -22,18 +22,13 @@ const Button = ({
       onPress={onPress}
       onLongPress={onLongPress}>
       <View style={[styles.button, buttonStyle]} {...props}>
-        {
-          loading ? (
-            <ActivityIndicator
-              style={StyleSheet.absoluteFill}
-              color='white'
-            />
-          )
-            :
-            <Text style={[styles.text, textStyle, disabled && styles.disabled]}>
-              {text}
-            </Text>
-        }
+        {loading ? (
+          <ActivityIndicator style={StyleSheet.absoluteFill} color="white" />
+        ) : (
+          <Text style={[styles.text, textStyle, disabled && styles.disabled]}>
+            {text}
+          </Text>
+        )}
       </View>
     </Touchable>
   );

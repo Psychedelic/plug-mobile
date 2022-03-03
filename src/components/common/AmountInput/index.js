@@ -39,10 +39,9 @@ const AmountInput = ({
     inputRef?.current.focus();
     setSelected(symbol);
   };
-
   return (
     <Touchable scale={animationScales.small} onPress={onPress}>
-      {isFocused && (
+      {!!isFocused && (
         <LinearGradient
           style={[styles.focusedGradient, customStyle]}
           {...Rainbow}
@@ -66,7 +65,7 @@ const AmountInput = ({
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
         />
-        {selected && maxAmount && (
+        {!!selected && !!maxAmount && (
           <Button
             variant="gray"
             text="Max"
