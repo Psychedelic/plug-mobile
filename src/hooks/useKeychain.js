@@ -32,7 +32,6 @@ const useKeychain = () => {
 
   const getPassword = async onError => {
     const { tokenKey } = KEYCHAIN_CONSTANTS;
-    console.log('tokenKey', tokenKey);
     try {
       const password = await RNSInfo.getItem(tokenKey, KEYCHAIN_OPTIONS);
       return password;

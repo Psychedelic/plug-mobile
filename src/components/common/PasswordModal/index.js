@@ -12,23 +12,26 @@ import PasswordInput from '../PasswordInput';
 
 import styles from './styles';
 
-const PasswordModal = ({
-  modalRef,
-  handleClose = () => {},
-  handleSubmit,
-  loading,
-}) => {
+const PasswordModal = ({ modalRef, handleClose = () => {}, handleSubmit }) => {
   const [password, setPassword] = useState('');
-  const error = useMemo(() => !isValidPassword(password), [password]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
   const dispatch = useDispatch();
   const validatedSubmit = async () => {
+    setLoading(true);
     dispatch(
       unlock({
         password,
         onSuccess: () => {
           handleSubmit();
           handleClose();
+          setLoading(false);
           modalRef.current.close();
+        },
+        onError: () => {
+          setError(true);
+          setLoading(false);
         },
       }),
     );
@@ -47,7 +50,7 @@ const PasswordModal = ({
           text="Continue"
           loading={loading}
           onPress={validatedSubmit}
-          disabled={isValidPassword(password)}
+          disabled={loading}
         />
       </Column>
     </Modal>
