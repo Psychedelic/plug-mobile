@@ -12,7 +12,12 @@ import PasswordInput from '../PasswordInput';
 
 import styles from './styles';
 
-const PasswordModal = ({ modalRef, handleClose, handleSubmit, loading }) => {
+const PasswordModal = ({
+  modalRef,
+  handleClose = () => {},
+  handleSubmit,
+  loading,
+}) => {
   const [password, setPassword] = useState('');
   const error = useMemo(() => !isValidPassword(password), [password]);
   const dispatch = useDispatch();

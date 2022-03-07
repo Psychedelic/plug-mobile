@@ -355,11 +355,7 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
           loading={loading || transactionsLoading}
         />
         <SaveContact id={address} modalRef={saveContactRef} />
-        <PasswordModal
-          modalRef={passwordRef}
-          handleClose={() => {}}
-          handleSubmit={send}
-        />
+        <PasswordModal modalRef={passwordRef} handleSubmit={send} />
       </ScrollView>
     </Modal>
   );
