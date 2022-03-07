@@ -35,6 +35,7 @@ import {
   USD_MAX_DECIMALS,
   ICP_MAX_DECIMALS,
 } from './utils';
+import PasswordModal from '../../components/common/PasswordModal';
 
 const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
 
@@ -43,11 +44,18 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
   const { isSensorAvailable, getPassword } = useKeychain();
   const { icpPrice } = useSelector(state => state.icp);
   const { currentWallet } = useSelector(state => state.keyring);
-  const { assets, transaction, collections, usingBiometrics, contacts } =
-    useSelector(state => state.user);
+  const {
+    assets,
+    transaction,
+    collections,
+    usingBiometrics,
+    contacts,
+    transactionsLoading,
+  } = useSelector(state => state.user);
 
   const reviewRef = useRef(null);
   const saveContactRef = useRef(null);
+  const passwordRef = useRef(null);
 
   const nfts =
     collections?.flatMap(collection => collection?.tokens || []) || [];
@@ -62,12 +70,12 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
   const [selectedTokenPrice, setSelectedTokenPrice] = useState(null);
   const [addressInfo, setAddressInfo] = useState(INITIAL_ADDRESS_INFO);
   const [sendingXTCtoCanister, setSendingXTCtoCanister] = useState(false);
-
+  const [biometricsError, setBiometricsError] = useState(false);
   const isValidAddress = addressInfo.isValid;
   const to = address || selectedContact?.id;
 
   useEffect(() => {
-    const savedContact = contacts.find(c => c.id === address);
+    const savedContact = contacts?.find(c => c.id === address);
     if (savedContact) {
       setSelectedContact(savedContact);
     }
@@ -76,6 +84,13 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
   useEffect(() => {
     dispatch(getICPPrice());
   }, []);
+
+  const handleBiometricsFail = err => {
+    if (err.includes('locked')) {
+      setBiometricsError(true);
+    }
+    passwordRef.current?.open();
+  };
 
   const onContactPress = contact => {
     Keyboard.dismiss();
@@ -148,24 +163,35 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
     }
   };
 
-  const handleSend = async () => {
+  const send = () => {
     setLoading(true);
-    const isBiometricsAvailable = await isSensorAvailable();
+    const func = selectedNft ? handleSendNFT : handleSendToken;
+    func();
+  };
 
-    const send = () => {
-      if (selectedNft) {
-        handleSendNFT();
-      } else {
-        handleSendToken();
-      }
-    };
+  const validateWithBiometrics = async () => {
+    setLoading(true);
+    const isBiometricsAvailable = await isSensorAvailable(handleBiometricsFail);
+    if (isBiometricsAvailable) {
+      const biometricsPassword = await getPassword(handleBiometricsFail);
+      setLoading(false);
+      return !!biometricsPassword;
+    }
+    setLoading(false);
+    return false;
+  };
 
-    if (isBiometricsAvailable && usingBiometrics) {
-      const biometrics = await getPassword();
-      if (biometrics) {
-        send();
+  const handleSend = async () => {
+    let authorized = false;
+    if (usingBiometrics) {
+      if (biometricsError) {
+        // If biometrics has failed, we prompt to enter the password
+        passwordRef.current?.open();
       } else {
-        setLoading(false);
+        authorized = await validateWithBiometrics();
+        if (authorized) {
+          send();
+        }
       }
     } else {
       send();
@@ -253,7 +279,6 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
     setSelectedContact(null);
     setAddressInfo(INITIAL_ADDRESS_INFO);
   };
-
   return (
     <Modal modalRef={modalRef} onClose={resetState}>
       <Header
@@ -327,9 +352,10 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
           }}
           onClose={partialReset}
           transaction={transaction}
-          loading={loading}
+          loading={loading || transactionsLoading}
         />
         <SaveContact id={address} modalRef={saveContactRef} />
+        <PasswordModal modalRef={passwordRef} handleSubmit={send} />
       </ScrollView>
     </Modal>
   );

@@ -26,6 +26,7 @@ import {
   USD_MAX_DECIMALS,
 } from '../../utils';
 import SaveContact from '../SaveContact';
+
 import styles from './styles';
 
 const ReviewSend = ({
@@ -42,6 +43,8 @@ const ReviewSend = ({
   transaction,
   tokenPrice,
   loading,
+  biometricsError,
+  setBiometricsError,
   ...props
 }) => {
   const dispatch = useDispatch();
@@ -59,7 +62,7 @@ const ReviewSend = ({
   useGetType(nft?.url, setNftType);
 
   useEffect(() => {
-    setSelectedContact(contacts.find(c => c.id === to));
+    setSelectedContact(contacts?.find(c => c.id === to));
   }, [contacts, to]);
 
   const success = transaction?.status === TRANSACTION_STATUS.success;

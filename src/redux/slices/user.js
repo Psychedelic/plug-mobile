@@ -154,12 +154,12 @@ export const privateGetNFTs = async (refresh, state) => {
 
 export const getTransactions = createAsyncThunk(
   'keyring/getTransactions',
-  async (params, { getState }) => {
-    return privateGetTransactions(params, getState());
+  async (params, { getState, dispatch }) => {
+    return privateGetTransactions(params, getState(), dispatch);
   },
 );
 
-export const privateGetTransactions = async (params, state) => {
+export const privateGetTransactions = async (params, state, dispatch) => {
   try {
     const { icpPrice } = params;
     const response = await state.keyring.instance?.getTransactions();
@@ -212,6 +212,7 @@ export const privateGetTransactions = async (params, state) => {
     };
     const parsedTrx = response?.transactions?.map(mapTransaction) || [];
 
+    dispatch(setTransactionsLoading(false));
     return parsedTrx;
   } catch (e) {
     console.log('getTransactions', e);
