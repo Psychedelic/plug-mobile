@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Text } from 'react-native';
 import { useDispatch } from 'react-redux';
+
 import { isValidPassword } from '../../../constants/general';
 import { unlock } from '../../../redux/slices/keyring';
 import RainbowButton from '../../buttons/RainbowButton';

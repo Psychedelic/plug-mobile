@@ -26,9 +26,8 @@ import {
   USD_MAX_DECIMALS,
 } from '../../utils';
 import SaveContact from '../SaveContact';
+
 import styles from './styles';
-import PasswordModal from '../../../../components/common/PasswordModal';
-import { ref } from 'yup';
 
 const ReviewSend = ({
   modalRef,
