@@ -76,11 +76,13 @@ function Login() {
   };
 
   const unlockUsingBiometrics = async () => {
+    console.log('checking if available');
     const isAvailable = await isSensorAvailable();
-
+    console.log('is available', isAvailable);
     if (isAvailable) {
+      console.log('getting password');
       const biometrics = await getPassword();
-
+      console.log('password?', biometrics);
       if (biometrics) {
         await handleSubmit(biometrics);
       }
@@ -112,6 +114,7 @@ function Login() {
           <Button
             text="Access Wallet"
             onPress={handleGoToWelcome}
+            disabled={assetsLoading}
             buttonStyle={styles.buttonMargin}
           />
         </View>

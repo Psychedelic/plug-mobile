@@ -7,7 +7,7 @@ const KEYCHAIN_CONSTANTS = {
   tokenKey: 'plug-accss-token',
   keychainService: 'ooo.plugwallet',
   sharedPreferencesName: 'plug-preferences',
-  kSecAccessControl: 'kSecAccessControlBiometryAny',
+  kSecAccessControl: 'kSecAccessControlUserPresence',
   kSecUseOperationPrompt: 'We need your permission to retrieve encrypted data',
 };
 
@@ -30,10 +30,17 @@ const useKeychain = () => {
     return RNSInfo.setItem(tokenKey, password, KEYCHAIN_OPTIONS);
   };
 
-  const getPassword = async () => {
+  const getPassword = async onError => {
     const { tokenKey } = KEYCHAIN_CONSTANTS;
-    const password = await RNSInfo.getItem(tokenKey, KEYCHAIN_OPTIONS);
-    return password;
+    console.log('tokenKey', tokenKey);
+    try {
+      const password = await RNSInfo.getItem(tokenKey, KEYCHAIN_OPTIONS);
+      return password;
+    } catch (e) {
+      onError?.();
+      console.log('Get password error', e);
+      return null;
+    }
   };
 
   const resetPassword = async () => {
@@ -42,8 +49,14 @@ const useKeychain = () => {
     return RNSInfo.deleteItem(tokenKey, KEYCHAIN_OPTIONS);
   };
 
-  const isSensorAvailable = async () => {
-    return RNSInfo.isSensorAvailable();
+  const isSensorAvailable = async onError => {
+    try {
+      return RNSInfo.isSensorAvailable();
+    } catch (e) {
+      onError?.();
+      console.log('Sensor available error', e);
+      return false;
+    }
   };
 
   // Statefull Keychain functions:

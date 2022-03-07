@@ -27,6 +27,8 @@ import {
 } from '../../utils';
 import SaveContact from '../SaveContact';
 import styles from './styles';
+import PasswordModal from '../../../../components/common/PasswordModal';
+import { ref } from 'yup';
 
 const ReviewSend = ({
   modalRef,
@@ -42,6 +44,8 @@ const ReviewSend = ({
   transaction,
   tokenPrice,
   loading,
+  requestPassword,
+  setRequestPassword,
   ...props
 }) => {
   const dispatch = useDispatch();
@@ -50,6 +54,7 @@ const ReviewSend = ({
   const contacts = useSelector(state => state.user.contacts, shallowEqual);
   const [selectedContact, setSelectedContact] = useState(contact || null);
   const saveContactRef = useRef(null);
+  const passwordRef = useRef(null);
   const transactionFee = getTransactionFee(token?.symbol);
 
   const handleSaveContact = () => {

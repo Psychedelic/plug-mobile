@@ -35,6 +35,7 @@ import {
   USD_MAX_DECIMALS,
   ICP_MAX_DECIMALS,
 } from './utils';
+import PasswordModal from '../../components/common/PasswordModal';
 
 const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
 
@@ -62,7 +63,7 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
   const [selectedTokenPrice, setSelectedTokenPrice] = useState(null);
   const [addressInfo, setAddressInfo] = useState(INITIAL_ADDRESS_INFO);
   const [sendingXTCtoCanister, setSendingXTCtoCanister] = useState(false);
-
+  const [requestPassword, setRequestPassword] = useState(false);
   const isValidAddress = addressInfo.isValid;
   const to = address || selectedContact?.id;
 
@@ -149,24 +150,24 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
   };
 
   const handleSend = async () => {
-    setLoading(true);
-    const isBiometricsAvailable = await isSensorAvailable();
-
     const send = () => {
-      if (selectedNft) {
-        handleSendNFT();
-      } else {
-        handleSendToken();
-      }
+      setLoading(true);
+      const func = selectedNft ? handleSendNFT : handleSendToken;
+      func();
+      setLoading(false);
     };
-
-    if (isBiometricsAvailable && usingBiometrics) {
-      const biometrics = await getPassword();
-      if (biometrics) {
+    const isBiometricsAvailable = await isSensorAvailable(() =>
+      setRequestPassword(true),
+    );
+    if (!requestPassword && isBiometricsAvailable && usingBiometrics) {
+      setLoading(true);
+      const biometricsPassword = await getPassword(() =>
+        setRequestPassword(true),
+      );
+      if (biometricsPassword) {
         send();
-      } else {
-        setLoading(false);
       }
+      setLoading(false);
     } else {
       send();
     }
@@ -254,6 +255,8 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
     setAddressInfo(INITIAL_ADDRESS_INFO);
   };
 
+  console.log('Should show password?', requestPassword);
+
   return (
     <Modal modalRef={modalRef} onClose={resetState}>
       <Header
@@ -328,8 +331,18 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
           onClose={partialReset}
           transaction={transaction}
           loading={loading}
+          requestPassword={requestPassword}
+          setRequestPassword={setRequestPassword}
         />
         <SaveContact id={address} modalRef={saveContactRef} />
+        {!!requestPassword && (
+          <PasswordModal
+            modalRef={modalRef}
+            handleClose={() => setRequestPassword(false)}
+            handleSubmit={handleSend}
+            loading={loading}
+          />
+        )}
       </ScrollView>
     </Modal>
   );
