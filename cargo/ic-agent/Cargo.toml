@@ -21,10 +21,9 @@ garcon = { version = "0.2", features = ["async"] }
 hex = "0.4.0"
 http = "0.2.6"
 hyper-rustls = { version = "0.23.0", features = [ "webpki-roots" ] }
-ic-types = "0.3.0"
+ic-types =  {git = "https://github.com/FirstFieldGmbH/ic-types.git", rev = "948709c5d7fd8b128abfdae0bb3f21ca57e0140b" }
 leb128 = "0.2.5"
 mime = "0.3.16"
-openssl = {version = "0.10.38", features = ["vendored"]}
 rand = "0.8.4"
 rustls = "0.20.2"
 ring = { version = "0.16.11", features = ["std"] }
