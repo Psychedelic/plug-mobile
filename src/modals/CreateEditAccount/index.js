@@ -53,6 +53,8 @@ const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
     if (account) {
       setAccountName(account.name);
       setEmoji(account.icon);
+    } else {
+      resetState();
     }
   }, [account]);
 
@@ -64,8 +66,14 @@ const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
     modalRef?.current.close();
   };
 
+  const handleClose = () => {
+    if (!account) {
+      resetState();
+    }
+  };
+
   return (
-    <Modal adjustToContentHeight modalRef={modalRef} onClose={resetState}>
+    <Modal adjustToContentHeight modalRef={modalRef} onClose={handleClose}>
       <Header
         right={
           <Text style={[FontStyles.Normal, styles.valid]} onPress={closeModal}>
