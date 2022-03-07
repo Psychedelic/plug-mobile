@@ -2,6 +2,7 @@ import { reset } from './slices/keyring';
 import {
   getNFTs,
   setAssets,
+  setContacts,
   setCollections,
   getTransactions,
   privateGetAssets,
@@ -58,6 +59,7 @@ export const recursiveParseBigint = obj =>
 
 export const resetStores = dispatch => {
   dispatch(reset());
+  dispatch(setContacts([]));
   dispatch(setCollections([]));
   dispatch(setTransactions([]));
   dispatch(setAssets(DEFAULT_ASSETS));
