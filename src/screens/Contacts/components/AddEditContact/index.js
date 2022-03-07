@@ -16,19 +16,20 @@ import styles from './styles';
 const AddEditContact = ({ modalRef, contact, onClose }) => {
   const { contacts } = useSelector(state => state.user);
   const { onCreate, onEdit } = useContacts();
+  const isEditContact = !!contact;
 
   const [name, setName] = useState('');
   const [id, setId] = useState('');
 
-  const title = `${contact ? 'Edit' : 'Add'} Contact`;
+  const title = `${isEditContact ? 'Edit' : 'Add'} Contact`;
   const validId = validatePrincipalId(id);
-  const savedContact = contacts.find(c => c.id === id);
+  const savedContact = isEditContact ? false : contacts.find(c => c.id === id);
 
   const handleSubmit = () => {
     const randomEmoji = charFromEmojiObject(
       emojis[Math.floor(Math.random() * emojis.length)],
     );
-    contact
+    isEditContact
       ? onEdit({ ...contact, id, name })
       : onCreate({
           id,
