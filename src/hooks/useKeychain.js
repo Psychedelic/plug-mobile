@@ -37,7 +37,7 @@ const useKeychain = () => {
       const password = await RNSInfo.getItem(tokenKey, KEYCHAIN_OPTIONS);
       return password;
     } catch (e) {
-      onError?.();
+      onError?.(e?.message);
       console.log('Get password error', e);
       return null;
     }
@@ -53,7 +53,7 @@ const useKeychain = () => {
     try {
       return RNSInfo.isSensorAvailable();
     } catch (e) {
-      onError?.();
+      onError?.(e?.message);
       console.log('Sensor available error', e);
       return false;
     }

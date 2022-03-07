@@ -44,8 +44,8 @@ const ReviewSend = ({
   transaction,
   tokenPrice,
   loading,
-  requestPassword,
-  setRequestPassword,
+  biometricsError,
+  setBiometricsError,
   ...props
 }) => {
   const dispatch = useDispatch();
@@ -54,7 +54,6 @@ const ReviewSend = ({
   const contacts = useSelector(state => state.user.contacts, shallowEqual);
   const [selectedContact, setSelectedContact] = useState(contact || null);
   const saveContactRef = useRef(null);
-  const passwordRef = useRef(null);
   const transactionFee = getTransactionFee(token?.symbol);
 
   const handleSaveContact = () => {
@@ -64,7 +63,7 @@ const ReviewSend = ({
   useGetType(nft?.url, setNftType);
 
   useEffect(() => {
-    setSelectedContact(contacts.find(c => c.id === to));
+    setSelectedContact(contacts?.find(c => c.id === to));
   }, [contacts, to]);
 
   const success = transaction?.status === TRANSACTION_STATUS.success;

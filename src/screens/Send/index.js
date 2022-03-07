@@ -44,11 +44,18 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
   const { isSensorAvailable, getPassword } = useKeychain();
   const { icpPrice } = useSelector(state => state.icp);
   const { currentWallet } = useSelector(state => state.keyring);
-  const { assets, transaction, collections, usingBiometrics, contacts } =
-    useSelector(state => state.user);
+  const {
+    assets,
+    transaction,
+    collections,
+    usingBiometrics,
+    contacts,
+    transactionsLoading,
+  } = useSelector(state => state.user);
 
   const reviewRef = useRef(null);
   const saveContactRef = useRef(null);
+  const passwordRef = useRef(null);
 
   const nfts =
     collections?.flatMap(collection => collection?.tokens || []) || [];
@@ -63,12 +70,12 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
   const [selectedTokenPrice, setSelectedTokenPrice] = useState(null);
   const [addressInfo, setAddressInfo] = useState(INITIAL_ADDRESS_INFO);
   const [sendingXTCtoCanister, setSendingXTCtoCanister] = useState(false);
-  const [requestPassword, setRequestPassword] = useState(false);
+  const [biometricsError, setBiometricsError] = useState(false);
   const isValidAddress = addressInfo.isValid;
   const to = address || selectedContact?.id;
 
   useEffect(() => {
-    const savedContact = contacts.find(c => c.id === address);
+    const savedContact = contacts?.find(c => c.id === address);
     if (savedContact) {
       setSelectedContact(savedContact);
     }
@@ -77,6 +84,13 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
   useEffect(() => {
     dispatch(getICPPrice());
   }, []);
+
+  const handleBiometricsFail = err => {
+    if (err.includes('locked')) {
+      setBiometricsError(true);
+    }
+    passwordRef.current?.open();
+  };
 
   const onContactPress = contact => {
     Keyboard.dismiss();
@@ -149,25 +163,36 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
     }
   };
 
+  const send = () => {
+    setLoading(true);
+    const func = selectedNft ? handleSendNFT : handleSendToken;
+    func();
+  };
+
+  const validateWithBiometrics = async () => {
+    setLoading(true);
+    const isBiometricsAvailable = await isSensorAvailable(handleBiometricsFail);
+    if (isBiometricsAvailable) {
+      const biometricsPassword = await getPassword(handleBiometricsFail);
+      setLoading(false);
+      return !!biometricsPassword;
+    }
+    setLoading(false);
+    return false;
+  };
+
   const handleSend = async () => {
-    const send = () => {
-      setLoading(true);
-      const func = selectedNft ? handleSendNFT : handleSendToken;
-      func();
-      setLoading(false);
-    };
-    const isBiometricsAvailable = await isSensorAvailable(() =>
-      setRequestPassword(true),
-    );
-    if (!requestPassword && isBiometricsAvailable && usingBiometrics) {
-      setLoading(true);
-      const biometricsPassword = await getPassword(() =>
-        setRequestPassword(true),
-      );
-      if (biometricsPassword) {
-        send();
+    let authorized = false;
+    if (usingBiometrics) {
+      if (biometricsError) {
+        // If biometrics has failed, we prompt to enter the password
+        passwordRef.current?.open();
+      } else {
+        authorized = await validateWithBiometrics();
+        if (authorized) {
+          send();
+        }
       }
-      setLoading(false);
     } else {
       send();
     }
@@ -254,9 +279,6 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
     setSelectedContact(null);
     setAddressInfo(INITIAL_ADDRESS_INFO);
   };
-
-  console.log('Should show password?', requestPassword);
-
   return (
     <Modal modalRef={modalRef} onClose={resetState}>
       <Header
@@ -330,19 +352,14 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
           }}
           onClose={partialReset}
           transaction={transaction}
-          loading={loading}
-          requestPassword={requestPassword}
-          setRequestPassword={setRequestPassword}
+          loading={loading || transactionsLoading}
         />
         <SaveContact id={address} modalRef={saveContactRef} />
-        {!!requestPassword && (
-          <PasswordModal
-            modalRef={modalRef}
-            handleClose={() => setRequestPassword(false)}
-            handleSubmit={handleSend}
-            loading={loading}
-          />
-        )}
+        <PasswordModal
+          modalRef={passwordRef}
+          handleClose={() => {}}
+          handleSubmit={send}
+        />
       </ScrollView>
     </Modal>
   );
