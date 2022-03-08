@@ -25,6 +25,7 @@ ic-types =  {git = "https://github.com/FirstFieldGmbH/ic-types.git", rev = "9487
 leb128 = "0.2.5"
 mime = "0.3.16"
 rand = "0.8.4"
+openssl = {version = "0.10.38", features = ["vendored"]}
 rustls = "0.20.2"
 ring = { version = "0.16.11", features = ["std"] }
 serde = { version = "1.0.133", features = ["derive"] }
