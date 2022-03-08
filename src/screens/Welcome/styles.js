@@ -11,6 +11,10 @@ export default StyleSheet.create({
     width: '100%',
     flex: 1,
   },
+  plugIcon: {
+    height: 116,
+    resizeMode: 'contain',
+  },
   title: {
     justifyContent: 'center',
     alignItems: 'center',
