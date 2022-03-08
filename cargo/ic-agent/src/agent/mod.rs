@@ -48,7 +48,7 @@ use std::{
     pin::Pin,
     sync::{Arc, RwLock},
     task::{Context, Poll},
-    time::Duration, ffi::CString,
+    time::Duration, ffi::{CString, CStr}, os::raw::c_char,
 };
 
 const IC_REQUEST_DOMAIN_SEPARATOR: &[u8; 11] = b"\x0Aic-request";
@@ -350,8 +350,8 @@ impl Agent {
         effective_canister_id: Principal,
         serialized_bytes: Vec<u8>,
     ) -> Result<A, AgentError>
-    where
-        A: serde::de::DeserializeOwned,
+        where
+            A: serde::de::DeserializeOwned,
     {
         let bytes = self
             .transport
@@ -365,8 +365,8 @@ impl Agent {
         effective_canister_id: Principal,
         serialized_bytes: Vec<u8>,
     ) -> Result<A, AgentError>
-    where
-        A: serde::de::DeserializeOwned,
+        where
+            A: serde::de::DeserializeOwned,
     {
         let bytes = self
             .transport
@@ -761,8 +761,8 @@ fn construct_message(request_id: &RequestId) -> Vec<u8> {
 }
 
 fn sign_request<'a, V>(request: &V, identity: Arc<dyn Identity>) -> Result<Vec<u8>, AgentError>
-where
-    V: 'a + Serialize,
+    where
+        V: 'a + Serialize,
 {
     let request_id = to_request_id(&request)?;
     let msg = construct_message(&request_id);
@@ -1073,13 +1073,13 @@ impl UpdateCall<'_> {
         self,
         waiter: W,
     ) -> Pin<Box<dyn core::future::Future<Output = Result<Vec<u8>, AgentError>> + Send + 'out>>
-    where
-        Self: 'out,
-        W: Waiter + 'out,
+        where
+            Self: 'out,
+            W: Waiter + 'out,
     {
         async fn run<W>(_self: UpdateCall<'_>, waiter: W) -> Result<Vec<u8>, AgentError>
-        where
-            W: Waiter,
+            where
+                W: Waiter,
         {
             let request_id = _self.request_id.await?;
             _self
@@ -1261,15 +1261,16 @@ struct IOSVerify<'a> {
     cert: Certificate<'a>,
 }
 
-fn error(ctx: &str, msg: String) -> CString {
+fn error(ctx: &str, msg: String) -> *mut c_char {
     let res = json!({"stage": ctx, "error": msg}).to_string();
-    CString::new(res).unwrap()
+    CString::new(res).unwrap().into_raw()
 }
 
 
 #[no_mangle]
-pub fn ios_verify_json(s: CString) -> CString {
-    let b = s.as_bytes();
+pub fn ios_verify_json(s: *const c_char) -> *mut c_char {
+    let c_str = unsafe { CStr::from_ptr(s)};
+    let b = c_str.to_bytes();
     let IOSVerify {request_id, cert} =
         match serde_json::from_slice(&b[..]) {
             Ok(v) => v,
@@ -1280,7 +1281,7 @@ pub fn ios_verify_json(s: CString) -> CString {
         Err(e) => return error("Verification", e.to_string()),
     };
     let json = json!({"certified_result": response}).to_string();
-    CString::new(json).unwrap()
+    CString::new(json).unwrap().into_raw()
 }
 
 #[test]
