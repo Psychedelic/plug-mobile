@@ -60,3 +60,6 @@ buck-out/
 
 # IC
 /cargo/
+
+# Env
+/*.env

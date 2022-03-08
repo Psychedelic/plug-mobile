@@ -1,5 +1,5 @@
 {
-  "name": "plugmobile",
+  "name": "Plug",
   "version": "0.1.0(22)",
   "private": true,
   "scripts": {
@@ -48,6 +48,8 @@
     "react": "17.0.2",
     "react-native": "0.66.3",
     "react-native-bip39": "^2.3.0",
+    "react-native-code-push": "^7.0.4",
+    "react-native-config": "^1.4.5",
     "react-native-crypto-js": "^1.0.0",
     "react-native-device-info": "^8.4.8",
     "react-native-fetch-api": "^2.0.0",
