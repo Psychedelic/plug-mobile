@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import RainbowButton from '../../components/buttons/RainbowButton';
 import Container from '../../components/common/Container';
-import Plug from '../../assets/icons/plug-white.png';
+import Plug from '../../assets/icons/il_white_plug.png';
 import Button from '../../components/buttons/Button';
 import { FontStyles } from '../../constants/theme';
 import Routes from '../../navigation/Routes';
@@ -32,7 +32,7 @@ function Welcome() {
         </Text>
       )}
       <View style={styles.container}>
-        <Image source={Plug} />
+        <Image source={Plug} style={styles.plugIcon} />
         <Text style={styles.title}>Welcome to Plug</Text>
         <RainbowButton
           buttonStyle={[styles.componentMargin, styles.buttonStyling]}

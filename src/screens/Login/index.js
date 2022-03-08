@@ -9,7 +9,7 @@ import PasswordInput from '../../components/common/PasswordInput';
 import { isValidPassword } from '../../constants/general';
 import { setAssetsLoading } from '../../redux/slices/user';
 import Container from '../../components/common/Container';
-import Plug from '../../assets/icons/plug-white.png';
+import Plug from '../../assets/icons/il_white_plug.png';
 import { getICPPrice } from '../../redux/slices/icp';
 import Button from '../../components/buttons/Button';
 import { login } from '../../redux/slices/keyring';
@@ -89,7 +89,7 @@ function Login() {
     <KeyboardHider>
       <Container>
         <View style={styles.container}>
-          <Image source={Plug} />
+          <Image source={Plug} style={styles.plugIcon} />
           <Text style={styles.title}>Unlock Plug</Text>
           <StatusBar barStyle="light-content" />
           <PasswordInput

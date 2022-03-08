@@ -1,6 +1,6 @@
 {
   "name": "Plug",
-  "version": "0.1.0(22)",
+  "version": "0.1.0(24)",
   "private": true,
   "scripts": {
     "ios": "react-native run-ios --scheme plug-dev",

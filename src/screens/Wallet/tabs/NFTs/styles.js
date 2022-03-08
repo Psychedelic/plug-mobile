@@ -15,7 +15,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     width: WINDOW_WIDTH,
     flexWrap: 'wrap',
-    paddingHorizontal: 10,
+    paddingHorizontal: '5%',
     paddingVertical: 10,
   },
   item: {
