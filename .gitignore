@@ -60,3 +60,10 @@ buck-out/
 
 # IC
 /cargo/
+
+# Env
+/*.env
+
+# react-native-config codegen
+ios/react-native-config.xcconfig
+ios/envfile
