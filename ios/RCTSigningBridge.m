@@ -19,14 +19,15 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(signData:(NSString *) data){
   const char *command = [data UTF8String];
-  const char *signedData = ios_verify_json_example(command);
+  const char *signedData = ios_verify_json(command);
+
   return [NSString stringWithUTF8String:signedData];
 }
 
 RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(interchangeDemo:(NSString *) data){
   const char *command = [data UTF8String];
-  const char *signedData = interchange_demo(command);
-  return [NSString stringWithUTF8String:signedData];
+//  const char *signedData = interchange_demo(command);
+  return [NSString string];
 }
 
 @end
