@@ -2,6 +2,17 @@ apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
 
+project.ext.envConfigFiles = [
+  	devdebug: ".dev.env",
+	devrelease: ".dev.env",
+    stagedebug: ".stage.env",
+	stagerelease: ".stage.env",
+	productiondebug: ".production.env",
+	productionrelease: ".production.env"
+]
+
+apply from: project(":react-native-config").projectDir.getPath() + "/dotenv.gradle"
+
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
  * and bundleReleaseJsAndAssets).
@@ -132,6 +143,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        resValue "string", "build_config_package", "co.psychedelic.plug"
     }
     splits {
         abi {
