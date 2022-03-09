@@ -165,8 +165,8 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
 
   const send = () => {
     setLoading(true);
-    const func = selectedNft ? handleSendNFT : handleSendToken;
-    func();
+    const handler = selectedNft ? handleSendNFT : handleSendToken;
+    handler();
   };
 
   const validateWithBiometrics = async () => {

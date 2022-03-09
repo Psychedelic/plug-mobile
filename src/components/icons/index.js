@@ -20,6 +20,7 @@ import UnknownIcon from './svg/UnknownIcon';
 import ProfileIcon from './svg/ProfileIcon';
 import FaceIdIcon from './svg/FaceIdIcon';
 import TokensIcon from './svg/TokensIcon';
+import ErrorIcon from './svg/ErrorIcon';
 import NFTsIcon from './svg/NFTsIcon';
 import GearIcon from './svg/GearIcon';
 import PlusIcon from './svg/PlusIcon';
@@ -39,6 +40,7 @@ export const IconTypes = {
   plus: PlusIcon,
   send: SendIcon,
   swap: SwapIcon,
+  error: ErrorIcon,
   dfinity: ICPIcon,
   tokens: TokensIcon,
   profile: ProfileIcon,
