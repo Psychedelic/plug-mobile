@@ -102,7 +102,7 @@ const ReviewSend = ({
       modalRef={modalRef}
       onClose={handleClose}
       {...props}
-      adjustToContentHeight={!isSuccess}>
+      fullHeight={isSuccess || isError}>
       <View style={styles.content}>
         <Header center={<Text style={FontStyles.Subtitle2}>{title}</Text>} />
         {ReviewIcon}
