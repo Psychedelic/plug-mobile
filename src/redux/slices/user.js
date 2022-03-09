@@ -104,12 +104,12 @@ export const setAssetsAndLoading = createAsyncThunk(
 
 export const getAssets = createAsyncThunk(
   'keyring/getAssets',
-  async (params, { getState }) => {
-    return privateGetAssets(params, getState());
+  async (params, { getState, dispatch }) => {
+    return privateGetAssets(params, getState(), dispatch);
   },
 );
 
-export const privateGetAssets = async (params, state) => {
+export const privateGetAssets = async (params, state, dispatch) => {
   try {
     const { refresh, icpPrice } = params;
     const { instance } = state.keyring;
@@ -125,21 +125,22 @@ export const privateGetAssets = async (params, state) => {
     } else {
       instance?.getBalance();
     }
+    dispatch(setAssetsError(false));
     return { assets, icpPrice };
   } catch (e) {
     console.log('getAssets', e);
-    setAssetsError(true);
+    dispatch(setAssetsError(true));
   }
 };
 
 export const getNFTs = createAsyncThunk(
   'keyring/getNFTs',
-  async (params, { getState }) => {
-    return privateGetNFTs(params, getState());
+  async (params, { getState, dispatch }) => {
+    return privateGetNFTs(params, getState(), dispatch);
   },
 );
 
-export const privateGetNFTs = async (refresh, state) => {
+export const privateGetNFTs = async (refresh, state, dispatch) => {
   try {
     const { instance } = state.keyring;
     const response = await instance?.getState();
@@ -148,12 +149,13 @@ export const privateGetNFTs = async (refresh, state) => {
     if (!collections.length) {
       collections = await instance.getNFTs(currentWalletId, refresh);
     }
+    dispatch(setCollectionsError(false));
     return (collections || [])?.map(collection =>
       recursiveParseBigint(collection),
     );
   } catch (e) {
     console.log('getNFTs', e);
-    setCollectionsError(true);
+    dispatch(setCollectionsError(true));
   }
 };
 
@@ -217,11 +219,12 @@ export const privateGetTransactions = async (params, state, dispatch) => {
     };
     const parsedTrx = response?.transactions?.map(mapTransaction) || [];
 
+    dispatch(setTransactionsError(false));
     dispatch(setTransactionsLoading(false));
     return parsedTrx;
   } catch (e) {
     console.log('getTransactions', e);
-    setTransactionsError(true);
+    dispatch(setTransactionsError(true));
     return {
       error: e.message,
     };
@@ -240,7 +243,7 @@ export const transferNFT = createAsyncThunk(
         token: nft,
       });
       if (response) {
-        await privateGetNFTs(true, state);
+        await privateGetNFTs(true, state, dispatch);
         dispatch(setTransactionsLoading(true));
         dispatch(getTransactions({ icpPrice }));
       }

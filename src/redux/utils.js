@@ -68,7 +68,11 @@ export const resetStores = dispatch => {
 export const getNewAccountData = async (dispatch, icpPrice, state) => {
   dispatch(setAssetsLoading(true));
   dispatch(getNFTs());
-  const assets = await privateGetAssets({ refresh: true, icpPrice }, state);
+  const assets = await privateGetAssets(
+    { refresh: true, icpPrice },
+    state,
+    dispatch,
+  );
   dispatch(setAssetsAndLoading({ assets }));
   dispatch(setTransactionsLoading(true));
   dispatch(getTransactions({ icpPrice }));
