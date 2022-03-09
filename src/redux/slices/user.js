@@ -12,13 +12,16 @@ import {
 
 const DEFAULT_STATE = {
   assets: DEFAULT_ASSETS,
+  assetsError: false,
   assetsLoading: false,
   contacts: [],
   transaction: DEFAULT_TRANSACTION,
   transactions: [],
+  transactionsError: false,
   transactionsLoading: false,
   selectedNFT: {},
   collections: [],
+  collectionsError: false,
   usingBiometrics: false,
 };
 
@@ -125,6 +128,7 @@ export const privateGetAssets = async (params, state) => {
     return { assets, icpPrice };
   } catch (e) {
     console.log('getAssets', e);
+    setAssetsError(true);
   }
 };
 
@@ -149,6 +153,7 @@ export const privateGetNFTs = async (refresh, state) => {
     );
   } catch (e) {
     console.log('getNFTs', e);
+    setCollectionsError(true);
   }
 };
 
@@ -216,6 +221,7 @@ export const privateGetTransactions = async (params, state, dispatch) => {
     return parsedTrx;
   } catch (e) {
     console.log('getTransactions', e);
+    setTransactionsError(true);
     return {
       error: e.message,
     };
@@ -279,14 +285,23 @@ export const keyringSlice = createSlice({
     setAssets: (state, action) => {
       state.assets = action.payload;
     },
+    setAssetsError: (state, action) => {
+      state.assetsError = action.payload;
+    },
     setTransaction: (state, action) => {
       state.transaction = action.payload;
     },
     setTransactions: (state, action) => {
       state.transactions = action.payload;
     },
+    setTransactionsError: (state, action) => {
+      state.transactionsError = action.payload;
+    },
     setCollections: (state, action) => {
       state.collections = action.payload;
+    },
+    setCollectionsError: (state, action) => {
+      state.collectionsError = action.payload;
     },
     removeNFT: (state, action) => {
       const collections = state.collections.map(col => ({
@@ -343,6 +358,9 @@ export const keyringSlice = createSlice({
 });
 
 export const {
+  setTransactionsError,
+  setCollectionsError,
+  setAssetsError,
   setUsingBiometrics,
   setContacts,
   addContact,

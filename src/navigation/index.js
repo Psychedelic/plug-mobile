@@ -10,6 +10,7 @@ import ImportSeedPhrase from '../screens/Welcome/views/ImportSeedPhrase';
 import BackupSeedPhrase from '../screens/Welcome/views/BackupSeedPhrase';
 import CreatePassword from '../screens/Welcome/views/CreatePassword';
 import SwipeNavigator from './navigators/SwipeNavigator';
+import ConnectionError from '../screens/ConnectionError';
 import { navigationRef } from '../helpers/navigation';
 import { setUnlocked } from '../redux/slices/keyring';
 import { Colors } from '../constants/theme';
@@ -81,6 +82,10 @@ const Navigator = () => {
             component={ImportSeedPhrase}
           />
           <Stack.Screen name={Routes.LOGIN_SCREEN} component={Login} />
+          <Stack.Screen
+            name={Routes.CONNECTION_ERROR}
+            component={ConnectionError}
+          />
           <Stack.Screen
             name={Routes.SWIPE_LAYOUT}
             component={SwipeNavigator}

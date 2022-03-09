@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { Text, View, ScrollView, RefreshControl } from 'react-native';
 
+import { ERROR_TYPES } from '../../components/common/ErrorState/constants';
+import ErrorState from '../../components/common/ErrorState';
 import EmptyState from '../../components/common/EmptyState';
 import Container from '../../components/common/Container';
 import UserIcon from '../../components/common/UserIcon';
@@ -19,12 +21,12 @@ import {
 } from '../../redux/slices/user';
 import styles from './styles';
 
-const Profile = ({ navigation }) => {
+const Profile = () => {
   const dispatch = useDispatch();
   const modalRef = useRef(null);
   const { currentWallet } = useSelector(state => state.keyring);
   const { icpPrice } = useSelector(state => state.icp);
-  const { transactions, transactionsLoading } = useSelector(
+  const { transactions, transactionsLoading, transactionsError } = useSelector(
     state => state.user,
     shallowEqual,
   );
@@ -72,30 +74,34 @@ const Profile = ({ navigation }) => {
           />
         </View>
         <Divider />
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              tintColor={Colors.White.Primary}
-            />
-          }>
-          <Text style={styles.title}>Activity</Text>
-          <View>
-            {transactions?.length > 0 ? (
-              transactions?.map((item, index) => (
-                <ActivityItem key={index} {...item} />
-              ))
-            ) : (
-              <EmptyState
-                style={styles.emptyState}
-                title="You have no activity yet"
-                text="When you do, they'll show here, where you will see their traits and send them."
+        {!transactionsError ? (
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                tintColor={Colors.White.Primary}
               />
-            )}
-          </View>
-        </ScrollView>
+            }>
+            <Text style={styles.title}>Activity</Text>
+            <View>
+              {transactions?.length > 0 ? (
+                transactions?.map((item, index) => (
+                  <ActivityItem key={index} {...item} />
+                ))
+              ) : (
+                <EmptyState
+                  style={styles.emptyState}
+                  title="You have no activity yet"
+                  text="When you do, they'll show here, where you will see their traits and send them."
+                />
+              )}
+            </View>
+          </ScrollView>
+        ) : (
+          <ErrorState onPress={onRefresh} errorType={ERROR_TYPES.FETCH_ERROR} />
+        )}
       </Container>
       <Accounts modalRef={modalRef} />
     </>

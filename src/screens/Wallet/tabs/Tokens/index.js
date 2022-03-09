@@ -2,6 +2,8 @@ import { RefreshControl, ScrollView, Text, StyleSheet } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { ERROR_TYPES } from '../../../../components/common/ErrorState/constants';
+import ErrorState from '../../../../components/common/ErrorState';
 import { Colors, FontStyles } from '../../../../constants/theme';
 import TokenItem from '../../../../components/tokens/TokenItem';
 import Container from '../../../../components/common/Container';
@@ -20,7 +22,9 @@ function Tokens() {
   const dispatch = useDispatch();
   const [selectedToken, setSelectedToken] = useState(null);
   const sendRef = useRef(null);
-  const { assets, assetsLoading } = useSelector(state => state.user);
+  const { assets, assetsLoading, assetsError } = useSelector(
+    state => state.user,
+  );
   const { icpPrice } = useSelector(state => state.icp);
   const [refreshing, setRefresing] = useState(assetsLoading);
   const usdSum = Number(
@@ -48,6 +52,10 @@ function Tokens() {
     dispatch(getAssets({ refresh: true, icpPrice }));
   };
 
+  const handleRefresh = () => {
+    onRefresh();
+  };
+
   const openSend = token => () => {
     setSelectedToken(token);
     sendRef.current?.open();
@@ -61,25 +69,32 @@ function Tokens() {
         <Text style={styles.title}>{`$${usdSum}`}</Text>
       </Row>
       <Divider />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor={Colors.White.Primary}
-          />
-        }>
-        {assets?.map(token => (
-          <TokenItem
-            key={token.symbol}
-            {...token}
-            color={Colors.Gray.Tertiary}
-            onPress={openSend(token)}
-            style={styles.tokenItem}
-          />
-        ))}
-      </ScrollView>
+      {!assetsError ? (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={Colors.White.Primary}
+            />
+          }>
+          {assets?.map(token => (
+            <TokenItem
+              key={token.symbol}
+              {...token}
+              color={Colors.Gray.Tertiary}
+              onPress={openSend(token)}
+              style={styles.tokenItem}
+            />
+          ))}
+        </ScrollView>
+      ) : (
+        <ErrorState
+          onPress={handleRefresh}
+          errorType={ERROR_TYPES.FETCH_ERROR}
+        />
+      )}
       <Send modalRef={sendRef} token={selectedToken} />
     </Container>
   );
