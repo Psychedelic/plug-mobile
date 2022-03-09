@@ -10,10 +10,11 @@ const useContacts = () => {
 
   const onCreate = contact => dispatch(addContact(contact));
   const onDelete = contact => dispatch(removeContact(contact));
-  const onEdit = contact =>
+  const onEdit = ({ contact, newContact }) =>
     dispatch(
-      setContacts(contacts.map(c => (c.id === contact.id ? contact : c))),
+      setContacts(contacts.map(c => (c.id === contact.id ? newContact : c))),
     );
+
   const groupedContacts = useMemo(
     () =>
       contacts.reduce((list, contact) => {
