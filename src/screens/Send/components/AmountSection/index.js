@@ -24,6 +24,9 @@ const AmountSection = ({
   availableUsdAmount,
 }) => {
   const [selectedInput, setSelectedInput] = useState('USD');
+  const newTokenAmount = Number(tokenAmount);
+  const newUsdAmount = Number(usdAmount);
+  const newAvailableUsdAmount = Number(availableUsdAmount);
 
   const handleSetTokenAmount = amount => {
     // TODO: Set the correct MAX decimals for the selected token.
@@ -56,26 +59,23 @@ const AmountSection = ({
     if (!tokenAmount || !usdAmount) {
       return 'Enter an Amount';
     }
-    if (availableUsdAmount < usdAmount || availableAmount < tokenAmount) {
+    if (
+      newAvailableUsdAmount < newUsdAmount ||
+      availableAmount < newTokenAmount
+    ) {
       return 'Insufficient Funds';
     }
     return 'Review Send';
   };
 
-  const isButtonDisabled = () => {
-    const newTokenAmount = Number(tokenAmount);
-    const newUsdAmount = Number(usdAmount);
-    const newAvailableUsdAmount = Number(availableUsdAmount);
+  const isButtonDisabled = () =>
+    !newTokenAmount ||
+    newTokenAmount <= 0 ||
+    !newUsdAmount ||
+    newUsdAmount <= 0 ||
+    newUsdAmount > newAvailableUsdAmount ||
+    newTokenAmount > availableAmount;
 
-    return (
-      !newTokenAmount ||
-      newTokenAmount <= 0 ||
-      !newUsdAmount ||
-      newUsdAmount <= 0 ||
-      newUsdAmount > newAvailableUsdAmount ||
-      newTokenAmount > availableAmount
-    );
-  };
   return (
     <>
       <TokenSelector

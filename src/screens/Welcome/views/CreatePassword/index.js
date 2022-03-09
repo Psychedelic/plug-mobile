@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import RainbowButton from '../../../../components/buttons/RainbowButton';
 import PasswordInput from '../../../../components/common/PasswordInput';
 import KeyboardHider from '../../../../components/common/KeyboardHider';
-import { reset, createWallet } from '../../../../redux/slices/keyring';
 import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
+import { createWallet } from '../../../../redux/slices/keyring';
 import { isValidPassword } from '../../../../constants/general';
 import Container from '../../../../components/common/Container';
 import Header from '../../../../components/common/Header';
@@ -46,7 +46,6 @@ const CreatePassword = ({ route, navigation }) => {
       setLoading(false);
     } else {
       try {
-        dispatch(reset());
         dispatch(createWallet({ password, icpPrice }))
           .unwrap()
           .then(async result => {

@@ -28,8 +28,8 @@ const EditEmoji = ({ modalRef, onSave, emoji }) => {
       <Header center={<Text style={FontStyles.Subtitle2}>Set Emoji</Text>} />
       <View style={styles.content}>
         <UserIcon icon={selectedEmoji} size="extralarge" style={styles.icon} />
-        <RainbowButton text="Save emoji" onPress={handleSave} />
         <EmojiSelector onSelect={setSelectedEmoji} />
+        <RainbowButton text="Save emoji" onPress={handleSave} />
       </View>
     </Modal>
   );

@@ -18,6 +18,7 @@ import {
 
 function Tokens() {
   const dispatch = useDispatch();
+  const [selectedToken, setSelectedToken] = useState(null);
   const sendRef = useRef(null);
   const { assets, assetsLoading } = useSelector(state => state.user);
   const { icpPrice } = useSelector(state => state.icp);
@@ -47,7 +48,8 @@ function Tokens() {
     dispatch(getAssets({ refresh: true, icpPrice }));
   };
 
-  const openSend = () => {
+  const openSend = token => () => {
+    setSelectedToken(token);
     sendRef.current?.open();
   };
 
@@ -73,12 +75,12 @@ function Tokens() {
             key={token.symbol}
             {...token}
             color={Colors.Gray.Tertiary}
-            onPress={openSend}
+            onPress={openSend(token)}
             style={styles.tokenItem}
           />
         ))}
       </ScrollView>
-      <Send modalRef={sendRef} />
+      <Send modalRef={sendRef} token={selectedToken} />
     </Container>
   );
 }

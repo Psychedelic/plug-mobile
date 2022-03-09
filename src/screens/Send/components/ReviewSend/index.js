@@ -7,10 +7,10 @@ import RainbowButton from '../../../../components/buttons/RainbowButton';
 import NftDisplayer from '../../../../components/common/NftDisplayer';
 import TokenFormat from '../../../../components/number/TokenFormat';
 import { Colors, FontStyles } from '../../../../constants/theme';
-import { TRANSACTION_STATUS } from '../../../../redux/constants';
 import TokenIcon from '../../../../components/tokens/TokenIcon';
 import { setTransaction } from '../../../../redux/slices/user';
 import UserIcon from '../../../../components/common/UserIcon';
+import { TRANSACTION_STATUS } from '../../../../redux/utils';
 import shortAddress from '../../../../helpers/short-address';
 import Button from '../../../../components/buttons/Button';
 import Header from '../../../../components/common/Header';
@@ -26,6 +26,7 @@ import {
   USD_MAX_DECIMALS,
 } from '../../utils';
 import SaveContact from '../SaveContact';
+
 import styles from './styles';
 
 const ReviewSend = ({
@@ -42,6 +43,8 @@ const ReviewSend = ({
   transaction,
   tokenPrice,
   loading,
+  biometricsError,
+  setBiometricsError,
   ...props
 }) => {
   const dispatch = useDispatch();
@@ -59,7 +62,7 @@ const ReviewSend = ({
   useGetType(nft?.url, setNftType);
 
   useEffect(() => {
-    setSelectedContact(contacts.find(c => c.id === to));
+    setSelectedContact(contacts?.find(c => c.id === to));
   }, [contacts, to]);
 
   const success = transaction?.status === TRANSACTION_STATUS.success;
@@ -166,8 +169,7 @@ const ReviewSend = ({
           </Row>
         )}
         {success ? (
-          token &&
-          token.symbol === 'ICP' && (
+          token && (
             <Button
               variant="gray"
               text="View in Activity"

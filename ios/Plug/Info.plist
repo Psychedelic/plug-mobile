@@ -8,6 +8,8 @@
 	<string>Plug</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>CodePushDeploymentKey</key>
+	<string>${CODE_PUSH_IOS_DEPLOY_KEY}</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>

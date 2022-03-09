@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { Text, ScrollView, Keyboard } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -35,19 +35,27 @@ import {
   USD_MAX_DECIMALS,
   ICP_MAX_DECIMALS,
 } from './utils';
+import PasswordModal from '../../components/common/PasswordModal';
 
 const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
 
-const Send = ({ modalRef, nft, onSuccess }) => {
+const Send = ({ modalRef, nft, token, onSuccess }) => {
   const dispatch = useDispatch();
   const { isSensorAvailable, getPassword } = useKeychain();
   const { icpPrice } = useSelector(state => state.icp);
   const { currentWallet } = useSelector(state => state.keyring);
-  const { assets, transaction, collections, usingBiometrics, contacts } =
-    useSelector(state => state.user);
+  const {
+    assets,
+    transaction,
+    collections,
+    usingBiometrics,
+    contacts,
+    transactionsLoading,
+  } = useSelector(state => state.user);
 
   const reviewRef = useRef(null);
   const saveContactRef = useRef(null);
+  const passwordRef = useRef(null);
 
   const nfts =
     collections?.flatMap(collection => collection?.tokens || []) || [];
@@ -62,17 +70,27 @@ const Send = ({ modalRef, nft, onSuccess }) => {
   const [selectedTokenPrice, setSelectedTokenPrice] = useState(null);
   const [addressInfo, setAddressInfo] = useState(INITIAL_ADDRESS_INFO);
   const [sendingXTCtoCanister, setSendingXTCtoCanister] = useState(false);
-
+  const [biometricsError, setBiometricsError] = useState(false);
   const isValidAddress = addressInfo.isValid;
   const to = address || selectedContact?.id;
 
   useEffect(() => {
-    setSelectedContact(contacts.find(c => c.id === address));
+    const savedContact = contacts?.find(c => c.id === address);
+    if (savedContact) {
+      setSelectedContact(savedContact);
+    }
   }, [contacts, address]);
 
   useEffect(() => {
     dispatch(getICPPrice());
   }, []);
+
+  const handleBiometricsFail = err => {
+    if (err.includes('locked')) {
+      setBiometricsError(true);
+    }
+    passwordRef.current?.open();
+  };
 
   const onContactPress = contact => {
     Keyboard.dismiss();
@@ -80,8 +98,8 @@ const Send = ({ modalRef, nft, onSuccess }) => {
     setSelectedContact(contact);
   };
 
-  const onTokenPress = token => {
-    setSelectedToken(token);
+  const onTokenPress = pressedToken => {
+    setSelectedToken(pressedToken);
     setSelectedNft(null);
   };
 
@@ -145,22 +163,35 @@ const Send = ({ modalRef, nft, onSuccess }) => {
     }
   };
 
-  const handleSend = async () => {
+  const send = () => {
     setLoading(true);
-    const isBiometricsAvailable = await isSensorAvailable();
+    const func = selectedNft ? handleSendNFT : handleSendToken;
+    func();
+  };
 
-    const send = () => {
-      if (selectedNft) {
-        handleSendNFT();
+  const validateWithBiometrics = async () => {
+    setLoading(true);
+    const isBiometricsAvailable = await isSensorAvailable(handleBiometricsFail);
+    if (isBiometricsAvailable) {
+      const biometricsPassword = await getPassword(handleBiometricsFail);
+      setLoading(false);
+      return !!biometricsPassword;
+    }
+    setLoading(false);
+    return false;
+  };
+
+  const handleSend = async () => {
+    let authorized = false;
+    if (usingBiometrics) {
+      if (biometricsError) {
+        // If biometrics has failed, we prompt to enter the password
+        passwordRef.current?.open();
       } else {
-        handleSendToken();
-      }
-    };
-
-    if (isBiometricsAvailable && usingBiometrics) {
-      const biometrics = await getPassword();
-      if (biometrics) {
-        send();
+        authorized = await validateWithBiometrics();
+        if (authorized) {
+          send();
+        }
       }
     } else {
       send();
@@ -171,7 +202,13 @@ const Send = ({ modalRef, nft, onSuccess }) => {
     if (!selectedToken && nft) {
       setSelectedNft(nft);
     }
-  }, [nft]);
+  }, [nft, isValidAddress]);
+
+  useEffect(() => {
+    if (!selectedNft && token) {
+      setSelectedToken(token);
+    }
+  }, [token, isValidAddress]);
 
   useEffect(() => {
     if (selectedNft && (isValidAddress || selectedContact)) {
@@ -212,13 +249,21 @@ const Send = ({ modalRef, nft, onSuccess }) => {
     }
   }, [address, selectedContact, selectedToken]);
 
-  const availableAmount = formatSendAmount(
-    getAvailableAmount(selectedToken?.amount),
-    ICP_MAX_DECIMALS,
+  const availableAmount = useMemo(
+    () =>
+      formatSendAmount(
+        getAvailableAmount(selectedToken?.amount, selectedToken?.symbol),
+        ICP_MAX_DECIMALS,
+      ),
+    [selectedToken],
   );
-  const availableUsdAmount = formatSendAmount(
-    getUsdAvailableAmount(availableAmount, selectedTokenPrice),
-    USD_MAX_DECIMALS,
+  const availableUsdAmount = useMemo(
+    () =>
+      formatSendAmount(
+        getUsdAvailableAmount(availableAmount, selectedTokenPrice),
+        USD_MAX_DECIMALS,
+      ),
+    [availableAmount, selectedTokenPrice],
   );
 
   const getSaveContactRef = () => {
@@ -229,9 +274,25 @@ const Send = ({ modalRef, nft, onSuccess }) => {
     }
   };
 
+  const handleBack = () => {
+    setAddress(null);
+    setSelectedContact(null);
+    setAddressInfo(INITIAL_ADDRESS_INFO);
+  };
   return (
     <Modal modalRef={modalRef} onClose={resetState}>
-      <Header center={<Text style={FontStyles.Subtitle2}>Send</Text>} />
+      <Header
+        left={
+          isValidAddress && (
+            <Text
+              style={[FontStyles.Normal, styles.valid]}
+              onPress={handleBack}>
+              Back
+            </Text>
+          )
+        }
+        center={<Text style={FontStyles.Subtitle2}>Send</Text>}
+      />
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.content}
@@ -240,6 +301,7 @@ const Send = ({ modalRef, nft, onSuccess }) => {
           label="To:"
           placeholder="Name or address"
           variant="innerLabel"
+          hideGradient
           value={selectedContact ? selectedContact.name : address}
           onChangeText={onChangeText}
           textStyle={isValidAddress ? styles.valid : null}
@@ -290,9 +352,10 @@ const Send = ({ modalRef, nft, onSuccess }) => {
           }}
           onClose={partialReset}
           transaction={transaction}
-          loading={loading}
+          loading={loading || transactionsLoading}
         />
         <SaveContact id={address} modalRef={saveContactRef} />
+        <PasswordModal modalRef={passwordRef} handleSubmit={send} />
       </ScrollView>
     </Modal>
   );

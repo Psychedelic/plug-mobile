@@ -5,16 +5,13 @@ import { fetch } from 'react-native-fetch-api';
 
 import { getPrivateAssetsAndTransactions } from '../../utils/keyringUtils';
 import { generateMnemonic } from '../../utils/crypto';
+import { resetStores, getNewAccountData } from '../utils';
 import { keyringStorage } from '../store';
+
 import {
   privateGetAssets,
   setAssetsLoading,
-  setAssetsAndLoading,
   setAssetsAndTransactions,
-  getNFTs,
-  resetUserState,
-  setTransactionsLoading,
-  getTransactions,
 } from './user';
 
 export const initKeyring = createAsyncThunk('keyring/init', async () => {
@@ -37,8 +34,7 @@ export const createWallet = createAsyncThunk(
   'keyring/createWallet',
   async ({ password, icpPrice }, { getState, dispatch }) => {
     // Reset previous state:
-    dispatch(reset());
-    dispatch(resetUserState());
+    resetStores(dispatch);
 
     // Create Wallet and unlock
     const state = getState();
@@ -49,12 +45,7 @@ export const createWallet = createAsyncThunk(
     await instance?.unlock(password);
 
     // Get new data:
-    dispatch(setAssetsLoading(true));
-    dispatch(getNFTs());
-    const assets = await privateGetAssets({ refresh: true, icpPrice }, state);
-    dispatch(setAssetsAndLoading({ assets }));
-    dispatch(setTransactionsLoading(true));
-    dispatch(getTransactions({ icpPrice }));
+    getNewAccountData(dispatch, icpPrice, state);
 
     return { wallet, mnemonic };
   },
@@ -64,8 +55,7 @@ export const importWallet = createAsyncThunk(
   'keyring/importWallet',
   async (params, { getState, dispatch }) => {
     // Reset previous state:
-    dispatch(reset());
-    dispatch(resetUserState());
+    resetStores(dispatch);
 
     // Import Wallet and unlock
     const state = getState();
@@ -76,12 +66,7 @@ export const importWallet = createAsyncThunk(
     await instance?.unlock(params.password);
 
     // Get new data:
-    dispatch(setAssetsLoading(true));
-    dispatch(getNFTs());
-    const assets = await privateGetAssets({ refresh: true, icpPrice }, state);
-    dispatch(setAssetsAndLoading({ assets }));
-    dispatch(setTransactionsLoading(true));
-    dispatch(getTransactions({ icpPrice }));
+    getNewAccountData(dispatch, icpPrice, state);
 
     return { wallet };
   },
@@ -97,11 +82,23 @@ export const unlock = createAsyncThunk(
 
 const privateUnlock = async (params, state) => {
   let unlocked = false;
-
+  const { password, onError, onSuccess } = params;
   try {
     const instance = state.keyring?.instance;
-    unlocked = await instance?.unlock(params.password);
+    unlocked = await instance?.unlock(password);
+    if (unlocked) {
+      if (onSuccess) {
+        onSuccess();
+      }
+    } else {
+      if (onError) {
+        onError();
+      }
+    }
   } catch (e) {
+    if (onError) {
+      onError();
+    }
     console.log('Private Unlock:', e.message);
   }
   return { unlocked };

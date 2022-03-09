@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Plug</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">@string/CODE_PUSH_ANDROID_DEPLOY_KEY</string>
 </resources>

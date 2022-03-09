@@ -15,7 +15,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     width: WINDOW_WIDTH,
     flexWrap: 'wrap',
-    paddingHorizontal: 10,
+    paddingHorizontal: '5%',
     paddingVertical: 10,
   },
   item: {
@@ -39,5 +39,8 @@ export default StyleSheet.create({
   },
   emptyState: {
     marginTop: 120,
+  },
+  disabledContainer: {
+    opacity: 0.5,
   },
 });

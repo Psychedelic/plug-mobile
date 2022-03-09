@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React, { useState } from 'react';
 import { Text } from 'react-native';
 
@@ -14,10 +14,11 @@ import Modal from '../../components/modal';
 import styles from './styles';
 
 const RevealSeedPhrase = ({ modalRef }) => {
-  const [password, setPassword] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
-  const [error, setError] = useState(false);
+  const [password, setPassword] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const dispatch = useDispatch();
 
   const { instance } = useSelector(state => state.keyring);
 
@@ -29,14 +30,20 @@ const RevealSeedPhrase = ({ modalRef }) => {
 
   const handleSubmit = async () => {
     setLoading(true);
-    const unlocked = await unlock(password);
-    if (unlocked) {
-      clearState();
-      setLoggedIn(true);
-    } else {
-      setError(true);
-    }
-    setLoading(false);
+    dispatch(
+      unlock({
+        password,
+        onError: () => {
+          setError(true);
+          setLoading(false);
+        },
+        onSuccess: () => {
+          clearState();
+          setLoggedIn(true);
+          setLoading(false);
+        },
+      }),
+    );
   };
 
   return (
