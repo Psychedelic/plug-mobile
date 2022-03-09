@@ -30,7 +30,7 @@ const AddEditContact = ({ modalRef, contact, onClose }) => {
       emojis[Math.floor(Math.random() * emojis.length)],
     );
     isEditContact
-      ? onEdit({ ...contact, id, name })
+      ? onEdit({ contact, newContact: { id, name } })
       : onCreate({
           id,
           name,
