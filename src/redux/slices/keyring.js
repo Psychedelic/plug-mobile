@@ -121,7 +121,7 @@ export const login = createAsyncThunk(
       if (unlocked) {
         dispatch(setCurrentWallet(wallets[currentWalletId]));
         dispatch(setWallets(wallets));
-        await privateGetAssets({ icpPrice }, state);
+        await privateGetAssets({ icpPrice }, state, dispatch);
         dispatch(setAssetsLoading(false));
       } else {
         handleError();
@@ -181,6 +181,7 @@ export const setCurrentPrincipal = createAsyncThunk(
       const [transactions, assets] = await getPrivateAssetsAndTransactions(
         icpPrice,
         state,
+        dispatch,
       );
       dispatch(setAssetsAndTransactions({ assets, transactions }));
 

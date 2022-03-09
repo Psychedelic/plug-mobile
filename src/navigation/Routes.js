@@ -10,6 +10,8 @@ const Routes = {
   CREATE_PASSWORD: 'CreatePassword',
   IMPORT_SEED_PHRASE: 'ImportSeedPhrase',
   BACKUP_SEED_PHRASE: 'BackupSeedPhrase',
+  //Error Screens:
+  CONNECTION_ERROR: 'ConnectionError',
 };
 
 export default Routes;
