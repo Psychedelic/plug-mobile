@@ -49,10 +49,12 @@ const ReviewSend = ({
 }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const [nftType, setNftType] = useState(null);
-  const contacts = useSelector(state => state.user.contacts, shallowEqual);
-  const [selectedContact, setSelectedContact] = useState(contact || null);
   const saveContactRef = useRef(null);
+  const [nftType, setNftType] = useState(null);
+  const [selectedContact, setSelectedContact] = useState(contact || null);
+  const contacts = useSelector(state => state.user.contacts, shallowEqual);
+  const isSuccess = transaction?.status === TRANSACTION_STATUS.success;
+  const isError = transaction?.status === TRANSACTION_STATUS.error;
   const transactionFee = getTransactionFee(token?.symbol);
 
   const handleSaveContact = () => {
@@ -65,13 +67,11 @@ const ReviewSend = ({
     setSelectedContact(contacts?.find(c => c.id === to));
   }, [contacts, to]);
 
-  const success = transaction?.status === TRANSACTION_STATUS.success;
-
   const handleClose = () => {
     onClose();
     dispatch(setTransaction(null));
 
-    if (success) {
+    if (isSuccess) {
       onSuccess();
       navigation.navigate(Routes.TOKENS);
     }
@@ -88,8 +88,8 @@ const ReviewSend = ({
       ReviewIcon: <Icon name="confirm" style={styles.icon} />,
     },
     [TRANSACTION_STATUS.error]: {
-      title: 'An error occurred',
-      ReviewIcon: <Icon name="confirm" style={styles.icon} />,
+      title: 'Transaction Failed',
+      ReviewIcon: <Icon name="error" style={styles.icon} />,
     },
     pending: {
       title: 'Review Send',
@@ -102,7 +102,7 @@ const ReviewSend = ({
       modalRef={modalRef}
       onClose={handleClose}
       {...props}
-      adjustToContentHeight={!success}>
+      adjustToContentHeight={!isSuccess}>
       <View style={styles.content}>
         <Header center={<Text style={FontStyles.Subtitle2}>{title}</Text>} />
         {ReviewIcon}
@@ -168,7 +168,7 @@ const ReviewSend = ({
             </Text>
           </Row>
         )}
-        {success ? (
+        {isSuccess ? (
           token && (
             <Button
               variant="gray"
@@ -178,17 +178,23 @@ const ReviewSend = ({
             />
           )
         ) : (
-          <RainbowButton
-            text={`Hold to ${
-              transaction?.status === TRANSACTION_STATUS.error
-                ? 'Retry'
-                : 'Send'
-            }`}
-            loading={loading}
-            disabled={loading}
-            onLongPress={onSend}
-            buttonStyle={styles.button}
-          />
+          <>
+            <RainbowButton
+              text={`Hold to ${isError ? 'Retry' : 'Send'}`}
+              loading={loading}
+              disabled={loading}
+              onLongPress={onSend}
+              buttonStyle={styles.button}
+            />
+            {isError && (
+              <Button
+                variant="gray"
+                text="Cancel"
+                buttonStyle={styles.button}
+                onPress={handleClose}
+              />
+            )}
+          </>
         )}
       </View>
       <SaveContact modalRef={saveContactRef} id={to} />
