@@ -20,7 +20,7 @@ const NFTs = () => {
   const dispatch = useDispatch();
   const [refreshing, setRefresing] = useState(false);
   const [selectedNft, setSelectedNft] = useState(null);
-  const { collections, colectionsError } = useSelector(state => state.user);
+  const { collections, collectionsError } = useSelector(state => state.user);
 
   const renderNFT = (item, index) => (
     <NftItem key={index} item={item} onOpen={onOpen} />
@@ -49,7 +49,7 @@ const NFTs = () => {
         <WalletHeader />
         <Text style={styles.title}>NFTs</Text>
         <Divider />
-        {!colectionsError ? (
+        {!collectionsError ? (
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.container}
