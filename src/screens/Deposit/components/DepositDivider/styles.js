@@ -1,8 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  container: {
+  divider: {
+    width: '42%',
     justifyContent: 'center',
-    alignItems: 'center',
+    marginRight: 'auto',
   },
 });

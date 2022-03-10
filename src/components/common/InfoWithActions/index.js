@@ -15,7 +15,6 @@ const InfoWithActions = ({ text, colors, actions }) => {
       end={{ x: 1, y: 0 }}>
       <View style={styles.container}>
         <Text style={styles.text}>{text}</Text>
-
         <View style={styles.actionsContainer}>
           {actions.map(action => (
             <View style={styles.action}>
