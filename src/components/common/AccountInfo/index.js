@@ -34,8 +34,8 @@ const AccountInfo = () => {
       <CopiedToast
         visibility={visibility}
         setVisibility={setVisibility}
-        customStyle={{ top: 48, left: -3 }}
-        customPointerStyle={{ top: -4 }}
+        customStyle={styles.toastStyle}
+        customPointerStyle={styles.toastPointerStyle}
       />
     </>
   );

@@ -5,4 +5,11 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  toastStyle: {
+    top: 48,
+    left: -3,
+  },
+  toastPointerStyle: {
+    top: -4,
+  },
 });
