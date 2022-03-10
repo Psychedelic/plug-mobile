@@ -1,11 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { FontStyles } from '../../constants/theme';
+
+import { FontStyles } from '../../../../constants/theme';
 
 export default StyleSheet.create({
   container: {
     paddingTop: 20,
     paddingHorizontal: 20,
-    marginBottom: 40,
+    marginBottom: 60,
   },
   title: {
     ...FontStyles.Subtitle3,
@@ -14,8 +15,11 @@ export default StyleSheet.create({
     ...FontStyles.NormalGray,
     marginVertical: 20,
   },
-  divider: {
-    width: '42%',
-    justifyContent: 'center',
+  toastStyle: {
+    top: 120,
+    right: '3%',
+  },
+  toastPointerStyle: {
+    top: 20,
   },
 });
