@@ -1,11 +1,12 @@
 import { StyleSheet } from 'react-native';
+
 import { FontStyles } from '../../../../constants/theme';
 
 export default StyleSheet.create({
   title: {
     ...FontStyles.Title,
     marginTop: 20,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   subtitle: {
     ...FontStyles.NormalGray,
@@ -16,9 +17,13 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     padding: 30,
-    width: '100%'
+    width: '100%',
   },
   button: {
     marginTop: 30,
+  },
+  copy: {
+    marginTop: 30,
+    alignSelf: 'center',
   },
 });

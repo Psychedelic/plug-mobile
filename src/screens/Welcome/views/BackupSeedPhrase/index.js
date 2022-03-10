@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { Text, View, Image } from 'react-native';
-import Container from '../../../../components/common/Container';
+
 import RainbowButton from '../../../../components/buttons/RainbowButton';
-import SeedPhrase from '../../../../components/common/SeedPhrase';
-import Copy from '../../../../components/common/Copy';
-import Header from '../../../../components/common/Header';
 import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
+import SeedPhrase from '../../../../components/common/SeedPhrase';
+import Container from '../../../../components/common/Container';
+import Header from '../../../../components/common/Header';
+import Copy from '../../../../components/common/Copy';
 import Back from '../../../../components/common/Back';
-import styles from './styles';
 import Routes from '../../../../navigation/Routes';
+import styles from './styles';
 
 const BackupSeedPhrase = ({ route, navigation }) => {
   const { goBack } = navigation;
@@ -36,17 +37,13 @@ const BackupSeedPhrase = ({ route, navigation }) => {
           </View>
         }
       />
-
       <View style={styles.container}>
         <Text style={styles.title}>Seed Phrase Backup</Text>
         <Text style={styles.subtitle}>
           Below is the seed phrase for your new wallet, write it down.
         </Text>
-
         <SeedPhrase mnemonic={mnemonic.split(' ')} onReveal={onReveal} />
-
-        <Copy text={mnemonic} customStyle={{ marginTop: 30, alignSelf: 'center' }} />
-
+        <Copy text={mnemonic} customStyle={styles.copy} />
         <RainbowButton
           buttonStyle={styles.button}
           text="I've saved these words"
