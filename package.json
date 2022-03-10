@@ -1,9 +1,11 @@
 {
   "name": "Plug",
-  "version": "0.1.0(24)",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "ios": "react-native run-ios --scheme plug-dev",
+    "rename-build": "chmod +x ./rename-ic-agent.sh && ./rename-ic-agent.sh",
+    "ic-build": "cd cargo/ic-agent && cargo lipo --release && npm run rename-build",
+    "ios": "yarn run ic-build && react-native run-ios --scheme plug-dev",
     "ios:stage": "react-native run-ios --scheme plug-stage --configuration Debug",
     "ios:production": "react-native run-ios --scheme plug-prod --configuration Debug",
     "android": "npx react-native run-android --variant=devDebug ",
