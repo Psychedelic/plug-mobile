@@ -86,8 +86,8 @@ function Login() {
   };
 
   return (
-    <KeyboardHider>
-      <Container>
+    <Container>
+      <KeyboardHider>
         <View style={styles.container}>
           <Image source={Plug} style={styles.plugIcon} />
           <Text style={styles.title}>Unlock Plug</Text>
@@ -114,8 +114,8 @@ function Login() {
             buttonStyle={styles.buttonMargin}
           />
         </View>
-      </Container>
-    </KeyboardHider>
+      </KeyboardHider>
+    </Container>
   );
 }
 
