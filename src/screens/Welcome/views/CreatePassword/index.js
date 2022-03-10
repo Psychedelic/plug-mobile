@@ -66,16 +66,16 @@ const CreatePassword = ({ route, navigation }) => {
   };
 
   return (
-    <KeyboardHider>
-      <Container>
-        <Header
-          left={<Back onPress={() => goBack()} />}
-          center={
-            <View style={styles.plugLogoContainer}>
-              <Image style={styles.plugLogo} source={PlugLogo} />
-            </View>
-          }
-        />
+    <Container>
+      <Header
+        left={<Back onPress={() => goBack()} />}
+        center={
+          <View style={styles.plugLogoContainer}>
+            <Image style={styles.plugLogo} source={PlugLogo} />
+          </View>
+        }
+      />
+      <KeyboardHider>
         <View style={styles.container}>
           <Text style={styles.title}>Create Password</Text>
           <Text style={styles.subtitle}>
@@ -101,8 +101,8 @@ const CreatePassword = ({ route, navigation }) => {
             disabled={isValidPassword(password) || loading}
           />
         </View>
-      </Container>
-    </KeyboardHider>
+      </KeyboardHider>
+    </Container>
   );
 };
 

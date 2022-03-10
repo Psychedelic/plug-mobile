@@ -4,7 +4,14 @@ import { Modalize } from 'react-native-modalize';
 
 import { Colors } from '../../constants/theme';
 
-const Modal = ({ children, modalRef, onClose, fullHeight, ...props }) => {
+const Modal = ({
+  children,
+  modalRef,
+  onClose,
+  fullHeight,
+  scrollViewProps,
+  ...props
+}) => {
   return (
     <Portal>
       <Modalize
@@ -20,6 +27,7 @@ const Modal = ({ children, modalRef, onClose, fullHeight, ...props }) => {
           ...(fullHeight && {
             contentContainerStyle: { height: '100%' },
           }),
+          ...scrollViewProps,
         }}
         modalTopOffset={10}
         onClose={onClose}

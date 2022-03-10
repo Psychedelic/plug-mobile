@@ -19,7 +19,7 @@ const KeyboardHider = ({ children }) => {
       style={containerStyle}
       behavior={isIos ? 'height' : 'padding'}>
       <TouchableWithoutFeedback onPress={handleClose}>
-        <>{children}</>
+        {children}
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );

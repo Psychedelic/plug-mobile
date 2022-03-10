@@ -11,9 +11,9 @@ import { getICPPrice } from '../../redux/slices/icp';
 import Header from '../../components/common/Header';
 import { FontStyles } from '../../constants/theme';
 import SaveContact from './components/SaveContact';
+import useKeychain from '../../hooks/useKeychain';
 import ReviewSend from './components/ReviewSend';
 import { USD_PER_TC } from '../../utils/assets';
-import useKeychain from '../../hooks/useKeychain';
 import XTC_OPTIONS from '../../constants/xtc';
 import Modal from '../../components/modal';
 import {
@@ -279,24 +279,28 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
     setSelectedContact(null);
     setAddressInfo(INITIAL_ADDRESS_INFO);
   };
+
   return (
-    <Modal modalRef={modalRef} onClose={resetState}>
-      <Header
-        left={
-          isValidAddress && (
-            <Text
-              style={[FontStyles.Normal, styles.valid]}
-              onPress={handleBack}>
-              Back
-            </Text>
-          )
-        }
-        center={<Text style={FontStyles.Subtitle2}>Send</Text>}
-      />
+    <Modal
+      modalRef={modalRef}
+      onClose={resetState}
+      scrollViewProps={{ keyboardShouldPersistTaps: 'never' }}>
       <ScrollView
+        keyboardShouldPersistTaps="never"
         showsVerticalScrollIndicator={false}
-        style={styles.content}
-        keyboardShouldPersistTaps="always">
+        contentContainerStyle={styles.contentContainer}>
+        <Header
+          left={
+            isValidAddress && (
+              <Text
+                style={[FontStyles.Normal, styles.valid]}
+                onPress={handleBack}>
+                Back
+              </Text>
+            )
+          }
+          center={<Text style={FontStyles.Subtitle2}>Send</Text>}
+        />
         <TextInput
           label="To:"
           placeholder="Name or address"
@@ -313,17 +317,17 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
         )}
         {isValidAddress && !selectedToken && (
           <TokenSection
-            tokens={assets}
             nfts={nfts}
-            onTokenPress={onTokenPress}
+            tokens={assets}
             onNftPress={onNftPress}
+            onTokenPress={onTokenPress}
           />
         )}
         {isValidAddress && selectedToken && (
           <AmountSection
             selectedToken={selectedToken}
-            setSelectedToken={setSelectedToken}
             tokenPrice={selectedTokenPrice}
+            setSelectedToken={setSelectedToken}
             tokenAmount={tokenAmount}
             setTokenAmount={setTokenAmount}
             usdAmount={usdAmount}
@@ -333,30 +337,30 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
             onReview={onReview}
           />
         )}
-        <ReviewSend
-          modalRef={reviewRef}
-          adjustToContentHeight
-          token={selectedToken}
-          to={selectedContact ? selectedContact?.id : address}
-          contact={selectedContact}
-          amount={tokenAmount}
-          tokenPrice={selectedTokenPrice}
-          value={usdAmount}
-          nft={selectedNft}
-          onSend={handleSend}
-          onSuccess={() => {
-            modalRef.current?.close();
-            if (onSuccess) {
-              onSuccess();
-            }
-          }}
-          onClose={partialReset}
-          transaction={transaction}
-          loading={loading || transactionsLoading}
-        />
-        <SaveContact id={address} modalRef={saveContactRef} />
-        <PasswordModal modalRef={passwordRef} handleSubmit={send} />
       </ScrollView>
+      <ReviewSend
+        modalRef={reviewRef}
+        adjustToContentHeight
+        token={selectedToken}
+        to={selectedContact ? selectedContact?.id : address}
+        contact={selectedContact}
+        amount={tokenAmount}
+        tokenPrice={selectedTokenPrice}
+        value={usdAmount}
+        nft={selectedNft}
+        onSend={handleSend}
+        onSuccess={() => {
+          modalRef.current?.close();
+          if (onSuccess) {
+            onSuccess();
+          }
+        }}
+        onClose={partialReset}
+        transaction={transaction}
+        loading={loading || transactionsLoading}
+      />
+      <SaveContact id={address} modalRef={saveContactRef} />
+      <PasswordModal modalRef={passwordRef} handleSubmit={send} />
     </Modal>
   );
 };

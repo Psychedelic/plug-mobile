@@ -6,11 +6,11 @@ export default StyleSheet.create({
   valid: {
     color: Colors.ActionBlue,
   },
-  content: {
-    paddingHorizontal: 20,
-    paddingBottom: 10,
-  },
   contactItem: {
     marginTop: 15,
+  },
+  contentContainer: {
+    paddingHorizontal: 20,
+    paddingBottom: 10,
   },
 });

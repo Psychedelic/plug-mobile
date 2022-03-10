@@ -59,16 +59,16 @@ const ImportSeedPhrase = ({ navigation, route }) => {
   };
 
   return (
-    <KeyboardHider>
-      <Container>
-        <Header
-          left={<Back onPress={goBack} />}
-          center={
-            <View style={styles.plugLogoContainer}>
-              <Image style={styles.plugLogo} source={PlugLogo} />
-            </View>
-          }
-        />
+    <Container>
+      <Header
+        left={<Back onPress={goBack} />}
+        center={
+          <View style={styles.plugLogoContainer}>
+            <Image style={styles.plugLogo} source={PlugLogo} />
+          </View>
+        }
+      />
+      <KeyboardHider>
         <View style={styles.container}>
           <Text style={styles.title}>Import Wallet</Text>
           <Text style={styles.subtitle}>
@@ -89,8 +89,8 @@ const ImportSeedPhrase = ({ navigation, route }) => {
             disabled={!isMnemonicValid || loading}
           />
         </View>
-      </Container>
-    </KeyboardHider>
+      </KeyboardHider>
+    </Container>
   );
 };
 
