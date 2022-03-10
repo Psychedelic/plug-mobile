@@ -28,7 +28,7 @@ function ImageDisplayer({ style, type, url, isSendView }) {
         <SvgCssUri {...imageStyle} uri={url} />
       ) : (
         <Image
-          resizeMode="cover"
+          resizeMode="contain"
           style={imageStyle}
           source={{ uri: url, type }}
         />
