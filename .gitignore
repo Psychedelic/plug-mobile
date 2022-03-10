@@ -59,7 +59,7 @@ buck-out/
 /ios/Pods/
 
 # IC
-/cargo/
+/cargo/target
 
 # Env
 /*.env

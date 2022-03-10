@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* PlugTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* PlugTests.m */; };
 		03F752A5273ACE6F006DB889 /* BridgingFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03F752A4273ACE6F006DB889 /* BridgingFile.swift */; };
+		0AEEB14127C918D3005F12AA /* RCTSigningBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AEEB14027C918D3005F12AA /* RCTSigningBridge.m */; };
+		0AEEB14627C920BE005F12AA /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AEEB14527C920A0005F12AA /* libresolv.tbd */; };
+		0AEEB14C27C92BF3005F12AA /* ic_agent_lib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AEEB14B27C92BF3005F12AA /* ic_agent_lib.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -37,6 +40,11 @@
 		03F752A3273ACE6F006DB889 /* Plug-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Plug-Bridging-Header.h"; sourceTree = "<group>"; };
 		03F752A4273ACE6F006DB889 /* BridgingFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgingFile.swift; sourceTree = "<group>"; };
 		066823DB692563D837AC36EC /* Pods-Plug.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Plug.release.xcconfig"; path = "Target Support Files/Pods-Plug/Pods-Plug.release.xcconfig"; sourceTree = "<group>"; };
+		0AA298A127C3F80E0006B556 /* libplug_signer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libplug_signer.h; sourceTree = "<group>"; };
+		0AEEB14027C918D3005F12AA /* RCTSigningBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTSigningBridge.m; sourceTree = "<group>"; };
+		0AEEB14227C918E9005F12AA /* RCTSigningBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTSigningBridge.h; sourceTree = "<group>"; };
+		0AEEB14527C920A0005F12AA /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
+		0AEEB14B27C92BF3005F12AA /* ic_agent_lib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = ic_agent_lib.a; path = ../cargo/target/universal/release/ic_agent_lib.a; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Plug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Plug/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Plug/AppDelegate.m; sourceTree = "<group>"; };
@@ -69,7 +77,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AEEB14C27C92BF3005F12AA /* ic_agent_lib.a in Frameworks */,
 				A1C3D441ED1064791A2B7D4D /* libPods-Plug.a in Frameworks */,
+				0AEEB14627C920BE005F12AA /* libresolv.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +119,10 @@
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
+				0AA298A127C3F80E0006B556 /* libplug_signer.h */,
+				0AEEB14B27C92BF3005F12AA /* ic_agent_lib.a */,
+				0AEEB14227C918E9005F12AA /* RCTSigningBridge.h */,
+				0AEEB14027C918D3005F12AA /* RCTSigningBridge.m */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
@@ -119,6 +133,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0AEEB14527C920A0005F12AA /* libresolv.tbd */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				DE8378D6CEF5F723EC96CF5A /* libPods-Plug.a */,
 				FADF2B18F6FD670780D27D82 /* libPods-Plug-PlugTests.a */,
@@ -439,6 +454,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				03F752A5273ACE6F006DB889 /* BridgingFile.swift in Sources */,
+				0AEEB14127C918D3005F12AA /* RCTSigningBridge.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -535,6 +551,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
 					"$(inherited)",
+					"$(PROJECT_DIR)/cargo/target/universal/release",
 				);
 				MARKETING_VERSION = 0.1.0;
 				OTHER_LDFLAGS = (
@@ -568,6 +585,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
 					"$(inherited)",
+					"$(PROJECT_DIR)/rust_lib/cargo/target/universal/release",
 				);
 				MARKETING_VERSION = 0.1.0;
 				OTHER_LDFLAGS = (

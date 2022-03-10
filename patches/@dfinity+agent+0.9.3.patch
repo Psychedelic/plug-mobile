@@ -1,23 +1,125 @@
 diff --git a/node_modules/@dfinity/agent/lib/cjs/certificate.js b/node_modules/@dfinity/agent/lib/cjs/certificate.js
-index 6e89e14..ff9964a 100644
+index 6e89e14..4a6509b 100644
 --- a/node_modules/@dfinity/agent/lib/cjs/certificate.js
 +++ b/node_modules/@dfinity/agent/lib/cjs/certificate.js
-@@ -107,12 +107,12 @@ class Certificate {
+@@ -27,6 +27,10 @@ const errors_1 = require("./errors");
+ const request_id_1 = require("./request_id");
+ const candid_1 = require("@dfinity/candid");
+ const bls_1 = require("./utils/bls");
++
++import { NativeModules } from 'react-native';
++const { SigningBridge } = NativeModules;
++
+ /**
+  * A certificate needs to be verified (using {@link Certificate.prototype.verify})
+  * before it can be used.
+@@ -91,6 +95,38 @@ function isBufferEqual(a, b) {
+     }
+     return true;
+ }
++
++function isArrayOrTypedArray(x) {
++    return Boolean(x && (typeof x === 'object') && (ArrayBuffer.isView(x) && !(x instanceof DataView)));
++}
++
++// Function that takes in an object and parses
++// all ArrayBuffer values into arrays
++const parseArrayBuffers = (obj) => {
++    if (isArrayOrTypedArray(obj)) {
++        return [...(new Uint8Array(obj))];
++    }
++
++    else if (obj instanceof Array) {
++        return obj.map(parseArrayBuffers);
++    }
++    else if (obj instanceof Object) {
++        const newObj = {};
++        for (const key of Object.keys(obj)) {
++            newObj[key] = parseArrayBuffers(obj[key]);
++        }
++        return newObj;
++    }
++    return obj;
++}
++
++const parseResponseStatus = ({ certified_result, error } = {}) => {
++    if (error) {
++        return null;
++    }
++    return certified_result?.toLowerCase?.() || Object.keys(certified_result || {})?.[0]?.toLowerCase?.() || 'unknown';
++}
++
+ class Certificate {
+     constructor(response, _agent = agent_1.getDefaultAgent()) {
+         this._agent = _agent;
+@@ -106,15 +142,20 @@ class Certificate {
+         this.checkState();
          return lookup_path(path, this.cert.tree);
      }
-     async verify() {
+-    async verify() {
 -        const rootHash = await reconstruct(this.cert.tree);
 -        const derKey = await this._checkDelegation(this.cert.delegation);
 -        const sig = this.cert.signature;
 -        const key = extractDER(derKey);
 -        const msg = buffer_1.Buffer.concat([domain_sep('ic-state-root'), rootHash]);
 -        const res = await bls_1.blsVerify(key, sig, msg);
+-        this.verified = res;
+-        return res;
++    async verify(requestId) {
 +        // const rootHash = await reconstruct(this.cert.tree);
 +        // const derKey = await this._checkDelegation(this.cert.delegation);
 +        // const sig = this.cert.signature;
 +        // const key = extractDER(derKey);
 +        // const msg = buffer_1.Buffer.concat([domain_sep('ic-state-root'), rootHash]);
-+        const res = true;
-         this.verified = res;
-         return res;
++        // const res = await bls_1.blsVerify(key, sig, msg);
++        // Do BLS validation directly on ic-agent on the rust side
++        const payload = JSON.stringify({ request_id: Array.from(requestId), cert: parseArrayBuffers(this.cert) })
++        const responseString = await SigningBridge.signData(payload);
++        const response = JSON.parse(responseString);
++        const status = parseResponseStatus(response);
++        this.verified = status;
++        return status;
      }
+     checkState() {
+         if (!this.verified) {
+diff --git a/node_modules/@dfinity/agent/lib/cjs/polling/index.js b/node_modules/@dfinity/agent/lib/cjs/polling/index.js
+index 39c803a..399b586 100644
+--- a/node_modules/@dfinity/agent/lib/cjs/polling/index.js
++++ b/node_modules/@dfinity/agent/lib/cjs/polling/index.js
+@@ -27,6 +27,7 @@ const candid_1 = require("@dfinity/candid");
+ exports.strategy = __importStar(require("./strategy"));
+ var strategy_1 = require("./strategy");
+ Object.defineProperty(exports, "defaultStrategy", { enumerable: true, get: function () { return strategy_1.defaultStrategy; } });
++
+ /**
+  * Polls the IC to check the status of the given request then
+  * returns the response bytes once the request has been processed.
+@@ -35,23 +36,17 @@ Object.defineProperty(exports, "defaultStrategy", { enumerable: true, get: funct
+  * @param requestId The Request ID to poll status for.
+  * @param strategy A polling strategy.
+  */
++
+ async function pollForResponse(agent, canisterId, requestId, strategy) {
+     const path = [candid_1.blobFromText('request_status'), requestId];
+     const state = await agent.readState(canisterId, { paths: [path] });
+     const cert = new certificate_1.Certificate(state, agent);
+-    const verified = await cert.verify();
+-    if (!verified) {
++
++    let status = await cert.verify(requestId);
++    if (!status) {
+         throw new Error('Fail to verify certificate');
+     }
+-    const maybeBuf = cert.lookup([...path, candid_1.blobFromText('status')]);
+-    let status;
+-    if (typeof maybeBuf === 'undefined') {
+-        // Missing requestId means we need to wait
+-        status = agent_1.RequestStatusResponseStatus.Unknown;
+-    }
+-    else {
+-        status = maybeBuf.toString();
+-    }
++
+     switch (status) {
+         case agent_1.RequestStatusResponseStatus.Replied: {
+             return cert.lookup([...path, candid_1.blobFromText('reply')]);
