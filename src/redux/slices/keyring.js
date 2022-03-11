@@ -237,6 +237,9 @@ export const keyringSlice = createSlice({
         );
       }
     },
+    [login.fulfilled]: (state, action) => {
+      state.isUnlocked = action.payload;
+    },
     [unlock.fulfilled]: (state, action) => {
       const { unlocked } = action.payload;
       state.isUnlocked = unlocked;

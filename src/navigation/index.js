@@ -1,8 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
 import { Host } from 'react-native-portalize';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
 import React, { useEffect } from 'react';
 import { AppState } from 'react-native';
 
@@ -26,8 +25,8 @@ const Navigator = () => {
   let timeoutId = null;
 
   const handleLockState = () => {
-    timeoutId = null;
     dispatch(setUnlocked(false));
+    timeoutId = null;
     navigationRef?.navigate(Routes.LOGIN_SCREEN);
   };
 

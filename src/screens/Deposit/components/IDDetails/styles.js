@@ -16,7 +16,7 @@ export default StyleSheet.create({
     marginVertical: 20,
   },
   toastStyle: {
-    top: 120,
+    top: '65%',
     right: '3%',
   },
   toastPointerStyle: {
