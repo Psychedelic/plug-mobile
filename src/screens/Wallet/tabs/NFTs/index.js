@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { RefreshControl, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { RefreshControl, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { ERROR_TYPES } from '../../../../components/common/ErrorState/constants';
@@ -61,7 +61,7 @@ const NFTs = () => {
               />
             }>
             {nfts?.length > 0 ? (
-              nfts.map(renderNFT)
+              <View style={styles.nftsContainer}>{nfts.map(renderNFT)}</View>
             ) : (
               <EmptyState
                 style={styles.emptyState}

@@ -12,11 +12,13 @@ const commonContainerSize = {
 
 export default StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    width: WINDOW_WIDTH,
-    flexWrap: 'wrap',
-    paddingHorizontal: '5%',
+    flex: 1,
     paddingVertical: 10,
+    paddingHorizontal: 18,
+  },
+  nftsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   item: {
     margin: 10,
