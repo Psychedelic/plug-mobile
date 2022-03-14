@@ -37,4 +37,11 @@ export default StyleSheet.create({
     marginTop: 5,
     color: 'red',
   },
+  moreOptionsButton: {
+    backgroundColor: null,
+    flexDirection: 'row',
+  },
+  moreOptionsIcon: {
+    marginLeft: 11,
+  },
 });

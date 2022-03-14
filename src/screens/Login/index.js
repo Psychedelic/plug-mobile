@@ -101,17 +101,19 @@ function Login() {
             inputStyle={styles.input}
           />
           <RainbowButton
-            text="Unlock Wallet"
+            text="Submit"
             onPress={() => handleSubmit(password)}
             loading={assetsLoading}
             disabled={isValidPassword(password)}
             buttonStyle={styles.buttonMargin}
           />
           <Button
-            text="Access Wallet"
+            iconName="arrowRight"
+            text="More Options"
             onPress={handleGoToWelcome}
             disabled={assetsLoading}
-            buttonStyle={styles.buttonMargin}
+            iconStyle={styles.moreOptionsIcon}
+            buttonStyle={[styles.buttonMargin, styles.moreOptionsButton]}
           />
         </View>
       </KeyboardHider>
