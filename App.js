@@ -1,6 +1,7 @@
 import { AppState } from 'react-native';
 import Config from 'react-native-config';
 import codePush from 'react-native-code-push';
+import * as Sentry from '@sentry/react-native';
 import React, { useEffect, useRef } from 'react';
 import Reactotron from 'reactotron-react-native';
 import SplashScreen from 'react-native-splash-screen';
@@ -13,6 +14,17 @@ import { persistor, store } from './src/redux/store';
 import { isIos } from './src/constants/platform';
 import Routes from './src/navigation';
 import './reactotronConfig';
+
+const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
+
+Sentry.init({
+  dsn: Config.SENTRY_DSN,
+  integrations: [
+    new Sentry.ReactNativeTracing({
+      routingInstrumentation,
+    }),
+  ],
+});
 
 const PersistedApp = () => {
   const { instance } = useSelector(state => state.keyring);
@@ -56,7 +68,11 @@ const PersistedApp = () => {
 
   return (
     <PersistGate loading={null} persistor={persistor}>
-      <ErrorBoundary>{!!instance && <Routes />}</ErrorBoundary>
+      <ErrorBoundary>
+        {!!instance && (
+          <Routes routingInstrumentation={routingInstrumentation} />
+        )}
+      </ErrorBoundary>
     </PersistGate>
   );
 };
@@ -67,9 +83,11 @@ const App = () => (
   </Provider>
 );
 
+const AppWithSentry = Sentry.wrap(__DEV__ ? Reactotron.overlay(App) : App);
+
 export default codePush({
   checkfrecuency: codePush.CheckFrequency.MANUAL,
   deploymentKey: isIos
     ? Config.CODE_PUSH_IOS_DEPLOY_KEY
     : Config.CODE_PUSH_ANDROID_DEPLOY_KEY,
-})(__DEV__ ? Reactotron.overlay(App) : App);
+})(AppWithSentry);

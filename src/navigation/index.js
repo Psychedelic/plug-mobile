@@ -19,7 +19,7 @@ import Routes from './Routes';
 
 const Stack = createStackNavigator();
 
-const Navigator = () => {
+const Navigator = ({ routingInstrumentation }) => {
   const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
   const dispatch = useDispatch();
   let timeoutId = null;
@@ -59,7 +59,11 @@ const Navigator = () => {
     : Routes.WELCOME_SCREEN;
 
   return (
-    <NavigationContainer ref={navigationRef}>
+    <NavigationContainer
+      ref={navigationRef}
+      onReady={routingInstrumentation.registerNavigationContainer(
+        navigationRef,
+      )}>
       <Host>
         <Stack.Navigator
           initialRouteName={initialRoute}
