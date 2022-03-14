@@ -12,6 +12,7 @@ import MintActivityIcon from './svg/MintActivityIcon';
 import PasswordEyeIcon from './svg/PasswordEyeIcon';
 import ChevronLeftIcon from './svg/ChevronLeftIcon';
 import SwapArrowsIcon from './svg/SwapArrowsIcon';
+import ArrowRightIcon from './svg/ArrowRightIcon';
 import ThreeDotsIcon from './svg/ThreeDotsIcon';
 import ArrowDownIcon from './svg/ArrowDownIcon';
 import DepositIcon from './svg/DepositIcon';
@@ -48,6 +49,7 @@ export const IconTypes = {
   confirm: ConfirmIcon,
   deposit: DepositIcon,
   faceIdIcon: FaceIdIcon,
+  arrowRight: ArrowRightIcon,
   arrowDown: ArrowDownIcon,
   threeDots: ThreeDotsIcon,
   swapArrows: SwapArrowsIcon,
