@@ -328,7 +328,7 @@ export const keyringSlice = createSlice({
       state.transaction = action.payload;
     },
     [getAssets.fulfilled]: (state, action) => {
-      const formattedAssets = formatAssets(action.payload);
+      const formattedAssets = formatAssets(action.payload || []);
       state.assets =
         formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS;
       state.assetsLoading = false;
