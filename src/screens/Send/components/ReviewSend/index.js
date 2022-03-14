@@ -73,8 +73,8 @@ const ReviewSend = ({
 
     if (isSuccess) {
       onSuccess();
-      navigation.navigate(Routes.TOKENS);
     }
+    navigation.navigate(Routes.TOKENS);
   };
 
   const handleGoToActivity = () => {

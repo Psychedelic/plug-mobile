@@ -1,8 +1,7 @@
-import React, { useMemo, useState } from 'react';
-import { Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { Text } from 'react-native';
 
-import { isValidPassword } from '../../../constants/general';
 import { unlock } from '../../../redux/slices/keyring';
 import RainbowButton from '../../buttons/RainbowButton';
 import Column from '../../layout/Column';
@@ -36,8 +35,24 @@ const PasswordModal = ({ modalRef, handleClose = () => {}, handleSubmit }) => {
       }),
     );
   };
+
+  const handleOnClose = () => {
+    handleClose();
+    clearState();
+  };
+
+  const clearState = () => {
+    setError(false);
+    setLoading(false);
+    setPassword('');
+  };
+
+  useEffect(() => {
+    return () => clearState();
+  }, []);
+
   return (
-    <Modal modalRef={modalRef} onClose={handleClose} adjustToContentHeight>
+    <Modal modalRef={modalRef} onClose={handleOnClose} adjustToContentHeight>
       <Header center={<Text style={styles.title}>Enter your password</Text>} />
       <Column style={styles.container}>
         <PasswordInput
