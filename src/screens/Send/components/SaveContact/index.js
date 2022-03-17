@@ -2,7 +2,7 @@ import { Text, View } from 'react-native';
 import React, { useState } from 'react';
 import emojis from 'emoji-datasource';
 
-import { charFromEmojiObject } from '../../../../components/common/EmojiSelector';
+import { charFromEmojiObject } from '../../../../components/common/EmojiSelector/utils';
 import RainbowButton from '../../../../components/buttons/RainbowButton';
 import TextInput from '../../../../components/common/TextInput';
 import Header from '../../../../components/common/Header';

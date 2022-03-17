@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
 
 import RainbowButton from '../components/buttons/RainbowButton';
 import EmojiSelector from '../components/common/EmojiSelector';

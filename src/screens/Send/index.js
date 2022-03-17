@@ -120,6 +120,11 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
     dispatch(setTransaction(null));
   };
 
+  const onError = () => {
+    resetState();
+    modalRef.current?.close();
+  };
+
   const partialReset = () => {
     setSelectedNft(null);
   };
@@ -349,6 +354,7 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
         value={usdAmount}
         nft={selectedNft}
         onSend={handleSend}
+        onError={onError}
         onSuccess={() => {
           modalRef.current?.close();
           if (onSuccess) {
