@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 import emojis from 'emoji-datasource';
 
-import { charFromEmojiObject } from '../../../../components/common/EmojiSelector';
+import { charFromEmojiObject } from '../../../../components/common/EmojiSelector/utils';
 import RainbowButton from '../../../../components/buttons/RainbowButton';
 import TextInput from '../../../../components/common/TextInput';
 import { validatePrincipalId } from '../../../../helpers/ids';

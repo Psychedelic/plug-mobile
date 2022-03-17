@@ -31,6 +31,7 @@ import styles from './styles';
 
 const ReviewSend = ({
   modalRef,
+  onError,
   token,
   nft,
   amount,
@@ -72,7 +73,10 @@ const ReviewSend = ({
     dispatch(setTransaction(null));
 
     if (isSuccess) {
-      onSuccess();
+      onSuccess?.();
+    }
+    if (isError) {
+      onError?.();
     }
     navigation.navigate(Routes.TOKENS);
   };
