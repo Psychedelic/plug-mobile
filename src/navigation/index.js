@@ -91,9 +91,16 @@ const Navigator = ({ routingInstrumentation }) => {
     />
   );
 
+  const navTheme = {
+    colors: {
+      background: Colors.Black.Primary,
+    },
+  };
+
   return (
     <NavigationContainer
       ref={navigationRef}
+      theme={navTheme}
       onReady={routingInstrumentation.registerNavigationContainer(
         navigationRef,
       )}>
