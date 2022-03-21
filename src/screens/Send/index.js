@@ -39,7 +39,7 @@ import PasswordModal from '../../components/common/PasswordModal';
 
 const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
 
-const Send = ({ modalRef, nft, token, onSuccess }) => {
+function Send({ modalRef, nft, token, onSuccess }) {
   const dispatch = useDispatch();
   const { isSensorAvailable, getPassword } = useKeychain();
   const { icpPrice } = useSelector(state => state.icp);
@@ -369,6 +369,6 @@ const Send = ({ modalRef, nft, token, onSuccess }) => {
       <PasswordModal modalRef={passwordRef} handleSubmit={send} />
     </Modal>
   );
-};
+}
 
 export default Send;
