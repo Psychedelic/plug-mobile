@@ -20,7 +20,7 @@ const CreatePassword = ({ route, navigation }) => {
   const dispatch = useDispatch();
 
   const { icpPrice } = useSelector(state => state.icp);
-  const { flow } = route.params;
+  const flow = route.params?.flow;
   const { goBack } = navigation;
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState(null);

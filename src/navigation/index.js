@@ -27,7 +27,6 @@ const Navigator = ({ routingInstrumentation }) => {
   const handleLockState = () => {
     dispatch(setUnlocked(false));
     timeoutId = null;
-    navigationRef?.navigate(Routes.LOGIN_SCREEN);
   };
 
   const handleAppStateChange = nextAppState => {
@@ -58,6 +57,32 @@ const Navigator = ({ routingInstrumentation }) => {
       : Routes.LOGIN_SCREEN
     : Routes.WELCOME_SCREEN;
 
+  const authStack = (
+    <>
+      {!isInitialized && (
+        <Stack.Screen name={Routes.WELCOME_SCREEN} component={Welcome} />
+      )}
+      <Stack.Screen name={Routes.LOGIN_SCREEN} component={Login} />
+      <Stack.Screen name={Routes.CREATE_PASSWORD} component={CreatePassword} />
+      <Stack.Screen
+        name={Routes.BACKUP_SEED_PHRASE}
+        component={BackupSeedPhrase}
+      />
+      <Stack.Screen
+        name={Routes.IMPORT_SEED_PHRASE}
+        component={ImportSeedPhrase}
+      />
+    </>
+  );
+
+  const appStack = (
+    <Stack.Screen
+      name={Routes.SWIPE_LAYOUT}
+      component={SwipeNavigator}
+      options={{ gestureEnabled: false }}
+    />
+  );
+
   return (
     <NavigationContainer
       ref={navigationRef}
@@ -71,28 +96,10 @@ const Navigator = ({ routingInstrumentation }) => {
             headerShown: false,
             cardStyle: { backgroundColor: Colors.Black.Primary },
           }}>
-          <Stack.Screen name={Routes.WELCOME_SCREEN} component={Welcome} />
-          <Stack.Screen
-            name={Routes.CREATE_PASSWORD}
-            component={CreatePassword}
-          />
-          <Stack.Screen
-            name={Routes.BACKUP_SEED_PHRASE}
-            component={BackupSeedPhrase}
-          />
-          <Stack.Screen
-            name={Routes.IMPORT_SEED_PHRASE}
-            component={ImportSeedPhrase}
-          />
-          <Stack.Screen name={Routes.LOGIN_SCREEN} component={Login} />
+          {isUnlocked ? appStack : authStack}
           <Stack.Screen
             name={Routes.CONNECTION_ERROR}
             component={ConnectionError}
-          />
-          <Stack.Screen
-            name={Routes.SWIPE_LAYOUT}
-            component={SwipeNavigator}
-            options={{ gestureEnabled: false }}
           />
         </Stack.Navigator>
       </Host>
