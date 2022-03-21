@@ -27,6 +27,7 @@ const Navigator = ({ routingInstrumentation }) => {
   const handleLockState = () => {
     dispatch(setUnlocked(false));
     timeoutId = null;
+    navigationRef.navigate(Routes.LOGIN_SCREEN);
   };
 
   const handleAppStateChange = nextAppState => {
@@ -59,10 +60,17 @@ const Navigator = ({ routingInstrumentation }) => {
 
   const authStack = (
     <>
-      {!isInitialized && (
-        <Stack.Screen name={Routes.WELCOME_SCREEN} component={Welcome} />
+      {isInitialized ? (
+        <>
+          <Stack.Screen name={Routes.LOGIN_SCREEN} component={Login} />
+          <Stack.Screen name={Routes.WELCOME_SCREEN} component={Welcome} />
+        </>
+      ) : (
+        <>
+          <Stack.Screen name={Routes.WELCOME_SCREEN} component={Welcome} />
+          <Stack.Screen name={Routes.LOGIN_SCREEN} component={Login} />
+        </>
       )}
-      <Stack.Screen name={Routes.LOGIN_SCREEN} component={Login} />
       <Stack.Screen name={Routes.CREATE_PASSWORD} component={CreatePassword} />
       <Stack.Screen
         name={Routes.BACKUP_SEED_PHRASE}
