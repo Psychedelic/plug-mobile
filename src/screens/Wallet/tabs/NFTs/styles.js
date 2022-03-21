@@ -39,9 +39,6 @@ export default StyleSheet.create({
   touchable: {
     ...commonContainerSize,
   },
-  emptyState: {
-    marginTop: 120,
-  },
   disabledContainer: {
     opacity: 0.5,
   },
