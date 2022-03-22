@@ -1,4 +1,6 @@
 import { StyleSheet } from 'react-native';
+
+import { pixelRatioScale } from '../../constants/platform';
 import { Colors } from '../../constants/theme';
 
 export default StyleSheet.create({
@@ -15,7 +17,7 @@ export default StyleSheet.create({
     width: '84%',
   },
   plugIcon: {
-    height: 116,
+    height: pixelRatioScale(50),
     resizeMode: 'contain',
   },
   title: {
