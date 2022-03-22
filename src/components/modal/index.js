@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
 import { Portal } from 'react-native-portalize';
 import { Modalize } from 'react-native-modalize';
 
@@ -13,14 +12,6 @@ const Modal = ({
   scrollViewProps,
   ...props
 }) => {
-  const { isUnlocked } = useSelector(state => state.keyring);
-
-  useEffect(() => {
-    if (!isUnlocked && modalRef) {
-      modalRef.current?.close();
-    }
-  }, [isUnlocked, modalRef]);
-
   return (
     <Portal>
       <Modalize

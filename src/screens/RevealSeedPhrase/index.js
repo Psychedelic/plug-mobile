@@ -13,7 +13,7 @@ import Copy from '../../components/common/Copy';
 import Modal from '../../components/modal';
 import styles from './styles';
 
-const RevealSeedPhrase = ({ modalRef }) => {
+function RevealSeedPhrase({ modalRef }) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [password, setPassword] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -81,6 +81,6 @@ const RevealSeedPhrase = ({ modalRef }) => {
       </Modal>
     </>
   );
-};
+}
 
 export default RevealSeedPhrase;
