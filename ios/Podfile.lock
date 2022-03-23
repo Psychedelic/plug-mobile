@@ -288,7 +288,7 @@ PODS:
     - react-native-config/App (= 1.4.5)
   - react-native-config/App (1.4.5):
     - React-Core
-  - react-native-pager-view (5.4.11):
+  - react-native-pager-view (5.4.15):
     - React-Core
   - react-native-randombytes (3.6.1):
     - React-Core
@@ -374,19 +374,19 @@ PODS:
     - React-perflogger (= 0.66.3)
   - rn-fetch-blob (0.12.0):
     - React-Core
-  - RNCAsyncStorage (1.16.1):
+  - RNCAsyncStorage (1.17.0):
     - React-Core
   - RNCClipboard (1.5.1):
     - React-Core
   - RNCMaskedView (0.2.6):
     - React-Core
-  - RNDeviceInfo (8.5.0):
+  - RNDeviceInfo (8.5.1):
     - React-Core
   - RNGestureHandler (1.10.3):
     - React-Core
   - RNReactNativeHapticFeedback (1.13.1):
     - React-Core
-  - RNReanimated (2.4.1):
+  - RNReanimated (2.5.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -417,16 +417,16 @@ PODS:
   - RNScreens (3.13.1):
     - React-Core
     - React-RCTImage
-  - RNSentry (3.3.2):
+  - RNSentry (3.3.4):
     - React-Core
-    - Sentry (= 7.10.1)
+    - Sentry (= 7.10.2)
   - RNSVG (12.3.0):
     - React-Core
   - RNVectorIcons (8.1.0):
     - React-Core
-  - Sentry (7.10.1):
-    - Sentry/Core (= 7.10.1)
-  - Sentry/Core (7.10.1)
+  - Sentry (7.10.2):
+    - Sentry/Core (= 7.10.2)
+  - Sentry/Core (7.10.2)
   - SSZipArchive (2.2.3)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -679,7 +679,7 @@ SPEC CHECKSUMS:
   React-logger: e522e76fa3e9ec3e7d7115b49485cc065cf4ae06
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
-  react-native-pager-view: 7f00d63688f7df9fad86dfb0154814419cc5eb8d
+  react-native-pager-view: b1914469643f40042e65d78cbf3d3dfebd6fb0d9
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-restart: 733a51ad137f15b0f8dc34c4082e55af7da00979
   react-native-safe-area-context: 9e40fb181dac02619414ba1294d6c2a807056ab9
@@ -700,22 +700,22 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: bbbdb3d8fcf327c6e2249ee71b6ef1764b7dc266
   ReactCommon: 9bac022ab71596f2b0fde1268272543184c63971
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
-  RNCAsyncStorage: b49b4e38a1548d03b74b30e558a1d18465b94be7
+  RNCAsyncStorage: 4efdcd2f7378421b29467c9de58f43552b60cf5b
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNCMaskedView: c298b644a10c0c142055b3ae24d83879ecb13ccd
-  RNDeviceInfo: a674f06c5a5bd496aebb809cbc3be61cfd612a65
+  RNDeviceInfo: 8d4177859b062334835962799460528869a487fb
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNReactNativeHapticFeedback: 4085973f5a38b40d3c6793a3ee5724773eae045e
-  RNReanimated: e8afbe2a9e08e9e778ea72ddb1a8533445812621
+  RNReanimated: ee33ab40fa252332a36aeed9d936801ed9700b24
   RNScreens: 40a2cb40a02a609938137a1e0acfbf8fc9eebf19
-  RNSentry: f8c14c77e400a93331b38538f735c2538f8108a8
+  RNSentry: 71f9eb4365afbea11c955427622cf8d038650600
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
-  Sentry: ddcd9fde63cfe7e9e2243da59d98daa382413e49
+  Sentry: 7bf9bfe713692cf87812e55f0999260494ba7982
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: 32a18c0e845e185f4a2a66ec76e1fd1f958f22fa
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
 PODFILE CHECKSUM: fbe8decbdb8543fcbcd025f66306ed5d55e6c8c4
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3
