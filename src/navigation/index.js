@@ -2,8 +2,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Host } from 'react-native-portalize';
-import React, { useEffect } from 'react';
-import { AppState } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { AppState, Linking } from 'react-native';
 
 import ImportSeedPhrase from '../screens/Welcome/views/ImportSeedPhrase';
 import BackupSeedPhrase from '../screens/Welcome/views/BackupSeedPhrase';
@@ -16,11 +16,15 @@ import { Colors } from '../constants/theme';
 import Welcome from '../screens/Welcome';
 import Login from '../screens/Login';
 import Routes from './Routes';
+import WalletConnect from '../screens/WalletConnect';
+import useDeepLink from '../hooks/useDeepLink';
 
 const Stack = createStackNavigator();
 
 const Navigator = ({ routingInstrumentation }) => {
   const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
+  const [deepLink, setDeepLink] = useState(null);
+  const { DeepLinkContext } = useDeepLink();
   const dispatch = useDispatch();
   let timeoutId = null;
 
@@ -30,7 +34,9 @@ const Navigator = ({ routingInstrumentation }) => {
     navigationRef.navigate(Routes.LOGIN_SCREEN);
   };
 
-  const handleAppStateChange = nextAppState => {
+  const handleAppStateChange = async nextAppState => {
+    const initialLink = await Linking.getInitialURL();
+
     if (nextAppState === 'background') {
       timeoutId = setTimeout(handleLockState, 120000);
     }
@@ -39,6 +45,8 @@ const Navigator = ({ routingInstrumentation }) => {
       clearTimeout(timeoutId);
       timeoutId = null;
     }
+
+    if (initialLink) setDeepLink(initialLink);
   };
 
   useEffect(() => {
@@ -53,8 +61,13 @@ const Navigator = ({ routingInstrumentation }) => {
       handleAppStateChange,
     );
 
+    Linking.addEventListener('url', link => {
+      setDeepLink(link.url);
+    });
+
     return () => {
       subscription.remove();
+      Linking.removeAllListeners();
     };
   }, []);
 
@@ -106,6 +119,10 @@ const Navigator = ({ routingInstrumentation }) => {
           <Stack.Screen
             name={Routes.CONNECTION_ERROR}
             component={ConnectionError}
+          />
+          <Stack.Screen
+            name={Routes.WALLET_CONNECT}
+            component={WalletConnect}
           />
         </Stack.Navigator>
       </Host>

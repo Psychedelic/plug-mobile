@@ -12,6 +12,8 @@ const Routes = {
   BACKUP_SEED_PHRASE: 'BackupSeedPhrase',
   //Error Screens:
   CONNECTION_ERROR: 'ConnectionError',
+  //Wallet Connect:
+  WALLET_CONNECT: 'WalletConnect',
 };
 
 export default Routes;
