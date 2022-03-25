@@ -100,7 +100,11 @@ const Profile = () => {
             </View>
           </ScrollView>
         ) : (
-          <ErrorState onPress={onRefresh} errorType={ERROR_TYPES.FETCH_ERROR} />
+          <ErrorState
+            onPress={onRefresh}
+            loading={transactionsLoading}
+            errorType={ERROR_TYPES.FETCH_ERROR}
+          />
         )}
       </Container>
       <Accounts modalRef={modalRef} />
