@@ -51,8 +51,9 @@ const NFTs = () => {
         <Divider />
         {!collectionsError ? (
           <ScrollView
+            bounces
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.container}
+            style={styles.container}
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}
