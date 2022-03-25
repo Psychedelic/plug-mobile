@@ -9,8 +9,11 @@ import { resetStores, getNewAccountData } from '../utils';
 import { keyringStorage } from '../store';
 
 import {
-  privateGetAssets,
+  getNFTs,
+  getAssets,
+  getTransactions,
   setAssetsLoading,
+  setTransactionsLoading,
   setAssetsAndTransactions,
 } from './user';
 
@@ -137,8 +140,11 @@ export const login = createAsyncThunk(
       if (unlocked) {
         dispatch(setCurrentWallet(wallets[currentWalletId]));
         dispatch(setWallets(wallets));
-        await privateGetAssets({ icpPrice }, state, dispatch);
-        dispatch(setAssetsLoading(false));
+        dispatch(setAssetsLoading(true));
+        dispatch(getAssets({ refresh: true, icpPrice }));
+        dispatch(setTransactionsLoading(true));
+        dispatch(getTransactions({ icpPrice }));
+        dispatch(getNFTs());
       } else {
         handleError();
       }
