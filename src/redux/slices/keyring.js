@@ -72,6 +72,28 @@ export const importWallet = createAsyncThunk(
   },
 );
 
+export const validatePassword = createAsyncThunk(
+  'keyring/validatePassword',
+  async (params, { getState }) => {
+    const state = getState();
+    let isValid = false;
+    const { password, onError, onSuccess } = params;
+    try {
+      const instance = state.keyring?.instance;
+      isValid = await instance?.isValidPassword(password);
+      if (isValid) {
+        onSuccess?.();
+      } else {
+        onError?.();
+      }
+    } catch (e) {
+      onError?.();
+      console.log('Validate Password:', e.message);
+    }
+    return isValid;
+  },
+);
+
 export const unlock = createAsyncThunk(
   'keyring/unlock',
   async (params, { getState }) => {
@@ -87,18 +109,12 @@ const privateUnlock = async (params, state) => {
     const instance = state.keyring?.instance;
     unlocked = await instance?.unlock(password);
     if (unlocked) {
-      if (onSuccess) {
-        onSuccess();
-      }
+      onSuccess?.();
     } else {
-      if (onError) {
-        onError();
-      }
+      onError?.();
     }
   } catch (e) {
-    if (onError) {
-      onError();
-    }
+    onError?.();
     console.log('Private Unlock:', e.message);
   }
   return { unlocked };

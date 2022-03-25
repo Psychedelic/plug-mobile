@@ -4,9 +4,9 @@ import { Text, Switch, View } from 'react-native';
 
 import RainbowButton from '../../../../components/buttons/RainbowButton';
 import PasswordInput from '../../../../components/common/PasswordInput';
+import { validatePassword } from '../../../../redux/slices/keyring';
 import { isValidPassword } from '../../../../constants/general';
 import Column from '../../../../components/layout/Column';
-import { unlock } from '../../../../redux/slices/keyring';
 import Header from '../../../../components/common/Header';
 import { FontStyles } from '../../../../constants/theme';
 import useKeychain from '../../../../hooks/useKeychain';
@@ -45,7 +45,7 @@ function BiometricUnlock({ modalRef }) {
   const handleSubmit = async () => {
     setLoading(true);
     dispatch(
-      unlock({
+      validatePassword({
         password,
         onError: () => {
           setError(true);
