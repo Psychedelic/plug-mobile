@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { View, Text, StyleSheet } from 'react-native';
 
 import Touchable from '../../components/animations/Touchable';
@@ -21,6 +22,7 @@ const Settings = () => {
   const contactsRef = useRef(null);
   const revealSeedPhraseRef = useRef(null);
   const biometricUnlockRef = useRef(null);
+  const { biometricsAvailable } = useSelector(state => state.user);
 
   const infoItems = useInfoItems();
 
@@ -42,6 +44,16 @@ const Settings = () => {
 
   const openContacts = () => {
     contactsRef.current?.open();
+  };
+
+  const renderSettingsItem = (item, index) => {
+    const isBiometrics = index === 2;
+    return isBiometrics && !biometricsAvailable ? null : (
+      <View key={item.name}>
+        <SettingItem {...item} />
+        {index !== settingsItems.length && <Separator />}
+      </View>
+    );
   };
 
   const settingsItems = [
@@ -82,14 +94,7 @@ const Settings = () => {
           }
         />
         <View style={styles.container}>
-          <View>
-            {settingsItems.map((item, index) => (
-              <View key={item.name}>
-                <SettingItem {...item} />
-                {index !== settingsItems.length && <Separator />}
-              </View>
-            ))}
-          </View>
+          <View>{settingsItems.map(renderSettingsItem)}</View>
           <View style={styles.infoContainer}>
             {infoItems.map(item => (
               <InfoItem {...item} key={item.name} />

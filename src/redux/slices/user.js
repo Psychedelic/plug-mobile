@@ -23,6 +23,7 @@ const DEFAULT_STATE = {
   collections: [],
   collectionsError: false,
   usingBiometrics: false,
+  biometricsAvailable: false,
 };
 
 export const sendToken = createAsyncThunk(
@@ -271,6 +272,9 @@ export const keyringSlice = createSlice({
     setUsingBiometrics: (state, action) => {
       state.usingBiometrics = action.payload;
     },
+    setBiometricsAvailable: (state, action) => {
+      state.biometricsAvailable = action.payload;
+    },
     setContacts: (state, action) => {
       state.contacts = action.payload;
     },
@@ -365,6 +369,7 @@ export const {
   setCollectionsError,
   setAssetsError,
   setUsingBiometrics,
+  setBiometricsAvailable,
   setContacts,
   addContact,
   removeContact,
