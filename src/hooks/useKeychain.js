@@ -1,7 +1,11 @@
+import { useEffect } from 'react';
 import RNSInfo from 'react-native-sensitive-info';
 import { useDispatch } from 'react-redux';
 
-import { setUsingBiometrics } from '../redux/slices/user';
+import {
+  setUsingBiometrics,
+  setBiometricsAvailable,
+} from '../redux/slices/user';
 
 const KEYCHAIN_CONSTANTS = {
   tokenKey: 'plug-accss-token',
@@ -22,6 +26,10 @@ const KEYCHAIN_OPTIONS = {
 
 const useKeychain = () => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    getSensor();
+  }, []);
 
   // Core Keychain functions:
   const setPassword = async password => {
@@ -72,6 +80,15 @@ const useKeychain = () => {
   const resetBiometrics = async () => {
     await resetPassword();
     dispatch(setUsingBiometrics(false));
+  };
+
+  const getSensor = async () => {
+    const isAvailable = await isSensorAvailable();
+    if (isAvailable) {
+      dispatch(setBiometricsAvailable(true));
+    } else {
+      dispatch(setBiometricsAvailable(false));
+    }
   };
 
   return {
