@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Text } from 'react-native';
 
-import { validatePassword } from '../../redux/slices/keyring';
+import { validatePassword } from '../../../redux/slices/keyring';
 import RainbowButton from '../../buttons/RainbowButton';
 import PasswordInput from '../PasswordInput';
 import Column from '../../layout/Column';
