@@ -42,7 +42,7 @@ const Navigator = ({ routingInstrumentation }) => {
   };
 
   useEffect(() => {
-    if (!isUnlocked) {
+    if (!isUnlocked && isInitialized) {
       navigationRef?.navigate(Routes.LOGIN_SCREEN);
     }
   }, [isUnlocked]);
