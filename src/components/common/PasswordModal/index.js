@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Text } from 'react-native';
 
-import { unlock } from '../../../redux/slices/keyring';
+import { validatePassword } from '../../redux/slices/keyring';
 import RainbowButton from '../../buttons/RainbowButton';
+import PasswordInput from '../PasswordInput';
 import Column from '../../layout/Column';
 import Modal from '../../modal';
 import Header from '../Header';
-import PasswordInput from '../PasswordInput';
-
 import styles from './styles';
 
 const PasswordModal = ({ modalRef, handleClose = () => {}, handleSubmit }) => {
@@ -20,7 +19,7 @@ const PasswordModal = ({ modalRef, handleClose = () => {}, handleSubmit }) => {
   const validatedSubmit = async () => {
     setLoading(true);
     dispatch(
-      unlock({
+      validatePassword({
         password,
         onSuccess: () => {
           handleSubmit();
