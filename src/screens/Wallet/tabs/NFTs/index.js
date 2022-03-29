@@ -54,10 +54,7 @@ const NFTs = () => {
             bounces
             showsVerticalScrollIndicator={false}
             style={styles.container}
-            contentContainerStyle={{
-              flexGrow: 1,
-              justifyContent: 'center',
-            }}
+            contentContainerStyle={styles.contentContainer}
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}
