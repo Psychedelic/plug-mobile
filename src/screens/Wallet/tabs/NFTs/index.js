@@ -54,6 +54,10 @@ const NFTs = () => {
             bounces
             showsVerticalScrollIndicator={false}
             style={styles.container}
+            contentContainerStyle={{
+              flexGrow: 1,
+              justifyContent: 'center',
+            }}
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}
@@ -65,7 +69,6 @@ const NFTs = () => {
               <View style={styles.nftsContainer}>{nfts.map(renderNFT)}</View>
             ) : (
               <EmptyState
-                style={styles.emptyState}
                 title="You don't own any NFTs yet"
                 text="When you do, they'll show here, where you will see their traits and send them."
               />

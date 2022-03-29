@@ -27,6 +27,13 @@ export const DEFAULT_ASSETS = [
     value: 0,
     icon: 'xtc',
   },
+  {
+    symbol: 'WICP',
+    name: 'Wrapped ICP',
+    amount: 0,
+    value: 0,
+    icon: 'wicp',
+  },
 ];
 
 export const DEFAULT_TRANSACTION = {
