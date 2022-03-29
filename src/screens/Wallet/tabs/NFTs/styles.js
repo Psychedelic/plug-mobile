@@ -21,6 +21,10 @@ export default StyleSheet.create({
     paddingVertical: 20,
     flex: 1,
   },
+  contentContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
   item: {
     margin: 10,
   },
