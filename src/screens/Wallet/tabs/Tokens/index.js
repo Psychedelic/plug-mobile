@@ -40,9 +40,9 @@ function Tokens() {
   }, [assetsLoading]);
 
   useEffect(() => {
-    dispatch(setAssetsLoading(true));
-    dispatch(getAssets({ refresh: true, icpPrice }));
-    dispatch(getTransactions({ icpPrice }));
+    // dispatch(setAssetsLoading(true));
+    // dispatch(getAssets({ refresh: true, icpPrice }));
+    // dispatch(getTransactions({ icpPrice }));
   }, [icpPrice]);
 
   const onRefresh = () => {

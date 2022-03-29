@@ -46,8 +46,8 @@ const Profile = () => {
   }, [transactionsLoading]);
 
   useEffect(() => {
-    onRefresh();
-    dispatch(getICPPrice());
+    // onRefresh();
+    // dispatch(getICPPrice());
   }, []);
 
   return (

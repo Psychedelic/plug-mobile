@@ -34,6 +34,7 @@ function Login() {
 
   useEffect(() => {
     if (usingBiometrics) {
+      console.log('entro');
       unlockUsingBiometrics();
     }
     dispatch(setAssetsLoading(false));
@@ -54,7 +55,6 @@ function Login() {
     setError(false);
     Keyboard.dismiss();
     setDisableInput(true);
-    dispatch(setAssetsLoading(true));
     dispatch(
       login({
         password: submittedPassword,
