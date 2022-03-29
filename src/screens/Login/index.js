@@ -54,7 +54,6 @@ function Login() {
     setError(false);
     Keyboard.dismiss();
     setDisableInput(true);
-    dispatch(setAssetsLoading(true));
     dispatch(
       login({
         password: submittedPassword,
