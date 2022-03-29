@@ -34,7 +34,6 @@ function Login() {
 
   useEffect(() => {
     if (usingBiometrics) {
-      console.log('entro');
       unlockUsingBiometrics();
     }
     dispatch(setAssetsLoading(false));

@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { ERROR_TYPES } from '../../../../components/common/ErrorState/constants';
+import { getAssets, setAssetsLoading } from '../../../../redux/slices/user';
 import ErrorState from '../../../../components/common/ErrorState';
 import { Colors, FontStyles } from '../../../../constants/theme';
 import TokenItem from '../../../../components/tokens/TokenItem';
@@ -12,11 +13,6 @@ import { getICPPrice } from '../../../../redux/slices/icp';
 import WalletHeader from '../../components/WalletHeader';
 import Row from '../../../../components/layout/Row';
 import Send from '../../../../screens/Send';
-import {
-  getAssets,
-  getTransactions,
-  setAssetsLoading,
-} from '../../../../redux/slices/user';
 
 function Tokens() {
   const dispatch = useDispatch();
@@ -38,12 +34,6 @@ function Tokens() {
   useEffect(() => {
     setRefresing(assetsLoading);
   }, [assetsLoading]);
-
-  useEffect(() => {
-    // dispatch(setAssetsLoading(true));
-    // dispatch(getAssets({ refresh: true, icpPrice }));
-    // dispatch(getTransactions({ icpPrice }));
-  }, [icpPrice]);
 
   const onRefresh = () => {
     dispatch(getICPPrice());

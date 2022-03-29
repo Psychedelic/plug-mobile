@@ -45,11 +45,6 @@ const Profile = () => {
     setRefresing(transactionsLoading);
   }, [transactionsLoading]);
 
-  useEffect(() => {
-    // onRefresh();
-    // dispatch(getICPPrice());
-  }, []);
-
   return (
     <>
       <Container>
@@ -74,6 +69,7 @@ const Profile = () => {
           />
         </View>
         <Divider />
+        <Text style={styles.title}>Activity</Text>
         {!transactionsError ? (
           <ScrollView
             showsVerticalScrollIndicator={false}
@@ -84,7 +80,6 @@ const Profile = () => {
                 tintColor={Colors.White.Primary}
               />
             }>
-            <Text style={styles.title}>Activity</Text>
             <View>
               {transactions?.length > 0 ? (
                 transactions?.map((item, index) => (
