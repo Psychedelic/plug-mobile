@@ -19,7 +19,6 @@ function WalletConnect() {
 
   const handleSuccess = useCallback(
     (success = false) => {
-      console.log('HANDLE SUCCESS', callback);
       if (callback) {
         setTimeout(
           () =>

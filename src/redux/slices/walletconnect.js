@@ -62,7 +62,6 @@ export const walletConnectRemovePendingRedirect = createAsyncThunk(
           Minimizer.goBack();
         }, 300);
       } else {
-        console.log('GOING BACK');
         Minimizer.goBack();
       }
       // If it's still active after showRedirectSheetThreshold
@@ -219,7 +218,6 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
       } catch (error) {
         clearTimeout(timeout);
         captureException(error);
-        console.log(error);
         Alert.alert('wallet.wallet_connect.error');
       }
     } catch (error) {
@@ -294,7 +292,6 @@ export const getPendingRequest = createAsyncThunk(
 export const removePendingRequest = createAsyncThunk(
   'walletconnect/removePendingRequest',
   ({ peerId }, { dispatch, getState }) => {
-    console.log('REMOVING PENDING REQUEST', peerId);
     const { pendingRequests } = getState().walletconnect;
     const updatedPendingRequests = pendingRequests;
     if (updatedPendingRequests[peerId]) {
@@ -345,13 +342,6 @@ export const walletConnectApproveSession = createAsyncThunk(
   ) => {
     const { pendingRequests } = getState().walletconnect;
     const walletConnector = pendingRequests[peerId];
-    console.log('CONNECTOR TO APPROVE', walletConnector.uri);
-
-    walletConnector.on('connect', (payload, error) => {
-      console.log('ON CONNECT', payload, error);
-    });
-
-    console.log('BEFORE ON CONNECT ');
 
     walletConnector.approveSession({
       accounts: [
@@ -360,11 +350,8 @@ export const walletConnectApproveSession = createAsyncThunk(
       chainId,
     });
 
-    console.log('CONNECTED ', walletConnector.connected);
-
     dispatch(removePendingRequest({ peerId }));
     saveWalletConnectSession(walletConnector.peerId, walletConnector.session);
-    console.log('Wallet connection saved');
 
     const listeningWalletConnector = dispatch(
       listenOnNewMessages(walletConnector),
@@ -372,7 +359,6 @@ export const walletConnectApproveSession = createAsyncThunk(
 
     dispatch(setWalletConnector({ walletConnector: listeningWalletConnector }));
     if (callback) {
-      console.log('going to callback');
       callback('connect', dappScheme);
     }
   },
