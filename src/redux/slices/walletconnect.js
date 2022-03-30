@@ -29,7 +29,6 @@ const getNativeOptions = async () => {
       description: 'Plug IC Wallet ',
       icons: [],
       name: 'Plug Wallet',
-      ssl: true,
       url: 'https://plugwallet.ooo',
     },
   };
@@ -40,7 +39,7 @@ const getNativeOptions = async () => {
 export const walletConnectSetPendingRedirect = createAsyncThunk(
   'walletconnect/setPendingRedirect',
   (params, { getState, dispatch }) => {
-    dispatch(setPendingRedirect);
+    dispatch(setPendingRedirect());
   },
 );
 
