@@ -27,7 +27,7 @@
   "dependencies": {
     "@babel/plugin-transform-exponentiation-operator": "^7.16.0",
     "@dfinity/principal": "^0.9.3",
-    "@psychedelic/plug-mobile-controller": "0.2.5",
+    "@psychedelic/plug-mobile-controller": "0.2.7",
     "@react-native-async-storage/async-storage": "^1.15.11",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/clipboard": "^1.5.1",
