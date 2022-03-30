@@ -14,6 +14,7 @@ import { persistor, store } from './src/redux/store';
 import { isIos } from './src/constants/platform';
 import Routes from './src/navigation';
 import './reactotronConfig';
+import Navigation from './src/helpers/navigation';
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
 
@@ -70,7 +71,10 @@ const PersistedApp = () => {
     <PersistGate loading={null} persistor={persistor}>
       <ErrorBoundary>
         {!!instance && (
-          <Routes routingInstrumentation={routingInstrumentation} />
+          <Routes
+            routingInstrumentation={routingInstrumentation}
+            ref={Navigation.TopLevelNavigationRef}
+          />
         )}
       </ErrorBoundary>
     </PersistGate>

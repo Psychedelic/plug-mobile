@@ -13,7 +13,9 @@ const Routes = {
   //Error Screens:
   CONNECTION_ERROR: 'ConnectionError',
   //Wallet Connect:
-  WALLET_CONNECT: 'WalletConnect',
+  WALLET_CONNECT_APPROVAL_SHEET: 'WalletConnect',
 };
+
+export const NATIVE_ROUTES = Object.values(Routes);
 
 export default Routes;

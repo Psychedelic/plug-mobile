@@ -16,7 +16,6 @@ const SwipeNavigator = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    alert(`'SWIPE NAVIGATOR' ${deepLink}`);
     if (deepLink) navigation.navigate(Routes.WALLET_CONNECT);
   }, [deepLink]);
 

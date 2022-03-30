@@ -10,28 +10,25 @@ import BackupSeedPhrase from '../screens/Welcome/views/BackupSeedPhrase';
 import CreatePassword from '../screens/Welcome/views/CreatePassword';
 import SwipeNavigator from './navigators/SwipeNavigator';
 import ConnectionError from '../screens/ConnectionError';
-import { navigationRef } from '../helpers/navigation';
 import { setUnlocked } from '../redux/slices/keyring';
 import { Colors } from '../constants/theme';
 import Welcome from '../screens/Welcome';
 import Login from '../screens/Login';
 import Routes from './Routes';
 import WalletConnect from '../screens/WalletConnect';
-import useDeepLink from '../hooks/useDeepLink';
+import { handleDeepLink } from '../helpers/deepLink';
 
 const Stack = createStackNavigator();
 
-const Navigator = ({ routingInstrumentation }) => {
+const Navigator = ({ routingInstrumentation }, navigationRef) => {
   const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
-  const [deepLink, setDeepLink] = useState(null);
-  const { DeepLinkContext } = useDeepLink();
   const dispatch = useDispatch();
   let timeoutId = null;
 
   const handleLockState = () => {
     dispatch(setUnlocked(false));
     timeoutId = null;
-    navigationRef.navigate(Routes.LOGIN_SCREEN);
+    navigationRef?.navigate(Routes.LOGIN_SCREEN);
   };
 
   const handleAppStateChange = async nextAppState => {
@@ -46,7 +43,7 @@ const Navigator = ({ routingInstrumentation }) => {
       timeoutId = null;
     }
 
-    if (initialLink) setDeepLink(initialLink);
+    if (initialLink) handleDeepLink(initialLink);
   };
 
   useEffect(() => {
@@ -62,7 +59,7 @@ const Navigator = ({ routingInstrumentation }) => {
     );
 
     Linking.addEventListener('url', link => {
-      setDeepLink(link.url);
+      handleDeepLink(link.url);
     });
 
     return () => {
@@ -112,16 +109,16 @@ const Navigator = ({ routingInstrumentation }) => {
             component={ImportSeedPhrase}
           />
           <Stack.Screen
+            name={Routes.CONNECTION_ERROR}
+            component={ConnectionError}
+          />
+          <Stack.Screen
             name={Routes.SWIPE_LAYOUT}
             component={SwipeNavigator}
             options={{ gestureEnabled: false }}
           />
           <Stack.Screen
-            name={Routes.CONNECTION_ERROR}
-            component={ConnectionError}
-          />
-          <Stack.Screen
-            name={Routes.WALLET_CONNECT}
+            name={Routes.WALLET_CONNECT_APPROVAL_SHEET}
             component={WalletConnect}
           />
         </Stack.Navigator>
@@ -130,4 +127,4 @@ const Navigator = ({ routingInstrumentation }) => {
   );
 };
 
-export default Navigator;
+export default React.memo(React.forwardRef(Navigator));
