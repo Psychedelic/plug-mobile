@@ -57,20 +57,29 @@ export const createWallet = createAsyncThunk(
 export const importWallet = createAsyncThunk(
   'keyring/importWallet',
   async (params, { getState, dispatch }) => {
+    const { icpPrice, password, mnemonic, onError, onSuccess } = params;
+    let wallet = {};
     // Reset previous state:
     resetStores(dispatch);
+    try {
+      // Import Wallet and unlock
+      const state = getState();
+      const instance = state.keyring?.instance;
+      const response = await instance?.importMnemonic({
+        icpPrice,
+        password,
+        mnemonic,
+      });
+      wallet = response?.wallet;
+      await instance?.unlock(params.password);
 
-    // Import Wallet and unlock
-    const state = getState();
-    const { icpPrice } = params;
-    const instance = state.keyring?.instance;
-    const response = await instance?.importMnemonic(params);
-    const { wallet } = response || {};
-    await instance?.unlock(params.password);
-
-    // Get new data:
-    getNewAccountData(dispatch, icpPrice, state);
-
+      // Get new data:
+      getNewAccountData(dispatch, icpPrice, state);
+      onSuccess?.();
+    } catch (e) {
+      console.log('Import Wallet Error:', e);
+      onError?.();
+    }
     return { wallet };
   },
 );

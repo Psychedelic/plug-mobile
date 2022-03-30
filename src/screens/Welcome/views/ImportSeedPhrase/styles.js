@@ -8,6 +8,10 @@ export default StyleSheet.create({
     marginTop: 20,
     textAlign: 'center',
   },
+  errorText: {
+    marginTop: 10,
+    color: 'red',
+  },
   subtitle: {
     ...FontStyles.NormalGray,
     marginTop: 5,
@@ -19,7 +23,10 @@ export default StyleSheet.create({
   },
   input: {
     backgroundColor: Colors.Gray.Secondary,
-    marginVertical: 30,
+    marginTop: 30,
+  },
+  button: {
+    marginTop: 30,
   },
   plugLogoContainer: {
     width: 70,

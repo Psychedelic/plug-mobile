@@ -1,6 +1,6 @@
 {
   "name": "Plug",
-  "version": "0.1.0(49)",
+  "version": "0.1.0(51)",
   "private": true,
   "scripts": {
     "rename-build": "chmod +x ./rename-ic-agent.sh && ./rename-ic-agent.sh",
@@ -27,7 +27,7 @@
   "dependencies": {
     "@babel/plugin-transform-exponentiation-operator": "^7.16.0",
     "@dfinity/principal": "^0.9.3",
-    "@psychedelic/plug-mobile-controller": "0.2.4",
+    "@psychedelic/plug-mobile-controller": "0.2.5",
     "@react-native-async-storage/async-storage": "^1.15.11",
     "@react-native-community/blur": "^3.6.0",
     "@react-native-community/clipboard": "^1.5.1",

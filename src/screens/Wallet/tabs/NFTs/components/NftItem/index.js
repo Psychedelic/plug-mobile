@@ -7,7 +7,7 @@ import useGetType from '../../../../../../hooks/useGetType';
 import sharedStyles from '../../styles';
 
 function NftItem({ item, onOpen, isSend }) {
-  const { url, canisterId, index, collection, name } = item;
+  const { url, canisterId, index, collection } = item;
   const isDisabled = collection === 'CAP Crowns' && isSend;
   const [type, setType] = useState(null);
 
@@ -27,7 +27,7 @@ function NftItem({ item, onOpen, isSend }) {
         <NftDisplayer type={type} url={url} style={sharedStyles.nftDisplayer} />
       </Touchable>
       <Text numberOfLines={1} ellipsizeMode="tail" style={sharedStyles.text}>
-        {name || `${collection} #${index}`}
+        {`${collection} #${index}`}
       </Text>
     </View>
   );
