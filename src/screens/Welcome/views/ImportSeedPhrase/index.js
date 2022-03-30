@@ -22,6 +22,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
   const { icpPrice } = useSelector(state => state.icp);
   const { password, shouldSaveBiometrics } = route?.params || {};
 
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [seedPhrase, setSeedPhrase] = useState(null);
   const [invalidSeedPhrase, setInvalidSeedPhrase] = useState(false);
@@ -34,15 +35,25 @@ const ImportSeedPhrase = ({ navigation, route }) => {
     setLoading(true);
     try {
       dispatch(reset());
-      dispatch(importWallet({ icpPrice, mnemonic: seedPhrase, password }))
-        .unwrap()
-        .then(async () => {
-          if (shouldSaveBiometrics) {
-            await saveBiometrics(password);
-          }
-          setLoading(false);
-          navigation.navigate(Routes.SWIPE_LAYOUT);
-        });
+      dispatch(
+        importWallet({
+          icpPrice,
+          mnemonic: seedPhrase,
+          password,
+          onError: () => {
+            setError(true);
+            setLoading(false);
+          },
+          onSuccess: async () => {
+            if (shouldSaveBiometrics) {
+              await saveBiometrics(password);
+            }
+            setLoading(false);
+            setError(false);
+            navigation.navigate(Routes.SWIPE_LAYOUT);
+          },
+        }),
+      );
     } catch (e) {
       console.log(e);
     }
@@ -82,10 +93,14 @@ const ImportSeedPhrase = ({ navigation, route }) => {
             placeholder="Secret Recovery Phrase"
             customStyle={styles.input}
           />
+          {error && (
+            <Text style={styles.errorText}>Recovery phrase not found</Text>
+          )}
           <RainbowButton
             text="Continue"
             onPress={onPress}
             loading={loading}
+            buttonStyle={styles.button}
             disabled={!isMnemonicValid || loading}
           />
         </View>
