@@ -10,5 +10,9 @@ export default StyleSheet.create({
   image: {
     resizeMode: 'contain',
     width: 30,
+    alignSelf: 'center',
+  },
+  errorState: {
+    marginBottom: '30%',
   },
 });

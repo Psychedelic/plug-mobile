@@ -7,15 +7,12 @@ import PlugLogo from '../../assets/icons/il_white_plug.png';
 import styles from './styles';
 
 function ConnectionError() {
-  //TODO: Add Network error handler.
-  const handleRetry = () => {};
-
   return (
     <View style={styles.container}>
-      <Image src={PlugLogo} style={styles.image} />
+      <Image source={PlugLogo} style={styles.image} />
       <ErrorState
         errorType={ERROR_TYPES.CONNECTION_ERROR}
-        onPress={handleRetry}
+        style={styles.errorState}
       />
     </View>
   );
