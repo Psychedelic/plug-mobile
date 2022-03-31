@@ -57,7 +57,7 @@ const Settings = () => {
     dispatch(setUnlocked(false));
     navigation.reset({
       index: 1,
-      routes: [{ name: Routes.LOGIN_SCREEN }],
+      routes: [{ name: Routes.LOGIN_SCREEN, params: { manualLock: true } }],
     });
   };
 
