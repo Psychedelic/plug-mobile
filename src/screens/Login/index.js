@@ -1,5 +1,4 @@
 import { View, StatusBar, Text, Image, Keyboard } from 'react-native';
-import { useNavigation } from '@react-navigation/core';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 
@@ -17,9 +16,9 @@ import useKeychain from '../../hooks/useKeychain';
 import Routes from '../../navigation/Routes';
 import styles from './styles';
 
-function Login() {
+function Login({ route, navigation }) {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
+  const isManualLock = route?.params?.manualLock || false;
   const { getPassword, isSensorAvailable } = useKeychain();
   const { icpPrice } = useSelector(state => state.icp);
   const { assetsLoading, usingBiometrics } = useSelector(state => state.user);
@@ -33,11 +32,11 @@ function Login() {
   }, []);
 
   useEffect(() => {
-    if (usingBiometrics) {
+    if (usingBiometrics && !isManualLock) {
       unlockUsingBiometrics();
     }
     dispatch(setAssetsLoading(false));
-  }, [usingBiometrics]);
+  }, [usingBiometrics, isManualLock]);
 
   const clearState = () => {
     setPassword('');
@@ -92,7 +91,7 @@ function Login() {
           <Text style={styles.title}>Unlock Plug</Text>
           <StatusBar barStyle="light-content" />
           <PasswordInput
-            autoFocus
+            autoFocus={!isManualLock}
             error={error}
             disabled={disableInput}
             password={password}
@@ -107,10 +106,16 @@ function Login() {
             buttonStyle={styles.buttonMargin}
           />
           <Button
+            iconName="faceIdIcon"
+            text="Sign in with biometrics"
+            onPress={unlockUsingBiometrics}
+            iconStyle={styles.biometricsIcon}
+            buttonStyle={[styles.buttonMargin, styles.biometricsButton]}
+          />
+          <Button
             iconName="arrowRight"
             text="More Options"
             onPress={handleGoToWelcome}
-            disabled={assetsLoading}
             iconStyle={styles.moreOptionsIcon}
             buttonStyle={[styles.buttonMargin, styles.moreOptionsButton]}
           />

@@ -24,6 +24,10 @@ function Welcome() {
     navigation.navigate(Routes.LOGIN_SCREEN);
   };
 
+  const title = isInitialized ? 'Choose an option' : 'Welcome to Plug';
+  const importTitle = `Import${isInitialized ? ' New ' : ' '}Wallet`;
+  const createTitle = `Create${isInitialized ? ' New ' : ' '}Wallet`;
+
   return (
     <Container>
       {isInitialized && (
@@ -33,15 +37,15 @@ function Welcome() {
       )}
       <View style={styles.container}>
         <Image source={Plug} style={styles.plugIcon} />
-        <Text style={styles.title}>Welcome to Plug</Text>
+        <Text style={styles.title}>{title}</Text>
         <RainbowButton
           buttonStyle={[styles.componentMargin, styles.buttonStyling]}
-          text="Create Wallet"
+          text={createTitle}
           onPress={onPress('create')}
         />
         <Button
           buttonStyle={[styles.buttonMargin, styles.buttonStyling]}
-          text="Import Wallet"
+          text={importTitle}
           onPress={onPress('import')}
         />
       </View>

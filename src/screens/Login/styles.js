@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { pixelRatioScale } from '../../constants/platform';
+import { pixelRatioScale, refRatioScale } from '../../constants/platform';
 import { Colors } from '../../constants/theme';
 
 export default StyleSheet.create({
@@ -42,8 +42,19 @@ export default StyleSheet.create({
   moreOptionsButton: {
     backgroundColor: null,
     flexDirection: 'row',
+    opacity: 0.5,
+    alignSelf: 'center',
+    position: 'absolute',
+    bottom: -refRatioScale(100),
   },
   moreOptionsIcon: {
     marginLeft: 11,
+  },
+  biometricsButton: {
+    backgroundColor: null,
+    flexDirection: 'row-reverse',
+  },
+  biometricsIcon: {
+    marginRight: 11,
   },
 });

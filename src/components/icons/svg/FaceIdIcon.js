@@ -2,7 +2,7 @@ import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 
 const FaceIdIcon = ({ color = 'white', ...props }) => (
-  <Svg width="19" height="19" viewBox="0 0 19 19" {...props}>
+  <Svg width="24" height="24" viewBox="0 0 19 19" {...props}>
     <Path
       d="M0.977143 5.21143V3.09429C0.977143 1.8984 1.8984 0.977143 3.09429 0.977143H5.21143C5.48126 0.977143 5.7 0.758402 5.7 0.488571C5.7 0.218741 5.48126 0 5.21143 0H3.09429C1.35874 0 0 1.35874 0 3.09429V5.21143C0 5.48126 0.218741 5.7 0.488571 5.7C0.758402 5.7 0.977143 5.48126 0.977143 5.21143Z"
       fill={color}
