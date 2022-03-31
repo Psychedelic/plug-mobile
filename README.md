@@ -61,6 +61,20 @@ yarn install
 cd ios && pod install && cd .. # install pods for iOS
 ```
 
+- Create a file called `react-native-config.xcconfig` inside `ios` folder and paste the following code :
+
+```swift
+//
+//  react-native-config.xcconfig
+//  Plug
+//
+//  Created by Matias Grote on 08/03/2022.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+```
+
 ### iOS
 
 - Install the iOS dependencies
