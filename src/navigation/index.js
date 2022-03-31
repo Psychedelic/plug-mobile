@@ -20,8 +20,10 @@ import Routes from './Routes';
 const Stack = createStackNavigator();
 
 const Navigator = ({ routingInstrumentation }) => {
-  const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
   const dispatch = useDispatch();
+  const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
+  const routeName = navigationRef?.current?.getCurrentRoute().name;
+  const isLogin = routeName !== Routes.LOGIN_SCREEN;
   let timeoutId = null;
 
   const handleLockState = () => {
@@ -42,7 +44,7 @@ const Navigator = ({ routingInstrumentation }) => {
   };
 
   useEffect(() => {
-    if (!isUnlocked && isInitialized) {
+    if (!isUnlocked && isInitialized && !isLogin) {
       navigationRef?.navigate(Routes.LOGIN_SCREEN);
     }
   }, [isUnlocked]);
