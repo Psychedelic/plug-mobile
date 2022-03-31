@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text } from 'react-native';
+
+import ConnectionError from '../../../screens/ConnectionError';
 
 class ErrorBoundary extends React.Component {
   state = { hasError: null };
@@ -15,7 +16,7 @@ class ErrorBoundary extends React.Component {
   logErrorToServices = console.log;
   render() {
     if (this.state.hasError) {
-      return <Text>Oops</Text>;
+      return <ConnectionError />;
     }
     return this.props.children;
   }

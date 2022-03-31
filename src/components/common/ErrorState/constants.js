@@ -16,7 +16,7 @@ export const getErrorStateData = type =>
       emoji: '📡',
       title: 'Internet Connection Error',
       description:
-        'We are unable to surface your account info due to an internet connection.',
+        'We are unable to surface your account info due to an internet connection error.',
       buttonTitle: 'Retry Connection',
     },
   }[type] || null);

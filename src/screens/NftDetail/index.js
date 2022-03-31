@@ -17,7 +17,8 @@ import Send from '../Send';
 const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
   const isCapCrowns = selectedNFT?.collection === 'CAP Crowns';
   const [type, setType] = useState(null);
-  const selectedCollection = useSelector(state => state.user.collections).find(
+  const userCollection = useSelector(state => state.user.collections) || [];
+  const selectedCollection = userCollection.find(
     collection => collection.name === selectedNFT?.collection,
   );
 
