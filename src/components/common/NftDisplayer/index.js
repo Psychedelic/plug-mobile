@@ -3,7 +3,6 @@ import { ActivityIndicator } from 'react-native';
 
 import ImageDisplayer from './components/ImageDisplayer';
 import VideoDisplayer from './components/VideoDisplayer';
-import HTMLDisplayer from './components/HTMLDisplayer';
 import styles from './styles';
 
 const NftDisplayer = ({ url, style, type, isDetailView, isSend }) => {
@@ -21,14 +20,6 @@ const NftDisplayer = ({ url, style, type, isDetailView, isSend }) => {
         style={styles.image}
         hideSpinner={hideSpinner}
         isDetailView={isDetailView}
-        isSendView={isSend}
-      />
-    ) : type?.includes('html') ? (
-      <HTMLDisplayer
-        url={url}
-        style={style}
-        loading={loading}
-        hideSpinner={hideSpinner}
         isSendView={isSend}
       />
     ) : (

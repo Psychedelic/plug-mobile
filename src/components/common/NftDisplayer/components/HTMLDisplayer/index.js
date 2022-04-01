@@ -4,7 +4,7 @@ import React, { useRef } from 'react';
 
 import sharedStyles from '../../styles';
 
-function HTMLDisplayer({ loading, hideSpinner, url, style, isSendView }) {
+function HTMLDisplayer({ loading, hideSpinner, url, style, isSendView, type }) {
   const webViewRef = useRef(null);
 
   return (
@@ -12,8 +12,22 @@ function HTMLDisplayer({ loading, hideSpinner, url, style, isSendView }) {
       <WebView
         onLoad={hideSpinner}
         ref={webViewRef}
-        source={{ uri: url }}
-        style={sharedStyles.webView}
+        source={
+          type?.includes('html')
+            ? {
+                uri: url,
+              }
+            : {
+                html: `
+            <head>
+              <meta content="width=width, initial-scale=1, maximum-scale=1" name="viewport"></meta>
+            </head>
+            <body style="background-image: url('${url}'); background-size:cover;"></body>
+          `,
+              }
+        }
+        scrollEnabled={false}
+        style={isSendView ? sharedStyles.webViewSend : sharedStyles.webView}
       />
       {loading && <ActivityIndicator style={sharedStyles.activityIndicator} />}
     </View>

@@ -6,6 +6,7 @@ import { StyleSheet } from 'react-native';
 import React from 'react';
 
 import sharedStyles from '../../styles';
+import HTMLDisplayer from '../../components/HTMLDisplayer';
 
 function ImageDisplayer({ style, type, url, isSendView }) {
   const imageStyle = isSendView
@@ -24,8 +25,8 @@ function ImageDisplayer({ style, type, url, isSendView }) {
           }}
         />
       }>
-      {type?.includes('svg') ? (
-        <SvgCssUri {...imageStyle} uri={url} />
+      {type?.includes('svg') || type?.includes('html') ? (
+        <HTMLDisplayer url={url} style={style} isSendView type={type} />
       ) : (
         <Image
           resizeMode="contain"
