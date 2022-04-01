@@ -23,7 +23,7 @@ const Navigator = ({ routingInstrumentation }) => {
   const dispatch = useDispatch();
   const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
   const routeName = navigationRef?.current?.getCurrentRoute().name;
-  const isLogin = routeName !== Routes.LOGIN_SCREEN;
+  const isLogin = routeName === Routes.LOGIN_SCREEN;
   let timeoutId = null;
 
   const handleLockState = () => {
