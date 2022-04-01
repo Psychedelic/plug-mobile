@@ -288,8 +288,7 @@ export const keyringSlice = createSlice({
       state.isInitialized = true;
     },
     [setCurrentPrincipal.fulfilled]: (state, action) => {
-      const { wallet } = action.payload;
-      state.currentWallet = wallet;
+      state.currentWallet = action.payload?.wallet || {};
     },
   },
 });
