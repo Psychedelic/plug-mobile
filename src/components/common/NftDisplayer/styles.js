@@ -1,0 +1,71 @@
+import { StyleSheet } from 'react-native';
+
+import { WINDOW_WIDTH } from '../../../constants/platform';
+
+const videoDetailSize = WINDOW_WIDTH - 40;
+const viewSendSize = 54;
+
+const itemSize = WINDOW_WIDTH / 2 - 40;
+
+const commonStyle = {
+  borderRadius: 20,
+  alignSelf: 'center',
+};
+
+const commonDetailContainer = {
+  height: videoDetailSize,
+  width: videoDetailSize,
+};
+
+const commonSendContainer = {
+  height: viewSendSize,
+  width: viewSendSize,
+};
+
+const commonCotainer = {
+  ...commonStyle,
+  width: itemSize,
+  height: itemSize,
+};
+
+export default StyleSheet.create({
+  image: {
+    ...commonStyle,
+  },
+  container: {
+    ...commonCotainer,
+  },
+  containerDetail: {
+    ...commonDetailContainer,
+  },
+  video: {
+    ...commonCotainer,
+  },
+  videoDetail: {
+    ...commonDetailContainer,
+  },
+  activityIndicator: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+  },
+  sendActivityIndicator: {
+    ...commonSendContainer,
+  },
+  webView: {
+    ...commonStyle,
+    flex: 1,
+  },
+  webViewSend: {
+    borderRadius: 10,
+  },
+  containerSend: {
+    ...commonSendContainer,
+  },
+  videoSend: {
+    ...commonStyle,
+    ...commonSendContainer,
+  },
+});
