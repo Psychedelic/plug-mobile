@@ -28,6 +28,11 @@ const commonCotainer = {
   height: itemSize,
 };
 
+const commonWebViewStyles = {
+  backgroundColor: 'transparent',
+  flex: 0,
+};
+
 export default StyleSheet.create({
   image: {
     ...commonStyle,
@@ -55,11 +60,13 @@ export default StyleSheet.create({
     ...commonSendContainer,
   },
   webView: {
-    ...commonStyle,
-    flex: 1,
+    ...commonWebViewStyles,
+    ...commonCotainer,
   },
   webViewSend: {
-    borderRadius: 10,
+    ...commonWebViewStyles,
+    height: '100%',
+    width: '100%',
   },
   containerSend: {
     ...commonSendContainer,
