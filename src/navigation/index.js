@@ -29,7 +29,6 @@ const Navigator = ({ routingInstrumentation }) => {
   const handleLockState = () => {
     dispatch(setUnlocked(false));
     timeoutId = null;
-    navigationRef.navigate(Routes.LOGIN_SCREEN);
   };
 
   const handleAppStateChange = nextAppState => {
@@ -45,9 +44,12 @@ const Navigator = ({ routingInstrumentation }) => {
 
   useEffect(() => {
     if (!isUnlocked && isInitialized && !isLogin) {
-      navigationRef?.navigate(Routes.LOGIN_SCREEN);
+      navigationRef?.current.reset({
+        index: 1,
+        routes: [{ name: Routes.LOGIN_SCREEN, params: { manualLock: true } }],
+      });
     }
-  }, [isUnlocked]);
+  }, [isUnlocked, isInitialized, isLogin]);
 
   useEffect(() => {
     const subscription = AppState.addEventListener(
