@@ -1142,10 +1142,10 @@
     cross-fetch "^3.1.4"
     crypto-js "^4.1.1"
 
-"@psychedelic/plug-mobile-controller@0.2.7":
-  version "0.2.7"
-  resolved "https://npm.pkg.github.com/download/@psychedelic/plug-mobile-controller/0.2.7/5df374aac89bc6ae1a3913a062aae2b5220deb62a8e634f70697d519f9a623c5#12f5f73bf08a5ef767fcb42582f0a6c0f0fdb9d3"
-  integrity sha512-JKHpLP0LazCLKcZcEJKL5PkyNbScIOV4dyax6FRG8Qr2rz0sHadgpsAk6i7w76F2y4jMrxtic6GfZYDZ+nEw6A==
+"@psychedelic/plug-mobile-controller@0.2.8":
+  version "0.2.8"
+  resolved "https://npm.pkg.github.com/download/@psychedelic/plug-mobile-controller/0.2.8/7fead5f66dcd4b03e5a9bcce14d22ceba16cea065f860332a3ec56e89d016042#4f33729da869fd418e96c20b660f4b1a554be695"
+  integrity sha512-h3PGTsEZoqjoU5tHAOwiyH0t2xRtgw6oKzBbp6q8fn7AUXVn/KbP/F74zf8jZZs5OK5l6ACra0outUT8NvPINQ==
   dependencies:
     "@dfinity/agent" "0.9.3"
     "@dfinity/candid" "0.9.3"
@@ -1161,13 +1161,13 @@
     buffer-crc32 "^0.2.13"
     create-hmac "^1.1.7"
     cross-fetch "^3.1.4"
-    crypto-js "^4.0.0"
     ed25519-hd-key "^1.2.0"
     extensionizer "^1.0.1"
     hdkey "^2.0.1"
     js-sha256 "^0.9.0"
     json-bigint "^1.0.0"
     random-color "^1.0.1"
+    react-native-crypto-js "^1.0.0"
     reflect-metadata "^0.1.13"
     secp256k1 "^4.0.2"
     text-encoding "^0.7.0"
@@ -3318,7 +3318,7 @@ crypto-browserify@^3.12.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
-crypto-js@^4.0.0, crypto-js@^4.1.1:
+crypto-js@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.1.1.tgz#9e485bcf03521041bd85844786b83fb7619736cf"
   integrity sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==

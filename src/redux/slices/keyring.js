@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import PlugController from '@psychedelic/plug-mobile-controller';
-import RNCryptoJS from 'react-native-crypto-js';
 import { fetch } from 'react-native-fetch-api';
 
 import { getPrivateAssetsAndTransactions } from '../../utils/keyringUtils';
@@ -18,11 +17,7 @@ import {
 } from './user';
 
 export const initKeyring = createAsyncThunk('keyring/init', async () => {
-  let keyring = new PlugController.PlugKeyRing(
-    keyringStorage,
-    RNCryptoJS,
-    fetch,
-  );
+  let keyring = new PlugController.PlugKeyRing(keyringStorage, fetch);
   await keyring.init();
   if (keyring?.isUnlocked) {
     const state = await keyring.getState();
