@@ -146,11 +146,9 @@ export const privateGetNFTs = async (refresh, state, dispatch) => {
     dispatch(setCollectionsError(false));
     const { instance } = state.keyring;
     const response = await instance?.getState();
-    const { wallets, currentWalletId } = response || {};
-    let collections = wallets?.[currentWalletId]?.collections || [];
-    if (!collections.length) {
-      collections = await instance.getNFTs(currentWalletId, refresh);
-    }
+    const { currentWalletId } = response || {};
+    let collections = [];
+    collections = await instance.getNFTs(currentWalletId, refresh);
     return (collections || [])?.map(collection =>
       recursiveParseBigint(collection),
     );
