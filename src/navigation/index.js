@@ -22,8 +22,6 @@ const Stack = createStackNavigator();
 const Navigator = ({ routingInstrumentation }) => {
   const dispatch = useDispatch();
   const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
-  const routeName = navigationRef?.current?.getCurrentRoute().name;
-  const isLogin = routeName === Routes.LOGIN_SCREEN;
   let timeoutId = null;
 
   const handleLockState = () => {
@@ -41,15 +39,6 @@ const Navigator = ({ routingInstrumentation }) => {
       timeoutId = null;
     }
   };
-
-  useEffect(() => {
-    if (!isUnlocked && isInitialized && !isLogin) {
-      navigationRef?.current.reset({
-        index: 1,
-        routes: [{ name: Routes.LOGIN_SCREEN, params: { manualLock: true } }],
-      });
-    }
-  }, [isUnlocked, isInitialized, isLogin]);
 
   useEffect(() => {
     const subscription = AppState.addEventListener(

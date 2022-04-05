@@ -33,19 +33,21 @@ export const createWallet = createAsyncThunk(
   async ({ password, icpPrice }, { getState, dispatch }) => {
     // Reset previous state:
     resetStores(dispatch);
+    try {
+      // Create Wallet and unlock
+      const state = getState();
+      const instance = getState().keyring?.instance;
+      const mnemonic = await generateMnemonic();
+      const response = await instance?.importMnemonic({ password, mnemonic });
+      const { wallet } = response || {};
+      const unlocked = await instance?.unlock(password);
 
-    // Create Wallet and unlock
-    const state = getState();
-    const { instance } = getState().keyring;
-    const mnemonic = await generateMnemonic();
-    const response = await instance?.importMnemonic({ password, mnemonic });
-    const { wallet } = response || {};
-    await instance?.unlock(password);
-
-    // Get new data:
-    getNewAccountData(dispatch, icpPrice, state);
-
-    return { wallet, mnemonic };
+      // Get new data:
+      getNewAccountData(dispatch, icpPrice, state);
+      return { wallet, mnemonic, unlocked };
+    } catch (e) {
+      console.log('Error at createWallet: ', e);
+    }
   },
 );
 
@@ -54,6 +56,7 @@ export const importWallet = createAsyncThunk(
   async (params, { getState, dispatch }) => {
     const { icpPrice, password, mnemonic, onError, onSuccess } = params;
     let wallet = {};
+    let unlocked = false;
     // Reset previous state:
     resetStores(dispatch);
     try {
@@ -66,8 +69,8 @@ export const importWallet = createAsyncThunk(
         mnemonic,
       });
       wallet = response?.wallet;
-      await instance?.unlock(params.password);
-
+      unlocked = await instance?.unlock(params.password);
+      dispatch(setUnlocked(unlocked));
       // Get new data:
       getNewAccountData(dispatch, icpPrice, state);
       onSuccess?.();
@@ -271,10 +274,11 @@ export const keyringSlice = createSlice({
       state.isUnlocked = unlocked;
     },
     [createWallet.fulfilled]: (state, action) => {
-      const { wallet } = action.payload;
+      const { wallet, unlocked } = action.payload;
       state.currentWallet = wallet;
       state.wallets = [wallet];
       state.isInitialized = true;
+      state.isUnlocked = unlocked;
     },
     [importWallet.fulfilled]: (state, action) => {
       const { wallet } = action.payload;
