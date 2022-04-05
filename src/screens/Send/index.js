@@ -224,7 +224,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
   useEffect(() => {
     if (selectedToken) {
       const price =
-        { ICP: icpPrice, XTC: USD_PER_TC, WTC: USD_PER_TC }[
+        { ICP: icpPrice, XTC: USD_PER_TC, WTC: USD_PER_TC, WICP: icpPrice }[
           selectedToken?.symbol
         ] || 1;
       setSelectedTokenPrice(price);
