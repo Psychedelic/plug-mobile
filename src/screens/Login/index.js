@@ -19,9 +19,11 @@ import styles from './styles';
 function Login({ route, navigation }) {
   const dispatch = useDispatch();
   const isManualLock = route?.params?.manualLock || false;
-  const { getPassword, isSensorAvailable } = useKeychain();
+  const { getPassword } = useKeychain();
   const { icpPrice } = useSelector(state => state.icp);
-  const { assetsLoading, usingBiometrics } = useSelector(state => state.user);
+  const { assetsLoading, usingBiometrics, biometricsAvailable } = useSelector(
+    state => state.user,
+  );
 
   const [error, setError] = useState(false);
   const [password, setPassword] = useState('');
@@ -74,8 +76,7 @@ function Login({ route, navigation }) {
   };
 
   const unlockUsingBiometrics = async () => {
-    const isAvailable = await isSensorAvailable();
-    if (isAvailable) {
+    if (biometricsAvailable) {
       const biometrics = await getPassword();
       if (biometrics) {
         await handleSubmit(biometrics);
@@ -105,13 +106,15 @@ function Login({ route, navigation }) {
             disabled={isValidPassword(password)}
             buttonStyle={styles.buttonMargin}
           />
-          <Button
-            iconName="faceIdIcon"
-            text="Sign in with biometrics"
-            onPress={unlockUsingBiometrics}
-            iconStyle={styles.biometricsIcon}
-            buttonStyle={[styles.buttonMargin, styles.biometricsButton]}
-          />
+          {biometricsAvailable && (
+            <Button
+              iconName="faceIdIcon"
+              text="Sign in with biometrics"
+              onPress={unlockUsingBiometrics}
+              iconStyle={styles.biometricsIcon}
+              buttonStyle={[styles.buttonMargin, styles.biometricsButton]}
+            />
+          )}
           <Button
             iconName="arrowRight"
             text="More Options"
