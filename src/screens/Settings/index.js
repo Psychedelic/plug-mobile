@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
 
 import Touchable from '../../components/animations/Touchable';
 import { FontStyles, Colors } from '../../constants/theme';
@@ -14,7 +13,6 @@ import Header from '../../components/common/Header';
 import SettingItem from './components/SettingItem';
 import RevealSeedPhrase from '../RevealSeedPhrase';
 import { version } from '../../../package.json';
-import Routes from '../../navigation/Routes';
 import InfoItem from './components/InfoItem';
 import Modal from '../../components/modal';
 import Icon from '../../components/icons';
@@ -27,7 +25,6 @@ const Settings = () => {
   const revealSeedPhraseRef = useRef(null);
 
   const dispatch = useDispatch();
-  const navigation = useNavigation();
   const { biometricsAvailable } = useSelector(state => state.user);
 
   const infoItems = useInfoItems();
