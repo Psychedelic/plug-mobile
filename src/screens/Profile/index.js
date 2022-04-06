@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { Text, View, ScrollView, RefreshControl } from 'react-native';
+import { Text, View, FlatList, RefreshControl } from 'react-native';
 
 import { ERROR_TYPES } from '../../components/common/ErrorState/constants';
 import ErrorState from '../../components/common/ErrorState';
@@ -9,10 +9,9 @@ import Container from '../../components/common/Container';
 import UserIcon from '../../components/common/UserIcon';
 import Divider from '../../components/common/Divider';
 import Button from '../../components/buttons/Button';
-import ActivityItem from './components/ActivityItem';
-import { getICPPrice } from '../../redux/slices/icp';
-import Header from '../../components/common/Header';
 import { Colors } from '../../constants/theme';
+import ActivityItem from './components/ActivityItem';
+import Header from '../../components/common/Header';
 import Settings from '../Settings';
 import Accounts from '../Accounts';
 import {
@@ -37,6 +36,7 @@ const Profile = () => {
   };
 
   const onRefresh = () => {
+    setRefresing(true);
     dispatch(setTransactionsLoading(true));
     dispatch(getTransactions({ icpPrice }));
   };
@@ -44,6 +44,10 @@ const Profile = () => {
   useEffect(() => {
     setRefresing(transactionsLoading);
   }, [transactionsLoading]);
+
+  const renderTransaction = ({ item }, index) => (
+    <ActivityItem key={index} {...item} />
+  );
 
   return (
     <>
@@ -71,7 +75,10 @@ const Profile = () => {
         <Divider />
         <Text style={styles.title}>Activity</Text>
         {!transactionsError ? (
-          <ScrollView
+          <FlatList
+            data={transactions}
+            renderItem={renderTransaction}
+            keyExtractor={(_, index) => index}
             showsVerticalScrollIndicator={false}
             refreshControl={
               <RefreshControl
@@ -79,21 +86,15 @@ const Profile = () => {
                 onRefresh={onRefresh}
                 tintColor={Colors.White.Primary}
               />
-            }>
-            <View>
-              {transactions?.length > 0 ? (
-                transactions?.map((item, index) => (
-                  <ActivityItem key={index} {...item} />
-                ))
-              ) : (
-                <EmptyState
-                  style={styles.emptyState}
-                  title="You have no activity yet"
-                  text="When you do, they'll show here, where you will see their traits and send them."
-                />
-              )}
-            </View>
-          </ScrollView>
+            }
+            ListEmptyComponent={
+              <EmptyState
+                style={styles.emptyState}
+                title="You have no activity yet"
+                text="When you do, they'll show here, where you will see their traits and send them."
+              />
+            }
+          />
         ) : (
           <ErrorState
             onPress={onRefresh}
