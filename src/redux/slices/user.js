@@ -261,7 +261,7 @@ export const transferNFT = createAsyncThunk(
   },
 );
 
-export const keyringSlice = createSlice({
+export const userSlice = createSlice({
   name: 'user',
   initialState: DEFAULT_STATE,
   reducers: {
@@ -377,6 +377,6 @@ export const {
   removeNFT,
   setTransactionsLoading,
   resetUserState,
-} = keyringSlice.actions;
+} = userSlice.actions;
 
-export default keyringSlice.reducer;
+export default userSlice.reducer;
