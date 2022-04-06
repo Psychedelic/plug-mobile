@@ -21,12 +21,13 @@ function Login({ route, navigation }) {
   const isManualLock = route?.params?.manualLock || false;
   const { getPassword } = useKeychain();
   const { icpPrice } = useSelector(state => state.icp);
-  const { assetsLoading, usingBiometrics, biometricsAvailable } = useSelector(
+  const { usingBiometrics, biometricsAvailable } = useSelector(
     state => state.user,
   );
 
   const [error, setError] = useState(false);
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const [disableInput, setDisableInput] = useState(false);
 
   useEffect(() => {
@@ -52,6 +53,7 @@ function Login({ route, navigation }) {
   };
 
   const handleSubmit = async submittedPassword => {
+    setLoading(true);
     setError(false);
     Keyboard.dismiss();
     setDisableInput(true);
@@ -60,6 +62,7 @@ function Login({ route, navigation }) {
         password: submittedPassword,
         icpPrice,
         onError: () => {
+          setLoading(false);
           dispatch(setAssetsLoading(false));
           setError(true);
           setDisableInput(false);
@@ -69,6 +72,7 @@ function Login({ route, navigation }) {
       .unwrap()
       .then(unlocked => {
         if (unlocked) {
+          setLoading(false);
           navigation.navigate(Routes.SWIPE_LAYOUT);
           clearState();
         }
@@ -102,8 +106,8 @@ function Login({ route, navigation }) {
           <RainbowButton
             text="Submit"
             onPress={() => handleSubmit(password)}
-            loading={assetsLoading}
-            disabled={isValidPassword(password)}
+            loading={loading}
+            disabled={isValidPassword(password) || loading}
             buttonStyle={styles.buttonMargin}
           />
           {biometricsAvailable && (

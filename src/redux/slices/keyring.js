@@ -138,7 +138,7 @@ export const login = createAsyncThunk(
     const { icpPrice, onError } = params;
     const handleError = () => {
       dispatch(setAssetsLoading(false));
-      onError();
+      onError?.();
     };
 
     try {
