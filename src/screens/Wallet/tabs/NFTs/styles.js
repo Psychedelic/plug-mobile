@@ -16,14 +16,7 @@ export default StyleSheet.create({
     paddingHorizontal: 18,
   },
   nftsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
     paddingVertical: 20,
-    flex: 1,
-  },
-  contentContainer: {
-    flexGrow: 1,
-    justifyContent: 'center',
   },
   item: {
     margin: 10,
