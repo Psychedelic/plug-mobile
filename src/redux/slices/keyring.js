@@ -207,14 +207,15 @@ export const setCurrentPrincipal = createAsyncThunk(
       const response = await instance?.getState();
       const { wallets } = response || {};
       const wallet = wallets[walletNumber];
+      dispatch(setCurrentWallet(wallet || {}));
+
+      // We need to update the state to map the transacctions and assets as it should:
       const [transactions, assets] = await getPrivateAssetsAndTransactions(
         icpPrice,
-        state,
+        getState(),
         dispatch,
       );
       dispatch(setAssetsAndTransactions({ assets, transactions }));
-
-      return { wallet };
     } catch (e) {
       console.log('setCurrentPrincipal', e.message);
     }
@@ -285,9 +286,6 @@ export const keyringSlice = createSlice({
       state.wallets = [wallet];
       state.currentWallet = wallet;
       state.isInitialized = true;
-    },
-    [setCurrentPrincipal.fulfilled]: (state, action) => {
-      state.currentWallet = action.payload?.wallet || {};
     },
   },
 });

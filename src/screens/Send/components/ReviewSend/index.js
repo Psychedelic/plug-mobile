@@ -53,10 +53,14 @@ const ReviewSend = ({
   const saveContactRef = useRef(null);
   const [nftType, setNftType] = useState(null);
   const [selectedContact, setSelectedContact] = useState(contact || null);
+  const { icpPrice } = useSelector(state => state.icp);
   const contacts = useSelector(state => state.user.contacts, shallowEqual);
   const isSuccess = transaction?.status === TRANSACTION_STATUS.success;
   const isError = transaction?.status === TRANSACTION_STATUS.error;
-  const transactionFee = getTransactionFee(token?.symbol);
+  const { currentFee, currentUSDFee } = getTransactionFee(
+    token?.symbol,
+    icpPrice,
+  );
 
   const handleSaveContact = () => {
     saveContactRef.current?.open();
@@ -163,11 +167,9 @@ const ReviewSend = ({
         {token && (
           <Row style={styles.row}>
             <Text style={FontStyles.Subtitle3}>
-              {`Total Fee: ${transactionFee} ${
-                token?.symbol
-              } ($${formatSendAmount(
-                transactionFee * tokenPrice,
-                USD_MAX_DECIMALS + 1,
+              {`Total Fee: ${currentFee} ${token?.symbol} ($${formatSendAmount(
+                currentUSDFee,
+                USD_MAX_DECIMALS + 2,
               )})`}
             </Text>
           </Row>

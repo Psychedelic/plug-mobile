@@ -257,7 +257,11 @@ function Send({ modalRef, nft, token, onSuccess }) {
   const availableAmount = useMemo(
     () =>
       formatSendAmount(
-        getAvailableAmount(selectedToken?.amount, selectedToken?.symbol),
+        getAvailableAmount(
+          selectedToken?.amount,
+          selectedToken?.symbol,
+          icpPrice,
+        ),
         ICP_MAX_DECIMALS,
       ),
     [selectedToken],
