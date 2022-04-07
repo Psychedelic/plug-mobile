@@ -24,6 +24,8 @@ const DEFAULT_STATE = {
   collectionsError: false,
   usingBiometrics: false,
   biometricsAvailable: false,
+  scrollOnProfile: false,
+  scrollOnNFTs: false,
 };
 
 export const sendToken = createAsyncThunk(
@@ -288,6 +290,12 @@ export const userSlice = createSlice({
     setAssets: (state, action) => {
       state.assets = action.payload;
     },
+    setScrollOnProfile: (state, action) => {
+      state.scrollOnProfile = action.payload;
+    },
+    setScrollOnNFTs: (state, action) => {
+      state.scrollOnNFTs = action.payload;
+    },
     setAssetsError: (state, action) => {
       state.assetsError = action.payload;
     },
@@ -361,6 +369,8 @@ export const userSlice = createSlice({
 });
 
 export const {
+  setScrollOnNFTs,
+  setScrollOnProfile,
   setTransactionsError,
   setCollectionsError,
   setAssetsError,

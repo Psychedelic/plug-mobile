@@ -1,7 +1,6 @@
-import React, { useState, useRef } from 'react';
+import { RefreshControl, Text, FlatList } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { RefreshControl, Text, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 
 import { ERROR_TYPES } from '../../../../components/common/ErrorState/constants';
 import ErrorState from '../../../../components/common/ErrorState';
@@ -17,12 +16,21 @@ import styles from './styles';
 
 const NFTs = () => {
   const detailRef = useRef(null);
+  const NFTListRef = useRef(null);
   const dispatch = useDispatch();
   const [refreshing, setRefresing] = useState(false);
   const [selectedNft, setSelectedNft] = useState(null);
-  const { collections, collectionsError } = useSelector(state => state.user);
+  const { collections, collectionsError, scrollOnNFTs } = useSelector(
+    state => state.user,
+  );
 
-  const renderNFT = (item, index) => (
+  useEffect(() => {
+    if (scrollOnNFTs) {
+      NFTListRef?.current?.scrollToIndex({ index: 0 });
+    }
+  }, [scrollOnNFTs]);
+
+  const renderNFT = ({ item }, index) => (
     <NftItem key={index} item={item} onOpen={onOpen} />
   );
 
@@ -50,27 +58,30 @@ const NFTs = () => {
         <Text style={styles.title}>NFTs</Text>
         <Divider />
         {!collectionsError ? (
-          <ScrollView
+          <FlatList
             bounces
-            showsVerticalScrollIndicator={false}
+            data={nfts}
+            numColumns={2}
+            ref={NFTListRef}
+            renderItem={renderNFT}
             style={styles.container}
-            contentContainerStyle={styles.contentContainer}
+            keyExtractor={(_, index) => index}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.nftsContainer}
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}
                 onRefresh={onRefresh}
                 tintColor={Colors.White.Primary}
               />
-            }>
-            {nfts?.length > 0 ? (
-              <View style={styles.nftsContainer}>{nfts.map(renderNFT)}</View>
-            ) : (
+            }
+            ListEmptyComponent={
               <EmptyState
                 title="You don't own any NFTs yet"
                 text="When you do, they'll show here, where you will see their traits and send them."
               />
-            )}
-          </ScrollView>
+            }
+          />
         ) : (
           <ErrorState onPress={onRefresh} errorType={ERROR_TYPES.FETCH_ERROR} />
         )}

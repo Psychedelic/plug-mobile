@@ -23,12 +23,15 @@ import styles from './styles';
 const Profile = () => {
   const dispatch = useDispatch();
   const modalRef = useRef(null);
+  const transactionListRef = useRef(null);
   const { currentWallet } = useSelector(state => state.keyring);
   const { icpPrice } = useSelector(state => state.icp);
-  const { transactions, transactionsLoading, transactionsError } = useSelector(
-    state => state.user,
-    shallowEqual,
-  );
+  const {
+    transactions,
+    transactionsLoading,
+    transactionsError,
+    scrollOnProfile,
+  } = useSelector(state => state.user, shallowEqual);
   const [refreshing, setRefresing] = useState(transactionsLoading);
 
   const openAccounts = () => {
@@ -44,6 +47,12 @@ const Profile = () => {
   useEffect(() => {
     setRefresing(transactionsLoading);
   }, [transactionsLoading]);
+
+  useEffect(() => {
+    if (scrollOnProfile) {
+      transactionListRef?.current?.scrollToIndex({ index: 0 });
+    }
+  }, [scrollOnProfile]);
 
   const renderTransaction = ({ item }, index) => (
     <ActivityItem key={index} {...item} />
@@ -76,6 +85,7 @@ const Profile = () => {
         <Text style={styles.title}>Activity</Text>
         {!transactionsError ? (
           <FlatList
+            ref={transactionListRef}
             data={transactions}
             renderItem={renderTransaction}
             keyExtractor={(_, index) => index}
