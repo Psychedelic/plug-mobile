@@ -1,14 +1,26 @@
-import { WebView } from 'react-native-webview';
 import { ActivityIndicator, View } from 'react-native';
+import { WebView } from 'react-native-webview';
 import React, { useRef } from 'react';
 
 import sharedStyles from '../../styles';
 
-function HTMLDisplayer({ loading, hideSpinner, url, style, isSendView, type }) {
+function HTMLDisplayer({
+  loading,
+  hideSpinner,
+  url,
+  style,
+  isSendView,
+  type,
+  isDetailView,
+}) {
   const webViewRef = useRef(null);
 
   const Spinner = () => (
-    <View style={sharedStyles.webViewLoader}>
+    <View
+      style={[
+        sharedStyles.webViewLoader,
+        (isDetailView || isSendView) && sharedStyles.webViewLoaderDetail,
+      ]}>
       <ActivityIndicator size="small" color="white" />
     </View>
   );

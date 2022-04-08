@@ -82,8 +82,11 @@ export default StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-    backgroundColor: Colors.Black.Pure,
+    backgroundColor: Colors.Black.Primary,
     height: '100%',
     width: '100%',
+  },
+  webViewLoaderDetail: {
+    backgroundColor: Colors.Black.Pure,
   },
 });
