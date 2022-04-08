@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { WINDOW_WIDTH } from '../../../constants/platform';
+import { Colors } from '../../../constants/theme';
 
 const videoDetailSize = WINDOW_WIDTH - 40;
 const viewSendSize = 54;
@@ -74,5 +75,15 @@ export default StyleSheet.create({
   videoSend: {
     ...commonStyle,
     ...commonSendContainer,
+  },
+  webViewLoader: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    backgroundColor: Colors.Black.Pure,
+    height: '100%',
+    width: '100%',
   },
 });
