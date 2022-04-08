@@ -1,4 +1,4 @@
-import { View, Text, Image } from 'react-native';
+import { View, Text } from 'react-native';
 import moment from 'moment';
 import React from 'react';
 
@@ -20,26 +20,13 @@ const ActivityItem = ({
   date,
   plug,
   swapData,
-  icon,
   symbol,
-  hash,
   image,
-  name,
   canisterId,
   details,
   canisterInfo,
 }) => {
-  //const isTransaction = ['SEND', 'RECEIVE'].includes(type) && symbol === 'ICP';
-
-  return type === 'PLUG' ? (
-    <View style={styles.container}>
-      <Image style={styles.image} source={icon} />
-      <View style={styles.leftContainer}>
-        <Text style={styles.pluggedTitle}>{`Plugged into ${name}`}</Text>
-        <Text>{moment(Date.parse(date)).format('MMM Do')}</Text>
-      </View>
-    </View>
-  ) : (
+  return (
     <View style={styles.container}>
       <ActivityIcon image={plug?.image || image} type={type} />
       <View style={styles.leftContainer}>
