@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import { ActivityIndicator } from 'react-native';
+import React, { useState } from 'react';
 
 import ImageDisplayer from './components/ImageDisplayer';
 import VideoDisplayer from './components/VideoDisplayer';
@@ -23,7 +23,13 @@ const NftDisplayer = ({ url, style, type, isDetailView, isSend }) => {
         isSendView={isSend}
       />
     ) : (
-      <ImageDisplayer style={style} type={type} url={url} isSendView={isSend} />
+      <ImageDisplayer
+        style={style}
+        type={type}
+        url={url}
+        isSendView={isSend}
+        isDetailView={isDetailView}
+      />
     )
   ) : (
     <ActivityIndicator
