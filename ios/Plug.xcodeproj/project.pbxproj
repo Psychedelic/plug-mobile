@@ -554,7 +554,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = DZVNACPGLK;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Plug/Info.plist;
@@ -568,7 +568,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/cargo/target/universal/release",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.1.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -589,7 +589,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 66;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = DZVNACPGLK;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -607,7 +607,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/rust_lib/cargo/target/universal/release",
 				);
-				MARKETING_VERSION = 0.1.0;
+				MARKETING_VERSION = 0.1.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
