@@ -31,7 +31,6 @@ export const getTransactionFee = (tokenSymbol, icpPrice) => {
 
   switch (tokenSymbol) {
     case 'ICP':
-    case 'WICP':
       currentFee = DEFAULT_FEE;
       currentUSDFee = DEFAULT_FEE * icpPrice;
       break;
