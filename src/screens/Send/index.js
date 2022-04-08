@@ -224,7 +224,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
   useEffect(() => {
     if (selectedToken) {
       const price =
-        { ICP: icpPrice, XTC: USD_PER_TC, WTC: USD_PER_TC }[
+        { ICP: icpPrice, XTC: USD_PER_TC, WTC: USD_PER_TC, WICP: icpPrice }[
           selectedToken?.symbol
         ] || 1;
       setSelectedTokenPrice(price);
@@ -257,7 +257,11 @@ function Send({ modalRef, nft, token, onSuccess }) {
   const availableAmount = useMemo(
     () =>
       formatSendAmount(
-        getAvailableAmount(selectedToken?.amount, selectedToken?.symbol),
+        getAvailableAmount(
+          selectedToken?.amount,
+          selectedToken?.symbol,
+          icpPrice,
+        ),
         ICP_MAX_DECIMALS,
       ),
     [selectedToken],

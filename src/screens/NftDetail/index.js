@@ -42,7 +42,11 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
 
   return (
     <>
-      <Modal modalRef={modalRef} onClose={handleClose} {...props}>
+      <Modal
+        scrollViewProps={{ showsVerticalScrollIndicator: false }}
+        modalRef={modalRef}
+        onClose={handleClose}
+        {...props}>
         <Header
           center={
             <Text style={FontStyles.Subtitle2}>{`#${selectedNFT?.index}`}</Text>

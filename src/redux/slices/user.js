@@ -24,6 +24,8 @@ const DEFAULT_STATE = {
   collectionsError: false,
   usingBiometrics: false,
   biometricsAvailable: false,
+  scrollOnProfile: false,
+  scrollOnNFTs: false,
 };
 
 export const sendToken = createAsyncThunk(
@@ -173,20 +175,6 @@ export const privateGetTransactions = async (params, state, dispatch) => {
 
     const mapTransaction = trx => {
       const { principal, accountId } = state.keyring?.currentWallet;
-      const asset = formatAssetBySymbol(
-        trx?.details?.amount,
-        trx?.details?.currency?.symbol,
-        icpPrice,
-      );
-      const isOwnTx = [principal, accountId].includes(trx?.caller);
-
-      const getType = () => {
-        const { type } = trx;
-        if (type.toUpperCase() === 'TRANSFER') {
-          return isOwnTx ? 'SEND' : 'RECEIVE';
-        }
-        return type.toUpperCase();
-      };
 
       const getSymbol = () => {
         if ('tokenRegistryInfo' in trx.details) {
@@ -196,6 +184,18 @@ export const privateGetTransactions = async (params, state, dispatch) => {
           return 'NFT';
         }
         return trx?.details?.currency?.symbol ?? '';
+      };
+
+      const symbol = getSymbol();
+      const asset = formatAssetBySymbol(trx?.details?.amount, symbol, icpPrice);
+      const isOwnTx = [principal, accountId].includes(trx?.caller);
+
+      const getType = () => {
+        const { type } = trx;
+        if (type.toUpperCase() === 'TRANSFER') {
+          return isOwnTx ? 'SEND' : 'RECEIVE';
+        }
+        return type.toUpperCase();
       };
 
       const canisterInfo =
@@ -208,8 +208,8 @@ export const privateGetTransactions = async (params, state, dispatch) => {
         from: trx?.details?.from || trx?.caller,
         date: new Date(trx?.timestamp),
         status: ACTIVITY_STATUS[trx?.details?.status],
-        image: TOKEN_IMAGES[getSymbol()] || canisterInfo?.icon || '',
-        symbol: getSymbol(),
+        image: TOKEN_IMAGES[symbol] || canisterInfo?.icon || '',
+        symbol,
         canisterId: trx?.details?.canisterId,
         plug: null,
         canisterInfo,
@@ -263,7 +263,7 @@ export const transferNFT = createAsyncThunk(
   },
 );
 
-export const keyringSlice = createSlice({
+export const userSlice = createSlice({
   name: 'user',
   initialState: DEFAULT_STATE,
   reducers: {
@@ -289,6 +289,12 @@ export const keyringSlice = createSlice({
     },
     setAssets: (state, action) => {
       state.assets = action.payload;
+    },
+    setScrollOnProfile: (state, action) => {
+      state.scrollOnProfile = action.payload;
+    },
+    setScrollOnNFTs: (state, action) => {
+      state.scrollOnNFTs = action.payload;
     },
     setAssetsError: (state, action) => {
       state.assetsError = action.payload;
@@ -363,6 +369,8 @@ export const keyringSlice = createSlice({
 });
 
 export const {
+  setScrollOnNFTs,
+  setScrollOnProfile,
   setTransactionsError,
   setCollectionsError,
   setAssetsError,
@@ -379,6 +387,6 @@ export const {
   removeNFT,
   setTransactionsLoading,
   resetUserState,
-} = keyringSlice.actions;
+} = userSlice.actions;
 
-export default keyringSlice.reducer;
+export default userSlice.reducer;

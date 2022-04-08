@@ -7,6 +7,12 @@ import sharedStyles from '../../styles';
 function HTMLDisplayer({ loading, hideSpinner, url, style, isSendView, type }) {
   const webViewRef = useRef(null);
 
+  const Spinner = () => (
+    <View style={sharedStyles.webViewLoader}>
+      <ActivityIndicator size="small" color="white" />
+    </View>
+  );
+
   return (
     <View style={[sharedStyles.image, style]}>
       <WebView
@@ -27,6 +33,8 @@ function HTMLDisplayer({ loading, hideSpinner, url, style, isSendView, type }) {
               }
         }
         scrollEnabled={false}
+        startInLoadingState={true}
+        renderLoading={Spinner}
         style={isSendView ? sharedStyles.webViewSend : sharedStyles.webView}
       />
       {loading && <ActivityIndicator style={sharedStyles.activityIndicator} />}

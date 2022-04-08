@@ -19,12 +19,15 @@ import styles from './styles';
 function Login({ route, navigation }) {
   const dispatch = useDispatch();
   const isManualLock = route?.params?.manualLock || false;
-  const { getPassword, isSensorAvailable } = useKeychain();
+  const { getPassword } = useKeychain();
   const { icpPrice } = useSelector(state => state.icp);
-  const { assetsLoading, usingBiometrics } = useSelector(state => state.user);
+  const { usingBiometrics, biometricsAvailable } = useSelector(
+    state => state.user,
+  );
 
   const [error, setError] = useState(false);
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const [disableInput, setDisableInput] = useState(false);
 
   useEffect(() => {
@@ -50,6 +53,7 @@ function Login({ route, navigation }) {
   };
 
   const handleSubmit = async submittedPassword => {
+    setLoading(true);
     setError(false);
     Keyboard.dismiss();
     setDisableInput(true);
@@ -58,6 +62,7 @@ function Login({ route, navigation }) {
         password: submittedPassword,
         icpPrice,
         onError: () => {
+          setLoading(false);
           dispatch(setAssetsLoading(false));
           setError(true);
           setDisableInput(false);
@@ -67,6 +72,7 @@ function Login({ route, navigation }) {
       .unwrap()
       .then(unlocked => {
         if (unlocked) {
+          setLoading(false);
           navigation.navigate(Routes.SWIPE_LAYOUT);
           clearState();
         }
@@ -74,8 +80,7 @@ function Login({ route, navigation }) {
   };
 
   const unlockUsingBiometrics = async () => {
-    const isAvailable = await isSensorAvailable();
-    if (isAvailable) {
+    if (biometricsAvailable) {
       const biometrics = await getPassword();
       if (biometrics) {
         await handleSubmit(biometrics);
@@ -101,17 +106,19 @@ function Login({ route, navigation }) {
           <RainbowButton
             text="Submit"
             onPress={() => handleSubmit(password)}
-            loading={assetsLoading}
-            disabled={isValidPassword(password)}
+            loading={loading}
+            disabled={isValidPassword(password) || loading}
             buttonStyle={styles.buttonMargin}
           />
-          <Button
-            iconName="faceIdIcon"
-            text="Sign in with biometrics"
-            onPress={unlockUsingBiometrics}
-            iconStyle={styles.biometricsIcon}
-            buttonStyle={[styles.buttonMargin, styles.biometricsButton]}
-          />
+          {biometricsAvailable && usingBiometrics && (
+            <Button
+              iconName="faceIdIcon"
+              text="Sign in with biometrics"
+              onPress={unlockUsingBiometrics}
+              iconStyle={styles.biometricsIcon}
+              buttonStyle={[styles.buttonMargin, styles.biometricsButton]}
+            />
+          )}
           <Button
             iconName="arrowRight"
             text="More Options"
