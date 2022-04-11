@@ -64,7 +64,6 @@ if (__DEV__ && Reactotron.setReduxStore) {
 export const keyringStorage = {
   get: async key => {
     const state = {};
-    // await AsyncStorage.clear();
     if (key) {
       return AsyncStorage.getItem(key).then(value => JSON.parse(`${value}`));
     } else {
