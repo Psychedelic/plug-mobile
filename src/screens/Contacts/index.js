@@ -1,5 +1,6 @@
 import React, { Fragment, useRef, useState } from 'react';
 import { Text, View, ActionSheetIOS } from 'react-native';
+import Clipboard from '@react-native-community/clipboard';
 
 import ContactItem from '../../components/common/ContactItem';
 import Touchable from '../../components/animations/Touchable';
@@ -35,9 +36,9 @@ const Contacts = ({ modalRef }) => {
   const onLongPress = contact => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: ['Cancel', 'Edit Contact', 'Delete Contact'],
+        options: ['Cancel', 'Edit Contact', 'Copy Address', 'Delete Contact'],
         cancelButtonIndex: 0,
-        destructiveButtonIndex: 2,
+        destructiveButtonIndex: 3,
       },
       buttonIndex => {
         switch (buttonIndex) {
@@ -45,6 +46,9 @@ const Contacts = ({ modalRef }) => {
             onEditContact(contact);
             break;
           case 2:
+            Clipboard.setString(contact.id);
+            break;
+          case 3:
             onDelete(contact);
             break;
         }
@@ -87,6 +91,7 @@ const Contacts = ({ modalRef }) => {
       <AddEditContact
         modalRef={addEditContactRef}
         contact={selectedContact}
+        contactsRef={modalRef}
         onClose={() => modalRef.current?.open()}
       />
     </>
