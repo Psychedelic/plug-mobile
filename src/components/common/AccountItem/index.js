@@ -1,12 +1,14 @@
-import React from 'react';
 import { View, Text } from 'react-native';
-import { FontStyles } from '../../../constants/theme';
-import UserIcon from '../UserIcon';
-import shortAddress from '../../../helpers/short-address';
+import React from 'react';
+
+import Touchable from '@components/animations/Touchable';
+import animationScales from '@utils/animationScales';
+import UserIcon from '@commonComponents/UserIcon';
+import shortAddress from '@helpers/short-address';
+import { FontStyles } from '@constants/theme';
+import Icon from '@components/icons';
+
 import styles from './styles';
-import Touchable from '../../animations/Touchable';
-import animationScales from '../../../utils/animationScales';
-import Icon from '../../icons';
 
 const AccountItem = ({ account, onPress, onMenu, ...props }) => {
   const { icon, name, principal } = account || {};
@@ -23,7 +25,6 @@ const AccountItem = ({ account, onPress, onMenu, ...props }) => {
             <Text style={FontStyles.Normal}>{name}</Text>
             <Text style={FontStyles.NormalGray}>{shortAddress(principal)}</Text>
           </View>
-
           <View style={styles.threeDots}>
             <Touchable onPress={onMenu} scale={animationScales.large}>
               <Icon name="threeDots" />

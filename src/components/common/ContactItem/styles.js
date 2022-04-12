@@ -11,4 +11,8 @@ export default StyleSheet.create({
     justifyContent: 'space-evenly',
     marginLeft: 10,
   },
+  threeDots: {
+    marginLeft: 'auto',
+    justifyContent: 'center',
+  },
 });
