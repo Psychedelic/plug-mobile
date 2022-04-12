@@ -177,10 +177,10 @@ export const privateGetTransactions = async (params, state, dispatch) => {
       const { principal, accountId } = state.keyring?.currentWallet;
 
       const getSymbol = () => {
-        if ('tokenRegistryInfo' in trx.details) {
-          return trx.details.tokenRegistryInfo.symbol;
+        if ('tokenRegistryInfo' in trx?.details) {
+          return trx?.details.tokenRegistryInfo.symbol;
         }
-        if ('nftRegistryInfo' in trx.details) {
+        if ('nftRegistryInfo' in trx?.details) {
           return 'NFT';
         }
         return trx?.details?.currency?.symbol ?? '';
@@ -191,7 +191,7 @@ export const privateGetTransactions = async (params, state, dispatch) => {
       const isOwnTx = [principal, accountId].includes(trx?.caller);
 
       const getType = () => {
-        const { type } = trx;
+        const type = trx?.type;
         if (type.toUpperCase() === 'TRANSFER') {
           return isOwnTx ? 'SEND' : 'RECEIVE';
         }
