@@ -122,6 +122,7 @@ function Login({ route, navigation }) {
           <Button
             iconName="arrowRight"
             text="More Options"
+            onLongPress={handleGoToWelcome}
             onPress={handleGoToWelcome}
             iconStyle={styles.moreOptionsIcon}
             buttonStyle={[styles.buttonMargin, styles.moreOptionsButton]}
