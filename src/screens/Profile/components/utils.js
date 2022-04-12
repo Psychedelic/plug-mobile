@@ -10,7 +10,9 @@ const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 export const getTitle = (type, symbol, swapData, plug) => {
   switch (type) {
     case 'SWAP':
-      return `Swap ${symbol} for ${swapData?.currency.name}`;
+      return swapData?.currency.name
+        ? `Swap ${symbol} for ${swapData?.currency.name}`
+        : 'Swap';
     case 'PLUG':
       return `Plugged into ${plug.name}`;
     default:

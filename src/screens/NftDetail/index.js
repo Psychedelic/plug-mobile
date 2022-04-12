@@ -1,21 +1,34 @@
-import { View, Text, Share } from 'react-native';
-import React, { useState, useRef } from 'react';
+import {
+  View,
+  Text,
+  Share,
+  Linking,
+  Platform,
+  ActionSheetIOS,
+} from 'react-native';
+import RNFetchBlob from 'rn-fetch-blob';
 import { useSelector } from 'react-redux';
+import React, { useState, useRef } from 'react';
 
-import RainbowButton from '../../components/buttons/RainbowButton';
-import NftDisplayer from '../../components/common/NftDisplayer';
-import Button from '../../components/buttons/Button';
-import Header from '../../components/common/Header';
-import { FontStyles } from '../../constants/theme';
-import Badge from '../../components/common/Badge';
-import useGetType from '../../hooks/useGetType';
-import Modal from '../../components/modal';
+import RainbowButton from '@components/buttons/RainbowButton';
+import NftDisplayer from '@commonComponents/NftDisplayer';
+import { getAbsoluteType } from '@utils/fileTypes';
+import { deleteWhiteSpaces } from '@utils/strings';
+import Button from '@components/buttons/Button';
+import Header from '@commonComponents/Header';
+import { FontStyles } from '@constants/theme';
+import Badge from '@commonComponents/Badge';
+import { isIos } from '@constants/platform';
+import useGetType from '@hooks/useGetType';
+import Modal from '@components/modal';
+
 import Section from './components/Section';
 import styles from './styles';
 import Send from '../Send';
 
 const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
   const isCapCrowns = selectedNFT?.collection === 'CAP Crowns';
+  const nftName = `${selectedNFT?.collection} #${selectedNFT?.index}`;
   const [type, setType] = useState(null);
   const userCollection = useSelector(state => state.user.collections) || [];
   const selectedCollection = userCollection.find(
@@ -26,9 +39,8 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
 
   const handleShare = () => {
     /* TODO: Change the link for the correct NFT View Page when it's ready */
-    const nftName = `${selectedNFT?.collection} #${selectedNFT?.index}`;
     Share.share({
-      message: `${nftName}: ${selectedNFT?.url}`,
+      message: `${selectedNFT?.url}`,
       url: selectedNFT?.url,
       title: nftName,
     });
@@ -38,6 +50,67 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
 
   const handleSend = () => {
     sendRef.current?.open();
+  };
+
+  const downloadNFT = () => {
+    // TODO: Add the persmissions for Android
+    try {
+      const dirs = RNFetchBlob.fs.dirs;
+      const dirToSave = isIos ? dirs.DocumentDir : dirs.DownloadDir;
+      const configfb = {
+        fileCache: true,
+        useDownloadManager: true,
+        notification: true,
+        mediaScannable: true,
+        title: nftName,
+        path: `${dirToSave}/Plug/NFT_${deleteWhiteSpaces(
+          nftName,
+        )}${getAbsoluteType(type)}`,
+      };
+      const configOptions = Platform.select({
+        ios: {
+          fileCache: configfb.fileCache,
+          title: configfb.title,
+          path: configfb.path,
+        },
+        android: configfb,
+      });
+
+      RNFetchBlob.config(configOptions)
+        .fetch('GET', selectedNFT?.url)
+        .then(res => {
+          if (isIos) {
+            RNFetchBlob.fs.writeFile(configfb.path, res.data, 'base64');
+            RNFetchBlob.ios.previewDocument(configfb.path);
+          }
+        });
+    } catch (e) {
+      console.log(`Error at Download NFT | type: ${type} | error: ${e}`);
+    }
+  };
+
+  const handleMore = () => {
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        title: 'More Options',
+        options: ['Cancel', 'View', 'Share', 'Download'],
+        cancelButtonIndex: 0,
+        userInterfaceStyle: 'dark',
+      },
+      buttonIndex => {
+        switch (buttonIndex) {
+          case 1:
+            Linking.openURL(selectedNFT?.url);
+            break;
+          case 2:
+            handleShare();
+            break;
+          case 3:
+            downloadNFT();
+            break;
+        }
+      },
+    );
   };
 
   return (
@@ -62,10 +135,10 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
             />
           </View>
           <View style={styles.buttonContainer}>
-            <View style={{ flex: 1, marginRight: 10 }}>
-              <Button variant="gray" text="Share" onPress={handleShare} />
+            <View style={styles.buttonWraperLeft}>
+              <Button variant="gray" text="More" onPress={handleMore} />
             </View>
-            <View style={{ flex: 1, marginLeft: 10 }}>
+            <View style={styles.buttonWraperRight}>
               <RainbowButton
                 text="Send"
                 onPress={handleSend}
@@ -73,7 +146,7 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
               />
             </View>
           </View>
-          <Section title="🧩 Collection" style={{ borderTopWidth: 0 }}>
+          <Section title="🧩 Collection" style={styles.collectionSection}>
             <Badge
               value={selectedNFT?.collection}
               icon={selectedCollection?.icon}
