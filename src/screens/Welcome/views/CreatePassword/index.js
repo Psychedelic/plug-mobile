@@ -7,7 +7,7 @@ import PasswordInput from '../../../../components/common/PasswordInput';
 import KeyboardHider from '../../../../components/common/KeyboardHider';
 import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
 import { createWallet } from '../../../../redux/slices/keyring';
-import { isValidPassword } from '../../../../constants/general';
+import { isValidNewPassword } from '../../../../constants/general';
 import Container from '../../../../components/common/Container';
 import Header from '../../../../components/common/Header';
 import useKeychain from '../../../../hooks/useKeychain';
@@ -98,7 +98,7 @@ const CreatePassword = ({ route, navigation }) => {
             loading={loading}
             onPress={handleCreate}
             buttonStyle={styles.rainbowButton}
-            disabled={isValidPassword(password) || loading}
+            disabled={isValidNewPassword(password) || loading}
           />
         </View>
       </KeyboardHider>
