@@ -28,7 +28,7 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
   const isEditContact = !!contact;
   const title = `${isEditContact ? 'Edit' : 'Add'} Contact`;
   const validId = validatePrincipalId(id);
-  const savedContact = isEditContact ? false : contacts.find(c => c.id === id);
+  const savedContact = contacts.find(c => c.id === id);
 
   const handleSubmit = () => {
     const randomEmoji = charFromEmojiObject(
