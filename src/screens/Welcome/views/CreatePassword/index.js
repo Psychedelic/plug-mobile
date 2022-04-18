@@ -1,18 +1,19 @@
 import { Text, View, Image, Switch } from 'react-native';
-import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
 
-import RainbowButton from '../../../../components/buttons/RainbowButton';
-import PasswordInput from '../../../../components/common/PasswordInput';
-import KeyboardHider from '../../../../components/common/KeyboardHider';
-import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
-import { createWallet } from '../../../../redux/slices/keyring';
-import { isValidNewPassword } from '../../../../constants/general';
-import Container from '../../../../components/common/Container';
-import Header from '../../../../components/common/Header';
-import useKeychain from '../../../../hooks/useKeychain';
-import Back from '../../../../components/common/Back';
-import Routes from '../../../../navigation/Routes';
+import RainbowButton from '@components/buttons/RainbowButton';
+import PasswordInput from '@commonComponents/PasswordInput';
+import KeyboardHider from '@commonComponents/KeyboardHider';
+import PlugLogo from '@assets/icons/plug-logo-full.png';
+import { isValidNewPassword } from '@constants/general';
+import { createWallet } from '@redux/slices/keyring';
+import Container from '@commonComponents/Container';
+import Header from '@commonComponents/Header';
+import useKeychain from '@hooks/useKeychain';
+import Back from '@commonComponents/Back';
+import Routes from '@navigation/Routes';
+
 import styles from './styles';
 
 const CreatePassword = ({ route, navigation }) => {
