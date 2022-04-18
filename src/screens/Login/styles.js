@@ -44,8 +44,6 @@ export default StyleSheet.create({
     flexDirection: 'row',
     opacity: 0.5,
     alignSelf: 'center',
-    position: 'absolute',
-    bottom: -refRatioScale(100),
   },
   moreOptionsIcon: {
     marginLeft: 11,
