@@ -1,8 +1,8 @@
+import React, { useEffect, useRef } from 'react';
 import { AppState } from 'react-native';
 import Config from 'react-native-config';
-import codePush from 'react-native-code-push';
+import CodePush from 'react-native-code-push';
 import * as Sentry from '@sentry/react-native';
-import React, { useEffect, useRef } from 'react';
 import Reactotron from 'reactotron-react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -39,8 +39,8 @@ const PersistedApp = () => {
   }, []);
 
   const checkUpdates = async () => {
-    await codePush.sync({
-      installMode: codePush.InstallMode.IMMEDIATE,
+    await CodePush.sync({
+      installMode: CodePush.InstallMode.IMMEDIATE,
       deploymentKey: isIos
         ? Config.CODE_PUSH_IOS_DEPLOY_KEY
         : Config.CODE_PUSH_ANDROID_DEPLOY_KEY,
@@ -85,8 +85,8 @@ const App = () => (
 
 const AppWithSentry = Sentry.wrap(__DEV__ ? Reactotron.overlay(App) : App);
 
-export default codePush({
-  checkfrecuency: codePush.CheckFrequency.MANUAL,
+export default CodePush({
+  checkfrecuency: CodePush.CheckFrequency.MANUAL,
   deploymentKey: isIos
     ? Config.CODE_PUSH_IOS_DEPLOY_KEY
     : Config.CODE_PUSH_ANDROID_DEPLOY_KEY,
