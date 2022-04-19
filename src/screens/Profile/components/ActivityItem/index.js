@@ -2,11 +2,12 @@ import { View, Text } from 'react-native';
 import moment from 'moment';
 import React from 'react';
 
-import TokenFormat from '../../../../components/number/TokenFormat';
-import UsdFormat from '../../../../components/number/UsdFormat';
+import UsdFormat from '@components/number/UsdFormat';
+import { formatToMaxDecimals } from '@utils/number';
+import shortAddress from '@helpers/short-address';
+import { FontStyles } from '@constants/theme';
+
 import { getStatus, getSubtitle, getTitle } from '../utils';
-import shortAddress from '../../../../helpers/short-address';
-import { FontStyles } from '../../../../constants/theme';
 import ActivityIcon from '../ActivityIcon';
 import styles from './styles';
 
@@ -56,11 +57,12 @@ const ActivityItem = ({
           </>
         ) : (
           <>
-            <TokenFormat
-              value={amount}
-              token={symbol}
-              style={FontStyles.Normal}
-            />
+            {amount && (
+              <Text style={FontStyles.Normal}>{`${formatToMaxDecimals(
+                Number(amount),
+                8,
+              )} ${symbol}`}</Text>
+            )}
             <UsdFormat value={Number(value)} style={FontStyles.SmallGray} />
           </>
         )}
