@@ -39,3 +39,11 @@ function toFixed(amount) {
 
   return amount;
 }
+
+export const formatToMaxDecimals = (number, maxDecimals) => {
+  const stringifyAmount = `${number}`.split('.')[1];
+  if (stringifyAmount && stringifyAmount.length > maxDecimals) {
+    return number?.toFixed(maxDecimals);
+  }
+  return number;
+};
