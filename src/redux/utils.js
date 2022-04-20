@@ -1,3 +1,7 @@
+import { formatAssetBySymbol, TOKEN_IMAGES, TOKENS } from '@utils/assets';
+import { ACTIVITY_STATUS } from '@screens/Profile/components/constants';
+import { parseToFloatAmount } from '@utils/number';
+
 import { reset } from './slices/keyring';
 import {
   getNFTs,
@@ -83,4 +87,81 @@ export const getNewAccountData = async (dispatch, icpPrice, state) => {
   dispatch(setAssetsAndLoading({ assets }));
   dispatch(setTransactionsLoading(true));
   dispatch(getTransactions({ icpPrice }));
+};
+
+export const mapTransaction = (icpPrice, state) => trx => {
+  const { principal, accountId } = state.keyring?.currentWallet;
+  const { amount, currency, token, sonicData } = trx?.details || {};
+  const { decimals } = {
+    ...currency,
+    ...token,
+    ...(sonicData?.token ?? {}),
+  };
+  const isSonic = !!sonicData;
+
+  const getSymbol = () => {
+    if ('tokenRegistryInfo' in (trx?.details?.canisterInfo || [])) {
+      return trx?.details?.canisterInfo.tokenRegistryInfo.symbol;
+    }
+    if (
+      'nftRegistryInfo' in
+      (trx?.details?.canisterInfo || trx?.details?.details || [])
+    ) {
+      return 'NFT';
+    }
+    return (
+      trx?.details?.currency?.symbol ??
+      sonicData?.token?.details?.symbol ??
+      trx?.details?.details?.name ??
+      ''
+    );
+  };
+
+  const symbol = getSymbol();
+  const parsedAmount = parseToFloatAmount(
+    amount,
+    decimals || TOKENS[sonicData?.token?.details?.symbol]?.decimals,
+  );
+  const asset = formatAssetBySymbol(
+    isSonic ? parsedAmount : amount,
+    symbol,
+    icpPrice,
+  );
+  const isOwnTx = [principal, accountId].includes(trx?.caller);
+
+  const getType = () => {
+    const type = trx?.type;
+    if (type.includes('transfer')) {
+      return isOwnTx ? 'SEND' : 'RECEIVE';
+    }
+    return type.toUpperCase();
+  };
+
+  const canisterInfo =
+    trx?.details?.tokenRegistryInfo ||
+    trx?.details?.nftRegistryInfo ||
+    trx?.details?.details?.nftRegistryInfo ||
+    trx?.details?.details?.tokenRegistryInfo;
+
+  const transaction = {
+    ...asset,
+    type: getType(),
+    hash: trx?.hash,
+    to: trx?.details?.to,
+    from: trx?.details?.from || trx?.caller,
+    date: new Date(trx?.timestamp),
+    status: ACTIVITY_STATUS[trx?.details?.status],
+    image:
+      trx?.details?.details?.icon ||
+      trx?.details?.icon ||
+      TOKEN_IMAGES[symbol] ||
+      canisterInfo?.icon ||
+      '',
+    symbol,
+    canisterId: trx?.details?.canisterId,
+    plug: null,
+    canisterInfo,
+    details: { ...trx?.details, caller: trx?.caller },
+  };
+  return transaction;
 };

@@ -1,13 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { formatAssets } from '@utils/assets';
 
-import { ACTIVITY_STATUS } from '../../screens/Profile/components/constants';
-import { formatAssets, formatAssetBySymbol } from '../../utils/assets';
-import { TOKEN_IMAGES } from '../../utils/assets';
 import {
   DEFAULT_ASSETS,
   TRANSACTION_STATUS,
   DEFAULT_TRANSACTION,
   recursiveParseBigint,
+  mapTransaction,
 } from '../utils';
 
 const DEFAULT_STATE = {
@@ -172,52 +171,8 @@ export const privateGetTransactions = async (params, state, dispatch) => {
     dispatch(setTransactionsError(false));
     const { icpPrice } = params;
     const response = await state.keyring.instance?.getTransactions();
-
-    const mapTransaction = trx => {
-      const { principal, accountId } = state.keyring?.currentWallet;
-
-      const getSymbol = () => {
-        if ('tokenRegistryInfo' in trx?.details) {
-          return trx?.details.tokenRegistryInfo.symbol;
-        }
-        if ('nftRegistryInfo' in trx?.details) {
-          return 'NFT';
-        }
-        return trx?.details?.currency?.symbol ?? '';
-      };
-
-      const symbol = getSymbol();
-      const asset = formatAssetBySymbol(trx?.details?.amount, symbol, icpPrice);
-      const isOwnTx = [principal, accountId].includes(trx?.caller);
-
-      const getType = () => {
-        const type = trx?.type;
-        if (type.toUpperCase() === 'TRANSFER') {
-          return isOwnTx ? 'SEND' : 'RECEIVE';
-        }
-        return type.toUpperCase();
-      };
-
-      const canisterInfo =
-        trx?.details?.tokenRegistryInfo || trx?.details?.nftRegistryInfo;
-      const transaction = {
-        ...asset,
-        type: getType(),
-        hash: trx?.hash,
-        to: trx?.details?.to,
-        from: trx?.details?.from || trx?.caller,
-        date: new Date(trx?.timestamp),
-        status: ACTIVITY_STATUS[trx?.details?.status],
-        image: TOKEN_IMAGES[symbol] || canisterInfo?.icon || '',
-        symbol,
-        canisterId: trx?.details?.canisterId,
-        plug: null,
-        canisterInfo,
-        details: { ...trx?.details, caller: trx?.caller },
-      };
-      return transaction;
-    };
-    const parsedTrx = response?.transactions?.map(mapTransaction) || [];
+    const parsedTrx =
+      response?.transactions?.map(mapTransaction(icpPrice, state)) || [];
 
     dispatch(setTransactionsLoading(false));
     return parsedTrx;
