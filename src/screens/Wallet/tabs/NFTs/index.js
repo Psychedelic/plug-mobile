@@ -55,7 +55,7 @@ const NFTs = () => {
     <>
       <Container>
         <WalletHeader />
-        <Text style={styles.title}>NFTs</Text>
+        <Text style={styles.title}>Collectibles</Text>
         <Divider />
         {!collectionsError ? (
           <FlatList
@@ -77,7 +77,7 @@ const NFTs = () => {
             }
             ListEmptyComponent={
               <EmptyState
-                title="You don't own any NFTs yet"
+                title="You don't own any Collectibles yet"
                 text="When you do, they'll show here, where you will see their traits and send them."
               />
             }
