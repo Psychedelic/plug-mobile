@@ -27,9 +27,12 @@ const ActivityItem = ({
   details,
   canisterInfo,
 }) => {
+  const isSonic = !!details?.sonicData;
+  const isSwap = type === 'SWAP';
+
   return (
     <View style={styles.container}>
-      <ActivityIcon image={plug?.image || image} type={type} />
+      <ActivityIcon image={image} type={type} />
       <View style={styles.leftContainer}>
         <Text style={FontStyles.Normal}>
           {getTitle(type, symbol, swapData, plug)}
@@ -41,7 +44,7 @@ const ActivityItem = ({
         </Text>
       </View>
       <View style={styles.rightContainer}>
-        {details?.tokenId ? (
+        {details?.tokenId && !isSonic ? (
           <>
             <Text style={FontStyles.Normal}>
               {details?.tokenId?.length > 5
@@ -55,6 +58,8 @@ const ActivityItem = ({
               {canisterInfo?.name || canisterId}
             </Text>
           </>
+        ) : isSwap ? (
+          <Text style={FontStyles.SmallGray}>Coming Soon!</Text>
         ) : (
           <>
             {amount && (

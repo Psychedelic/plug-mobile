@@ -2,22 +2,20 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { Text, View, FlatList, RefreshControl } from 'react-native';
 
-import { ERROR_TYPES } from '../../components/common/ErrorState/constants';
-import ErrorState from '../../components/common/ErrorState';
-import EmptyState from '../../components/common/EmptyState';
-import Container from '../../components/common/Container';
-import UserIcon from '../../components/common/UserIcon';
-import Divider from '../../components/common/Divider';
-import Button from '../../components/buttons/Button';
-import { Colors } from '../../constants/theme';
+import { getTransactions, setTransactionsLoading } from '@redux/slices/user';
+import { ERROR_TYPES } from '@commonComponents/ErrorState/constants';
+import ErrorState from '@commonComponents/ErrorState';
+import EmptyState from '@commonComponents/EmptyState';
+import Container from '@commonComponents/Container';
+import UserIcon from '@commonComponents/UserIcon';
+import Divider from '@commonComponents/Divider';
+import Button from '@components/buttons/Button';
+import Header from '@commonComponents/Header';
+import { Colors } from '@constants/theme';
+
 import ActivityItem from './components/ActivityItem';
-import Header from '../../components/common/Header';
 import Settings from '../Settings';
 import Accounts from '../Accounts';
-import {
-  getTransactions,
-  setTransactionsLoading,
-} from '../../redux/slices/user';
 import styles from './styles';
 
 const Profile = () => {
