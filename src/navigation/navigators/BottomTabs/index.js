@@ -23,10 +23,10 @@ const BottomTabs = ({ state, navigation }) => {
   return (
     <View style={styles.root}>
       {state.routes.map((route, index) => {
-        const { isProfile, isTokens, isFocused } = getTabStatus(index);
+        const { isProfile, isTokens, isFocused, isNFTs } = getTabStatus(index);
         const iconName = isProfile ? 'profile' : isTokens ? 'tokens' : 'nfts';
         const iconSize = '20';
-        const label = route.name;
+        const label = isNFTs ? 'Collectibles' : route.name;
 
         const onPress = () => {
           const event = navigation.emit({
