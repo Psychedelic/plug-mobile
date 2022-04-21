@@ -21,9 +21,10 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
   const { onCreate, onEdit } = useContacts();
   const editEmojiRef = useRef(null);
 
-  const [name, setName] = useState('');
   const [id, setId] = useState('');
+  const [name, setName] = useState('');
   const [emoji, setEmoji] = useState('');
+  const [error, setError] = useState(false);
 
   const isEditContact = !!contact;
   const title = `${isEditContact ? 'Edit' : 'Add'} Contact`;
@@ -31,24 +32,29 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
   const savedContact = contacts.find(c => c.id === id);
 
   const handleSubmit = () => {
-    const randomEmoji = charFromEmojiObject(
-      emojis[Math.floor(Math.random() * emojis.length)],
-    );
-    isEditContact
-      ? onEdit({ contact, newContact: { id, name, image: emoji } })
-      : onCreate({
-          id,
-          name,
-          image: randomEmoji,
-        });
+    if (savedContact) {
+      setError(true);
+    } else {
+      const randomEmoji = charFromEmojiObject(
+        emojis[Math.floor(Math.random() * emojis.length)],
+      );
+      isEditContact
+        ? onEdit({ contact, newContact: { id, name, image: emoji } })
+        : onCreate({
+            id,
+            name,
+            image: randomEmoji,
+          });
 
-    modalRef.current?.close();
+      modalRef.current?.close();
+    }
   };
 
   const clearState = () => {
     setName('');
     setId('');
     setEmoji('');
+    setError(false);
   };
 
   useEffect(() => {
@@ -60,10 +66,11 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
     }
   }, [contact]);
 
-  const isButtonDisabled = () => !name || !id || !validId || !!savedContact;
+  const isButtonDisabled = () => !name || !id || !validId;
 
   const handleClose = () => {
     onClose();
+    setError(false);
     if (!contact) {
       clearState();
     }
@@ -75,11 +82,13 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
   };
 
   const closeModal = () => {
+    setError(false);
     modalRef?.current.close();
     contactsRef?.current.close();
   };
 
   const handleBack = () => {
+    setError(false);
     modalRef?.current.close();
   };
 
@@ -123,7 +132,7 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
           placeholder="Principal ID"
           customStyle={styles.marginedContainer}
         />
-        {savedContact && (
+        {error && savedContact && (
           <Text style={styles.savedContactText}>
             {`Contact already saved as ${savedContact?.name}!`}
           </Text>
