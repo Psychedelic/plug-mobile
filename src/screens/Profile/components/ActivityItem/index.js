@@ -29,6 +29,7 @@ const ActivityItem = ({
 }) => {
   const isSonic = !!details?.sonicData;
   const isSwap = type === 'SWAP';
+  const isLiquidity = type.includes('Liquidity');
 
   return (
     <View style={styles.container}>
@@ -58,7 +59,7 @@ const ActivityItem = ({
               {canisterInfo?.name || canisterId}
             </Text>
           </>
-        ) : isSwap ? (
+        ) : isSwap || isLiquidity ? (
           <Text style={FontStyles.SmallGray}>Coming Soon!</Text>
         ) : (
           <>
@@ -68,7 +69,9 @@ const ActivityItem = ({
                 8,
               )} ${symbol}`}</Text>
             )}
-            <UsdFormat value={Number(value)} style={FontStyles.SmallGray} />
+            {value && (
+              <UsdFormat value={Number(value)} style={FontStyles.SmallGray} />
+            )}
           </>
         )}
       </View>

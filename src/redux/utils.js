@@ -109,6 +109,9 @@ export const mapTransaction = (icpPrice, state) => trx => {
     ) {
       return 'NFT';
     }
+    if (trx?.details?.details?.name?.includes('Swap')) {
+      return '';
+    }
     return (
       trx?.details?.currency?.symbol ??
       sonicData?.token?.details?.symbol ??
@@ -133,6 +136,9 @@ export const mapTransaction = (icpPrice, state) => trx => {
     const type = trx?.type;
     if (type.includes('transfer')) {
       return isOwnTx ? 'SEND' : 'RECEIVE';
+    }
+    if (type.includes('Liquidity')) {
+      return `${type.includes('removeLiquidity') ? 'Remove' : 'Add'} Liquidity`;
     }
     return type.toUpperCase();
   };
