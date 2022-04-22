@@ -86,7 +86,7 @@ function BiometricUnlock({ modalRef }) {
               loading={loading}
               onPress={handleSubmit}
               buttonStyle={styles.buttonStyle}
-              disabled={isValidPassword(password)}
+              disabled={!isValidPassword(password)}
             />
           </>
         ) : (

@@ -107,7 +107,7 @@ function Login({ route, navigation }) {
             text="Submit"
             onPress={() => handleSubmit(password)}
             loading={loading}
-            disabled={isValidPassword(password) || loading}
+            disabled={!isValidPassword(password) || loading}
             buttonStyle={styles.buttonMargin}
           />
           {biometricsAvailable && usingBiometrics && (

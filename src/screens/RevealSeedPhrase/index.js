@@ -63,7 +63,7 @@ function RevealSeedPhrase({ modalRef }) {
                 text="Continue"
                 loading={loading}
                 onPress={handleSubmit}
-                disabled={isValidPassword(password)}
+                disabled={!isValidPassword(password)}
               />
             </>
           ) : (
