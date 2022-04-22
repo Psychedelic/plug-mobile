@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { FontStyles } from '../../../../constants/theme';
+
+import { FontStyles } from '@constants/theme';
 
 export default StyleSheet.create({
   title: {
@@ -15,6 +16,10 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 30,
+  },
+  errorText: {
+    marginTop: 10,
+    color: 'red',
   },
   switchContainer: {
     flexDirection: 'row',

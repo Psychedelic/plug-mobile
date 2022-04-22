@@ -1,12 +1,13 @@
 import { Text, View, Image, Switch } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { ErrorMessage } from '@hookform/error-message';
+import { useForm, Controller } from 'react-hook-form';
 import React, { useState, useEffect } from 'react';
 
 import RainbowButton from '@components/buttons/RainbowButton';
 import PasswordInput from '@commonComponents/PasswordInput';
 import KeyboardHider from '@commonComponents/KeyboardHider';
 import PlugLogo from '@assets/icons/plug-logo-full.png';
-import { isValidNewPassword } from '@constants/general';
 import { createWallet } from '@redux/slices/keyring';
 import Container from '@commonComponents/Container';
 import Header from '@commonComponents/Header';
@@ -14,17 +15,25 @@ import useKeychain from '@hooks/useKeychain';
 import Back from '@commonComponents/Back';
 import Routes from '@navigation/Routes';
 
+import { createPasswordRules, createPasswordFields } from './constants';
 import styles from './styles';
 
 const CreatePassword = ({ route, navigation }) => {
   const { isSensorAvailable, saveBiometrics } = useKeychain();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: { password: '' },
+    mode: 'onBlur',
+  });
   const dispatch = useDispatch();
 
   const { icpPrice } = useSelector(state => state.icp);
   const flow = route.params?.flow;
   const { goBack } = navigation;
   const [loading, setLoading] = useState(false);
-  const [password, setPassword] = useState(null);
   const [biometrics, setBiometrics] = useState(false);
   const [biometryAvailable, setBiometryAvailable] = useState(false);
 
@@ -36,7 +45,8 @@ const CreatePassword = ({ route, navigation }) => {
     });
   }, []);
 
-  const handleCreate = async () => {
+  const handleCreate = async data => {
+    const password = data?.password;
     setLoading(true);
     if (flow === 'import') {
       const shouldSaveBiometrics = biometryAvailable && biometrics;
@@ -82,12 +92,27 @@ const CreatePassword = ({ route, navigation }) => {
           <Text style={styles.subtitle}>
             Please create a secure password that you will remember.
           </Text>
-          <PasswordInput
-            password={password}
-            onChange={setPassword}
-            customStyle={styles.passwordInput}
+          <Controller
+            name={createPasswordFields.password}
+            control={control}
+            rules={createPasswordRules}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <PasswordInput
+                maxLength={24}
+                onBlur={onBlur}
+                password={value}
+                onChange={onChange}
+                customStyle={styles.passwordInput}
+              />
+            )}
           />
-          <Text style={styles.help}>Must be at least 12 characters</Text>
+          <ErrorMessage
+            errors={errors}
+            name={createPasswordFields.password}
+            render={({ message }) => (
+              <Text style={styles.errorText}>{message}</Text>
+            )}
+          />
           {biometryAvailable && (
             <View style={styles.switchContainer}>
               <Text style={styles.faceId}>Sign in with biometrics?</Text>
@@ -97,9 +122,9 @@ const CreatePassword = ({ route, navigation }) => {
           <RainbowButton
             text="Continue"
             loading={loading}
-            onPress={handleCreate}
+            onPress={handleSubmit(handleCreate)}
             buttonStyle={styles.rainbowButton}
-            disabled={isValidNewPassword(password) || loading}
+            disabled={loading || !!errors.password}
           />
         </View>
       </KeyboardHider>
