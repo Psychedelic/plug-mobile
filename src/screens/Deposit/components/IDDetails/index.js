@@ -3,11 +3,12 @@ import { useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
 import Clipboard from '@react-native-community/clipboard';
 
-import InfoWithActions from '../../../../components/common/InfoWithActions';
-import GradientText from '../../../../components/common/GradientText';
-import CopiedToast from '../../../../components/common/CopiedToast';
+import InfoWithActions from '@commonComponents/InfoWithActions';
+import GradientText from '@commonComponents/GradientText';
+import CopiedToast from '@commonComponents/CopiedToast';
 import shortAddress from '@helpers/shortAddress';
-import Column from '../../../../components/layout/Column';
+import Column from '@components/layout/Column';
+
 import { getIdInfo } from '../../constants';
 import styles from './styles';
 

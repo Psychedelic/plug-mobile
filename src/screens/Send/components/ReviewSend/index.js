@@ -3,30 +3,30 @@ import { useNavigation } from '@react-navigation/core';
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
-import RainbowButton from '../../../../components/buttons/RainbowButton';
-import NftDisplayer from '../../../../components/common/NftDisplayer';
-import TokenFormat from '../../../../components/number/TokenFormat';
-import { Colors, FontStyles } from '../../../../constants/theme';
-import TokenIcon from '../../../../components/tokens/TokenIcon';
-import { setTransaction } from '../../../../redux/slices/user';
-import UserIcon from '../../../../components/common/UserIcon';
-import { TRANSACTION_STATUS } from '../../../../redux/utils';
+import RainbowButton from '@components/buttons/RainbowButton';
+import NftDisplayer from '@commonComponents/NftDisplayer';
+import TokenFormat from '@components/number/TokenFormat';
+import { Colors, FontStyles } from '@constants/theme';
+import TokenIcon from '@components/tokens/TokenIcon';
+import { setTransaction } from '@redux/slices/user';
+import UserIcon from '@commonComponents/UserIcon';
+import { TRANSACTION_STATUS } from '@redux/utils';
 import shortAddress from '@helpers/shortAddress';
-import Button from '../../../../components/buttons/Button';
-import Header from '../../../../components/common/Header';
-import Column from '../../../../components/layout/Column';
-import useGetType from '../../../../hooks/useGetType';
-import Row from '../../../../components/layout/Row';
-import Routes from '../../../../navigation/Routes';
-import Modal from '../../../../components/modal';
-import Icon from '../../../../components/icons';
+import Button from '@components/buttons/Button';
+import Header from '@commonComponents/Header';
+import Column from '@components/layout/Column';
+import useGetType from '@hooks/useGetType';
+import Row from '@components/layout/Row';
+import Routes from '@navigation/Routes';
+import Modal from '@components/modal';
+import Icon from '@components/icons';
+
 import {
   formatSendAmount,
   getTransactionFee,
   USD_MAX_DECIMALS,
 } from '../../utils';
 import SaveContact from '../SaveContact';
-
 import styles from './styles';
 
 const ReviewSend = ({
