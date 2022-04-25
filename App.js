@@ -32,9 +32,9 @@ const PersistedApp = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    AppState.addEventListener('change', handleAppStateChange);
+    const event = AppState.addEventListener('change', handleAppStateChange);
     return () => {
-      AppState.removeEventListener('change', handleAppStateChange);
+      event.remove();
     };
   }, []);
 
