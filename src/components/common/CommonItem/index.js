@@ -4,29 +4,27 @@ import React from 'react';
 import Touchable from '@components/animations/Touchable';
 import animationScales from '@utils/animationScales';
 import UserIcon from '@commonComponents/UserIcon';
-import shortAddress from '@helpers/short-address';
+import shortAddress from '@helpers/shortAddress';
 import { FontStyles } from '@constants/theme';
 import Icon from '@components/icons';
 
 import styles from './styles';
 
-const AccountItem = ({ account, onPress, onMenu, ...props }) => {
-  const { icon, name, principal } = account || {};
-
+function CommonItem({ image, name, id, style, onPress, onLongPress }) {
   return (
-    <View {...props} style={{ marginBottom: 20 }}>
+    <View style={style}>
       <Touchable
         scale={animationScales.small}
         onPress={onPress}
-        onLongPress={onMenu}>
-        <View style={styles.container}>
-          <UserIcon icon={icon} disabled />
+        onLongPress={onLongPress}>
+        <View style={styles.root}>
+          <UserIcon icon={image} disabled />
           <View style={styles.leftContainer}>
             <Text style={FontStyles.Normal}>{name}</Text>
-            <Text style={FontStyles.NormalGray}>{shortAddress(principal)}</Text>
+            <Text style={FontStyles.NormalGray}>{shortAddress(id)}</Text>
           </View>
           <View style={styles.threeDots}>
-            <Touchable onPress={onMenu} scale={animationScales.large}>
+            <Touchable onPress={onLongPress} scale={animationScales.large}>
               <Icon name="threeDots" />
             </Touchable>
           </View>
@@ -34,6 +32,6 @@ const AccountItem = ({ account, onPress, onMenu, ...props }) => {
       </Touchable>
     </View>
   );
-};
+}
 
-export default AccountItem;
+export default CommonItem;
