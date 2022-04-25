@@ -7,7 +7,7 @@ import { reset, setCurrentPrincipal } from '../../redux/slices/keyring';
 import CreateEditAccount from '../../modals/CreateEditAccount';
 import Touchable from '../../components/animations/Touchable';
 import AccountItem from '../../components/common/AccountItem';
-import shortAddress from '../../helpers/short-address';
+import shortAddress from '@helpers/shortAddress';
 import { getICPPrice } from '../../redux/slices/icp';
 import Header from '../../components/common/Header';
 import { FontStyles } from '../../constants/theme';

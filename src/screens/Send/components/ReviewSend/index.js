@@ -11,7 +11,7 @@ import TokenIcon from '../../../../components/tokens/TokenIcon';
 import { setTransaction } from '../../../../redux/slices/user';
 import UserIcon from '../../../../components/common/UserIcon';
 import { TRANSACTION_STATUS } from '../../../../redux/utils';
-import shortAddress from '../../../../helpers/short-address';
+import shortAddress from '@helpers/shortAddress';
 import Button from '../../../../components/buttons/Button';
 import Header from '../../../../components/common/Header';
 import Column from '../../../../components/layout/Column';

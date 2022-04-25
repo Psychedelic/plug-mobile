@@ -4,7 +4,7 @@ import React from 'react';
 import Touchable from '@components/animations/Touchable';
 import animationScales from '@utils/animationScales';
 import UserIcon from '@commonComponents/UserIcon';
-import shortAddress from '@helpers/short-address';
+import shortAddress from '@helpers/shortAddress';
 import { FontStyles } from '@constants/theme';
 import Icon from '@components/icons';
 

@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import shortAddress from '../../../helpers/short-address';
-import { FontStyles } from '../../../constants/theme';
+import shortAddress from '@helpers/shortAddress';
+import { FontStyles } from '@constants/theme';
+
 import Touchable from '../../animations/Touchable';
 import CopiedToast from '../CopiedToast';
 import styles from './styles';
