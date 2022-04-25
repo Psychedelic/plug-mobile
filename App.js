@@ -1,4 +1,5 @@
 import { AppState } from 'react-native';
+import { Platform } from 'react-native';
 import Config from 'react-native-config';
 import codePush from 'react-native-code-push';
 import * as Sentry from '@sentry/react-native';
@@ -7,6 +8,11 @@ import Reactotron from 'reactotron-react-native';
 import SplashScreen from 'react-native-splash-screen';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider, useDispatch, useSelector } from 'react-redux';
+import {
+  getBundleId,
+  getVersion,
+  getBuildNumber,
+} from 'react-native-device-info';
 
 import ErrorBoundary from './src/components/common/ErrorBoundary';
 import { initKeyring } from './src/redux/slices/keyring';
@@ -16,9 +22,17 @@ import Routes from './src/navigation';
 import './reactotronConfig';
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
+const baseDist = getBuildNumber();
+const baseRelease = `${getBundleId()}@${getVersion()}:${Platform.OS}`;
 
 Sentry.init({
-  dsn: Config.SENTRY_DSN,
+  tracesSampleRate: 1.0,
+  dist: baseDist,
+  release: baseRelease,
+  environment: __DEV__ ? 'local' : 'productive',
+  maxBreadcrumbs: 100,
+  normalizeDepth: 10,
+  enableOutOfMemoryTracking: false,
   integrations: [
     new Sentry.ReactNativeTracing({
       routingInstrumentation,
