@@ -2,9 +2,10 @@ import React from 'react';
 import { Text } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import ContactItem from '../../../../components/common/ContactItem';
-import { FontStyles } from '../../../../constants/theme';
-import useContacts from '../../../../hooks/useContacts';
+import CommonItem from '@commonComponents/CommonItem';
+import { FontStyles } from '@constants/theme';
+import useContacts from '@hooks/useContacts';
+
 import styles from '../../styles';
 
 const ContactSection = ({ onPress, filterText }) => {
@@ -25,10 +26,12 @@ const ContactSection = ({ onPress, filterText }) => {
       <>
         <Text style={FontStyles.Subtitle3}>Contacts</Text>
         {filteredContacts.map((contact, index) => (
-          <ContactItem
+          <CommonItem
+            name={contact.name}
+            id={contact.id}
+            image={contact.image}
             key={index}
             onPress={() => onPress(contact)}
-            contact={contact}
             style={styles.contactItem}
           />
         ))}
