@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Text, Switch, View } from 'react-native';
 
-import RainbowButton from '../../../../components/buttons/RainbowButton';
-import PasswordInput from '../../../../components/common/PasswordInput';
-import { validatePassword } from '../../../../redux/slices/keyring';
-import { isValidPassword } from '../../../../constants/general';
-import Column from '../../../../components/layout/Column';
-import Header from '../../../../components/common/Header';
-import { FontStyles } from '../../../../constants/theme';
-import useKeychain from '../../../../hooks/useKeychain';
-import Modal from '../../../../components/modal';
+import RainbowButton from '@components/buttons/RainbowButton';
+import PasswordInput from '@commonComponents/PasswordInput';
+import { validatePassword } from '@redux/slices/keyring';
+import { isValidPassword } from '@constants/general';
+import Column from '@components/layout/Column';
+import Header from '@commonComponents/Header';
+import { FontStyles } from '@constants/theme';
+import useKeychain from '@hooks/useKeychain';
+import Modal from '@components/modal';
+
 import styles from './styles';
 
 function BiometricUnlock({ modalRef }) {

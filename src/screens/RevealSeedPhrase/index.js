@@ -2,15 +2,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useState } from 'react';
 import { Text } from 'react-native';
 
-import RainbowButton from '../../components/buttons/RainbowButton';
-import PasswordInput from '../../components/common/PasswordInput';
-import { validatePassword } from '../../redux/slices/keyring';
-import SeedPhrase from '../../components/common/SeedPhrase';
-import { isValidPassword } from '../../constants/general';
-import Column from '../../components/layout/Column';
-import Header from '../../components/common/Header';
-import Copy from '../../components/common/Copy';
-import Modal from '../../components/modal';
+import RainbowButton from '@components/buttons/RainbowButton';
+import PasswordInput from '@commonComponents/PasswordInput';
+import { validatePassword } from '@redux/slices/keyring';
+import SeedPhrase from '@commonComponents/SeedPhrase';
+import { isValidPassword } from '@constants/general';
+import Column from '@components/layout/Column';
+import Header from '@commonComponents/Header';
+import Copy from '@commonComponents/Copy';
+import Modal from '@components/modal';
+
 import styles from './styles';
 
 function RevealSeedPhrase({ modalRef }) {
