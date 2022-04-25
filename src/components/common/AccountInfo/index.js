@@ -5,8 +5,8 @@ import { useSelector } from 'react-redux';
 
 import shortAddress from '@helpers/shortAddress';
 import { FontStyles } from '@constants/theme';
+import Touchable from '@components/animations/Touchable';
 
-import Touchable from '../../animations/Touchable';
 import CopiedToast from '../CopiedToast';
 import styles from './styles';
 
