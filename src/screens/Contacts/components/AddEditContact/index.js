@@ -30,11 +30,15 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
   const title = `${isEditContact ? 'Edit' : 'Add'} Contact`;
   const validId = validatePrincipalId(id);
   const savedContact = contacts.find(c => c.id === id);
+  const savedContactName = contacts.find(c => c.name === name);
+  const nameError = savedContactName && contact?.name !== name;
+  const idError = savedContact && contact?.id !== id;
 
   const handleSubmit = () => {
-    if (savedContact) {
+    if (idError || nameError) {
       setError(true);
     } else {
+      setError(false);
       const randomEmoji = charFromEmojiObject(
         emojis[Math.floor(Math.random() * emojis.length)],
       );
@@ -92,6 +96,16 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
     modalRef?.current.close();
   };
 
+  const handleOnChangeName = text => {
+    setError(false);
+    setName(text);
+  };
+
+  const handleOnChangeId = text => {
+    setError(false);
+    setId(text);
+  };
+
   return (
     <Modal modalRef={modalRef} adjustToContentHeight onClose={handleClose}>
       <Header
@@ -123,18 +137,20 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
           variant="text"
           maxLenght={22}
           placeholder="Name"
-          onChangeText={setName}
+          onChangeText={handleOnChangeName}
         />
         <TextInput
           value={id}
           variant="text"
-          onChangeText={setId}
+          onChangeText={handleOnChangeId}
           placeholder="Principal ID"
           customStyle={styles.marginedContainer}
         />
-        {error && savedContact && (
+        {error && (
           <Text style={styles.savedContactText}>
-            {`Contact already saved as ${savedContact?.name}!`}
+            {nameError
+              ? 'Name is already taken!'
+              : `Contact already saved as ${savedContact?.name}!`}
           </Text>
         )}
         <RainbowButton
