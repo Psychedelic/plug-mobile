@@ -1,9 +1,9 @@
-import { ALPHANUM_REGEX } from '@constants/addresses';
+import { ALPHANUM_AND_SPECIAL_CHARS_REGEX } from '@constants/addresses';
 
 export const createPasswordRules = {
   required: 'Password is required.',
   pattern: {
-    value: ALPHANUM_REGEX,
+    value: ALPHANUM_AND_SPECIAL_CHARS_REGEX,
     message: 'Password must be alphanumeric.',
   },
   maxLength: {
