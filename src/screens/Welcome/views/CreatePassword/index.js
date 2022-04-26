@@ -24,9 +24,10 @@ const CreatePassword = ({ route, navigation }) => {
     control,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm({
     defaultValues: { password: '' },
-    mode: 'onBlur',
+    mode: 'onChange',
   });
   const dispatch = useDispatch();
 
@@ -124,7 +125,7 @@ const CreatePassword = ({ route, navigation }) => {
             loading={loading}
             onPress={handleSubmit(handleCreate)}
             buttonStyle={styles.rainbowButton}
-            disabled={loading || !!errors.password}
+            disabled={loading || !!errors.password || !getValues().password}
           />
         </View>
       </KeyboardHider>
