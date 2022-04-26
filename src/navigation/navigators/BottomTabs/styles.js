@@ -29,4 +29,7 @@ export default StyleSheet.create({
   default: {
     color: Colors.White.Secondary,
   },
+  disabledTab: {
+    opacity: 0.5,
+  },
 });

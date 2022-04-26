@@ -2,13 +2,12 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import Touchable from '../../../components/animations/Touchable';
-import { Colors } from '../../../constants/theme';
-import Icon from '../../../components/icons';
-import {
-  setScrollOnProfile,
-  setScrollOnNFTs,
-} from '../../../redux/slices/user';
+import { setScrollOnProfile, setScrollOnNFTs } from '@redux/slices/user';
+import Touchable from '@components/animations/Touchable';
+import { ENABLE_NFTS } from '@constants/nfts';
+import { Colors } from '@constants/theme';
+import Icon from '@components/icons';
+
 import styles from './styles';
 
 const BottomTabs = ({ state, navigation }) => {
@@ -52,8 +51,15 @@ const BottomTabs = ({ state, navigation }) => {
         };
 
         return (
-          <Touchable onPress={onPress} key={route.name}>
-            <View key={index} style={styles.tab}>
+          <Touchable
+            onPress={isNFTs && !ENABLE_NFTS ? () => {} : onPress}
+            key={route.name}>
+            <View
+              key={index}
+              style={[
+                styles.tab,
+                isNFTs && !ENABLE_NFTS && styles.disabledTab,
+              ]}>
               <Icon
                 name={iconName}
                 width={iconSize}
