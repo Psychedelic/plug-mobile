@@ -78,7 +78,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
 
   const renderAccountItem = (account, index) => {
     const handleOnPress = () => {
-      if (currentWallet.principal !== account.principal) {
+      if (currentWallet?.principal !== account.principal) {
         onChangeAccount(account?.walletNumber);
       }
     };

@@ -77,8 +77,8 @@ function Send({ modalRef, nft, token, onSuccess }) {
   useEffect(() => {
     const savedContact = contacts?.find(c => c.id === address);
     const isMySelf =
-      address === currentWallet.principal ||
-      address === currentWallet.accountId;
+      address === currentWallet?.principal ||
+      address === currentWallet?.accountId;
 
     if (savedContact && !isMySelf) {
       setSelectedContact(savedContact);
