@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors } from '../../../constants/theme';
+import { Colors } from '@constants/theme';
 
 export default StyleSheet.create({
   root: {
@@ -28,8 +28,5 @@ export default StyleSheet.create({
   },
   default: {
     color: Colors.White.Secondary,
-  },
-  disabledTab: {
-    opacity: 0.5,
   },
 });

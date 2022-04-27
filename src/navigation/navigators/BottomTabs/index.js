@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 
 import { setScrollOnProfile, setScrollOnNFTs } from '@redux/slices/user';
 import Touchable from '@components/animations/Touchable';
-import { ENABLE_NFTS } from '@constants/nfts';
 import { Colors } from '@constants/theme';
 import Icon from '@components/icons';
 
@@ -51,15 +50,8 @@ const BottomTabs = ({ state, navigation }) => {
         };
 
         return (
-          <Touchable
-            onPress={isNFTs && !ENABLE_NFTS ? () => {} : onPress}
-            key={route.name}>
-            <View
-              key={index}
-              style={[
-                styles.tab,
-                isNFTs && !ENABLE_NFTS && styles.disabledTab,
-              ]}>
+          <Touchable onPress={onPress} key={route.name}>
+            <View key={index} style={styles.tab}>
               <Icon
                 name={iconName}
                 width={iconSize}
