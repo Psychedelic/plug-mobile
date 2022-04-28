@@ -11,6 +11,7 @@ import UserIcon from '@commonComponents/UserIcon';
 import Divider from '@commonComponents/Divider';
 import Button from '@components/buttons/Button';
 import Header from '@commonComponents/Header';
+import { ENABLE_NFTS } from '@constants/nfts';
 import { Colors } from '@constants/theme';
 
 import ActivityItem from './components/ActivityItem';
@@ -52,9 +53,10 @@ const Profile = () => {
     }
   }, [scrollOnProfile]);
 
-  const renderTransaction = ({ item }, index) => (
-    <ActivityItem key={index} {...item} />
-  );
+  const renderTransaction = ({ item }, index) =>
+    item?.symbol === 'NFT' && !ENABLE_NFTS ? null : (
+      <ActivityItem key={index} {...item} />
+    );
 
   return (
     <>
