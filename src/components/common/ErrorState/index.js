@@ -6,8 +6,8 @@ import { getErrorStateData } from './constants';
 import Button from '../../buttons/Button';
 import styles from './styles';
 
-function ErrorState({ errorType, onPress, loading, style }) {
-  const { title, emoji, description, buttonTitle } =
+function ErrorState({ errorType, onPress, loading, style, buttonStyle }) {
+  const { title, emoji, description, buttonTitle, buttonImage } =
     getErrorStateData(errorType);
 
   return (
@@ -21,9 +21,10 @@ function ErrorState({ errorType, onPress, loading, style }) {
         <Button
           variant="gray"
           onPress={onPress}
-          text={buttonTitle}
           loading={loading}
-          buttonStyle={styles.button}
+          text={buttonTitle}
+          iconName={buttonImage}
+          buttonStyle={[styles.button, buttonStyle]}
         />
       )}
     </View>

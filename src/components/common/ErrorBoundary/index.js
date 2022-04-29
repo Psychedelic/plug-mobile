@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ConnectionError from '../../../screens/ConnectionError';
+import ErrorBoundaryScreen from '@screens/ErrorBoundaryScreen';
 
 class ErrorBoundary extends React.Component {
   state = { hasError: null };
@@ -16,7 +16,7 @@ class ErrorBoundary extends React.Component {
   logErrorToServices = console.log;
   render() {
     if (this.state.hasError) {
-      return <ConnectionError />;
+      return <ErrorBoundaryScreen />;
     }
     return this.props.children;
   }

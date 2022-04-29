@@ -19,6 +19,7 @@ import DepositIcon from './svg/DepositIcon';
 import ConfirmIcon from './svg/ConfirmIcon';
 import UnknownIcon from './svg/UnknownIcon';
 import ProfileIcon from './svg/ProfileIcon';
+import DiscordIcon from './svg/DiscordIcon';
 import FaceIdIcon from './svg/FaceIdIcon';
 import TokensIcon from './svg/TokensIcon';
 import ErrorIcon from './svg/ErrorIcon';
@@ -48,14 +49,15 @@ export const IconTypes = {
   unknown: UnknownIcon,
   confirm: ConfirmIcon,
   deposit: DepositIcon,
+  discord: DiscordIcon,
   faceIdIcon: FaceIdIcon,
   arrowRight: ArrowRightIcon,
   arrowDown: ArrowDownIcon,
   threeDots: ThreeDotsIcon,
   swapArrows: SwapArrowsIcon,
+  chevronLeft: ChevronLeftIcon,
   activitySend: ActivitySendIcon,
   burnActivity: BurnActivityIcon,
-  chevronLeft: ChevronLeftIcon,
   chevronRight: ChevronRightIcon,
   mintActivity: MintActivityIcon,
   passwordEyeIcon: PasswordEyeIcon,
