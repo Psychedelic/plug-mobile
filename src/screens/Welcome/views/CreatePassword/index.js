@@ -18,7 +18,7 @@ import Routes from '@navigation/Routes';
 import {
   createPasswordRules,
   createPasswordFields,
-  MIN_LENGHT_MESSAGE,
+  MIN_LENGTH_MESSAGE,
 } from './constants';
 import styles from './styles';
 
@@ -120,7 +120,7 @@ const CreatePassword = ({ route, navigation }) => {
                 ? messages?.pattern
                 : message;
               const warningMessage =
-                messages?.minLength && choosenMessage === MIN_LENGHT_MESSAGE;
+                messages?.minLength && choosenMessage === MIN_LENGTH_MESSAGE;
 
               return (
                 <Text
