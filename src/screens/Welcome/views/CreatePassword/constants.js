@@ -1,10 +1,13 @@
 import { ALPHANUM_AND_SPECIAL_CHARS_REGEX } from '@constants/addresses';
 
+export const MIN_LENGTH_MESSAGE =
+  'Password must be at least 12 characters long.';
+
 export const createPasswordRules = {
   required: 'Password is required.',
   pattern: {
     value: ALPHANUM_AND_SPECIAL_CHARS_REGEX,
-    message: 'Password must be alphanumeric.',
+    message: 'Invalid character.',
   },
   maxLength: {
     value: 24,
@@ -12,7 +15,7 @@ export const createPasswordRules = {
   },
   minLength: {
     value: 12,
-    message: 'Password must be at least 12 characters long.',
+    message: MIN_LENGTH_MESSAGE,
   },
 };
 
