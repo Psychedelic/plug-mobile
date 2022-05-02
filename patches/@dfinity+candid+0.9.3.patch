@@ -1,24 +1,104 @@
 diff --git a/node_modules/@dfinity/candid/lib/cjs/idl.js b/node_modules/@dfinity/candid/lib/cjs/idl.js
-index d97a72b..ed24049 100644
+index d97a72b..da49030 100644
 --- a/node_modules/@dfinity/candid/lib/cjs/idl.js
 +++ b/node_modules/@dfinity/candid/lib/cjs/idl.js
-@@ -457,8 +457,8 @@ class FixedIntClass extends PrimitiveType {
+@@ -376,6 +376,7 @@ class NatClass extends PrimitiveType {
+     covariant(x) {
+         // We allow encoding of JavaScript plain numbers.
+         // But we will always decode to bigint.
++        console.log('nat', x);
+         return (typeof x === 'bigint' && x >= BigInt(0)) || (Number.isInteger(x) && x >= 0);
+     }
+     encodeValue(x) {
+@@ -457,8 +458,11 @@ class FixedIntClass extends PrimitiveType {
          return v.visitFixedInt(this, d);
      }
      covariant(x) {
 -        const min = BigInt(2) ** BigInt(this._bits - 1) * BigInt(-1);
 -        const max = BigInt(2) ** BigInt(this._bits - 1) - BigInt(1);
++        console.log('fixed int cov', x, typeof x);
 +        const min = BigInt(Math.pow(2, this._bits - 1)) * BigInt(-1);
 +        const max = BigInt(Math.pow(2, this._bits - 1)) - BigInt(1);
++        console.log('min-max', min, max);
++        console.log('Is it an integer?', Number.isInteger(x));
          if (typeof x === 'bigint') {
              return x >= min && x <= max;
          }
-@@ -507,7 +507,7 @@ class FixedNatClass extends PrimitiveType {
+@@ -507,8 +511,13 @@ class FixedNatClass extends PrimitiveType {
          return v.visitFixedNat(this, d);
      }
      covariant(x) {
 -        const max = BigInt(2) ** BigInt(this.bits);
+-        if (typeof x === 'bigint' && x >= BigInt(0)) {
++        console.log('fixed nat cov', x, typeof x);
++        console.log('is it a bigint?', typeof x === 'bigint');
++        console.log('Is it an integer?', Number.isInteger(x));
 +        const max = Math.pow(2, this.bits);
-         if (typeof x === 'bigint' && x >= BigInt(0)) {
++        console.log('max is 2^',this.bits);
++        console.log('?????',x,  max, x < max);
++        if (x >= BigInt(0)) {
              return x < max;
+         }
+         else if (Number.isInteger(x) && x >= 0) {
+@@ -691,6 +700,7 @@ class RecordClass extends ConstructType {
+     covariant(x) {
+         return (typeof x === 'object' &&
+             this._fields.every(([k, t]) => {
++                console.log('checking field covariant', x, k, t);
+                 // eslint-disable-next-line
+                 if (!x.hasOwnProperty(k)) {
+                     throw new Error(`Record is missing key "${k}".`);
+diff --git a/node_modules/@dfinity/candid/lib/cjs/utils/leb128.js b/node_modules/@dfinity/candid/lib/cjs/utils/leb128.js
+index aacdb30..e5a7745 100644
+--- a/node_modules/@dfinity/candid/lib/cjs/utils/leb128.js
++++ b/node_modules/@dfinity/candid/lib/cjs/utils/leb128.js
+@@ -35,7 +35,8 @@ function lebEncode(value) {
+     while (true) {
+         const i = Number(value & BigInt(0x7f));
+         value /= BigInt(0x80);
+-        if (value === BigInt(0)) {
++        value = Math.trunc(value);
++        if (value === 0) {
+             pipe.write([i]);
+             break;
+         }
+@@ -80,9 +81,10 @@ function slebEncode(value) {
+     while (true) {
+         const i = getLowerBytes(value);
+         value /= BigInt(0x80);
++        value = Math.trunc(value);
+         // prettier-ignore
+-        if ((isNeg && value === BigInt(0) && (i & 0x40) !== 0)
+-            || (!isNeg && value === BigInt(0) && (i & 0x40) === 0)) {
++        if ((isNeg && value === 0 && (i & 0x40) !== 0)
++            || (!isNeg && value === 0 && (i & 0x40) === 0)) {
+             pipe.write([i]);
+             break;
+         }
+diff --git a/node_modules/@dfinity/candid/lib/esm/utils/leb128.js b/node_modules/@dfinity/candid/lib/esm/utils/leb128.js
+index 70a0d61..4e39a57 100644
+--- a/node_modules/@dfinity/candid/lib/esm/utils/leb128.js
++++ b/node_modules/@dfinity/candid/lib/esm/utils/leb128.js
+@@ -28,7 +28,8 @@ export function lebEncode(value) {
+     while (true) {
+         const i = Number(value & BigInt(0x7f));
+         value /= BigInt(0x80);
+-        if (value === BigInt(0)) {
++        value = Math.trunc(value);
++        if (value === 0) {
+             pipe.write([i]);
+             break;
+         }
+@@ -71,9 +72,10 @@ export function slebEncode(value) {
+     while (true) {
+         const i = getLowerBytes(value);
+         value /= BigInt(0x80);
++        value = Math.trunc(value);
+         // prettier-ignore
+-        if ((isNeg && value === BigInt(0) && (i & 0x40) !== 0)
+-            || (!isNeg && value === BigInt(0) && (i & 0x40) === 0)) {
++        if ((isNeg && value === 0 && (i & 0x40) !== 0)
++            || (!isNeg && value === 0 && (i & 0x40) === 0)) {
+             pipe.write([i]);
+             break;
          }

@@ -107,6 +107,7 @@ export const setAssetsAndLoading = createAsyncThunk(
 export const getAssets = createAsyncThunk(
   'keyring/getAssets',
   async (params, { getState, dispatch }) => {
+    console.log('private get assets');
     return privateGetAssets(params, getState(), dispatch);
   },
 );
