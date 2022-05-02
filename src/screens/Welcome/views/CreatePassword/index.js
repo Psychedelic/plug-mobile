@@ -15,7 +15,11 @@ import useKeychain from '@hooks/useKeychain';
 import Back from '@commonComponents/Back';
 import Routes from '@navigation/Routes';
 
-import { createPasswordRules, createPasswordFields } from './constants';
+import {
+  createPasswordRules,
+  createPasswordFields,
+  MIN_LENGHT_MESSAGE,
+} from './constants';
 import styles from './styles';
 
 const CreatePassword = ({ route, navigation }) => {
@@ -28,6 +32,7 @@ const CreatePassword = ({ route, navigation }) => {
   } = useForm({
     defaultValues: { password: '' },
     mode: 'onChange',
+    criteriaMode: 'all',
   });
   const dispatch = useDispatch();
 
@@ -110,9 +115,23 @@ const CreatePassword = ({ route, navigation }) => {
           <ErrorMessage
             errors={errors}
             name={createPasswordFields.password}
-            render={({ message }) => (
-              <Text style={styles.errorText}>{message}</Text>
-            )}
+            render={({ message, messages }) => {
+              const choosenMessage = messages?.pattern
+                ? messages?.pattern
+                : message;
+              const warningMessage =
+                messages?.minLength && choosenMessage === MIN_LENGHT_MESSAGE;
+
+              return (
+                <Text
+                  style={[
+                    styles.errorText,
+                    warningMessage && styles.warningText,
+                  ]}>
+                  {choosenMessage}
+                </Text>
+              );
+            }}
           />
           {biometryAvailable && (
             <View style={styles.switchContainer}>

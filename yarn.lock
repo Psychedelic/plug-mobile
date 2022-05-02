@@ -1147,10 +1147,10 @@
     cross-fetch "^3.1.4"
     crypto-js "^4.1.1"
 
-"@psychedelic/plug-mobile-controller@0.2.9":
-  version "0.2.9"
-  resolved "https://npm.pkg.github.com/download/@psychedelic/plug-mobile-controller/0.2.9/140011f6d88e60c516e9a4fa3366e8ee13e6c644afeab92b0226291d3e2cadad#7548613f3c7da911990fb9cab4eb6a0435d90ced"
-  integrity sha512-jJ9hRtypHGwZT1xjZHLE3N++B5ycNbv7aIlrMQWcIhMVd1FJ+E0PQ9noGGm3RK5TNxGdXbPJKQdquyASBiejUA==
+"@psychedelic/plug-mobile-controller@0.2.10":
+  version "0.2.10"
+  resolved "https://npm.pkg.github.com/download/@psychedelic/plug-mobile-controller/0.2.10/84782f05a8e62d3064d018a935ec9d3b6ec3a340a1d27f723fb50daea7ce386f#19464c2273492461fc1eaeff248ca3ef1121270f"
+  integrity sha512-baNsieMZs+fhh6pzAx3Gci9R32zmPdbbkSG4NUrusS+z/otmP4Om6zWdFOnkFG/PPFNEEdxQ3PHaJHFUb/jrHg==
   dependencies:
     "@dfinity/agent" "0.9.3"
     "@dfinity/candid" "0.9.3"
