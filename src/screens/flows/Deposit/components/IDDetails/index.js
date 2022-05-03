@@ -6,7 +6,7 @@ import Clipboard from '@react-native-community/clipboard';
 import InfoWithActions from '@commonComponents/InfoWithActions';
 import GradientText from '@commonComponents/GradientText';
 import CopiedToast from '@commonComponents/CopiedToast';
-import shortAddress from '@helpers/shortAddress';
+import shortAddress from '@utils/shortAddress';
 import Column from '@components/layout/Column';
 
 import { getIdInfo } from '../../constants';

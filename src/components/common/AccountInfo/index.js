@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import shortAddress from '@helpers/shortAddress';
+import shortAddress from '@utils/shortAddress';
 import { FontStyles } from '@constants/theme';
 import Touchable from '@components/animations/Touchable';
 

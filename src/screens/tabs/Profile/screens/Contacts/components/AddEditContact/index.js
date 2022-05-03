@@ -6,7 +6,7 @@ import emojis from 'emoji-datasource';
 import { charFromEmojiObject } from '@commonComponents/EmojiSelector/utils';
 import RainbowButton from '@components/buttons/RainbowButton';
 import TextInput from '@commonComponents/TextInput';
-import { validatePrincipalId } from '@helpers/ids';
+import { validatePrincipalId } from '@utils/ids';
 import UserIcon from '@commonComponents/UserIcon';
 import Header from '@commonComponents/Header';
 import { FontStyles } from '@constants/theme';
