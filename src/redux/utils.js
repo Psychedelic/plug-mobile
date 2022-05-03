@@ -1,5 +1,5 @@
 import { formatAssetBySymbol, TOKEN_IMAGES, TOKENS } from '@utils/assets';
-import { ACTIVITY_STATUS } from '@screens/Profile/components/constants';
+import { ACTIVITY_STATUS } from '@screens/tabs/components/constants';
 import { parseToFloatAmount } from '@utils/number';
 
 import { reset } from './slices/keyring';

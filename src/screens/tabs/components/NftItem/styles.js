@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
-import { WINDOW_WIDTH } from '../../../../constants/platform';
-import { FontStyles } from '../../../../constants/theme';
+import { WINDOW_WIDTH } from '@constants/platform';
+import { FontStyles } from '@constants/theme';
 
 const itemSize = WINDOW_WIDTH / 2 - 40;
 
@@ -11,16 +11,6 @@ const commonContainerSize = {
 };
 
 export default StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingHorizontal: 18,
-  },
-  nftsContainer: {
-    paddingVertical: 20,
-  },
-  item: {
-    margin: 10,
-  },
   text: {
     ...FontStyles.SmallGray,
     marginTop: 10,

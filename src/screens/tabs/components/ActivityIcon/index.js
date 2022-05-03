@@ -1,7 +1,8 @@
 import { Image, StyleSheet, View } from 'react-native';
 import React from 'react';
 
-import Icon from '../../../../components/icons';
+import Icon from '@components/icons';
+
 import { ACTIVITY_IMAGES } from '../constants';
 import { parseImageName } from '../utils';
 import styles from './styles';
