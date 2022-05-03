@@ -9,7 +9,6 @@ import Separator from '@components/layout/Separator';
 import animationScales from '@utils/animationScales';
 import { setUnlocked } from '@redux/slices/keyring';
 import RevealSeedPhrase from '../RevealSeedPhrase';
-import useInfoItems from '@hooks/useInfoItems';
 import Header from '@components/common/Header';
 import Modal from '@components/modal';
 import Icon from '@components/icons';
@@ -18,6 +17,7 @@ import BiometricUnlock from './components/BiometricUnlock';
 import { version } from '../../../../../../package.json';
 import SettingItem from './components/SettingItem';
 import InfoItem from './components/InfoItem';
+import { infoItems } from './constants';
 
 const Settings = () => {
   const modalRef = useRef(null);
@@ -27,8 +27,6 @@ const Settings = () => {
 
   const dispatch = useDispatch();
   const { biometricsAvailable } = useSelector(state => state.user);
-
-  const infoItems = useInfoItems();
 
   const openModal = () => {
     modalRef.current?.open();

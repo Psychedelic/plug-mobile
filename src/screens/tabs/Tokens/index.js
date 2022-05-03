@@ -11,7 +11,7 @@ import Divider from '@commonComponents/Divider';
 import { getICPPrice } from '@redux/slices/icp';
 import { Colors } from '@constants/theme';
 import Row from '@components/layout/Row';
-import Send from '@screens/Send';
+import Send from '@screens/flows/Send';
 
 import WalletHeader from '../components/WalletHeader';
 import styles from './styles';

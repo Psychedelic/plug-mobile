@@ -1,4 +1,4 @@
-import { WINDOW_HEIGHT, WINDOW_WIDTH } from '../constants/platform';
+import { WINDOW_HEIGHT, WINDOW_WIDTH } from '@constants/platform';
 
 export const Metrics = {
   ScreenWidth: WINDOW_HEIGHT,

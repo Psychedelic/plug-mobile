@@ -14,9 +14,9 @@ import Button from '@components/buttons/Button';
 import Header from '@commonComponents/Header';
 import { ENABLE_NFTS } from '@constants/nfts';
 import { Colors } from '@constants/theme';
-import Settings from '@screens/Settings';
-import Accounts from '@screens/Accounts';
 
+import Settings from './screens/Settings';
+import Accounts from './screens/Accounts';
 import styles from './styles';
 
 const Profile = () => {

@@ -2,32 +2,34 @@ import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { Text, ScrollView, Keyboard } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
-import TextInput from '../../components/common/TextInput';
-import { ADDRESS_TYPES } from '../../constants/addresses';
-import ContactSection from './components/ContactSection';
-import AmountSection from './components/AmountSection';
-import TokenSection from './components/TokenSection';
-import { getICPPrice } from '../../redux/slices/icp';
-import Header from '../../components/common/Header';
-import { FontStyles } from '../../constants/theme';
-import SaveContact from './components/SaveContact';
-import useKeychain from '../../hooks/useKeychain';
-import ReviewSend from './components/ReviewSend';
-import { USD_PER_TC } from '../../utils/assets';
-import XTC_OPTIONS from '../../constants/xtc';
-import Modal from '../../components/modal';
+import PasswordModal from '@commonComponents/PasswordModal';
+import TextInput from '@commonComponents/TextInput';
+import { ADDRESS_TYPES } from '@constants/addresses';
+import { getICPPrice } from '@redux/slices/icp';
+import Header from '@commonComponents/Header';
+import { FontStyles } from '@constants/theme';
+import useKeychain from '@hooks/useKeychain';
+import { USD_PER_TC } from '@utils/assets';
+import XTC_OPTIONS from '@constants/xtc';
+import Modal from '@components/modal';
 import {
   burnXtc,
   sendToken,
   setTransaction,
   transferNFT,
-} from '../../redux/slices/user';
-import styles from './styles';
+} from '@redux/slices/user';
 import {
   validatePrincipalId,
   validateAccountId,
   validateCanisterId,
-} from '../../helpers/ids';
+} from '@helpers/ids';
+
+import ContactSection from './components/ContactSection';
+import AmountSection from './components/AmountSection';
+import TokenSection from './components/TokenSection';
+import SaveContact from './components/SaveContact';
+import ReviewSend from './components/ReviewSend';
+import styles from './styles';
 import {
   getAvailableAmount,
   getUsdAvailableAmount,
@@ -35,7 +37,6 @@ import {
   USD_MAX_DECIMALS,
   ICP_MAX_DECIMALS,
 } from './utils';
-import PasswordModal from '../../components/common/PasswordModal';
 
 const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
 

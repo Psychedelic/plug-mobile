@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { createSubaccount, editSubaccount } from '../redux/slices/keyring';
+
+import { createSubaccount, editSubaccount } from '@redux/slices/keyring';
 
 const useAccounts = () => {
   const dispatch = useDispatch();

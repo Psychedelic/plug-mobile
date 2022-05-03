@@ -4,7 +4,6 @@ import Clipboard from '@react-native-community/clipboard';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { reset, setCurrentPrincipal } from '@redux/slices/keyring';
-import CreateEditAccount from '@modals/CreateEditAccount';
 import Touchable from '@components/animations/Touchable';
 import CommonItem from '@commonComponents/CommonItem';
 import shortAddress from '@helpers/shortAddress';
@@ -16,6 +15,7 @@ import Row from '@components/layout/Row';
 import Modal from '@components/modal';
 import Icon from '@components/icons';
 
+import CreateEditAccount from '../CreateEditAccount';
 import styles from './styles';
 
 const Accounts = ({ modalRef, onClose, ...props }) => {

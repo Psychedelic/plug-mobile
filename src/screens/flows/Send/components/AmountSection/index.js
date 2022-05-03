@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 
-import RainbowButton from '../../../../components/buttons/RainbowButton';
-import TokenSelector from '../../../../components/tokens/TokenSelector';
-import AmountInput from '../../../../components/common/AmountInput';
-import { toFixedNoRounding } from '../../../../utils/number';
-import styles from './styles';
+import RainbowButton from '@components/buttons/RainbowButton';
+import TokenSelector from '@components/tokens/TokenSelector';
+import AmountInput from '@components/common/AmountInput';
+import { toFixedNoRounding } from '@utils/number';
 import {
   formatSendAmount,
   ICP_MAX_DECIMALS,
   USD_MAX_DECIMALS,
-} from '../../utils';
+} from '@screens/flows/Send/utils';
+
+import styles from './styles';
 
 const AmountSection = ({
   selectedToken,

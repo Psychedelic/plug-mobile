@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import emojis from 'emoji-datasource';
 
 import { charFromEmojiObject } from '@commonComponents/EmojiSelector/utils';
-import EmojiSelector from '@modals/EmojiSelector';
 import RainbowButton from '@components/buttons/RainbowButton';
 import TextInput from '@commonComponents/TextInput';
 import { validatePrincipalId } from '@helpers/ids';
@@ -14,6 +13,7 @@ import { FontStyles } from '@constants/theme';
 import useContacts from '@hooks/useContacts';
 import Modal from '@components/modal';
 
+import EditEmoji from '../../../EditEmoji';
 import styles from './styles';
 
 const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
@@ -160,7 +160,7 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
           disabled={isButtonDisabled()}
         />
       </View>
-      <EmojiSelector
+      <EditEmoji
         modalRef={editEmojiRef}
         onSave={setEmoji}
         emoji={emoji || contact?.image}

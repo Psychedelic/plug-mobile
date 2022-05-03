@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { Text, View, Image } from 'react-native';
 
-import RainbowButton from '../../../../components/buttons/RainbowButton';
-import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
-import SeedPhrase from '../../../../components/common/SeedPhrase';
-import Container from '../../../../components/common/Container';
-import Header from '../../../../components/common/Header';
-import Copy from '../../../../components/common/Copy';
-import Back from '../../../../components/common/Back';
-import Routes from '../../../../navigation/Routes';
+import RainbowButton from '@components/buttons/RainbowButton';
+import PlugLogo from '@assets/icons/plug-logo-full.png';
+import SeedPhrase from '@commonComponents/SeedPhrase';
+import Container from '@commonComponents/Container';
+import Header from '@commonComponents/Header';
+import Copy from '@commonComponents/Copy';
+import Back from '@commonComponents/Back';
+import Routes from '@navigation/Routes';
+
 import styles from './styles';
 
 const BackupSeedPhrase = ({ route, navigation }) => {

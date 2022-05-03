@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact, removeContact, setContacts } from '../redux/slices/user';
+
+import { addContact, removeContact, setContacts } from '@redux/slices/user';
 
 const getFirstLetterFrom = value => value.slice(0, 1).toUpperCase();
 
