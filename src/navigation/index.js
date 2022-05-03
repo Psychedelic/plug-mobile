@@ -5,16 +5,17 @@ import { Host } from 'react-native-portalize';
 import React, { useEffect } from 'react';
 import { AppState } from 'react-native';
 
-import ImportSeedPhrase from '../screens/Welcome/views/ImportSeedPhrase';
-import BackupSeedPhrase from '../screens/Welcome/views/BackupSeedPhrase';
-import CreatePassword from '../screens/Welcome/views/CreatePassword';
+import ImportSeedPhrase from '@screens/auth/ImportSeedPhrase';
+import BackupSeedPhrase from '@screens/auth/BackupSeedPhrase';
+import ConnectionError from '@screens/error/ConnectionError';
+import CreatePassword from '@screens/auth/CreatePassword';
+import { navigationRef } from '@helpers/navigation';
+import { setUnlocked } from '@redux/slices/keyring';
+import Welcome from '@screens/auth/Welcome';
+import { Colors } from '@constants/theme';
+import Login from '@screens/auth/Login';
+
 import SwipeNavigator from './navigators/SwipeNavigator';
-import ConnectionError from '../screens/ConnectionError';
-import { navigationRef } from '../helpers/navigation';
-import { setUnlocked } from '../redux/slices/keyring';
-import { Colors } from '../constants/theme';
-import Welcome from '../screens/Welcome';
-import Login from '../screens/Login';
 import Routes from './Routes';
 
 const Stack = createStackNavigator();

@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { FontStyles, Colors } from '../../../../constants/theme';
+import { FontStyles, Colors } from '@constants/theme';
 
 const commonPadding = 20;
 

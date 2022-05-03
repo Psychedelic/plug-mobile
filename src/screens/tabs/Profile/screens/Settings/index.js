@@ -2,21 +2,22 @@ import React, { useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Touchable from '../../components/animations/Touchable';
-import { FontStyles, Colors } from '../../constants/theme';
-import BiometricUnlock from './components/BiometricUnlock';
-import Separator from '../../components/layout/Separator';
-import animationScales from '../../utils/animationScales';
-import { setUnlocked } from '../../redux/slices/keyring';
-import useInfoItems from '../../hooks/useInfoItems';
-import Header from '../../components/common/Header';
-import SettingItem from './components/SettingItem';
+import Contacts from '@screens/tabs/Profile/screens/Contacts';
+import Touchable from '@components/animations/Touchable';
+import { FontStyles, Colors } from '@constants/theme';
+import Separator from '@components/layout/Separator';
+import animationScales from '@utils/animationScales';
+import { setUnlocked } from '@redux/slices/keyring';
 import RevealSeedPhrase from '../RevealSeedPhrase';
-import { version } from '../../../package.json';
+import useInfoItems from '@hooks/useInfoItems';
+import Header from '@components/common/Header';
+import Modal from '@components/modal';
+import Icon from '@components/icons';
+
+import BiometricUnlock from './components/BiometricUnlock';
+import { version } from '../../../../../../package.json';
+import SettingItem from './components/SettingItem';
 import InfoItem from './components/InfoItem';
-import Modal from '../../components/modal';
-import Icon from '../../components/icons';
-import Contacts from '../Contacts';
 
 const Settings = () => {
   const modalRef = useRef(null);

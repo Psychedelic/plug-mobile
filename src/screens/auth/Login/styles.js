@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
-import { pixelRatioScale, refRatioScale } from '../../constants/platform';
-import { Colors } from '../../constants/theme';
+import { pixelRatioScale } from '@constants/platform';
+import { Colors } from '@constants/theme';
 
 export default StyleSheet.create({
   container: {
