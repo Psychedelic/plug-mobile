@@ -1,8 +1,17 @@
 diff --git a/node_modules/@dfinity/candid/lib/cjs/idl.js b/node_modules/@dfinity/candid/lib/cjs/idl.js
-index d97a72b..da49030 100644
+index d97a72b..2ceeb06 100644
 --- a/node_modules/@dfinity/candid/lib/cjs/idl.js
 +++ b/node_modules/@dfinity/candid/lib/cjs/idl.js
-@@ -376,6 +376,7 @@ class NatClass extends PrimitiveType {
+@@ -13,6 +13,8 @@ const types_1 = require("./types");
+ const hash_1 = require("./utils/hash");
+ const leb128_1 = require("./utils/leb128");
+ const leb128_2 = require("./utils/leb128");
++import JSBI from 'jsbi';
++
+ const magicNumber = 'DIDL';
+ function zipWith(xs, ys, f) {
+     return xs.map((x, i) => f(x, ys[i]));
+@@ -376,6 +378,7 @@ class NatClass extends PrimitiveType {
      covariant(x) {
          // We allow encoding of JavaScript plain numbers.
          // But we will always decode to bigint.
@@ -10,7 +19,7 @@ index d97a72b..da49030 100644
          return (typeof x === 'bigint' && x >= BigInt(0)) || (Number.isInteger(x) && x >= 0);
      }
      encodeValue(x) {
-@@ -457,8 +458,11 @@ class FixedIntClass extends PrimitiveType {
+@@ -457,8 +460,11 @@ class FixedIntClass extends PrimitiveType {
          return v.visitFixedInt(this, d);
      }
      covariant(x) {
@@ -24,23 +33,34 @@ index d97a72b..da49030 100644
          if (typeof x === 'bigint') {
              return x >= min && x <= max;
          }
-@@ -507,8 +511,13 @@ class FixedNatClass extends PrimitiveType {
+@@ -507,17 +513,16 @@ class FixedNatClass extends PrimitiveType {
          return v.visitFixedNat(this, d);
      }
      covariant(x) {
 -        const max = BigInt(2) ** BigInt(this.bits);
 -        if (typeof x === 'bigint' && x >= BigInt(0)) {
+-            return x < max;
+-        }
+-        else if (Number.isInteger(x) && x >= 0) {
+-            const v = BigInt(x);
+-            return v < max;
+-        }
+-        else {
+-            return false;
++        const v = JSBI.BigInt(x);
 +        console.log('fixed nat cov', x, typeof x);
 +        console.log('is it a bigint?', typeof x === 'bigint');
 +        console.log('Is it an integer?', Number.isInteger(x));
-+        const max = Math.pow(2, this.bits);
++        const max = JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(this.bits));
 +        console.log('max is 2^',this.bits);
-+        console.log('?????',x,  max, x < max);
-+        if (x >= BigInt(0)) {
-             return x < max;
++        if (JSBI.greaterThanOrEqual(v, JSBI.BigInt(0))) {
++            return JSBI.LT(v, max);
          }
-         else if (Number.isInteger(x) && x >= 0) {
-@@ -691,6 +700,7 @@ class RecordClass extends ConstructType {
++        return false;
+     }
+     encodeValue(x) {
+         return leb128_2.writeUIntLE(x, this.bits / 8);
+@@ -691,6 +696,7 @@ class RecordClass extends ConstructType {
      covariant(x) {
          return (typeof x === 'object' &&
              this._fields.every(([k, t]) => {

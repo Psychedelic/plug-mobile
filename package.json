@@ -1,6 +1,6 @@
 {
   "name": "Plug",
-  "version": "0.1.1(8)",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "rename-build": "chmod +x ./rename-ic-agent.sh && ./rename-ic-agent.sh",
@@ -50,6 +50,7 @@
     "flatted": "^3.2.4",
     "formik": "^2.2.9",
     "js-sha256": "^0.9.0",
+    "jsbi": "^4.3.0",
     "json-bigint": "^1.0.0",
     "moment": "^2.29.2",
     "patch-package": "^6.4.7",
