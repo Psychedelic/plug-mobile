@@ -75,6 +75,8 @@ cd ios && pod install && cd .. # install pods for iOS
 // https://help.apple.com/xcode/#/dev745c5c974
 ```
 
+- To be able to run the app you will have to follow the installation steps on our controller package called [plug-mobile-controller](https://github.com/Psychedelic/plug-mobile-controller).
+
 ### iOS
 
 - Install the iOS dependencies
