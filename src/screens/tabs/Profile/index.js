@@ -4,6 +4,7 @@ import { Text, View, FlatList, RefreshControl } from 'react-native';
 
 import { getTransactions, setTransactionsLoading } from '@redux/slices/user';
 import { ERROR_TYPES } from '@commonComponents/ErrorState/constants';
+import ActivityItem from '@screens/tabs/components/ActivityItem';
 import ErrorState from '@commonComponents/ErrorState';
 import EmptyState from '@commonComponents/EmptyState';
 import Container from '@commonComponents/Container';
@@ -13,10 +14,9 @@ import Button from '@components/buttons/Button';
 import Header from '@commonComponents/Header';
 import { ENABLE_NFTS } from '@constants/nfts';
 import { Colors } from '@constants/theme';
+import Settings from '@screens/Settings';
+import Accounts from '@screens/Accounts';
 
-import ActivityItem from './components/ActivityItem';
-import Settings from '../Settings';
-import Accounts from '../Accounts';
 import styles from './styles';
 
 const Profile = () => {

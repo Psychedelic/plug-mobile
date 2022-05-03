@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-import NftItem from '@screens/Wallet/tabs/NFTs/components/NftItem';
+import NftItem from '@screens/tabs/components/NftItem';
 import { FontStyles, Colors } from '@constants/theme';
 import TokenItem from '@components/tokens/TokenItem';
 import { ENABLE_NFTS } from '@constants/nfts';

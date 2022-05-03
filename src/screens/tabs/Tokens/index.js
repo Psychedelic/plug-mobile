@@ -1,18 +1,20 @@
-import { RefreshControl, ScrollView, Text, StyleSheet } from 'react-native';
+import { RefreshControl, ScrollView, Text } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ERROR_TYPES } from '../../../../components/common/ErrorState/constants';
-import { getAssets, setAssetsLoading } from '../../../../redux/slices/user';
-import ErrorState from '../../../../components/common/ErrorState';
-import { Colors, FontStyles } from '../../../../constants/theme';
-import TokenItem from '../../../../components/tokens/TokenItem';
-import Container from '../../../../components/common/Container';
-import Divider from '../../../../components/common/Divider';
-import { getICPPrice } from '../../../../redux/slices/icp';
-import WalletHeader from '../../components/WalletHeader';
-import Row from '../../../../components/layout/Row';
-import Send from '../../../../screens/Send';
+import { ERROR_TYPES } from '@commonComponents/ErrorState/constants';
+import { getAssets, setAssetsLoading } from '@redux/slices/user';
+import ErrorState from '@commonComponents/ErrorState';
+import TokenItem from '@components/tokens/TokenItem';
+import Container from '@commonComponents/Container';
+import Divider from '@commonComponents/Divider';
+import { getICPPrice } from '@redux/slices/icp';
+import { Colors } from '@constants/theme';
+import Row from '@components/layout/Row';
+import Send from '@screens/Send';
+
+import WalletHeader from '../components/WalletHeader';
+import styles from './styles';
 
 function Tokens() {
   const dispatch = useDispatch();
@@ -91,19 +93,3 @@ function Tokens() {
 }
 
 export default Tokens;
-
-const styles = StyleSheet.create({
-  title: {
-    paddingLeft: 20,
-    paddingBottom: 20,
-    ...FontStyles.Title,
-  },
-  tokenItem: {
-    marginTop: 20,
-    paddingHorizontal: 20,
-  },
-  rowStyle: {
-    justifyContent: 'space-between',
-    paddingRight: 20,
-  },
-});

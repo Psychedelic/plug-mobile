@@ -2,16 +2,17 @@ import { RefreshControl, Text, FlatList } from 'react-native';
 import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ERROR_TYPES } from '../../../../components/common/ErrorState/constants';
-import ErrorState from '../../../../components/common/ErrorState';
-import EmptyState from '../../../../components/common/EmptyState';
-import Container from '../../../../components/common/Container';
-import Divider from '../../../../components/common/Divider';
-import WalletHeader from '../../components/WalletHeader';
-import { getNFTs } from '../../../../redux/slices/user';
-import { Colors } from '../../../../constants/theme';
-import NftItem from './components/NftItem/index';
-import NftDetail from '../../../NftDetail';
+import { ERROR_TYPES } from '@commonComponents/ErrorState/constants';
+import WalletHeader from '@screens/tabs/components/WalletHeader';
+import ErrorState from '@commonComponents/ErrorState';
+import EmptyState from '@commonComponents/EmptyState';
+import NftItem from '@screens/tabs/components/NftItem';
+import Container from '@commonComponents/Container';
+import Divider from '@commonComponents/Divider';
+import { getNFTs } from '@redux/slices/user';
+import NftDetail from '@screens/NftDetail';
+import { Colors } from '@constants/theme';
+
 import styles from './styles';
 
 const NFTs = () => {

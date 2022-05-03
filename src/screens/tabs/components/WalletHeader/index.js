@@ -3,18 +3,19 @@ import { useNavigation } from '@react-navigation/core';
 import { useSelector } from 'react-redux';
 import { View } from 'react-native';
 
-import AccountInfo from '../../../../components/common/AccountInfo';
-import Touchable from '../../../../components/animations/Touchable';
-import UserIcon from '../../../../components/common/UserIcon';
-import { useDebounce } from '../../../../hooks/useDebounce';
-import Header from '../../../../components/common/Header';
-import { Colors } from '../../../../constants/theme';
-import Routes from '../../../../navigation/Routes';
-import Modal from '../../../../components/modal';
-import Icon from '../../../../components/icons';
+import AccountInfo from '@commonComponents/AccountInfo';
+import Touchable from '@components/animations/Touchable';
+import UserIcon from '@commonComponents/UserIcon';
+import { useDebounce } from '@hooks/useDebounce';
+import Header from '@commonComponents/Header';
+import { Colors } from '@constants/theme';
+import Routes from '@navigation/Routes';
+import Deposit from '@screens/Deposit';
+import Modal from '@components/modal';
+import Icon from '@components/icons';
+import Send from '@screens/Send';
+
 import ActionButton from '../ActionButton';
-import Deposit from '../../../Deposit';
-import Send from '../../../Send';
 import styles from './styles';
 
 const WalletHeader = () => {

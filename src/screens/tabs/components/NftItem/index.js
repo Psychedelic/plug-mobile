@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 
-import NftDisplayer from '../../../../../../components/common/NftDisplayer';
-import Touchable from '../../../../../../components/animations/Touchable';
-import useGetType from '../../../../../../hooks/useGetType';
-import sharedStyles from '../../styles';
+import NftDisplayer from '@commonComponents/NftDisplayer';
+import Touchable from '@components/animations/Touchable';
+import useGetType from '@hooks/useGetType';
+
+import styles from './styles';
 
 function NftItem({ item, onOpen, isSend }) {
   const { url, canisterId, index, collection } = item;
@@ -22,11 +23,11 @@ function NftItem({ item, onOpen, isSend }) {
   return (
     <View
       key={`${canisterId}_${index}`}
-      style={[sharedStyles.item, isDisabled && sharedStyles.disabledContainer]}>
-      <Touchable onPress={handleOnPress} style={sharedStyles.touchable}>
-        <NftDisplayer type={type} url={url} style={sharedStyles.nftDisplayer} />
+      style={[styles.item, isDisabled && styles.disabledContainer]}>
+      <Touchable onPress={handleOnPress} style={styles.touchable}>
+        <NftDisplayer type={type} url={url} style={styles.nftDisplayer} />
       </Touchable>
-      <Text numberOfLines={1} ellipsizeMode="tail" style={sharedStyles.text}>
+      <Text numberOfLines={1} ellipsizeMode="tail" style={styles.text}>
         {`${collection} #${index}`}
       </Text>
     </View>
