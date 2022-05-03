@@ -69,10 +69,18 @@ index d97a72b..2ceeb06 100644
                  if (!x.hasOwnProperty(k)) {
                      throw new Error(`Record is missing key "${k}".`);
 diff --git a/node_modules/@dfinity/candid/lib/cjs/utils/leb128.js b/node_modules/@dfinity/candid/lib/cjs/utils/leb128.js
-index aacdb30..e5a7745 100644
+index aacdb30..f3d9bec 100644
 --- a/node_modules/@dfinity/candid/lib/cjs/utils/leb128.js
 +++ b/node_modules/@dfinity/candid/lib/cjs/utils/leb128.js
-@@ -35,7 +35,8 @@ function lebEncode(value) {
+@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.readIntLE = exports.readUIntLE = exports.writeIntLE = exports.writeUIntLE = exports.slebDecode = exports.slebEncode = exports.lebDecode = exports.lebEncode = exports.safeRead = void 0;
+ const buffer_pipe_1 = __importDefault(require("buffer-pipe"));
+ const buffer_1 = require("buffer/");
++import JSBI from 'jsbi';
+ /**
+  *
+  * @param pipe Pipe from buffer-pipe
+@@ -35,7 +36,8 @@ function lebEncode(value) {
      while (true) {
          const i = Number(value & BigInt(0x7f));
          value /= BigInt(0x80);
@@ -82,19 +90,57 @@ index aacdb30..e5a7745 100644
              pipe.write([i]);
              break;
          }
-@@ -80,9 +81,10 @@ function slebEncode(value) {
+@@ -69,20 +71,23 @@ exports.lebDecode = lebDecode;
+  * @param value The number to encode.
+  */
+ function slebEncode(value) {
+-    if (typeof value === 'number') {
+-        value = BigInt(value);
+-    }
+-    const isNeg = value < BigInt(0);
++    console.log('sleb encode ', value);
++    value = JSBI.BigInt(value);
++    console.log('jsbi bigint val', value);
++    const isNeg = JSBI.LT(value, JSBI.BigInt(0));
++    console.log('isNeg', isNeg);
+     if (isNeg) {
+-        value = -value - BigInt(1);
++        value = JSBI.subtract(JSBI.multiply(value, JSBI.BigInt(-1)), JSBI.BigInt(1));
+     }
++    console.log('new val', isNeg, value);
+     const pipe = new buffer_pipe_1.default();
++    console.log('entering loop', value, isNeg);
      while (true) {
          const i = getLowerBytes(value);
-         value /= BigInt(0x80);
-+        value = Math.trunc(value);
+-        value /= BigInt(0x80);
++        value = JSBI.divide(value, JSBI.BigInt(0x80));
++        const isZero = JSBI.equal(value, JSBI.BigInt(0));
          // prettier-ignore
 -        if ((isNeg && value === BigInt(0) && (i & 0x40) !== 0)
 -            || (!isNeg && value === BigInt(0) && (i & 0x40) === 0)) {
-+        if ((isNeg && value === 0 && (i & 0x40) !== 0)
-+            || (!isNeg && value === 0 && (i & 0x40) === 0)) {
++        if ((isNeg && isZero && (i & 0x40) !== 0) || (!isNeg && isZero && (i & 0x40) === 0)) {
              pipe.write([i]);
              break;
          }
+@@ -91,13 +96,15 @@ function slebEncode(value) {
+         }
+     }
+     function getLowerBytes(num) {
+-        const bytes = num % BigInt(0x80);
++        const bytes = JSBI.remainder(num, JSBI.BigInt(0x80));
+         if (isNeg) {
+             // We swap the bits here again, and remove 1 to do two's complement.
+-            return Number(BigInt(0x80) - bytes - BigInt(1));
++            return JSBI.toNumber(
++                JSBI.subtract(JSBI.subtract(JSBI.BigInt(0x80), bytes), JSBI.BigInt(1))
++            );
+         }
+         else {
+-            return Number(bytes);
++            return JSBI.toNumber(bytes);
+         }
+     }
+     return new buffer_1.Buffer(pipe.buffer);
 diff --git a/node_modules/@dfinity/candid/lib/esm/utils/leb128.js b/node_modules/@dfinity/candid/lib/esm/utils/leb128.js
 index 70a0d61..4e39a57 100644
 --- a/node_modules/@dfinity/candid/lib/esm/utils/leb128.js
