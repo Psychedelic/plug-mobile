@@ -1,9 +1,10 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-import Divider from '../../../../components/common/Divider';
-import { FontStyles } from '../../../../constants/theme';
-import Row from '../../../../components/layout/Row';
+import Divider from '@commonComponents/Divider';
+import { FontStyles } from '@constants/theme';
+import Row from '@components/layout/Row';
+
 import styles from './styles';
 
 function DepositDivider() {

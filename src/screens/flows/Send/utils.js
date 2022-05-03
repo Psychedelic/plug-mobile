@@ -1,6 +1,6 @@
-import { DEFAULT_FEE, XTC_FEE } from '../../constants/addresses';
-import { toFixedNoRounding } from '../../utils/number';
-import { USD_PER_TC } from '../../utils/assets';
+import { DEFAULT_FEE, XTC_FEE } from '@constants/addresses';
+import { toFixedNoRounding } from '@utils/number';
+import { USD_PER_TC } from '@utils/assets';
 
 export const USD_MAX_DECIMALS = 2;
 export const ICP_MAX_DECIMALS = 8;

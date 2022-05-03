@@ -1,12 +1,14 @@
-import { StyleSheet, View, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import { View, Text } from 'react-native';
 
-import RainbowButton from '../components/buttons/RainbowButton';
-import EmojiSelector from '../components/common/EmojiSelector';
-import UserIcon from '../components/common/UserIcon';
-import Header from '../components/common/Header';
-import { FontStyles } from '../constants/theme';
-import Modal from '../components/modal';
+import RainbowButton from '@components/buttons/RainbowButton';
+import EmojiSelector from '@commonComponents/EmojiSelector';
+import UserIcon from '@commonComponents/UserIcon';
+import Header from '@commonComponents/Header';
+import { FontStyles } from '@constants/theme';
+import Modal from '@components/modal';
+
+import styles from './styles';
 
 const EditEmoji = ({ modalRef, onSave, emoji }) => {
   const [selectedEmoji, setSelectedEmoji] = useState('');
@@ -34,19 +36,5 @@ const EditEmoji = ({ modalRef, onSave, emoji }) => {
     </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  content: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 35,
-    justifyContent: 'space-between',
-  },
-  icon: {
-    alignSelf: 'center',
-    marginBottom: 25,
-  },
-});
 
 export default EditEmoji;

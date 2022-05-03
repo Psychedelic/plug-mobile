@@ -8,12 +8,12 @@ import Touchable from '@components/animations/Touchable';
 import UserIcon from '@commonComponents/UserIcon';
 import { useDebounce } from '@hooks/useDebounce';
 import Header from '@commonComponents/Header';
+import Deposit from '@screens/flows/Deposit';
 import { Colors } from '@constants/theme';
 import Routes from '@navigation/Routes';
-import Deposit from '@screens/Deposit';
+import Send from '@screens/flows/Send';
 import Modal from '@components/modal';
 import Icon from '@components/icons';
-import Send from '@screens/Send';
 
 import ActionButton from '../ActionButton';
 import styles from './styles';

@@ -10,9 +10,9 @@ import NftItem from '@screens/tabs/components/NftItem';
 import Container from '@commonComponents/Container';
 import Divider from '@commonComponents/Divider';
 import { getNFTs } from '@redux/slices/user';
-import NftDetail from '@screens/NftDetail';
 import { Colors } from '@constants/theme';
 
+import NftDetail from './screens/NftDetail';
 import styles from './styles';
 
 const NFTs = () => {
