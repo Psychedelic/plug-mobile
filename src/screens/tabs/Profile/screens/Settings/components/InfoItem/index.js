@@ -1,11 +1,14 @@
 import React from 'react';
-import Touchable from '../../../components/animations/Touchable';
 import { View, Text } from 'react-native';
-import { FontStyles } from '../../../constants/theme';
+
+import Touchable from '@components/animations/Touchable';
+import { FontStyles } from '@constants/theme';
+
+const containerStyle = { height: 40, justifyContent: 'center' };
 
 const InfoItem = ({ name, onPress }) => (
   <Touchable onPress={onPress}>
-    <View style={{ height: 40, justifyContent: 'center' }}>
+    <View style={containerStyle}>
       <Text style={FontStyles.Normal}>{name}</Text>
     </View>
   </Touchable>

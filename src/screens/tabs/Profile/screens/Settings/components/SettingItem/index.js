@@ -1,11 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Text } from 'react-native';
 
-import Touchable from '../../../components/animations/Touchable';
-import Column from '../../../components/layout/Column';
-import { FontStyles } from '../../../constants/theme';
-import Row from '../../../components/layout/Row';
-import Icon from '../../../components/icons';
+import Touchable from '@components/animations/Touchable';
+import Column from '@components/layout/Column';
+import { FontStyles } from '@constants/theme';
+import Row from '@components/layout/Row';
+import Icon from '@components/icons';
+
+import styles from './styles';
 
 const SettingItem = ({ icon, name, description, onPress, iconName }) => (
   <Touchable onPress={onPress}>
@@ -25,23 +27,3 @@ const SettingItem = ({ icon, name, description, onPress, iconName }) => (
 );
 
 export default SettingItem;
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 20,
-    paddingVertical: 20,
-  },
-  icon: {
-    fontSize: 18,
-  },
-  chevron: {
-    marginLeft: 'auto',
-    alignSelf: 'center',
-  },
-  iconName: {
-    marginRight: 5,
-  },
-  name: {
-    marginBottom: 5,
-  },
-});
