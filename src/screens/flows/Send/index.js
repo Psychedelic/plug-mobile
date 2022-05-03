@@ -22,7 +22,7 @@ import {
   validatePrincipalId,
   validateAccountId,
   validateCanisterId,
-} from '@helpers/ids';
+} from '@utils/ids';
 
 import ContactSection from './components/ContactSection';
 import AmountSection from './components/AmountSection';

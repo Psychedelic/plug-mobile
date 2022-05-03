@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { reset, setCurrentPrincipal } from '@redux/slices/keyring';
 import Touchable from '@components/animations/Touchable';
 import CommonItem from '@commonComponents/CommonItem';
-import shortAddress from '@helpers/shortAddress';
+import shortAddress from '@utils/shortAddress';
 import { getICPPrice } from '@redux/slices/icp';
 import Header from '@commonComponents/Header';
 import { FontStyles } from '@constants/theme';

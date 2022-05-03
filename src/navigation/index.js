@@ -9,7 +9,7 @@ import ImportSeedPhrase from '@screens/auth/ImportSeedPhrase';
 import BackupSeedPhrase from '@screens/auth/BackupSeedPhrase';
 import ConnectionError from '@screens/error/ConnectionError';
 import CreatePassword from '@screens/auth/CreatePassword';
-import { navigationRef } from '@helpers/navigation';
+import { navigationRef } from '@utils/navigation';
 import { setUnlocked } from '@redux/slices/keyring';
 import Welcome from '@screens/auth/Welcome';
 import { Colors } from '@constants/theme';

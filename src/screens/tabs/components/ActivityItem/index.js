@@ -4,7 +4,7 @@ import React from 'react';
 
 import UsdFormat from '@components/number/UsdFormat';
 import { formatToMaxDecimals } from '@utils/number';
-import shortAddress from '@helpers/shortAddress';
+import shortAddress from '@utils/shortAddress';
 import { FontStyles } from '@constants/theme';
 
 import { getStatus, getSubtitle, getTitle } from '../utils';
