@@ -4,11 +4,11 @@ import { Text, View, Image } from 'react-native';
 import RainbowButton from '@components/buttons/RainbowButton';
 import PlugLogo from '@assets/icons/plug-logo-full.png';
 import SeedPhrase from '@commonComponents/SeedPhrase';
-import Container from '@commonComponents/Container';
 import Header from '@commonComponents/Header';
 import Copy from '@commonComponents/Copy';
 import Back from '@commonComponents/Back';
 import Routes from '@navigation/Routes';
+import { Container } from '@layout';
 
 import styles from './styles';
 

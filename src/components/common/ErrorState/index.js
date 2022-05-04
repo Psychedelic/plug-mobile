@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-import { FontStyles } from '../../../constants/theme';
+import { FontStyles } from '@constants/theme';
+import Button from '@buttons/Button';
+
 import { getErrorStateData } from './constants';
-import Button from '../../buttons/Button';
 import styles from './styles';
 
 function ErrorState({ errorType, onPress, loading, style, buttonStyle }) {

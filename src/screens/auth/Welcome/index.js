@@ -4,11 +4,11 @@ import { View, Text, Image } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import RainbowButton from '@components/buttons/RainbowButton';
-import Container from '@components/common/Container';
 import Plug from '@assets/icons/il_white_plug.png';
 import Button from '@components/buttons/Button';
 import { FontStyles } from '@constants/theme';
 import Routes from '@navigation/Routes';
+import { Container } from '@layout';
 
 import styles from './styles';
 

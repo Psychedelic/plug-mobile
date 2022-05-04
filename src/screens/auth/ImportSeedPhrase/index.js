@@ -6,13 +6,13 @@ import RainbowButton from '@components/buttons/RainbowButton';
 import KeyboardHider from '@commonComponents/KeyboardHider';
 import { reset, importWallet } from '@redux/slices/keyring';
 import PlugLogo from '@assets/icons/plug-logo-full.png';
-import Container from '@commonComponents/Container';
 import TextInput from '@commonComponents/TextInput';
 import { getICPPrice } from '@redux/slices/icp';
 import Header from '@commonComponents/Header';
 import useKeychain from '@hooks/useKeychain';
 import Back from '@commonComponents/Back';
 import Routes from '@navigation/Routes';
+import { Container } from '@layout';
 
 import styles from './styles';
 

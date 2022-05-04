@@ -6,10 +6,9 @@ import { ERROR_TYPES } from '@commonComponents/ErrorState/constants';
 import { getAssets, setAssetsLoading } from '@redux/slices/user';
 import ErrorState from '@commonComponents/ErrorState';
 import TokenItem from '@components/tokens/TokenItem';
-import Container from '@commonComponents/Container';
+import { Row, Separator, Container } from '@layout';
 import { getICPPrice } from '@redux/slices/icp';
 import { Colors } from '@constants/theme';
-import { Row, Separator } from '@layout';
 import Send from '@screens/flows/Send';
 
 import WalletHeader from '../components/WalletHeader';

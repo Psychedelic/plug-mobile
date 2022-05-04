@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+
 import styles from './styles';
 
 const EmptyState = ({ title, text, style }) => (

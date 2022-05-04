@@ -4,14 +4,14 @@ import { Modalize } from 'react-native-modalize';
 
 import styles from './styles';
 
-const Modal = ({
+function Modal({
   children,
   modalRef,
   onClose,
   fullHeight,
   scrollViewProps,
   ...props
-}) => {
+}) {
   return (
     <Portal>
       <Modalize
@@ -36,6 +36,6 @@ const Modal = ({
       </Modalize>
     </Portal>
   );
-};
+}
 
 export default Modal;

@@ -5,8 +5,9 @@ import Animated, {
   useAnimatedStyle,
   withTiming,
 } from 'react-native-reanimated';
-import haptics, { HapticFeedbackTypes } from '../../../utils/haptics';
-import scales from '../../../utils/animationScales';
+
+import haptics, { HapticFeedbackTypes } from '@utils/haptics';
+import scales from '@utils/animationScales';
 
 const Touchable = ({
   children,
