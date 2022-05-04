@@ -2,10 +2,11 @@ import React, { useRef, useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-import animationScales from '../../../utils/animationScales';
-import { Rainbow, Colors } from '../../../constants/theme';
+import animationScales from '@utils/animationScales';
 import Touchable from '@commonComponents/Touchable';
-import Button from '../../buttons/Button';
+import { Rainbow, Colors } from '@constants/theme';
+import Button from '@buttons/Button';
+
 import styles from './styles';
 
 const AmountInput = ({

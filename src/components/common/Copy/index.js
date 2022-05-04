@@ -1,10 +1,11 @@
-import { Text, View } from 'react-native';
-import React, { useState, useEffect } from 'react';
 import Clipboard from '@react-native-community/clipboard';
+import React, { useState, useEffect } from 'react';
+import { Text, View } from 'react-native';
 
+import CopiedToast from '@commonComponents/CopiedToast';
 import Touchable from '@commonComponents/Touchable';
-import CopiedToast from '../CopiedToast';
-import Icon from '../../icons';
+import Icon from '@icons';
+
 import styles from './styles';
 
 const Copy = ({ text, customStyle }) => {

@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, View } from 'react-native';
 
 import Touchable from '@commonComponents/Touchable';
+
 import { categoryKeys, Categories } from '../../utils';
 import styles from './styles';
 

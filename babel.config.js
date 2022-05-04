@@ -18,7 +18,7 @@ module.exports = {
           '@screens': './src/screens',
           '@services': './src/services',
           '@utils': './src/utils',
-          // Usefull aliases:+
+          // Usefull aliases:
           '@buttons': './src/components/buttons',
           '@commonComponents': './src/components/common',
           '@formatters': './src/components/formatters',
