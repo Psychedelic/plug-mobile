@@ -2,7 +2,7 @@ import { Text, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import Clipboard from '@react-native-community/clipboard';
 
-import Touchable from '../../animations/Touchable';
+import Touchable from '@commonComponents/Touchable';
 import CopiedToast from '../CopiedToast';
 import Icon from '../../icons';
 import styles from './styles';

@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import React from 'react';
 
-import Touchable from '@components/animations/Touchable';
+import Touchable from '@commonComponents/Touchable';
 import animationScales from '@utils/animationScales';
 import UserIcon from '@commonComponents/UserIcon';
 import shortAddress from '@utils/shortAddress';

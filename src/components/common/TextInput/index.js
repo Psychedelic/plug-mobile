@@ -4,7 +4,7 @@ import { Text, View, TextInput as Input } from 'react-native';
 
 import animationScales from '../../../utils/animationScales';
 import { Rainbow } from '../../../constants/theme';
-import Touchable from '../../animations/Touchable';
+import Touchable from '@commonComponents/Touchable';
 import { variants } from './constants';
 import Icon from '../../icons';
 import styles from './styles';

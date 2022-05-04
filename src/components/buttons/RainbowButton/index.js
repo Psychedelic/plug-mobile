@@ -1,10 +1,11 @@
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
+
 import Button from '../Button';
 import { styles } from './styles';
 
-import { DisabledRainbow, Rainbow } from '../../../constants/theme';
-import Touchable from '../../animations/Touchable';
+import { DisabledRainbow, Rainbow } from '@constants/theme';
+import Touchable from '@commonComponents/Touchable';
 
 const RainbowButton = ({
   text,

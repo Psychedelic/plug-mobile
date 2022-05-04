@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { setScrollOnProfile, setScrollOnNFTs } from '@redux/slices/user';
-import Touchable from '@components/animations/Touchable';
+import Touchable from '@commonComponents/Touchable';
 import { Colors } from '@constants/theme';
 import Icon from '@components/icons';
 

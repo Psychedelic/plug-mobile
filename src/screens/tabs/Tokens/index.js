@@ -7,10 +7,9 @@ import { getAssets, setAssetsLoading } from '@redux/slices/user';
 import ErrorState from '@commonComponents/ErrorState';
 import TokenItem from '@components/tokens/TokenItem';
 import Container from '@commonComponents/Container';
-import Divider from '@commonComponents/Divider';
 import { getICPPrice } from '@redux/slices/icp';
 import { Colors } from '@constants/theme';
-import Row from '@components/layout/Row';
+import { Row, Separator } from '@layout';
 import Send from '@screens/flows/Send';
 
 import WalletHeader from '../components/WalletHeader';
@@ -60,7 +59,7 @@ function Tokens() {
         <Text style={styles.title}>Tokens</Text>
         <Text style={styles.title}>{`$${usdSum}`}</Text>
       </Row>
-      <Divider />
+      <Separator />
       {!assetsError ? (
         <ScrollView
           showsVerticalScrollIndicator={false}

@@ -4,16 +4,16 @@ import Clipboard from '@react-native-community/clipboard';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { reset, setCurrentPrincipal } from '@redux/slices/keyring';
-import Touchable from '@components/animations/Touchable';
+import Touchable from '@commonComponents/Touchable';
 import CommonItem from '@commonComponents/CommonItem';
 import shortAddress from '@utils/shortAddress';
 import { getICPPrice } from '@redux/slices/icp';
 import Header from '@commonComponents/Header';
 import { FontStyles } from '@constants/theme';
 import { getNFTs } from '@redux/slices/user';
-import Row from '@components/layout/Row';
-import Modal from '@components/modal';
+import Modal from '@commonComponents/Modal';
 import Icon from '@components/icons';
+import { Row } from '@layout';
 
 import CreateEditAccount from '../CreateEditAccount';
 import styles from './styles';

@@ -3,15 +3,15 @@ import { View, Text, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Contacts from '@screens/tabs/Profile/screens/Contacts';
-import Touchable from '@components/animations/Touchable';
+import Touchable from '@commonComponents/Touchable';
 import { FontStyles, Colors } from '@constants/theme';
-import Separator from '@components/layout/Separator';
 import animationScales from '@utils/animationScales';
 import { setUnlocked } from '@redux/slices/keyring';
 import RevealSeedPhrase from '../RevealSeedPhrase';
 import Header from '@components/common/Header';
-import Modal from '@components/modal';
+import Modal from '@commonComponents/Modal';
 import Icon from '@components/icons';
+import { Separator } from '@layout';
 
 import BiometricUnlock from './components/BiometricUnlock';
 import { version } from '../../../../../../package.json';

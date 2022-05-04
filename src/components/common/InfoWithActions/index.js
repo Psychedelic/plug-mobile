@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import animationScales from '../../../utils/animationScales';
-import Touchable from '../../animations/Touchable';
+import Touchable from '@commonComponents/Touchable';
 import Icon from '../../icons';
 import styles from './styles';
 

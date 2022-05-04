@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import animationScales from '../../../utils/animationScales';
 import { Rainbow, Colors } from '../../../constants/theme';
-import Touchable from '../../animations/Touchable';
+import Touchable from '@commonComponents/Touchable';
 import Button from '../../buttons/Button';
 import styles from './styles';
 

@@ -1,12 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 
-import animationScales from '../../utils/animationScales';
-import { FontStyles } from '../../constants/theme';
-import Touchable from '../animations/Touchable';
-import TokenFormat from '../number/TokenFormat';
-import UsdFormat from '../number/UsdFormat';
-import TokenIcon from './TokenIcon';
+import Touchable from '@commonComponents/Touchable';
+import animationScales from '@utils/animationScales';
+import { FontStyles } from '@constants/theme';
+import TokenFormat from '@formatters/TokenFormat';
+import UsdFormat from '@formatters/UsdFormat';
+import TokenIcon from '@tokens/TokenIcon';
+
+import styles from './styles';
 
 function TokenItem({
   icon,
@@ -43,21 +45,3 @@ function TokenItem({
 }
 
 export default TokenItem;
-
-const styles = StyleSheet.create({
-  root: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    width: '100%',
-  },
-  leftContainer: {
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    marginLeft: 10,
-  },
-  value: {
-    ...FontStyles.Normal,
-    marginLeft: 'auto',
-    alignSelf: 'flex-start',
-  },
-});

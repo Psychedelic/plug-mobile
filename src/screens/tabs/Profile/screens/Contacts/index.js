@@ -2,16 +2,16 @@ import React, { Fragment, useRef, useState } from 'react';
 import { Text, View, ActionSheetIOS } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
 
-import Touchable from '@components/animations/Touchable';
+import Touchable from '@commonComponents/Touchable';
 import AddEditContact from './components/AddEditContact';
 import CommonItem from '@commonComponents/CommonItem';
-import Column from '@components/layout/Column';
+import { Column } from '@layout';
 import { FontStyles } from '@constants/theme';
 import Header from '@commonComponents/Header';
 import useContacts from '@hooks/useContacts';
-import Row from '@components/layout/Row';
-import Modal from '@components/modal';
+import Modal from '@commonComponents/Modal';
 import Icon from '@components/icons';
+import { Row } from '@layout';
 
 import styles from './styles';
 

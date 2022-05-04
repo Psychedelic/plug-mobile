@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import { Colors } from '@constants/theme';
+
 export default StyleSheet.create({
   column: {
     display: 'flex',
@@ -8,5 +10,11 @@ export default StyleSheet.create({
   row: {
     display: 'flex',
     flexDirection: 'row',
+  },
+  separator: {
+    height: 0,
+    borderBottomColor: Colors.Gray.Secondary,
+    borderBottomWidth: 1,
+    width: '100%',
   },
 });

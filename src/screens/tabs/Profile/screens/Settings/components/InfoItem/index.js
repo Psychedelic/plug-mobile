@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 
-import Touchable from '@components/animations/Touchable';
+import Touchable from '@commonComponents/Touchable';
 import { FontStyles } from '@constants/theme';
 
 const containerStyle = { height: 40, justifyContent: 'center' };

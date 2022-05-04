@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Text } from 'react-native';
 
-import { validatePassword } from '../../../redux/slices/keyring';
-import RainbowButton from '../../buttons/RainbowButton';
+import { validatePassword } from '@redux/slices/keyring';
+import RainbowButton from '@components/buttons/RainbowButton';
+import Modal from '@commonComponents/Modal';
+import { Column } from '@layout';
+
 import PasswordInput from '../PasswordInput';
-import Column from '../../layout/Column';
-import Modal from '../../modal';
 import Header from '../Header';
 import styles from './styles';
 

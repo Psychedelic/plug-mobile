@@ -7,7 +7,7 @@ import UserIcon from '@commonComponents/UserIcon';
 import Header from '@commonComponents/Header';
 import { FontStyles } from '@constants/theme';
 import useAccounts from '@hooks/useAccounts';
-import Modal from '@components/modal';
+import Modal from '@commonComponents/Modal';
 
 import EditEmoji from '../EditEmoji';
 import styles from './styles';

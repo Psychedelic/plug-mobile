@@ -5,7 +5,7 @@ import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 
 import RainbowButton from '@components/buttons/RainbowButton';
 import NftDisplayer from '@commonComponents/NftDisplayer';
-import TokenFormat from '@components/number/TokenFormat';
+import TokenFormat from '@formatters/TokenFormat';
 import { Colors, FontStyles } from '@constants/theme';
 import TokenIcon from '@components/tokens/TokenIcon';
 import { setTransaction } from '@redux/slices/user';
@@ -14,12 +14,12 @@ import { TRANSACTION_STATUS } from '@redux/utils';
 import shortAddress from '@utils/shortAddress';
 import Button from '@components/buttons/Button';
 import Header from '@commonComponents/Header';
-import Column from '@components/layout/Column';
+import { Column } from '@layout';
 import useGetType from '@hooks/useGetType';
-import Row from '@components/layout/Row';
 import Routes from '@navigation/Routes';
-import Modal from '@components/modal';
+import Modal from '@commonComponents/Modal';
 import Icon from '@components/icons';
+import { Row } from '@layout';
 
 import {
   formatSendAmount,

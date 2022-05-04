@@ -6,7 +6,7 @@ import EmojiSelector from '@commonComponents/EmojiSelector';
 import UserIcon from '@commonComponents/UserIcon';
 import Header from '@commonComponents/Header';
 import { FontStyles } from '@constants/theme';
-import Modal from '@components/modal';
+import Modal from '@commonComponents/Modal';
 
 import styles from './styles';
 
