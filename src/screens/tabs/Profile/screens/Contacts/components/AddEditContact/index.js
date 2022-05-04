@@ -11,7 +11,7 @@ import UserIcon from '@commonComponents/UserIcon';
 import Header from '@commonComponents/Header';
 import { FontStyles } from '@constants/theme';
 import useContacts from '@hooks/useContacts';
-import Modal from '@components/modal';
+import Modal from '@commonComponents/Modal';
 
 import EditEmoji from '../../../EditEmoji';
 import styles from './styles';

@@ -1,18 +1,17 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-import Divider from '@commonComponents/Divider';
 import { FontStyles } from '@constants/theme';
-import Row from '@components/layout/Row';
+import { Row, Separator } from '@layout';
 
 import styles from './styles';
 
 function DepositDivider() {
   return (
     <Row>
-      <Divider style={styles.divider} />
+      <Separator style={styles.divider} />
       <Text style={FontStyles.Subtitle3}>OR</Text>
-      <Divider style={styles.divider} />
+      <Separator style={styles.divider} />
     </Row>
   );
 }

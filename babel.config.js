@@ -19,7 +19,12 @@ module.exports = {
           '@services': './src/services',
           '@utils': './src/utils',
           // Usefull aliases:
+          '@buttons': './src/components/buttons',
           '@commonComponents': './src/components/common',
+          '@formatters': './src/components/formatters',
+          '@icons': './src/components/icons',
+          '@layout': './src/components/layout/index',
+          '@tokens': './src/components/tokens',
         },
       },
     ],

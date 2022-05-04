@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import GradientText from '@commonComponents/GradientText';
-import Touchable from '@components/animations/Touchable';
+import Touchable from '@commonComponents/Touchable';
 
 import styles from './styles';
 

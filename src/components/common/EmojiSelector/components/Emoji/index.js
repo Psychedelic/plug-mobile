@@ -1,7 +1,8 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-import Touchable from '../../../../animations/Touchable';
+import Touchable from '@commonComponents/Touchable';
+
 import { charFromEmojiObject } from '../../utils';
 import styles from './styles';
 

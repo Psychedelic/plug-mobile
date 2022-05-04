@@ -3,11 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import CopiedToast from '@commonComponents/CopiedToast';
+import Touchable from '@commonComponents/Touchable';
 import shortAddress from '@utils/shortAddress';
 import { FontStyles } from '@constants/theme';
-import Touchable from '@components/animations/Touchable';
 
-import CopiedToast from '../CopiedToast';
 import styles from './styles';
 
 const AccountInfo = () => {

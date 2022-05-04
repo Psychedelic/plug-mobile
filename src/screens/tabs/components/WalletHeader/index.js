@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { View } from 'react-native';
 
 import AccountInfo from '@commonComponents/AccountInfo';
-import Touchable from '@components/animations/Touchable';
+import Touchable from '@commonComponents/Touchable';
 import UserIcon from '@commonComponents/UserIcon';
 import { useDebounce } from '@hooks/useDebounce';
 import Header from '@commonComponents/Header';
@@ -12,7 +12,7 @@ import Deposit from '@screens/flows/Deposit';
 import { Colors } from '@constants/theme';
 import Routes from '@navigation/Routes';
 import Send from '@screens/flows/Send';
-import Modal from '@components/modal';
+import Modal from '@commonComponents/Modal';
 import Icon from '@components/icons';
 
 import ActionButton from '../ActionButton';

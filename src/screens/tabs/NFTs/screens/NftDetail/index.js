@@ -21,7 +21,7 @@ import Badge from '@commonComponents/Badge';
 import { isIos } from '@constants/platform';
 import useGetType from '@hooks/useGetType';
 import Send from '@screens/flows/Send';
-import Modal from '@components/modal';
+import Modal from '@commonComponents/Modal';
 
 import Section from './components/Section';
 import styles from './styles';

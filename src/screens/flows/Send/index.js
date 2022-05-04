@@ -11,7 +11,7 @@ import { FontStyles } from '@constants/theme';
 import useKeychain from '@hooks/useKeychain';
 import { USD_PER_TC } from '@utils/assets';
 import XTC_OPTIONS from '@constants/xtc';
-import Modal from '@components/modal';
+import Modal from '@commonComponents/Modal';
 import {
   burnXtc,
   sendToken,

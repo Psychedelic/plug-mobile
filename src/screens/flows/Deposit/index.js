@@ -3,7 +3,7 @@ import { Text } from 'react-native';
 
 import Header from '@commonComponents/Header';
 import { FontStyles } from '@constants/theme';
-import Modal from '@components/modal';
+import Modal from '@commonComponents/Modal';
 
 import DepositDivider from './components/DepositDivider';
 import IDDetails from './components/IDDetails';

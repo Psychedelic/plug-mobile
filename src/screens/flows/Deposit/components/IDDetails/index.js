@@ -7,7 +7,7 @@ import InfoWithActions from '@commonComponents/InfoWithActions';
 import GradientText from '@commonComponents/GradientText';
 import CopiedToast from '@commonComponents/CopiedToast';
 import shortAddress from '@utils/shortAddress';
-import Column from '@components/layout/Column';
+import { Column } from '@layout';
 
 import { getIdInfo } from '../../constants';
 import styles from './styles';

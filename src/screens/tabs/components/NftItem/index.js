@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 
 import NftDisplayer from '@commonComponents/NftDisplayer';
-import Touchable from '@components/animations/Touchable';
+import Touchable from '@commonComponents/Touchable';
 import useGetType from '@hooks/useGetType';
 
 import styles from './styles';

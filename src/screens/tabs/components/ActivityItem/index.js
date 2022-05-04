@@ -2,7 +2,7 @@ import { View, Text } from 'react-native';
 import moment from 'moment';
 import React from 'react';
 
-import UsdFormat from '@components/number/UsdFormat';
+import UsdFormat from '@formatters/UsdFormat';
 import { formatToMaxDecimals } from '@utils/number';
 import shortAddress from '@utils/shortAddress';
 import { FontStyles } from '@constants/theme';

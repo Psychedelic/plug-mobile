@@ -1,10 +1,9 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-import Touchable from '@components/animations/Touchable';
-import Column from '@components/layout/Column';
+import Touchable from '@commonComponents/Touchable';
 import { FontStyles } from '@constants/theme';
-import Row from '@components/layout/Row';
+import { Column, Row } from '@layout';
 import Icon from '@components/icons';
 
 import styles from './styles';

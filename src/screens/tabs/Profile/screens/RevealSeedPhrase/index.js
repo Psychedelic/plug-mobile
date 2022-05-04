@@ -7,10 +7,10 @@ import PasswordInput from '@commonComponents/PasswordInput';
 import { validatePassword } from '@redux/slices/keyring';
 import SeedPhrase from '@commonComponents/SeedPhrase';
 import { isValidPassword } from '@constants/general';
-import Column from '@components/layout/Column';
+import { Column } from '@layout';
 import Header from '@commonComponents/Header';
 import Copy from '@commonComponents/Copy';
-import Modal from '@components/modal';
+import Modal from '@commonComponents/Modal';
 
 import styles from './styles';
 

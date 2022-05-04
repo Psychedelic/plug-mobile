@@ -9,11 +9,11 @@ import ErrorState from '@commonComponents/ErrorState';
 import EmptyState from '@commonComponents/EmptyState';
 import Container from '@commonComponents/Container';
 import UserIcon from '@commonComponents/UserIcon';
-import Divider from '@commonComponents/Divider';
 import Button from '@components/buttons/Button';
 import Header from '@commonComponents/Header';
 import { ENABLE_NFTS } from '@constants/nfts';
 import { Colors } from '@constants/theme';
+import { Separator } from '@layout';
 
 import Settings from './screens/Settings';
 import Accounts from './screens/Accounts';
@@ -81,7 +81,7 @@ const Profile = () => {
             onPress={openAccounts}
           />
         </View>
-        <Divider />
+        <Separator />
         <Text style={styles.title}>Activity</Text>
         {!transactionsError ? (
           <FlatList

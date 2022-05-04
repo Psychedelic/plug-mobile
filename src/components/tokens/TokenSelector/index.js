@@ -1,12 +1,15 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Colors, FontStyles } from '../../constants/theme';
-import UsdFormat from '../number/UsdFormat';
-import TokenFormat from '../number/TokenFormat';
-import TokenIcon from './TokenIcon';
-import Icon from '../icons';
-import Touchable from '../animations/Touchable';
-import Row from '../layout/Row';
+import { View, Text } from 'react-native';
+
+import { Colors, FontStyles } from '@constants/theme';
+import Touchable from '@commonComponents/Touchable';
+import TokenFormat from '@formatters/TokenFormat';
+import UsdFormat from '@formatters/UsdFormat';
+import TokenIcon from '@tokens/TokenIcon';
+import { Row } from '@layout';
+import Icon from '@icons';
+
+import styles from './styles';
 
 const TokenSelector = ({
   icon,
@@ -47,20 +50,3 @@ const TokenSelector = ({
 );
 
 export default TokenSelector;
-
-const styles = StyleSheet.create({
-  root: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    width: '100%',
-  },
-  leftContainer: {
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    marginLeft: 10,
-  },
-  icon: {
-    marginLeft: 'auto',
-    alignSelf: 'center',
-  },
-});

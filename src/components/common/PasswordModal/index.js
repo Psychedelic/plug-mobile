@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Text } from 'react-native';
 
-import { validatePassword } from '../../../redux/slices/keyring';
-import RainbowButton from '../../buttons/RainbowButton';
-import PasswordInput from '../PasswordInput';
-import Column from '../../layout/Column';
-import Modal from '../../modal';
-import Header from '../Header';
+import RainbowButton from '@components/buttons/RainbowButton';
+import PasswordInput from '@commonComponents/PasswordInput';
+import { validatePassword } from '@redux/slices/keyring';
+import Header from '@commonComponents/Header';
+import Modal from '@commonComponents/Modal';
+import { Column } from '@layout';
+
 import styles from './styles';
 
 const PasswordModal = ({ modalRef, handleClose = () => {}, handleSubmit }) => {
