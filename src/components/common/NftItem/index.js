@@ -1,15 +1,13 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import NftDisplayer from '../NftDisplayer';
+
+import NftDisplayer from '@commonComponents/NftDisplayer';
 
 import styles from './styles';
 
 const NftItem = ({ url, name, style }) => (
   <View style={[styles.root, style]}>
-    <NftDisplayer
-      url={url}
-      style={{ height: 155, aspectRatio: 1, borderRadius: 7 }}
-    />
+    <NftDisplayer url={url} style={styles.nftDisplayer} />
     <View style={styles.leftContainer}>
       <Text style={styles.nftName}>{name}</Text>
     </View>

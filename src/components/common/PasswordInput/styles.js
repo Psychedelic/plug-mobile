@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors } from '../../../constants/theme';
+import { Colors } from '@constants/theme';
 
 const inputHeight = 60;
 const commonBorderRadius = 15;

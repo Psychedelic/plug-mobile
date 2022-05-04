@@ -9,11 +9,11 @@ import PasswordInput from '@commonComponents/PasswordInput';
 import KeyboardHider from '@commonComponents/KeyboardHider';
 import PlugLogo from '@assets/icons/plug-logo-full.png';
 import { createWallet } from '@redux/slices/keyring';
-import Container from '@commonComponents/Container';
 import Header from '@commonComponents/Header';
 import useKeychain from '@hooks/useKeychain';
 import Back from '@commonComponents/Back';
 import Routes from '@navigation/Routes';
+import { Container } from '@layout';
 
 import {
   createPasswordRules,

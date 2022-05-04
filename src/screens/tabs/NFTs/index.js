@@ -7,10 +7,9 @@ import WalletHeader from '@screens/tabs/components/WalletHeader';
 import ErrorState from '@commonComponents/ErrorState';
 import EmptyState from '@commonComponents/EmptyState';
 import NftItem from '@screens/tabs/components/NftItem';
-import Container from '@commonComponents/Container';
+import { Separator, Container } from '@layout';
 import { getNFTs } from '@redux/slices/user';
 import { Colors } from '@constants/theme';
-import { Separator } from '@layout';
 
 import NftDetail from './screens/NftDetail';
 import styles from './styles';

@@ -7,13 +7,12 @@ import { ERROR_TYPES } from '@commonComponents/ErrorState/constants';
 import ActivityItem from '@screens/tabs/components/ActivityItem';
 import ErrorState from '@commonComponents/ErrorState';
 import EmptyState from '@commonComponents/EmptyState';
-import Container from '@commonComponents/Container';
 import UserIcon from '@commonComponents/UserIcon';
 import Button from '@components/buttons/Button';
+import { Separator, Container } from '@layout';
 import Header from '@commonComponents/Header';
 import { ENABLE_NFTS } from '@constants/nfts';
 import { Colors } from '@constants/theme';
-import { Separator } from '@layout';
 
 import Settings from './screens/Settings';
 import Accounts from './screens/Accounts';

@@ -2,7 +2,8 @@ import React from 'react';
 import Video from 'react-native-video';
 import { ActivityIndicator, View } from 'react-native';
 
-import useFileDownload from '../../../../../hooks/useFileDownload';
+import useFileDownload from '@hooks/useFileDownload';
+
 import sharedStyles from '../../styles';
 
 const VideoDisplayer = ({
