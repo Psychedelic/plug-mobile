@@ -16,6 +16,9 @@ export default StyleSheet.create({
     marginTop: 10,
     maxWidth: itemSize,
   },
+  item: {
+    margin: 10,
+  },
   title: {
     paddingLeft: 20,
     paddingBottom: 20,
