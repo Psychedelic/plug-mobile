@@ -14,6 +14,7 @@ const Routes = {
   CONNECTION_ERROR: 'ConnectionError',
   //Wallet Connect:
   WALLET_CONNECT_APPROVAL_SHEET: 'WalletConnect',
+  WALLET_CONNECT_CALL_REQUEST: 'WalletConnectCallRequest',
 };
 
 export const NATIVE_ROUTES = Object.values(Routes);

@@ -16,6 +16,7 @@ import Welcome from '../screens/Welcome';
 import Login from '../screens/Login';
 import Routes from './Routes';
 import WalletConnect from '../screens/WalletConnect';
+import WalletConnectCallRequest from '../screens/WalletConnect/callRequest';
 import { handleDeepLink } from '../helpers/deepLink';
 
 const Stack = createStackNavigator();
@@ -120,6 +121,10 @@ const Navigator = ({ routingInstrumentation }, navigationRef) => {
           <Stack.Screen
             name={Routes.WALLET_CONNECT_APPROVAL_SHEET}
             component={WalletConnect}
+          />
+          <Stack.Screen
+            name={Routes.WALLET_CONNECT_CALL_REQUEST}
+            component={WalletConnectCallRequest}
           />
         </Stack.Navigator>
       </Host>

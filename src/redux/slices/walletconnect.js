@@ -13,6 +13,10 @@ import {
 } from '../../utils/walletConnect';
 import { delay } from '../../utils/utilities';
 import Routes from '../../navigation/Routes';
+import {
+  notSigningMethod,
+  walletConnectHandleMethod,
+} from '../../helpers/walletConnect';
 
 // -- Variables --------------------------------------- //
 let showRedirectSheetThreshold = 300;
@@ -87,6 +91,7 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
     let walletConnector = null;
     const receivedTimestamp = Date.now();
     try {
+      console.log('ON SESSION REQUEST', uri);
       const { clientMeta } = await getNativeOptions();
       try {
         // Don't initiate a new session if we have already established one using this walletconnect URI
@@ -183,13 +188,9 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
         }
 
         waitingFn(async () => {
-          if (IS_TESTING !== 'true') {
-            // Wait until the app is idle so we can navigate
-            // This usually happens only when coming from a cold start
-            // while (!getState().appState.walletReady) {
-            //   console.log('INTO WAITING FN - delay');
-            //   //await delay(300);
-            // }
+          const { isInitialized, isUnlocked } = getState().keyring;
+          if ((isInitialized, isUnlocked)) {
+            await delay(300);
           }
 
           // We need to add a timeout in case the bridge is down
@@ -215,11 +216,14 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
           );
         }, 2000);
       } catch (error) {
+        console.log('WALLET CONNECT ERROR', error);
+
         clearTimeout(timeout);
         captureException(error);
         Alert.alert('wallet.wallet_connect.error');
       }
     } catch (error) {
+      console.log('WALLET CONNECT ERROR', error);
       clearTimeout(timeout);
       captureException(error);
       Alert.alert('wallet.wallet_connect.missing_fcm');
@@ -227,45 +231,66 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
   },
 );
 
-const listenOnNewMessages = walletConnector => (dispatch, getState) => {
-  walletConnector.on('call_request', async (error, payload) => {
-    console.log('WC Request!', error, payload);
-    if (error) {
-      throw error;
-    }
-    const { clientId, peerId, peerMeta } = walletConnector;
-    const imageUrl = '';
-    const dappName = peerMeta?.name;
-    const dappUrl = peerMeta?.url;
-    const requestId = payload.id;
+const listenOnNewMessages = createAsyncThunk(
+  'walletconnect/listenOnNewMessages',
+  (walletConnector, { dispatch, getState }) => {
+    walletConnector.on('call_request', async (error, payload) => {
+      console.log('WC Request!', error, payload);
+      if (error) {
+        throw error;
+      }
+      const { clientId, peerId, peerMeta } = walletConnector;
+      const requestId = payload.id;
 
-    const address = walletConnector._accounts?.[0];
+      if (notSigningMethod(payload.method)) {
+        walletConnectHandleMethod(payload.method, payload.params, dispatch)
+          .then(result =>
+            walletConnector.approveRequest({
+              id: payload.id,
+              result,
+            }),
+          )
+          .catch(e =>
+            walletConnector.rejectRequest({
+              id: payload.id,
+              e,
+            }),
+          );
+        return;
+      }
 
-    // const { requests: pendingRequests } = getState().requests;
-    // const request = !pendingRequests[requestId]
-    //   ? dispatch(
-    //       addRequestToApprove(clientId, peerId, requestId, payload, peerMeta),
-    //     )
-    //   : null;
-    // if (request) {
-    //   Navigation.handleAction(Routes.CONFIRM_REQUEST, {
-    //     openAutomatically: true,
-    //     transactionDetails: request,
-    //   });
-    //   InteractionManager.runAfterInteractions(() => {
-    //     analytics.track('Showing Walletconnect signing request');
-    //   });
-    // }
-  });
-  walletConnector.on('disconnect', error => {
-    console.log('WC Disconnect!', error);
+      const { pendingCallRequests } = getState().walletconnect;
+      const request = !pendingCallRequests[requestId]
+        ? await dispatch(
+            addCallRequestToApprove({
+              clientId,
+              peerId,
+              requestId,
+              payload,
+              peerMeta,
+            }),
+          ).unwrap()
+        : null;
 
-    if (error) {
-      throw error;
-    }
-  });
-  return walletConnector;
-};
+      console.log('CALL_REQUEST.IS REQUEST', request);
+
+      if (request) {
+        Navigation.handleAction(Routes.WALLET_CONNECT_CALL_REQUEST, {
+          openAutomatically: true,
+          transactionDetails: request,
+        });
+      }
+    });
+    walletConnector.on('disconnect', error => {
+      console.log('WC Disconnect!', error);
+
+      if (error) {
+        throw error;
+      }
+    });
+    return walletConnector;
+  },
+);
 
 export const setPendingRequest = createAsyncThunk(
   'walletconnect/setPendingRequest',
@@ -297,6 +322,55 @@ export const removePendingRequest = createAsyncThunk(
       delete updatedPendingRequests[peerId];
     }
     dispatch(updateRequests(updatedPendingRequests));
+  },
+);
+
+export const addCallRequestToApprove = createAsyncThunk(
+  'walletconnect/addCallRequestToApprove',
+  async (
+    { clientId, peerId, requestId, payload, peerMeta },
+    { dispatch, getState },
+  ) => {
+    console.log('walletconnect/going to return');
+    const { walletConnectors, pendingCallRequests } = getState().walletconnect;
+
+    const walletConnector = walletConnectors[peerId];
+    const chainId = walletConnector._chainId;
+
+    const imageUrl = peerMeta?.url;
+    const dappName = peerMeta?.name || 'Unknown Dapp';
+    const dappUrl = peerMeta?.url || 'Unknown Url';
+    const dappScheme = peerMeta?.scheme || null;
+
+    const request = {
+      clientId,
+      dappName,
+      dappScheme,
+      dappUrl,
+      displayDetails: {},
+      imageUrl,
+      payload,
+      peerId,
+      requestId,
+    };
+
+    const updatedRequests = { ...pendingCallRequests, [requestId]: request };
+    dispatch(updateCallRequests(updatedRequests));
+
+    return request;
+  },
+);
+
+export const removeCallRequestToApprove = createAsyncThunk(
+  'walletconnect/removeCallRequestToApprove',
+  (requestId, { dispatch, getState }) => {
+    const { pendingCallRequests } = getState().walletconnect;
+
+    const updatedPendingRequests = pendingCallRequests;
+    if (updatedPendingRequests[requestId]) {
+      delete updatedPendingRequests[requestId];
+    }
+    dispatch(updateCallRequests(updatedPendingRequests));
   },
 );
 
@@ -352,11 +426,15 @@ export const walletConnectApproveSession = createAsyncThunk(
     dispatch(removePendingRequest({ peerId }));
     saveWalletConnectSession(walletConnector.peerId, walletConnector.session);
 
-    const listeningWalletConnector = dispatch(
+    const listeningWalletConnector = await dispatch(
       listenOnNewMessages(walletConnector),
-    );
+    ).unwrap();
 
-    dispatch(setWalletConnector({ walletConnector: listeningWalletConnector }));
+    dispatch(
+      setWalletConnector({
+        walletConnector: listeningWalletConnector,
+      }),
+    );
     if (callback) {
       callback('connect', dappScheme);
     }
@@ -371,10 +449,37 @@ export const walletConnectRejectSession = createAsyncThunk(
   },
 );
 
+export const walletConnectSendStatus = createAsyncThunk(
+  'walletconnect/sendStatus',
+  async ({ peerId, requestId, response }, { dispatch, getState }) => {
+    const walletConnector = getState().walletconnect.walletConnectors[peerId];
+    if (walletConnector) {
+      const { result, error } = response;
+      try {
+        if (result) {
+          await walletConnector.approveRequest({ id: requestId, result });
+        } else {
+          await walletConnector.rejectRequest({
+            error,
+            id: requestId,
+          });
+        }
+      } catch (e) {
+        Alert.alert('Failed to send request status to WalletConnect.');
+      }
+    } else {
+      Alert.alert(
+        'WalletConnect session has expired while trying to send request status. Please reconnect.',
+      );
+    }
+  },
+);
+
 // -- Reducer ----------------------------------------- //
 const DEFAULT_STATE = {
   pendingRedirect: false,
   pendingRequests: {},
+  pendingCallRequests: {},
   walletConnectors: {},
 };
 
@@ -382,6 +487,12 @@ export const walletconnectSlice = createSlice({
   name: 'walletconnect',
   initialState: DEFAULT_STATE,
   reducers: {
+    updateCallRequests: (state, action) => {
+      return {
+        ...state,
+        pendingCallRequests: action.payload,
+      };
+    },
     updateRequests: (state, action) => {
       return {
         ...state,
@@ -417,6 +528,7 @@ export const walletconnectSlice = createSlice({
 });
 
 export const {
+  updateCallRequests,
   updateRequests,
   updateConnectors,
   clearState,

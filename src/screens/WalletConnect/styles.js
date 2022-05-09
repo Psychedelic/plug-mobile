@@ -23,6 +23,13 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 27,
   },
+  text: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: Colors.White.Primary,
+    fontWeight: 'bold',
+    marginTop: 27,
+  },
   componentMargin: {
     marginTop: 27,
   },
