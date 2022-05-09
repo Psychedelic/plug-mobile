@@ -18,9 +18,6 @@ export default StyleSheet.create({
   nftsContainer: {
     paddingVertical: 20,
   },
-  item: {
-    margin: 10,
-  },
   text: {
     ...FontStyles.SmallGray,
     marginTop: 10,
