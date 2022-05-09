@@ -8,12 +8,12 @@ import {
   walletConnectRemovePendingRedirect,
 } from '../redux/slices/walletconnect';
 
-export const handleDeepLink = url => {
-  const urlObj = new URL(url);
-  const { uri } = qs.parse(urlObj.query.substring(1));
+function handleWalletConnect(uri) {
   const { dispatch } = store;
   dispatch(walletConnectSetPendingRedirect());
-  if (uri && urlObj.query) {
+  const { query } = new URL(uri);
+  console.log('HANDLE WALLET CONNECT', uri, query);
+  if (uri && query) {
     dispatch(
       walletConnectOnSessionRequest({
         uri,
@@ -27,5 +27,29 @@ export const handleDeepLink = url => {
     );
   } else {
     // This is when we get focused by WC due to a signing request
+  }
+}
+
+export const handleDeepLink = url => {
+  if (!url) return;
+  // We need to wait till the wallet is ready
+  // to handle any deeplink
+
+  const urlObj = new URL(url);
+  console.log(
+    'HANDLE_DEEP_LINK',
+    url,
+    urlObj.protocol,
+    urlObj.pathname.split('/')[1],
+  );
+  if (urlObj.protocol === 'https:') {
+    const action = urlObj.pathname.split('/')[1];
+    switch (action) {
+      case 'wc': {
+        const { uri } = qs.parse(urlObj.query.substring(1));
+        handleWalletConnect(uri);
+        break;
+      }
+    }
   }
 };
