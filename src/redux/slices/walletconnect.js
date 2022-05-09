@@ -17,6 +17,7 @@ import {
   notSigningMethod,
   walletConnectHandleMethod,
 } from '../../helpers/walletConnect';
+import { PLUG_DESCRIPTION } from '../../constants/walletconnect';
 
 // -- Variables --------------------------------------- //
 let showRedirectSheetThreshold = 300;
@@ -29,12 +30,7 @@ const IS_TESTING = false;
 // -- Actions ---------------------------------------- //
 const getNativeOptions = async () => {
   const nativeOptions = {
-    clientMeta: {
-      description: 'Plug IC Wallet ',
-      icons: [],
-      name: 'Plug Wallet',
-      url: 'https://plugwallet.ooo',
-    },
+    clientMeta: PLUG_DESCRIPTION,
   };
 
   return nativeOptions;
@@ -91,7 +87,6 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
     let walletConnector = null;
     const receivedTimestamp = Date.now();
     try {
-      console.log('ON SESSION REQUEST', uri);
       const { clientMeta } = await getNativeOptions();
       try {
         // Don't initiate a new session if we have already established one using this walletconnect URI
@@ -116,7 +111,7 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
         let navigated = false;
         let timedOut = false;
         let routeParams = {
-          callback: async (
+          callback: async ({
             approved,
             chainId,
             accountAddress,
@@ -124,7 +119,7 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
             dappScheme,
             dappName,
             dappUrl,
-          ) => {
+          }) => {
             if (approved) {
               dispatch(setPendingRequest({ peerId, walletConnector }));
               dispatch(
@@ -216,14 +211,11 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
           );
         }, 2000);
       } catch (error) {
-        console.log('WALLET CONNECT ERROR', error);
-
         clearTimeout(timeout);
         captureException(error);
         Alert.alert('wallet.wallet_connect.error');
       }
     } catch (error) {
-      console.log('WALLET CONNECT ERROR', error);
       clearTimeout(timeout);
       captureException(error);
       Alert.alert('wallet.wallet_connect.missing_fcm');
@@ -235,7 +227,6 @@ const listenOnNewMessages = createAsyncThunk(
   'walletconnect/listenOnNewMessages',
   (walletConnector, { dispatch, getState }) => {
     walletConnector.on('call_request', async (error, payload) => {
-      console.log('WC Request!', error, payload);
       if (error) {
         throw error;
       }
@@ -262,17 +253,16 @@ const listenOnNewMessages = createAsyncThunk(
       const { pendingCallRequests } = getState().walletconnect;
       const request = !pendingCallRequests[requestId]
         ? await dispatch(
-            addCallRequestToApprove({
-              clientId,
-              peerId,
-              requestId,
-              payload,
-              peerMeta,
-            }),
-          ).unwrap()
+          addCallRequestToApprove({
+            clientId,
+            peerId,
+            requestId,
+            payload,
+            peerMeta,
+          }),
+        ).unwrap()
         : null;
 
-      console.log('CALL_REQUEST.IS REQUEST', request);
 
       if (request) {
         Navigation.handleAction(Routes.WALLET_CONNECT_CALL_REQUEST, {
@@ -282,8 +272,6 @@ const listenOnNewMessages = createAsyncThunk(
       }
     });
     walletConnector.on('disconnect', error => {
-      console.log('WC Disconnect!', error);
-
       if (error) {
         throw error;
       }
@@ -331,7 +319,6 @@ export const addCallRequestToApprove = createAsyncThunk(
     { clientId, peerId, requestId, payload, peerMeta },
     { dispatch, getState },
   ) => {
-    console.log('walletconnect/going to return');
     const { walletConnectors, pendingCallRequests } = getState().walletconnect;
 
     const walletConnector = walletConnectors[peerId];

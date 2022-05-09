@@ -28,15 +28,11 @@ const WALLETCONNECT_HANDLERS = {
   },
   sign_read_state: async (args, dispatch) => {
     //if (!(args && args.lenght > 0)) throw 'NOT MSG ON SIGN ARGS';
-    console.log('SIGN_READ_STATE', args);
-
     const argsDecoded = base64ToBuffer(args[0]);
 
     const result = await dispatch(
       sign({ msg: blobFromUint8Array(new Uint8Array(argsDecoded)) }),
     ).unwrap();
-    console.log('SIGN_READ_STATE RESULT', result.response.toString('base64'));
-
     return { result: result.response.toString('base64') };
   },
   getAssets: async (args, dispatch) => {

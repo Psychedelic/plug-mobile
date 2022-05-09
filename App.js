@@ -13,8 +13,8 @@ import { initKeyring } from './src/redux/slices/keyring';
 import { persistor, store } from './src/redux/store';
 import { isIos } from './src/constants/platform';
 import Routes from './src/navigation';
+import { TopLevelNavigationRef } from './src/helpers/navigation';
 import './reactotronConfig';
-import Navigation from './src/helpers/navigation';
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
 
@@ -73,7 +73,7 @@ const PersistedApp = () => {
         {!!instance && (
           <Routes
             routingInstrumentation={routingInstrumentation}
-            ref={Navigation.TopLevelNavigationRef}
+            ref={TopLevelNavigationRef}
           />
         )}
       </ErrorBoundary>

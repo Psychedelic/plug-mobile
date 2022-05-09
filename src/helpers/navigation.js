@@ -9,12 +9,15 @@ import { get } from 'lodash';
 import React from 'react';
 import { Value } from 'react-native-reanimated';
 import { useCallbackOne } from 'use-memo-one';
+
 import { NATIVE_ROUTES } from '../navigation/Routes';
 
 export let TopLevelNavigationRef = createNavigationContainerRef();
 const transitionPosition = new Value(0);
-
 const poppingCounter = { isClosing: false, pendingActions: [] };
+
+let blocked = false;
+let timeout = null;
 
 export function addActionAfterClosingSheet(action) {
   if (poppingCounter.isClosing) {
@@ -67,11 +70,9 @@ export function withNavigationFocus(Component) {
   };
 }
 
-let blocked = false;
-let timeout = null;
 function block() {
   blocked = true;
-  if (timeout !== null) {
+  if (timeout) {
     clearTimeout(timeout);
     timeout = null;
   }

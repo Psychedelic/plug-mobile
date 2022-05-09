@@ -12,7 +12,6 @@ function handleWalletConnect(uri) {
   const { dispatch } = store;
   dispatch(walletConnectSetPendingRedirect());
   const { query } = new URL(uri);
-  console.log('HANDLE WALLET CONNECT', uri, query);
   if (uri && query) {
     dispatch(
       walletConnectOnSessionRequest({
@@ -36,12 +35,6 @@ export const handleDeepLink = url => {
   // to handle any deeplink
 
   const urlObj = new URL(url);
-  console.log(
-    'HANDLE_DEEP_LINK',
-    url,
-    urlObj.protocol,
-    urlObj.pathname.split('/')[1],
-  );
   if (urlObj.protocol === 'https:') {
     const action = urlObj.pathname.split('/')[1];
     switch (action) {

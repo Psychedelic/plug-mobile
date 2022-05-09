@@ -76,8 +76,8 @@ function WalletConnect() {
             dispatch(removeCallRequestToApprove(requestId));
           }
         }, 300);
-      } catch (error) {
-        console.log('error while handling cancel request', error);
+      } catch (e) {
+        console.log('error while handling cancel request', e);
         closeScreen(true);
       }
     },
@@ -103,20 +103,6 @@ function WalletConnect() {
       }
       closeScreen(false);
     } else {
-      try {
-        console.log('Error with WC transaction. See previous logs...');
-        const dappInfo = {
-          dappName,
-          dappScheme,
-          dappUrl,
-        };
-        console.log('Dapp info:', dappInfo);
-        console.log('Request info:', {
-          method,
-          params,
-        });
-      } catch (e) {}
-
       await onCancel(error);
     }
   }, [

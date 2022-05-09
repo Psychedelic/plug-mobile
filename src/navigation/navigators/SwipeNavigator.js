@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { useNavigation } from '@react-navigation/native';
 
 import Tokens from '../../screens/Wallet/tabs/Tokens';
 import NFTs from '../../screens/Wallet/tabs/NFTs';
@@ -7,7 +8,6 @@ import ProfileScreen from '../../screens/Profile';
 import BottomTabs from './BottomTabs';
 import Routes from '../Routes';
 import useDeepLink from '../../hooks/useDeepLink';
-import { useNavigation } from '@react-navigation/native';
 
 const Swipe = createMaterialTopTabNavigator();
 

@@ -2,7 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { Host } from 'react-native-portalize';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, memo, forwardRef } from 'react';
 import { AppState, Linking } from 'react-native';
 
 import ImportSeedPhrase from '../screens/Welcome/views/ImportSeedPhrase';
@@ -132,4 +132,4 @@ const Navigator = ({ routingInstrumentation }, navigationRef) => {
   );
 };
 
-export default React.memo(React.forwardRef(Navigator));
+export default memo(forwardRef(Navigator));

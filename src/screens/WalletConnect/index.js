@@ -1,20 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useCallback } from 'react';
 import { View, Text, Image, ActivityIndicator } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import WCClient from '@walletconnect/client';
 
 import RainbowButton from '../../components/buttons/RainbowButton';
 import Container from '../../components/common/Container';
 import Plug from '../../assets/icons/il_white_plug.png';
-import { FontStyles } from '../../constants/theme';
-import Routes from '../../navigation/Routes';
 import styles from './styles';
-import useDeepLink from '../../hooks/useDeepLink';
 import { useNavigation } from '../../helpers/navigation';
 
 function WalletConnect() {
-  const dispatch = useDispatch();
   const { goBack } = useNavigation();
   const { params } = useRoute();
   const { callback } = params;
@@ -26,15 +20,15 @@ function WalletConnect() {
       if (callback) {
         setTimeout(
           () =>
-            callback(
-              success,
-              1,
-              'approvalAccount.address',
+            callback({
+              approve: success,
+              chainId: 1,
+              accountAddress: 'approvalAccount.address',
               peerId,
               dappScheme,
               dappName,
               dappUrl,
-            ),
+            }),
           300,
         );
       }
