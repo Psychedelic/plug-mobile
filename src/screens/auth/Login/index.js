@@ -1,6 +1,7 @@
 import { View, StatusBar, Text, Image, Keyboard } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import RainbowButton from '@components/buttons/RainbowButton';
 import KeyboardHider from '@commonComponents/KeyboardHider';
@@ -19,6 +20,7 @@ import styles from './styles';
 
 function Login({ route, navigation }) {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const isManualLock = route?.params?.manualLock || false;
   const { getPassword } = useKeychain();
   const { icpPrice } = useSelector(state => state.icp);
@@ -94,7 +96,7 @@ function Login({ route, navigation }) {
       <KeyboardHider>
         <View style={styles.container}>
           <Image source={Plug} style={styles.plugIcon} />
-          <Text style={styles.title}>Unlock Plug</Text>
+          <Text style={styles.title}>{t('login.unlock')}</Text>
           <StatusBar barStyle="light-content" />
           <PasswordInput
             autoFocus={!isManualLock}
@@ -105,7 +107,7 @@ function Login({ route, navigation }) {
             inputStyle={styles.input}
           />
           <RainbowButton
-            text="Submit"
+            text={t('login.submit')}
             onPress={() => handleSubmit(password)}
             loading={loading}
             disabled={!isValidPassword(password) || loading}
@@ -114,7 +116,7 @@ function Login({ route, navigation }) {
           {biometricsAvailable && usingBiometrics && (
             <Button
               iconName="faceIdIcon"
-              text="Sign in with biometrics"
+              text={t('login.signInBiometric')}
               onPress={unlockUsingBiometrics}
               iconStyle={styles.biometricsIcon}
               buttonStyle={[styles.buttonMargin, styles.biometricsButton]}
@@ -122,7 +124,7 @@ function Login({ route, navigation }) {
           )}
           <Button
             iconName="arrowRight"
-            text="More Options"
+            text={t('login.moreOptions')}
             onLongPress={handleGoToWelcome}
             onPress={handleGoToWelcome}
             iconStyle={styles.moreOptionsIcon}
