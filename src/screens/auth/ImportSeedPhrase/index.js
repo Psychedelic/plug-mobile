@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import RainbowButton from '@components/buttons/RainbowButton';
 import KeyboardHider from '@commonComponents/KeyboardHider';
@@ -15,7 +16,6 @@ import Routes from '@navigation/Routes';
 import { Container } from '@layout';
 
 import styles from './styles';
-import { useTranslation } from 'react-i18next';
 
 const ImportSeedPhrase = ({ navigation, route }) => {
   const { goBack } = navigation;
