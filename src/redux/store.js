@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import thunk from 'redux-thunk';
 import Flatted from 'flatted';
 
-import Reactotron from '../../reactotronConfig';
+import Reactotron from '../config/reactotron';
 import KeyringReducer from './slices/keyring';
 import UserReducer from './slices/user';
 import IcpReducer from './slices/icp';

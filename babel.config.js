@@ -11,6 +11,7 @@ module.exports = {
           // Core aliases:
           '@assets': './src/assets',
           '@components': './src/components',
+          '@config': './src/config',
           '@constants': './src/constants',
           '@hooks': './src/hooks',
           '@navigation': './src/navigation',

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { View, Text, Image } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import { useNavigation } from '@react-navigation/native';
 import RainbowButton from '@components/buttons/RainbowButton';
@@ -14,6 +15,7 @@ import styles from './styles';
 
 function Welcome() {
   const navigation = useNavigation();
+  const { t } = useTranslation();
   const { isInitialized } = useSelector(state => state.keyring);
 
   const onPress = flow => () =>
@@ -25,15 +27,19 @@ function Welcome() {
     navigation.navigate(Routes.LOGIN_SCREEN, { manualLock: true });
   };
 
-  const title = isInitialized ? 'Choose an option' : 'Welcome to Plug';
-  const importTitle = `Import${isInitialized ? ' New ' : ' '}Wallet`;
-  const createTitle = `Create${isInitialized ? ' New ' : ' '}Wallet`;
+  const title = isInitialized ? t('welcome.initTitle') : t('welcome.title');
+  const importTitle = isInitialized
+    ? t('welcome.importNew')
+    : t('welcome.import');
+  const createTitle = isInitialized
+    ? t('welcome.createNew')
+    : t('welcome.create');
 
   return (
     <Container>
       {isInitialized && (
         <Text style={[FontStyles.Normal, styles.valid]} onPress={handleBack}>
-          Back
+          {t('common.back')}
         </Text>
       )}
       <View style={styles.container}>

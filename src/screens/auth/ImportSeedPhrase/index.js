@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import RainbowButton from '@components/buttons/RainbowButton';
 import KeyboardHider from '@commonComponents/KeyboardHider';
@@ -19,6 +20,7 @@ import styles from './styles';
 const ImportSeedPhrase = ({ navigation, route }) => {
   const { goBack } = navigation;
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { saveBiometrics } = useKeychain();
   const { icpPrice } = useSelector(state => state.icp);
   const { password, shouldSaveBiometrics } = route?.params || {};
@@ -82,23 +84,25 @@ const ImportSeedPhrase = ({ navigation, route }) => {
       />
       <KeyboardHider>
         <View style={styles.container}>
-          <Text style={styles.title}>Import Wallet</Text>
+          <Text style={styles.title}>{t('importSeedPhrase.title')}</Text>
           <Text style={styles.subtitle}>
-            Please enter your 12 word Secret Recovery Phrase.
+            {t('importSeedPhrase.enterPhrase')}
           </Text>
           <TextInput
             multiline
             variant="multi"
             value={seedPhrase}
             onChangeText={onChangeText}
-            placeholder="Secret Recovery Phrase"
+            placeholder={t('importSeedPhrase.secretPhrase')}
             customStyle={styles.input}
           />
           {error && (
-            <Text style={styles.errorText}>Recovery phrase not found</Text>
+            <Text style={styles.errorText}>
+              {t('importSeedPhrase.notFound')}
+            </Text>
           )}
           <RainbowButton
-            text="Continue"
+            text={t('common.continue')}
             onPress={onPress}
             loading={loading}
             buttonStyle={styles.button}
