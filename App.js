@@ -8,12 +8,13 @@ import SplashScreen from 'react-native-splash-screen';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 
-import ErrorBoundary from './src/components/common/ErrorBoundary';
-import { initKeyring } from './src/redux/slices/keyring';
-import { persistor, store } from './src/redux/store';
-import { isIos } from './src/constants/platform';
-import Routes from './src/navigation';
-import './reactotronConfig';
+import ErrorBoundary from '@commonComponents/ErrorBoundary';
+import { initKeyring } from '@redux/slices/keyring';
+import { persistor, store } from '@redux/store';
+import { isIos } from '@constants/platform';
+import Routes from '@navigation';
+import '@config/i18n';
+import '@config/reactotron';
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
 
