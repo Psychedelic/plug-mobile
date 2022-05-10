@@ -1,9 +1,9 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import Touchable from '@commonComponents/Touchable';
+import Touchable from '@/commonComponents/Touchable';
 
-import { categoryKeys, Categories } from '../../utils';
+import { Categories, categoryKeys } from '../../utils';
 import styles from './styles';
 
 const EmojiBar = ({ currentCategory, setCurrentCategory }) => {

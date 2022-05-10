@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 
-import { FontStyles } from '@constants/theme';
+import { FontStyles } from '@/constants/theme';
 
 import styles from './styles';
 

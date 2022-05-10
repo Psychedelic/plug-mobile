@@ -1,12 +1,12 @@
 import Clipboard from '@react-native-community/clipboard';
-import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import CopiedToast from '@commonComponents/CopiedToast';
-import Touchable from '@commonComponents/Touchable';
-import shortAddress from '@utils/shortAddress';
-import { FontStyles } from '@constants/theme';
+import CopiedToast from '@/commonComponents/CopiedToast';
+import Touchable from '@/commonComponents/Touchable';
+import { FontStyles } from '@/constants/theme';
+import shortAddress from '@/utils/shortAddress';
 
 import styles from './styles';
 

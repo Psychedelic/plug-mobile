@@ -1,15 +1,15 @@
+import React, { useEffect, useRef, useState } from 'react';
 import { RefreshControl, ScrollView, Text } from 'react-native';
-import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ERROR_TYPES } from '@commonComponents/ErrorState/constants';
-import { getAssets, setAssetsLoading } from '@redux/slices/user';
-import ErrorState from '@commonComponents/ErrorState';
-import TokenItem from '@components/tokens/TokenItem';
-import { Row, Separator, Container } from '@layout';
-import { getICPPrice } from '@redux/slices/icp';
-import { Colors } from '@constants/theme';
-import Send from '@screens/flows/Send';
+import ErrorState from '@/commonComponents/ErrorState';
+import { ERROR_TYPES } from '@/commonComponents/ErrorState/constants';
+import TokenItem from '@/components/tokens/TokenItem';
+import { Colors } from '@/constants/theme';
+import { Container, Row, Separator } from '@/layout';
+import { getICPPrice } from '@/redux/slices/icp';
+import { getAssets, setAssetsLoading } from '@/redux/slices/user';
+import Send from '@/screens/flows/Send';
 
 import WalletHeader from '../components/WalletHeader';
 import styles from './styles';

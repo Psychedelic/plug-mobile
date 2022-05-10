@@ -1,6 +1,6 @@
+import React, { useRef } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { WebView } from 'react-native-webview';
-import React, { useRef } from 'react';
 
 import sharedStyles from '../../styles';
 

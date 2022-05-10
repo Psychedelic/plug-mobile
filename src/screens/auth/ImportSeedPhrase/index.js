@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, Image } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Image, Text, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
-import RainbowButton from '@components/buttons/RainbowButton';
-import KeyboardHider from '@commonComponents/KeyboardHider';
-import { reset, importWallet } from '@redux/slices/keyring';
-import PlugLogo from '@assets/icons/plug-logo-full.png';
-import TextInput from '@commonComponents/TextInput';
-import { getICPPrice } from '@redux/slices/icp';
-import Header from '@commonComponents/Header';
-import useKeychain from '@hooks/useKeychain';
-import Back from '@commonComponents/Back';
-import Routes from '@navigation/Routes';
-import { Container } from '@layout';
+import PlugLogo from '@/assets/icons/plug-logo-full.png';
+import Back from '@/commonComponents/Back';
+import Header from '@/commonComponents/Header';
+import KeyboardHider from '@/commonComponents/KeyboardHider';
+import TextInput from '@/commonComponents/TextInput';
+import RainbowButton from '@/components/buttons/RainbowButton';
+import useKeychain from '@/hooks/useKeychain';
+import { Container } from '@/layout';
+import Routes from '@/navigation/Routes';
+import { getICPPrice } from '@/redux/slices/icp';
+import { importWallet, reset } from '@/redux/slices/keyring';
 
 import styles from './styles';
 

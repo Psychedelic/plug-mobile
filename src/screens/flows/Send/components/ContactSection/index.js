@@ -2,9 +2,9 @@ import React from 'react';
 import { Text } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import CommonItem from '@commonComponents/CommonItem';
-import { FontStyles } from '@constants/theme';
-import useContacts from '@hooks/useContacts';
+import CommonItem from '@/commonComponents/CommonItem';
+import { FontStyles } from '@/constants/theme';
+import useContacts from '@/hooks/useContacts';
 
 import styles from '../../styles';
 

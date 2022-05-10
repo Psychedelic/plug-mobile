@@ -1,15 +1,15 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { View, Text, Image } from 'react-native';
-import { useTranslation } from 'react-i18next';
-
 import { useNavigation } from '@react-navigation/native';
-import RainbowButton from '@components/buttons/RainbowButton';
-import Plug from '@assets/icons/il_white_plug.png';
-import Button from '@components/buttons/Button';
-import { FontStyles } from '@constants/theme';
-import Routes from '@navigation/Routes';
-import { Container } from '@layout';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Image, Text, View } from 'react-native';
+import { useSelector } from 'react-redux';
+
+import Plug from '@/assets/icons/il_white_plug.png';
+import Button from '@/components/buttons/Button';
+import RainbowButton from '@/components/buttons/RainbowButton';
+import { FontStyles } from '@/constants/theme';
+import { Container } from '@/layout';
+import Routes from '@/navigation/Routes';
 
 import styles from './styles';
 

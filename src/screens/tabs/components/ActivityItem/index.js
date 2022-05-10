@@ -1,14 +1,14 @@
-import { View, Text } from 'react-native';
 import moment from 'moment';
 import React from 'react';
+import { Text, View } from 'react-native';
 
-import UsdFormat from '@formatters/UsdFormat';
-import { formatToMaxDecimals } from '@utils/number';
-import shortAddress from '@utils/shortAddress';
-import { FontStyles } from '@constants/theme';
+import { FontStyles } from '@/constants/theme';
+import UsdFormat from '@/formatters/UsdFormat';
+import { formatToMaxDecimals } from '@/utils/number';
+import shortAddress from '@/utils/shortAddress';
 
-import { getStatus, getSubtitle, getTitle } from '../utils';
 import ActivityIcon from '../ActivityIcon';
+import { getStatus, getSubtitle, getTitle } from '../utils';
 import styles from './styles';
 
 const ActivityItem = ({

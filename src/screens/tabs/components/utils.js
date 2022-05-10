@@ -1,7 +1,7 @@
-import { Text } from 'react-native';
 import React from 'react';
+import { Text } from 'react-native';
 
-import shortAddress from '@utils/shortAddress';
+import shortAddress from '@/utils/shortAddress';
 
 import { ACTIVITY_STATUS } from './constants';
 

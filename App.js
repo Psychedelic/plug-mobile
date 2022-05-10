@@ -1,20 +1,21 @@
-import { AppState } from 'react-native';
-import Config from 'react-native-config';
-import codePush from 'react-native-code-push';
+import '@/config/i18n';
+import '@/config/reactotron';
+
 import * as Sentry from '@sentry/react-native';
 import React, { useEffect, useRef } from 'react';
-import Reactotron from 'reactotron-react-native';
+import { AppState } from 'react-native';
+import codePush from 'react-native-code-push';
+import Config from 'react-native-config';
 import SplashScreen from 'react-native-splash-screen';
-import { PersistGate } from 'redux-persist/integration/react';
 import { Provider, useDispatch, useSelector } from 'react-redux';
+import Reactotron from 'reactotron-react-native';
+import { PersistGate } from 'redux-persist/integration/react';
 
-import ErrorBoundary from '@commonComponents/ErrorBoundary';
-import { initKeyring } from '@redux/slices/keyring';
-import { persistor, store } from '@redux/store';
-import { isIos } from '@constants/platform';
-import Routes from '@navigation';
-import '@config/i18n';
-import '@config/reactotron';
+import ErrorBoundary from '@/commonComponents/ErrorBoundary';
+import { isIos } from '@/constants/platform';
+import Routes from '@/navigation';
+import { initKeyring } from '@/redux/slices/keyring';
+import { persistor, store } from '@/redux/store';
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
 

@@ -1,7 +1,7 @@
-import { Image, StyleSheet, View } from 'react-native';
 import React from 'react';
+import { Image, StyleSheet, View } from 'react-native';
 
-import Icon from '@components/icons';
+import Icon from '@/components/icons';
 
 import { ACTIVITY_IMAGES } from '../constants';
 import { parseImageName } from '../utils';

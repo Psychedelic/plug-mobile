@@ -1,22 +1,22 @@
 import React, { useRef } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Contacts from '@screens/tabs/Profile/screens/Contacts';
-import Touchable from '@commonComponents/Touchable';
-import { FontStyles, Colors } from '@constants/theme';
-import animationScales from '@utils/animationScales';
-import { setUnlocked } from '@redux/slices/keyring';
-import RevealSeedPhrase from '../RevealSeedPhrase';
-import Header from '@components/common/Header';
-import Modal from '@commonComponents/Modal';
-import Icon from '@components/icons';
-import { Separator } from '@layout';
+import Modal from '@/commonComponents/Modal';
+import Touchable from '@/commonComponents/Touchable';
+import Header from '@/components/common/Header';
+import Icon from '@/components/icons';
+import { Colors, FontStyles } from '@/constants/theme';
+import { Separator } from '@/layout';
+import { setUnlocked } from '@/redux/slices/keyring';
+import Contacts from '@/screens/tabs/Profile/screens/Contacts';
+import animationScales from '@/utils/animationScales';
 
-import BiometricUnlock from './components/BiometricUnlock';
 import { version } from '../../../../../../package.json';
-import SettingItem from './components/SettingItem';
+import RevealSeedPhrase from '../RevealSeedPhrase';
+import BiometricUnlock from './components/BiometricUnlock';
 import InfoItem from './components/InfoItem';
+import SettingItem from './components/SettingItem';
 import { infoItems } from './constants';
 
 const Settings = () => {

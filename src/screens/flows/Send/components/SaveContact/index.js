@@ -1,14 +1,14 @@
-import { Text, View } from 'react-native';
-import React, { useState } from 'react';
 import emojis from 'emoji-datasource';
+import React, { useState } from 'react';
+import { Text, View } from 'react-native';
 
-import { charFromEmojiObject } from '@commonComponents/EmojiSelector/utils';
-import RainbowButton from '@components/buttons/RainbowButton';
-import TextInput from '@commonComponents/TextInput';
-import Header from '@commonComponents/Header';
-import { FontStyles } from '@constants/theme';
-import useContacts from '@hooks/useContacts';
-import Modal from '@commonComponents/Modal';
+import { charFromEmojiObject } from '@/commonComponents/EmojiSelector/utils';
+import Header from '@/commonComponents/Header';
+import Modal from '@/commonComponents/Modal';
+import TextInput from '@/commonComponents/TextInput';
+import RainbowButton from '@/components/buttons/RainbowButton';
+import { FontStyles } from '@/constants/theme';
+import useContacts from '@/hooks/useContacts';
 
 import styles from './styles';
 

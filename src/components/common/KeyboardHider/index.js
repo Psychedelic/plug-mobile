@@ -5,7 +5,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 
-import { isIos } from '@constants/platform';
+import { isIos } from '@/constants/platform';
 
 const containerStyle = { flex: 1 };
 

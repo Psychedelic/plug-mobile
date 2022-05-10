@@ -1,18 +1,18 @@
-import { formatAssetBySymbol, TOKEN_IMAGES, TOKENS } from '@utils/assets';
-import { ACTIVITY_STATUS } from '@screens/tabs/components/constants';
-import { parseToFloatAmount } from '@utils/number';
+import { ACTIVITY_STATUS } from '@/screens/tabs/components/constants';
+import { formatAssetBySymbol, TOKEN_IMAGES, TOKENS } from '@/utils/assets';
+import { parseToFloatAmount } from '@/utils/number';
 
 import { reset } from './slices/keyring';
 import {
   getNFTs,
-  setAssets,
-  setContacts,
-  setCollections,
   getTransactions,
   privateGetAssets,
-  setTransactions,
-  setAssetsLoading,
+  setAssets,
   setAssetsAndLoading,
+  setAssetsLoading,
+  setCollections,
+  setContacts,
+  setTransactions,
   setTransactionsLoading,
 } from './slices/user';
 

@@ -1,19 +1,18 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import PlugController from '@psychedelic/plug-mobile-controller';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { fetch } from 'react-native-fetch-api';
 
-import { getPrivateAssetsAndTransactions } from '../../utils/keyringUtils';
 import { generateMnemonic } from '../../utils/crypto';
-import { resetStores, getNewAccountData } from '../utils';
+import { getPrivateAssetsAndTransactions } from '../../utils/keyringUtils';
 import { keyringStorage } from '../store';
-
+import { getNewAccountData, resetStores } from '../utils';
 import {
-  getNFTs,
   getAssets,
+  getNFTs,
   getTransactions,
+  setAssetsAndTransactions,
   setAssetsLoading,
   setTransactionsLoading,
-  setAssetsAndTransactions,
 } from './user';
 
 export const initKeyring = createAsyncThunk('keyring/init', async () => {

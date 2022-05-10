@@ -1,18 +1,18 @@
-import React, { Fragment, useRef, useState } from 'react';
-import { Text, View, ActionSheetIOS } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
+import React, { Fragment, useRef, useState } from 'react';
+import { ActionSheetIOS, Text, View } from 'react-native';
 
-import Touchable from '@commonComponents/Touchable';
+import CommonItem from '@/commonComponents/CommonItem';
+import Header from '@/commonComponents/Header';
+import Modal from '@/commonComponents/Modal';
+import Touchable from '@/commonComponents/Touchable';
+import Icon from '@/components/icons';
+import { FontStyles } from '@/constants/theme';
+import useContacts from '@/hooks/useContacts';
+import { Column } from '@/layout';
+import { Row } from '@/layout';
+
 import AddEditContact from './components/AddEditContact';
-import CommonItem from '@commonComponents/CommonItem';
-import { Column } from '@layout';
-import { FontStyles } from '@constants/theme';
-import Header from '@commonComponents/Header';
-import useContacts from '@hooks/useContacts';
-import Modal from '@commonComponents/Modal';
-import Icon from '@components/icons';
-import { Row } from '@layout';
-
 import styles from './styles';
 
 const Contacts = ({ modalRef }) => {

@@ -1,19 +1,19 @@
-import { ActionSheetIOS, ActivityIndicator, View, Text } from 'react-native';
-import React, { useRef, useState, useEffect } from 'react';
 import Clipboard from '@react-native-community/clipboard';
+import React, { useEffect, useRef, useState } from 'react';
+import { ActionSheetIOS, ActivityIndicator, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { reset, setCurrentPrincipal } from '@redux/slices/keyring';
-import Touchable from '@commonComponents/Touchable';
-import CommonItem from '@commonComponents/CommonItem';
-import shortAddress from '@utils/shortAddress';
-import { getICPPrice } from '@redux/slices/icp';
-import Header from '@commonComponents/Header';
-import { FontStyles } from '@constants/theme';
-import { getNFTs } from '@redux/slices/user';
-import Modal from '@commonComponents/Modal';
-import Icon from '@components/icons';
-import { Row } from '@layout';
+import CommonItem from '@/commonComponents/CommonItem';
+import Header from '@/commonComponents/Header';
+import Modal from '@/commonComponents/Modal';
+import Touchable from '@/commonComponents/Touchable';
+import Icon from '@/components/icons';
+import { FontStyles } from '@/constants/theme';
+import { Row } from '@/layout';
+import { getICPPrice } from '@/redux/slices/icp';
+import { reset, setCurrentPrincipal } from '@/redux/slices/keyring';
+import { getNFTs } from '@/redux/slices/user';
+import shortAddress from '@/utils/shortAddress';
 
 import CreateEditAccount from '../CreateEditAccount';
 import styles from './styles';

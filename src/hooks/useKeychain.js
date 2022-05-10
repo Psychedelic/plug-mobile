@@ -2,7 +2,10 @@ import { useEffect } from 'react';
 import RNSInfo from 'react-native-sensitive-info';
 import { useDispatch } from 'react-redux';
 
-import { setUsingBiometrics, setBiometricsAvailable } from '@redux/slices/user';
+import {
+  setBiometricsAvailable,
+  setUsingBiometrics,
+} from '@/redux/slices/user';
 
 const KEYCHAIN_CONSTANTS = {
   tokenKey: 'plug-accss-token',

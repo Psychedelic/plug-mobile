@@ -1,10 +1,10 @@
 import { BlurView } from '@react-native-community/blur';
-import { Image, View, Text } from 'react-native';
 import React, { useState } from 'react';
+import { Image, Text, View } from 'react-native';
 
-import Touchable from '@commonComponents/Touchable';
-import ListItem from '@commonComponents/ListItem';
-import KeyImg from '@assets/icons/key.png';
+import KeyImg from '@/assets/icons/key.png';
+import ListItem from '@/commonComponents/ListItem';
+import Touchable from '@/commonComponents/Touchable';
 
 import styles from './styles';
 

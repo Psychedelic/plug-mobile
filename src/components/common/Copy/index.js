@@ -1,10 +1,10 @@
 import Clipboard from '@react-native-community/clipboard';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 
-import CopiedToast from '@commonComponents/CopiedToast';
-import Touchable from '@commonComponents/Touchable';
-import Icon from '@icons';
+import CopiedToast from '@/commonComponents/CopiedToast';
+import Touchable from '@/commonComponents/Touchable';
+import Icon from '@/icons';
 
 import styles from './styles';
 

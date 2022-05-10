@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
 import { emojiByCategory, sortEmoji, splitToRows } from '../../utils';
 import Emoji from '../Emoji';

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 
-import RainbowButton from '@components/buttons/RainbowButton';
-import EmojiSelector from '@commonComponents/EmojiSelector';
-import UserIcon from '@commonComponents/UserIcon';
-import Header from '@commonComponents/Header';
-import { FontStyles } from '@constants/theme';
-import Modal from '@commonComponents/Modal';
+import EmojiSelector from '@/commonComponents/EmojiSelector';
+import Header from '@/commonComponents/Header';
+import Modal from '@/commonComponents/Modal';
+import UserIcon from '@/commonComponents/UserIcon';
+import RainbowButton from '@/components/buttons/RainbowButton';
+import { FontStyles } from '@/constants/theme';
 
 import styles from './styles';
 

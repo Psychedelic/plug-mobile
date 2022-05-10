@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 
-import Touchable from '@commonComponents/Touchable';
-import animationScales from '@utils/animationScales';
-import { FontStyles } from '@constants/theme';
-import TokenFormat from '@formatters/TokenFormat';
-import UsdFormat from '@formatters/UsdFormat';
-import TokenIcon from '@tokens/TokenIcon';
+import Touchable from '@/commonComponents/Touchable';
+import { FontStyles } from '@/constants/theme';
+import TokenFormat from '@/formatters/TokenFormat';
+import UsdFormat from '@/formatters/UsdFormat';
+import TokenIcon from '@/tokens/TokenIcon';
+import animationScales from '@/utils/animationScales';
 
 import styles from './styles';
 

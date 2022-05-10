@@ -1,6 +1,6 @@
 import React from 'react';
-import { Portal } from 'react-native-portalize';
 import { Modalize } from 'react-native-modalize';
+import { Portal } from 'react-native-portalize';
 
 import styles from './styles';
 

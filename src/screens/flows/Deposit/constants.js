@@ -1,4 +1,4 @@
-import { Colors } from '@constants/theme';
+import { Colors } from '@/constants/theme';
 
 export const ID_TYPES = {
   PRINCIPAL_ID: 'Principal ID',

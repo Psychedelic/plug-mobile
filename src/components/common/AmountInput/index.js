@@ -2,10 +2,10 @@ import React, { useRef, useState } from 'react';
 import { Text, TextInput, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-import animationScales from '@utils/animationScales';
-import Touchable from '@commonComponents/Touchable';
-import { Rainbow, Colors } from '@constants/theme';
-import Button from '@buttons/Button';
+import Button from '@/buttons/Button';
+import Touchable from '@/commonComponents/Touchable';
+import { Colors, Rainbow } from '@/constants/theme';
+import animationScales from '@/utils/animationScales';
 
 import styles from './styles';
 

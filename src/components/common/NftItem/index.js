@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 
-import NftDisplayer from '@commonComponents/NftDisplayer';
+import NftDisplayer from '@/commonComponents/NftDisplayer';
 
 import styles from './styles';
 

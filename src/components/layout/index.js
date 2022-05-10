@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, StatusBar } from 'react-native';
+import { StatusBar, View } from 'react-native';
 
-import { withNotch } from '@constants/platform';
+import { withNotch } from '@/constants/platform';
 
 import styles from './styles';
 

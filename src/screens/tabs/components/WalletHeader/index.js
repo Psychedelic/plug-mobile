@@ -1,19 +1,19 @@
-import React, { useRef, useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/core';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
+import { useSelector } from 'react-redux';
 
-import AccountInfo from '@commonComponents/AccountInfo';
-import Touchable from '@commonComponents/Touchable';
-import UserIcon from '@commonComponents/UserIcon';
-import { useDebounce } from '@hooks/useDebounce';
-import Header from '@commonComponents/Header';
-import Deposit from '@screens/flows/Deposit';
-import { Colors } from '@constants/theme';
-import Routes from '@navigation/Routes';
-import Send from '@screens/flows/Send';
-import Modal from '@commonComponents/Modal';
-import Icon from '@components/icons';
+import AccountInfo from '@/commonComponents/AccountInfo';
+import Header from '@/commonComponents/Header';
+import Modal from '@/commonComponents/Modal';
+import Touchable from '@/commonComponents/Touchable';
+import UserIcon from '@/commonComponents/UserIcon';
+import Icon from '@/components/icons';
+import { Colors } from '@/constants/theme';
+import { useDebounce } from '@/hooks/useDebounce';
+import Routes from '@/navigation/Routes';
+import Deposit from '@/screens/flows/Deposit';
+import Send from '@/screens/flows/Send';
 
 import ActionButton from '../ActionButton';
 import styles from './styles';
