@@ -1,4 +1,4 @@
-import { ALPHANUM_REGEX } from '@constants/addresses';
+import { ALPHANUM_REGEX } from '@/constants/addresses';
 
 export const isValidPassword = password => password && password.length >= 12;
 

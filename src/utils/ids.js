@@ -1,6 +1,6 @@
 import { Principal } from '@dfinity/principal';
 
-import { ALPHANUM_REGEX, CANISTER_MAX_LENGTH } from '@constants/addresses';
+import { ALPHANUM_REGEX, CANISTER_MAX_LENGTH } from '@/constants/addresses';
 
 export const validatePrincipalId = text => {
   try {

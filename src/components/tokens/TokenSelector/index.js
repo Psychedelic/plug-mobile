@@ -1,13 +1,13 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 
-import { Colors, FontStyles } from '@constants/theme';
-import Touchable from '@commonComponents/Touchable';
-import TokenFormat from '@formatters/TokenFormat';
-import UsdFormat from '@formatters/UsdFormat';
-import TokenIcon from '@tokens/TokenIcon';
-import { Row } from '@layout';
-import Icon from '@icons';
+import Touchable from '@/commonComponents/Touchable';
+import { Colors, FontStyles } from '@/constants/theme';
+import TokenFormat from '@/formatters/TokenFormat';
+import UsdFormat from '@/formatters/UsdFormat';
+import Icon from '@/icons';
+import { Row } from '@/layout';
+import TokenIcon from '@/tokens/TokenIcon';
 
 import styles from './styles';
 

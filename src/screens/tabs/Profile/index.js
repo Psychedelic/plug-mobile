@@ -1,21 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { Text, View, FlatList, RefreshControl } from 'react-native';
+import { FlatList, RefreshControl, Text, View } from 'react-native';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
-import { getTransactions, setTransactionsLoading } from '@redux/slices/user';
-import { ERROR_TYPES } from '@commonComponents/ErrorState/constants';
-import ActivityItem from '@screens/tabs/components/ActivityItem';
-import ErrorState from '@commonComponents/ErrorState';
-import EmptyState from '@commonComponents/EmptyState';
-import UserIcon from '@commonComponents/UserIcon';
-import Button from '@components/buttons/Button';
-import { Separator, Container } from '@layout';
-import Header from '@commonComponents/Header';
-import { ENABLE_NFTS } from '@constants/nfts';
-import { Colors } from '@constants/theme';
+import EmptyState from '@/commonComponents/EmptyState';
+import ErrorState from '@/commonComponents/ErrorState';
+import { ERROR_TYPES } from '@/commonComponents/ErrorState/constants';
+import Header from '@/commonComponents/Header';
+import UserIcon from '@/commonComponents/UserIcon';
+import Button from '@/components/buttons/Button';
+import { ENABLE_NFTS } from '@/constants/nfts';
+import { Colors } from '@/constants/theme';
+import { Container, Separator } from '@/layout';
+import { getTransactions, setTransactionsLoading } from '@/redux/slices/user';
+import ActivityItem from '@/screens/tabs/components/ActivityItem';
 
-import Settings from './screens/Settings';
 import Accounts from './screens/Accounts';
+import Settings from './screens/Settings';
 import styles from './styles';
 
 const Profile = () => {

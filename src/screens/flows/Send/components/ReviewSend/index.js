@@ -1,25 +1,25 @@
-import { Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import React, { useEffect, useRef, useState } from 'react';
+import { Text, View } from 'react-native';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
-import RainbowButton from '@components/buttons/RainbowButton';
-import NftDisplayer from '@commonComponents/NftDisplayer';
-import TokenFormat from '@formatters/TokenFormat';
-import { Colors, FontStyles } from '@constants/theme';
-import TokenIcon from '@components/tokens/TokenIcon';
-import { setTransaction } from '@redux/slices/user';
-import UserIcon from '@commonComponents/UserIcon';
-import { TRANSACTION_STATUS } from '@redux/utils';
-import shortAddress from '@utils/shortAddress';
-import Button from '@components/buttons/Button';
-import Header from '@commonComponents/Header';
-import { Column } from '@layout';
-import useGetType from '@hooks/useGetType';
-import Routes from '@navigation/Routes';
-import Modal from '@commonComponents/Modal';
-import Icon from '@components/icons';
-import { Row } from '@layout';
+import Header from '@/commonComponents/Header';
+import Modal from '@/commonComponents/Modal';
+import NftDisplayer from '@/commonComponents/NftDisplayer';
+import UserIcon from '@/commonComponents/UserIcon';
+import Button from '@/components/buttons/Button';
+import RainbowButton from '@/components/buttons/RainbowButton';
+import Icon from '@/components/icons';
+import TokenIcon from '@/components/tokens/TokenIcon';
+import { Colors, FontStyles } from '@/constants/theme';
+import TokenFormat from '@/formatters/TokenFormat';
+import useGetType from '@/hooks/useGetType';
+import { Column } from '@/layout';
+import { Row } from '@/layout';
+import Routes from '@/navigation/Routes';
+import { setTransaction } from '@/redux/slices/user';
+import { TRANSACTION_STATUS } from '@/redux/utils';
+import shortAddress from '@/utils/shortAddress';
 
 import {
   formatSendAmount,

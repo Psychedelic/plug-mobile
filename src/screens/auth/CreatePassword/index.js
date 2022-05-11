@@ -1,23 +1,23 @@
-import { Text, View, Image, Switch } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import { ErrorMessage } from '@hookform/error-message';
-import { useForm, Controller } from 'react-hook-form';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Image, Switch, Text, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
-import RainbowButton from '@components/buttons/RainbowButton';
-import PasswordInput from '@commonComponents/PasswordInput';
-import KeyboardHider from '@commonComponents/KeyboardHider';
-import PlugLogo from '@assets/icons/plug-logo-full.png';
-import { createWallet } from '@redux/slices/keyring';
-import Header from '@commonComponents/Header';
-import useKeychain from '@hooks/useKeychain';
-import Back from '@commonComponents/Back';
-import Routes from '@navigation/Routes';
-import { Container } from '@layout';
+import PlugLogo from '@/assets/icons/plug-logo-full.png';
+import Back from '@/commonComponents/Back';
+import Header from '@/commonComponents/Header';
+import KeyboardHider from '@/commonComponents/KeyboardHider';
+import PasswordInput from '@/commonComponents/PasswordInput';
+import RainbowButton from '@/components/buttons/RainbowButton';
+import useKeychain from '@/hooks/useKeychain';
+import { Container } from '@/layout';
+import Routes from '@/navigation/Routes';
+import { createWallet } from '@/redux/slices/keyring';
 
 import {
-  createPasswordRules,
   createPasswordFields,
+  createPasswordRules,
   MIN_LENGTH_MESSAGE,
 } from './constants';
 import styles from './styles';

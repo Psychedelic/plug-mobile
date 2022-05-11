@@ -1,8 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import GradientText from '@commonComponents/GradientText';
-import Touchable from '@commonComponents/Touchable';
+import GradientText from '@/commonComponents/GradientText';
+import Touchable from '@/commonComponents/Touchable';
 
 import styles from './styles';
 

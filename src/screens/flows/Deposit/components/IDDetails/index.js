@@ -1,13 +1,13 @@
+import Clipboard from '@react-native-community/clipboard';
+import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
 import { useSelector } from 'react-redux';
-import React, { useState, useEffect } from 'react';
-import Clipboard from '@react-native-community/clipboard';
 
-import InfoWithActions from '@commonComponents/InfoWithActions';
-import GradientText from '@commonComponents/GradientText';
-import CopiedToast from '@commonComponents/CopiedToast';
-import shortAddress from '@utils/shortAddress';
-import { Column } from '@layout';
+import CopiedToast from '@/commonComponents/CopiedToast';
+import GradientText from '@/commonComponents/GradientText';
+import InfoWithActions from '@/commonComponents/InfoWithActions';
+import { Column } from '@/layout';
+import shortAddress from '@/utils/shortAddress';
 
 import { getIdInfo } from '../../constants';
 import styles from './styles';

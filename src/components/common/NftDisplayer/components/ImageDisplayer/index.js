@@ -1,8 +1,8 @@
 import MaskedView from '@react-native-masked-view/masked-view';
+import React from 'react';
+import { StyleSheet } from 'react-native';
 import { SquircleView } from 'react-native-figma-squircle';
 import Image from 'react-native-remote-svg';
-import { StyleSheet } from 'react-native';
-import React from 'react';
 
 import HTMLDisplayer from '../../components/HTMLDisplayer';
 import sharedStyles from '../../styles';

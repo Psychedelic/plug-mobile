@@ -1,41 +1,41 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
-import { Text, ScrollView, Keyboard } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Keyboard, ScrollView, Text } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
-import PasswordModal from '@commonComponents/PasswordModal';
-import TextInput from '@commonComponents/TextInput';
-import { ADDRESS_TYPES } from '@constants/addresses';
-import { getICPPrice } from '@redux/slices/icp';
-import Header from '@commonComponents/Header';
-import { FontStyles } from '@constants/theme';
-import useKeychain from '@hooks/useKeychain';
-import { USD_PER_TC } from '@utils/assets';
-import XTC_OPTIONS from '@constants/xtc';
-import Modal from '@commonComponents/Modal';
+import Header from '@/commonComponents/Header';
+import Modal from '@/commonComponents/Modal';
+import PasswordModal from '@/commonComponents/PasswordModal';
+import TextInput from '@/commonComponents/TextInput';
+import { ADDRESS_TYPES } from '@/constants/addresses';
+import { FontStyles } from '@/constants/theme';
+import XTC_OPTIONS from '@/constants/xtc';
+import useKeychain from '@/hooks/useKeychain';
+import { getICPPrice } from '@/redux/slices/icp';
 import {
   burnXtc,
   sendToken,
   setTransaction,
   transferNFT,
-} from '@redux/slices/user';
+} from '@/redux/slices/user';
+import { USD_PER_TC } from '@/utils/assets';
 import {
-  validatePrincipalId,
   validateAccountId,
   validateCanisterId,
-} from '@utils/ids';
+  validatePrincipalId,
+} from '@/utils/ids';
 
-import ContactSection from './components/ContactSection';
 import AmountSection from './components/AmountSection';
-import TokenSection from './components/TokenSection';
-import SaveContact from './components/SaveContact';
+import ContactSection from './components/ContactSection';
 import ReviewSend from './components/ReviewSend';
+import SaveContact from './components/SaveContact';
+import TokenSection from './components/TokenSection';
 import styles from './styles';
 import {
+  formatSendAmount,
   getAvailableAmount,
   getUsdAvailableAmount,
-  formatSendAmount,
-  USD_MAX_DECIMALS,
   ICP_MAX_DECIMALS,
+  USD_MAX_DECIMALS,
 } from './utils';
 
 const INITIAL_ADDRESS_INFO = { isValid: null, type: null };

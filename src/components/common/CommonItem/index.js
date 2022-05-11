@@ -1,12 +1,12 @@
-import { View, Text } from 'react-native';
 import React from 'react';
+import { Text, View } from 'react-native';
 
-import Touchable from '@commonComponents/Touchable';
-import animationScales from '@utils/animationScales';
-import UserIcon from '@commonComponents/UserIcon';
-import shortAddress from '@utils/shortAddress';
-import { FontStyles } from '@constants/theme';
-import Icon from '@components/icons';
+import Touchable from '@/commonComponents/Touchable';
+import UserIcon from '@/commonComponents/UserIcon';
+import Icon from '@/components/icons';
+import { FontStyles } from '@/constants/theme';
+import animationScales from '@/utils/animationScales';
+import shortAddress from '@/utils/shortAddress';
 
 import styles from './styles';
 

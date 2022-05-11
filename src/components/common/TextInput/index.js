@@ -1,11 +1,11 @@
-import { Text, View, TextInput as Input } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import React, { useState } from 'react';
+import { Text, TextInput as Input, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 
-import animationScales from '@utils/animationScales';
-import Touchable from '@commonComponents/Touchable';
-import { Rainbow } from '@constants/theme';
-import Icon from '@icons';
+import Touchable from '@/commonComponents/Touchable';
+import { Rainbow } from '@/constants/theme';
+import Icon from '@/icons';
+import animationScales from '@/utils/animationScales';
 
 import { variants } from './constants';
 import styles from './styles';

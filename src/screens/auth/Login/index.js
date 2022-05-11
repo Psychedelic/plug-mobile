@@ -1,20 +1,20 @@
-import { View, StatusBar, Text, Image, Keyboard } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Image, Keyboard, StatusBar, Text, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
-import RainbowButton from '@components/buttons/RainbowButton';
-import KeyboardHider from '@commonComponents/KeyboardHider';
-import PasswordInput from '@commonComponents/PasswordInput';
-import { isValidPassword } from '@constants/general';
-import { setAssetsLoading } from '@redux/slices/user';
-import Plug from '@assets/icons/il_white_plug.png';
-import { getICPPrice } from '@redux/slices/icp';
-import Button from '@components/buttons/Button';
-import { login } from '@redux/slices/keyring';
-import useKeychain from '@hooks/useKeychain';
-import Routes from '@navigation/Routes';
-import { Container } from '@layout';
+import Plug from '@/assets/icons/il_white_plug.png';
+import KeyboardHider from '@/commonComponents/KeyboardHider';
+import PasswordInput from '@/commonComponents/PasswordInput';
+import Button from '@/components/buttons/Button';
+import RainbowButton from '@/components/buttons/RainbowButton';
+import { isValidPassword } from '@/constants/general';
+import useKeychain from '@/hooks/useKeychain';
+import { Container } from '@/layout';
+import Routes from '@/navigation/Routes';
+import { getICPPrice } from '@/redux/slices/icp';
+import { login } from '@/redux/slices/keyring';
+import { setAssetsLoading } from '@/redux/slices/user';
 
 import styles from './styles';
 

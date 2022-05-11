@@ -1,4 +1,4 @@
-import { Colors } from '@constants/theme';
+import { Colors } from '@/constants/theme';
 
 const modalStyle = {
   zIndex: 5,

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ErrorBoundaryScreen from '@screens/error/ErrorBoundaryScreen';
+import ErrorBoundaryScreen from '@/screens/error/ErrorBoundaryScreen';
 
 class ErrorBoundary extends React.Component {
   state = { hasError: null };

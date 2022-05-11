@@ -1,15 +1,15 @@
-import { RefreshControl, Text, FlatList } from 'react-native';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { FlatList, RefreshControl, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ERROR_TYPES } from '@commonComponents/ErrorState/constants';
-import WalletHeader from '@screens/tabs/components/WalletHeader';
-import ErrorState from '@commonComponents/ErrorState';
-import EmptyState from '@commonComponents/EmptyState';
-import NftItem from '@screens/tabs/components/NftItem';
-import { Separator, Container } from '@layout';
-import { getNFTs } from '@redux/slices/user';
-import { Colors } from '@constants/theme';
+import EmptyState from '@/commonComponents/EmptyState';
+import ErrorState from '@/commonComponents/ErrorState';
+import { ERROR_TYPES } from '@/commonComponents/ErrorState/constants';
+import { Colors } from '@/constants/theme';
+import { Container, Separator } from '@/layout';
+import { getNFTs } from '@/redux/slices/user';
+import NftItem from '@/screens/tabs/components/NftItem';
+import WalletHeader from '@/screens/tabs/components/WalletHeader';
 
 import NftDetail from './screens/NftDetail';
 import styles from './styles';

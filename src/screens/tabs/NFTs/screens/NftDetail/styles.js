@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { WINDOW_WIDTH } from '@constants/platform';
+
+import { WINDOW_WIDTH } from '@/constants/platform';
 
 const imageSize = WINDOW_WIDTH - 40;
 

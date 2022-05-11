@@ -1,27 +1,27 @@
+import React, { useRef, useState } from 'react';
 import {
-  View,
-  Text,
-  Share,
+  ActionSheetIOS,
   Linking,
   Platform,
-  ActionSheetIOS,
+  Share,
+  Text,
+  View,
 } from 'react-native';
-import RNFetchBlob from 'rn-fetch-blob';
 import { useSelector } from 'react-redux';
-import React, { useState, useRef } from 'react';
+import RNFetchBlob from 'rn-fetch-blob';
 
-import RainbowButton from '@components/buttons/RainbowButton';
-import NftDisplayer from '@commonComponents/NftDisplayer';
-import { getAbsoluteType } from '@utils/fileTypes';
-import { deleteWhiteSpaces } from '@utils/strings';
-import Button from '@components/buttons/Button';
-import Header from '@commonComponents/Header';
-import { FontStyles } from '@constants/theme';
-import Badge from '@commonComponents/Badge';
-import { isIos } from '@constants/platform';
-import useGetType from '@hooks/useGetType';
-import Send from '@screens/flows/Send';
-import Modal from '@commonComponents/Modal';
+import Badge from '@/commonComponents/Badge';
+import Header from '@/commonComponents/Header';
+import Modal from '@/commonComponents/Modal';
+import NftDisplayer from '@/commonComponents/NftDisplayer';
+import Button from '@/components/buttons/Button';
+import RainbowButton from '@/components/buttons/RainbowButton';
+import { isIos } from '@/constants/platform';
+import { FontStyles } from '@/constants/theme';
+import useGetType from '@/hooks/useGetType';
+import Send from '@/screens/flows/Send';
+import { getAbsoluteType } from '@/utils/fileTypes';
+import { deleteWhiteSpaces } from '@/utils/strings';
 
 import Section from './components/Section';
 import styles from './styles';

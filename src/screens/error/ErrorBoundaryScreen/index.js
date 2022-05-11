@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Image, Linking } from 'react-native';
+import { Image, Linking, View } from 'react-native';
 
-import { ERROR_TYPES } from '@commonComponents/ErrorState/constants';
-import ErrorState from '@commonComponents/ErrorState';
-import PlugLogo from '@assets/icons/il_white_plug.png';
+import PlugLogo from '@/assets/icons/il_white_plug.png';
+import ErrorState from '@/commonComponents/ErrorState';
+import { ERROR_TYPES } from '@/commonComponents/ErrorState/constants';
 
 import styles from './styles';
 

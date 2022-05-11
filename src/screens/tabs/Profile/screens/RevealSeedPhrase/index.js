@@ -1,16 +1,16 @@
-import { useDispatch, useSelector } from 'react-redux';
 import React, { useState } from 'react';
 import { Text } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
-import RainbowButton from '@components/buttons/RainbowButton';
-import PasswordInput from '@commonComponents/PasswordInput';
-import { validatePassword } from '@redux/slices/keyring';
-import SeedPhrase from '@commonComponents/SeedPhrase';
-import { isValidPassword } from '@constants/general';
-import { Column } from '@layout';
-import Header from '@commonComponents/Header';
-import Copy from '@commonComponents/Copy';
-import Modal from '@commonComponents/Modal';
+import Copy from '@/commonComponents/Copy';
+import Header from '@/commonComponents/Header';
+import Modal from '@/commonComponents/Modal';
+import PasswordInput from '@/commonComponents/PasswordInput';
+import SeedPhrase from '@/commonComponents/SeedPhrase';
+import RainbowButton from '@/components/buttons/RainbowButton';
+import { isValidPassword } from '@/constants/general';
+import { Column } from '@/layout';
+import { validatePassword } from '@/redux/slices/keyring';
 
 import styles from './styles';
 

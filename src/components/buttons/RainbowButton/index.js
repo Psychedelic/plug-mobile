@@ -1,9 +1,9 @@
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { DisabledRainbow, Rainbow } from '@constants/theme';
-import Touchable from '@commonComponents/Touchable';
-import Button from '@buttons/Button';
+import Button from '@/buttons/Button';
+import Touchable from '@/commonComponents/Touchable';
+import { DisabledRainbow, Rainbow } from '@/constants/theme';
 
 import { styles } from './styles';
 

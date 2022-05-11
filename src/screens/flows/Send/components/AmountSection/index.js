@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 
-import RainbowButton from '@components/buttons/RainbowButton';
-import TokenSelector from '@components/tokens/TokenSelector';
-import AmountInput from '@components/common/AmountInput';
-import { toFixedNoRounding } from '@utils/number';
+import RainbowButton from '@/components/buttons/RainbowButton';
+import AmountInput from '@/components/common/AmountInput';
+import TokenSelector from '@/components/tokens/TokenSelector';
 import {
   formatSendAmount,
   ICP_MAX_DECIMALS,
   USD_MAX_DECIMALS,
-} from '@screens/flows/Send/utils';
+} from '@/screens/flows/Send/utils';
+import { toFixedNoRounding } from '@/utils/number';
 
 import styles from './styles';
 

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
+import { Switch, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { Text, Switch, View } from 'react-native';
 
-import RainbowButton from '@components/buttons/RainbowButton';
-import PasswordInput from '@commonComponents/PasswordInput';
-import { validatePassword } from '@redux/slices/keyring';
-import { isValidPassword } from '@constants/general';
-import { Column } from '@layout';
-import Header from '@commonComponents/Header';
-import { FontStyles } from '@constants/theme';
-import useKeychain from '@hooks/useKeychain';
-import Modal from '@commonComponents/Modal';
+import Header from '@/commonComponents/Header';
+import Modal from '@/commonComponents/Modal';
+import PasswordInput from '@/commonComponents/PasswordInput';
+import RainbowButton from '@/components/buttons/RainbowButton';
+import { isValidPassword } from '@/constants/general';
+import { FontStyles } from '@/constants/theme';
+import useKeychain from '@/hooks/useKeychain';
+import { Column } from '@/layout';
+import { validatePassword } from '@/redux/slices/keyring';
 
 import styles from './styles';
 

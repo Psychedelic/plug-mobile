@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { Text, View, Image } from 'react-native';
+import { Image, Text, View } from 'react-native';
 
-import RainbowButton from '@components/buttons/RainbowButton';
-import PlugLogo from '@assets/icons/plug-logo-full.png';
-import SeedPhrase from '@commonComponents/SeedPhrase';
-import Header from '@commonComponents/Header';
-import Copy from '@commonComponents/Copy';
-import Back from '@commonComponents/Back';
-import Routes from '@navigation/Routes';
-import { Container } from '@layout';
+import PlugLogo from '@/assets/icons/plug-logo-full.png';
+import Back from '@/commonComponents/Back';
+import Copy from '@/commonComponents/Copy';
+import Header from '@/commonComponents/Header';
+import SeedPhrase from '@/commonComponents/SeedPhrase';
+import RainbowButton from '@/components/buttons/RainbowButton';
+import { Container } from '@/layout';
+import Routes from '@/navigation/Routes';
 
 import styles from './styles';
 

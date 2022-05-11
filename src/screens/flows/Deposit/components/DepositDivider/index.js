@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-import { FontStyles } from '@constants/theme';
-import { Row, Separator } from '@layout';
+import { FontStyles } from '@/constants/theme';
+import { Row, Separator } from '@/layout';
 
 import styles from './styles';
 

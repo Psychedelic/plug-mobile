@@ -1,13 +1,13 @@
 import React from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
 import Animated, {
-  useSharedValue,
   useAnimatedStyle,
+  useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
 
-import haptics, { HapticFeedbackTypes } from '@utils/haptics';
-import scales from '@utils/animationScales';
+import scales from '@/utils/animationScales';
+import haptics, { HapticFeedbackTypes } from '@/utils/haptics';
 
 const Touchable = ({
   children,

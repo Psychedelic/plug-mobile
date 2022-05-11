@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { FontStyles, Metrics } from '@constants/theme';
+import { FontStyles, Metrics } from '@/constants/theme';
 
 export default StyleSheet.create({
   title: {

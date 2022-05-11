@@ -1,5 +1,5 @@
 import React from 'react';
-import Svg, { Path, Rect, Defs, LinearGradient, Stop } from 'react-native-svg';
+import Svg, { Defs, LinearGradient, Path, Rect, Stop } from 'react-native-svg';
 
 const ICPIcon = ({ color = 'black', ...props }) => (
   <Svg width="41" height="41" viewBox="0 0 41 41" {...props}>
