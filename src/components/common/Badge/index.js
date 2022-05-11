@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, View, Image } from 'react-native';
+import { Image, Text, View } from 'react-native';
+
 import styles from './styles';
 
 const Badge = ({ name, value, icon }) => (

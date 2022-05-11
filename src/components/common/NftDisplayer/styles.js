@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
-import { WINDOW_WIDTH } from '../../../constants/platform';
+import { WINDOW_WIDTH } from '@/constants/platform';
+import { Colors } from '@/constants/theme';
 
 const videoDetailSize = WINDOW_WIDTH - 40;
 const viewSendSize = 54;
@@ -26,6 +27,11 @@ const commonCotainer = {
   ...commonStyle,
   width: itemSize,
   height: itemSize,
+};
+
+const commonWebViewStyles = {
+  backgroundColor: 'transparent',
+  flex: 0,
 };
 
 export default StyleSheet.create({
@@ -55,11 +61,13 @@ export default StyleSheet.create({
     ...commonSendContainer,
   },
   webView: {
-    ...commonStyle,
-    flex: 1,
+    ...commonWebViewStyles,
+    ...commonCotainer,
   },
   webViewSend: {
-    borderRadius: 10,
+    ...commonWebViewStyles,
+    height: '100%',
+    width: '100%',
   },
   containerSend: {
     ...commonSendContainer,
@@ -67,5 +75,18 @@ export default StyleSheet.create({
   videoSend: {
     ...commonStyle,
     ...commonSendContainer,
+  },
+  webViewLoader: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    backgroundColor: Colors.Black.Primary,
+    height: '100%',
+    width: '100%',
+  },
+  webViewLoaderDetail: {
+    backgroundColor: Colors.Black.Pure,
   },
 });

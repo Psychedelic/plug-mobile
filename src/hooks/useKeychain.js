@@ -3,9 +3,9 @@ import RNSInfo from 'react-native-sensitive-info';
 import { useDispatch } from 'react-redux';
 
 import {
-  setUsingBiometrics,
   setBiometricsAvailable,
-} from '../redux/slices/user';
+  setUsingBiometrics,
+} from '@/redux/slices/user';
 
 const KEYCHAIN_CONSTANTS = {
   tokenKey: 'plug-accss-token',
@@ -34,7 +34,6 @@ const useKeychain = () => {
   // Core Keychain functions:
   const setPassword = async password => {
     const { tokenKey } = KEYCHAIN_CONSTANTS;
-
     return RNSInfo.setItem(tokenKey, password, KEYCHAIN_OPTIONS);
   };
 
@@ -52,7 +51,6 @@ const useKeychain = () => {
 
   const resetPassword = async () => {
     const { tokenKey } = KEYCHAIN_CONSTANTS;
-
     return RNSInfo.deleteItem(tokenKey, KEYCHAIN_OPTIONS);
   };
 
@@ -72,7 +70,8 @@ const useKeychain = () => {
       await resetPassword();
       await setPassword(password);
       dispatch(setUsingBiometrics(true));
-    } catch {
+    } catch (e) {
+      console.log('SaveBiometrics: ', e);
       dispatch(setUsingBiometrics(false));
     }
   };

@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { ACTIVITY_STATUS } from '../../screens/Profile/components/constants';
-import { formatAssets, formatAssetBySymbol } from '../../utils/assets';
-import { TOKEN_IMAGES } from '../../utils/assets';
+import { formatAssets } from '@/utils/assets';
+
 import {
   DEFAULT_ASSETS,
-  TRANSACTION_STATUS,
   DEFAULT_TRANSACTION,
+  mapTransaction,
   recursiveParseBigint,
+  TRANSACTION_STATUS,
 } from '../utils';
 
 const DEFAULT_STATE = {
@@ -24,6 +24,8 @@ const DEFAULT_STATE = {
   collectionsError: false,
   usingBiometrics: false,
   biometricsAvailable: false,
+  scrollOnProfile: false,
+  scrollOnNFTs: false,
 };
 
 export const sign = createAsyncThunk(
@@ -156,11 +158,9 @@ export const privateGetNFTs = async (refresh, state, dispatch) => {
     dispatch(setCollectionsError(false));
     const { instance } = state.keyring;
     const response = await instance?.getState();
-    const { wallets, currentWalletId } = response || {};
-    let collections = wallets?.[currentWalletId]?.collections || [];
-    if (!collections.length) {
-      collections = await instance.getNFTs(currentWalletId, refresh);
-    }
+    const { currentWalletId } = response || {};
+    let collections = [];
+    collections = await instance.getNFTs(currentWalletId, refresh);
     return (collections || [])?.map(collection =>
       recursiveParseBigint(collection),
     );
@@ -182,54 +182,8 @@ export const privateGetTransactions = async (params, state, dispatch) => {
     dispatch(setTransactionsError(false));
     const { icpPrice } = params;
     const response = await state.keyring.instance?.getTransactions();
-
-    const mapTransaction = trx => {
-      const { principal, accountId } = state.keyring?.currentWallet;
-      const asset = formatAssetBySymbol(
-        trx?.details?.amount,
-        trx?.details?.currency?.symbol,
-        icpPrice,
-      );
-      const isOwnTx = [principal, accountId].includes(trx?.caller);
-
-      const getType = () => {
-        const { type } = trx;
-        if (type.toUpperCase() === 'TRANSFER') {
-          return isOwnTx ? 'SEND' : 'RECEIVE';
-        }
-        return type.toUpperCase();
-      };
-
-      const getSymbol = () => {
-        if ('tokenRegistryInfo' in trx.details) {
-          return trx.details.tokenRegistryInfo.symbol;
-        }
-        if ('nftRegistryInfo' in trx.details) {
-          return 'NFT';
-        }
-        return trx?.details?.currency?.symbol ?? '';
-      };
-
-      const canisterInfo =
-        trx?.details?.tokenRegistryInfo || trx?.details?.nftRegistryInfo;
-      const transaction = {
-        ...asset,
-        type: getType(),
-        hash: trx?.hash,
-        to: trx?.details?.to,
-        from: trx?.details?.from || trx?.caller,
-        date: new Date(trx?.timestamp),
-        status: ACTIVITY_STATUS[trx?.details?.status],
-        image: TOKEN_IMAGES[getSymbol()] || canisterInfo?.icon || '',
-        symbol: getSymbol(),
-        canisterId: trx?.details?.canisterId,
-        plug: null,
-        canisterInfo,
-        details: { ...trx?.details, caller: trx?.caller },
-      };
-      return transaction;
-    };
-    const parsedTrx = response?.transactions?.map(mapTransaction) || [];
+    const parsedTrx =
+      response?.transactions?.map(mapTransaction(icpPrice, state)) || [];
 
     dispatch(setTransactionsLoading(false));
     return parsedTrx;
@@ -275,7 +229,7 @@ export const transferNFT = createAsyncThunk(
   },
 );
 
-export const keyringSlice = createSlice({
+export const userSlice = createSlice({
   name: 'user',
   initialState: DEFAULT_STATE,
   reducers: {
@@ -301,6 +255,12 @@ export const keyringSlice = createSlice({
     },
     setAssets: (state, action) => {
       state.assets = action.payload;
+    },
+    setScrollOnProfile: (state, action) => {
+      state.scrollOnProfile = action.payload;
+    },
+    setScrollOnNFTs: (state, action) => {
+      state.scrollOnNFTs = action.payload;
     },
     setAssetsError: (state, action) => {
       state.assetsError = action.payload;
@@ -375,6 +335,8 @@ export const keyringSlice = createSlice({
 });
 
 export const {
+  setScrollOnNFTs,
+  setScrollOnProfile,
   setTransactionsError,
   setCollectionsError,
   setAssetsError,
@@ -391,6 +353,6 @@ export const {
   removeNFT,
   setTransactionsLoading,
   resetUserState,
-} = keyringSlice.actions;
+} = userSlice.actions;
 
-export default keyringSlice.reducer;
+export default userSlice.reducer;

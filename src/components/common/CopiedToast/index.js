@@ -1,7 +1,8 @@
-import React, { useRef, useEffect } from 'react';
-import { View, Text, Animated } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { Animated, Text, View } from 'react-native';
 
-import { FontStyles } from '../../../constants/theme';
+import { FontStyles } from '@/constants/theme';
+
 import styles from './styles';
 
 const TOAST_DURATION = 2500;

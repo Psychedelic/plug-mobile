@@ -1,12 +1,16 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
-import Touchable from '../../../components/animations/Touchable';
-import { Colors } from '../../../constants/theme';
-import Icon from '../../../components/icons';
+import Touchable from '@/commonComponents/Touchable';
+import Icon from '@/components/icons';
+import { Colors } from '@/constants/theme';
+import { setScrollOnNFTs, setScrollOnProfile } from '@/redux/slices/user';
+
 import styles from './styles';
 
 const BottomTabs = ({ state, navigation }) => {
+  const dispatch = useDispatch();
   const getTabStatus = index => ({
     isProfile: index === 0,
     isTokens: index === 1,
@@ -17,10 +21,10 @@ const BottomTabs = ({ state, navigation }) => {
   return (
     <View style={styles.root}>
       {state.routes.map((route, index) => {
-        const { isProfile, isTokens, isFocused } = getTabStatus(index);
+        const { isProfile, isTokens, isFocused, isNFTs } = getTabStatus(index);
         const iconName = isProfile ? 'profile' : isTokens ? 'tokens' : 'nfts';
         const iconSize = '20';
-        const label = route.name;
+        const label = isNFTs ? 'Collectibles' : route.name;
 
         const onPress = () => {
           const event = navigation.emit({
@@ -31,6 +35,17 @@ const BottomTabs = ({ state, navigation }) => {
 
           if (!isFocused && !event.defaultPrevented) {
             navigation.navigate({ name: route.name, merge: true });
+          }
+
+          // Tap to scroll to top feature:
+          if (isFocused && !isTokens) {
+            const actionToDispatch = isProfile
+              ? setScrollOnProfile
+              : setScrollOnNFTs;
+            dispatch(actionToDispatch(true));
+            setTimeout(() => {
+              dispatch(actionToDispatch(false));
+            }, 1000);
           }
         };
 

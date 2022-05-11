@@ -1,29 +1,33 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 
-import { FontStyles } from '../../../constants/theme';
+import Button from '@/buttons/Button';
+import { FontStyles } from '@/constants/theme';
+
 import { getErrorStateData } from './constants';
-import Button from '../../buttons/Button';
 import styles from './styles';
 
-function ErrorState({ errorType, onPress, loading }) {
-  const { title, emoji, description, buttonTitle } =
+function ErrorState({ errorType, onPress, loading, style, buttonStyle }) {
+  const { title, emoji, description, buttonTitle, buttonImage } =
     getErrorStateData(errorType);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <Text style={styles.emoji}>{emoji}</Text>
       <Text style={FontStyles.Normal}>{title}</Text>
       <Text style={[FontStyles.SmallGray, styles.description]}>
         {description}
       </Text>
-      <Button
-        variant="gray"
-        onPress={onPress}
-        text={buttonTitle}
-        loading={loading}
-        buttonStyle={styles.button}
-      />
+      {onPress && (
+        <Button
+          variant="gray"
+          onPress={onPress}
+          loading={loading}
+          text={buttonTitle}
+          iconName={buttonImage}
+          buttonStyle={[styles.button, buttonStyle]}
+        />
+      )}
     </View>
   );
 }

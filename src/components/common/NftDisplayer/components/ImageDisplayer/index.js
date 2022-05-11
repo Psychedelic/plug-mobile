@@ -1,13 +1,13 @@
 import MaskedView from '@react-native-masked-view/masked-view';
-import { SquircleView } from 'react-native-figma-squircle';
-import { SvgCssUri } from 'react-native-svg';
-import Image from 'react-native-remote-svg';
-import { StyleSheet } from 'react-native';
 import React from 'react';
+import { StyleSheet } from 'react-native';
+import { SquircleView } from 'react-native-figma-squircle';
+import Image from 'react-native-remote-svg';
 
+import HTMLDisplayer from '../../components/HTMLDisplayer';
 import sharedStyles from '../../styles';
 
-function ImageDisplayer({ style, type, url, isSendView }) {
+function ImageDisplayer({ style, type, url, isSendView, isDetailView }) {
   const imageStyle = isSendView
     ? { width: 54, height: 54 }
     : { width: '100%', height: '100%' };
@@ -24,8 +24,14 @@ function ImageDisplayer({ style, type, url, isSendView }) {
           }}
         />
       }>
-      {type?.includes('svg') ? (
-        <SvgCssUri {...imageStyle} uri={url} />
+      {type?.includes('svg') || type?.includes('html') ? (
+        <HTMLDisplayer
+          url={url}
+          style={style}
+          isSendView
+          type={type}
+          isDetailView={isDetailView}
+        />
       ) : (
         <Image
           resizeMode="contain"

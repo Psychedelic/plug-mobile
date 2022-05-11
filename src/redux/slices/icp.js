@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import getICPPriceService from '../../services/ICPPrice';
+import getICPPriceService from '@/services/ICPPriceService';
 
 export const getICPPrice = createAsyncThunk('wallet/getICPPrice', async () => {
   const { data } = await getICPPriceService();

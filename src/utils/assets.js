@@ -8,60 +8,63 @@ export const TOKEN_IMAGES = {
   WICP: 'wicp',
 };
 
-export const CURRENCIES = new Map([
-  [
-    'ICP',
-    {
-      id: 'ICP',
-      name: 'ICP',
-      value: 'ICP',
-      symbol: 'ICP',
-      image: TOKEN_IMAGES.ICP,
-    },
-  ],
-  [
-    'XTC',
-    {
-      id: 'XTC',
-      name: 'Cycles',
-      value: 'XTC',
-      image: TOKEN_IMAGES.XTC,
-      symbol: 'XTC',
-      price: USD_PER_TC,
-    },
-  ],
-]);
-
-export const formatAssetBySymbol = (amount, symbol, icpPrice) => {
-  return (
-    {
-      ICP: {
-        amount,
-        value: amount * icpPrice,
-        icon: TOKEN_IMAGES.ICP,
-        symbol: 'ICP',
-      },
-      XTC: {
-        amount,
-        value: amount * USD_PER_TC,
-        icon: TOKEN_IMAGES.XTC,
-        symbol: 'XTC',
-      },
-      WTC: {
-        amount,
-        value: amount * USD_PER_TC,
-        symbol: 'WTC',
-      },
-      WICP: {
-        amount,
-        value: amount * icpPrice,
-        icon: TOKEN_IMAGES.WICP,
-        symbol: 'WICP',
-      },
-      default: { amount, value: amount },
-    }[symbol || 'default'] || { amount, value: amount }
-  );
+export const TOKENS = {
+  ICP: {
+    symbol: 'ICP',
+    canisterId: 'ryjl3-tyaaa-aaaaa-aaaba-cai',
+    name: 'ICP',
+    decimals: 8,
+    amount: 0,
+    value: 0,
+    image: TOKEN_IMAGES.ICP,
+  },
+  XTC: {
+    symbol: 'XTC',
+    canisterId: 'aanaa-xaaaa-aaaah-aaeiq-cai',
+    name: 'Cycles',
+    decimals: 12,
+    amount: 0,
+    value: 0,
+    image: TOKEN_IMAGES.XTC,
+  },
+  WICP: {
+    symbol: 'WICP',
+    canisterId: 'aanaa-xaaaa-aaaah-aaeiq-cai',
+    name: 'Wrapped ICP',
+    decimals: 8,
+    amount: 0,
+    value: 0,
+    image: TOKEN_IMAGES.WICP,
+  },
 };
+
+export const formatAssetBySymbol = (amount, symbol, icpPrice) =>
+  ({
+    ICP: {
+      amount,
+      value: amount * icpPrice,
+      icon: TOKEN_IMAGES.ICP,
+      symbol: 'ICP',
+    },
+    XTC: {
+      amount,
+      value: amount * USD_PER_TC,
+      icon: TOKEN_IMAGES.XTC,
+      symbol: 'XTC',
+    },
+    WTC: {
+      amount,
+      value: amount * USD_PER_TC,
+      symbol: 'WTC',
+    },
+    WICP: {
+      amount,
+      value: amount * icpPrice,
+      icon: TOKEN_IMAGES.WICP,
+      symbol: 'WICP',
+    },
+    default: { amount, value: amount },
+  }[symbol || 'default'] || { amount, value: amount });
 
 export const formatAssets = ({ assets = [], icpPrice }) => {
   const mappedAssets = assets.map(({ amount, name, symbol, canisterId }) => {

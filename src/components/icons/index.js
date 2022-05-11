@@ -1,36 +1,37 @@
 import React from 'react';
 
-import PasswordEyeClosedIcon from './svg/PasswordEyeClosedIcon';
-import LightingActivityIcon from './svg/LightingActivityIcon';
-import ArrowDownAccountIcon from './svg/ArrowDownAccountIcon';
 import ActivityReceiveIcon from './svg/ActivityReceiveIcon';
-import GroupedActionsIcon from './svg/GroupedActionsIcon';
-import ChevronRightIcon from './svg/ChevronRightIcon';
 import ActivitySendIcon from './svg/ActivitySendIcon';
-import BurnActivityIcon from './svg/BurnActivityIcon';
-import MintActivityIcon from './svg/MintActivityIcon';
-import PasswordEyeIcon from './svg/PasswordEyeIcon';
-import ChevronLeftIcon from './svg/ChevronLeftIcon';
-import SwapArrowsIcon from './svg/SwapArrowsIcon';
-import ArrowRightIcon from './svg/ArrowRightIcon';
-import ThreeDotsIcon from './svg/ThreeDotsIcon';
+import ArrowDownAccountIcon from './svg/ArrowDownAccountIcon';
 import ArrowDownIcon from './svg/ArrowDownIcon';
-import DepositIcon from './svg/DepositIcon';
+import ArrowRightIcon from './svg/ArrowRightIcon';
+import BurnActivityIcon from './svg/BurnActivityIcon';
+import ChevronLeftIcon from './svg/ChevronLeftIcon';
+import ChevronRightIcon from './svg/ChevronRightIcon';
 import ConfirmIcon from './svg/ConfirmIcon';
-import UnknownIcon from './svg/UnknownIcon';
-import ProfileIcon from './svg/ProfileIcon';
-import FaceIdIcon from './svg/FaceIdIcon';
-import TokensIcon from './svg/TokensIcon';
-import ErrorIcon from './svg/ErrorIcon';
-import NFTsIcon from './svg/NFTsIcon';
-import GearIcon from './svg/GearIcon';
-import PlusIcon from './svg/PlusIcon';
 import CopyIcon from './svg/CopyIcon';
-import SwapIcon from './svg/SwapIcon';
+import DepositIcon from './svg/DepositIcon';
+import DiscordIcon from './svg/DiscordIcon';
+import ErrorIcon from './svg/ErrorIcon';
+import FaceIdIcon from './svg/FaceIdIcon';
+import GearIcon from './svg/GearIcon';
+import GroupedActionsIcon from './svg/GroupedActionsIcon';
+import ICPIcon from './svg/ICPIcon';
+import LightingActivityIcon from './svg/LightingActivityIcon';
+import MintActivityIcon from './svg/MintActivityIcon';
+import NFTsIcon from './svg/NFTsIcon';
+import PasswordEyeClosedIcon from './svg/PasswordEyeClosedIcon';
+import PasswordEyeIcon from './svg/PasswordEyeIcon';
+import PlusIcon from './svg/PlusIcon';
+import ProfileIcon from './svg/ProfileIcon';
 import SendIcon from './svg/SendIcon';
+import SwapArrowsIcon from './svg/SwapArrowsIcon';
+import SwapIcon from './svg/SwapIcon';
+import ThreeDotsIcon from './svg/ThreeDotsIcon';
+import TokensIcon from './svg/TokensIcon';
+import UnknownIcon from './svg/UnknownIcon';
 import WICPIcon from './svg/WICPIcon';
 import XTCIcon from './svg/XTCIcon';
-import ICPIcon from './svg/ICPIcon';
 
 export const IconTypes = {
   xtc: XTCIcon,
@@ -48,14 +49,15 @@ export const IconTypes = {
   unknown: UnknownIcon,
   confirm: ConfirmIcon,
   deposit: DepositIcon,
+  discord: DiscordIcon,
   faceIdIcon: FaceIdIcon,
   arrowRight: ArrowRightIcon,
   arrowDown: ArrowDownIcon,
   threeDots: ThreeDotsIcon,
   swapArrows: SwapArrowsIcon,
+  chevronLeft: ChevronLeftIcon,
   activitySend: ActivitySendIcon,
   burnActivity: BurnActivityIcon,
-  chevronLeft: ChevronLeftIcon,
   chevronRight: ChevronRightIcon,
   mintActivity: MintActivityIcon,
   passwordEyeIcon: PasswordEyeIcon,

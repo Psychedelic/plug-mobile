@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { FontStyles } from '../../../constants/theme';
+
+import { FontStyles } from '@/constants/theme';
 
 export default StyleSheet.create({
   root: {
@@ -18,5 +19,10 @@ export default StyleSheet.create({
   nftName: {
     color: '#616571',
     fontSize: 15,
+  },
+  nftDisplayer: {
+    height: 155,
+    aspectRatio: 1,
+    borderRadius: 7,
   },
 });

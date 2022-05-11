@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors } from '../../../../../constants/theme';
+import { Colors } from '@/constants/theme';
 
 export default StyleSheet.create({
   emojiText: {
     color: Colors.White.Pure,
-    fontSize: 30,
+    fontSize: 28,
   },
 });

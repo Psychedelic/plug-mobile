@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import { Text } from 'react-native';
+import { useDispatch } from 'react-redux';
 
-import { validatePassword } from '../../../redux/slices/keyring';
-import RainbowButton from '../../buttons/RainbowButton';
-import PasswordInput from '../PasswordInput';
-import Column from '../../layout/Column';
-import Modal from '../../modal';
-import Header from '../Header';
+import Header from '@/commonComponents/Header';
+import Modal from '@/commonComponents/Modal';
+import PasswordInput from '@/commonComponents/PasswordInput';
+import RainbowButton from '@/components/buttons/RainbowButton';
+import { Column } from '@/layout';
+import { validatePassword } from '@/redux/slices/keyring';
+
 import styles from './styles';
 
 const PasswordModal = ({ modalRef, handleClose = () => {}, handleSubmit }) => {

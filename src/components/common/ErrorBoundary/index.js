@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text } from 'react-native';
+
+import ErrorBoundaryScreen from '@/screens/error/ErrorBoundaryScreen';
 
 class ErrorBoundary extends React.Component {
   state = { hasError: null };
@@ -15,7 +16,7 @@ class ErrorBoundary extends React.Component {
   logErrorToServices = console.log;
   render() {
     if (this.state.hasError) {
-      return <Text>Oops</Text>;
+      return <ErrorBoundaryScreen />;
     }
     return this.props.children;
   }

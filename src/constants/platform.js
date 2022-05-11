@@ -1,5 +1,5 @@
+import { Dimensions, PixelRatio, Platform, StatusBar } from 'react-native';
 import DeviceInfo, { getUniqueId } from 'react-native-device-info';
-import { Platform, StatusBar, Dimensions, PixelRatio } from 'react-native';
 
 export const isAndroid = Platform.OS === 'android';
 export const isIos = Platform.OS === 'ios';

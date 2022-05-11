@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-import animationScales from '../../../utils/animationScales';
-import { Rainbow } from '../../../constants/theme';
-import Touchable from '../../animations/Touchable';
-import Icon from '../../icons/index';
-import TextInput from '../TextInput';
+import TextInput from '@/commonComponents/TextInput';
+import Touchable from '@/commonComponents/Touchable';
+import { Rainbow } from '@/constants/theme';
+import Icon from '@/icons/index';
+import animationScales from '@/utils/animationScales';
+
 import styles from './styles';
 
 function PasswordInput({
@@ -18,6 +19,9 @@ function PasswordInput({
   placeholder = 'Enter Password',
   autoFocus,
   disabled,
+  maxLength,
+  inputProps,
+  onBlur,
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
@@ -28,6 +32,7 @@ function PasswordInput({
 
   const handleOnBlur = () => {
     setIsFocused(false);
+    onBlur?.();
   };
 
   const toggleShowPassowrd = () => {
@@ -59,12 +64,14 @@ function PasswordInput({
           value={password}
           autoFocus={autoFocus}
           onChangeText={onChange}
+          maxLength={maxLength}
           placeholder={placeholder}
           disabled={disabled}
           customStyle={[styles.input, inputStyle]}
           variant={`${showPassword ? 'text' : 'password'}`}
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
+          {...inputProps}
         />
         <Touchable
           disabled={disabled}
