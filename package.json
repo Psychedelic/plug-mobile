@@ -49,7 +49,6 @@
     "events": "^1.1.1",
     "events-browserify": "^0.0.1",
     "flatted": "^3.2.4",
-    "formik": "^2.2.9",
     "i18next": "^21.8.0",
     "js-sha256": "^0.9.0",
     "json-bigint": "^1.0.0",

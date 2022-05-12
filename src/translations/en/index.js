@@ -23,6 +23,16 @@ const translations = {
     secretPhrase: 'Secret Recovery Phrase',
     notFound: 'Recovery phrase not found',
   },
+  createPassword: {
+    title: 'Create Password',
+    subtitle: 'Please create a secure password that you will remember.',
+    biometrics: 'Sign in with biometrics?',
+  },
+  validations: {
+    passRequired: 'Password is required.',
+    passMinLength: 'Password must be at least 12 characters long.',
+    invalidChar: 'Invalid character.',
+  },
 };
 
 export default translations;

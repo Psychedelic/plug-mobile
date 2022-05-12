@@ -1,6 +1,7 @@
 import { ErrorMessage } from '@hookform/error-message';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Image, Switch, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -23,6 +24,7 @@ import {
 import styles from './styles';
 
 const CreatePassword = ({ route, navigation }) => {
+  const { t } = useTranslation();
   const { isSensorAvailable, saveBiometrics } = useKeychain();
   const {
     control,
@@ -94,10 +96,8 @@ const CreatePassword = ({ route, navigation }) => {
       />
       <KeyboardHider>
         <View style={styles.container}>
-          <Text style={styles.title}>Create Password</Text>
-          <Text style={styles.subtitle}>
-            Please create a secure password that you will remember.
-          </Text>
+          <Text style={styles.title}>{t('createPassword.title')}</Text>
+          <Text style={styles.subtitle}>{t('createPassword.subtitle')}</Text>
           <Controller
             name={createPasswordFields.password}
             control={control}
@@ -135,7 +135,9 @@ const CreatePassword = ({ route, navigation }) => {
           />
           {biometryAvailable && (
             <View style={styles.switchContainer}>
-              <Text style={styles.faceId}>Sign in with biometrics?</Text>
+              <Text style={styles.faceId}>
+                {t('createPassword.biometrics')}
+              </Text>
               <Switch onValueChange={toggleSwitch} value={biometrics} />
             </View>
           )}
