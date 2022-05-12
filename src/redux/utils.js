@@ -1,4 +1,4 @@
-import { ACTIVITY_STATUS } from '@/screens/tabs/components/constants';
+import { ACTIVITY_STATUS } from '@/constants/business';
 import { formatAssetBySymbol, TOKEN_IMAGES, TOKENS } from '@/utils/assets';
 import { parseToFloatAmount } from '@/utils/number';
 

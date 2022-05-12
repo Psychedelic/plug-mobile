@@ -1,3 +1,5 @@
+import { ACTIVITY_STATUS } from '@/constants/business';
+
 const translations = {
   common: {
     back: 'Back',
@@ -7,6 +9,13 @@ const translations = {
     close: 'Close',
     tokens: 'Tokens',
     collectibles: 'Collectibles',
+    more: 'More',
+    send: 'Send',
+    deposit: 'Deposit',
+    swap: 'Swap',
+    swapFor: 'Swap {{from}} for {{to}}',
+    comingSoon: 'Coming Soon!',
+    pluggedInto: 'Plugged into {{name}}',
   },
   welcome: {
     title: 'Welcome to Plug',
@@ -67,6 +76,25 @@ const translations = {
   saveContact: {
     title: 'Save Contact',
     namePlaceholder: 'Name',
+  },
+  nftTab: {
+    emptyTitle: "You don't own any Collectibles yet",
+    emptySubtitle:
+      "When you do, they'll show here, where you will see their traits and send them.",
+  },
+  nftDetail: {
+    collectionTitle: '🧩 Collection',
+    descriptionTitle: '📝 Description',
+    attributesTitle: '🎛 Attributes',
+    moreTitle: 'More Options',
+    moreOptions: ['Cancel', 'View', 'Share', 'Download'],
+  },
+  activity: {
+    [ACTIVITY_STATUS.COMPLETED]: 'Completed',
+    [ACTIVITY_STATUS.PENDING]: 'Pending',
+    [ACTIVITY_STATUS.REVERTED]: 'Failed',
+    subtitleTo: ' · To: {{value}}',
+    subtitleFrom: ' · From: {{value}}',
   },
   validations: {
     passRequired: 'Password is required.',
