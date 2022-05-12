@@ -3,6 +3,10 @@ const translations = {
     back: 'Back',
     continue: 'Continue',
     or: 'Or',
+    cancel: 'Cancel',
+    close: 'Close',
+    tokens: 'Tokens',
+    collectibles: 'Collectibles',
   },
   welcome: {
     title: 'Welcome to Plug',
@@ -47,6 +51,22 @@ const translations = {
     enterAmount: 'Enter an Amount',
     noFunds: 'Insufficient Funds',
     reviewSend: 'Review Send',
+    contact: 'Contact',
+  },
+  reviewSend: {
+    to: 'To',
+    saveContact: 'Save as contact',
+    goToActivity: 'View in Activity',
+    holdToSend: 'Hold to Send',
+    holdToRetry: 'Hold to Retry',
+    totalFee: 'Total Fee: {{value}}',
+    transactionSuccess: 'Confirmed',
+    transactionError: 'Transaction Failed',
+    transactionPending: 'Review Send',
+  },
+  saveContact: {
+    title: 'Save Contact',
+    namePlaceholder: 'Name',
   },
   validations: {
     passRequired: 'Password is required.',

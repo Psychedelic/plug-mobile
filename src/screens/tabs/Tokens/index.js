@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { RefreshControl, ScrollView, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -15,6 +16,7 @@ import WalletHeader from '../components/WalletHeader';
 import styles from './styles';
 
 function Tokens() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [selectedToken, setSelectedToken] = useState(null);
   const sendRef = useRef(null);
@@ -55,7 +57,7 @@ function Tokens() {
     <Container>
       <WalletHeader />
       <Row style={styles.rowStyle}>
-        <Text style={styles.title}>Tokens</Text>
+        <Text style={styles.title}>{t('common.tokens')}</Text>
         <Text style={styles.title}>{`$${usdSum}`}</Text>
       </Row>
       <Separator />
