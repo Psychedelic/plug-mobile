@@ -28,6 +28,11 @@ const translations = {
     subtitle: 'Please create a secure password that you will remember.',
     biometrics: 'Sign in with biometrics?',
   },
+  backupSeed: {
+    title: 'Seed Phrase Backup',
+    subtitle: 'Below is the seed phrase for your new wallet, write it down.',
+    confirm: "I've saved these words",
+  },
   validations: {
     passRequired: 'Password is required.',
     passMinLength: 'Password must be at least 12 characters long.',

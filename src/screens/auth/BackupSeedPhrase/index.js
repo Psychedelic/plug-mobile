@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Image, Text, View } from 'react-native';
 
 import PlugLogo from '@/assets/icons/plug-logo-full.png';
@@ -14,6 +15,7 @@ import styles from './styles';
 
 const BackupSeedPhrase = ({ route, navigation }) => {
   const { goBack } = navigation;
+  const { t } = useTranslation();
   const { mnemonic } = route?.params || {};
   const [revealed, setRevealed] = useState(false);
 
@@ -23,7 +25,7 @@ const BackupSeedPhrase = ({ route, navigation }) => {
   return (
     <Container>
       <Header
-        left={<Back onPress={() => goBack()} />}
+        left={<Back onPress={goBack} />}
         center={
           <View style={{ width: 70, height: 33 }}>
             <Image
@@ -39,15 +41,13 @@ const BackupSeedPhrase = ({ route, navigation }) => {
         }
       />
       <View style={styles.container}>
-        <Text style={styles.title}>Seed Phrase Backup</Text>
-        <Text style={styles.subtitle}>
-          Below is the seed phrase for your new wallet, write it down.
-        </Text>
+        <Text style={styles.title}>{t('backupSeed.title')}</Text>
+        <Text style={styles.subtitle}>{t('backupSeed.subtitle')}</Text>
         <SeedPhrase mnemonic={mnemonic.split(' ')} onReveal={onReveal} />
         <Copy text={mnemonic} customStyle={styles.copy} />
         <RainbowButton
           buttonStyle={styles.button}
-          text="I've saved these words"
+          text={t('backupSeed.confirm')}
           onPress={onPress}
           disabled={!revealed}
         />
