@@ -24,8 +24,6 @@ function handleWalletConnect(uri) {
         },
       }),
     );
-  } else {
-    // This is when we get focused by WC due to a signing request
   }
 }
 
@@ -33,9 +31,7 @@ export const handleDeepLink = url => {
   if (!url) {
     return;
   }
-  // We need to wait till the wallet is ready
-  // to handle any deeplink
-
+  // Check if we need to wait till the wallet is ready to handle any deeplink
   const urlObj = new URL(url);
   if (urlObj.protocol === 'https:') {
     const action = urlObj.pathname.split('/')[1];

@@ -55,6 +55,7 @@ function WalletConnect() {
         {!Object.keys(meta).length ? (
           <ActivityIndicator size="large" />
         ) : (
+          // TODO: changes on this screen after desings
           <>
             <Image source={Plug} style={styles.plugIcon} />
             <Text style={styles.title}>Wallet Connect</Text>

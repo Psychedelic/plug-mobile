@@ -14,8 +14,8 @@ import ImportSeedPhrase from '@/screens/auth/ImportSeedPhrase';
 import Login from '@/screens/auth/Login';
 import Welcome from '@/screens/auth/Welcome';
 import ConnectionError from '@/screens/error/ConnectionError';
-import WalletConnect from '@/screens/WalletConnect';
-import WalletConnectCallRequest from '@/screens/WalletConnect/callRequest';
+import WalletConnect from '@/screens/flows/WalletConnect';
+import WalletConnectCallRequest from '@/screens/flows/WalletConnect/screens/RequestCall/index.js';
 import { handleDeepLink } from '@/utils/deepLink';
 
 import Routes from './Routes';

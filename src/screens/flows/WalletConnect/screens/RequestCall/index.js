@@ -21,9 +21,9 @@ import {
 import { useNavigation } from '@/utils/navigation';
 import { walletConnectHandleMethod } from '@/utils/walletConnect';
 
-import styles from './styles';
+import styles from '../../styles';
 
-function WalletConnect() {
+function RequestCall() {
   const [isAuthorizing, setIsAuthorizing] = useState(false);
 
   const dispatch = useDispatch();
@@ -142,13 +142,13 @@ function WalletConnect() {
         {!Object.keys(params).length ? (
           <ActivityIndicator size="large" />
         ) : (
+          // TODO: changes on this screen after desings
           <>
             <Image source={Plug} style={styles.plugIcon} />
             <Text style={styles.title}>Wallet Connect</Text>
             <Text style={styles.text}>{`DAP URL: ${dappUrl}`}</Text>
             <Text style={styles.text}>{`DAP NAME: ${dappName}`}</Text>
             <Text style={styles.text}>{`METHOD: ${method}`}</Text>
-
             <RainbowButton
               buttonStyle={[styles.componentMargin, styles.buttonStyling]}
               text="Approve"
@@ -166,4 +166,4 @@ function WalletConnect() {
   );
 }
 
-export default WalletConnect;
+export default RequestCall;

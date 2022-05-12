@@ -6,28 +6,24 @@ import { Alert, AppState, InteractionManager, Linking } from 'react-native';
 import Minimizer from 'react-native-minimizer';
 import URL, { qs } from 'url-parse';
 
-import { PLUG_DESCRIPTION } from '@/constants/walletconnect';
+import {
+  BIOMETRICS_ANIMATION_DELAY,
+  DEFAULT_STATE,
+  IS_TESTING,
+  PLUG_DESCRIPTION,
+} from '@/constants/walletconnect';
 import Routes from '@/navigation/Routes';
 import Navigation from '@/utils/navigation';
 import { delay } from '@/utils/utilities';
 import {
+  getAllValidWalletConnectSessions,
   notSigningMethod,
+  saveWalletConnectSession,
   walletConnectHandleMethod,
 } from '@/utils/walletConnect';
-import {
-  getAllValidWalletConnectSessions,
-  saveWalletConnectSession,
-} from '@/utils/walletConnect';
 
-// -- Variables --------------------------------------- //
 let showRedirectSheetThreshold = 300;
 
-// -- Constants --------------------------------------- //
-const BIOMETRICS_ANIMATION_DELAY = 569;
-
-const IS_TESTING = false;
-
-// -- Actions ---------------------------------------- //
 const getNativeOptions = async () => {
   const nativeOptions = {
     clientMeta: PLUG_DESCRIPTION,
@@ -453,23 +449,15 @@ export const walletConnectSendStatus = createAsyncThunk(
           });
         }
       } catch (e) {
-        Alert.alert('Failed to send request status to WalletConnect.');
+        console.log('Failed to send request status to WalletConnect.');
       }
     } else {
-      Alert.alert(
+      console.log(
         'WalletConnect session has expired while trying to send request status. Please reconnect.',
       );
     }
   },
 );
-
-// -- Reducer ----------------------------------------- //
-const DEFAULT_STATE = {
-  pendingRedirect: false,
-  pendingRequests: {},
-  pendingCallRequests: {},
-  walletConnectors: {},
-};
 
 export const walletconnectSlice = createSlice({
   name: 'walletconnect',
