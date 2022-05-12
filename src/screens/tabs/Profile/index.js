@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FlatList, RefreshControl, Text, View } from 'react-native';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
@@ -19,6 +20,7 @@ import Settings from './screens/Settings';
 import styles from './styles';
 
 const Profile = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const modalRef = useRef(null);
   const transactionListRef = useRef(null);
@@ -74,14 +76,14 @@ const Profile = () => {
           </View>
           <Button
             variant="gray"
-            text="Change"
+            text={t('common.change')}
             buttonStyle={styles.buttonStyle}
             textStyle={styles.buttonTextStyle}
             onPress={openAccounts}
           />
         </View>
         <Separator />
-        <Text style={styles.title}>Activity</Text>
+        <Text style={styles.title}>{t('activity.title')}</Text>
         {!transactionsError ? (
           <FlatList
             ref={transactionListRef}
@@ -99,8 +101,8 @@ const Profile = () => {
             ListEmptyComponent={
               <EmptyState
                 style={styles.emptyState}
-                title="You have no activity yet"
-                text="When you do, they'll show here, where you will see their traits and send them."
+                title={t('activity.emptyTitle')}
+                text={t('activity.emptySubtitle')}
               />
             }
           />

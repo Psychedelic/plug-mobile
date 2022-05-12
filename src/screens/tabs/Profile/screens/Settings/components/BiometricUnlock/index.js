@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Switch, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,6 +17,7 @@ import styles from './styles';
 
 function BiometricUnlock({ modalRef }) {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { saveBiometrics, resetBiometrics } = useKeychain();
   const hasBiometrics = useSelector(state => state.user.usingBiometrics);
   const [useBiometrics, setUseBiometrics] = useState(hasBiometrics);
@@ -69,10 +71,14 @@ function BiometricUnlock({ modalRef }) {
       <Header
         right={
           <Text style={[FontStyles.Normal, styles.valid]} onPress={closeModal}>
-            Close
+            {t('common.close')}
           </Text>
         }
-        center={<Text style={styles.title}>Biometric Unlock</Text>}
+        center={
+          <Text style={styles.title}>
+            {t('settings.items.biometric.name')},
+          </Text>
+        }
       />
       <Column style={styles.container}>
         {!loggedIn ? (
@@ -83,7 +89,7 @@ function BiometricUnlock({ modalRef }) {
               onChange={setPassword}
             />
             <RainbowButton
-              text="Continue"
+              text={t('common.continue')}
               loading={loading}
               onPress={handleSubmit}
               buttonStyle={styles.buttonStyle}
@@ -92,7 +98,7 @@ function BiometricUnlock({ modalRef }) {
           </>
         ) : (
           <View style={styles.optionContainer}>
-            <Text style={styles.option}>Sign in with biometrics?</Text>
+            <Text style={styles.option}>{t('common.biometricSignIn')}</Text>
             <Switch onValueChange={toggleSwitch} value={useBiometrics} />
           </View>
         )}

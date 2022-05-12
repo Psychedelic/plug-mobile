@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -15,6 +16,7 @@ import { validatePassword } from '@/redux/slices/keyring';
 import styles from './styles';
 
 function RevealSeedPhrase({ modalRef }) {
+  const { t } = useTranslation();
   const [loggedIn, setLoggedIn] = useState(false);
   const [password, setPassword] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -50,7 +52,11 @@ function RevealSeedPhrase({ modalRef }) {
   return (
     <>
       <Modal modalRef={modalRef} onClose={clearState} adjustToContentHeight>
-        <Header center={<Text style={styles.title}>Seed Phrase</Text>} />
+        <Header
+          center={
+            <Text style={styles.title}>{t('settings.items.phrase.name')}</Text>
+          }
+        />
         <Column style={styles.container}>
           {!loggedIn ? (
             <>
@@ -61,7 +67,7 @@ function RevealSeedPhrase({ modalRef }) {
               />
               <RainbowButton
                 buttonStyle={styles.buttonStyle}
-                text="Continue"
+                text={t('common.continue')}
                 loading={loading}
                 onPress={handleSubmit}
                 disabled={!isValidPassword(password)}

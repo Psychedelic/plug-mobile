@@ -1,4 +1,5 @@
 import Clipboard from '@react-native-community/clipboard';
+import i18next, { t } from 'i18next';
 import React, { Fragment, useRef, useState } from 'react';
 import { ActionSheetIOS, Text, View } from 'react-native';
 
@@ -14,6 +15,8 @@ import { Row } from '@/layout';
 
 import AddEditContact from './components/AddEditContact';
 import styles from './styles';
+
+const moreOptions = i18next.t('contacts.moreOptions', { returnObjects: true });
 
 const Contacts = ({ modalRef }) => {
   const addEditContactRef = useRef(null);
@@ -37,7 +40,7 @@ const Contacts = ({ modalRef }) => {
   const onLongPress = contact => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: ['Cancel', 'Edit Contact', 'Copy Address', 'Delete Contact'],
+        options: moreOptions,
         cancelButtonIndex: 0,
         destructiveButtonIndex: 3,
       },
@@ -60,12 +63,16 @@ const Contacts = ({ modalRef }) => {
   return (
     <>
       <Modal modalRef={modalRef} adjustToContentHeight>
-        <Header center={<Text style={FontStyles.Subtitle2}>Contacts</Text>} />
+        <Header
+          center={
+            <Text style={FontStyles.Subtitle2}>{t('contacts.title')}</Text>
+          }
+        />
         <Column style={styles.container}>
           <Touchable onPress={onAddContact}>
-            <Row align="center" style={{ marginBottom: 30, marginTop: 10 }}>
-              <Icon name="plus" />
-              <Text style={FontStyles.Normal}> Add contact</Text>
+            <Row align="center" style={styles.addRow}>
+              <Icon name="plus" style={styles.plusIcon} />
+              <Text style={FontStyles.Normal}>{t('contacts.addContact')}</Text>
             </Row>
           </Touchable>
           {groupedContacts
@@ -77,7 +84,7 @@ const Contacts = ({ modalRef }) => {
                   .sort((a, b) => a.name.localeCompare(b.name))
                   .map(contact => (
                     <View
-                      style={{ marginBottom: 20 }}
+                      style={styles.contactItem}
                       key={`${contact.id}_${contact.name}`}>
                       <CommonItem
                         name={contact.name}
@@ -95,7 +102,7 @@ const Contacts = ({ modalRef }) => {
         modalRef={addEditContactRef}
         contact={selectedContact}
         contactsRef={modalRef}
-        onClose={() => modalRef.current?.open()}
+        onClose={modalRef.current?.open}
       />
     </>
   );

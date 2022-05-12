@@ -1,6 +1,5 @@
-import i18next from 'i18next';
+import i18next, { t } from 'i18next';
 import React, { useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   ActionSheetIOS,
   Linking,
@@ -31,7 +30,6 @@ import styles from './styles';
 const moreOptions = i18next.t('nftDetail.moreOptions', { returnObjects: true });
 
 const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
-  const { t } = useTranslation();
   const isCapCrowns = selectedNFT?.collection === 'CAP Crowns';
   const nftName = `${selectedNFT?.collection} #${selectedNFT?.index}`;
   const [type, setType] = useState(null);

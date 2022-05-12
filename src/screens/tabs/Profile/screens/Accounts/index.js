@@ -1,4 +1,5 @@
 import Clipboard from '@react-native-community/clipboard';
+import i18next, { t } from 'i18next';
 import React, { useEffect, useRef, useState } from 'react';
 import { ActionSheetIOS, ActivityIndicator, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,6 +18,8 @@ import shortAddress from '@/utils/shortAddress';
 
 import CreateEditAccount from '../CreateEditAccount';
 import styles from './styles';
+
+const moreOptions = i18next.t('accounts.moreOptions', { returnObjects: true });
 
 const Accounts = ({ modalRef, onClose, ...props }) => {
   const { wallets, currentWallet } = useSelector(state => state.keyring);
@@ -59,7 +62,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
       {
         title: account.name,
         message: shortAddress(account.principal),
-        options: ['Cancel', 'Edit Account', 'Copy Address'],
+        options: moreOptions,
         cancelButtonIndex: 0,
         userInterfaceStyle: 'dark',
       },
@@ -98,7 +101,9 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
 
   return (
     <Modal adjustToContentHeight modalRef={modalRef} {...props}>
-      <Header center={<Text style={FontStyles.Subtitle2}>Accounts</Text>} />
+      <Header
+        center={<Text style={FontStyles.Subtitle2}>{t('accounts.title')}</Text>}
+      />
       <View style={styles.content}>
         {loading && (
           <View style={styles.loading}>
@@ -114,8 +119,8 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
         {wallets?.map(renderAccountItem)}
         <Touchable onPress={onCreateAccount}>
           <Row align="center" style={styles.row}>
-            <Icon name="plus" />
-            <Text style={FontStyles.Normal}> Create account</Text>
+            <Icon name="plus" style={styles.plusIcon} />
+            <Text style={FontStyles.Normal}>{t('accounts.createAccount')}</Text>
           </Row>
         </Touchable>
         <CreateEditAccount

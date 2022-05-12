@@ -135,14 +135,12 @@ const CreatePassword = ({ route, navigation }) => {
           />
           {biometryAvailable && (
             <View style={styles.switchContainer}>
-              <Text style={styles.faceId}>
-                {t('createPassword.biometrics')}
-              </Text>
+              <Text style={styles.faceId}>{t('common.biometricSignIn')}</Text>
               <Switch onValueChange={toggleSwitch} value={biometrics} />
             </View>
           )}
           <RainbowButton
-            text="Continue"
+            text={t('common.continue')}
             loading={loading}
             onPress={handleSubmit(handleCreate)}
             buttonStyle={styles.rainbowButton}
