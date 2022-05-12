@@ -41,6 +41,13 @@ const translations = {
     accountIdDesc:
       "Use when receiving from exchanges, or other apps that only support sending to Accounts ID's.",
   },
+  send: {
+    inputLabel: 'To:',
+    inputPlaceholder: 'Name or address',
+    enterAmount: 'Enter an Amount',
+    noFunds: 'Insufficient Funds',
+    reviewSend: 'Review Send',
+  },
   validations: {
     passRequired: 'Password is required.',
     passMinLength: 'Password must be at least 12 characters long.',

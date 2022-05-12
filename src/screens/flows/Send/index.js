@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Keyboard, ScrollView, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -41,6 +42,7 @@ import {
 const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
 
 function Send({ modalRef, nft, token, onSuccess }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { isSensorAvailable, getPassword } = useKeychain();
   const { icpPrice } = useSelector(state => state.icp);
@@ -309,15 +311,15 @@ function Send({ modalRef, nft, token, onSuccess }) {
               <Text
                 style={[FontStyles.Normal, styles.valid]}
                 onPress={handleBack}>
-                Back
+                {t('common.back')}
               </Text>
             )
           }
           center={<Text style={FontStyles.Subtitle2}>Send</Text>}
         />
         <TextInput
-          label="To:"
-          placeholder="Name or address"
+          label={t('send.inputLabel')}
+          placeholder={t('send.inputPlaceholder')}
           variant="innerLabel"
           hideGradient
           value={selectedContact ? selectedContact.name : address}
