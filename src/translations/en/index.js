@@ -2,6 +2,7 @@ const translations = {
   common: {
     back: 'Back',
     continue: 'Continue',
+    or: 'Or',
   },
   welcome: {
     title: 'Welcome to Plug',
@@ -32,6 +33,13 @@ const translations = {
     title: 'Seed Phrase Backup',
     subtitle: 'Below is the seed phrase for your new wallet, write it down.',
     confirm: "I've saved these words",
+  },
+  deposit: {
+    title: 'Deposit',
+    principalIdDesc:
+      "Use when receiving from Plug accounts & users, or other apps that support sending directly to Principal ID's.",
+    accountIdDesc:
+      "Use when receiving from exchanges, or other apps that only support sending to Accounts ID's.",
   },
   validations: {
     passRequired: 'Password is required.',

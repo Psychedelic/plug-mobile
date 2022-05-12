@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 import { Colors } from '@/constants/theme';
 
 export const ID_TYPES = {
@@ -8,14 +10,12 @@ export const ID_TYPES = {
 export const getIdInfo = (principal, accountId, idType) =>
   ({
     [ID_TYPES.PRINCIPAL_ID]: {
-      description:
-        "Use when receiving from Plug accounts & users, or other apps that support sending directly to Principal ID's.",
+      description: i18next.t('deposit.principalIdDesc'),
       id: principal,
       colors: [Colors.Rainbow.Teal, Colors.Rainbow.Green],
     },
     [ID_TYPES.ACCOUNT_ID]: {
-      description:
-        "Use when receiving from exchanges, or other apps that only support sending to Accounts ID's.",
+      description: i18next.t('deposit.accountIdDesc'),
       id: accountId,
       colors: [Colors.Rainbow.Purple, Colors.Rainbow.Blue],
     },
