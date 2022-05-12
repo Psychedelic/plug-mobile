@@ -1,12 +1,12 @@
 import qs from 'qs';
 import URL from 'url-parse';
 
-import { store } from '../redux/store';
 import {
-  walletConnectSetPendingRedirect,
   walletConnectOnSessionRequest,
   walletConnectRemovePendingRedirect,
-} from '../redux/slices/walletconnect';
+  walletConnectSetPendingRedirect,
+} from '@/redux/slices/walletconnect';
+import { store } from '@/redux/store';
 
 function handleWalletConnect(uri) {
   const { dispatch } = store;
@@ -30,7 +30,9 @@ function handleWalletConnect(uri) {
 }
 
 export const handleDeepLink = url => {
-  if (!url) return;
+  if (!url) {
+    return;
+  }
   // We need to wait till the wallet is ready
   // to handle any deeplink
 
@@ -38,6 +40,7 @@ export const handleDeepLink = url => {
   if (urlObj.protocol === 'https:') {
     const action = urlObj.pathname.split('/')[1];
     switch (action) {
+      // We could add more actions here
       case 'wc': {
         const { uri } = qs.parse(urlObj.query.substring(1));
         handleWalletConnect(uri);

@@ -1,11 +1,12 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import React, { useEffect } from 'react';
+import React, { forwardRef, memo, useEffect } from 'react';
 import { AppState } from 'react-native';
 import { Host } from 'react-native-portalize';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Colors } from '@/constants/theme';
+import SwipeNavigator from '@/navigators/SwipeNavigator';
 import { setUnlocked } from '@/redux/slices/keyring';
 import BackupSeedPhrase from '@/screens/auth/BackupSeedPhrase';
 import CreatePassword from '@/screens/auth/CreatePassword';
@@ -13,17 +14,15 @@ import ImportSeedPhrase from '@/screens/auth/ImportSeedPhrase';
 import Login from '@/screens/auth/Login';
 import Welcome from '@/screens/auth/Welcome';
 import ConnectionError from '@/screens/error/ConnectionError';
-import { navigationRef } from '@/utils/navigation';
+import WalletConnect from '@/screens/WalletConnect';
+import WalletConnectCallRequest from '@/screens/WalletConnect/callRequest';
+import { handleDeepLink } from '@/utils/deepLink';
 
-import SwipeNavigator from './navigators/SwipeNavigator';
 import Routes from './Routes';
-import WalletConnect from '../screens/WalletConnect';
-import WalletConnectCallRequest from '../screens/WalletConnect/callRequest';
-import { handleDeepLink } from '../helpers/deepLink';
 
 const Stack = createStackNavigator();
 
-const Navigator = ({ routingInstrumentation }, navigationRef) => {
+const Navigator = ({ routingInstrumentation }) => {
   const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
   const dispatch = useDispatch();
   let timeoutId = null;
@@ -31,7 +30,6 @@ const Navigator = ({ routingInstrumentation }, navigationRef) => {
   const handleLockState = () => {
     dispatch(setUnlocked(false));
     timeoutId = null;
-    navigationRef?.navigate(Routes.LOGIN_SCREEN);
   };
 
   const handleAppStateChange = async nextAppState => {
@@ -46,7 +44,9 @@ const Navigator = ({ routingInstrumentation }, navigationRef) => {
       timeoutId = null;
     }
 
-    if (initialLink) handleDeepLink(initialLink);
+    if (initialLink) {
+      handleDeepLink(initialLink);
+    }
   };
 
   useEffect(() => {

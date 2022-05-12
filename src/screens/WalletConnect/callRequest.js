@@ -1,26 +1,27 @@
-import React, { useCallback, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  View,
-  Text,
-  Image,
-  ActivityIndicator,
-  InteractionManager,
-} from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import React, { useCallback, useState } from 'react';
+import {
+  ActivityIndicator,
+  Image,
+  InteractionManager,
+  Text,
+  View,
+} from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
-import RainbowButton from '../../components/buttons/RainbowButton';
-import Container from '../../components/common/Container';
-import Plug from '../../assets/icons/il_white_plug.png';
-import styles from './styles';
-import { useNavigation } from '../../helpers/navigation';
-import { walletConnectHandleMethod } from '../../helpers/walletConnect';
+import Plug from '@/assets/icons/il_white_plug.png';
+import Button from '@/components/buttons/Button';
+import RainbowButton from '@/components/buttons/RainbowButton';
+import Container from '@/components/common/Container';
 import {
   removeCallRequestToApprove,
   walletConnectRemovePendingRedirect,
   walletConnectSendStatus,
-} from '../../redux/slices/walletconnect';
-import Button from '../../components/buttons/Button';
+} from '@/redux/slices/walletconnect';
+import { useNavigation } from '@/utils/navigation';
+import { walletConnectHandleMethod } from '@/utils/walletConnect';
+
+import styles from './styles';
 
 function WalletConnect() {
   const [isAuthorizing, setIsAuthorizing] = useState(false);
@@ -121,7 +122,9 @@ function WalletConnect() {
   }, [handleConfirmTransaction]);
 
   const onPressSend = useCallback(async () => {
-    if (isAuthorizing) return;
+    if (isAuthorizing) {
+      return;
+    }
     setIsAuthorizing(true);
     try {
       await onConfirm();

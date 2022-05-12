@@ -1,16 +1,13 @@
 import {
   CommonActions,
-  useNavigation as oldUseNavigation,
-  StackActions,
-  useIsFocused,
   createNavigationContainerRef,
+  StackActions,
+  useNavigation as oldUseNavigation,
 } from '@react-navigation/native';
-import { get } from 'lodash';
-import React from 'react';
 import { Value } from 'react-native-reanimated';
 import { useCallbackOne } from 'use-memo-one';
 
-import { NATIVE_ROUTES } from '../navigation/Routes';
+import { NATIVE_ROUTES } from '@/navigation/Routes';
 
 export let TopLevelNavigationRef = createNavigationContainerRef();
 const transitionPosition = new Value(0);
@@ -27,20 +24,6 @@ export function addActionAfterClosingSheet(action) {
   }
 }
 
-export function onWillPop() {
-  poppingCounter.isClosing = true;
-}
-
-export function onDidPop() {
-  poppingCounter.isClosing = false;
-  if (poppingCounter.pendingActions.length !== 0) {
-    setImmediate(() => {
-      poppingCounter.pendingActions.forEach(action => action());
-      poppingCounter.pendingActions = [];
-    });
-  }
-}
-
 export function useNavigation() {
   const { navigate: oldNavigate, ...rest } = oldUseNavigation();
 
@@ -52,21 +35,6 @@ export function useNavigation() {
   return {
     navigate: handleNavigate,
     ...rest,
-  };
-}
-
-export function withNavigation(Component) {
-  return function WithNavigationWrapper(props) {
-    const navigation = useNavigation();
-    return <Component {...props} navigation={navigation} />;
-  };
-}
-
-export function withNavigationFocus(Component) {
-  return function WithNavigationWrapper(props) {
-    const isFocused = useIsFocused();
-
-    return <Component {...props} isFocused={isFocused} />;
   };
 }
 
@@ -103,24 +71,14 @@ export function getActiveRoute() {
   return TopLevelNavigationRef?.getCurrentRoute();
 }
 
-function getActiveOptions() {
-  return TopLevelNavigationRef?.getCurrentOptions();
-}
-
-/**
- * Gets the current screen from navigation state
- */
-function getActiveRouteName(navigationState) {
-  const route = getActiveRoute(navigationState);
-  return get(route, 'name');
-}
-
 /**
  * Handle a navigation action or queue the action if navigation actions have been paused.
  * @param  {Object} action      The navigation action to run.
  */
 function handleAction(name, params, replace = false) {
-  if (!TopLevelNavigationRef) return;
+  if (!TopLevelNavigationRef) {
+    return;
+  }
   const action = (replace ? StackActions.replace : CommonActions.navigate)(
     name,
     params,
@@ -128,19 +86,9 @@ function handleAction(name, params, replace = false) {
   TopLevelNavigationRef?.dispatch(action);
 }
 
-/**
- * Set Top Level Navigator
- */
-function setTopLevelNavigator(navigatorRef) {
-  TopLevelNavigationRef = navigatorRef;
-}
-
 export default {
-  getActiveOptions,
   getActiveRoute,
-  getActiveRouteName,
   handleAction,
-  setTopLevelNavigator,
   transitionPosition,
   TopLevelNavigationRef,
 };

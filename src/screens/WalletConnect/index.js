@@ -1,12 +1,13 @@
-import React, { useCallback } from 'react';
-import { View, Text, Image, ActivityIndicator } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import React, { useCallback } from 'react';
+import { ActivityIndicator, Image, Text, View } from 'react-native';
 
-import RainbowButton from '../../components/buttons/RainbowButton';
-import Container from '../../components/common/Container';
-import Plug from '../../assets/icons/il_white_plug.png';
+import Plug from '@/assets/icons/il_white_plug.png';
+import RainbowButton from '@/components/buttons/RainbowButton';
+import Container from '@/components/common/Container';
+import { useNavigation } from '@/utils/navigation';
+
 import styles from './styles';
-import { useNavigation } from '../../helpers/navigation';
 
 function WalletConnect() {
   const { goBack } = useNavigation();

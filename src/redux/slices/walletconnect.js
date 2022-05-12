@@ -1,23 +1,23 @@
-import { Alert, AppState, InteractionManager, Linking } from 'react-native';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { captureException } from '@sentry/react-native';
 import WalletConnect from '@walletconnect/client';
 import { parseWalletConnectUri } from '@walletconnect/utils';
-import URL, { qs } from 'url-parse';
-import { captureException } from '@sentry/react-native';
+import { Alert, AppState, InteractionManager, Linking } from 'react-native';
 import Minimizer from 'react-native-minimizer';
+import URL, { qs } from 'url-parse';
 
-import Navigation from '../../helpers/navigation';
-import {
-  getAllValidWalletConnectSessions,
-  saveWalletConnectSession,
-} from '../../utils/walletConnect';
-import { delay } from '../../utils/utilities';
-import Routes from '../../navigation/Routes';
+import { PLUG_DESCRIPTION } from '@/constants/walletconnect';
+import Routes from '@/navigation/Routes';
+import Navigation from '@/utils/navigation';
+import { delay } from '@/utils/utilities';
 import {
   notSigningMethod,
   walletConnectHandleMethod,
-} from '../../helpers/walletConnect';
-import { PLUG_DESCRIPTION } from '../../constants/walletconnect';
+} from '@/utils/walletConnect';
+import {
+  getAllValidWalletConnectSessions,
+  saveWalletConnectSession,
+} from '@/utils/walletConnect';
 
 // -- Variables --------------------------------------- //
 let showRedirectSheetThreshold = 300;
@@ -191,7 +191,9 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
           // We need to add a timeout in case the bridge is down
           // to explain the user what's happening
           timeout = setTimeout(() => {
-            if (meta) return;
+            if (meta) {
+              return;
+            }
             timedOut = true;
             routeParams = { ...routeParams, timedOut };
             Navigation.handleAction(
@@ -262,7 +264,6 @@ const listenOnNewMessages = createAsyncThunk(
           }),
         ).unwrap()
         : null;
-
 
       if (request) {
         Navigation.handleAction(Routes.WALLET_CONNECT_CALL_REQUEST, {
