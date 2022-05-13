@@ -73,17 +73,6 @@ The code is built using React-Native and running code locally requires a Mac or 
   $ rustup target add aarch64-apple-ios x86_64-apple-ios
   ```
 
-## iOS
-
-- Install the iOS dependencies
-
-  - [React Native Getting Started - iOS](https://reactnative.dev/docs/environment-setup#installing-dependencies) _(React Native CLI Quickstart -> [your OS] -> iOS)_
-    - You do **not** need CocoaPods since you already installed it.
-
-  ```bash
-  cd ios && pod install
-  ```
-
 ## Support
 
 If you're experiencing any troubles with the setup guide you can share your issues in our [Discord](https://discord.gg/yVEcEzmrgm) at **#plug-mobile**
