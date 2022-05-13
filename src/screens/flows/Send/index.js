@@ -377,7 +377,11 @@ function Send({ modalRef, nft, token, onSuccess }) {
         loading={loading || transactionsLoading}
       />
       <SaveContact id={address} modalRef={saveContactRef} />
-      <PasswordModal modalRef={passwordRef} handleSubmit={send} />
+      <PasswordModal
+        modalRef={passwordRef}
+        handleSubmit={send}
+        title={t('send.enterPassword')}
+      />
     </Modal>
   );
 }

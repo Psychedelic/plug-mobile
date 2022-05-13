@@ -4,8 +4,8 @@ import { RefreshControl, ScrollView, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ErrorState from '@/commonComponents/ErrorState';
-import { ERROR_TYPES } from '@/commonComponents/ErrorState/constants';
 import TokenItem from '@/components/tokens/TokenItem';
+import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
 import { Container, Row, Separator } from '@/layout';
 import { getICPPrice } from '@/redux/slices/icp';

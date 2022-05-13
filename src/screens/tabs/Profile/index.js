@@ -5,10 +5,10 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import EmptyState from '@/commonComponents/EmptyState';
 import ErrorState from '@/commonComponents/ErrorState';
-import { ERROR_TYPES } from '@/commonComponents/ErrorState/constants';
 import Header from '@/commonComponents/Header';
 import UserIcon from '@/commonComponents/UserIcon';
 import Button from '@/components/buttons/Button';
+import { ERROR_TYPES } from '@/constants/general';
 import { ENABLE_NFTS } from '@/constants/nfts';
 import { Colors } from '@/constants/theme';
 import { Container, Separator } from '@/layout';

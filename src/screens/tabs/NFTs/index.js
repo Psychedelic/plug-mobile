@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import EmptyState from '@/commonComponents/EmptyState';
 import ErrorState from '@/commonComponents/ErrorState';
-import { ERROR_TYPES } from '@/commonComponents/ErrorState/constants';
+import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
 import { Container, Separator } from '@/layout';
 import { getNFTs } from '@/redux/slices/user';

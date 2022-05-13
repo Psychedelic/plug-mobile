@@ -3,7 +3,7 @@ import { Image, Linking, View } from 'react-native';
 
 import PlugLogo from '@/assets/icons/il_white_plug.png';
 import ErrorState from '@/commonComponents/ErrorState';
-import { ERROR_TYPES } from '@/commonComponents/ErrorState/constants';
+import { ERROR_TYPES } from '@/constants/general';
 
 import styles from './styles';
 

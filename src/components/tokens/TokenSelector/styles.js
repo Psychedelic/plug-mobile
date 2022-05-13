@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import { FontStyles } from '@/constants/theme';
+
 export default StyleSheet.create({
   root: {
     flexDirection: 'row',
@@ -14,5 +16,10 @@ export default StyleSheet.create({
   icon: {
     marginLeft: 'auto',
     alignSelf: 'center',
+  },
+  available: {
+    ...FontStyles.NormalGray,
+    marginLeft: 2,
+    textTransform: 'lowercase',
   },
 });

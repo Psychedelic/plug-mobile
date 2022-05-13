@@ -1,4 +1,5 @@
 import { ACTIVITY_STATUS } from '@/constants/business';
+import { ERROR_TYPES } from '@/constants/general';
 
 const translations = {
   common: {
@@ -18,6 +19,10 @@ const translations = {
     swapFor: 'Swap {{from}} for {{to}}',
     tokens: 'Tokens',
     biometricSignIn: 'Sign in with biometrics?',
+    copied: 'Copied!',
+    copyClipboard: 'Copy to clipboard',
+    revealPhrase: 'Reveal Seed Phrase',
+    available: 'Available',
   },
   welcome: {
     title: 'Welcome to Plug',
@@ -62,6 +67,7 @@ const translations = {
     noFunds: 'Insufficient Funds',
     reviewSend: 'Review Send',
     contact: 'Contact',
+    enterPassword: 'Enter your password',
   },
   reviewSend: {
     to: 'To',
@@ -145,7 +151,32 @@ const translations = {
   validations: {
     passRequired: 'Password is required.',
     passMinLength: 'Password must be at least 12 characters long.',
+    passIncorrect: 'The password is incorrect',
     invalidChar: 'Invalid character.',
+  },
+  errors: {
+    [ERROR_TYPES.FETCH_ERROR]: {
+      emoji: '🤔',
+      title: 'We had an issue',
+      description:
+        'We are unable to surface your account info due to an error.',
+      buttonTitle: 'Refresh',
+    },
+    [ERROR_TYPES.CONNECTION_ERROR]: {
+      emoji: '📡',
+      title: 'Internet Connection Error',
+      description:
+        'We are unable to surface your account info due to an internet connection error.',
+      buttonTitle: 'Retry Connection',
+    },
+    [ERROR_TYPES.ERROR_BOUNDARY]: {
+      emoji: '😨',
+      title: 'Oops, we had an issue!',
+      description:
+        'Close and reopen the app to try again. If the issue persists, contact our team on Discord.',
+      buttonTitle: '  Join Discord',
+      buttonImage: 'discord',
+    },
   },
 };
 
