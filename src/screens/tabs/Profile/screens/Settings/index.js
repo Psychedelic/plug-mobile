@@ -1,4 +1,5 @@
-import React, { useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -20,6 +21,7 @@ import SettingItem from './components/SettingItem';
 import { infoItems } from './constants';
 
 const Settings = () => {
+  const { t } = useTranslation();
   const modalRef = useRef(null);
   const contactsRef = useRef(null);
   const biometricUnlockRef = useRef(null);
@@ -63,32 +65,35 @@ const Settings = () => {
     );
   };
 
-  const settingsItems = [
-    {
-      icon: '📓',
-      name: 'Contacts',
-      description: 'Add, edit, remove contacts.',
-      onPress: openContacts,
-    },
-    {
-      icon: '🗝',
-      name: 'Seed Phrase',
-      description: 'View your seed phrase & backup.',
-      onPress: openRevealSeedPhrase,
-    },
-    {
-      iconName: 'faceIdIcon',
-      name: 'Biometric Unlock',
-      description: 'Turn Biometrics on or off.',
-      onPress: openBiometricUnlock,
-    },
-    {
-      icon: '🔒',
-      name: 'Lock Account',
-      description: 'Lock your account and sign out.',
-      onPress: lockAccount,
-    },
-  ];
+  const settingsItems = useMemo(
+    () => [
+      {
+        icon: '📓',
+        name: t('settings.items.contacts.name'),
+        description: t('settings.items.contacts.desc'),
+        onPress: openContacts,
+      },
+      {
+        icon: '🗝',
+        name: t('settings.items.phrase.name'),
+        description: t('settings.items.phrase.desc'),
+        onPress: openRevealSeedPhrase,
+      },
+      {
+        iconName: 'faceIdIcon',
+        name: t('settings.items.biometric.name'),
+        description: t('settings.items.biometric.desc'),
+        onPress: openBiometricUnlock,
+      },
+      {
+        icon: '🔒',
+        name: t('settings.items.lock.name'),
+        description: t('settings.items.lock.desc'),
+        onPress: lockAccount,
+      },
+    ],
+    [],
+  );
 
   return (
     <>
@@ -97,12 +102,14 @@ const Settings = () => {
       </Touchable>
       <Modal modalRef={modalRef} fullHeight>
         <Header
-          center={<Text style={FontStyles.Subtitle2}>Settings</Text>}
+          center={
+            <Text style={FontStyles.Subtitle2}>{t('settings.title')}</Text>
+          }
           right={
             <Text
               style={[FontStyles.Normal, styles.valid]}
               onPress={closeModal}>
-              Close
+              {t('common.close')}
             </Text>
           }
         />
@@ -113,7 +120,7 @@ const Settings = () => {
               <InfoItem {...item} key={item.name} />
             ))}
             <Text style={[FontStyles.SmallGray, styles.version]}>
-              v{version}
+              {t('settings.version', { version })}
             </Text>
           </View>
         </View>

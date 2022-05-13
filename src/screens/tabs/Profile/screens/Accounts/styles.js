@@ -21,4 +21,7 @@ export default StyleSheet.create({
   accountItem: {
     marginBottom: 20,
   },
+  plusIcon: {
+    marginRight: 8,
+  },
 });

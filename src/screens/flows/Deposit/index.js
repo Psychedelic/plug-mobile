@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text } from 'react-native';
 
 import Header from '@/commonComponents/Header';
@@ -10,9 +11,12 @@ import IDDetails from './components/IDDetails';
 import { ID_TYPES } from './constants';
 
 function Deposit({ modalRef }) {
+  const { t } = useTranslation();
   return (
     <Modal modalRef={modalRef} adjustToContentHeight>
-      <Header center={<Text style={FontStyles.Subtitle2}>Deposit</Text>} />
+      <Header
+        center={<Text style={FontStyles.Subtitle2}>{t('deposit.title')}</Text>}
+      />
       <IDDetails idType={ID_TYPES.PRINCIPAL_ID} />
       <DepositDivider />
       <IDDetails idType={ID_TYPES.ACCOUNT_ID} />

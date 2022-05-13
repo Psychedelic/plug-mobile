@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import RainbowButton from '@/components/buttons/RainbowButton';
 import AmountInput from '@/components/common/AmountInput';
@@ -24,6 +25,7 @@ const AmountSection = ({
   availableAmount,
   availableUsdAmount,
 }) => {
+  const { t } = useTranslation();
   const [selectedInput, setSelectedInput] = useState('USD');
   const newTokenAmount = Number(tokenAmount);
   const newUsdAmount = Number(usdAmount);
@@ -58,15 +60,15 @@ const AmountSection = ({
 
   const getButtonText = () => {
     if (!tokenAmount || !usdAmount) {
-      return 'Enter an Amount';
+      return t('send.enterAmount');
     }
     if (
       newAvailableUsdAmount < newUsdAmount ||
       availableAmount < newTokenAmount
     ) {
-      return 'Insufficient Funds';
+      return t('send.noFunds');
     }
-    return 'Review Send';
+    return t('send.reviewSend');
   };
 
   const isButtonDisabled = () =>

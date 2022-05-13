@@ -17,7 +17,7 @@
       "@/commonComponents/*": ["./src/components/common/*"],
       "@/formatters/*": ["./src/components/formatters/*"],
       "@/icons/*": ["./src/components/icons/*"],
-      "@/layout/*": ["./src/components/layout/index/*"],
+      "@/layout": ["./src/components/layout/index"],
       "@/tokens/*": ["./src/components/tokens/*"],
     }
   },

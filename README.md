@@ -63,20 +63,6 @@ The code is built using React-Native and running code locally requires a Mac or 
   cd ios && pod install && cd .. # install pods for iOS
   ```
 
-- Create a file called `react-native-config.xcconfig` inside `ios` folder and paste the following code:
-
-  ```swift
-  //
-  //  react-native-config.xcconfig
-  //  Plug
-  //
-  //  Created by Matias Grote on 08/03/2022.
-  //
-
-  // Configuration settings file format documentation can be found at:
-  // https://help.apple.com/xcode/#/dev745c5c974
-  ```
-
 - Follow the installation steps on our controller package called [plug-mobile-controller](https://github.com/Psychedelic/plug-mobile-controller).
 
 - Choose the toolchain and install rust dependencies following the nexts steps:
@@ -85,17 +71,6 @@ The code is built using React-Native and running code locally requires a Mac or 
   $ cargo install cargo-lip
   $ rustup default 1.55.0-aarch64-apple-darwin
   $ rustup target add aarch64-apple-ios x86_64-apple-ios
-  ```
-
-## iOS
-
-- Install the iOS dependencies
-
-  - [React Native Getting Started - iOS](https://reactnative.dev/docs/environment-setup#installing-dependencies) _(React Native CLI Quickstart -> [your OS] -> iOS)_
-    - You do **not** need CocoaPods since you already installed it.
-
-  ```bash
-  yarn ios
   ```
 
 ## Support

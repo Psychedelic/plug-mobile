@@ -1,9 +1,9 @@
+import { t } from 'i18next';
 import React from 'react';
 import { Text } from 'react-native';
 
+import { ACTIVITY_STATUS } from '@/constants/business';
 import shortAddress from '@/utils/shortAddress';
-
-import { ACTIVITY_STATUS } from './constants';
 
 export const parseImageName = name => name.replace('.png', '').toLowerCase();
 const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
@@ -12,10 +12,13 @@ export const getTitle = (type, symbol, swapData, plug) => {
   switch (type) {
     case 'SWAP':
       return swapData?.currency.name
-        ? `Swap ${symbol} for ${swapData?.currency.name}`
-        : 'Swap';
+        ? t('common.swapFor', {
+            from: symbol,
+            to: swapData?.currency.name,
+          })
+        : t('common.swap');
     case 'PLUG':
-      return `Plugged into ${plug.name}`;
+      return t('common.pluggedInto', { name: plug.name });
     default:
       if (type.includes('Liquidity')) {
         return type;
@@ -28,9 +31,17 @@ export const getTitle = (type, symbol, swapData, plug) => {
 export const getStatus = (status, styles) => {
   switch (status) {
     case ACTIVITY_STATUS.PENDING:
-      return <Text style={styles.pending}>Pending</Text>;
+      return (
+        <Text style={styles.pending}>
+          {t(`activity.${ACTIVITY_STATUS.PENDING}`)}
+        </Text>
+      );
     case ACTIVITY_STATUS.REVERTED:
-      return <Text style={styles.failed}>Failed</Text>;
+      return (
+        <Text style={styles.failed}>
+          {t(`activity.${ACTIVITY_STATUS.REVERTED}`)}
+        </Text>
+      );
     default:
       return null;
   }
@@ -38,9 +49,9 @@ export const getStatus = (status, styles) => {
 
 export const getSubtitle = (type, to, from) =>
   ({
-    SEND: ` · To: ${shortAddress(to)}`,
-    BURN: ` · To: ${shortAddress(to)}`,
-    RECEIVE: ` · From: ${shortAddress(from)}`,
+    SEND: t('activity.subtitleTo', { value: shortAddress(to) }),
+    BURN: t('activity.subtitleTo', { value: shortAddress(to) }),
+    RECEIVE: t('activity.subtitleFrom', { value: shortAddress(from) }),
   }[type]);
 
 export const getAddress = (type, to, from, canisterId) =>

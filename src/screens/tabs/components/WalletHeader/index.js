@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/core';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -19,6 +20,7 @@ import ActionButton from '../ActionButton';
 import styles from './styles';
 
 const WalletHeader = () => {
+  const { t } = useTranslation();
   const modalRef = useRef(null);
   const sendRef = useRef(null);
   const depositRef = useRef(null);
@@ -42,26 +44,29 @@ const WalletHeader = () => {
     depositRef.current?.open();
   };
 
-  const BUTTONS = [
-    {
-      image: <Icon name="deposit" />,
-      colors: [Colors.Rainbow.Red, Colors.Rainbow.Yellow],
-      text: 'Deposit',
-      onPress: openDeposit,
-    },
-    {
-      image: <Icon name="send" />,
-      colors: [Colors.Rainbow.Blue, Colors.Rainbow.Purple],
-      text: 'Send',
-      onPress: openSend,
-    },
-    {
-      image: <Icon name="swap" />,
-      colors: [Colors.Rainbow.Green, Colors.Rainbow.Teal],
-      text: 'Swap',
-      disabled: true,
-    },
-  ];
+  const BUTTONS = useMemo(
+    () => [
+      {
+        image: <Icon name="deposit" />,
+        colors: [Colors.Rainbow.Red, Colors.Rainbow.Yellow],
+        text: t('common.deposit'),
+        onPress: openDeposit,
+      },
+      {
+        image: <Icon name="send" />,
+        colors: [Colors.Rainbow.Blue, Colors.Rainbow.Purple],
+        text: t('common.send'),
+        onPress: openSend,
+      },
+      {
+        image: <Icon name="swap" />,
+        colors: [Colors.Rainbow.Green, Colors.Rainbow.Teal],
+        text: t('common.swap'),
+        disabled: true,
+      },
+    ],
+    [],
+  );
 
   useEffect(() => {
     setNavigated(false);
@@ -95,9 +100,11 @@ const WalletHeader = () => {
       <Modal modalRef={modalRef} adjustToContentHeight>
         <View style={styles.container}>
           <View style={styles.buttons}>
-            {BUTTONS.map(button => (
-              <ActionButton {...button} key={button.text} />
-            ))}
+            {React.Children.toArray(
+              BUTTONS.map(button => (
+                <ActionButton {...button} key={button.text} />
+              )),
+            )}
           </View>
         </View>
       </Modal>

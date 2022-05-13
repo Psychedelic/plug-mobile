@@ -1,16 +1,17 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text } from 'react-native';
 
-import { FontStyles } from '@/constants/theme';
 import { Row, Separator } from '@/layout';
 
 import styles from './styles';
 
 function DepositDivider() {
+  const { t } = useTranslation();
   return (
     <Row>
       <Separator style={styles.divider} />
-      <Text style={FontStyles.Subtitle3}>OR</Text>
+      <Text style={styles.text}>{t('common.or')}</Text>
       <Separator style={styles.divider} />
     </Row>
   );

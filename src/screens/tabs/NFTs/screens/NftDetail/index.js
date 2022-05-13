@@ -1,3 +1,4 @@
+import i18next, { t } from 'i18next';
 import React, { useRef, useState } from 'react';
 import {
   ActionSheetIOS,
@@ -25,6 +26,8 @@ import { deleteWhiteSpaces } from '@/utils/strings';
 
 import Section from './components/Section';
 import styles from './styles';
+
+const moreOptions = i18next.t('nftDetail.moreOptions', { returnObjects: true });
 
 const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
   const isCapCrowns = selectedNFT?.collection === 'CAP Crowns';
@@ -92,8 +95,8 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
   const handleMore = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        title: 'More Options',
-        options: ['Cancel', 'View', 'Share', 'Download'],
+        title: t('nftDetail.moreTitle'),
+        options: moreOptions,
         cancelButtonIndex: 0,
         userInterfaceStyle: 'dark',
       },
@@ -136,17 +139,23 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
           </View>
           <View style={styles.buttonContainer}>
             <View style={styles.buttonWraperLeft}>
-              <Button variant="gray" text="More" onPress={handleMore} />
+              <Button
+                variant="gray"
+                text={t('common.more')}
+                onPress={handleMore}
+              />
             </View>
             <View style={styles.buttonWraperRight}>
               <RainbowButton
-                text="Send"
+                text={t('common.send')}
                 onPress={handleSend}
                 disabled={isCapCrowns}
               />
             </View>
           </View>
-          <Section title="🧩 Collection" style={styles.collectionSection}>
+          <Section
+            title={t('nftDetail.collectionTitle')}
+            style={styles.collectionSection}>
             <Badge
               value={selectedNFT?.collection}
               icon={selectedCollection?.icon}
@@ -154,14 +163,14 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
             <Badge value={`#${selectedNFT?.index}`} />
           </Section>
           {!!selectedCollection?.description && (
-            <Section title="📝 Description">
+            <Section title={t('nftDetail.descriptionTitle')}>
               <Text style={FontStyles.NormalGray}>
                 {selectedCollection?.description}
               </Text>
             </Section>
           )}
           {selectedNFT?.metadata?.properties?.length && (
-            <Section title="🎛 Attributes">
+            <Section title={t('nftDetail.attributesTitle')}>
               {selectedNFT?.metadata?.properties?.map(prop => (
                 <Badge key={prop.name} name={prop.name} value={prop.value} />
               ))}

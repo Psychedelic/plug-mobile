@@ -18,4 +18,7 @@ export default StyleSheet.create({
   name: {
     marginBottom: 5,
   },
+  column: {
+    marginLeft: 9,
+  },
 });

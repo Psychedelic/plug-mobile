@@ -1,5 +1,6 @@
 import emojis from 'emoji-datasource';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 
 import { charFromEmojiObject } from '@/commonComponents/EmojiSelector/utils';
@@ -13,9 +14,10 @@ import useContacts from '@/hooks/useContacts';
 import styles from './styles';
 
 function SaveContact({ modalRef, onClose, id }) {
+  const { t } = useTranslation();
   const { onCreate } = useContacts();
   const [name, setName] = useState('');
-  const title = 'Save Contact';
+  const title = t('saveContact.title');
 
   const handleClose = () => {
     setName('');
@@ -46,7 +48,7 @@ function SaveContact({ modalRef, onClose, id }) {
       <Header
         right={
           <Text style={[FontStyles.Normal, styles.valid]} onPress={closeModal}>
-            Close
+            {t('common.close')}
           </Text>
         }
         center={<Text style={FontStyles.Subtitle2}>{title}</Text>}
@@ -57,7 +59,7 @@ function SaveContact({ modalRef, onClose, id }) {
           value={name}
           variant="text"
           maxLenght={22}
-          placeholder="Name"
+          placeholder={t('saveContact.namePlaceholder')}
           onChangeText={setName}
           customStyle={styles.input}
         />

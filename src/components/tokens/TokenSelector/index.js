@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import React from 'react';
 import { Text, View } from 'react-native';
 
@@ -40,8 +41,7 @@ const TokenSelector = ({
               style={FontStyles.NormalGray}
             />
           )}
-
-          <Text style={FontStyles.NormalGray}> available</Text>
+          <Text style={styles.available}>{t('common.available')}</Text>
         </Row>
       </View>
       <Icon name="swapArrows" style={styles.icon} />

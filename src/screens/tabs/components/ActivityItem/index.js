@@ -1,5 +1,6 @@
 import moment from 'moment';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 
 import { FontStyles } from '@/constants/theme';
@@ -27,6 +28,7 @@ const ActivityItem = ({
   details,
   canisterInfo,
 }) => {
+  const { t } = useTranslation();
   const isSonic = !!details?.sonicData;
   const isSwap = type === 'SWAP';
   const isLiquidity = type.includes('Liquidity');
@@ -60,7 +62,7 @@ const ActivityItem = ({
             </Text>
           </>
         ) : isSwap || isLiquidity ? (
-          <Text style={FontStyles.SmallGray}>Coming Soon!</Text>
+          <Text style={FontStyles.SmallGray}>{t('common.comingSoon')}</Text>
         ) : (
           <>
             {amount && (
