@@ -24,6 +24,7 @@ if (typeof Buffer === 'undefined') {
 const isDev = typeof __DEV__ === 'boolean' && __DEV__;
 process.env.NODE_ENV = isDev ? 'development' : 'production';
 if (typeof localStorage !== 'undefined') {
+  // eslint-disable-next-line no-undef
   localStorage.debug = isDev ? '*' : '';
 }
 if (typeof BigInt === 'undefined') {
