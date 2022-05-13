@@ -26,9 +26,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Install Dependencies
-      run: echo "//npm.pkg.github.com/:_authToken=$GITHUB_TOKEN\n@Psychedelic:registry=https://npm.pkg.github.com/" >> .npmrc && yarn
-      env:
-        GITHUB_TOKEN: ${{ secrets.PACKAGE_TOKEN }}
+      run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PACKAGE_TOKEN }}\n@Psychedelic:registry=https://npm.pkg.github.com/" >> .npmrc && yarn
 
     - name: Audit
       run: yarn audit
