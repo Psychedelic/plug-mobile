@@ -1,77 +1,5 @@
-diff --git a/node_modules/@dfinity/agent/lib/cjs/actor.js b/node_modules/@dfinity/agent/lib/cjs/actor.js
-index 9aa4c75..8c4c0a9 100644
---- a/node_modules/@dfinity/agent/lib/cjs/actor.js
-+++ b/node_modules/@dfinity/agent/lib/cjs/actor.js
-@@ -153,13 +153,17 @@ function _createActorMethod(actor, methodName, func) {
-     let caller;
-     if (func.annotations.includes('query')) {
-         caller = async (options, ...args) => {
-+            console.log('actor.query');
-             var _a, _b;
-             // First, if there's a config transformation, call it.
-             options = Object.assign(Object.assign({}, options), (_b = (_a = actor[metadataSymbol].config).queryTransform) === null || _b === void 0 ? void 0 : _b.call(_a, methodName, args, Object.assign(Object.assign({}, actor[metadataSymbol].config), options)));
-             const agent = options.agent || actor[metadataSymbol].config.agent || agent_1.getDefaultAgent();
-             const cid = principal_1.Principal.from(options.canisterId || actor[metadataSymbol].config.canisterId);
-+            console.log('pre encode');
-             const arg = candid_1.IDL.encode(func.argTypes, args);
-+            console.log('post encode');
-             const result = await agent.query(cid, { methodName, arg });
-+            console.log('agent result', result);
-             switch (result.status) {
-                 case "rejected" /* Rejected */:
-                     throw new QueryCallRejectedError(cid, methodName, result);
-@@ -177,12 +181,15 @@ function _createActorMethod(actor, methodName, func) {
-             const { canisterId, effectiveCanisterId, pollingStrategyFactory } = Object.assign(Object.assign(Object.assign({}, DEFAULT_ACTOR_CONFIG), actor[metadataSymbol].config), options);
-             const cid = principal_1.Principal.from(canisterId);
-             const ecid = effectiveCanisterId !== undefined ? principal_1.Principal.from(effectiveCanisterId) : cid;
-+            console.log('pre call encode');
-             const arg = candid_1.IDL.encode(func.argTypes, args);
-+            console.log('post call encode, executing call');
-             const { requestId, response } = await agent.call(cid, {
-                 methodName,
-                 arg,
-                 effectiveCanisterId: ecid,
-             });
-+            console.log('ok, call response?', response);
-             if (!response.ok) {
-                 throw new UpdateCallRejectedError(cid, methodName, requestId, response);
-             }
-diff --git a/node_modules/@dfinity/agent/lib/cjs/agent/http/index.js b/node_modules/@dfinity/agent/lib/cjs/agent/http/index.js
-index 1ae0e0b..8c6a13a 100644
---- a/node_modules/@dfinity/agent/lib/cjs/agent/http/index.js
-+++ b/node_modules/@dfinity/agent/lib/cjs/agent/http/index.js
-@@ -170,6 +170,7 @@ class HttpAgent {
-         };
-     }
-     async query(canisterId, fields, identity) {
-+        console.log('query?');
-         const id = await (identity !== undefined ? await identity : await this._identity);
-         const canister = typeof canisterId === 'string' ? principal_1.Principal.fromText(canisterId) : canisterId;
-         const sender = (id === null || id === void 0 ? void 0 : id.getPrincipal()) || principal_1.Principal.anonymous();
-@@ -181,6 +182,7 @@ class HttpAgent {
-             sender: sender,
-             ingress_expiry: new transforms_1.Expiry(DEFAULT_INGRESS_EXPIRY_DELTA_IN_MSECS),
-         };
-+        console.log('inside of the query', request);
-         // TODO: remove this any. This can be a Signed or UnSigned request.
-         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-         let transformedRequest = await this._transform({
-@@ -192,9 +194,13 @@ class HttpAgent {
-             body: request,
-         });
-         // Apply transform for identity.
-+        console.log('transformed request', transformedRequest);
-         transformedRequest = await id.transformRequest(transformedRequest);
-+        console.log('transformed request 2, pre encode', transformedRequest);
-         const body = cbor.encode(transformedRequest.body);
-+        console.log('doing fetch in query');
-         const response = await this._fetch('' + new URL(`/api/v2/canister/${canister.toText()}/query`, this._host), Object.assign(Object.assign({}, transformedRequest.request), { body }));
-+        console.log('fetched response', response);
-         if (!response.ok) {
-             throw new Error(`Server returned an error:\n` +
-                 `  Code: ${response.status} (${response.statusText})\n` +
 diff --git a/node_modules/@dfinity/agent/lib/cjs/certificate.js b/node_modules/@dfinity/agent/lib/cjs/certificate.js
-index 6e89e14..da054da 100644
+index 6e89e14..22804d1 100644
 --- a/node_modules/@dfinity/agent/lib/cjs/certificate.js
 +++ b/node_modules/@dfinity/agent/lib/cjs/certificate.js
 @@ -27,6 +27,10 @@ const errors_1 = require("./errors");
@@ -124,7 +52,7 @@ index 6e89e14..da054da 100644
  class Certificate {
      constructor(response, _agent = agent_1.getDefaultAgent()) {
          this._agent = _agent;
-@@ -106,15 +142,25 @@ class Certificate {
+@@ -106,15 +142,21 @@ class Certificate {
          this.checkState();
          return lookup_path(path, this.cert.tree);
      }
@@ -145,15 +73,11 @@ index 6e89e14..da054da 100644
 +        // const msg = buffer_1.Buffer.concat([domain_sep('ic-state-root'), rootHash]);
 +        // const res = await bls_1.blsVerify(key, sig, msg);
 +        // Do BLS validation directly on ic-agent on the rust side
-+        console.log('executing ios bridge????');
++        console.log('Calling IOS Bridge. This should fail');
 +        const payload = JSON.stringify({ request_id: Array.from(requestId), cert: parseArrayBuffers(this.cert) });
-+        console.log('payload', payload);
 +        const responseString = await SigningBridge.signData(payload);
-+        console.log('responseString', responseString);
 +        const response = JSON.parse(responseString);
-+        console.log('response', response);
 +        const status = parseResponseStatus(response);
-+        console.log('status', status);
 +        this.verified = status;
 +        return status;
      }
@@ -200,37 +124,3 @@ index 39c803a..399b586 100644
      switch (status) {
          case agent_1.RequestStatusResponseStatus.Replied: {
              return cert.lookup([...path, candid_1.blobFromText('reply')]);
-diff --git a/node_modules/@dfinity/agent/lib/esm/actor.js b/node_modules/@dfinity/agent/lib/esm/actor.js
-index 5687266..60e08ef 100644
---- a/node_modules/@dfinity/agent/lib/esm/actor.js
-+++ b/node_modules/@dfinity/agent/lib/esm/actor.js
-@@ -146,6 +146,7 @@ function _createActorMethod(actor, methodName, func) {
-     let caller;
-     if (func.annotations.includes('query')) {
-         caller = async (options, ...args) => {
-+            console.log('doing query son');
-             var _a, _b;
-             // First, if there's a config transformation, call it.
-             options = Object.assign(Object.assign({}, options), (_b = (_a = actor[metadataSymbol].config).queryTransform) === null || _b === void 0 ? void 0 : _b.call(_a, methodName, args, Object.assign(Object.assign({}, actor[metadataSymbol].config), options)));
-diff --git a/node_modules/@dfinity/agent/lib/esm/agent/http/index.js b/node_modules/@dfinity/agent/lib/esm/agent/http/index.js
-index 3a8d799..c3524b3 100644
---- a/node_modules/@dfinity/agent/lib/esm/agent/http/index.js
-+++ b/node_modules/@dfinity/agent/lib/esm/agent/http/index.js
-@@ -145,6 +145,7 @@ export class HttpAgent {
-         };
-     }
-     async query(canisterId, fields, identity) {
-+        console.log('doing query');
-         const id = await (identity !== undefined ? await identity : await this._identity);
-         const canister = typeof canisterId === 'string' ? Principal.fromText(canisterId) : canisterId;
-         const sender = (id === null || id === void 0 ? void 0 : id.getPrincipal()) || Principal.anonymous();
-@@ -169,7 +170,9 @@ export class HttpAgent {
-         // Apply transform for identity.
-         transformedRequest = await id.transformRequest(transformedRequest);
-         const body = cbor.encode(transformedRequest.body);
-+        console.log('doing fetch in query');
-         const response = await this._fetch('' + new URL(`/api/v2/canister/${canister.toText()}/query`, this._host), Object.assign(Object.assign({}, transformedRequest.request), { body }));
-+        console.log('fetch done in query', response);
-         if (!response.ok) {
-             throw new Error(`Server returned an error:\n` +
-                 `  Code: ${response.status} (${response.statusText})\n` +
