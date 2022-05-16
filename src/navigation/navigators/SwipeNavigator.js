@@ -1,14 +1,14 @@
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-import Tokens from '@screens/Wallet/tabs/Tokens';
-import NFTs from '@screens/Wallet/tabs/NFTs';
-import { ENABLE_NFTS } from '@constants/nfts';
-import ProfileScreen from '@screens/Profile';
+import { ENABLE_NFTS } from '@/constants/nfts';
+import NFTs from '@/screens/tabs/NFTs';
+import ProfileScreen from '@/screens/tabs/Profile';
+import Tokens from '@/screens/tabs/Tokens';
 
-import BottomTabs from './BottomTabs';
 import Routes from '../Routes';
+import BottomTabs from './BottomTabs';
 
 const Swipe = createMaterialTopTabNavigator();
 

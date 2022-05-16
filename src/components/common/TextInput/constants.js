@@ -1,5 +1,6 @@
+import { Colors } from '@/constants/theme';
+
 import styles from './styles';
-import { Colors } from '../../../constants/theme';
 
 export const variants = {
   text: {

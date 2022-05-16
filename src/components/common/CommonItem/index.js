@@ -1,12 +1,12 @@
-import { View, Text } from 'react-native';
 import React from 'react';
+import { Text, View } from 'react-native';
 
-import Touchable from '@components/animations/Touchable';
-import animationScales from '@utils/animationScales';
-import UserIcon from '@commonComponents/UserIcon';
-import shortAddress from '@helpers/shortAddress';
-import { FontStyles } from '@constants/theme';
-import Icon from '@components/icons';
+import Touchable from '@/commonComponents/Touchable';
+import UserIcon from '@/commonComponents/UserIcon';
+import Icon from '@/components/icons';
+import { FontStyles } from '@/constants/theme';
+import animationScales from '@/utils/animationScales';
+import shortAddress from '@/utils/shortAddress';
 
 import styles from './styles';
 
@@ -24,7 +24,10 @@ function CommonItem({ image, name, id, style, onPress, onLongPress }) {
             <Text style={FontStyles.NormalGray}>{shortAddress(id)}</Text>
           </View>
           <View style={styles.threeDots}>
-            <Touchable onPress={onLongPress} scale={animationScales.large}>
+            <Touchable
+              onPress={onLongPress}
+              scale={animationScales.large}
+              hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}>
               <Icon name="threeDots" />
             </Touchable>
           </View>

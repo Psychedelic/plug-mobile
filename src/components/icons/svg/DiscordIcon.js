@@ -1,7 +1,7 @@
 import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 
-import { Colors } from '@constants/theme';
+import { Colors } from '@/constants/theme';
 
 const DiscordIcon = ({ color = Colors.White.Pure, ...props }) => (
   <Svg fill={color} width="24" height="26" viewBox="0 0 640 512" {...props}>

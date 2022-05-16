@@ -1,5 +1,5 @@
 import React from 'react';
-import Svg, { Path, Defs, RadialGradient, Stop } from 'react-native-svg';
+import Svg, { Defs, Path, RadialGradient, Stop } from 'react-native-svg';
 
 const PlusIcon = ({ color, ...props }) => (
   <Svg width="22" height="22" viewBox="0 0 22 22" {...props}>

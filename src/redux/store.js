@@ -1,13 +1,13 @@
-import { applyMiddleware, combineReducers, createStore, compose } from 'redux';
-import { persistReducer, persistStore, createTransform } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import thunk from 'redux-thunk';
 import Flatted from 'flatted';
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
+import { createTransform, persistReducer, persistStore } from 'redux-persist';
+import thunk from 'redux-thunk';
 
-import Reactotron from '../../reactotronConfig';
+import Reactotron from '../config/reactotron';
+import IcpReducer from './slices/icp';
 import KeyringReducer from './slices/keyring';
 import UserReducer from './slices/user';
-import IcpReducer from './slices/icp';
 
 // PERSIST
 export const transformCircular = createTransform(

@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
+
+import styles from './styles';
 
 const Header = ({ left, center, right }) => (
   <View style={styles.container}>
@@ -10,24 +12,3 @@ const Header = ({ left, center, right }) => (
 );
 
 export default Header;
-
-const styles = StyleSheet.create({
-  container: {
-    position: 'relative',
-    height: 74,
-    justifyContent: 'center',
-    width: '100%',
-  },
-  left: {
-    position: 'absolute',
-    left: 20,
-  },
-  center: {
-    position: 'absolute',
-    alignSelf: 'center',
-  },
-  right: {
-    position: 'absolute',
-    right: 20,
-  },
-});

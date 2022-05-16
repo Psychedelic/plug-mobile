@@ -1,20 +1,21 @@
-import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { useSelector, useDispatch } from 'react-redux';
-import { Host } from 'react-native-portalize';
+import { createStackNavigator } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
 import { AppState } from 'react-native';
+import { Host } from 'react-native-portalize';
+import { useDispatch, useSelector } from 'react-redux';
 
-import ImportSeedPhrase from '../screens/Welcome/views/ImportSeedPhrase';
-import BackupSeedPhrase from '../screens/Welcome/views/BackupSeedPhrase';
-import CreatePassword from '../screens/Welcome/views/CreatePassword';
+import { Colors } from '@/constants/theme';
+import { setUnlocked } from '@/redux/slices/keyring';
+import BackupSeedPhrase from '@/screens/auth/BackupSeedPhrase';
+import CreatePassword from '@/screens/auth/CreatePassword';
+import ImportSeedPhrase from '@/screens/auth/ImportSeedPhrase';
+import Login from '@/screens/auth/Login';
+import Welcome from '@/screens/auth/Welcome';
+import ConnectionError from '@/screens/error/ConnectionError';
+import { navigationRef } from '@/utils/navigation';
+
 import SwipeNavigator from './navigators/SwipeNavigator';
-import ConnectionError from '../screens/ConnectionError';
-import { navigationRef } from '../helpers/navigation';
-import { setUnlocked } from '../redux/slices/keyring';
-import { Colors } from '../constants/theme';
-import Welcome from '../screens/Welcome';
-import Login from '../screens/Login';
 import Routes from './Routes';
 
 const Stack = createStackNavigator();

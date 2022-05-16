@@ -1,8 +1,10 @@
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
-import animationScales from '../../../utils/animationScales';
-import Touchable from '../../animations/Touchable';
-import Icon from '../../icons';
+
+import Touchable from '@/commonComponents/Touchable';
+import Icon from '@/icons';
+import animationScales from '@/utils/animationScales';
+
 import styles from './styles';
 
 const Button = ({

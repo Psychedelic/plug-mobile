@@ -1,5 +1,5 @@
 import React from 'react';
-import Svg, { Path, Defs, RadialGradient, Stop } from 'react-native-svg';
+import Svg, { Defs, Path, RadialGradient, Stop } from 'react-native-svg';
 
 const ConfirmIcon = ({ ...props }) => (
   <Svg width="64" height="64" viewBox="0 0 64 64" {...props}>

@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import { setScrollOnProfile, setScrollOnNFTs } from '@redux/slices/user';
-import Touchable from '@components/animations/Touchable';
-import { Colors } from '@constants/theme';
-import Icon from '@components/icons';
+import Touchable from '@/commonComponents/Touchable';
+import Icon from '@/components/icons';
+import { Colors } from '@/constants/theme';
+import { setScrollOnNFTs, setScrollOnProfile } from '@/redux/slices/user';
 
 import styles from './styles';
 

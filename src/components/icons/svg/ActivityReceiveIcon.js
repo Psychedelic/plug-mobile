@@ -1,5 +1,5 @@
 import React from 'react';
-import Svg, { Path, Rect, Defs, LinearGradient, Stop } from 'react-native-svg';
+import Svg, { Defs, LinearGradient, Path, Rect, Stop } from 'react-native-svg';
 
 const ActivityReceiveIcon = ({ color, ...props }) => (
   <Svg width="19" height="19" viewBox="0 0 19 19" {...props}>

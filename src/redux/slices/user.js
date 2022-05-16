@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { formatAssets } from '@utils/assets';
+
+import { formatAssets } from '@/utils/assets';
 
 import {
   DEFAULT_ASSETS,
-  TRANSACTION_STATUS,
   DEFAULT_TRANSACTION,
-  recursiveParseBigint,
   mapTransaction,
+  recursiveParseBigint,
+  TRANSACTION_STATUS,
 } from '../utils';
 
 const DEFAULT_STATE = {

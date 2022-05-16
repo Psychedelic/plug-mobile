@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
-import { WINDOW_WIDTH } from '../../../constants/platform';
-import { Colors } from '../../../constants/theme';
+import { WINDOW_WIDTH } from '@/constants/platform';
+import { Colors } from '@/constants/theme';
 
 const videoDetailSize = WINDOW_WIDTH - 40;
 const viewSendSize = 54;

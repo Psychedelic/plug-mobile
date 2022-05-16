@@ -1,5 +1,5 @@
-import { ActivityIndicator } from 'react-native';
 import React, { useState } from 'react';
+import { ActivityIndicator } from 'react-native';
 
 import ImageDisplayer from './components/ImageDisplayer';
 import VideoDisplayer from './components/VideoDisplayer';
