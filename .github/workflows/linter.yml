@@ -27,7 +27,6 @@ jobs:
 
     - name: Install Dependencies
       run: npm set //npm.pkg.github.com/:_authToken=${{ secrets.PACKAGE_TOKEN }} && npm set @Psychedelic:registry=https://npm.pkg.github.com/ && yarn
-      continue-on-error: true
 
     - name: Run ESLint
       run: yarn lint
