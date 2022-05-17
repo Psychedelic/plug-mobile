@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
-import RNFetchBlob from 'rn-fetch-blob';
+import { Dirs, FileSystem } from 'react-native-file-access';
 
-function useFileDownload(uri) {
+function useFileDownload({ url, format }) {
   const [path, setPath] = useState(null);
+
   useEffect(() => {
-    RNFetchBlob.config({
-      fileCache: true,
-      appendExt: 'mp4',
-    })
-      .fetch('GET', uri)
-      .then(res => {
-        setPath(res.path());
-      });
+    const randomTitle = new Date().getTime();
+
+    // Saves the file in the cache
+    const newPath = `${Dirs.CacheDir}/${randomTitle}.${format}`;
+    FileSystem.fetch(url, {
+      method: 'GET',
+      path: newPath,
+    }).then(() => {
+      setPath(newPath);
+    });
   }, []);
 
   if (path) {

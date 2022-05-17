@@ -14,7 +14,7 @@ const VideoDisplayer = ({
   isDetailView,
   isSendView,
 }) => {
-  const newUrl = useFileDownload(url);
+  const newUrl = useFileDownload({ url, format: 'mp4' });
 
   return (
     <View
