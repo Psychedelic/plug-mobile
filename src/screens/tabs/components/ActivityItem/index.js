@@ -1,10 +1,10 @@
-import moment from 'moment';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 
 import { FontStyles } from '@/constants/theme';
 import UsdFormat from '@/formatters/UsdFormat';
+import { formatDate } from '@/utils/dates';
 import { formatToMaxDecimals } from '@/utils/number';
 import shortAddress from '@/utils/shortAddress';
 
@@ -42,7 +42,7 @@ const ActivityItem = ({
         </Text>
         <Text style={FontStyles.SmallGray}>
           {getStatus(status, styles)}
-          {moment(date).format('MMM Do')}
+          {formatDate(date, 'MMM Do')}
           {getSubtitle(type, to, from, canisterId)}
         </Text>
       </View>
