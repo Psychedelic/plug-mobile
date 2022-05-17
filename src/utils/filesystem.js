@@ -1,11 +1,8 @@
 import { Share } from 'react-native';
 import { Dirs, FileSystem } from 'react-native-file-access';
 
-import { getAbsoluteType } from '@/utils/fileTypes';
-import { deleteWhiteSpaces } from '@/utils/strings';
-
 export const downloadFile = ({
-  name,
+  filename,
   url,
   type,
   onFetched,
@@ -14,16 +11,14 @@ export const downloadFile = ({
 }) => {
   try {
     const dirToSave = Dirs.CacheDir;
-    const path = `${dirToSave}/NFT_${deleteWhiteSpaces(name)}${getAbsoluteType(
-      type,
-    )}`;
+    const path = `${dirToSave}/${filename}`;
 
     FileSystem.fetch(url, {
       method: 'GET',
       path,
     }).then(() => {
       onFetched?.();
-      Share.share({ url: path, title: name })
+      Share.share({ url: path, title: filename })
         .then(() => onSuccess?.())
         .catch(() => onError?.());
     });

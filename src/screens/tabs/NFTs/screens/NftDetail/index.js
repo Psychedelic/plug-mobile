@@ -13,6 +13,8 @@ import { FontStyles } from '@/constants/theme';
 import useGetType from '@/hooks/useGetType';
 import Send from '@/screens/flows/Send';
 import { downloadFile } from '@/utils/filesystem';
+import { getAbsoluteType } from '@/utils/fileTypes';
+import { deleteWhiteSpaces } from '@/utils/strings';
 
 import Section from './components/Section';
 import styles from './styles';
@@ -50,7 +52,7 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
     // TODO: Handle download error
     setIsDownloading(true);
     downloadFile({
-      name: nftName,
+      filename: `/NFT_${deleteWhiteSpaces(nftName)}${getAbsoluteType(type)}`,
       url: selectedNFT?.url,
       type,
       onFetched: () => setIsDownloading(false),
