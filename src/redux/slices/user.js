@@ -32,6 +32,16 @@ const DEFAULT_STATE = {
   scrollOnNFTs: false,
 };
 
+export const sign = createAsyncThunk(
+  'keyring/sign',
+  async (params, { getState, dispatch }) => {
+    const { msg } = params;
+    const { keyring } = getState();
+    const result = await keyring.instance.sign(msg);
+    return { response: result };
+  },
+);
+
 export const sendToken = createAsyncThunk(
   'keyring/sendToken',
   async (params, { getState, dispatch }) => {
