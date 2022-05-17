@@ -10,6 +10,7 @@ import styles from './styles';
 function NftItem({ item, onOpen, isSend }) {
   const { url, canisterId, index, collection } = item;
   const isDisabled = collection === 'CAP Crowns' && isSend;
+  const title = `${collection} #${index}`;
   const [type, setType] = useState(null);
 
   useGetType(url, setType);
@@ -28,7 +29,7 @@ function NftItem({ item, onOpen, isSend }) {
         <NftDisplayer type={type} url={url} style={styles.nftDisplayer} />
       </Touchable>
       <Text numberOfLines={1} ellipsizeMode="tail" style={styles.text}>
-        {`${collection} #${index}`}
+        {title}
       </Text>
     </View>
   );
