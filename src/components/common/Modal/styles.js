@@ -13,13 +13,15 @@ const modalStyle = {
   elevation: 4,
 };
 
+const flexStyle = { flex: 1 };
+
 const overlayStyle = {
   position: 'absolute',
   top: 0,
   right: 0,
   bottom: 0,
   left: 0,
-  backgroundColor: 'rgba(21, 22, 28, 0.6)',
+  backgroundColor: 'rgba(21, 22, 28, 0.6)', //TODO: I think we should remove this, looks better without it
 };
 
 const handleStyle = {
@@ -31,4 +33,4 @@ const handleStyle = {
   backgroundColor: Colors.Gray.Primary,
 };
 
-export default { modalStyle, overlayStyle, handleStyle };
+export default { flexStyle, modalStyle, overlayStyle, handleStyle };
