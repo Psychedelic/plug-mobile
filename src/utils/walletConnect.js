@@ -55,7 +55,7 @@ function base64ToBuffer(base64) {
 
 const WALLETCONNECT_HANDLERS = {
   sign: async (args, dispatch) => {
-    if (!(args && args.lenght > 0)) {
+    if (!(args && args.length > 0)) {
       throw ERRORS.NO_MSG_SIGN;
     }
 
@@ -68,7 +68,7 @@ const WALLETCONNECT_HANDLERS = {
     return { result: result.response.toString('base64') };
   },
   sign_read_state: async (args, dispatch) => {
-    if (!(args && args.lenght > 0)) {
+    if (!(args && args.length > 0)) {
       throw ERRORS.NO_MSG_SIGN;
     }
 

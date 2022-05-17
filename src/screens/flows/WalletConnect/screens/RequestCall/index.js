@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Plug from '@/assets/icons/il_white_plug.png';
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
-import Container from '@/components/common/Container';
+import { Container } from '@/layout';
 import {
   removeCallRequestToApprove,
   walletConnectRemovePendingRedirect,

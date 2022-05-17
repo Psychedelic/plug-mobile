@@ -4,7 +4,7 @@ import { ActivityIndicator, Image, Text, View } from 'react-native';
 
 import Plug from '@/assets/icons/il_white_plug.png';
 import RainbowButton from '@/components/buttons/RainbowButton';
-import Container from '@/components/common/Container';
+import { Container } from '@/layout';
 import { useNavigation } from '@/utils/navigation';
 
 import styles from './styles';
@@ -22,7 +22,7 @@ function WalletConnect() {
         setTimeout(
           () =>
             callback({
-              approve: success,
+              approved: success,
               chainId: 1,
               accountAddress: 'approvalAccount.address',
               peerId,

@@ -14,7 +14,7 @@ import BottomTabs from './BottomTabs';
 
 const Swipe = createMaterialTopTabNavigator();
 
-const SwipeNavigator = () => {
+const SwipeNavigator = ({ route }) => {
   const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
   const isLogin = route.name === Routes.LOGIN_SCREEN;
   const { deepLink } = useDeepLink();

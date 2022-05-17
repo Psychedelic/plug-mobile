@@ -1,12 +1,12 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { forwardRef, memo, useEffect } from 'react';
-import { AppState } from 'react-native';
+import { AppState, Linking } from 'react-native';
 import { Host } from 'react-native-portalize';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Colors } from '@/constants/theme';
-import SwipeNavigator from '@/navigators/SwipeNavigator';
+import SwipeNavigator from '@/navigation/navigators/SwipeNavigator';
 import { setUnlocked } from '@/redux/slices/keyring';
 import BackupSeedPhrase from '@/screens/auth/BackupSeedPhrase';
 import CreatePassword from '@/screens/auth/CreatePassword';
@@ -22,7 +22,7 @@ import Routes from './Routes';
 
 const Stack = createStackNavigator();
 
-const Navigator = ({ routingInstrumentation }) => {
+const Navigator = ({ routingInstrumentation }, navigationRef) => {
   const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
   const dispatch = useDispatch();
   let timeoutId = null;

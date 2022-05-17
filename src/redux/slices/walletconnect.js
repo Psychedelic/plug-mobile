@@ -211,12 +211,12 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
       } catch (error) {
         clearTimeout(timeout);
         captureException(error);
-        Alert.alert('wallet.wallet_connect.error');
+        console.log('Wallet Connect Connect Error:', error);
       }
     } catch (error) {
       clearTimeout(timeout);
       captureException(error);
-      Alert.alert('wallet.wallet_connect.missing_fcm');
+      console.log('Wallet Connect Missing FCM Error:', error);
     }
   },
 );
