@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/core';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
@@ -48,6 +49,7 @@ const ReviewSend = ({
   setBiometricsError,
   ...props
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const saveContactRef = useRef(null);
@@ -90,20 +92,24 @@ const ReviewSend = ({
     navigation.navigate(Routes.PROFILE_SCREEN);
   };
 
-  const { title, ReviewIcon } = {
-    [TRANSACTION_STATUS.success]: {
-      title: 'Confirmed',
-      ReviewIcon: <Icon name="confirm" style={styles.icon} />,
-    },
-    [TRANSACTION_STATUS.error]: {
-      title: 'Transaction Failed',
-      ReviewIcon: <Icon name="error" style={styles.icon} />,
-    },
-    pending: {
-      title: 'Review Send',
-      ReviewIcon: null,
-    },
-  }[transaction?.status || 'pending'];
+  const { title, ReviewIcon } = useMemo(
+    () =>
+      ({
+        [TRANSACTION_STATUS.success]: {
+          title: t('reviewSend.transactionSuccess'),
+          ReviewIcon: <Icon name="confirm" style={styles.icon} />,
+        },
+        [TRANSACTION_STATUS.error]: {
+          title: t('reviewSend.transactionError'),
+          ReviewIcon: <Icon name="error" style={styles.icon} />,
+        },
+        pending: {
+          title: t('reviewSend.transactionPending'),
+          ReviewIcon: null,
+        },
+      }[transaction?.status || 'pending']),
+    [transaction],
+  );
 
   return (
     <Modal
@@ -138,7 +144,7 @@ const ReviewSend = ({
         )}
         <Row style={[styles.row, styles.toRow]}>
           <View style={styles.to}>
-            <Text style={FontStyles.Normal}>To</Text>
+            <Text style={FontStyles.Normal}>{t('reviewSend.to')}</Text>
           </View>
           <Icon name="arrowDown" />
         </Row>
@@ -157,7 +163,7 @@ const ReviewSend = ({
                 <Text
                   style={[FontStyles.Normal, styles.valid]}
                   onPress={handleSaveContact}>
-                  Save as contact
+                  {t('reviewSend.saveContact')}
                 </Text>
               </>
             )}
@@ -167,10 +173,12 @@ const ReviewSend = ({
         {token && (
           <Row style={styles.row}>
             <Text style={FontStyles.Subtitle3}>
-              {`Total Fee: ${currentFee} ${token?.symbol} ($${formatSendAmount(
-                currentUSDFee,
-                USD_MAX_DECIMALS + 2,
-              )})`}
+              {t('reviewSend.totalFee', {
+                value: `${currentFee} ${token?.symbol} ($${formatSendAmount(
+                  currentUSDFee,
+                  USD_MAX_DECIMALS + 2,
+                )})`,
+              })}
             </Text>
           </Row>
         )}
@@ -178,7 +186,7 @@ const ReviewSend = ({
           token && (
             <Button
               variant="gray"
-              text="View in Activity"
+              text={t('reviewSend.goToActivity')}
               buttonStyle={styles.button}
               onPress={handleGoToActivity}
             />
@@ -186,7 +194,11 @@ const ReviewSend = ({
         ) : (
           <>
             <RainbowButton
-              text={`Hold to ${isError ? 'Retry' : 'Send'}`}
+              text={
+                isError
+                  ? t('reviewSend.holdToRetry')
+                  : t('reviewSend.holdToSend')
+              }
               loading={loading}
               disabled={loading}
               onLongPress={onSend}
@@ -195,7 +207,7 @@ const ReviewSend = ({
             {isError && (
               <Button
                 variant="gray"
-                text="Cancel"
+                text={t('common.cancel')}
                 buttonStyle={styles.button}
                 onPress={handleClose}
               />

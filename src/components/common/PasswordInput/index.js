@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -23,6 +24,7 @@ function PasswordInput({
   inputProps,
   onBlur,
 }) {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -86,7 +88,9 @@ function PasswordInput({
           />
         </Touchable>
       </View>
-      {error && <Text style={styles.errorText}>The password is incorrect</Text>}
+      {error && (
+        <Text style={styles.errorText}>{t('validations.passIncorrect')}</Text>
+      )}
     </Touchable>
   );
 }

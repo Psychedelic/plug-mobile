@@ -19,4 +19,14 @@ export default StyleSheet.create({
     ...FontStyles.NormalGray,
     marginBottom: 20,
   },
+  addRow: {
+    marginBottom: 30,
+    marginTop: 10,
+  },
+  plusIcon: {
+    marginRight: 8,
+  },
+  contactItem: {
+    marginBottom: 20,
+  },
 });

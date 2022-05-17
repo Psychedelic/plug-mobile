@@ -16,7 +16,7 @@ const SettingItem = ({ icon, name, description, onPress, iconName }) => (
       ) : (
         <Text style={styles.icon}>{icon}</Text>
       )}
-      <Column style={{ marginLeft: 9 }}>
+      <Column style={styles.column}>
         <Text style={[FontStyles.Normal, styles.name]}>{name}</Text>
         <Text style={FontStyles.NormalGray}>{description}</Text>
       </Column>

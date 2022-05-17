@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -11,7 +12,13 @@ import { validatePassword } from '@/redux/slices/keyring';
 
 import styles from './styles';
 
-const PasswordModal = ({ modalRef, handleClose = () => {}, handleSubmit }) => {
+const PasswordModal = ({
+  modalRef,
+  title,
+  handleClose = () => {},
+  handleSubmit,
+}) => {
+  const { t } = useTranslation();
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -53,7 +60,7 @@ const PasswordModal = ({ modalRef, handleClose = () => {}, handleSubmit }) => {
 
   return (
     <Modal modalRef={modalRef} onClose={handleOnClose} adjustToContentHeight>
-      <Header center={<Text style={styles.title}>Enter your password</Text>} />
+      <Header center={<Text style={styles.title}>{title}</Text>} />
       <Column style={styles.container}>
         <PasswordInput
           error={error}
@@ -62,7 +69,7 @@ const PasswordModal = ({ modalRef, handleClose = () => {}, handleSubmit }) => {
         />
         <RainbowButton
           buttonStyle={styles.buttonStyle}
-          text="Continue"
+          text={t('common.continue')}
           loading={loading}
           onPress={validatedSubmit}
           disabled={loading}

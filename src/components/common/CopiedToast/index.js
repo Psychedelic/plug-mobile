@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import React, { useEffect, useRef } from 'react';
 import { Animated, Text, View } from 'react-native';
 
@@ -46,7 +47,7 @@ function CopiedToast({
     <Animated.View
       style={[styles.animationContainer, customStyle, { opacity: fadeAnim }]}>
       <View style={[styles.pointer, customPointerStyle]} />
-      <Text style={[FontStyles.Small, styles.text]}>Copied!</Text>
+      <Text style={[FontStyles.Small, styles.text]}>{t('common.copied')}</Text>
     </Animated.View>
   ) : null;
 }

@@ -24,7 +24,10 @@ function CommonItem({ image, name, id, style, onPress, onLongPress }) {
             <Text style={FontStyles.NormalGray}>{shortAddress(id)}</Text>
           </View>
           <View style={styles.threeDots}>
-            <Touchable onPress={onLongPress} scale={animationScales.large}>
+            <Touchable
+              onPress={onLongPress}
+              scale={animationScales.large}
+              hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}>
               <Icon name="threeDots" />
             </Touchable>
           </View>

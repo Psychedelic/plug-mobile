@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Keyboard, Text, View } from 'react-native';
 
 import Header from '@/commonComponents/Header';
@@ -13,6 +14,7 @@ import EditEmoji from '../EditEmoji';
 import styles from './styles';
 
 const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
+  const { t } = useTranslation();
   const editEmojiRef = useRef(null);
   const [accountName, setAccountName] = useState('');
   const [editTouched, setEditTouched] = useState(false);
@@ -47,8 +49,15 @@ const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
     setEditTouched(true);
   };
 
-  const getName = isSave =>
-    isSave ? 'Save' : `${account ? 'Edit' : 'Create'} Account`;
+  const getName = useCallback(
+    isSave =>
+      isSave
+        ? t('accounts.save')
+        : account
+        ? t('accounts.edit')
+        : t('accounts.create'),
+    [account],
+  );
 
   useEffect(() => {
     if (account) {
@@ -78,12 +87,12 @@ const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
       <Header
         right={
           <Text style={[FontStyles.Normal, styles.valid]} onPress={closeModal}>
-            Close
+            {t('common.close')}
           </Text>
         }
         left={
           <Text style={[FontStyles.Normal, styles.valid]} onPress={handleBack}>
-            Back
+            {t('common.back')}
           </Text>
         }
         center={<Text style={FontStyles.Subtitle2}>{getName()}</Text>}
@@ -99,7 +108,7 @@ const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
           {!editTouched && (
             <View style={styles.toolTip}>
               <Text style={[FontStyles.Small, styles.toolTipText]}>
-                👈 Edit
+                {t('accounts.editButton')}
               </Text>
             </View>
           )}
@@ -109,7 +118,7 @@ const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
           variant="text"
           maxLenght={22}
           value={accountName}
-          placeholder="Account name"
+          placeholder={t('accounts.accountNamePlaceholder')}
           customStyle={styles.input}
           onChangeText={setAccountName}
         />

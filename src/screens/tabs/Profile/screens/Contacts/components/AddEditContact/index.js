@@ -1,5 +1,6 @@
 import emojis from 'emoji-datasource';
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Keyboard, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -17,6 +18,7 @@ import EditEmoji from '../../../EditEmoji';
 import styles from './styles';
 
 const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
+  const { t } = useTranslation();
   const { contacts } = useSelector(state => state.user);
   const { onCreate, onEdit } = useContacts();
   const editEmojiRef = useRef(null);
@@ -27,7 +29,9 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
   const [error, setError] = useState(false);
 
   const isEditContact = !!contact;
-  const title = `${isEditContact ? 'Edit' : 'Add'} Contact`;
+  const title = isEditContact
+    ? t('contacts.editContact')
+    : t('contacts.addContact');
   const validId = validatePrincipalId(id);
   const savedContact = contacts.find(c => c.id === id);
   const savedContactName = contacts.find(c => c.name === name);
@@ -111,15 +115,15 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
       <Header
         right={
           <Text style={[FontStyles.Normal, styles.valid]} onPress={closeModal}>
-            Close
+            {t('common.close')}
           </Text>
         }
         left={
           <Text style={[FontStyles.Normal, styles.valid]} onPress={handleBack}>
-            Back
+            {t('common.back')}
           </Text>
         }
-        center={<Text style={FontStyles.Subtitle2}>{title}</Text>}
+        center={<Text style={styles.title}>{title}</Text>}
       />
       <View style={styles.container}>
         {isEditContact && (
@@ -136,27 +140,30 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
           value={name}
           variant="text"
           maxLenght={22}
-          placeholder="Name"
+          placeholder={t('contacts.namePlaceholder')}
           onChangeText={handleOnChangeName}
         />
         <TextInput
           value={id}
           variant="text"
           onChangeText={handleOnChangeId}
-          placeholder="Principal ID"
+          placeholder={t('contacts.idPlaceholder')}
           customStyle={styles.marginedContainer}
         />
         {error && (
           <Text style={styles.savedContactText}>
             {nameError
-              ? 'Name is already taken!'
-              : `Contact already saved as ${savedContact?.name}!`}
+              ? t('contacts.nameTaken')
+              : t('contacts.contactAlreadySaved', {
+                  value: savedContact?.name,
+                })}
           </Text>
         )}
         <RainbowButton
           text={title}
           onPress={handleSubmit}
           buttonStyle={styles.marginedContainer}
+          textStyle={styles.capitalized}
           disabled={isButtonDisabled()}
         />
       </View>

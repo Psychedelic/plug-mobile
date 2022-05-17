@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 
@@ -9,7 +10,7 @@ function Back({ onPress }) {
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
       <Icon name="chevronLeft" />
-      <Text style={styles.text}>Back</Text>
+      <Text style={styles.text}>{t('common.back')}</Text>
     </TouchableOpacity>
   );
 }

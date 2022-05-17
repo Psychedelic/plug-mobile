@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FlatList, RefreshControl, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import EmptyState from '@/commonComponents/EmptyState';
 import ErrorState from '@/commonComponents/ErrorState';
-import { ERROR_TYPES } from '@/commonComponents/ErrorState/constants';
+import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
 import { Container, Separator } from '@/layout';
 import { getNFTs } from '@/redux/slices/user';
@@ -15,6 +16,7 @@ import NftDetail from './screens/NftDetail';
 import styles from './styles';
 
 const NFTs = () => {
+  const { t } = useTranslation();
   const detailRef = useRef(null);
   const NFTListRef = useRef(null);
   const dispatch = useDispatch();
@@ -55,7 +57,7 @@ const NFTs = () => {
     <>
       <Container>
         <WalletHeader />
-        <Text style={styles.title}>Collectibles</Text>
+        <Text style={styles.title}>{t('common.collectibles')}</Text>
         <Separator />
         {!collectionsError ? (
           <FlatList
@@ -77,8 +79,8 @@ const NFTs = () => {
             }
             ListEmptyComponent={
               <EmptyState
-                title="You don't own any Collectibles yet"
-                text="When you do, they'll show here, where you will see their traits and send them."
+                title={t('nftTab.emptyTitle')}
+                text={t('nftTab.emptySubtitle')}
               />
             }
           />

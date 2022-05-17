@@ -1,9 +1,10 @@
-import moment from 'moment';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 
 import { FontStyles } from '@/constants/theme';
 import UsdFormat from '@/formatters/UsdFormat';
+import { formatDate } from '@/utils/dates';
 import { formatToMaxDecimals } from '@/utils/number';
 import shortAddress from '@/utils/shortAddress';
 
@@ -27,6 +28,7 @@ const ActivityItem = ({
   details,
   canisterInfo,
 }) => {
+  const { t } = useTranslation();
   const isSonic = !!details?.sonicData;
   const isSwap = type === 'SWAP';
   const isLiquidity = type.includes('Liquidity');
@@ -40,7 +42,7 @@ const ActivityItem = ({
         </Text>
         <Text style={FontStyles.SmallGray}>
           {getStatus(status, styles)}
-          {moment(date).format('MMM Do')}
+          {formatDate(date, 'MMM Do')}
           {getSubtitle(type, to, from, canisterId)}
         </Text>
       </View>
@@ -60,7 +62,7 @@ const ActivityItem = ({
             </Text>
           </>
         ) : isSwap || isLiquidity ? (
-          <Text style={FontStyles.SmallGray}>Coming Soon!</Text>
+          <Text style={FontStyles.SmallGray}>{t('common.comingSoon')}</Text>
         ) : (
           <>
             {amount && (
