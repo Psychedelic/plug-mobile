@@ -3,18 +3,28 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import { ENABLE_NFTS } from '@/constants/nfts';
+import useDeepLink from '@/hooks/useDeepLink';
 import NFTs from '@/screens/tabs/NFTs';
 import ProfileScreen from '@/screens/tabs/Profile';
 import Tokens from '@/screens/tabs/Tokens';
+import { useNavigation } from '@/utils/navigation';
 
 import Routes from '../Routes';
 import BottomTabs from './BottomTabs';
 
 const Swipe = createMaterialTopTabNavigator();
 
-const SwipeNavigator = ({ route, navigation }) => {
+const SwipeNavigator = ({ route }) => {
   const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
   const isLogin = route.name === Routes.LOGIN_SCREEN;
+  const { deepLink } = useDeepLink();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (deepLink) {
+      navigation.navigate(Routes.WALLET_CONNECT);
+    }
+  }, [deepLink]);
 
   const goToLogin = () => {
     navigation.reset({

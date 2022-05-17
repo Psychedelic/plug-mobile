@@ -8,6 +8,11 @@ import Reactotron from '../config/reactotron';
 import IcpReducer from './slices/icp';
 import KeyringReducer from './slices/keyring';
 import UserReducer from './slices/user';
+import WalletConnectReducer from './slices/walletconnect';
+
+// CONSTANT
+
+export const WALLETCONNECTKEY = 'WALLETCONNECT';
 
 // PERSIST
 export const transformCircular = createTransform(
@@ -32,12 +37,19 @@ const userPersistConfig = {
   transforms: [transformCircular],
 };
 
+const walletConnectPersistConfig = {
+  key: 'walletconnect',
+  storage: AsyncStorage,
+  transforms: [transformCircular],
+};
+
 // REDUCER
 
 const rootReducer = combineReducers({
   keyring: KeyringReducer,
   icp: persistReducer(icpPersistConfig, IcpReducer),
   user: persistReducer(userPersistConfig, UserReducer),
+  walletconnect: WalletConnectReducer,
 });
 
 const middlewares = [thunk];
@@ -70,7 +82,7 @@ export const keyringStorage = {
       const allKeys = await AsyncStorage.getAllKeys();
       await Promise.all(
         allKeys.map(async k => {
-          if (!k.includes('@REACTOTRON')) {
+          if (!k.includes('@REACTOTRON') && !k.includes('WALLETCONNECT')) {
             const val = await AsyncStorage.getItem(k);
             state[k] = JSON.parse(val)[0];
           }
@@ -86,4 +98,29 @@ export const keyringStorage = {
       })
     ),
   clear: AsyncStorage.clear,
+};
+
+export const walletConnectStorage = {
+  get: async key => {
+    // await AsyncStorage.clear();
+    if (key) {
+      return AsyncStorage.getItem(WALLETCONNECTKEY)
+        .then(value => JSON.parse(`${value}`))
+        .then(parsedValue => parsedValue[key])
+        .then(value => (value ? JSON.parse(value) : value));
+    }
+    return AsyncStorage.getItem(WALLETCONNECTKEY).then(value =>
+      value ? JSON.parse(value) : value,
+    );
+  },
+  set: values =>
+    AsyncStorage.getItem(WALLETCONNECTKEY)
+      .then(savedValues => (savedValues ? JSON.parse(savedValues) : {}))
+      .then(parsedValues =>
+        AsyncStorage.setItem(
+          WALLETCONNECTKEY,
+          Flatted.stringify({ ...parsedValues, values }),
+        ),
+      ),
+  clear: AsyncStorage.setItem(WALLETCONNECTKEY, Flatted.stringify({})),
 };
