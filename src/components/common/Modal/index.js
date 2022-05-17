@@ -2,6 +2,8 @@ import React from 'react';
 import { Modalize } from 'react-native-modalize';
 import { Portal } from 'react-native-portalize';
 
+import { isIos } from '@/constants/platform';
+
 import styles from './styles';
 
 function Modal({
@@ -9,6 +11,7 @@ function Modal({
   modalRef,
   onClose,
   fullHeight,
+  adjustToContentHeight,
   scrollViewProps,
   ...props
 }) {
@@ -17,8 +20,11 @@ function Modal({
       <Modalize
         {...props}
         ref={modalRef}
-        handlePosition={'inside'}
-        modalStyle={styles.modalStyle}
+        handlePosition="inside"
+        modalStyle={[
+          styles.modalStyle,
+          !adjustToContentHeight && styles.flexStyle,
+        ]}
         overlayStyle={styles.overlayStyle}
         handleStyle={styles.handleStyle}
         scrollViewProps={{
@@ -29,8 +35,12 @@ function Modal({
           }),
           ...scrollViewProps,
         }}
+        closeOnOverlayTap
+        keyboardAvoidingBehavior={isIos ? 'padding' : 'height'}
         modalTopOffset={10}
+        onOverlayPress={onClose}
         onClose={onClose}
+        adjustToContentHeight={adjustToContentHeight}
         threshold={15}>
         {children}
       </Modalize>
