@@ -68,7 +68,7 @@ The code is built using React-Native and running code locally requires a Mac or 
 - Choose the toolchain and install rust dependencies following the nexts steps:
 
   ```bash
-  $ cargo install cargo-lip
+  $ cargo install cargo-lipo
   $ rustup default 1.55.0-aarch64-apple-darwin
   $ rustup target add aarch64-apple-ios x86_64-apple-ios
   ```
