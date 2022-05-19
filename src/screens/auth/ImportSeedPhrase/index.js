@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import PlugLogo from '@/assets/icons/plug-logo-full.png';
 import Back from '@/commonComponents/Back';
 import Header from '@/commonComponents/Header';
-import KeyboardHider from '@/commonComponents/KeyboardHider';
 import TextInput from '@/commonComponents/TextInput';
 import RainbowButton from '@/components/buttons/RainbowButton';
+import KeyboardScrollView from '@/components/common/KeyboardScrollView';
 import useKeychain from '@/hooks/useKeychain';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
@@ -82,7 +82,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
           </View>
         }
       />
-      <KeyboardHider>
+      <KeyboardScrollView>
         <View style={styles.container}>
           <Text style={styles.title}>{t('importSeedPhrase.title')}</Text>
           <Text style={styles.subtitle}>
@@ -109,7 +109,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
             disabled={!isMnemonicValid || loading}
           />
         </View>
-      </KeyboardHider>
+      </KeyboardScrollView>
     </Container>
   );
 };

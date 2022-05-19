@@ -20,9 +20,9 @@ function KeyboardScrollView({
   return (
     <HeaderHeightContext.Consumer>
       {headerHeight => (
-        <SafeAreaView style={[styles.safeArea, safeAreaStyle]}>
+        <SafeAreaView style={[styles.flex, safeAreaStyle]}>
           <KeyboardAvoidingView
-            style={[styles.keyboard, keyboardStyle]}
+            style={[styles.flex, keyboardStyle]}
             behavior={Platform.select({ ios: 'padding', android: undefined })}
             keyboardVerticalOffset={Platform.select({
               ios: headerHeight,
@@ -33,6 +33,7 @@ function KeyboardScrollView({
               bounces={false}
               contentContainerStyle={styles.scrollContent}
               ref={scrollviewRef}
+              overScrollMode="never"
               {...scrollViewProps}>
               {children}
             </ScrollView>
