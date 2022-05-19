@@ -1,5 +1,5 @@
-use crate::{
-    agent::{agent_config::AgentConfig, Agent, ReplicaV2Transport},
+use crate::android::{
+    {agent_config::AgentConfig, Agent, ReplicaV2Transport},
     AgentError, Identity, NonceFactory, NonceGenerator,
 };
 use std::sync::Arc;

@@ -1,7 +1,8 @@
-use crate::{ic_types::Principal, AgentError, RequestId};
-
-use crate::{
-    agent::{replica_api::Certificate, Replied, RequestStatusResponse},
+use crate::android::ic_types::Principal;
+use crate::android::AgentError;
+use crate::request_id::RequestId;
+use crate::android::{
+    {replica_api::Certificate, Replied, RequestStatusResponse},
     bls::bls12381::bls,
     hash_tree::{Label, LookupResult},
 };

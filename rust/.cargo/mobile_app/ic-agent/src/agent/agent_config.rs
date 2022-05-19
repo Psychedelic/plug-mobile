@@ -1,6 +1,6 @@
 use crate::{
-    agent::{NonceFactory, NonceGenerator, ReplicaV2Transport},
-    identity::{anonymous::AnonymousIdentity, Identity},
+    android::nonce::{NonceFactory, NonceGenerator, ReplicaV2Transport},
+    android::identity::{anonymous::AnonymousIdentity, Identity},
 };
 use std::{sync::Arc, time::Duration};
 
