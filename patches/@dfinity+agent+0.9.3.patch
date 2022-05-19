@@ -1,5 +1,5 @@
 diff --git a/node_modules/@dfinity/agent/lib/cjs/certificate.js b/node_modules/@dfinity/agent/lib/cjs/certificate.js
-index 6e89e14..e683fe6 100644
+index 6e89e14..6662010 100644
 --- a/node_modules/@dfinity/agent/lib/cjs/certificate.js
 +++ b/node_modules/@dfinity/agent/lib/cjs/certificate.js
 @@ -27,6 +27,10 @@ const errors_1 = require("./errors");
@@ -8,7 +8,7 @@ index 6e89e14..e683fe6 100644
  const bls_1 = require("./utils/bls");
 +
 +import { NativeModules } from 'react-native';
-+const { SigningBridge } = NativeModules;
++const { BLSModule } = NativeModules;
 +
  /**
   * A certificate needs to be verified (using {@link Certificate.prototype.verify})
@@ -52,7 +52,7 @@ index 6e89e14..e683fe6 100644
  class Certificate {
      constructor(response, _agent = agent_1.getDefaultAgent()) {
          this._agent = _agent;
-@@ -106,15 +142,21 @@ class Certificate {
+@@ -106,15 +142,22 @@ class Certificate {
          this.checkState();
          return lookup_path(path, this.cert.tree);
      }
@@ -73,18 +73,19 @@ index 6e89e14..e683fe6 100644
 +        // const msg = buffer_1.Buffer.concat([domain_sep('ic-state-root'), rootHash]);
 +        // const res = await bls_1.blsVerify(key, sig, msg);
 +        // Do BLS validation directly on ic-agent on the rust side
-+        console.log('BLS Disabled. Use for testing only');
-+        // const payload = JSON.stringify({ request_id: Array.from(requestId), cert: parseArrayBuffers(this.cert) });
-+        // const responseString = await SigningBridge.signData(payload);
-+        // const response = JSON.parse(responseString);
-+        const status = true; // parseResponseStatus(response);
++        /* This is the code that is used to verify the certificate. */
++        const payload = JSON.stringify({ request_id: Array.from(requestId), cert: parseArrayBuffers(this.cert) });
++        console.log('BLSM:', BLSModule);
++        const responseString = BLSModule.androidVerifyJson(payload);
++        const response = JSON.parse(responseString)
++        const status = parseResponseStatus(response);
 +        this.verified = status;
 +        return status;
      }
      checkState() {
          if (!this.verified) {
 diff --git a/node_modules/@dfinity/agent/lib/cjs/polling/index.js b/node_modules/@dfinity/agent/lib/cjs/polling/index.js
-index 39c803a..0a2744d 100644
+index 39c803a..53d5a79 100644
 --- a/node_modules/@dfinity/agent/lib/cjs/polling/index.js
 +++ b/node_modules/@dfinity/agent/lib/cjs/polling/index.js
 @@ -27,6 +27,7 @@ const candid_1 = require("@dfinity/candid");
@@ -95,7 +96,7 @@ index 39c803a..0a2744d 100644
  /**
   * Polls the IC to check the status of the given request then
   * returns the response bytes once the request has been processed.
-@@ -35,11 +36,13 @@ Object.defineProperty(exports, "defaultStrategy", { enumerable: true, get: funct
+@@ -35,23 +36,25 @@ Object.defineProperty(exports, "defaultStrategy", { enumerable: true, get: funct
   * @param requestId The Request ID to poll status for.
   * @param strategy A polling strategy.
   */
@@ -105,8 +106,30 @@ index 39c803a..0a2744d 100644
      const state = await agent.readState(canisterId, { paths: [path] });
      const cert = new certificate_1.Certificate(state, agent);
 -    const verified = await cert.verify();
+-    if (!verified) {
 +
-+    let verified = await cert.verify(requestId);
-     if (!verified) {
++    let status = await cert.verify(requestId);
++    if (!status) {
          throw new Error('Fail to verify certificate');
      }
+-    const maybeBuf = cert.lookup([...path, candid_1.blobFromText('status')]);
+-    let status;
+-    if (typeof maybeBuf === 'undefined') {
+-        // Missing requestId means we need to wait
+-        status = agent_1.RequestStatusResponseStatus.Unknown;
+-    }
+-    else {
+-        status = maybeBuf.toString();
+-    }
++    // const maybeBuf = cert.lookup([...path, candid_1.blobFromText('status')]);
++    // let status;
++    // if (typeof maybeBuf === 'undefined') {
++    //     // Missing requestId means we need to wait
++    //     status = agent_1.RequestStatusResponseStatus.Unknown;
++    // }
++    // else {
++    //     status = maybeBuf.toString();
++    // }
+     switch (status) {
+         case agent_1.RequestStatusResponseStatus.Replied: {
+             return cert.lookup([...path, candid_1.blobFromText('reply')]);
