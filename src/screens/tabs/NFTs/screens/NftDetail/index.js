@@ -1,15 +1,7 @@
 import i18next, { t } from 'i18next';
 import React, { useRef, useState } from 'react';
-import {
-  ActionSheetIOS,
-  Linking,
-  Platform,
-  Share,
-  Text,
-  View,
-} from 'react-native';
+import { ActionSheetIOS, Linking, Share, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import RNFetchBlob from 'rn-fetch-blob';
 
 import Badge from '@/commonComponents/Badge';
 import Header from '@/commonComponents/Header';
@@ -17,10 +9,10 @@ import Modal from '@/commonComponents/Modal';
 import NftDisplayer from '@/commonComponents/NftDisplayer';
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
-import { isIos } from '@/constants/platform';
 import { FontStyles } from '@/constants/theme';
 import useGetType from '@/hooks/useGetType';
 import Send from '@/screens/flows/Send';
+import { downloadFile } from '@/utils/filesystem';
 import { getAbsoluteType } from '@/utils/fileTypes';
 import { deleteWhiteSpaces } from '@/utils/strings';
 
@@ -34,6 +26,7 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
   const nftName = `${selectedNFT?.collection} #${selectedNFT?.index}`;
   const [type, setType] = useState(null);
   const userCollection = useSelector(state => state.user.collections) || [];
+  const [isDownloading, setIsDownloading] = useState(false);
   const selectedCollection = userCollection.find(
     collection => collection.name === selectedNFT?.collection,
   );
@@ -56,40 +49,14 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
   };
 
   const downloadNFT = () => {
-    // TODO: Add the persmissions for Android
-    try {
-      const dirs = RNFetchBlob.fs.dirs;
-      const dirToSave = isIos ? dirs.DocumentDir : dirs.DownloadDir;
-      const configfb = {
-        fileCache: true,
-        useDownloadManager: true,
-        notification: true,
-        mediaScannable: true,
-        title: nftName,
-        path: `${dirToSave}/Plug/NFT_${deleteWhiteSpaces(
-          nftName,
-        )}${getAbsoluteType(type)}`,
-      };
-      const configOptions = Platform.select({
-        ios: {
-          fileCache: configfb.fileCache,
-          title: configfb.title,
-          path: configfb.path,
-        },
-        android: configfb,
-      });
-
-      RNFetchBlob.config(configOptions)
-        .fetch('GET', selectedNFT?.url)
-        .then(res => {
-          if (isIos) {
-            RNFetchBlob.fs.writeFile(configfb.path, res.data, 'base64');
-            RNFetchBlob.ios.previewDocument(configfb.path);
-          }
-        });
-    } catch (e) {
-      console.log(`Error at Download NFT | type: ${type} | error: ${e}`);
-    }
+    // TODO: Handle download error
+    setIsDownloading(true);
+    downloadFile({
+      filename: `/NFT_${deleteWhiteSpaces(nftName)}${getAbsoluteType(type)}`,
+      url: selectedNFT?.url,
+      type,
+      onFetched: () => setIsDownloading(false),
+    });
   };
 
   const handleMore = () => {
@@ -143,13 +110,14 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
                 variant="gray"
                 text={t('common.more')}
                 onPress={handleMore}
+                loading={isDownloading}
               />
             </View>
             <View style={styles.buttonWraperRight}>
               <RainbowButton
                 text={t('common.send')}
                 onPress={handleSend}
-                disabled={isCapCrowns}
+                disabled={isCapCrowns || isDownloading}
               />
             </View>
           </View>

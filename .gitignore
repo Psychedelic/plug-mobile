@@ -64,5 +64,8 @@ buck-out/
 # Env
 /*.env
 
+# Android
+android/*.hprof
+
 # react-native-config codegen
 ios/envfile
