@@ -4,10 +4,10 @@ import { Image, Keyboard, StatusBar, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Plug from '@/assets/icons/il_white_plug.png';
-import KeyboardHider from '@/commonComponents/KeyboardHider';
 import PasswordInput from '@/commonComponents/PasswordInput';
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
+import KeyboardScrollView from '@/components/common/KeyboardScrollView';
 import { isValidPassword } from '@/constants/general';
 import useKeychain from '@/hooks/useKeychain';
 import { Container } from '@/layout';
@@ -93,7 +93,7 @@ function Login({ route, navigation }) {
 
   return (
     <Container>
-      <KeyboardHider>
+      <KeyboardScrollView>
         <View style={styles.container}>
           <Image source={Plug} style={styles.plugIcon} />
           <Text style={styles.title}>{t('login.unlock')}</Text>
@@ -105,6 +105,7 @@ function Login({ route, navigation }) {
             password={password}
             onChange={setPassword}
             inputStyle={styles.input}
+            onSubmit={() => handleSubmit(password)}
           />
           <RainbowButton
             text={t('login.submit')}
@@ -131,7 +132,7 @@ function Login({ route, navigation }) {
             buttonStyle={[styles.buttonMargin, styles.moreOptionsButton]}
           />
         </View>
-      </KeyboardHider>
+      </KeyboardScrollView>
     </Container>
   );
 }
