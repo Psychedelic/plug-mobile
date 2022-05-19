@@ -1,0 +1,28 @@
+[workspace]
+members = [
+    "ic-agent",
+    "ic-asset",
+    "icx-cert",
+    "ic-identity-hsm",
+    "ic-utils",
+    "icx",
+    "icx-asset",
+    "ref-tests"
+]
+
+[package]
+name = "mobile_app"
+version = "0.1.0"
+edition = "2018"
+authors = ["Matt <matt@fleek.co>"]
+
+[lib]
+name = "mobile_app"
+crate-type = ["staticlib", "cdylib"]
+
+[dependencies]
+libc = "0.2"
+jni = { version = "0.5.1", optional = true, default-features = false }
+
+[features]
+default = ["jni"]
