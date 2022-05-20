@@ -1,7 +1,8 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { useEffect } from 'react';
-import { AppState } from 'react-native';
+import { AppState, StyleSheet } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Host } from 'react-native-portalize';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -71,40 +72,50 @@ const Navigator = ({ routingInstrumentation }) => {
       onReady={routingInstrumentation.registerNavigationContainer(
         navigationRef,
       )}>
-      <Host>
-        <Stack.Navigator
-          initialRouteName={initialRoute}
-          screenOptions={{
-            headerShown: false,
-            cardStyle: { backgroundColor: Colors.Black.Primary },
-          }}>
-          <Stack.Screen name={Routes.WELCOME_SCREEN} component={Welcome} />
-          <Stack.Screen name={Routes.LOGIN_SCREEN} component={Login} />
-          <Stack.Screen
-            name={Routes.CREATE_PASSWORD}
-            component={CreatePassword}
-          />
-          <Stack.Screen
-            name={Routes.BACKUP_SEED_PHRASE}
-            component={BackupSeedPhrase}
-          />
-          <Stack.Screen
-            name={Routes.IMPORT_SEED_PHRASE}
-            component={ImportSeedPhrase}
-          />
-          <Stack.Screen
-            name={Routes.SWIPE_LAYOUT}
-            component={SwipeNavigator}
-            options={{ gestureEnabled: false }}
-          />
-          <Stack.Screen
-            name={Routes.CONNECTION_ERROR}
-            component={ConnectionError}
-          />
-        </Stack.Navigator>
-      </Host>
+      <GestureHandlerRootView style={styles.container}>
+        <Host>
+          <Stack.Navigator
+            initialRouteName={initialRoute}
+            screenOptions={{
+              headerShown: false,
+              cardStyle: { backgroundColor: Colors.Black.Primary },
+              gestureEnabled: true,
+              gestureDirection: 'horizontal',
+            }}>
+            <Stack.Screen name={Routes.WELCOME_SCREEN} component={Welcome} />
+            <Stack.Screen name={Routes.LOGIN_SCREEN} component={Login} />
+            <Stack.Screen
+              name={Routes.CREATE_PASSWORD}
+              component={CreatePassword}
+            />
+            <Stack.Screen
+              name={Routes.BACKUP_SEED_PHRASE}
+              component={BackupSeedPhrase}
+            />
+            <Stack.Screen
+              name={Routes.IMPORT_SEED_PHRASE}
+              component={ImportSeedPhrase}
+            />
+            <Stack.Screen
+              name={Routes.SWIPE_LAYOUT}
+              component={SwipeNavigator}
+              options={{ gestureEnabled: false }}
+            />
+            <Stack.Screen
+              name={Routes.CONNECTION_ERROR}
+              component={ConnectionError}
+            />
+          </Stack.Navigator>
+        </Host>
+      </GestureHandlerRootView>
     </NavigationContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 export default Navigator;
