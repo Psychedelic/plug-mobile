@@ -1,7 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-
-import { withNotch } from '@/constants/platform';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import styles from './styles';
 
@@ -38,12 +37,12 @@ export const Column = ({ align, justify, children, style }) => {
 };
 
 export const Container = ({ children, customStyle }) => {
+  const { top } = useSafeAreaInsets();
+
   return (
     <View style={[styles.container, customStyle]}>
       <View style={styles.outerContainer} />
-      <View style={[styles.content, withNotch && styles.notchContainer]}>
-        {children}
-      </View>
+      <View style={[styles.content, { marginTop: top }]}>{children}</View>
     </View>
   );
 };
