@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import { Platform } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { Portal } from 'react-native-portalize';
 
@@ -16,10 +15,7 @@ function Modal({
   scrollViewProps,
   ...props
 }) {
-  const modalOffset = useMemo(
-    () => Platform.select({ android: 35, ios: withNotch ? undefined : 10 }),
-    [],
-  );
+  const modalOffset = useMemo(() => (withNotch ? undefined : 10), []);
 
   return (
     <Portal>

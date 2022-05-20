@@ -12,4 +12,13 @@ public class MainActivity extends ReactActivity {
   protected String getMainComponentName() {
     return "Plug";
   }
+
+  /**
+  * Needed for react-native-screens to work well
+  * https://github.com/software-mansion/react-native-screens#android
+  */
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+      super.onCreate(null);
+  }
 }
