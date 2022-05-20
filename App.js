@@ -3,7 +3,7 @@ import '@/config/reactotron';
 
 import * as Sentry from '@sentry/react-native';
 import React, { useEffect, useRef } from 'react';
-import { AppState } from 'react-native';
+import { AppState, StatusBar } from 'react-native';
 import codePush from 'react-native-code-push';
 import Config from 'react-native-config';
 import SplashScreen from 'react-native-splash-screen';
@@ -71,6 +71,7 @@ const PersistedApp = () => {
   return (
     <PersistGate loading={null} persistor={persistor}>
       <ErrorBoundary>
+        <StatusBar barStyle="light-content" backgroundColor="black" />
         {!!instance && (
           <Routes routingInstrumentation={routingInstrumentation} />
         )}

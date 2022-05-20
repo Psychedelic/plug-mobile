@@ -1,5 +1,5 @@
 import React from 'react';
-import { StatusBar, View } from 'react-native';
+import { View } from 'react-native';
 
 import { withNotch } from '@/constants/platform';
 
@@ -40,7 +40,6 @@ export const Column = ({ align, justify, children, style }) => {
 export const Container = ({ children, customStyle }) => {
   return (
     <View style={[styles.container, customStyle]}>
-      <StatusBar barStyle="light-content" backgroundColor="black" />
       <View style={styles.outerContainer} />
       <View style={[styles.content, withNotch && styles.notchContainer]}>
         {children}

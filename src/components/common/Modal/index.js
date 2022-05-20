@@ -21,24 +21,21 @@ function Modal({
         {...props}
         ref={modalRef}
         handlePosition="inside"
-        modalStyle={[
-          styles.modalStyle,
-          !adjustToContentHeight && styles.flexStyle,
-        ]}
-        overlayStyle={styles.overlayStyle}
-        handleStyle={styles.handleStyle}
+        modalStyle={[styles.modal, !adjustToContentHeight && styles.flex]}
+        overlayStyle={styles.overlay}
+        handleStyle={styles.handle}
         scrollViewProps={{
           keyboardShouldPersistTaps: 'always',
           keyboardDismissMode: 'none',
           overScrollMode: 'never',
           ...(fullHeight && {
-            contentContainerStyle: { height: '100%' },
+            contentContainerStyle: styles.scrollviewContent,
           }),
           ...scrollViewProps,
         }}
         closeOnOverlayTap
-        keyboardAvoidingBehavior={isIos ? 'padding' : 'height'}
-        modalTopOffset={10}
+        keyboardAvoidingBehavior={isIos ? 'padding' : undefined}
+        modalTopOffset={isIos ? 10 : 35}
         onOverlayPress={onClose}
         onClose={onClose}
         adjustToContentHeight={adjustToContentHeight}
