@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Keyboard, StatusBar, Text, View } from 'react-native';
+import { Image, Keyboard, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Plug from '@/assets/icons/il_white_plug.png';
@@ -93,45 +93,44 @@ function Login({ route, navigation }) {
 
   return (
     <Container>
-      <KeyboardScrollView>
-        <View style={styles.container}>
-          <Image source={Plug} style={styles.plugIcon} />
+      <KeyboardScrollView contentStyle={styles.container}>
+        <Image source={Plug} style={styles.plugIcon} />
+        <View>
           <Text style={styles.title}>{t('login.unlock')}</Text>
-          <StatusBar barStyle="light-content" />
-          <PasswordInput
-            autoFocus={!isManualLock}
-            error={error}
-            disabled={disableInput}
-            password={password}
-            onChange={setPassword}
-            inputStyle={styles.input}
-            onSubmit={() => handleSubmit(password)}
-          />
-          <RainbowButton
-            text={t('login.submit')}
-            onPress={() => handleSubmit(password)}
-            loading={loading}
-            disabled={!isValidPassword(password) || loading}
-            buttonStyle={styles.buttonMargin}
-          />
-          {biometricsAvailable && usingBiometrics && (
-            <Button
-              iconName="faceIdIcon"
-              text={t('login.signInBiometric')}
-              onPress={unlockUsingBiometrics}
-              iconStyle={styles.biometricsIcon}
-              buttonStyle={[styles.buttonMargin, styles.biometricsButton]}
-            />
-          )}
-          <Button
-            iconName="arrowRight"
-            text={t('login.moreOptions')}
-            onLongPress={handleGoToWelcome}
-            onPress={handleGoToWelcome}
-            iconStyle={styles.moreOptionsIcon}
-            buttonStyle={[styles.buttonMargin, styles.moreOptionsButton]}
-          />
         </View>
+        <PasswordInput
+          autoFocus={!isManualLock}
+          error={error}
+          disabled={disableInput}
+          password={password}
+          onChange={setPassword}
+          inputStyle={styles.input}
+          onSubmit={() => handleSubmit(password)}
+        />
+        <RainbowButton
+          text={t('login.submit')}
+          onPress={() => handleSubmit(password)}
+          loading={loading}
+          disabled={!isValidPassword(password) || loading}
+          buttonStyle={styles.buttonMargin}
+        />
+        {biometricsAvailable && usingBiometrics && (
+          <Button
+            iconName="faceIdIcon"
+            text={t('login.signInBiometric')}
+            onPress={unlockUsingBiometrics}
+            iconStyle={styles.biometricsIcon}
+            buttonStyle={[styles.buttonMargin, styles.biometricsButton]}
+          />
+        )}
+        <Button
+          iconName="arrowRight"
+          text={t('login.moreOptions')}
+          onLongPress={handleGoToWelcome}
+          onPress={handleGoToWelcome}
+          iconStyle={styles.moreOptionsIcon}
+          buttonStyle={[styles.buttonMargin, styles.moreOptionsButton]}
+        />
       </KeyboardScrollView>
     </Container>
   );

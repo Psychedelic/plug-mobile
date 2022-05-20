@@ -16,6 +16,7 @@ function KeyboardScrollView({
   safeAreaStyle,
   scrollviewRef,
   scrollViewProps,
+  contentStyle,
 }) {
   return (
     <HeaderHeightContext.Consumer>
@@ -31,7 +32,7 @@ function KeyboardScrollView({
               keyboardShouldPersistTaps={keyboardShouldPersistTaps}
               showsVerticalScrollIndicator={false}
               bounces={false}
-              contentContainerStyle={styles.scrollContent}
+              contentContainerStyle={[styles.scrollContent, contentStyle]}
               ref={scrollviewRef}
               overScrollMode="never"
               {...scrollViewProps}>
