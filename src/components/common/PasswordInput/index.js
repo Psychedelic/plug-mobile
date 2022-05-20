@@ -23,6 +23,7 @@ function PasswordInput({
   maxLength,
   inputProps,
   onBlur,
+  onSubmit,
 }) {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
@@ -39,6 +40,11 @@ function PasswordInput({
 
   const toggleShowPassowrd = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleOnSubmit = () => {
+    setIsFocused(false);
+    onSubmit?.();
   };
 
   useEffect(() => {
@@ -73,6 +79,7 @@ function PasswordInput({
           variant={`${showPassword ? 'text' : 'password'}`}
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
+          onSubmitEditing={handleOnSubmit}
           {...inputProps}
         />
         <Touchable
