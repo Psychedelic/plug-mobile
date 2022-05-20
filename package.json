@@ -8,7 +8,7 @@
     "ios": "yarn run ic-build && react-native run-ios --scheme plug-dev",
     "ios:stage": "yarn run ic-build && react-native run-ios --scheme plug-stage --configuration Debug",
     "ios:production": "yarn run ic-build && react-native run-ios --scheme plug-prod --configuration Debug",
-    "android": "npx react-native run-android --variant=devDebug ",
+    "android": "npx react-native run-android --variant=devDebug --appId co.psychedelic.plug.dev ",
     "android:stage": "react-native run-android --variant=stageDebug ",
     "android:production": "react-native run-android --variant=productionDebug ",
     "android:build.dev": "cd android && ./gradlew clean && ./gradlew assembleDevRelease",
