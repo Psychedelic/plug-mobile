@@ -1,6 +1,7 @@
 package co.psychedelic.plug;
 
 import com.facebook.react.ReactActivity;
+import android.os.Bundle;
 
 public class MainActivity extends ReactActivity {
 
