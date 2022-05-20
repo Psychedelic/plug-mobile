@@ -1,4 +1,4 @@
-use crate::android::{
+use crate::{
     export::Principal,
     hash_tree::{HashTree, Label},
 };

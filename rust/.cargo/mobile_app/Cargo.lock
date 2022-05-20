@@ -1287,14 +1287,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "mobile_app"
-version = "0.1.0"
-dependencies = [
- "jni",
- "libc",
-]
-
-[[package]]
 name = "mockito"
 version = "0.30.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"

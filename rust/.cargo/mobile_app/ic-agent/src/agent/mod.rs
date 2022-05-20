@@ -15,16 +15,15 @@ pub use agent_error::AgentError;
 pub use builder::AgentBuilder;
 pub use nonce::{NonceFactory, NonceGenerator};
 pub use response::{Replied, RequestStatusResponse};
-use crate::android::replica_api::*;
-use crate::android::response_authentication::*;
+
 use serde::Deserialize;
 use serde_json::json;
 
 #[cfg(test)]
 mod agent_test;
 
-use crate::android::{
-    replica_api::{
+use crate::{
+    agent::replica_api::{
         CallRequestContent, Certificate, Delegation, Envelope, QueryContent, ReadStateContent,
         ReadStateResponse,
     },
@@ -37,8 +36,8 @@ use garcon::Waiter;
 use serde::Serialize;
 use status::Status;
 
-use crate::android::{
-    response_authentication::{
+use crate::{
+    agent::response_authentication::{
         extract_der, initialize_bls, lookup_canister_info, lookup_canister_metadata,
         lookup_request_status, lookup_value,
     },
