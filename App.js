@@ -6,6 +6,7 @@ import React, { useEffect, useRef } from 'react';
 import { AppState, StatusBar } from 'react-native';
 import codePush from 'react-native-code-push';
 import Config from 'react-native-config';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import SplashScreen from 'react-native-splash-screen';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import Reactotron from 'reactotron-react-native';
@@ -71,10 +72,12 @@ const PersistedApp = () => {
   return (
     <PersistGate loading={null} persistor={persistor}>
       <ErrorBoundary>
-        <StatusBar barStyle="light-content" backgroundColor="black" />
-        {!!instance && (
-          <Routes routingInstrumentation={routingInstrumentation} />
-        )}
+        <SafeAreaProvider>
+          <StatusBar barStyle="light-content" backgroundColor="black" />
+          {!!instance && (
+            <Routes routingInstrumentation={routingInstrumentation} />
+          )}
+        </SafeAreaProvider>
       </ErrorBoundary>
     </PersistGate>
   );

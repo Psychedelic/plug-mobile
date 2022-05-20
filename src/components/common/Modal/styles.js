@@ -1,14 +1,10 @@
 import { StyleSheet } from 'react-native';
 
-import { isIos } from '@/constants/platform';
 import { Colors } from '@/constants/theme';
-
-export const modalOffset = isIos ? 10 : 35;
 
 export default StyleSheet.create({
   modal: {
     zIndex: 5,
-    marginTop: 'auto',
     backgroundColor: Colors.Black.Pure,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
@@ -18,8 +14,7 @@ export default StyleSheet.create({
     shadowRadius: 12,
     elevation: 4,
   },
-  flexOffset: {
-    marginTop: modalOffset,
+  flex: {
     flex: 1,
   },
   overlay: {
