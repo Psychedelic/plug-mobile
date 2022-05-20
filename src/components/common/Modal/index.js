@@ -30,6 +30,7 @@ function Modal({
         scrollViewProps={{
           keyboardShouldPersistTaps: 'always',
           keyboardDismissMode: 'none',
+          overScrollMode: 'never',
           ...(fullHeight && {
             contentContainerStyle: { height: '100%' },
           }),

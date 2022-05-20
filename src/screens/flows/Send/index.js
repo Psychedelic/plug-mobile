@@ -304,6 +304,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
       <ScrollView
         keyboardShouldPersistTaps="never"
         showsVerticalScrollIndicator={false}
+        overScrollMode="never"
         contentContainerStyle={styles.contentContainer}>
         <Header
           left={
