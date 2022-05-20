@@ -4,7 +4,7 @@ import { Portal } from 'react-native-portalize';
 
 import { isIos } from '@/constants/platform';
 
-import styles from './styles';
+import styles, { modalOffset } from './styles';
 
 function Modal({
   children,
@@ -21,7 +21,7 @@ function Modal({
         {...props}
         ref={modalRef}
         handlePosition="inside"
-        modalStyle={[styles.modal, !adjustToContentHeight && styles.flex]}
+        modalStyle={[styles.modal, !adjustToContentHeight && styles.flexOffset]}
         overlayStyle={styles.overlay}
         handleStyle={styles.handle}
         scrollViewProps={{
@@ -35,7 +35,7 @@ function Modal({
         }}
         closeOnOverlayTap
         keyboardAvoidingBehavior={isIos ? 'padding' : undefined}
-        modalTopOffset={isIos ? 10 : 35}
+        modalTopOffset={modalOffset}
         onOverlayPress={onClose}
         onClose={onClose}
         adjustToContentHeight={adjustToContentHeight}
