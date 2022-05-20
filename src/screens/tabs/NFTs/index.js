@@ -70,6 +70,7 @@ const NFTs = () => {
             keyExtractor={(_, index) => index}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.nftsContainer}
+            overScrollMode="never"
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}
