@@ -2,9 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { captureException } from '@sentry/react-native';
 import WalletConnect from '@walletconnect/client';
 import { parseWalletConnectUri } from '@walletconnect/utils';
-import { Alert, AppState, InteractionManager, Linking } from 'react-native';
+import { AppState, InteractionManager, Linking } from 'react-native';
 import Minimizer from 'react-native-minimizer';
-import URL, { qs } from 'url-parse';
 
 import {
   BIOMETRICS_ANIMATION_DELAY,
@@ -23,7 +22,6 @@ import { delay } from '@/utils/utilities';
 import {
   callRequestHandlerFactory,
   connectionRequestResponseHandlerFactory,
-  notSigningMethod,
   sessionRequestHandlerFactory,
 } from '@/utils/walletConnect';
 
@@ -189,44 +187,46 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
 const listenOnNewMessages = createAsyncThunk(
   'walletconnect/listenOnNewMessages',
   (walletConnector, { dispatch, getState }) => {
+    const getWalletConnectHandlers = callRequestHandlerFactory(dispatch);
     walletConnector.on('call_request', async (error, payload) => {
       if (error) {
         throw error;
       }
       const { clientId, peerId, peerMeta } = walletConnector;
       const requestId = payload.id;
+      try {
+        const { pendingCallRequests } = getState().walletconnect;
+        if (!pendingCallRequests[requestId]) {
+          const [handler, executor] = getWalletConnectHandlers(payload.method);
 
-      if (notSigningMethod(payload.method)) {
+          if (!handler) {
+            return walletConnector.rejectRequest({
+              error: ERRORS.NOT_METHOD,
+              id: requestId,
+            });
+          }
+
+          const request = await dispatch(
+            addCallRequestToApprove({
+              clientId,
+              peerId,
+              requestId,
+              payload,
+              peerMeta,
+              executor,
+            }),
+          ).unwrap();
+
+          handler(request, ...request.args);
+        }
+      } catch (e) {
         dispatch(
           walletConnectExecuteAndResponse({
-            methodName: payload.method,
-            args: payload.params,
             requestId,
             peerId,
-            approve: true,
+            error: ERRORS.SERVER_ERROR(e),
           }),
         );
-        return;
-      }
-
-      const { pendingCallRequests } = getState().walletconnect;
-      const request = !pendingCallRequests[requestId]
-        ? await dispatch(
-          addCallRequestToApprove({
-            clientId,
-            peerId,
-            requestId,
-            payload,
-            peerMeta,
-          }),
-        ).unwrap()
-        : null;
-
-      if (request) {
-        Navigation.handleAction(Routes.WALLET_CONNECT_CALL_REQUEST, {
-          openAutomatically: true,
-          transactionDetails: request,
-        });
       }
     });
     walletConnector.on('disconnect', error => {
@@ -240,41 +240,45 @@ const listenOnNewMessages = createAsyncThunk(
 
 export const walletConnectExecuteAndResponse = createAsyncThunk(
   'walletconnect/executeAndResponse',
-  async (
-    { peerId, requestId, methodName, args, opts, approve, error },
-    { dispatch, getState },
-  ) => {
-    const callRequestResponseHandler = callRequestHandlerFactory(dispatch);
-    const walletConnector = getState().walletconnect.walletConnectors[peerId];
-    if (walletConnector) {
-      try {
-        if (!approve || error) {
-          await walletConnector.rejectRequest({
-            error: error || ERRORS.NOT_APPROVED,
-            id: requestId,
-          });
-        }
-        const { result, error: resultError } = await callRequestResponseHandler(
-          methodName,
-          opts,
-          args,
-        );
+  async ({ peerId, requestId, args, opts, error }, { dispatch, getState }) => {
+    try {
+      const walletConnector = getState().walletconnect.walletConnectors[peerId];
+      const { executor } =
+        getState().walletconnect.pendingCallRequests[requestId] || {};
+      if (walletConnector) {
+        try {
+          if (error || !executor) {
+            await walletConnector.rejectRequest({
+              error: error || ERRORS.NOT_APPROVED,
+              id: requestId,
+            });
+          } else {
+            const { result, error: resultError } = await executor(
+              opts,
+              ...args,
+            );
 
-        if (result) {
-          await walletConnector.approveRequest({ id: requestId, result });
-        } else {
-          await walletConnector.rejectRequest({
-            error: resultError,
-            id: requestId,
-          });
+            if (result) {
+              await walletConnector.approveRequest({ id: requestId, result });
+            } else {
+              await walletConnector.rejectRequest({
+                error: resultError,
+                id: requestId,
+              });
+            }
+          }
+
+          dispatch(removeCallRequestToApprove({ requestId }));
+        } catch (e) {
+          console.log('Failed to send request status to WalletConnect.', e);
         }
-      } catch (e) {
-        console.log('Failed to send request status to WalletConnect.', e);
+      } else {
+        console.log(
+          'WalletConnect session has expired while trying to send request status. Please reconnect.',
+        );
       }
-    } else {
-      console.log(
-        'WalletConnect session has expired while trying to send request status. Please reconnect.',
-      );
+    } catch (e) {
+      console.log('EXECUTE AND RESPONSE ERROR', e);
     }
   },
 );
@@ -314,7 +318,7 @@ export const removePendingRequest = createAsyncThunk(
 export const addCallRequestToApprove = createAsyncThunk(
   'walletconnect/addCallRequestToApprove',
   async (
-    { clientId, peerId, requestId, payload, peerMeta },
+    { clientId, peerId, requestId, payload, peerMeta, executor },
     { dispatch, getState },
   ) => {
     const { walletConnectors, pendingCallRequests } = getState().walletconnect;
@@ -334,9 +338,11 @@ export const addCallRequestToApprove = createAsyncThunk(
       dappUrl,
       displayDetails: {},
       imageUrl,
-      payload,
+      methodName: payload.method,
+      args: payload.params,
       peerId,
       requestId,
+      executor,
     };
 
     const updatedRequests = { ...pendingCallRequests, [requestId]: request };
@@ -348,7 +354,7 @@ export const addCallRequestToApprove = createAsyncThunk(
 
 export const removeCallRequestToApprove = createAsyncThunk(
   'walletconnect/removeCallRequestToApprove',
-  (requestId, { dispatch, getState }) => {
+  ({ requestId }, { dispatch, getState }) => {
     const { pendingCallRequests } = getState().walletconnect;
 
     const updatedPendingRequests = pendingCallRequests;
