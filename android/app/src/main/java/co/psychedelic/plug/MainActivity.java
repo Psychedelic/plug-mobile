@@ -1,6 +1,7 @@
 package co.psychedelic.plug;
 
 import com.facebook.react.ReactActivity;
+import android.os.Bundle;
 
 public class MainActivity extends ReactActivity {
 
@@ -11,5 +12,14 @@ public class MainActivity extends ReactActivity {
   @Override
   protected String getMainComponentName() {
     return "Plug";
+  }
+
+  /**
+  * Needed for react-native-screens to work well
+  * https://github.com/software-mansion/react-native-screens#android
+  */
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+      super.onCreate(null);
   }
 }

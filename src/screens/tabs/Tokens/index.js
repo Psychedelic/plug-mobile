@@ -64,6 +64,7 @@ function Tokens() {
       {!assetsError ? (
         <ScrollView
           showsVerticalScrollIndicator={false}
+          overScrollMode="never"
           refreshControl={
             <RefreshControl
               refreshing={refreshing}

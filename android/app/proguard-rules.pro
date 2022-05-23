@@ -10,3 +10,7 @@
 # Add any project specific keep options here:
 
 -keep class com.co.psychedelic.plug.BuildConfig { *; }
+
+## react-native-reanimated
+-keep class com.swmansion.reanimated.** { *; }
+-keep class com.facebook.react.turbomodule.** { *; }

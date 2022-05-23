@@ -1,7 +1,6 @@
 import React from 'react';
-import { StatusBar, View } from 'react-native';
-
-import { withNotch } from '@/constants/platform';
+import { View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import styles from './styles';
 
@@ -38,11 +37,12 @@ export const Column = ({ align, justify, children, style }) => {
 };
 
 export const Container = ({ children, customStyle }) => {
+  const { top } = useSafeAreaInsets();
+
   return (
     <View style={[styles.container, customStyle]}>
-      <StatusBar barStyle="light-content" backgroundColor="black" />
       <View style={styles.outerContainer} />
-      <View style={[styles.content, withNotch && styles.notchContainer]}>
+      <View style={[styles.content, top > 0 && { marginTop: top }]}>
         {children}
       </View>
     </View>

@@ -91,6 +91,7 @@ const Profile = () => {
             renderItem={renderTransaction}
             keyExtractor={(_, index) => index}
             showsVerticalScrollIndicator={false}
+            overScrollMode="never"
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}
