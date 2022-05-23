@@ -14,7 +14,6 @@ import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import { Container } from '@/layout';
 import {
-  removeCallRequestToApprove,
   walletConnectExecuteAndResponse,
   walletConnectRemovePendingRedirect,
 } from '@/redux/slices/walletconnect';
@@ -33,7 +32,8 @@ function RequestCall() {
       dappName,
       dappScheme,
       dappUrl,
-      payload: { method, params: args },
+      methodName,
+      args,
       peerId,
       requestId,
     },
@@ -58,7 +58,7 @@ function RequestCall() {
         });
       }
     },
-    [goBack, pendingRedirect, , method, dappScheme, dispatch],
+    [goBack, pendingRedirect, dappScheme, dispatch],
   );
 
   const onCancel = useCallback(
@@ -75,15 +75,21 @@ function RequestCall() {
                 approve: false,
               }),
             );
-            dispatch(removeCallRequestToApprove(requestId));
           }
         }, 300);
       } catch (e) {
         console.log('error while handling cancel request', e);
+        await dispatch(
+          walletConnectExecuteAndResponse({
+            peerId,
+            requestId,
+            error: e,
+          }),
+        );
         closeScreen(true);
       }
     },
-    [closeScreen, dispatch, method, peerId, requestId],
+    [closeScreen, dispatch, peerId, requestId],
   );
 
   const handleConfirmTransaction = useCallback(async () => {
@@ -92,24 +98,13 @@ function RequestCall() {
         walletConnectExecuteAndResponse({
           peerId,
           requestId,
-          methodName: method,
-          params: args,
+          args,
           approve: true,
         }),
       );
-      dispatch(removeCallRequestToApprove(requestId));
     }
     closeScreen(false);
-  }, [
-    method,
-    params,
-    requestId,
-    dappName,
-    dispatch,
-    peerId,
-    dappScheme,
-    dappUrl,
-  ]);
+  }, [params, requestId, dappName, dispatch, peerId, dappScheme, dappUrl]);
 
   const onConfirm = useCallback(async () => {
     return handleConfirmTransaction();
@@ -142,7 +137,7 @@ function RequestCall() {
             <Text style={styles.title}>Wallet Connect</Text>
             <Text style={styles.text}>{`DAP URL: ${dappUrl}`}</Text>
             <Text style={styles.text}>{`DAP NAME: ${dappName}`}</Text>
-            <Text style={styles.text}>{`METHOD: ${method}`}</Text>
+            <Text style={styles.text}>{`METHOD: ${methodName}`}</Text>
             <RainbowButton
               buttonStyle={[styles.componentMargin, styles.buttonStyling]}
               text="Approve"
