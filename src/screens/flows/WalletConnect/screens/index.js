@@ -1,5 +1,5 @@
 import { useRoute } from '@react-navigation/native';
-import React, { useCallback, useState } from 'react';
+import React, { Children, useCallback, useState } from 'react';
 import {
   ActivityIndicator,
   Image,
@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Plug from '@/assets/icons/il_white_plug.png';
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
+import { ERRORS } from '@/constants/walletconnect';
 import { Container } from '@/layout';
 import {
   walletConnectExecuteAndResponse,
@@ -19,25 +20,33 @@ import {
 } from '@/redux/slices/walletconnect';
 import { useNavigation } from '@/utils/navigation';
 
-import styles from '../../styles';
+import styles from '../styles';
+import RequestConnect from './RequestConnect';
+import RequestTransfer from './RequestTransfer';
 
-function RequestCall() {
+const SCREENS = {
+  transfer: RequestTransfer,
+  requestConnect: RequestConnect,
+};
+
+function WalletConnectScreens() {
   const [isAuthorizing, setIsAuthorizing] = useState(false);
 
   const dispatch = useDispatch();
-  const { goBack } = useNavigation();
   const { params } = useRoute();
+  const { goBack } = useNavigation();
   const {
-    transactionDetails: {
-      dappName,
-      dappScheme,
-      dappUrl,
-      methodName,
-      args,
-      peerId,
-      requestId,
-    },
+    type,
+    request,
+    metadata,
+    args,
+    handleApprove,
+    handleDecline,
+    handleError,
+    timedOut,
   } = params;
+  const Screen = SCREENS[type];
+  const { dappScheme } = request;
 
   const pendingRedirect = useSelector(
     ({ walletconnect }) => walletconnect.pendingRedirect,
@@ -54,7 +63,9 @@ function RequestCall() {
           if (canceled) {
             type = `${type}-canceled`;
           }
-          dispatch(walletConnectRemovePendingRedirect(type, dappScheme));
+          dispatch(
+            walletConnectRemovePendingRedirect({ type, scheme: dappScheme }),
+          );
         });
       }
     },
@@ -67,44 +78,40 @@ function RequestCall() {
         closeScreen(true);
 
         setTimeout(async () => {
-          if (requestId) {
-            await dispatch(
-              walletConnectExecuteAndResponse({
-                peerId,
-                requestId,
-                approve: false,
-              }),
-            );
+          if (handleDecline) {
+            handleDecline();
           }
         }, 300);
       } catch (e) {
-        console.log('error while handling cancel request', e);
-        await dispatch(
+        console.log('onCancel error', e);
+        dispatch(
           walletConnectExecuteAndResponse({
-            peerId,
-            requestId,
-            error: e,
+            ...request,
+            error: ERRORS.SERVER_ERROR(e.message),
           }),
         );
         closeScreen(true);
       }
     },
-    [closeScreen, dispatch, peerId, requestId],
+    [closeScreen, dispatch, handleDecline, handleError],
   );
 
   const handleConfirmTransaction = useCallback(async () => {
-    if (requestId) {
+    try {
+      if (handleApprove) {
+        await handleApprove();
+      }
+    } catch (e) {
+      console.log('handleConfirmTransaction error', e);
       await dispatch(
         walletConnectExecuteAndResponse({
-          peerId,
-          requestId,
-          args,
-          approve: true,
+          ...request,
+          error: ERRORS.SERVER_ERROR(e),
         }),
       );
     }
     closeScreen(false);
-  }, [params, requestId, dappName, dispatch, peerId, dappScheme, dappUrl]);
+  }, [closeScreen, dispatch, handleApprove]);
 
   const onConfirm = useCallback(async () => {
     return handleConfirmTransaction();
@@ -128,16 +135,16 @@ function RequestCall() {
   return (
     <Container>
       <View style={styles.container}>
-        {!Object.keys(params).length ? (
+        {timedOut ? (
+          <Text style={styles.error}>TIMED OUT</Text>
+        ) : !Object.keys(params).length ? (
           <ActivityIndicator size="large" />
         ) : (
           // TODO: changes on this screen after desings
           <>
             <Image source={Plug} style={styles.plugIcon} />
             <Text style={styles.title}>Wallet Connect</Text>
-            <Text style={styles.text}>{`DAP URL: ${dappUrl}`}</Text>
-            <Text style={styles.text}>{`DAP NAME: ${dappName}`}</Text>
-            <Text style={styles.text}>{`METHOD: ${methodName}`}</Text>
+            <Screen metadta={metadata} request={request} args={args} />
             <RainbowButton
               buttonStyle={[styles.componentMargin, styles.buttonStyling]}
               text="Approve"
@@ -155,4 +162,4 @@ function RequestCall() {
   );
 }
 
-export default RequestCall;
+export default WalletConnectScreens;
