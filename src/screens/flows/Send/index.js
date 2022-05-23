@@ -4,10 +4,11 @@ import { Keyboard, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Header from '@/commonComponents/Header';
-import Modal from '@/commonComponents/Modal';
+import Modal, { modalOffset } from '@/commonComponents/Modal';
 import PasswordModal from '@/commonComponents/PasswordModal';
 import TextInput from '@/commonComponents/TextInput';
 import { ADDRESS_TYPES } from '@/constants/addresses';
+import { isAndroid } from '@/constants/platform';
 import { FontStyles } from '@/constants/theme';
 import XTC_OPTIONS from '@/constants/xtc';
 import useKeychain from '@/hooks/useKeychain';
@@ -300,10 +301,10 @@ function Send({ modalRef, nft, token, onSuccess }) {
     <Modal
       modalRef={modalRef}
       onClose={resetState}
+      fullHeight
+      modalStyle={isAndroid && modalOffset && { marginTop: modalOffset }}
       scrollViewProps={{
         keyboardShouldPersistTaps: 'never',
-        overScrollMode: 'never',
-        showsVerticalScrollIndicator: false,
       }}>
       <View style={styles.contentContainer}>
         <Header

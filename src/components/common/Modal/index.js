@@ -1,10 +1,12 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Modalize } from 'react-native-modalize';
 import { Portal } from 'react-native-portalize';
 
 import { isIos, withNotch } from '@/constants/platform';
 
 import styles from './styles';
+
+export const modalOffset = withNotch ? undefined : isIos ? 10 : 35;
 
 function Modal({
   children,
@@ -16,8 +18,6 @@ function Modal({
   modalStyle,
   ...props
 }) {
-  const modalOffset = useMemo(() => (withNotch ? undefined : 35), []);
-
   return (
     <Portal>
       <Modalize
@@ -34,6 +34,7 @@ function Modal({
         scrollViewProps={{
           keyboardShouldPersistTaps: 'always',
           keyboardDismissMode: 'none',
+          showsVerticalScrollIndicator: false,
           overScrollMode: 'never',
           ...(fullHeight && {
             contentContainerStyle: styles.scrollviewContent,

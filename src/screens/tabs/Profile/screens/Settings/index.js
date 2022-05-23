@@ -100,7 +100,7 @@ const Settings = () => {
       <Touchable scale={animationScales.large} onPress={openModal}>
         <Icon name="gear" />
       </Touchable>
-      <Modal modalRef={modalRef} fullHeight>
+      <Modal modalRef={modalRef}>
         <Header
           center={
             <Text style={FontStyles.Subtitle2}>{t('settings.title')}</Text>
