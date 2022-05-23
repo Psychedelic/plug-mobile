@@ -13,9 +13,10 @@ function Modal({
   fullHeight,
   adjustToContentHeight,
   scrollViewProps,
+  modalStyle,
   ...props
 }) {
-  const modalOffset = useMemo(() => (withNotch ? undefined : 10), []);
+  const modalOffset = useMemo(() => (withNotch ? undefined : 35), []);
 
   return (
     <Portal>
@@ -23,7 +24,11 @@ function Modal({
         {...props}
         ref={modalRef}
         handlePosition="inside"
-        modalStyle={[styles.modal, !adjustToContentHeight && styles.flex]}
+        modalStyle={[
+          styles.modal,
+          !adjustToContentHeight && styles.flex,
+          modalStyle,
+        ]}
         overlayStyle={styles.overlay}
         handleStyle={styles.handle}
         scrollViewProps={{

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Keyboard, ScrollView, Text } from 'react-native';
+import { Keyboard, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Header from '@/commonComponents/Header';
@@ -300,12 +300,12 @@ function Send({ modalRef, nft, token, onSuccess }) {
     <Modal
       modalRef={modalRef}
       onClose={resetState}
-      scrollViewProps={{ keyboardShouldPersistTaps: 'never' }}>
-      <ScrollView
-        keyboardShouldPersistTaps="never"
-        showsVerticalScrollIndicator={false}
-        overScrollMode="never"
-        contentContainerStyle={styles.contentContainer}>
+      scrollViewProps={{
+        keyboardShouldPersistTaps: 'never',
+        overScrollMode: 'never',
+        showsVerticalScrollIndicator: false,
+      }}>
+      <View style={styles.contentContainer}>
         <Header
           left={
             isValidAddress && (
@@ -316,7 +316,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
               </Text>
             )
           }
-          center={<Text style={FontStyles.Subtitle2}>Send</Text>}
+          center={<Text style={FontStyles.Subtitle2}>{t('send.title')}</Text>}
         />
         <TextInput
           label={t('send.inputLabel')}
@@ -354,7 +354,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
             onReview={onReview}
           />
         )}
-      </ScrollView>
+      </View>
       <ReviewSend
         modalRef={reviewRef}
         adjustToContentHeight

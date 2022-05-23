@@ -61,6 +61,7 @@ const translations = {
       "Use when receiving from exchanges, or other apps that only support sending to Accounts ID's.",
   },
   send: {
+    title: 'Send',
     inputLabel: 'To:',
     inputPlaceholder: 'Name or address',
     enterAmount: 'Enter an Amount',

@@ -42,7 +42,9 @@ export const Container = ({ children, customStyle }) => {
   return (
     <View style={[styles.container, customStyle]}>
       <View style={styles.outerContainer} />
-      <View style={[styles.content, { marginTop: top }]}>{children}</View>
+      <View style={[styles.content, top > 0 && { marginTop: top }]}>
+        {children}
+      </View>
     </View>
   );
 };
