@@ -165,7 +165,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
           amount: tokenAmount,
           canisterId: selectedToken?.canisterId,
           icpPrice,
-        }),
+        })
       )
         .unwrap()
         .then(response => {
@@ -257,7 +257,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
       }
       setAddressInfo({ isValid, type });
       setSendingXTCtoCanister(
-        selectedToken?.symbol === 'XTC' && validateCanisterId(id),
+        selectedToken?.symbol === 'XTC' && validateCanisterId(id)
       );
     }
   }, [address, selectedContact, selectedToken]);
@@ -268,19 +268,19 @@ function Send({ modalRef, nft, token, onSuccess }) {
         getAvailableAmount(
           selectedToken?.amount,
           selectedToken?.symbol,
-          icpPrice,
+          icpPrice
         ),
-        ICP_MAX_DECIMALS,
+        ICP_MAX_DECIMALS
       ),
-    [selectedToken],
+    [selectedToken]
   );
   const availableUsdAmount = useMemo(
     () =>
       formatSendAmount(
         getUsdAvailableAmount(availableAmount, selectedTokenPrice),
-        USD_MAX_DECIMALS,
+        USD_MAX_DECIMALS
       ),
-    [availableAmount, selectedTokenPrice],
+    [availableAmount, selectedTokenPrice]
   );
 
   const getSaveContactRef = () => {

@@ -45,7 +45,7 @@ const Navigator = ({ routingInstrumentation }) => {
   useEffect(() => {
     const subscription = AppState.addEventListener(
       'change',
-      handleAppStateChange,
+      handleAppStateChange
     );
 
     return () => {
@@ -70,7 +70,7 @@ const Navigator = ({ routingInstrumentation }) => {
       ref={navigationRef}
       theme={navTheme}
       onReady={routingInstrumentation.registerNavigationContainer(
-        navigationRef,
+        navigationRef
       )}>
       <GestureHandlerRootView style={styles.container}>
         <Host>

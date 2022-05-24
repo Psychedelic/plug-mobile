@@ -23,7 +23,7 @@ const NFTs = () => {
   const [refreshing, setRefresing] = useState(false);
   const [selectedNft, setSelectedNft] = useState(null);
   const { collections, collectionsError, scrollOnNFTs } = useSelector(
-    state => state.user,
+    state => state.user
   );
 
   useEffect(() => {

@@ -39,7 +39,7 @@ const PasswordModal = ({
           setError(true);
           setLoading(false);
         },
-      }),
+      })
     );
   };
 

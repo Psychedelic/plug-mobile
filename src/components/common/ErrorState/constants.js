@@ -11,7 +11,7 @@ export const getErrorStateData = type =>
       `errors.${ERROR_TYPES.CONNECTION_ERROR}`,
       {
         returnObjects: true,
-      },
+      }
     ),
     [ERROR_TYPES.ERROR_BOUNDARY]: t(`errors.${ERROR_TYPES.ERROR_BOUNDARY}`, {
       returnObjects: true,

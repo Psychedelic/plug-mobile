@@ -68,7 +68,7 @@ const ActivityItem = ({
             {amount && (
               <Text style={FontStyles.Normal}>{`${formatToMaxDecimals(
                 Number(amount),
-                8,
+                8
               )} ${symbol}`}</Text>
             )}
             {value && (

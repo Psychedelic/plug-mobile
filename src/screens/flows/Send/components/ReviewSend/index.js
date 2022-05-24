@@ -61,7 +61,7 @@ const ReviewSend = ({
   const isError = transaction?.status === TRANSACTION_STATUS.error;
   const { currentFee, currentUSDFee } = getTransactionFee(
     token?.symbol,
-    icpPrice,
+    icpPrice
   );
 
   const handleSaveContact = () => {
@@ -108,7 +108,7 @@ const ReviewSend = ({
           ReviewIcon: null,
         },
       }[transaction?.status || 'pending']),
-    [transaction],
+    [transaction]
   );
 
   return (
@@ -176,7 +176,7 @@ const ReviewSend = ({
               {t('reviewSend.totalFee', {
                 value: `${currentFee} ${token?.symbol} ($${formatSendAmount(
                   currentUSDFee,
-                  USD_MAX_DECIMALS + 2,
+                  USD_MAX_DECIMALS + 2
                 )})`,
               })}
             </Text>

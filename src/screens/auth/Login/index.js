@@ -25,7 +25,7 @@ function Login({ route, navigation }) {
   const { getPassword } = useKeychain();
   const { icpPrice } = useSelector(state => state.icp);
   const { usingBiometrics, biometricsAvailable } = useSelector(
-    state => state.user,
+    state => state.user
   );
 
   const [error, setError] = useState(false);
@@ -70,7 +70,7 @@ function Login({ route, navigation }) {
           setError(true);
           setDisableInput(false);
         },
-      }),
+      })
     )
       .unwrap()
       .then(unlocked => {

@@ -58,7 +58,7 @@ function BiometricUnlock({ modalRef }) {
           setLoggedIn(true);
           setLoading(false);
         },
-      }),
+      })
     );
   };
 

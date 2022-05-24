@@ -38,7 +38,7 @@ const AmountSection = ({
     setUsdAmount(
       amount
         ? toFixedNoRounding(formattedAmount * tokenPrice, USD_MAX_DECIMALS)
-        : null,
+        : null
     );
   };
 
@@ -48,7 +48,7 @@ const AmountSection = ({
     setTokenAmount(
       amount
         ? toFixedNoRounding(formattedAmount / tokenPrice, ICP_MAX_DECIMALS)
-        : null,
+        : null
     );
   };
 

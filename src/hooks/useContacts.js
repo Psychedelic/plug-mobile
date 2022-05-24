@@ -13,7 +13,7 @@ const useContacts = () => {
   const onDelete = contact => dispatch(removeContact(contact));
   const onEdit = ({ contact, newContact }) =>
     dispatch(
-      setContacts(contacts.map(c => (c.id === contact.id ? newContact : c))),
+      setContacts(contacts.map(c => (c.id === contact.id ? newContact : c)))
     );
 
   const groupedContacts = useMemo(
@@ -21,7 +21,7 @@ const useContacts = () => {
       contacts.reduce((list, contact) => {
         const { name } = contact;
         const listItem = list.find(
-          item => item.letter && item.letter === getFirstLetterFrom(name),
+          item => item.letter && item.letter === getFirstLetterFrom(name)
         );
         if (!listItem) {
           list.push({ letter: getFirstLetterFrom(name), contacts: [contact] });
@@ -31,7 +31,7 @@ const useContacts = () => {
 
         return list;
       }, []),
-    [contacts],
+    [contacts]
   );
 
   return { contacts, groupedContacts, onCreate, onEdit, onDelete };

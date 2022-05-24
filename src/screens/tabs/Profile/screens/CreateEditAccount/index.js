@@ -56,7 +56,7 @@ const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
         : account
         ? t('accounts.edit')
         : t('accounts.create'),
-    [account],
+    [account]
   );
 
   useEffect(() => {

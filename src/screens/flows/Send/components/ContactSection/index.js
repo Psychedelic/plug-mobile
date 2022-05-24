@@ -17,7 +17,7 @@ const ContactSection = ({ onPress, filterText }) => {
     ? usableContacts.filter(
         contact =>
           contact.name.toLowerCase().includes(filterText.toLowerCase()) ||
-          contact.id.includes(filterText.toLowerCase()),
+          contact.id.includes(filterText.toLowerCase())
       )
     : usableContacts;
 

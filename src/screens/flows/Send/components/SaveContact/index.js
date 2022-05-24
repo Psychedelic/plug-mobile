@@ -28,7 +28,7 @@ function SaveContact({ modalRef, onClose, id }) {
 
   const handleSubmit = () => {
     const randomEmoji = charFromEmojiObject(
-      emojis[Math.floor(Math.random() * emojis.length)],
+      emojis[Math.floor(Math.random() * emojis.length)]
     );
     onCreate({
       id,

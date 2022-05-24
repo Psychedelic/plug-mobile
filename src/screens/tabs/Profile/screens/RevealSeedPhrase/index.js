@@ -45,7 +45,7 @@ function RevealSeedPhrase({ modalRef }) {
           setLoggedIn(true);
           setLoading(false);
         },
-      }),
+      })
     );
   };
 

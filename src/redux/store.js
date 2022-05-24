@@ -12,7 +12,7 @@ import UserReducer from './slices/user';
 // PERSIST
 export const transformCircular = createTransform(
   inboundState => Flatted.stringify(inboundState),
-  outboundState => Flatted.parse(outboundState),
+  outboundState => Flatted.parse(outboundState)
 );
 
 const persistConfig = {
@@ -74,7 +74,7 @@ export const keyringStorage = {
             const val = await AsyncStorage.getItem(k);
             state[k] = JSON.parse(val)[0];
           }
-        }),
+        })
       );
       return state;
     }
@@ -83,7 +83,7 @@ export const keyringStorage = {
     Promise.all(
       Object.entries(values).map(async ([key, val]) => {
         await AsyncStorage.setItem(key, Flatted.stringify(val));
-      }),
+      })
     ),
   clear: AsyncStorage.clear,
 };

@@ -65,7 +65,7 @@ const WalletHeader = () => {
         disabled: true,
       },
     ],
-    [],
+    []
   );
 
   useEffect(() => {
@@ -103,7 +103,7 @@ const WalletHeader = () => {
             {React.Children.toArray(
               BUTTONS.map(button => (
                 <ActionButton {...button} key={button.text} />
-              )),
+              ))
             )}
           </View>
         </View>

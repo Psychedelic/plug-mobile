@@ -55,7 +55,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
             setError(false);
             navigation.navigate(Routes.SWIPE_LAYOUT);
           },
-        }),
+        })
       );
     } catch (e) {
       console.log(e);

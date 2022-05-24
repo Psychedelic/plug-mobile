@@ -47,7 +47,7 @@ export const createWallet = createAsyncThunk(
     } catch (e) {
       console.log('Error at createWallet: ', e);
     }
-  },
+  }
 );
 
 export const importWallet = createAsyncThunk(
@@ -78,7 +78,7 @@ export const importWallet = createAsyncThunk(
       onError?.();
     }
     return { wallet };
-  },
+  }
 );
 
 export const validatePassword = createAsyncThunk(
@@ -100,7 +100,7 @@ export const validatePassword = createAsyncThunk(
       console.log('Validate Password:', e.message);
     }
     return isValid;
-  },
+  }
 );
 
 export const unlock = createAsyncThunk(
@@ -108,7 +108,7 @@ export const unlock = createAsyncThunk(
   async (params, { getState }) => {
     const state = getState();
     return await privateUnlock(params, state);
-  },
+  }
 );
 
 const privateUnlock = async (params, state) => {
@@ -159,7 +159,7 @@ export const login = createAsyncThunk(
       console.log('Error at login: ', e);
       handleError();
     }
-  },
+  }
 );
 
 export const createSubaccount = createAsyncThunk(
@@ -173,7 +173,7 @@ export const createSubaccount = createAsyncThunk(
     } catch (e) {
       console.log('createSubaccount', e);
     }
-  },
+  }
 );
 
 export const editSubaccount = createAsyncThunk(
@@ -193,7 +193,7 @@ export const editSubaccount = createAsyncThunk(
     } catch (e) {
       console.log('editSubaccount', e);
     }
-  },
+  }
 );
 
 export const setCurrentPrincipal = createAsyncThunk(
@@ -212,13 +212,13 @@ export const setCurrentPrincipal = createAsyncThunk(
       const [transactions, assets] = await getPrivateAssetsAndTransactions(
         icpPrice,
         getState(),
-        dispatch,
+        dispatch
       );
       dispatch(setAssetsAndTransactions({ assets, transactions }));
     } catch (e) {
       console.log('setCurrentPrincipal', e.message);
     }
-  },
+  }
 );
 
 const DEFAULT_STATE = {
@@ -262,7 +262,7 @@ export const keyringSlice = createSlice({
       const account = action.payload;
       if (account) {
         state.wallets = state.wallets.map(a =>
-          a.walletNumber === account.walletNumber ? account : a,
+          a.walletNumber === account.walletNumber ? account : a
         );
       }
     },
