@@ -1,12 +1,13 @@
 import Clipboard from '@react-native-community/clipboard';
-import i18next, { t } from 'i18next';
+import { t } from 'i18next';
 import React, { Fragment, useRef, useState } from 'react';
-import { ActionSheetIOS, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 import CommonItem from '@/commonComponents/CommonItem';
 import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
 import Touchable from '@/commonComponents/Touchable';
+import ActionSheet from '@/components/common/ActionSheet';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
 import useContacts from '@/hooks/useContacts';
@@ -16,10 +17,10 @@ import { Row } from '@/layout';
 import AddEditContact from './components/AddEditContact';
 import styles from './styles';
 
-const moreOptions = i18next.t('contacts.moreOptions', { returnObjects: true });
-
 const Contacts = ({ modalRef }) => {
   const addEditContactRef = useRef(null);
+  const actionSheetRef = useRef(null);
+  const [actionSheetData, setActionSheetData] = useState(undefined);
 
   const { groupedContacts, onDelete } = useContacts();
 
@@ -38,26 +39,27 @@ const Contacts = ({ modalRef }) => {
   };
 
   const onLongPress = contact => {
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options: moreOptions,
-        cancelButtonIndex: 0,
-        destructiveButtonIndex: 3,
-      },
-      buttonIndex => {
-        switch (buttonIndex) {
-          case 1:
-            onEditContact(contact);
-            break;
-          case 2:
-            Clipboard.setString(contact.id);
-            break;
-          case 3:
-            onDelete(contact);
-            break;
-        }
-      },
-    );
+    const newActionsData = {
+      options: [
+        {
+          id: 1,
+          label: t('contacts.moreOptions.edit'),
+          onPress: () => onEditContact(contact),
+        },
+        {
+          id: 2,
+          label: t('contacts.moreOptions.copy'),
+          onPress: () => Clipboard.setString(contact.id),
+        },
+        {
+          id: 3,
+          label: t('contacts.moreOptions.delete'),
+          onPress: () => onDelete(contact),
+        },
+      ],
+    };
+    setActionSheetData(newActionsData);
+    actionSheetRef?.current?.open();
   };
 
   return (
@@ -98,6 +100,10 @@ const Contacts = ({ modalRef }) => {
             ))}
         </Column>
       </Modal>
+      <ActionSheet
+        modalRef={actionSheetRef}
+        options={actionSheetData?.options}
+      />
       <AddEditContact
         modalRef={addEditContactRef}
         contact={selectedContact}

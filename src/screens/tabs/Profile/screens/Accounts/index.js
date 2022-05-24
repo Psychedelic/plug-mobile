@@ -1,13 +1,14 @@
 import Clipboard from '@react-native-community/clipboard';
-import i18next, { t } from 'i18next';
+import { t } from 'i18next';
 import React, { useEffect, useRef, useState } from 'react';
-import { ActionSheetIOS, ActivityIndicator, Text, View } from 'react-native';
+import { ActivityIndicator, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CommonItem from '@/commonComponents/CommonItem';
 import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
 import Touchable from '@/commonComponents/Touchable';
+import ActionSheet from '@/components/common/ActionSheet';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
 import { Row } from '@/layout';
@@ -19,14 +20,13 @@ import shortAddress from '@/utils/shortAddress';
 import CreateEditAccount from '../CreateEditAccount';
 import styles from './styles';
 
-const moreOptions = i18next.t('accounts.moreOptions', { returnObjects: true });
-
 const Accounts = ({ modalRef, onClose, ...props }) => {
   const { wallets, currentWallet } = useSelector(state => state.keyring);
   const { icpPrice } = useSelector(state => state.icp);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-
+  const actionSheetRef = useRef(null);
+  const [actionSheetData, setActionSheetData] = useState(undefined);
   const [selectedAccount, setSelectedAccount] = useState(null);
 
   const createEditAccountRef = useRef(null);
@@ -58,25 +58,28 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
   };
 
   const onLongPress = account => {
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        title: account.name,
-        message: shortAddress(account.principal),
-        options: moreOptions,
-        cancelButtonIndex: 0,
-        userInterfaceStyle: 'dark',
-      },
-      buttonIndex => {
-        switch (buttonIndex) {
-          case 1:
-            onEditAccount(account);
-            break;
-          case 2:
-            Clipboard.setString(account.principal);
-            break;
-        }
-      },
-    );
+    const newActionsData = {
+      title: account.name,
+      subtitle: shortAddress(account.principal),
+      options: [
+        {
+          id: 1,
+          label: t('accounts.moreOptions.edit'),
+          onPress: () => onEditAccount(account),
+        },
+        {
+          id: 2,
+          label: t('accounts.moreOptions.copy'),
+          onPress: () => Clipboard.setString(account.principal),
+        },
+      ],
+    };
+    setActionSheetData(newActionsData);
+    actionSheetRef?.current?.open();
+  };
+
+  const handleOptionsClose = () => {
+    setActionSheetData(undefined);
   };
 
   const renderAccountItem = (account, index) => {
@@ -100,36 +103,49 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
   };
 
   return (
-    <Modal adjustToContentHeight modalRef={modalRef} {...props}>
-      <Header
-        center={<Text style={FontStyles.Subtitle2}>{t('accounts.title')}</Text>}
-      />
-      <View style={styles.content}>
-        {loading && (
-          <View style={styles.loading}>
-            <ActivityIndicator
-              style={[
-                styles.activityIndicator,
-                { marginBottom: wallets.length * 30 },
-              ]}
-              color="white"
-            />
-          </View>
-        )}
-        {wallets?.map(renderAccountItem)}
-        <Touchable onPress={onCreateAccount}>
-          <Row align="center" style={styles.row}>
-            <Icon name="plus" style={styles.plusIcon} />
-            <Text style={FontStyles.Normal}>{t('accounts.createAccount')}</Text>
-          </Row>
-        </Touchable>
-        <CreateEditAccount
-          modalRef={createEditAccountRef}
-          accountsModalRef={modalRef}
-          account={selectedAccount}
+    <>
+      <Modal adjustToContentHeight modalRef={modalRef} {...props}>
+        <Header
+          center={
+            <Text style={FontStyles.Subtitle2}>{t('accounts.title')}</Text>
+          }
         />
-      </View>
-    </Modal>
+        <View style={styles.content}>
+          {loading && (
+            <View style={styles.loading}>
+              <ActivityIndicator
+                style={[
+                  styles.activityIndicator,
+                  { marginBottom: wallets.length * 30 },
+                ]}
+                color="white"
+              />
+            </View>
+          )}
+          {wallets?.map(renderAccountItem)}
+          <Touchable onPress={onCreateAccount}>
+            <Row align="center" style={styles.row}>
+              <Icon name="plus" style={styles.plusIcon} />
+              <Text style={FontStyles.Normal}>
+                {t('accounts.createAccount')}
+              </Text>
+            </Row>
+          </Touchable>
+          <CreateEditAccount
+            modalRef={createEditAccountRef}
+            accountsModalRef={modalRef}
+            account={selectedAccount}
+          />
+        </View>
+      </Modal>
+      <ActionSheet
+        modalRef={actionSheetRef}
+        onClose={handleOptionsClose}
+        title={actionSheetData?.title}
+        subtitle={actionSheetData?.subtitle}
+        options={actionSheetData?.options}
+      />
+    </>
   );
 };
 

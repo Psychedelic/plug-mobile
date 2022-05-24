@@ -95,7 +95,11 @@ const translations = {
     descriptionTitle: '📝 Description',
     attributesTitle: '🎛 Attributes',
     moreTitle: 'More Options',
-    moreOptions: ['Cancel', 'View', 'Share', 'Download'],
+    moreOptions: {
+      view: 'View',
+      share: 'Share',
+      download: 'Download',
+    },
   },
   activity: {
     [ACTIVITY_STATUS.COMPLETED]: 'Completed',
@@ -130,7 +134,10 @@ const translations = {
   accounts: {
     title: 'Accounts',
     createAccount: 'Create account',
-    moreOptions: ['Cancel', 'Edit Account', 'Copy Address'],
+    moreOptions: {
+      edit: 'Edit Account',
+      copy: 'Copy Address',
+    },
     setEmoji: 'Set Emoji',
     editEmoji: 'Edit emoji',
     editButton: '👈 Edit',
@@ -143,7 +150,11 @@ const translations = {
     title: 'Contacts',
     addContact: 'Add contact',
     editContact: 'Edit contact',
-    moreOptions: ['Cancel', 'Edit Contact', 'Copy Address', 'Delete Contact'],
+    moreOptions: {
+      edit: 'Edit Contact',
+      copy: 'Copy Address',
+      delete: 'Delete Contact',
+    },
     namePlaceholder: 'Name',
     idPlaceholder: 'Principal ID',
     nameTaken: 'Name is already taken!',
