@@ -130,7 +130,8 @@ const translations = {
   accounts: {
     title: 'Accounts',
     createAccount: 'Create account',
-    moreOptions: ['Cancel', 'Edit Account', 'Copy Address'],
+    editAccount: 'Edit Account',
+    copyAddress: 'Copy Address',
     setEmoji: 'Set Emoji',
     editEmoji: 'Edit emoji',
     editButton: '👈 Edit',
