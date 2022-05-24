@@ -33,6 +33,7 @@ const ContactSection = ({ onPress, filterText }) => {
             key={index}
             onPress={() => onPress(contact)}
             style={styles.contactItem}
+            showActions={false}
           />
         ))}
       </>
