@@ -11,8 +11,8 @@ import haptics, { HapticFeedbackTypes } from '@/utils/haptics';
 
 const Touchable = ({
   children,
-  onPress = () => null,
-  onLongPress = () => null,
+  onPress = () => {},
+  onLongPress = () => {},
   hapticType = HapticFeedbackTypes.impactLight,
   scale = scales.small,
   disabled = false,

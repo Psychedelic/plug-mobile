@@ -1,5 +1,5 @@
 import i18next from 'i18next';
-import React from 'react';
+import React, { RefObject } from 'react';
 import { Text, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { Portal } from 'react-native-portalize';
@@ -7,13 +7,28 @@ import { Portal } from 'react-native-portalize';
 import Touchable from '../Touchable';
 import styles from './styles';
 
-function ActionSheet({ modalRef, onClose, title, subtitle, options }) {
+interface Option {
+  id: number;
+  label: string;
+  onPress: () => void;
+  destructive?: boolean;
+}
+
+interface Props {
+  modalRef: RefObject<Modalize>;
+  onClose: () => void;
+  title?: string;
+  subtitle?: string;
+  options: Option[];
+}
+
+function ActionSheet({ modalRef, onClose, title, subtitle, options }: Props) {
   const handleClose = () => {
     modalRef?.current?.close();
     onClose?.();
   };
 
-  const handleItemPress = option => {
+  const handleItemPress = (option: Option) => {
     option?.onPress();
     handleClose();
   };
