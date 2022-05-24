@@ -27,7 +27,6 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
   const [loading, setLoading] = useState(false);
   const actionSheetRef = useRef(null);
   const [actionSheetData, setActionSheetData] = useState(undefined);
-
   const [selectedAccount, setSelectedAccount] = useState(null);
 
   const createEditAccountRef = useRef(null);
@@ -65,12 +64,12 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
       options: [
         {
           id: 1,
-          label: t('accounts.editAccount'),
+          label: t('accounts.moreOptions.edit'),
           onPress: () => onEditAccount(account),
         },
         {
           id: 2,
-          label: t('accounts.copyAddress'),
+          label: t('accounts.moreOptions.copy'),
           onPress: () => Clipboard.setString(account.principal),
         },
       ],
@@ -80,7 +79,6 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
   };
 
   const handleOptionsClose = () => {
-    actionSheetRef?.current?.close();
     setActionSheetData(undefined);
   };
 

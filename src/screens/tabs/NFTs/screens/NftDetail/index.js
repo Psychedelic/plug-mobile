@@ -1,6 +1,6 @@
-import i18next, { t } from 'i18next';
-import React, { useRef, useState } from 'react';
-import { ActionSheetIOS, Linking, Share, Text, View } from 'react-native';
+import { t } from 'i18next';
+import React, { useMemo, useRef, useState } from 'react';
+import { Linking, Share, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import Badge from '@/commonComponents/Badge';
@@ -9,6 +9,7 @@ import Modal from '@/commonComponents/Modal';
 import NftDisplayer from '@/commonComponents/NftDisplayer';
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
+import ActionSheet from '@/components/common/ActionSheet';
 import { FontStyles } from '@/constants/theme';
 import useGetType from '@/hooks/useGetType';
 import Send from '@/screens/flows/Send';
@@ -19,16 +20,15 @@ import { deleteWhiteSpaces } from '@/utils/strings';
 import Section from './components/Section';
 import styles from './styles';
 
-const moreOptions = i18next.t('nftDetail.moreOptions', { returnObjects: true });
-
 const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
   const isCapCrowns = selectedNFT?.collection === 'CAP Crowns';
   const nftName = `${selectedNFT?.collection} #${selectedNFT?.index}`;
+  const actionSheetRef = useRef(null);
   const [type, setType] = useState(null);
   const userCollection = useSelector(state => state.user.collections) || [];
   const [isDownloading, setIsDownloading] = useState(false);
   const selectedCollection = userCollection.find(
-    collection => collection.name === selectedNFT?.collection,
+    collection => collection.name === selectedNFT?.collection
   );
 
   useGetType(selectedNFT?.url, setType);
@@ -59,29 +59,29 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
     });
   };
 
-  const handleMore = () => {
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        title: t('nftDetail.moreTitle'),
-        options: moreOptions,
-        cancelButtonIndex: 0,
-        userInterfaceStyle: 'dark',
-      },
-      buttonIndex => {
-        switch (buttonIndex) {
-          case 1:
-            Linking.openURL(selectedNFT?.url);
-            break;
-          case 2:
-            handleShare();
-            break;
-          case 3:
-            downloadNFT();
-            break;
-        }
-      },
-    );
-  };
+  const moreOptions = useMemo(
+    () => ({
+      title: t('nftDetail.moreTitle'),
+      options: [
+        {
+          id: 1,
+          label: t('nftDetail.moreOptions.view'),
+          onPress: () => Linking.openURL(selectedNFT?.url),
+        },
+        {
+          id: 2,
+          label: t('nftDetail.moreOptions.share'),
+          onPress: handleShare,
+        },
+        {
+          id: 3,
+          label: t('nftDetail.moreOptions.download'),
+          onPress: downloadNFT,
+        },
+      ],
+    }),
+    [selectedNFT]
+  );
 
   return (
     <>
@@ -109,7 +109,7 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
               <Button
                 variant="gray"
                 text={t('common.more')}
-                onPress={handleMore}
+                onPress={actionSheetRef.current?.open}
                 loading={isDownloading}
               />
             </View>
@@ -146,6 +146,11 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
           )}
         </View>
       </Modal>
+      <ActionSheet
+        modalRef={actionSheetRef}
+        options={moreOptions.options}
+        title={moreOptions.title}
+      />
       <Send
         modalRef={sendRef}
         nft={selectedNFT}

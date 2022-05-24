@@ -8,9 +8,14 @@ import Touchable from '../Touchable';
 import styles from './styles';
 
 function ActionSheet({ modalRef, onClose, title, subtitle, options }) {
+  const handleClose = () => {
+    modalRef?.current?.close();
+    onClose?.();
+  };
+
   const handleItemPress = option => {
     option?.onPress();
-    onClose?.();
+    handleClose();
   };
 
   return (
@@ -44,7 +49,7 @@ function ActionSheet({ modalRef, onClose, title, subtitle, options }) {
             ))}
           </View>
           <Touchable
-            onPress={onClose}
+            onPress={handleClose}
             style={[styles.item, styles.cancelContainer]}>
             <Text style={[styles.itemText, styles.cancelText]}>
               {i18next.t('common.cancel')}
