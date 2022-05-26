@@ -1,5 +1,4 @@
 package co.psychedelic.plug;
-import android.util.Log;
 
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.NativeModule;
@@ -25,15 +24,27 @@ public class BLSModule extends ReactContextBaseJavaModule {
         super(context);
     }
 
-    @ReactMethod
-    public String androidVerifyJson(String name) {
-        return verifyJson(name);
-    }
-
+//    Direct method
 //    @ReactMethod
 //    public String androidVerifyJson(String name) {
-//        return verifyJson(name);
+//        return "Matute123";
 //    }
+
+//    Callback method
+//    @ReactMethod
+//    public void androidVerifyJson(String s, Callback callback) {
+//        callback.invoke(verifyJson(s));
+//    }
+
+//    Promise method
+    @ReactMethod
+    public void androidVerifyJson(String s, Promise promise) {
+        try {
+            promise.resolve(verifyJson(s));
+        } catch(Exception e) {
+            promise.reject("Error at BLSModule:androidVerifyJson", e);
+        }
+    }
 
     private static native String verifyJson(String name);
 }

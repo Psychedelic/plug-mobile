@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Image,
-  Keyboard,
-  NativeModules,
-  StatusBar,
-  Text,
-  View,
-} from 'react-native';
+import { Image, Keyboard, StatusBar, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Plug from '@/assets/icons/il_white_plug.png';

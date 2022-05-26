@@ -1332,7 +1332,6 @@ pub mod android {
                     }
                 };
                 let json = json!({ "certified_result": response }).to_string();
-                // return env.new_string(json).unwrap().into_inner()
                 return env.new_string(json).unwrap().into_inner();
             }
             Err(e) => {
