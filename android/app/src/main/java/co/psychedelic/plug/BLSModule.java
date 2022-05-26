@@ -24,19 +24,6 @@ public class BLSModule extends ReactContextBaseJavaModule {
         super(context);
     }
 
-//    Direct method
-//    @ReactMethod
-//    public String androidVerifyJson(String name) {
-//        return "Matute123";
-//    }
-
-//    Callback method
-//    @ReactMethod
-//    public void androidVerifyJson(String s, Callback callback) {
-//        callback.invoke(verifyJson(s));
-//    }
-
-//    Promise method
     @ReactMethod
     public void androidVerifyJson(String s, Promise promise) {
         try {

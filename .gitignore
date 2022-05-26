@@ -61,6 +61,7 @@ buck-out/
 # IC
 /rust/.cargo/mobile_app/target
 /NDK
+rust/.cargo/config.toml
 
 # Env
 /*.env
