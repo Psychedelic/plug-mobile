@@ -27,7 +27,6 @@ function Login({ route, navigation }) {
   const { usingBiometrics, biometricsAvailable } = useSelector(
     state => state.user
   );
-
   const [error, setError] = useState(false);
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
