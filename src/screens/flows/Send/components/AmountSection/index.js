@@ -93,11 +93,11 @@ const AmountSection = ({
         value={tokenAmount}
         onChange={handleSetTokenAmount}
         maxAmount={availableAmount}
-        customPlaceholder="0.00000000"
         selected={selectedInput === selectedToken.symbol}
         setSelected={setSelectedInput}
         symbol={selectedToken.symbol}
-        customStyle={styles.firstInput}
+        containerStyle={styles.firstInputContainer}
+        inputStyle={styles.firstInput}
       />
       <AmountInput
         value={usdAmount}
@@ -105,7 +105,7 @@ const AmountSection = ({
         selected={selectedInput === 'USD'}
         setSelected={setSelectedInput}
         symbol="USD"
-        customStyle={styles.secondInput}
+        containerStyle={styles.secondInputContainer}
       />
       <RainbowButton
         text={getButtonText()}

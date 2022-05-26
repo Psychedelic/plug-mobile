@@ -18,7 +18,8 @@ const AmountInput = ({
   symbol,
   maxAmount,
   autoFocus,
-  customStyle,
+  containerStyle,
+  inputStyle,
 }) => {
   const inputRef = useRef();
   const [isFocused, setIsFocused] = useState(false);
@@ -44,15 +45,15 @@ const AmountInput = ({
     <Touchable scale={animationScales.small} onPress={onPress}>
       {!!isFocused && (
         <LinearGradient
-          style={[styles.focusedGradient, customStyle]}
+          style={[styles.focusedGradient, containerStyle]}
           {...Rainbow}
         />
       )}
-      <View style={[styles.container, customStyle]}>
+      <View style={[styles.container, containerStyle]}>
         <TextInput
           ref={inputRef}
           underlineColorAndroid="transparent"
-          style={styles.textInput}
+          style={[styles.textInput, inputStyle]}
           placeholderTextColor="#373946"
           onChangeText={onChange}
           value={value}
@@ -62,7 +63,7 @@ const AmountInput = ({
           blurOnSubmit={false}
           autoFocus={autoFocus}
           keyboardAppearance="dark"
-          selectionColor={Colors.White.Primary}
+          selectionColor={Colors.White.Secondary}
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
         />
