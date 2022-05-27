@@ -6,7 +6,7 @@ import { Image, Text, View } from 'react-native';
 import KeyImg from '@/assets/icons/key.png';
 import ListItem from '@/commonComponents/ListItem';
 import Touchable from '@/commonComponents/Touchable';
-import { TestIds } from '@/constants/testIDs';
+import { TestIds } from '@/constants/testIds';
 
 import styles from './styles';
 

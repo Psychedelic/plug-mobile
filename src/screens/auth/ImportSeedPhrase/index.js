@@ -9,7 +9,7 @@ import Header from '@/commonComponents/Header';
 import TextInput from '@/commonComponents/TextInput';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import KeyboardScrollView from '@/components/common/KeyboardScrollView';
-import { TestIds } from '@/constants/testIDs';
+import { TestIds } from '@/constants/testIds';
 import useKeychain from '@/hooks/useKeychain';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';

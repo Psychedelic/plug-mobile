@@ -5,7 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import TextInput from '@/commonComponents/TextInput';
 import Touchable from '@/commonComponents/Touchable';
-import { TestIds } from '@/constants/testIDs';
+import { TestIds } from '@/constants/testIds';
 import { Rainbow } from '@/constants/theme';
 import Icon from '@/icons/index';
 import animationScales from '@/utils/animationScales';
