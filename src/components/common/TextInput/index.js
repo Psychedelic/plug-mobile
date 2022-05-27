@@ -24,6 +24,7 @@ const TextInput = ({
   disabled,
   maxLenght,
   saveContactRef,
+  testID,
   ...props
 }) => {
   const {
@@ -83,6 +84,7 @@ const TextInput = ({
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
           keyboardAppearance="dark"
+          testID={testID}
           {...props}
         />
         {saveContactRef && (
