@@ -1,8 +1,9 @@
-export const TEST_IDS = {
-  //Common
-  PASSWORD_INPUT: 'common:passwordInput',
-  SEED_PHRASE_VIEW: 'common:seedPhraseView',
-
-  //ImportSeedPhrase
-  IMPORT_PHRASE_INPUT: 'importSeedPhrase:phraseInput',
+export const TestIds = {
+  COMMON: {
+    PASSWORD_INPUT: 'common:passwordInput',
+    SEED_PHRASE_VIEW: 'common:seedPhraseView',
+  },
+  IMPORT_SEED_PHRASE: {
+    PHRASE_INPUT: 'importSeedPhrase:phraseInput',
+  },
 };

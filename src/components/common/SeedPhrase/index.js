@@ -6,7 +6,7 @@ import { Image, Text, View } from 'react-native';
 import KeyImg from '@/assets/icons/key.png';
 import ListItem from '@/commonComponents/ListItem';
 import Touchable from '@/commonComponents/Touchable';
-import { TEST_IDS } from '@/constants/testIDs';
+import { TestIds } from '@/constants/testIDs';
 
 import styles from './styles';
 
@@ -22,7 +22,7 @@ const SeedPhrase = ({ mnemonic, onReveal = () => null }) => {
     <View
       style={styles.container}
       onPress={revealSeedPhrase}
-      testID={TEST_IDS.SEED_PHRASE_VIEW}>
+      testID={TestIds.COMMON.SEED_PHRASE_VIEW}>
       {mnemonic.map((word, i) => (
         <View style={styles.item} key={word}>
           <ListItem number={i + 1} text={word} />

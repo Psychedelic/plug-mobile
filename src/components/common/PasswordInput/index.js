@@ -5,7 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import TextInput from '@/commonComponents/TextInput';
 import Touchable from '@/commonComponents/Touchable';
-import { TEST_IDS } from '@/constants/testIDs';
+import { TestIds } from '@/constants/testIDs';
 import { Rainbow } from '@/constants/theme';
 import Icon from '@/icons/index';
 import animationScales from '@/utils/animationScales';
@@ -81,7 +81,7 @@ function PasswordInput({
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
           onSubmitEditing={handleOnSubmit}
-          testID={TEST_IDS.PASSWORD_INPUT}
+          testID={TestIds.COMMON.PASSWORD_INPUT}
           {...inputProps}
         />
         <Touchable
