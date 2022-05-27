@@ -59,8 +59,8 @@ buck-out/
 /ios/Pods/
 
 # IC
-/rust/.cargo/mobile_app/target
-/NDK
+rust/.cargo/mobile_app/target
+NDK
 rust/.cargo/config.toml
 
 # Env
@@ -68,6 +68,7 @@ rust/.cargo/config.toml
 
 # Android
 android/*.hprof
+android/app/src/main/jniLibs
 
 # react-native-config codegen
 ios/envfile
