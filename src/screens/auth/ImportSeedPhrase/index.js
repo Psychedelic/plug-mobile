@@ -9,6 +9,7 @@ import Header from '@/commonComponents/Header';
 import TextInput from '@/commonComponents/TextInput';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import KeyboardScrollView from '@/components/common/KeyboardScrollView';
+import { TEST_IDS } from '@/constants/testIDs';
 import useKeychain from '@/hooks/useKeychain';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
@@ -95,6 +96,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
             onChangeText={onChangeText}
             placeholder={t('importSeedPhrase.secretPhrase')}
             customStyle={styles.input}
+            testID={TEST_IDS.IMPORT_PHRASE_INPUT}
           />
           {error && (
             <Text style={styles.errorText}>
