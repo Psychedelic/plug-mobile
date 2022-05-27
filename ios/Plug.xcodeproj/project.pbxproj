@@ -44,7 +44,7 @@
 		0AEEB14027C918D3005F12AA /* RCTSigningBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCTSigningBridge.m; sourceTree = "<group>"; };
 		0AEEB14227C918E9005F12AA /* RCTSigningBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTSigningBridge.h; sourceTree = "<group>"; };
 		0AEEB14527C920A0005F12AA /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
-		0AEEB14B27C92BF3005F12AA /* ic_agent_lib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = ic_agent_lib.a; path = ../cargo/target/universal/release/ic_agent_lib.a; sourceTree = "<group>"; };
+		0AEEB14B27C92BF3005F12AA /* ic_agent_lib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = ic_agent_lib.a; path = ../rust/.cargo/mobile_app/target/universal/release/ic_agent_lib.a; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Plug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Plug/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Plug/AppDelegate.m; sourceTree = "<group>"; };
@@ -568,7 +568,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
 					"$(inherited)",
-					"$(PROJECT_DIR)/cargo/target/universal/release",
+					"$(PROJECT_DIR)/rust/.cargo/mobile_app/target/universal/release",
 				);
 				MARKETING_VERSION = 0.1.2;
 				OTHER_LDFLAGS = (
@@ -610,7 +610,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(SDKROOT)/usr/lib/swift",
 					"$(inherited)",
-					"$(PROJECT_DIR)/rust_lib/cargo/target/universal/release",
+					"$(PROJECT_DIR)/rust/.cargo/mobile_app/target/universal/release",
 				);
 				MARKETING_VERSION = 0.1.2;
 				OTHER_LDFLAGS = (
