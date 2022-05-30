@@ -18,4 +18,7 @@ export default StyleSheet.create({
     marginBottom: 30,
     marginTop: 10,
   },
+  accountItem: {
+    marginBottom: 20,
+  },
 });

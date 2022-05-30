@@ -46,10 +46,10 @@ function Send({ modalRef, nft, token, onSuccess }) {
   const { currentWallet } = useSelector(state => state.keyring);
   const {
     assets,
+    contacts,
     transaction,
     collections,
     usingBiometrics,
-    contacts,
     transactionsLoading,
   } = useSelector(state => state.user);
 
@@ -76,7 +76,11 @@ function Send({ modalRef, nft, token, onSuccess }) {
 
   useEffect(() => {
     const savedContact = contacts?.find(c => c.id === address);
-    if (savedContact) {
+    const isMySelf =
+      address === currentWallet?.principal ||
+      address === currentWallet?.accountId;
+
+    if (savedContact && !isMySelf) {
       setSelectedContact(savedContact);
     }
   }, [contacts, address]);

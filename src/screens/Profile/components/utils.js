@@ -1,7 +1,8 @@
 import { Text } from 'react-native';
 import React from 'react';
 
-import shortAddress from '../../../helpers/short-address';
+import shortAddress from '@helpers/shortAddress';
+
 import { ACTIVITY_STATUS } from './constants';
 
 export const parseImageName = name => name.replace('.png', '').toLowerCase();
@@ -10,11 +11,17 @@ const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 export const getTitle = (type, symbol, swapData, plug) => {
   switch (type) {
     case 'SWAP':
-      return `Swap ${symbol} for ${swapData?.currency.name}`;
+      return swapData?.currency.name
+        ? `Swap ${symbol} for ${swapData?.currency.name}`
+        : 'Swap';
     case 'PLUG':
       return `Plugged into ${plug.name}`;
     default:
-      return `${capitalize(type?.toLowerCase())} ${symbol ?? ''}`;
+      if (type.includes('Liquidity')) {
+        return type;
+      } else {
+        return `${capitalize(type?.toLowerCase())} ${symbol ?? ''}`;
+      }
   }
 };
 

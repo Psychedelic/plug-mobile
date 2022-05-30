@@ -2,11 +2,12 @@ import { View, Text } from 'react-native';
 import moment from 'moment';
 import React from 'react';
 
-import TokenFormat from '../../../../components/number/TokenFormat';
-import UsdFormat from '../../../../components/number/UsdFormat';
+import UsdFormat from '@components/number/UsdFormat';
+import { formatToMaxDecimals } from '@utils/number';
+import shortAddress from '@helpers/shortAddress';
+import { FontStyles } from '@constants/theme';
+
 import { getStatus, getSubtitle, getTitle } from '../utils';
-import shortAddress from '../../../../helpers/short-address';
-import { FontStyles } from '../../../../constants/theme';
 import ActivityIcon from '../ActivityIcon';
 import styles from './styles';
 
@@ -26,9 +27,13 @@ const ActivityItem = ({
   details,
   canisterInfo,
 }) => {
+  const isSonic = !!details?.sonicData;
+  const isSwap = type === 'SWAP';
+  const isLiquidity = type.includes('Liquidity');
+
   return (
     <View style={styles.container}>
-      <ActivityIcon image={plug?.image || image} type={type} />
+      <ActivityIcon image={image} type={type} />
       <View style={styles.leftContainer}>
         <Text style={FontStyles.Normal}>
           {getTitle(type, symbol, swapData, plug)}
@@ -40,7 +45,7 @@ const ActivityItem = ({
         </Text>
       </View>
       <View style={styles.rightContainer}>
-        {details?.tokenId ? (
+        {details?.tokenId && !isSonic ? (
           <>
             <Text style={FontStyles.Normal}>
               {details?.tokenId?.length > 5
@@ -54,14 +59,19 @@ const ActivityItem = ({
               {canisterInfo?.name || canisterId}
             </Text>
           </>
+        ) : isSwap || isLiquidity ? (
+          <Text style={FontStyles.SmallGray}>Coming Soon!</Text>
         ) : (
           <>
-            <TokenFormat
-              value={amount}
-              token={symbol}
-              style={FontStyles.Normal}
-            />
-            <UsdFormat value={Number(value)} style={FontStyles.SmallGray} />
+            {amount && (
+              <Text style={FontStyles.Normal}>{`${formatToMaxDecimals(
+                Number(amount),
+                8,
+              )} ${symbol}`}</Text>
+            )}
+            {value && (
+              <UsdFormat value={Number(value)} style={FontStyles.SmallGray} />
+            )}
           </>
         )}
       </View>

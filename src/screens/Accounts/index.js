@@ -1,22 +1,22 @@
 import { ActionSheetIOS, ActivityIndicator, View, Text } from 'react-native';
+import React, { useRef, useState, useEffect } from 'react';
 import Clipboard from '@react-native-community/clipboard';
 import { useDispatch, useSelector } from 'react-redux';
-import React, { useRef, useState } from 'react';
 
-import { reset, setCurrentPrincipal } from '../../redux/slices/keyring';
-import CreateEditAccount from '../../modals/CreateEditAccount';
-import Touchable from '../../components/animations/Touchable';
-import AccountItem from '../../components/common/AccountItem';
-import shortAddress from '../../helpers/short-address';
-import { getICPPrice } from '../../redux/slices/icp';
-import Header from '../../components/common/Header';
-import { FontStyles } from '../../constants/theme';
-import { getNFTs } from '../../redux/slices/user';
-import Row from '../../components/layout/Row';
-import Modal from '../../components/modal';
-import Icon from '../../components/icons';
+import { reset, setCurrentPrincipal } from '@redux/slices/keyring';
+import CreateEditAccount from '@modals/CreateEditAccount';
+import Touchable from '@components/animations/Touchable';
+import CommonItem from '@commonComponents/CommonItem';
+import shortAddress from '@helpers/shortAddress';
+import { getICPPrice } from '@redux/slices/icp';
+import Header from '@commonComponents/Header';
+import { FontStyles } from '@constants/theme';
+import { getNFTs } from '@redux/slices/user';
+import Row from '@components/layout/Row';
+import Modal from '@components/modal';
+import Icon from '@components/icons';
+
 import styles from './styles';
-import { useEffect } from 'react';
 
 const Accounts = ({ modalRef, onClose, ...props }) => {
   const { wallets, currentWallet } = useSelector(state => state.keyring);
@@ -78,17 +78,20 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
 
   const renderAccountItem = (account, index) => {
     const handleOnPress = () => {
-      if (currentWallet.principal !== account.principal) {
+      if (currentWallet?.principal !== account.principal) {
         onChangeAccount(account?.walletNumber);
       }
     };
 
     return (
-      <AccountItem
+      <CommonItem
         key={index}
-        account={account}
+        name={account.name}
+        image={account.icon}
+        id={account.principal}
         onPress={handleOnPress}
-        onMenu={() => onLongPress(account)}
+        style={styles.accountItem}
+        onLongPress={() => onLongPress(account)}
       />
     );
   };

@@ -2,13 +2,11 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import Touchable from '../../../components/animations/Touchable';
-import { Colors } from '../../../constants/theme';
-import Icon from '../../../components/icons';
-import {
-  setScrollOnProfile,
-  setScrollOnNFTs,
-} from '../../../redux/slices/user';
+import { setScrollOnProfile, setScrollOnNFTs } from '@redux/slices/user';
+import Touchable from '@components/animations/Touchable';
+import { Colors } from '@constants/theme';
+import Icon from '@components/icons';
+
 import styles from './styles';
 
 const BottomTabs = ({ state, navigation }) => {
@@ -23,10 +21,10 @@ const BottomTabs = ({ state, navigation }) => {
   return (
     <View style={styles.root}>
       {state.routes.map((route, index) => {
-        const { isProfile, isTokens, isFocused } = getTabStatus(index);
+        const { isProfile, isTokens, isFocused, isNFTs } = getTabStatus(index);
         const iconName = isProfile ? 'profile' : isTokens ? 'tokens' : 'nfts';
         const iconSize = '20';
-        const label = route.name;
+        const label = isNFTs ? 'Collectibles' : route.name;
 
         const onPress = () => {
           const event = navigation.emit({

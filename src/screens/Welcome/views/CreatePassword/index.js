@@ -1,29 +1,45 @@
 import { Text, View, Image, Switch } from 'react-native';
-import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { ErrorMessage } from '@hookform/error-message';
+import { useForm, Controller } from 'react-hook-form';
+import React, { useState, useEffect } from 'react';
 
-import RainbowButton from '../../../../components/buttons/RainbowButton';
-import PasswordInput from '../../../../components/common/PasswordInput';
-import KeyboardHider from '../../../../components/common/KeyboardHider';
-import PlugLogo from '../../../../assets/icons/plug-logo-full.png';
-import { createWallet } from '../../../../redux/slices/keyring';
-import { isValidPassword } from '../../../../constants/general';
-import Container from '../../../../components/common/Container';
-import Header from '../../../../components/common/Header';
-import useKeychain from '../../../../hooks/useKeychain';
-import Back from '../../../../components/common/Back';
-import Routes from '../../../../navigation/Routes';
+import RainbowButton from '@components/buttons/RainbowButton';
+import PasswordInput from '@commonComponents/PasswordInput';
+import KeyboardHider from '@commonComponents/KeyboardHider';
+import PlugLogo from '@assets/icons/plug-logo-full.png';
+import { createWallet } from '@redux/slices/keyring';
+import Container from '@commonComponents/Container';
+import Header from '@commonComponents/Header';
+import useKeychain from '@hooks/useKeychain';
+import Back from '@commonComponents/Back';
+import Routes from '@navigation/Routes';
+
+import {
+  createPasswordRules,
+  createPasswordFields,
+  MIN_LENGTH_MESSAGE,
+} from './constants';
 import styles from './styles';
 
 const CreatePassword = ({ route, navigation }) => {
   const { isSensorAvailable, saveBiometrics } = useKeychain();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+  } = useForm({
+    defaultValues: { password: '' },
+    mode: 'onChange',
+    criteriaMode: 'all',
+  });
   const dispatch = useDispatch();
 
   const { icpPrice } = useSelector(state => state.icp);
   const flow = route.params?.flow;
   const { goBack } = navigation;
   const [loading, setLoading] = useState(false);
-  const [password, setPassword] = useState(null);
   const [biometrics, setBiometrics] = useState(false);
   const [biometryAvailable, setBiometryAvailable] = useState(false);
 
@@ -35,7 +51,8 @@ const CreatePassword = ({ route, navigation }) => {
     });
   }, []);
 
-  const handleCreate = async () => {
+  const handleCreate = async data => {
+    const password = data?.password;
     setLoading(true);
     if (flow === 'import') {
       const shouldSaveBiometrics = biometryAvailable && biometrics;
@@ -81,12 +98,41 @@ const CreatePassword = ({ route, navigation }) => {
           <Text style={styles.subtitle}>
             Please create a secure password that you will remember.
           </Text>
-          <PasswordInput
-            password={password}
-            onChange={setPassword}
-            customStyle={styles.passwordInput}
+          <Controller
+            name={createPasswordFields.password}
+            control={control}
+            rules={createPasswordRules}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <PasswordInput
+                maxLength={24}
+                onBlur={onBlur}
+                password={value}
+                onChange={onChange}
+                customStyle={styles.passwordInput}
+              />
+            )}
           />
-          <Text style={styles.help}>Must be at least 12 characters</Text>
+          <ErrorMessage
+            errors={errors}
+            name={createPasswordFields.password}
+            render={({ message, messages }) => {
+              const choosenMessage = messages?.pattern
+                ? messages?.pattern
+                : message;
+              const warningMessage =
+                messages?.minLength && choosenMessage === MIN_LENGTH_MESSAGE;
+
+              return (
+                <Text
+                  style={[
+                    styles.errorText,
+                    warningMessage && styles.warningText,
+                  ]}>
+                  {choosenMessage}
+                </Text>
+              );
+            }}
+          />
           {biometryAvailable && (
             <View style={styles.switchContainer}>
               <Text style={styles.faceId}>Sign in with biometrics?</Text>
@@ -96,9 +142,9 @@ const CreatePassword = ({ route, navigation }) => {
           <RainbowButton
             text="Continue"
             loading={loading}
-            onPress={handleCreate}
+            onPress={handleSubmit(handleCreate)}
             buttonStyle={styles.rainbowButton}
-            disabled={isValidPassword(password) || loading}
+            disabled={loading || !!errors.password || !getValues().password}
           />
         </View>
       </KeyboardHider>

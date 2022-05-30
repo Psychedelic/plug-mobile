@@ -1,16 +1,18 @@
 import React, { Fragment, useRef, useState } from 'react';
 import { Text, View, ActionSheetIOS } from 'react-native';
+import Clipboard from '@react-native-community/clipboard';
 
-import ContactItem from '../../components/common/ContactItem';
-import Touchable from '../../components/animations/Touchable';
+import Touchable from '@components/animations/Touchable';
 import AddEditContact from './components/AddEditContact';
-import Header from '../../components/common/Header';
-import Column from '../../components/layout/Column';
-import { FontStyles } from '../../constants/theme';
-import useContacts from '../../hooks/useContacts';
-import Row from '../../components/layout/Row';
-import Modal from '../../components/modal';
-import Icon from '../../components/icons';
+import CommonItem from '@commonComponents/CommonItem';
+import Column from '@components/layout/Column';
+import { FontStyles } from '@constants/theme';
+import Header from '@commonComponents/Header';
+import useContacts from '@hooks/useContacts';
+import Row from '@components/layout/Row';
+import Modal from '@components/modal';
+import Icon from '@components/icons';
+
 import styles from './styles';
 
 const Contacts = ({ modalRef }) => {
@@ -35,9 +37,9 @@ const Contacts = ({ modalRef }) => {
   const onLongPress = contact => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: ['Cancel', 'Edit Contact', 'Delete Contact'],
+        options: ['Cancel', 'Edit Contact', 'Copy Address', 'Delete Contact'],
         cancelButtonIndex: 0,
-        destructiveButtonIndex: 2,
+        destructiveButtonIndex: 3,
       },
       buttonIndex => {
         switch (buttonIndex) {
@@ -45,6 +47,9 @@ const Contacts = ({ modalRef }) => {
             onEditContact(contact);
             break;
           case 2:
+            Clipboard.setString(contact.id);
+            break;
+          case 3:
             onDelete(contact);
             break;
         }
@@ -74,8 +79,10 @@ const Contacts = ({ modalRef }) => {
                     <View
                       style={{ marginBottom: 20 }}
                       key={`${contact.id}_${contact.name}`}>
-                      <ContactItem
-                        contact={contact}
+                      <CommonItem
+                        name={contact.name}
+                        id={contact.id}
+                        image={contact.image}
                         onLongPress={() => onLongPress(contact)}
                       />
                     </View>
@@ -87,6 +94,7 @@ const Contacts = ({ modalRef }) => {
       <AddEditContact
         modalRef={addEditContactRef}
         contact={selectedContact}
+        contactsRef={modalRef}
         onClose={() => modalRef.current?.open()}
       />
     </>

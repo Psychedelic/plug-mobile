@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  container: {
+  root: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     width: '100%',

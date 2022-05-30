@@ -1,48 +1,64 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Text, Keyboard } from 'react-native';
 import { useSelector } from 'react-redux';
 import emojis from 'emoji-datasource';
 
-import { charFromEmojiObject } from '../../../../components/common/EmojiSelector/utils';
-import RainbowButton from '../../../../components/buttons/RainbowButton';
-import TextInput from '../../../../components/common/TextInput';
-import { validatePrincipalId } from '../../../../helpers/ids';
-import Header from '../../../../components/common/Header';
-import { FontStyles } from '../../../../constants/theme';
-import useContacts from '../../../../hooks/useContacts';
-import Modal from '../../../../components/modal';
+import { charFromEmojiObject } from '@commonComponents/EmojiSelector/utils';
+import EmojiSelector from '@modals/EmojiSelector';
+import RainbowButton from '@components/buttons/RainbowButton';
+import TextInput from '@commonComponents/TextInput';
+import { validatePrincipalId } from '@helpers/ids';
+import UserIcon from '@commonComponents/UserIcon';
+import Header from '@commonComponents/Header';
+import { FontStyles } from '@constants/theme';
+import useContacts from '@hooks/useContacts';
+import Modal from '@components/modal';
+
 import styles from './styles';
 
-const AddEditContact = ({ modalRef, contact, onClose }) => {
+const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
   const { contacts } = useSelector(state => state.user);
   const { onCreate, onEdit } = useContacts();
-  const isEditContact = !!contact;
+  const editEmojiRef = useRef(null);
 
-  const [name, setName] = useState('');
   const [id, setId] = useState('');
+  const [name, setName] = useState('');
+  const [emoji, setEmoji] = useState('');
+  const [error, setError] = useState(false);
 
+  const isEditContact = !!contact;
   const title = `${isEditContact ? 'Edit' : 'Add'} Contact`;
   const validId = validatePrincipalId(id);
-  const savedContact = isEditContact ? false : contacts.find(c => c.id === id);
+  const savedContact = contacts.find(c => c.id === id);
+  const savedContactName = contacts.find(c => c.name === name);
+  const nameError = savedContactName && contact?.name !== name;
+  const idError = savedContact && contact?.id !== id;
 
   const handleSubmit = () => {
-    const randomEmoji = charFromEmojiObject(
-      emojis[Math.floor(Math.random() * emojis.length)],
-    );
-    isEditContact
-      ? onEdit({ contact, newContact: { id, name } })
-      : onCreate({
-          id,
-          name,
-          image: randomEmoji,
-        });
+    if (idError || nameError) {
+      setError(true);
+    } else {
+      setError(false);
+      const randomEmoji = charFromEmojiObject(
+        emojis[Math.floor(Math.random() * emojis.length)],
+      );
+      isEditContact
+        ? onEdit({ contact, newContact: { id, name, image: emoji } })
+        : onCreate({
+            id,
+            name,
+            image: randomEmoji,
+          });
 
-    modalRef.current?.close();
+      modalRef.current?.close();
+    }
   };
 
   const clearState = () => {
     setName('');
     setId('');
+    setEmoji('');
+    setError(false);
   };
 
   useEffect(() => {
@@ -54,37 +70,87 @@ const AddEditContact = ({ modalRef, contact, onClose }) => {
     }
   }, [contact]);
 
-  const isButtonDisabled = () => !name || !id || !validId || !!savedContact;
+  const isButtonDisabled = () => !name || !id || !validId;
 
   const handleClose = () => {
     onClose();
+    setError(false);
     if (!contact) {
       clearState();
     }
   };
 
+  const onEditEmoji = () => {
+    Keyboard.dismiss();
+    editEmojiRef?.current.open();
+  };
+
+  const closeModal = () => {
+    setError(false);
+    modalRef?.current.close();
+    contactsRef?.current.close();
+  };
+
+  const handleBack = () => {
+    setError(false);
+    modalRef?.current.close();
+  };
+
+  const handleOnChangeName = text => {
+    setError(false);
+    setName(text);
+  };
+
+  const handleOnChangeId = text => {
+    setError(false);
+    setId(text);
+  };
+
   return (
     <Modal modalRef={modalRef} adjustToContentHeight onClose={handleClose}>
-      <Header center={<Text style={FontStyles.Subtitle2}>{title}</Text>} />
+      <Header
+        right={
+          <Text style={[FontStyles.Normal, styles.valid]} onPress={closeModal}>
+            Close
+          </Text>
+        }
+        left={
+          <Text style={[FontStyles.Normal, styles.valid]} onPress={handleBack}>
+            Back
+          </Text>
+        }
+        center={<Text style={FontStyles.Subtitle2}>{title}</Text>}
+      />
       <View style={styles.container}>
+        {isEditContact && (
+          <View style={styles.emojiContainer}>
+            <UserIcon
+              icon={emoji || contact?.image}
+              size="extralarge"
+              onPress={onEditEmoji}
+            />
+          </View>
+        )}
         <TextInput
           autoFocus
           value={name}
           variant="text"
           maxLenght={22}
           placeholder="Name"
-          onChangeText={setName}
+          onChangeText={handleOnChangeName}
         />
         <TextInput
           value={id}
           variant="text"
-          onChangeText={setId}
+          onChangeText={handleOnChangeId}
           placeholder="Principal ID"
           customStyle={styles.marginedContainer}
         />
-        {savedContact && (
+        {error && (
           <Text style={styles.savedContactText}>
-            {`Contact already saved as ${savedContact?.name}!`}
+            {nameError
+              ? 'Name is already taken!'
+              : `Contact already saved as ${savedContact?.name}!`}
           </Text>
         )}
         <RainbowButton
@@ -94,6 +160,11 @@ const AddEditContact = ({ modalRef, contact, onClose }) => {
           disabled={isButtonDisabled()}
         />
       </View>
+      <EmojiSelector
+        modalRef={editEmojiRef}
+        onSave={setEmoji}
+        emoji={emoji || contact?.image}
+      />
     </Modal>
   );
 };

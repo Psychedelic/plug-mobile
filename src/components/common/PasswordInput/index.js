@@ -18,6 +18,9 @@ function PasswordInput({
   placeholder = 'Enter Password',
   autoFocus,
   disabled,
+  maxLength,
+  inputProps,
+  onBlur,
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
@@ -28,6 +31,7 @@ function PasswordInput({
 
   const handleOnBlur = () => {
     setIsFocused(false);
+    onBlur?.();
   };
 
   const toggleShowPassowrd = () => {
@@ -59,12 +63,14 @@ function PasswordInput({
           value={password}
           autoFocus={autoFocus}
           onChangeText={onChange}
+          maxLength={maxLength}
           placeholder={placeholder}
           disabled={disabled}
           customStyle={[styles.input, inputStyle]}
           variant={`${showPassword ? 'text' : 'password'}`}
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
+          {...inputProps}
         />
         <Touchable
           disabled={disabled}

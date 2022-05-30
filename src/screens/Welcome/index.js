@@ -1,14 +1,15 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { View, Text, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
-import RainbowButton from '../../components/buttons/RainbowButton';
-import Container from '../../components/common/Container';
-import Plug from '../../assets/icons/il_white_plug.png';
-import Button from '../../components/buttons/Button';
-import { FontStyles } from '../../constants/theme';
-import Routes from '../../navigation/Routes';
+import { useNavigation } from '@react-navigation/native';
+import RainbowButton from '@components/buttons/RainbowButton';
+import Container from '@components/common/Container';
+import Plug from '@assets/icons/il_white_plug.png';
+import Button from '@components/buttons/Button';
+import { FontStyles } from '@constants/theme';
+import Routes from '@navigation/Routes';
+
 import styles from './styles';
 
 function Welcome() {
@@ -21,7 +22,7 @@ function Welcome() {
     });
 
   const handleBack = () => {
-    navigation.navigate(Routes.LOGIN_SCREEN);
+    navigation.navigate(Routes.LOGIN_SCREEN, { manualLock: true });
   };
 
   const title = isInitialized ? 'Choose an option' : 'Welcome to Plug';
