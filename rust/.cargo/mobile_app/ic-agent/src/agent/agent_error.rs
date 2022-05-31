@@ -1,6 +1,5 @@
 use crate::{agent::status::Status, hash_tree::Label, RequestIdError};
 use leb128::read;
-use serde::Serialize;
 use std::{
     fmt::{Debug, Display, Formatter},
     str::Utf8Error,

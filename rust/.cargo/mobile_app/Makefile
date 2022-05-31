@@ -10,6 +10,7 @@ $(ARCHS_IOS): %:
 	cargo build --target $@ --release
 .PHONY: $(ARCHS_ANDROID)
 $(ARCHS_ANDROID): %:
+	sh set-env.sh $@; \
 	cargo build --target $@ --release
 $(LIB): $(ARCHS_IOS)
 	lipo -create -output $@ $(foreach arch,$(ARCHS_IOS),$(wildcard target/$(arch)/release/$(LIB)))
