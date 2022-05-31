@@ -6,6 +6,8 @@
     "rename-build": "chmod +x ./rename-ic-agent.sh && ./rename-ic-agent.sh",
     "ic:build.ios": "cd rust/.cargo/mobile_app/ic-agent && cargo lipo --release && npm run rename-build",
     "ic:build.android": "cd rust/.cargo/mobile_app && make android",
+    "patch:ios": "sh copyPatches.sh ios && rm -rf node_modules && yarn install",
+    "patch:android": "sh copyPatches.sh android && rm -rf node_modules && yarn install",
     "ios": "yarn run ic:build.ios && react-native run-ios --scheme plug-dev",
     "ios:stage": "yarn run ic:build.ios && react-native run-ios --scheme plug-stage --configuration Debug",
     "ios:production": "yarn run ic:build.ios && react-native run-ios --scheme plug-prod --configuration Debug",
