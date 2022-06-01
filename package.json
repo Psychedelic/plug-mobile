@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "rename-build": "chmod +x ./rename-ic-agent.sh && ./rename-ic-agent.sh",
-    "ic:build.ios": "cd rust/.cargo/mobile_app/ic-agent && cargo lipo --release && npm run rename-build",
+    "ic:build.ios": "cd rust/.cargo/mobile_app && make ios",
     "ic:build.android": "cd rust/.cargo/mobile_app && make android",
     "patch:ios": "sh copyPatches.sh ios && rm -rf node_modules && yarn install",
     "patch:android": "sh copyPatches.sh android && rm -rf node_modules && yarn install",

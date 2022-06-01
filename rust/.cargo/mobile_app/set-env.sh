@@ -2,6 +2,9 @@
 echo "Target: " $@
 PROJ_DIR=$(builtin cd ..; builtin cd .. ; builtin cd .. ; pwd)
 
+# Uncomment this line to enable full rust logs
+# export RUST_BACKTRACE=full
+
 if [ $@ = 'aarch64-apple-ios' ]; then
   export TARGET_CC=
 elif [ $@ = 'i386-apple-ios' ]; then
