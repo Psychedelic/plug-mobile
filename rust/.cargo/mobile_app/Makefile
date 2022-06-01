@@ -1,16 +1,12 @@
-ARCHS_IOS = i386-apple-ios x86_64-apple-ios armv7-apple-ios armv7s-apple-ios aarch64-apple-ios
+ARCHS_IOS = aarch64-apple-ios i386-apple-ios
 ARCHS_ANDROID = aarch64-linux-android armv7-linux-androideabi i686-linux-android
-LIB=libsigner.a
 all: ios android
-ios: $(LIB)
+ios: $(ARCHS_IOS)
 android: $(ARCHS_ANDROID)
-	sh copy_android.sh
+	sh copy-android.sh
 .PHONY: $(ARCHS_IOS)
 $(ARCHS_IOS): %:
-	cargo build --target $@ --release
+	source set-env.sh $@ && cargo lipo --release && npm run rename-build
 .PHONY: $(ARCHS_ANDROID)
 $(ARCHS_ANDROID): %:
-	sh set-env.sh $@; \
-	cargo build --target $@ --release
-$(LIB): $(ARCHS_IOS)
-	lipo -create -output $@ $(foreach arch,$(ARCHS_IOS),$(wildcard target/$(arch)/release/$(LIB)))
+	source set-env.sh $@ && cargo build --target $@ --release
