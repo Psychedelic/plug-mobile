@@ -1,4 +1,4 @@
-ARCHS_IOS = aarch64-apple-ios i386-apple-ios
+ARCHS_IOS = aarch64-apple-ios
 ARCHS_ANDROID = aarch64-linux-android armv7-linux-androideabi i686-linux-android
 all: ios android
 ios: $(ARCHS_IOS)
