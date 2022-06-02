@@ -8,7 +8,7 @@ function TokenFormat({ value, token, style }) {
       value={value}
       displayType="text"
       thousandSeparator=","
-      decimalScale={8}
+      decimalScale={value > 0 ? 8 : 2}
       suffix={` ${token}`}
       renderText={textValue => <Text style={style}>{textValue}</Text>}
     />
