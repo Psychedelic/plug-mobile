@@ -1,6 +1,6 @@
 {
   "name": "Plug",
-  "version": "0.1.2(3)",
+  "version": "0.1.2(6)",
   "private": true,
   "scripts": {
     "rename-build": "chmod +x ./rename-ic-agent.sh && ./rename-ic-agent.sh",
@@ -14,9 +14,9 @@
     "android": "yarn run ic:build.android && npx react-native run-android --variant=devDebug --appId co.psychedelic.plug.dev ",
     "android:stage": "yarn run ic:build.android && react-native run-android --variant=stageDebug ",
     "android:production": "yarn run ic:build.android && react-native run-android --variant=productionDebug ",
-    "android:build.dev": "cd android && ./gradlew clean && ./gradlew assembleDevRelease",
-    "android:build.stage": "cd android && ./gradlew clean && ./gradlew assembleStageRelease",
-    "android:build.production": "cd android && ./gradlew clean && ./gradlew bundleProductionRelease",
+    "android:build.dev": "yarn run ic:build.android && yarn run patch:android && cd android && ./gradlew clean && ./gradlew assembleDevRelease",
+    "android:build.stage": "yarn run ic:build.android && yarn run patch:android && cd android && ./gradlew clean && ./gradlew assembleStageRelease",
+    "android:build.production": "yarn run ic:build.android && yarn run patch:android && cd android && ./gradlew clean && ./gradlew bundleProductionRelease",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
