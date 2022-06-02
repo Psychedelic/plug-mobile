@@ -21,12 +21,12 @@ function Tokens() {
   const [selectedToken, setSelectedToken] = useState(null);
   const sendRef = useRef(null);
   const { assets, assetsLoading, assetsError } = useSelector(
-    state => state.user,
+    state => state.user
   );
   const { icpPrice } = useSelector(state => state.icp);
   const [refreshing, setRefresing] = useState(assetsLoading);
   const usdSum = Number(
-    assets.reduce((total, token) => total + Number(token?.value), 0),
+    assets.reduce((total, token) => total + Number(token?.value), 0)
   ).toFixed(2);
 
   useEffect(() => {
@@ -64,6 +64,7 @@ function Tokens() {
       {!assetsError ? (
         <ScrollView
           showsVerticalScrollIndicator={false}
+          overScrollMode="never"
           refreshControl={
             <RefreshControl
               refreshing={refreshing}

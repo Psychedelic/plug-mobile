@@ -25,7 +25,7 @@ const shortAddress = (address, config = defaultConfig) => {
 
   const addr = replaceRules.reduce(
     (acc, rules) => acc.replace(...rules),
-    address,
+    address
   );
 
   return `${addr.slice(0, leftSize)}${separator}${addr.slice(rightSize * -1)}`;

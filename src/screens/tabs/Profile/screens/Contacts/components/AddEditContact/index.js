@@ -44,7 +44,7 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
     } else {
       setError(false);
       const randomEmoji = charFromEmojiObject(
-        emojis[Math.floor(Math.random() * emojis.length)],
+        emojis[Math.floor(Math.random() * emojis.length)]
       );
       isEditContact
         ? onEdit({ contact, newContact: { id, name, image: emoji } })

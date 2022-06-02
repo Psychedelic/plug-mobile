@@ -10,7 +10,7 @@ import styles from './styles';
 function ErrorBoundaryScreen() {
   const handleJoinDiscord = () => {
     Linking.openURL(
-      'https://discord.com/channels/837010835423494144/959517549693907014',
+      'https://discord.com/channels/837010835423494144/959517549693907014'
     );
   };
 

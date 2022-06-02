@@ -65,7 +65,7 @@ export const recursiveParseBigint = obj =>
       }
       return { ...acum, [key]: val };
     },
-    { ...obj },
+    { ...obj }
   );
 
 export const resetStores = dispatch => {
@@ -82,7 +82,7 @@ export const getNewAccountData = async (dispatch, icpPrice, state) => {
   const assets = await privateGetAssets(
     { refresh: true, icpPrice },
     state,
-    dispatch,
+    dispatch
   );
   dispatch(setAssetsAndLoading({ assets }));
   dispatch(setTransactionsLoading(true));
@@ -123,12 +123,12 @@ export const mapTransaction = (icpPrice, state) => trx => {
   const symbol = getSymbol();
   const parsedAmount = parseToFloatAmount(
     amount,
-    decimals || TOKENS[sonicData?.token?.details?.symbol]?.decimals,
+    decimals || TOKENS[sonicData?.token?.details?.symbol]?.decimals
   );
   const asset = formatAssetBySymbol(
     isSonic ? parsedAmount : amount,
     symbol,
-    icpPrice,
+    icpPrice
   );
   const isOwnTx = [principal, accountId].includes(trx?.caller);
 

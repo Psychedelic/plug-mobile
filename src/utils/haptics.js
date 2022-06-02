@@ -18,7 +18,7 @@ const hapticToTrigger = haptic => ({
 });
 
 const haptics = reduceArrayToObject(
-  map(keys(HapticFeedbackTypes), hapticToTrigger),
+  map(keys(HapticFeedbackTypes), hapticToTrigger)
 );
 
 export default haptics;

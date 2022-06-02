@@ -3,11 +3,14 @@ import { StyleSheet } from 'react-native';
 const commonMargin = 25;
 
 export default StyleSheet.create({
-  firstInput: {
+  firstInputContainer: {
     marginBottom: commonMargin,
     marginTop: commonMargin,
   },
-  secondInput: {
+  firstInput: {
+    width: '70%',
+  },
+  secondInputContainer: {
     marginBottom: commonMargin,
   },
 });

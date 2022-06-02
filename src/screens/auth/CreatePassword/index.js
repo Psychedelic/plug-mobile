@@ -2,15 +2,16 @@ import { ErrorMessage } from '@hookform/error-message';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Image, Switch, Text, View } from 'react-native';
+import { Image, Keyboard, Switch, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import PlugLogo from '@/assets/icons/plug-logo-full.png';
 import Back from '@/commonComponents/Back';
 import Header from '@/commonComponents/Header';
-import KeyboardHider from '@/commonComponents/KeyboardHider';
 import PasswordInput from '@/commonComponents/PasswordInput';
 import RainbowButton from '@/components/buttons/RainbowButton';
+import KeyboardScrollView from '@/components/common/KeyboardScrollView';
+import { Colors } from '@/constants/theme';
 import useKeychain from '@/hooks/useKeychain';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
@@ -94,7 +95,7 @@ const CreatePassword = ({ route, navigation }) => {
           </View>
         }
       />
-      <KeyboardHider>
+      <KeyboardScrollView>
         <View style={styles.container}>
           <Text style={styles.title}>{t('createPassword.title')}</Text>
           <Text style={styles.subtitle}>{t('createPassword.subtitle')}</Text>
@@ -109,6 +110,7 @@ const CreatePassword = ({ route, navigation }) => {
                 password={value}
                 onChange={onChange}
                 customStyle={styles.passwordInput}
+                onSubmit={Keyboard.dismiss}
               />
             )}
           />
@@ -136,7 +138,11 @@ const CreatePassword = ({ route, navigation }) => {
           {biometryAvailable && (
             <View style={styles.switchContainer}>
               <Text style={styles.faceId}>{t('common.biometricSignIn')}</Text>
-              <Switch onValueChange={toggleSwitch} value={biometrics} />
+              <Switch
+                onValueChange={toggleSwitch}
+                value={biometrics}
+                trackColor={{ false: Colors.Gray.Pure }}
+              />
             </View>
           )}
           <RainbowButton
@@ -147,7 +153,7 @@ const CreatePassword = ({ route, navigation }) => {
             disabled={loading || !!errors.password || !getValues().password}
           />
         </View>
-      </KeyboardHider>
+      </KeyboardScrollView>
     </Container>
   );
 };

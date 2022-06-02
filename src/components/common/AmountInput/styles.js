@@ -10,6 +10,7 @@ export default StyleSheet.create({
     ...FontStyles.Normal,
     fontSize: 24,
     marginRight: 'auto',
+    width: '85%',
   },
   container: {
     backgroundColor: Colors.Black.Primary,

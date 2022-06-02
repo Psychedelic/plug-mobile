@@ -92,7 +92,7 @@ const Settings = () => {
         onPress: lockAccount,
       },
     ],
-    [],
+    []
   );
 
   return (

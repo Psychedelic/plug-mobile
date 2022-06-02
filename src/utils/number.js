@@ -2,7 +2,7 @@
 export function toFixedNoRounding(amount, n) {
   amount = toFixed(amount);
   const v = (typeof amount === 'string' ? amount : amount.toString()).split(
-    '.',
+    '.'
   );
 
   if (n <= 0) {
@@ -65,7 +65,7 @@ export const parseToFloatAmount = (amount, decimals) => {
 
     return `${prefix + formatedString[0]}.${formatedString.slice(
       1,
-      formatedString.length,
+      formatedString.length
     )}`;
   }
 

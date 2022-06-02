@@ -12,7 +12,7 @@ function EmojiBoard({ onSelect, currentCategory }) {
 
   return (
     <View style={styles.emojiBoard}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} overScrollMode="never">
         {rowsToDisplay.map((row, index) => {
           const isLastRow = rowsToDisplay?.length === index + 1;
           return (

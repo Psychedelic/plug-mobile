@@ -59,13 +59,23 @@ buck-out/
 /ios/Pods/
 
 # IC
-/cargo/target
+rust/.cargo/mobile_app/target
+NDK
+rust/.cargo/config.toml
 
 # Env
 /*.env
 
 # Android
 android/*.hprof
+android/app/src/main/jniLibs
 
 # react-native-config codegen
 ios/envfile
+
+# Visual Studio Code
+/.vscode
+
+# Custom Patches
+patches/@dfinity+agent+0.9.3.patch
+patches/@dfinity+candid+0.9.3.patch

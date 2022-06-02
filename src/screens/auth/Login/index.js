@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Keyboard, StatusBar, Text, View } from 'react-native';
+import { Image, Keyboard, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Plug from '@/assets/icons/il_white_plug.png';
-import KeyboardHider from '@/commonComponents/KeyboardHider';
 import PasswordInput from '@/commonComponents/PasswordInput';
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
+import KeyboardScrollView from '@/components/common/KeyboardScrollView';
 import { isValidPassword } from '@/constants/general';
 import useKeychain from '@/hooks/useKeychain';
 import { Container } from '@/layout';
@@ -25,9 +25,8 @@ function Login({ route, navigation }) {
   const { getPassword } = useKeychain();
   const { icpPrice } = useSelector(state => state.icp);
   const { usingBiometrics, biometricsAvailable } = useSelector(
-    state => state.user,
+    state => state.user
   );
-
   const [error, setError] = useState(false);
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -70,7 +69,7 @@ function Login({ route, navigation }) {
           setError(true);
           setDisableInput(false);
         },
-      }),
+      })
     )
       .unwrap()
       .then(unlocked => {
@@ -93,45 +92,45 @@ function Login({ route, navigation }) {
 
   return (
     <Container>
-      <KeyboardHider>
-        <View style={styles.container}>
-          <Image source={Plug} style={styles.plugIcon} />
+      <KeyboardScrollView contentStyle={styles.container}>
+        <Image source={Plug} style={styles.plugIcon} />
+        <View>
           <Text style={styles.title}>{t('login.unlock')}</Text>
-          <StatusBar barStyle="light-content" />
-          <PasswordInput
-            autoFocus={!isManualLock}
-            error={error}
-            disabled={disableInput}
-            password={password}
-            onChange={setPassword}
-            inputStyle={styles.input}
-          />
-          <RainbowButton
-            text={t('login.submit')}
-            onPress={() => handleSubmit(password)}
-            loading={loading}
-            disabled={!isValidPassword(password) || loading}
-            buttonStyle={styles.buttonMargin}
-          />
-          {biometricsAvailable && usingBiometrics && (
-            <Button
-              iconName="faceIdIcon"
-              text={t('login.signInBiometric')}
-              onPress={unlockUsingBiometrics}
-              iconStyle={styles.biometricsIcon}
-              buttonStyle={[styles.buttonMargin, styles.biometricsButton]}
-            />
-          )}
-          <Button
-            iconName="arrowRight"
-            text={t('login.moreOptions')}
-            onLongPress={handleGoToWelcome}
-            onPress={handleGoToWelcome}
-            iconStyle={styles.moreOptionsIcon}
-            buttonStyle={[styles.buttonMargin, styles.moreOptionsButton]}
-          />
         </View>
-      </KeyboardHider>
+        <PasswordInput
+          autoFocus={!isManualLock}
+          error={error}
+          disabled={disableInput}
+          password={password}
+          onChange={setPassword}
+          inputStyle={styles.input}
+          onSubmit={() => handleSubmit(password)}
+        />
+        <RainbowButton
+          text={t('login.submit')}
+          onPress={() => handleSubmit(password)}
+          loading={loading}
+          disabled={!isValidPassword(password) || loading}
+          buttonStyle={styles.buttonMargin}
+        />
+        {biometricsAvailable && usingBiometrics && (
+          <Button
+            iconName="faceIdIcon"
+            text={t('login.signInBiometric')}
+            onPress={unlockUsingBiometrics}
+            iconStyle={styles.biometricsIcon}
+            buttonStyle={[styles.buttonMargin, styles.biometricsButton]}
+          />
+        )}
+        <Button
+          iconName="arrowRight"
+          text={t('login.moreOptions')}
+          onLongPress={handleGoToWelcome}
+          onPress={handleGoToWelcome}
+          iconStyle={styles.moreOptionsIcon}
+          buttonStyle={[styles.buttonMargin, styles.moreOptionsButton]}
+        />
+      </KeyboardScrollView>
     </Container>
   );
 }

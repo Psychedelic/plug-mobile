@@ -5,6 +5,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import TextInput from '@/commonComponents/TextInput';
 import Touchable from '@/commonComponents/Touchable';
+import { TestIds } from '@/constants/testIds';
 import { Rainbow } from '@/constants/theme';
 import Icon from '@/icons/index';
 import animationScales from '@/utils/animationScales';
@@ -23,6 +24,7 @@ function PasswordInput({
   maxLength,
   inputProps,
   onBlur,
+  onSubmit,
 }) {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
@@ -39,6 +41,11 @@ function PasswordInput({
 
   const toggleShowPassowrd = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleOnSubmit = () => {
+    setIsFocused(false);
+    onSubmit?.();
   };
 
   useEffect(() => {
@@ -73,6 +80,8 @@ function PasswordInput({
           variant={`${showPassword ? 'text' : 'password'}`}
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
+          onSubmitEditing={handleOnSubmit}
+          testID={TestIds.COMMON.PASSWORD_INPUT}
           {...inputProps}
         />
         <Touchable

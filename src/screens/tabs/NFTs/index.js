@@ -23,7 +23,7 @@ const NFTs = () => {
   const [refreshing, setRefresing] = useState(false);
   const [selectedNft, setSelectedNft] = useState(null);
   const { collections, collectionsError, scrollOnNFTs } = useSelector(
-    state => state.user,
+    state => state.user
   );
 
   useEffect(() => {
@@ -70,6 +70,7 @@ const NFTs = () => {
             keyExtractor={(_, index) => index}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.nftsContainer}
+            overScrollMode="never"
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}

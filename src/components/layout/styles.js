@@ -36,7 +36,4 @@ export default StyleSheet.create({
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
   },
-  notchContainer: {
-    marginTop: 38,
-  },
 });

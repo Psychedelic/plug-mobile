@@ -2,9 +2,11 @@ import React from 'react';
 import { Modalize } from 'react-native-modalize';
 import { Portal } from 'react-native-portalize';
 
-import { isIos } from '@/constants/platform';
+import { isIos, withNotch } from '@/constants/platform';
 
 import styles from './styles';
+
+export const modalOffset = withNotch ? undefined : isIos ? 10 : 35;
 
 function Modal({
   children,
@@ -13,6 +15,7 @@ function Modal({
   fullHeight,
   adjustToContentHeight,
   scrollViewProps,
+  modalStyle,
   ...props
 }) {
   return (
@@ -22,22 +25,25 @@ function Modal({
         ref={modalRef}
         handlePosition="inside"
         modalStyle={[
-          styles.modalStyle,
-          !adjustToContentHeight && styles.flexStyle,
+          styles.modal,
+          !adjustToContentHeight && styles.flex,
+          modalStyle,
         ]}
-        overlayStyle={styles.overlayStyle}
-        handleStyle={styles.handleStyle}
+        overlayStyle={styles.overlay}
+        handleStyle={styles.handle}
         scrollViewProps={{
           keyboardShouldPersistTaps: 'always',
           keyboardDismissMode: 'none',
+          showsVerticalScrollIndicator: false,
+          overScrollMode: 'never',
           ...(fullHeight && {
-            contentContainerStyle: { height: '100%' },
+            contentContainerStyle: styles.scrollviewContent,
           }),
           ...scrollViewProps,
         }}
         closeOnOverlayTap
-        keyboardAvoidingBehavior={isIos ? 'padding' : 'height'}
-        modalTopOffset={10}
+        keyboardAvoidingBehavior={isIos ? 'padding' : undefined}
+        modalTopOffset={modalOffset}
         onOverlayPress={onClose}
         onClose={onClose}
         adjustToContentHeight={adjustToContentHeight}

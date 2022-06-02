@@ -27,7 +27,7 @@ const InfoWithActions = ({ text, colors, actions }) => {
                   <Icon name={action.icon} color="white" />
                 </Touchable>
               </View>
-            )),
+            ))
           )}
         </View>
       </View>

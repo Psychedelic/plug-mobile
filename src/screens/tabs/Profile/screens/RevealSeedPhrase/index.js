@@ -45,7 +45,7 @@ function RevealSeedPhrase({ modalRef }) {
           setLoggedIn(true);
           setLoading(false);
         },
-      }),
+      })
     );
   };
 
@@ -64,6 +64,7 @@ function RevealSeedPhrase({ modalRef }) {
                 error={error}
                 password={password}
                 onChange={setPassword}
+                onSubmit={handleSubmit}
               />
               <RainbowButton
                 buttonStyle={styles.buttonStyle}

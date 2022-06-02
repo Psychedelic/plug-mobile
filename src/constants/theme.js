@@ -33,6 +33,7 @@ export const Colors = {
     Green: '#09DF66',
     Teal: '#05DCC8',
   },
+  Red: '#FF453A',
 };
 
 export const Rainbow = {
