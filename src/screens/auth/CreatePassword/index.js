@@ -11,6 +11,7 @@ import Header from '@/commonComponents/Header';
 import PasswordInput from '@/commonComponents/PasswordInput';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import KeyboardScrollView from '@/components/common/KeyboardScrollView';
+import { Colors } from '@/constants/theme';
 import useKeychain from '@/hooks/useKeychain';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
@@ -137,7 +138,11 @@ const CreatePassword = ({ route, navigation }) => {
           {biometryAvailable && (
             <View style={styles.switchContainer}>
               <Text style={styles.faceId}>{t('common.biometricSignIn')}</Text>
-              <Switch onValueChange={toggleSwitch} value={biometrics} />
+              <Switch
+                onValueChange={toggleSwitch}
+                value={biometrics}
+                trackColor={{ false: Colors.Gray.Pure }}
+              />
             </View>
           )}
           <RainbowButton

@@ -9,6 +9,7 @@ import PasswordInput from '@/commonComponents/PasswordInput';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import { isValidPassword } from '@/constants/general';
 import { FontStyles } from '@/constants/theme';
+import { Colors } from '@/constants/theme';
 import useKeychain from '@/hooks/useKeychain';
 import { Column } from '@/layout';
 import { validatePassword } from '@/redux/slices/keyring';
@@ -75,9 +76,7 @@ function BiometricUnlock({ modalRef }) {
           </Text>
         }
         center={
-          <Text style={styles.title}>
-            {t('settings.items.biometric.name')},
-          </Text>
+          <Text style={styles.title}>{t('settings.items.biometric.name')}</Text>
         }
       />
       <Column style={styles.container}>
@@ -99,7 +98,11 @@ function BiometricUnlock({ modalRef }) {
         ) : (
           <View style={styles.optionContainer}>
             <Text style={styles.option}>{t('common.biometricSignIn')}</Text>
-            <Switch onValueChange={toggleSwitch} value={useBiometrics} />
+            <Switch
+              onValueChange={toggleSwitch}
+              value={useBiometrics}
+              trackColor={{ false: Colors.Gray.Pure }}
+            />
           </View>
         )}
       </Column>
