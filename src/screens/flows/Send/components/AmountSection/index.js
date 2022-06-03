@@ -5,11 +5,10 @@ import RainbowButton from '@/components/buttons/RainbowButton';
 import AmountInput from '@/components/common/AmountInput';
 import TokenSelector from '@/components/tokens/TokenSelector';
 import {
-  formatSendAmount,
-  ICP_MAX_DECIMALS,
+  TOKEN_MAX_DECIMALS,
   USD_MAX_DECIMALS,
 } from '@/screens/flows/Send/utils';
-import { toFixedNoRounding } from '@/utils/number';
+import { parseLocaleNumber, toFixedLocale } from '@/utils/number';
 
 import styles from './styles';
 
@@ -27,27 +26,47 @@ const AmountSection = ({
 }) => {
   const { t } = useTranslation();
   const [selectedInput, setSelectedInput] = useState('USD');
-  const newTokenAmount = Number(tokenAmount);
-  const newUsdAmount = Number(usdAmount);
+  const newTokenAmount = tokenAmount?.value;
+  const newUsdAmount = usdAmount?.value;
   const newAvailableUsdAmount = Number(availableUsdAmount);
 
   const handleSetTokenAmount = amount => {
     // TODO: Set the correct MAX decimals for the selected token.
-    const formattedAmount = formatSendAmount(amount, ICP_MAX_DECIMALS);
-    setTokenAmount(formattedAmount);
+    const formattedAmount = parseLocaleNumber(amount);
+    setTokenAmount({
+      value: formattedAmount,
+      display: amount,
+    });
+
     setUsdAmount(
-      amount
-        ? toFixedNoRounding(formattedAmount * tokenPrice, USD_MAX_DECIMALS)
+      !isNaN(formattedAmount) && formattedAmount > 0
+        ? {
+            value: formattedAmount * tokenPrice,
+            display: toFixedLocale(
+              formattedAmount * tokenPrice,
+              USD_MAX_DECIMALS
+            ),
+          }
         : null
     );
   };
 
   const handleSetUsdAmount = amount => {
-    const formattedAmount = formatSendAmount(amount, USD_MAX_DECIMALS);
-    setUsdAmount(formattedAmount);
+    const formattedAmount = parseLocaleNumber(amount);
+    setUsdAmount({
+      value: formattedAmount,
+      display: amount,
+    });
+
     setTokenAmount(
-      amount
-        ? toFixedNoRounding(formattedAmount / tokenPrice, ICP_MAX_DECIMALS)
+      !isNaN(formattedAmount) && formattedAmount > 0
+        ? {
+            value: formattedAmount / tokenPrice,
+            display: toFixedLocale(
+              formattedAmount / tokenPrice,
+              TOKEN_MAX_DECIMALS
+            ),
+          }
         : null
     );
   };
@@ -90,7 +109,7 @@ const AmountSection = ({
       />
       <AmountInput
         autoFocus
-        value={tokenAmount}
+        value={tokenAmount?.display}
         onChange={handleSetTokenAmount}
         maxAmount={availableAmount}
         selected={selectedInput === selectedToken.symbol}
@@ -100,7 +119,7 @@ const AmountSection = ({
         inputStyle={styles.firstInput}
       />
       <AmountInput
-        value={usdAmount}
+        value={usdAmount?.display}
         onChange={handleSetUsdAmount}
         selected={selectedInput === 'USD'}
         setSelected={setSelectedInput}

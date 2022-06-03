@@ -22,11 +22,7 @@ import { setTransaction } from '@/redux/slices/user';
 import { TRANSACTION_STATUS } from '@/redux/utils';
 import shortAddress from '@/utils/shortAddress';
 
-import {
-  formatSendAmount,
-  getTransactionFee,
-  USD_MAX_DECIMALS,
-} from '../../utils';
+import { getTransactionFee, USD_MAX_DECIMALS } from '../../utils';
 import SaveContact from '../SaveContact';
 import styles from './styles';
 
@@ -123,9 +119,9 @@ const ReviewSend = ({
         {token && (
           <Row style={styles.row}>
             <Column>
-              <Text style={FontStyles.Title2}>${value}</Text>
+              <Text style={FontStyles.Title2}>${value?.value}</Text>
               <Text style={FontStyles.Subtitle3}>
-                <TokenFormat value={amount} token={token.symbol} />
+                <TokenFormat value={amount?.value} token={token.symbol} />
               </Text>
             </Column>
             <TokenIcon {...token} color={Colors.Gray.Tertiary} />
@@ -174,10 +170,9 @@ const ReviewSend = ({
           <Row style={styles.row}>
             <Text style={FontStyles.Subtitle3}>
               {t('reviewSend.totalFee', {
-                value: `${currentFee} ${token?.symbol} ($${formatSendAmount(
-                  currentUSDFee,
-                  USD_MAX_DECIMALS + 2
-                )})`,
+                value: `${currentFee} ${
+                  token?.symbol
+                } ($${currentUSDFee.toFixed(USD_MAX_DECIMALS + 2)})`,
               })}
             </Text>
           </Row>

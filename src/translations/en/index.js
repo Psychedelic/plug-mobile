@@ -1,5 +1,9 @@
+import { getNumberFormatSettings } from 'react-native-localize';
+
 import { ACTIVITY_STATUS } from '@/constants/business';
 import { ERROR_TYPES } from '@/constants/general';
+
+const { decimalSeparator } = getNumberFormatSettings();
 
 const translations = {
   common: {
@@ -159,6 +163,9 @@ const translations = {
     idPlaceholder: 'Principal ID',
     nameTaken: 'Name is already taken!',
     contactAlreadySaved: 'Contact already saved as {{name}}',
+  },
+  placeholders: {
+    amount: `0${decimalSeparator}00`,
   },
   validations: {
     passRequired: 'Password is required.',

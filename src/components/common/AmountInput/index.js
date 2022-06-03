@@ -1,5 +1,6 @@
+import { t } from 'i18next';
 import React, { useRef, useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { Keyboard, Text, TextInput, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import Button from '@/buttons/Button';
@@ -58,8 +59,10 @@ const AmountInput = ({
           onChangeText={onChange}
           value={value}
           keyboardType="numeric"
+          returnKeyType="done"
+          onSubmitEditing={Keyboard.dismiss}
           maxLength={20}
-          placeholder={customPlaceholder || '0.00'}
+          placeholder={customPlaceholder || t('placeholders.amount')}
           blurOnSubmit={false}
           autoFocus={autoFocus}
           keyboardAppearance="dark"
