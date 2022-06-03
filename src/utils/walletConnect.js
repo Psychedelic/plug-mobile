@@ -1,8 +1,15 @@
+import { blobFromBuffer } from '@dfinity/candid';
 import { getAllNFTS, getTokens } from '@psychedelic/dab-js';
-import { getCanisterInfo } from '@psychedelic/plug-mobile-controller';
+import {
+  getCanisterInfo,
+  IDLDecode,
+} from '@psychedelic/plug-mobile-controller';
 
+import ErrorState from '@/components/common/ErrorState';
+import { XTC_FEE } from '@/constants/addresses';
+import { CYCLES_PER_TC } from '@/constants/assets';
 import { ASSET_CANISTER_IDS } from '@/constants/canister';
-import { SIGNING_METHODS } from '@/constants/walletconnect';
+import { ERRORS } from '@/constants/walletconnect';
 import {
   ConnectionModule,
   InformationModule,
@@ -17,10 +24,17 @@ import {
   walletConnectApproveSession,
   walletConnectRejectSession,
 } from '@/redux/slices/walletconnect';
+import { validateAccountId, validatePrincipalId } from '@/utils/ids';
+import { validateCanisterId } from '@/utils/ids';
 import Navigation from '@/utils/navigation';
+import {
+  isValidBigInt,
+  validateAmount,
+  validateFloatStrAmount,
+} from '@/utils/number';
 import { recursiveParseBigint, recursiveParsePrincipal } from '@/utils/objects';
 
-export const notSigningMethod = method => !SIGNING_METHODS.includes(method);
+import { base64ToBuffer } from './utilities';
 
 export const connectionRequestResponseHandlerFactory = (
   dispatch,
@@ -178,4 +192,113 @@ export const fetchCanistersInfo = async whitelist => {
   }
 
   return [];
+};
+
+export const validateTransferArgs = ({ to, amount, opts, strAmount }) => {
+  let message = null;
+
+  if (amount && !validateAmount(amount)) {
+    message =
+      'The transaction failed because the amount entered was invalid. \n';
+  }
+
+  if (strAmount && !validateFloatStrAmount(strAmount)) {
+    message =
+      'The transaction failed because the amount entered was invalid. \n';
+  }
+
+  if (!validatePrincipalId(to) && !validateAccountId(to)) {
+    message =
+      'The transaction failed because the destination address was invalid, it has to be a Principal ID or an Account ID.';
+  }
+  if (opts?.memo && !isValidBigInt(opts?.memo)) {
+    message =
+      'The transaction failed because the memo entered was invalid. It needs to be a valid BigInt \n';
+  }
+  return message ? ERRORS.CLIENT_ERROR(message) : null;
+};
+
+export const validateBurnArgs = ({ to, amount }) => {
+  let message = null;
+
+  if (!validateAmount(amount)) {
+    message =
+      'The transaction failed because the amount entered was invalid. \n';
+  }
+
+  if (!validateCanisterId(to)) {
+    message =
+      'The transaction failed because the destination address was invalid, it has to be a Canister ID';
+  }
+  if (amount < XTC_FEE * CYCLES_PER_TC) {
+    message = 'You cannot burn less XTC than the minimum fee';
+  }
+  return message ? ERRORS.CLIENT_ERROR(message) : null;
+};
+
+export const validateTransactions = transactions => {
+  let message = null;
+
+  if (Array.isArray(transactions)) {
+    return ErrorState.CLIENT_ERROR(
+      'The batch transaction failes becuase transactions must be an array ',
+    );
+  }
+
+  if (transactions.every(tx => tx.sender)) {
+    message =
+      'The batch transaction failed because each transaction must have a sender';
+  }
+
+  if (
+    transactions.every(tx => tx.canisterId && validateCanisterId(tx.canisterId))
+  ) {
+    message =
+      'The batch transaction failed because each transaction must have a valid canisterId';
+  }
+
+  if (transactions.every(tx => tx.methodName)) {
+    message =
+      'The batch transaction failed because each transaction must have a valid methodName';
+  }
+
+  return message ? ERRORS.CLIENT_ERROR(message) : null;
+};
+
+export const generateRequestInfo = args => {
+  const decodedArguments = recursiveParseBigint(
+    IDLDecode(blobFromBuffer(base64ToBuffer(args.arg))),
+  );
+
+  return {
+    ...args,
+    arguments: args.arg,
+    decodedArguments,
+    type: 'call',
+  };
+};
+
+export const validateBatchTx = (
+  savedTxInfo,
+  { canisterId, methodName, arguments: arg },
+) => {
+  if (
+    !savedTxInfo ||
+    savedTxInfo.canisterId !== canisterId ||
+    savedTxInfo.methodName !== methodName
+  ) {
+    // if you dont have savedTxInfo
+    // or the methodName or cannotisterId is different from the savedTxInfo
+    // the batch tx is not valid
+    return false;
+  }
+
+  if (savedTxInfo.args) {
+    // if there is args saved in the savedTxInfo
+    // coming args must be the same as the saved args
+    // args and savedTxInfo.args gonna be base64 encoded
+    return savedTxInfo.args === arg;
+  }
+
+  return true;
 };

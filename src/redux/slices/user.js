@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { ENABLE_NFTS } from '@/constants/nfts';
-import { formatAssets } from '@/utils/assets';
+import { getICPPrice } from '@/redux/slices/icp';
+import { formatAssets, parseAssetsAmount } from '@/utils/assets';
 
 import {
   DEFAULT_ASSETS,
@@ -13,6 +14,7 @@ import {
   recursiveParseBigint,
   TRANSACTION_STATUS,
 } from '../utils';
+import keyring from './keyring';
 
 const DEFAULT_STATE = {
   assets: DEFAULT_ASSETS,
@@ -142,6 +144,28 @@ export const privateGetAssets = async (params, state, dispatch) => {
       instance?.getBalance();
     }
     return { assets, icpPrice };
+  } catch (e) {
+    dispatch(setAssetsError(true));
+  }
+};
+
+export const getBalance = createAsyncThunk(
+  'keyring/getBalance',
+  async (params, { getState, dispatch }) => {
+    return privateGetBalance(params, getState(), dispatch);
+  },
+);
+
+export const privateGetBalance = async (params, state, dispatch) => {
+  try {
+    const { subaccount } = params;
+    const { instance } = state.keyring;
+    const icpPrice = await dispatch(getICPPrice());
+
+    const assets = await instance?.getBalance(subaccount);
+    const parsedAssets = parseAssetsAmount(assets);
+
+    return formatAssets(parsedAssets, icpPrice);
   } catch (e) {
     dispatch(setAssetsError(true));
   }
@@ -329,6 +353,19 @@ export const editContact = createAsyncThunk(
       console.log('Error editing contact:', e);
     }
   }
+);
+export const getICNSData = createAsyncThunk(
+  'keyring/getICNSData',
+  async ({ refresh }, { getState, dispatch }) => {
+    const { currentWallet } = getState().keyring;
+    const icnsData = currentWallet?.icnsData || { names: [] };
+    if (!icnsData?.names?.length || refresh) {
+      return keyring.getICNSData();
+    } else {
+      keyring.getICNSData();
+    }
+    return icnsData;
+  },
 );
 
 export const userSlice = createSlice({

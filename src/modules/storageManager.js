@@ -1,8 +1,26 @@
-import { addDisconnectedEntry } from '@shared/utils/apps';
-
+import { CONNECTION_STATUS } from '@/constants/walletconnect';
 import { walletConnectStorage } from '@/redux/store';
 
 const storage = walletConnectStorage;
+
+const addDisconnectedEntry = ({ apps, appUrl }) => {
+  const date = new Date().toISOString();
+  return {
+    ...apps,
+    [appUrl]: {
+      ...apps[appUrl],
+      status: CONNECTION_STATUS.disconnected,
+      date,
+      events: [
+        ...(apps[appUrl]?.events || []),
+        {
+          status: CONNECTION_STATUS.disconnected,
+          date,
+        },
+      ],
+    },
+  };
+};
 
 const secureGetWrapper = (key, defaultValue, cb) => {
   try {
@@ -39,13 +57,13 @@ export const getApp = (currentWalletId, appUrl, cb) => {
   );
 };
 
-export const setApps = (currentWalletId, apps, cb = () => {}) => {
+export const setApps = (currentWalletId, apps, cb = () => { }) => {
   const defaultValue = false;
 
   secureSetWrapper({ [currentWalletId]: { apps } }, defaultValue, cb);
 };
 
-export const removeApp = (currentWalletId, appUrl, cb = () => {}) => {
+export const removeApp = (currentWalletId, appUrl, cb = () => { }) => {
   const defaultValue = false;
 
   getApps(currentWalletId, apps => {
@@ -58,7 +76,7 @@ export const removeApp = (currentWalletId, appUrl, cb = () => {}) => {
   });
 };
 
-export const setRouter = (route, cb = () => {}) => {
+export const setRouter = (route, cb = () => { }) => {
   const defaultValue = false;
 
   secureSetWrapper({ router: route }, defaultValue, cb);
@@ -72,13 +90,13 @@ export const getContacts = cb => {
   });
 };
 
-export const setContacts = (contacts, cb = () => {}) => {
+export const setContacts = (contacts, cb = () => { }) => {
   const defaultValue = false;
 
   secureSetWrapper({ contacts }, defaultValue, cb);
 };
 
-export const setHiddenAccounts = (hiddenAccounts, cb = () => {}) => {
+export const setHiddenAccounts = (hiddenAccounts, cb = () => { }) => {
   const defaultValue = false;
 
   secureSetWrapper({ hiddenAccounts }, defaultValue, cb);
@@ -100,7 +118,7 @@ export const getAppsKey = cb => {
   });
 };
 
-export const clearStorage = (cb = () => {}) => {
+export const clearStorage = (cb = () => { }) => {
   try {
     storage.clear(cb(true));
   } catch (e) {
@@ -108,7 +126,7 @@ export const clearStorage = (cb = () => {}) => {
   }
 };
 
-export const setProtectedIds = (protectedIds = [], cb = () => {}) => {
+export const setProtectedIds = (protectedIds = [], cb = () => { }) => {
   secureSetWrapper({ protectedIds }, [], cb);
 };
 
@@ -120,7 +138,7 @@ export const getProtectedIds = cb => {
   });
 };
 
-export const setUseICNS = (useICNS, walletNumber, cb = () => {}) => {
+export const setUseICNS = (useICNS, walletNumber, cb = () => { }) => {
   const defaultValue = true;
   secureSetWrapper({ icns: { [walletNumber]: useICNS } }, defaultValue, cb);
 };

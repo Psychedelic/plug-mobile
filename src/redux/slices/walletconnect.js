@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { executeReducerBuilderCallback } from '@reduxjs/toolkit/dist/mapBuilders';
 import { captureException } from '@sentry/react-native';
 import WalletConnect from '@walletconnect/client';
 import { parseWalletConnectUri } from '@walletconnect/utils';
@@ -23,7 +22,6 @@ import { delay } from '@/utils/utilities';
 import {
   callRequestHandlerFactory,
   connectionRequestResponseHandlerFactory,
-  notSigningMethod,
   sessionRequestHandlerFactory,
 } from '@/utils/walletConnect';
 
@@ -219,11 +217,15 @@ const listenOnNewMessages = createAsyncThunk(
             }),
           ).unwrap();
 
-          handler(request);
+          handler(request, ...request.args);
         }
       } catch (e) {
         dispatch(
-          executeReducerBuilderCallback({ requestId, peerId, error: e }),
+          walletConnectExecuteAndResponse({
+            requestId,
+            peerId,
+            error: ERRORS.SERVER_ERROR(e),
+          }),
         );
       }
     });
