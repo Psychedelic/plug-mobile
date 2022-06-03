@@ -3,6 +3,10 @@ import { getNumberFormatSettings } from 'react-native-localize';
 export const { decimalSeparator, groupingSeparator: thousandSeparator } =
   getNumberFormatSettings();
 
+export const isDecimal = (value: string) => {
+  return RegExp(`^[0-9]+[${decimalSeparator}]?[0-9]*$`, 'g').test(value);
+};
+
 export const formatToMaxDecimals = (number: number, maxDecimals: number) => {
   const stringifyAmount = `${number}`.split('.')[1];
   if (stringifyAmount && stringifyAmount.length > maxDecimals) {

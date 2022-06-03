@@ -7,6 +7,7 @@ import Button from '@/buttons/Button';
 import Touchable from '@/commonComponents/Touchable';
 import { Colors, Rainbow } from '@/constants/theme';
 import animationScales from '@/utils/animationScales';
+import { isDecimal } from '@/utils/number';
 
 import styles from './styles';
 
@@ -38,6 +39,12 @@ const AmountInput = ({
     onChange(String(maxAmount));
   };
 
+  const handleChange = newText => {
+    if (isDecimal(newText) || !newText.length) {
+      onChange(newText);
+    }
+  };
+
   const onPress = () => {
     inputRef?.current.focus();
     setSelected(symbol);
@@ -56,7 +63,7 @@ const AmountInput = ({
           underlineColorAndroid="transparent"
           style={[styles.textInput, inputStyle]}
           placeholderTextColor="#373946"
-          onChangeText={onChange}
+          onChangeText={handleChange}
           value={value}
           keyboardType="numeric"
           returnKeyType="done"
