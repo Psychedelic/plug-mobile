@@ -33,10 +33,9 @@ import SaveContact from './components/SaveContact';
 import TokenSection from './components/TokenSection';
 import styles from './styles';
 import {
-  formatSendAmount,
   getAvailableAmount,
   getUsdAvailableAmount,
-  ICP_MAX_DECIMALS,
+  TOKEN_MAX_DECIMALS,
   USD_MAX_DECIMALS,
 } from './utils';
 
@@ -156,13 +155,14 @@ function Send({ modalRef, nft, token, onSuccess }) {
   };
 
   const handleSendToken = () => {
+    const amount = tokenAmount.value.toFixed(TOKEN_MAX_DECIMALS);
     if (sendingXTCtoCanister && destination === XTC_OPTIONS.BURN) {
-      dispatch(burnXtc({ to, amount: tokenAmount }));
+      dispatch(burnXtc({ to, amount }));
     } else {
       dispatch(
         sendToken({
           to,
-          amount: tokenAmount,
+          amount,
           canisterId: selectedToken?.canisterId,
           icpPrice,
         })
@@ -264,20 +264,17 @@ function Send({ modalRef, nft, token, onSuccess }) {
 
   const availableAmount = useMemo(
     () =>
-      formatSendAmount(
-        getAvailableAmount(
-          selectedToken?.amount,
-          selectedToken?.symbol,
-          icpPrice
-        ),
-        ICP_MAX_DECIMALS
-      ),
+      getAvailableAmount(
+        selectedToken?.amount,
+        selectedToken?.symbol,
+        icpPrice
+      ).toFixed(TOKEN_MAX_DECIMALS),
     [selectedToken]
   );
+
   const availableUsdAmount = useMemo(
     () =>
-      formatSendAmount(
-        getUsdAvailableAmount(availableAmount, selectedTokenPrice),
+      getUsdAvailableAmount(availableAmount, selectedTokenPrice).toFixed(
         USD_MAX_DECIMALS
       ),
     [availableAmount, selectedTokenPrice]
