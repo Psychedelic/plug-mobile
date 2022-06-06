@@ -11,6 +11,9 @@ import ActionSheet from '@/components/common/ActionSheet';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
 import useContacts from '@/hooks/useContacts';
+import CopyIcon from '@/icons/svg/material/Copy.svg';
+import DeleteIcon from '@/icons/svg/material/Delete.svg';
+import EditIcon from '@/icons/svg/material/Edit.svg';
 import { Column } from '@/layout';
 import { Row } from '@/layout';
 
@@ -45,16 +48,19 @@ const Contacts = ({ modalRef }) => {
           id: 1,
           label: t('contacts.moreOptions.edit'),
           onPress: () => onEditContact(contact),
+          icon: EditIcon,
         },
         {
           id: 2,
           label: t('contacts.moreOptions.copy'),
           onPress: () => Clipboard.setString(contact.id),
+          icon: CopyIcon,
         },
         {
           id: 3,
           label: t('contacts.moreOptions.delete'),
           onPress: () => onDelete(contact),
+          icon: DeleteIcon,
         },
       ],
     };

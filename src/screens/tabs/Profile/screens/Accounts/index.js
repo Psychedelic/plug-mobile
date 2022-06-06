@@ -11,6 +11,8 @@ import Touchable from '@/commonComponents/Touchable';
 import ActionSheet from '@/components/common/ActionSheet';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
+import CopyIcon from '@/icons/svg/material/Copy.svg';
+import EditIcon from '@/icons/svg/material/Edit.svg';
 import { Row } from '@/layout';
 import { getICPPrice } from '@/redux/slices/icp';
 import { reset, setCurrentPrincipal } from '@/redux/slices/keyring';
@@ -66,11 +68,13 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
           id: 1,
           label: t('accounts.moreOptions.edit'),
           onPress: () => onEditAccount(account),
+          icon: EditIcon,
         },
         {
           id: 2,
           label: t('accounts.moreOptions.copy'),
           onPress: () => Clipboard.setString(account.principal),
+          icon: CopyIcon,
         },
       ],
     };

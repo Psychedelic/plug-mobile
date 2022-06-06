@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { Colors } from '@/constants/theme';
 
 const ITEM_RADIUS = 14;
+export const ICON_COLOR = Colors.White.Secondary;
 
 export default StyleSheet.create({
   modal: {
@@ -13,6 +14,9 @@ export default StyleSheet.create({
     borderRadius: ITEM_RADIUS,
     margin: 8,
     marginBottom: 0,
+  },
+  icon: {
+    marginRight: 16,
   },
   titleContainer: {
     paddingVertical: 12,
@@ -26,9 +30,10 @@ export default StyleSheet.create({
     color: Colors.White.Secondary,
   },
   item: {
+    flexDirection: 'row',
     paddingHorizontal: 8,
     height: 60,
-    justifyContent: 'center',
+    alignItems: 'center',
   },
   itemBorder: {},
   itemText: {

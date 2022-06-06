@@ -12,6 +12,9 @@ import RainbowButton from '@/components/buttons/RainbowButton';
 import ActionSheet from '@/components/common/ActionSheet';
 import { FontStyles } from '@/constants/theme';
 import useGetType from '@/hooks/useGetType';
+import DownloadIcon from '@/icons/svg/material/Download.svg';
+import ShareIcon from '@/icons/svg/material/Share.svg';
+import ViewIcon from '@/icons/svg/material/View.svg';
 import Send from '@/screens/flows/Send';
 import { downloadFile } from '@/utils/filesystem';
 import { getAbsoluteType } from '@/utils/fileTypes';
@@ -67,16 +70,19 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
           id: 1,
           label: t('nftDetail.moreOptions.view'),
           onPress: () => Linking.openURL(selectedNFT?.url),
+          icon: ViewIcon,
         },
         {
           id: 2,
           label: t('nftDetail.moreOptions.share'),
           onPress: handleShare,
+          icon: ShareIcon,
         },
         {
           id: 3,
           label: t('nftDetail.moreOptions.download'),
           onPress: downloadNFT,
+          icon: DownloadIcon,
         },
       ],
     }),
