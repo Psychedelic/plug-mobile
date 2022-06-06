@@ -1,27 +1,24 @@
 import qs from 'qs';
 import URL from 'url-parse';
 
+import Routes from '@/navigation/Routes';
 import {
   walletConnectOnSessionRequest,
   walletConnectRemovePendingRedirect,
   walletConnectSetPendingRedirect,
 } from '@/redux/slices/walletconnect';
 import { store } from '@/redux/store';
+import Navigation from '@/utils/navigation';
 
 function handleWalletConnect(uri) {
   const { dispatch } = store;
   dispatch(walletConnectSetPendingRedirect());
+  Navigation.handleAction(Routes.WALLET_CONNECT_WAITING_BRIDGE);
   const { query } = new URL(uri);
   if (uri && query) {
     dispatch(
       walletConnectOnSessionRequest({
         uri,
-        callback: (status, dappScheme) => {
-          const type = status === 'approved' ? 'connect' : status;
-          dispatch(
-            walletConnectRemovePendingRedirect({ type, scheme: dappScheme }),
-          );
-        },
       }),
     );
   }

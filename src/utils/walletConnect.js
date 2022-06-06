@@ -36,11 +36,7 @@ import { recursiveParseBigint, recursiveParsePrincipal } from '@/utils/objects';
 
 import { base64ToBuffer } from './utilities';
 
-export const connectionRequestResponseHandlerFactory = (
-  dispatch,
-  callback,
-  uri,
-) => {
+export const connectionRequestResponseHandlerFactory = (dispatch, uri) => {
   return async ({
     approved,
     chainId,
@@ -59,7 +55,6 @@ export const connectionRequestResponseHandlerFactory = (
       dispatch(
         walletConnectApproveSession({
           peerId,
-          callback,
           dappScheme,
           chainId,
           accountAddress,
@@ -67,56 +62,45 @@ export const connectionRequestResponseHandlerFactory = (
       );
     } else if (!timedOut) {
       await dispatch(walletConnectRejectSession(peerId, walletConnector));
-      callback?.('reject', dappScheme);
-    } else {
-      callback?.('timedOut', dappScheme);
     }
   };
 };
 
-export const sessionRequestHandlerFactory = (dispatch, uri) => {
-  return async (error, payload) => {
-    const { timeout, navigated, timedOut, routeParams } = await dispatch(
-      getSession({ uri }),
-    ).unwrap();
-    clearTimeout(timeout);
-    if (error) {
-      throw error;
-    }
-    const { peerId, peerMeta, chainId } = payload.params[0];
+export const sessionRequestHandler = async (
+  { dispatch, getState, uri },
+  { error, payload },
+) => {
+  const { routeParams } = await dispatch(getSession({ uri })).unwrap();
+  if (error) {
+    throw error;
+  }
+  const { peerId, peerMeta, chainId } = payload.params[0];
 
-    const dappName = peerMeta?.name;
-    const dappUrl = peerMeta?.url;
-    const dappScheme = peerMeta?.scheme;
+  const dappName = peerMeta?.name;
+  const dappUrl = peerMeta?.url;
+  const dappScheme = peerMeta?.scheme;
 
-    const meta = {
-      chainId,
-      dappName,
-      dappScheme,
-      dappUrl,
-      peerId,
-    };
-
-    dispatch(setSession({ uri, sessionInfo: { meta } }));
-
-    // If we already showed the sheet
-    // We need navigate to the same route with the updated params
-    // which now includes the meta
-    if (navigated && !timedOut) {
-      Navigation.handleAction(Routes.WALLET_CONNECT_APPROVAL_SHEET, {
-        ...routeParams,
-        meta,
-        timedOut,
-      });
-    }
+  const meta = {
+    chainId,
+    dappName,
+    dappScheme,
+    dappUrl,
+    peerId,
   };
+
+  dispatch(setSession({ uri, sessionInfo: { meta } }));
+
+  Navigation.handleAction(Routes.WALLET_CONNECT_APPROVAL_SHEET, {
+    ...routeParams,
+    meta,
+  });
 };
 
-export const callRequestHandlerFactory = dispatch => {
+export const callRequestHandlerFactory = (dispatch, getState) => {
   const modules = [
-    ...TransactionModule(dispatch),
-    ...InformationModule(dispatch),
-    ...ConnectionModule(dispatch),
+    ...TransactionModule(dispatch, getState),
+    ...InformationModule(dispatch, getState),
+    ...ConnectionModule(dispatch, getState),
   ];
 
   const walletConnectHandlers = modules.reduce(
