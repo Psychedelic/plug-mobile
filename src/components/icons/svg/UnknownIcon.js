@@ -1,5 +1,5 @@
 import React from 'react';
-import Svg, { G, Path, Rect } from 'react-native-svg';
+import Svg, { Path, Rect } from 'react-native-svg';
 
 const UnknownIcon = ({ color = '#6B7280', ...props }) => (
   <Svg width="41" height="41" viewBox="0 0 41 41" {...props}>
