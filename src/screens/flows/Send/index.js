@@ -19,7 +19,7 @@ import {
   setTransaction,
   transferNFT,
 } from '@/redux/slices/user';
-import { USD_PER_TC } from '@/utils/assets';
+import { TOKENS, USD_PER_TC } from '@/utils/assets';
 import {
   validateAccountId,
   validateCanisterId,
@@ -251,13 +251,16 @@ function Send({ modalRef, nft, token, onSuccess }) {
       const type = validatePrincipalId(id)
         ? ADDRESS_TYPES.PRINCIPAL
         : ADDRESS_TYPES.ACCOUNT;
-      // check for accountId if cycles selected
-      if (type === ADDRESS_TYPES.ACCOUNT && selectedToken?.symbol !== 'ICP') {
+      if (
+        type === ADDRESS_TYPES.ACCOUNT &&
+        selectedToken?.symbol &&
+        selectedToken.symbol !== TOKENS.ICP.symbol
+      ) {
         isValid = false;
       }
       setAddressInfo({ isValid, type });
       setSendingXTCtoCanister(
-        selectedToken?.symbol === 'XTC' && validateCanisterId(id)
+        selectedToken?.symbol === TOKENS.XTC.symbol && validateCanisterId(id)
       );
     }
   }, [address, selectedContact, selectedToken]);
@@ -293,6 +296,15 @@ function Send({ modalRef, nft, token, onSuccess }) {
     setSelectedContact(null);
     setAddressInfo(INITIAL_ADDRESS_INFO);
   };
+
+  const tokens = useMemo(
+    // TODO: Add OGY when is available on Mobile.
+    () =>
+      addressInfo?.type === ADDRESS_TYPES.ACCOUNT
+        ? assets.filter(asset => asset.symbol === TOKENS.ICP.symbol)
+        : assets,
+    [assets, addressInfo]
+  );
 
   return (
     <Modal
@@ -333,7 +345,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
         {isValidAddress && !selectedToken && (
           <TokenSection
             nfts={nfts}
-            tokens={assets}
+            tokens={tokens}
             onNftPress={onNftPress}
             onTokenPress={onTokenPress}
           />
