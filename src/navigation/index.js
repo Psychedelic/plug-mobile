@@ -17,6 +17,7 @@ import Welcome from '@/screens/auth/Welcome';
 import ConnectionError from '@/screens/error/ConnectionError';
 import WalletConnect from '@/screens/flows/WalletConnect';
 import WalletConnectScreens from '@/screens/flows/WalletConnect/screens';
+import WalletConnectWaitingBridge from '@/screens/flows/WalletConnect/screens/WaitingBridge';
 import { handleDeepLink } from '@/utils/deepLink';
 
 import Routes from './Routes';
@@ -126,6 +127,10 @@ const Navigator = ({ routingInstrumentation }, navigationRef) => {
             <Stack.Screen
               name={Routes.WALLET_CONNECT_SCREENS}
               component={WalletConnectScreens}
+            />
+            <Stack.Screen
+              name={Routes.WALLET_CONNECT_WAITING_BRIDGE}
+              component={WalletConnectWaitingBridge}
             />
           </Stack.Navigator>
         </Host>

@@ -52,6 +52,7 @@ export const DEFAULT_STATE = {
   pendingCallRequests: {},
   walletConnectors: {},
   sessions: {},
+  bridgeTimeout: { timeout: null, onBridgeContact: () => { } },
 };
 
 export const BIOMETRICS_ANIMATION_DELAY = 569;
