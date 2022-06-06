@@ -4,10 +4,10 @@ import '@/config/reactotron';
 import * as Sentry from '@sentry/react-native';
 import React, { useEffect, useRef } from 'react';
 import { AppState, StatusBar } from 'react-native';
+import RNBootSplash from 'react-native-bootsplash';
 import codePush from 'react-native-code-push';
 import Config from 'react-native-config';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import SplashScreen from 'react-native-splash-screen';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import Reactotron from 'reactotron-react-native';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -62,7 +62,7 @@ const PersistedApp = () => {
 
   useEffect(() => {
     if (instance) {
-      SplashScreen.hide();
+      RNBootSplash.hide({ fade: true });
     } else {
       console.log('init');
       dispatch(initKeyring());
