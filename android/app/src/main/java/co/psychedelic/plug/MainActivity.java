@@ -2,6 +2,8 @@ package co.psychedelic.plug;
 
 import com.facebook.react.ReactActivity;
 import android.os.Bundle;
+import com.facebook.react.ReactActivityDelegate;
+import com.zoontek.rnbootsplash.RNBootSplash;
 
 public class MainActivity extends ReactActivity {
 
@@ -22,4 +24,20 @@ public class MainActivity extends ReactActivity {
   protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(null);
   }
+
+  /**
+  * Needed for react-native-bootsplash
+  */
+  @Override
+  protected ReactActivityDelegate createReactActivityDelegate() {
+    return new ReactActivityDelegate(this, getMainComponentName()) {
+
+      @Override
+      protected void loadApp(String appKey) {
+        RNBootSplash.init(MainActivity.this);
+        super.loadApp(appKey);
+      }
+    };
+  }
+
 }
