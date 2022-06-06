@@ -1,11 +1,32 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native';
 
 import Touchable from '@/commonComponents/Touchable';
 import Icon from '@/icons';
 import animationScales from '@/utils/animationScales';
 
 import styles from './styles';
+
+interface Props {
+  onPress: () => void;
+  onLongPress?: () => void;
+  text: string;
+  buttonStyle?: StyleProp<ViewStyle>;
+  iconStyle?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
+  iconName?: string;
+  disabled?: boolean;
+  disableAnimation?: boolean;
+  loading?: boolean;
+}
 
 const Button = ({
   onPress,
@@ -19,7 +40,7 @@ const Button = ({
   disableAnimation = false,
   loading = false,
   ...props
-}) => {
+}: Props) => {
   return (
     <Touchable
       scale={animationScales.medium}
