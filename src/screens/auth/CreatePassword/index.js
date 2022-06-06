@@ -95,7 +95,7 @@ const CreatePassword = ({ route, navigation }) => {
           </View>
         }
       />
-      <KeyboardScrollView>
+      <KeyboardScrollView keyboardShouldPersistTaps="always">
         <View style={styles.container}>
           <Text style={styles.title}>{t('createPassword.title')}</Text>
           <Text style={styles.subtitle}>{t('createPassword.subtitle')}</Text>

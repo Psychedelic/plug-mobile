@@ -83,7 +83,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
           </View>
         }
       />
-      <KeyboardScrollView>
+      <KeyboardScrollView keyboardShouldPersistTaps="always">
         <View style={styles.container}>
           <Text style={styles.title}>{t('importSeedPhrase.title')}</Text>
           <Text style={styles.subtitle}>
