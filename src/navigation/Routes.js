@@ -15,6 +15,7 @@ const Routes = {
   //Wallet Connect:
   WALLET_CONNECT_APPROVAL_SHEET: 'WalletConnect',
   WALLET_CONNECT_SCREENS: 'WalletConnectScreens',
+  WALLET_CONNECT_WAITING_BRIDGE: 'WalletConnectWaitingBridge',
 };
 
 export const NATIVE_ROUTES = Object.values(Routes);

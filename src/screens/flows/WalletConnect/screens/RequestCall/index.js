@@ -20,110 +20,12 @@ import {
 import { useNavigation } from '@/utils/navigation';
 
 import styles from '../../styles';
+import WalletConnectLayaout from '..';
 
 function RequestCall() {
-  const [isAuthorizing, setIsAuthorizing] = useState(false);
-
-  const dispatch = useDispatch();
-  const { goBack } = useNavigation();
   const { params } = useRoute();
-  const {
-    transactionDetails: {
-      dappName,
-      dappScheme,
-      dappUrl,
-      methodName,
-      args,
-      peerId,
-      requestId,
-    },
-  } = params;
-
-  const pendingRedirect = useSelector(
-    ({ walletconnect }) => walletconnect.pendingRedirect,
-  );
-
-  const closeScreen = useCallback(
-    canceled => {
-      goBack();
-
-      if (pendingRedirect) {
-        InteractionManager.runAfterInteractions(() => {
-          let type = 'sign';
-
-          if (canceled) {
-            type = `${type}-canceled`;
-          }
-          dispatch(walletConnectRemovePendingRedirect(type, dappScheme));
-        });
-      }
-    },
-    [goBack, pendingRedirect, dappScheme, dispatch],
-  );
-
-  const onCancel = useCallback(
-    async error => {
-      try {
-        closeScreen(true);
-
-        setTimeout(async () => {
-          if (requestId) {
-            await dispatch(
-              walletConnectExecuteAndResponse({
-                peerId,
-                requestId,
-                approve: false,
-              }),
-            );
-          }
-        }, 300);
-      } catch (e) {
-        console.log('error while handling cancel request', e);
-        await dispatch(
-          walletConnectExecuteAndResponse({
-            peerId,
-            requestId,
-            error: e,
-          }),
-        );
-        closeScreen(true);
-      }
-    },
-    [closeScreen, dispatch, peerId, requestId],
-  );
-
-  const handleConfirmTransaction = useCallback(async () => {
-    if (requestId) {
-      await dispatch(
-        walletConnectExecuteAndResponse({
-          peerId,
-          requestId,
-          args,
-          approve: true,
-        }),
-      );
-    }
-    closeScreen(false);
-  }, [params, requestId, dappName, dispatch, peerId, dappScheme, dappUrl]);
-
-  const onConfirm = useCallback(async () => {
-    return handleConfirmTransaction();
-  }, [handleConfirmTransaction]);
-
-  const onPressSend = useCallback(async () => {
-    if (isAuthorizing) {
-      return;
-    }
-    setIsAuthorizing(true);
-    try {
-      await onConfirm();
-      setIsAuthorizing(false);
-    } catch (error) {
-      setIsAuthorizing(false);
-    }
-  }, [isAuthorizing, onConfirm]);
-
-  const onPressCancel = useCallback(() => onCancel(), [onCancel]);
+  const { methodName } = params.args;
+  const { dappUrl, dappName } = params.request;
 
   return (
     <Container>
@@ -132,23 +34,11 @@ function RequestCall() {
           <ActivityIndicator size="large" />
         ) : (
           // TODO: changes on this screen after desings
-          <>
-            <Image source={Plug} style={styles.plugIcon} />
-            <Text style={styles.title}>Wallet Connect</Text>
+          <WalletConnectLayaout>
             <Text style={styles.text}>{`DAP URL: ${dappUrl}`}</Text>
             <Text style={styles.text}>{`DAP NAME: ${dappName}`}</Text>
             <Text style={styles.text}>{`METHOD: ${methodName}`}</Text>
-            <RainbowButton
-              buttonStyle={[styles.componentMargin, styles.buttonStyling]}
-              text="Approve"
-              onPress={onPressSend}
-            />
-            <Button
-              buttonStyle={[styles.componentMargin, styles.buttonStyling]}
-              text="Cancel"
-              onPress={onPressCancel}
-            />
-          </>
+          </WalletConnectLayaout>
         )}
       </View>
     </Container>

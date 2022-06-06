@@ -119,7 +119,20 @@ const InformationModule = (dispatch, getState) => {
     },
   };
 
-  return [requestBalance, getPublicKey, getPrincipal, getICNSInfo];
+  const isUnlock = {
+    methodName: 'isUnlock',
+    handler: request => { },
+    executor: () => {
+      try {
+        const { isUnlocked } = getState().keyring;
+        return { result: isUnlocked };
+      } catch (e) {
+        return { error: ERRORS.SERVER_ERROR(e) };
+      }
+    },
+  };
+
+  return [requestBalance, getPublicKey, getPrincipal, getICNSInfo, isUnlock];
 };
 
 export default InformationModule;

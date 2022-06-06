@@ -12,7 +12,7 @@ import styles from './styles';
 function WalletConnect() {
   const { goBack } = useNavigation();
   const { params } = useRoute();
-  const { callback } = params;
+  const { callback, timedOut } = params;
   const meta = params.meta || {};
   const { dappName, dappUrl, dappScheme, peerId } = meta;
 
@@ -52,7 +52,9 @@ function WalletConnect() {
   return (
     <Container>
       <View style={styles.container}>
-        {!Object.keys(meta).length ? (
+        {timedOut ? (
+          <Text style={styles.title}> TIMEDOUT </Text>
+        ) : !Object.keys(meta).length ? (
           <ActivityIndicator size="large" />
         ) : (
           // TODO: changes on this screen after desings
