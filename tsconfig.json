@@ -26,6 +26,7 @@
       "@/buttons/*": ["./src/components/buttons/*"],
       "@/commonComponents/*": ["./src/components/common/*"],
       "@/formatters/*": ["./src/components/formatters/*"],
+      "@/icons": ["./src/components/icons/index"],
       "@/icons/*": ["./src/components/icons/*"],
       "@/layout": ["./src/components/layout/index"],
       "@/tokens/*": ["./src/components/tokens/*"],

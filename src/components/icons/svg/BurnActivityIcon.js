@@ -1,12 +1,5 @@
 import React from 'react';
-import Svg, {
-  Defs,
-  G,
-  LinearGradient,
-  Path,
-  Rect,
-  Stop,
-} from 'react-native-svg';
+import Svg, { Defs, LinearGradient, Path, Rect, Stop } from 'react-native-svg';
 
 const BurnActivityIcon = ({ color = '#6B7280', ...props }) => (
   <Svg width="19" height="19" viewBox="0 0 19 19" {...props}>

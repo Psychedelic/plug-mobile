@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyleProp, ViewStyle } from 'react-native';
 
 import ActivityReceiveIcon from './svg/ActivityReceiveIcon';
 import ActivitySendIcon from './svg/ActivitySendIcon';
@@ -33,43 +34,50 @@ import UnknownIcon from './svg/UnknownIcon';
 import WICPIcon from './svg/WICPIcon';
 import XTCIcon from './svg/XTCIcon';
 
-export const IconTypes = {
-  xtc: XTCIcon,
-  nfts: NFTsIcon,
-  wicp: WICPIcon,
-  copy: CopyIcon,
-  gear: GearIcon,
-  plus: PlusIcon,
-  send: SendIcon,
-  swap: SwapIcon,
-  error: ErrorIcon,
-  dfinity: ICPIcon,
-  tokens: TokensIcon,
-  profile: ProfileIcon,
-  unknown: UnknownIcon,
-  confirm: ConfirmIcon,
-  deposit: DepositIcon,
-  discord: DiscordIcon,
-  faceIdIcon: FaceIdIcon,
-  arrowRight: ArrowRightIcon,
-  arrowDown: ArrowDownIcon,
-  threeDots: ThreeDotsIcon,
-  swapArrows: SwapArrowsIcon,
-  chevronLeft: ChevronLeftIcon,
-  activitySend: ActivitySendIcon,
-  burnActivity: BurnActivityIcon,
-  chevronRight: ChevronRightIcon,
-  mintActivity: MintActivityIcon,
-  passwordEyeIcon: PasswordEyeIcon,
-  groupedActions: GroupedActionsIcon,
-  activityReceive: ActivityReceiveIcon,
-  arrowDownAccount: ArrowDownAccountIcon,
-  lightingActivity: LightingActivityIcon,
-  passwordEyeClosedIcon: PasswordEyeClosedIcon,
-};
+export const IconTypes = (type: string) =>
+  ({
+    xtc: XTCIcon,
+    nfts: NFTsIcon,
+    wicp: WICPIcon,
+    copy: CopyIcon,
+    gear: GearIcon,
+    plus: PlusIcon,
+    send: SendIcon,
+    swap: SwapIcon,
+    error: ErrorIcon,
+    dfinity: ICPIcon,
+    tokens: TokensIcon,
+    profile: ProfileIcon,
+    unknown: UnknownIcon,
+    confirm: ConfirmIcon,
+    deposit: DepositIcon,
+    discord: DiscordIcon,
+    faceIdIcon: FaceIdIcon,
+    arrowRight: ArrowRightIcon,
+    arrowDown: ArrowDownIcon,
+    threeDots: ThreeDotsIcon,
+    swapArrows: SwapArrowsIcon,
+    chevronLeft: ChevronLeftIcon,
+    activitySend: ActivitySendIcon,
+    burnActivity: BurnActivityIcon,
+    chevronRight: ChevronRightIcon,
+    mintActivity: MintActivityIcon,
+    passwordEyeIcon: PasswordEyeIcon,
+    groupedActions: GroupedActionsIcon,
+    activityReceive: ActivityReceiveIcon,
+    arrowDownAccount: ArrowDownAccountIcon,
+    lightingActivity: LightingActivityIcon,
+    passwordEyeClosedIcon: PasswordEyeClosedIcon,
+  }[type]);
 
-const Icon = ({ name, color, ...props }) => {
-  const IconElement = IconTypes[name];
+interface Props {
+  name: string;
+  color?: string;
+  style?: StyleProp<ViewStyle>;
+}
+
+const Icon = ({ name, color, ...props }: Props) => {
+  const IconElement = IconTypes(name) as React.FunctionComponent<any>;
   return <IconElement {...props} name={name} color={color} />;
 };
 

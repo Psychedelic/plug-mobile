@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableWithoutFeedback } from 'react-native';
+import { StyleProp, TouchableWithoutFeedback, ViewStyle } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -8,6 +8,16 @@ import Animated, {
 
 import scales from '@/utils/animationScales';
 import haptics, { HapticFeedbackTypes } from '@/utils/haptics';
+
+interface Props {
+  children: React.ReactNode;
+  onPress: () => void;
+  onLongPress?: () => void;
+  hapticType?: string;
+  scale?: number;
+  disabled?: boolean;
+  style?: StyleProp<ViewStyle>;
+}
 
 const Touchable = ({
   children,
@@ -18,7 +28,7 @@ const Touchable = ({
   disabled = false,
   style,
   ...props
-}) => {
+}: Props) => {
   const pressed = useSharedValue(false);
 
   const animatedStyle = useAnimatedStyle(() => {
