@@ -58,7 +58,9 @@ const ImportSeedPhrase = ({ navigation, route }) => {
           },
         })
       );
-    } catch (e) {}
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const isMnemonicValid =
