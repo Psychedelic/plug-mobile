@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import React, { useMemo, useRef, useState } from 'react';
-import { Linking, Share, Text, View } from 'react-native';
+import { Linking, Platform, Share, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import Badge from '@/commonComponents/Badge';
@@ -70,19 +70,19 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
           id: 1,
           label: t('nftDetail.moreOptions.view'),
           onPress: () => Linking.openURL(selectedNFT?.url),
-          icon: ViewIcon,
+          icon: Platform.select({ android: ViewIcon }),
         },
         {
           id: 2,
           label: t('nftDetail.moreOptions.share'),
           onPress: handleShare,
-          icon: ShareIcon,
+          icon: Platform.select({ android: ShareIcon }),
         },
         {
           id: 3,
           label: t('nftDetail.moreOptions.download'),
           onPress: downloadNFT,
-          icon: DownloadIcon,
+          icon: Platform.select({ android: DownloadIcon }),
         },
       ],
     }),

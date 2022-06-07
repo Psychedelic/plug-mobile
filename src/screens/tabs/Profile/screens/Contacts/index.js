@@ -1,7 +1,7 @@
 import Clipboard from '@react-native-community/clipboard';
 import { t } from 'i18next';
 import React, { Fragment, useRef, useState } from 'react';
-import { Text, View } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 
 import CommonItem from '@/commonComponents/CommonItem';
 import Header from '@/commonComponents/Header';
@@ -48,19 +48,19 @@ const Contacts = ({ modalRef }) => {
           id: 1,
           label: t('contacts.moreOptions.edit'),
           onPress: () => onEditContact(contact),
-          icon: EditIcon,
+          icon: Platform.select({ android: EditIcon }),
         },
         {
           id: 2,
           label: t('contacts.moreOptions.copy'),
           onPress: () => Clipboard.setString(contact.id),
-          icon: CopyIcon,
+          icon: Platform.select({ android: CopyIcon }),
         },
         {
           id: 3,
           label: t('contacts.moreOptions.delete'),
           onPress: () => onDelete(contact),
-          icon: DeleteIcon,
+          icon: Platform.select({ android: DeleteIcon }),
         },
       ],
     };

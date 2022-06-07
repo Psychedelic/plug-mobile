@@ -5,6 +5,7 @@ import { Modalize } from 'react-native-modalize';
 import { Portal } from 'react-native-portalize';
 import { SvgProps } from 'react-native-svg';
 
+import { isAndroid } from '@/constants/platform';
 import Close from '@/icons/svg/material/Close.svg';
 
 import Touchable from '../Touchable';
@@ -71,7 +72,7 @@ function ActionSheet({ modalRef, onClose, title, subtitle, options }: Props) {
           <Touchable
             onPress={handleClose}
             style={[styles.item, styles.cancelContainer]}>
-            <Close fill={ICON_COLOR} style={styles.icon} />
+            {isAndroid && <Close fill={ICON_COLOR} style={styles.icon} />}
             <Text style={[styles.itemText, styles.cancelText]}>
               {i18next.t('common.cancel')}
             </Text>

@@ -1,7 +1,7 @@
 import Clipboard from '@react-native-community/clipboard';
 import { t } from 'i18next';
 import React, { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
+import { ActivityIndicator, Platform, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CommonItem from '@/commonComponents/CommonItem';
@@ -68,13 +68,13 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
           id: 1,
           label: t('accounts.moreOptions.edit'),
           onPress: () => onEditAccount(account),
-          icon: EditIcon,
+          icon: Platform.select({ android: EditIcon }),
         },
         {
           id: 2,
           label: t('accounts.moreOptions.copy'),
           onPress: () => Clipboard.setString(account.principal),
-          icon: CopyIcon,
+          icon: Platform.select({ android: CopyIcon }),
         },
       ],
     };
