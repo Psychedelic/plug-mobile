@@ -24,6 +24,5 @@ export const downloadFile = ({
     });
   } catch (e) {
     onError?.();
-    console.log(`Error at downloadFile | type: ${type} | error: ${e}`);
   }
 };

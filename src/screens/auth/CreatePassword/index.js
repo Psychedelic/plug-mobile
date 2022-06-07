@@ -79,9 +79,7 @@ const CreatePassword = ({ route, navigation }) => {
               setLoading(false);
             }
           });
-      } catch (e) {
-        console.log('Error:', e);
-      }
+      } catch (e) {}
     }
   };
 
