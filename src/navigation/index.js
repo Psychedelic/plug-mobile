@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { AppState, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Host } from 'react-native-portalize';
@@ -24,21 +24,21 @@ const Stack = createStackNavigator();
 const Navigator = ({ routingInstrumentation }) => {
   const dispatch = useDispatch();
   const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
-  let timeoutId = null;
+  const timeoutId = useRef(null);
 
   const handleLockState = () => {
     dispatch(setUnlocked(false));
-    timeoutId = null;
+    timeoutId.current = null;
   };
 
   const handleAppStateChange = nextAppState => {
     if (nextAppState === 'background') {
-      timeoutId = setTimeout(handleLockState, 120000);
+      timeoutId.current = setTimeout(handleLockState, 120000);
     }
 
     if (nextAppState === 'active' && timeoutId) {
       clearTimeout(timeoutId);
-      timeoutId = null;
+      timeoutId.current = null;
     }
   };
 
