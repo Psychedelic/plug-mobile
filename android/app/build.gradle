@@ -8,7 +8,8 @@ project.ext.envConfigFiles = [
     stagedebug: ".stage.env",
 	stagerelease: ".stage.env",
 	productiondebug: ".production.env",
-	productionrelease: ".production.env"
+	productionrelease: ".production.env",
+    "": ".dev.env",
 ]
 
 apply from: project(":react-native-config").projectDir.getPath() + "/dotenv.gradle"

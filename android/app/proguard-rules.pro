@@ -9,14 +9,12 @@
 
 # Add any project specific keep options here:
 
--keep class com.co.psychedelic.plug.BuildConfig { *; }
+# react-native-config
+-keep class co.psychedelic.plug.BuildConfig { *; }
 
 ## react-native-reanimated
 -keep class com.swmansion.reanimated.** { *; }
 -keep class com.facebook.react.turbomodule.** { *; }
-
-# react-native-config
--keep class com.mobile.BuildConfig { *; }
 
 # react-native-fast-image
 -keep public class com.dylanvann.fastimage.* {*;}
