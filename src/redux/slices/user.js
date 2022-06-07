@@ -54,7 +54,6 @@ export const sendToken = createAsyncThunk(
         status: TRANSACTION_STATUS.success,
       };
     } catch (e) {
-      console.log('sendToken', e);
       return {
         error: e.message,
         status: TRANSACTION_STATUS.error,
@@ -74,7 +73,6 @@ export const burnXtc = createAsyncThunk(
         status: TRANSACTION_STATUS.success,
       };
     } catch (e) {
-      console.log('burnXtc', e);
       return {
         error: e.message,
         status: TRANSACTION_STATUS.error,
@@ -108,7 +106,6 @@ export const setAssetsAndLoading = createAsyncThunk(
 export const getAssets = createAsyncThunk(
   'keyring/getAssets',
   async (params, { getState, dispatch }) => {
-    console.log('private get assets');
     return privateGetAssets(params, getState(), dispatch);
   }
 );
@@ -132,7 +129,6 @@ export const privateGetAssets = async (params, state, dispatch) => {
     }
     return { assets, icpPrice };
   } catch (e) {
-    console.log('getAssets', e);
     dispatch(setAssetsError(true));
   }
 };
@@ -156,7 +152,6 @@ export const privateGetNFTs = async (refresh, state, dispatch) => {
       recursiveParseBigint(collection)
     );
   } catch (e) {
-    console.log('getNFTs', e);
     dispatch(setCollectionsError(true));
   }
 };
@@ -179,7 +174,6 @@ export const privateGetTransactions = async (params, state, dispatch) => {
     dispatch(setTransactionsLoading(false));
     return parsedTrx;
   } catch (e) {
-    console.log('getTransactions', e);
     dispatch(setTransactionsError(true));
     return {
       error: e.message,
@@ -210,7 +204,6 @@ export const transferNFT = createAsyncThunk(
         status: TRANSACTION_STATUS.success,
       };
     } catch (e) {
-      console.log('transferNFT', e);
       console.trace(e.stack);
       return {
         error: e.message,

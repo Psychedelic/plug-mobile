@@ -1,3 +1,4 @@
+import '@/config/logs';
 import '@/config/i18n';
 import '@/config/reactotron';
 
@@ -64,7 +65,6 @@ const PersistedApp = () => {
     if (instance) {
       RNBootSplash.hide({ fade: true });
     } else {
-      console.log('init');
       dispatch(initKeyring());
     }
   }, [instance]);
