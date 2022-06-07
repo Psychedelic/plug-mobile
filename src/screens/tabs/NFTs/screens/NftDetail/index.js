@@ -143,7 +143,7 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
               </Text>
             </Section>
           )}
-          {selectedNFT?.metadata?.properties?.length && (
+          {!!selectedNFT?.metadata?.properties?.length && (
             <Section title={t('nftDetail.attributesTitle')}>
               {selectedNFT?.metadata?.properties?.map(prop => (
                 <Badge key={prop.name} name={prop.name} value={prop.value} />
