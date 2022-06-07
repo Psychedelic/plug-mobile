@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { Colors } from '@/constants/theme';
 
 const ITEM_RADIUS = 14;
+export const ICON_COLOR = Colors.White.Secondary;
 
 export default StyleSheet.create({
   modal: {

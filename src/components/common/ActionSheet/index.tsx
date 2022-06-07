@@ -3,15 +3,20 @@ import React, { RefObject } from 'react';
 import { Text, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { Portal } from 'react-native-portalize';
+import { SvgProps } from 'react-native-svg';
+
+import { isAndroid } from '@/constants/platform';
+import Close from '@/icons/svg/material/Close.svg';
 
 import Touchable from '../Touchable';
-import styles from './styles';
+import styles, { ICON_COLOR } from './styles';
 
 interface Option {
   id: number;
   label: string;
   onPress: () => void;
   destructive?: boolean;
+  icon?: React.FC<SvgProps>;
 }
 
 interface Props {
@@ -48,11 +53,12 @@ function ActionSheet({ modalRef, onClose, title, subtitle, options }: Props) {
                 {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
               </View>
             )}
-            {options?.map((option, index) => (
+            {options?.map(({ icon: Icon, ...option }, index) => (
               <Touchable
                 key={option.id}
                 onPress={() => handleItemPress(option)}
                 style={[styles.item, index > 0 && styles.itemBorder]}>
+                {Icon && <Icon fill={ICON_COLOR} style={styles.icon} />}
                 <Text
                   style={[
                     styles.itemText,
@@ -66,6 +72,7 @@ function ActionSheet({ modalRef, onClose, title, subtitle, options }: Props) {
           <Touchable
             onPress={handleClose}
             style={[styles.item, styles.cancelContainer]}>
+            {isAndroid && <Close fill={ICON_COLOR} style={styles.icon} />}
             <Text style={[styles.itemText, styles.cancelText]}>
               {i18next.t('common.cancel')}
             </Text>

@@ -1,7 +1,7 @@
 import Clipboard from '@react-native-community/clipboard';
 import { t } from 'i18next';
 import React, { Fragment, useRef, useState } from 'react';
-import { Text, View } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 
 import CommonItem from '@/commonComponents/CommonItem';
 import Header from '@/commonComponents/Header';
@@ -11,6 +11,9 @@ import ActionSheet from '@/components/common/ActionSheet';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
 import useContacts from '@/hooks/useContacts';
+import CopyIcon from '@/icons/svg/material/Copy.svg';
+import DeleteIcon from '@/icons/svg/material/Delete.svg';
+import EditIcon from '@/icons/svg/material/Edit.svg';
 import { Column } from '@/layout';
 import { Row } from '@/layout';
 
@@ -45,16 +48,19 @@ const Contacts = ({ modalRef }) => {
           id: 1,
           label: t('contacts.moreOptions.edit'),
           onPress: () => onEditContact(contact),
+          icon: Platform.select({ android: EditIcon }),
         },
         {
           id: 2,
           label: t('contacts.moreOptions.copy'),
           onPress: () => Clipboard.setString(contact.id),
+          icon: Platform.select({ android: CopyIcon }),
         },
         {
           id: 3,
           label: t('contacts.moreOptions.delete'),
           onPress: () => onDelete(contact),
+          icon: Platform.select({ android: DeleteIcon }),
         },
       ],
     };
