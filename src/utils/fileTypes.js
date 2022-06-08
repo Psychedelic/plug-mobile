@@ -8,6 +8,10 @@ export const FILE_TYPES = {
 };
 
 export const getAbsoluteType = type => {
+  if (!type) {
+    return '';
+  }
+
   switch (true) {
     case type.includes('svg'):
       return FILE_TYPES.SVG;
