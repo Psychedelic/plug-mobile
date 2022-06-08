@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+import { ENABLE_NFTS } from '@/constants/nfts';
 import { formatAssets } from '@/utils/assets';
 
 import {
@@ -136,7 +137,9 @@ export const privateGetAssets = async (params, state, dispatch) => {
 export const getNFTs = createAsyncThunk(
   'keyring/getNFTs',
   async (params, { getState, dispatch }) => {
-    return privateGetNFTs(params, getState(), dispatch);
+    if (ENABLE_NFTS) {
+      return privateGetNFTs(params, getState(), dispatch);
+    }
   }
 );
 

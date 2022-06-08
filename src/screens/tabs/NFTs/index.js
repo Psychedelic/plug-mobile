@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, RefreshControl, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,11 +26,19 @@ const NFTs = () => {
     state => state.user
   );
 
+  const nfts = useMemo(
+    () => collections?.flatMap(collection => collection?.tokens || []) || [],
+    [collections]
+  );
+
   useEffect(() => {
     if (scrollOnNFTs) {
-      NFTListRef?.current?.scrollToIndex({ index: 0 });
+      // TODO: Check scrollOnNFTs and scrollOnProfile logic
+      if (nfts.length > 0) {
+        NFTListRef?.current?.scrollToIndex({ index: 0 });
+      }
     }
-  }, [scrollOnNFTs]);
+  }, [scrollOnNFTs, nfts]);
 
   const renderNFT = ({ item }, index) => (
     <NftItem key={index} item={item} onOpen={onOpen} />
@@ -49,9 +57,6 @@ const NFTs = () => {
         setRefresing(false);
       });
   };
-
-  const nfts =
-    collections?.flatMap(collection => collection?.tokens || []) || [];
 
   return (
     <>

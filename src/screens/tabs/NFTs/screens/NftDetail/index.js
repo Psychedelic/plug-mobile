@@ -11,7 +11,6 @@ import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import ActionSheet from '@/components/common/ActionSheet';
 import { FontStyles } from '@/constants/theme';
-import useGetType from '@/hooks/useGetType';
 import DownloadIcon from '@/icons/svg/material/Download.svg';
 import ShareIcon from '@/icons/svg/material/Share.svg';
 import ViewIcon from '@/icons/svg/material/View.svg';
@@ -27,14 +26,11 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
   const isCapCrowns = selectedNFT?.collection === 'CAP Crowns';
   const nftName = `${selectedNFT?.collection} #${selectedNFT?.index}`;
   const actionSheetRef = useRef(null);
-  const [type, setType] = useState(null);
   const userCollection = useSelector(state => state.user.collections) || [];
   const [isDownloading, setIsDownloading] = useState(false);
   const selectedCollection = userCollection.find(
     collection => collection.name === selectedNFT?.collection
   );
-
-  useGetType(selectedNFT?.url, setType);
 
   const handleShare = () => {
     /* TODO: Change the link for the correct NFT View Page when it's ready */
@@ -55,9 +51,11 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
     // TODO: Handle download error
     setIsDownloading(true);
     downloadFile({
-      filename: `/NFT_${deleteWhiteSpaces(nftName)}${getAbsoluteType(type)}`,
+      filename: `/NFT_${deleteWhiteSpaces(nftName)}${getAbsoluteType(
+        selectedNFT?.type
+      )}`,
       url: selectedNFT?.url,
-      type,
+      type: selectedNFT?.type,
       onFetched: () => setIsDownloading(false),
     });
   };
@@ -105,7 +103,7 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
           <View style={styles.nftDisplayerContainer}>
             <NftDisplayer
               url={selectedNFT?.url}
-              type={type}
+              type={selectedNFT?.type}
               style={styles.video}
               isDetailView
             />
