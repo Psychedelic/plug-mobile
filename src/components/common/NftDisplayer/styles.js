@@ -56,6 +56,8 @@ export default StyleSheet.create({
     bottom: 0,
     right: 0,
     left: 0,
+    backgroundColor: Colors.Black.Pure,
+    ...commonStyle,
   },
   sendActivityIndicator: {
     ...commonSendContainer,

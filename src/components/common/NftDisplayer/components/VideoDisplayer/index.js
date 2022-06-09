@@ -25,7 +25,10 @@ const VideoDisplayer = ({
         style,
       ]}>
       {loading && !newUrl ? (
-        <ActivityIndicator style={sharedStyles.activityIndicator} />
+        <ActivityIndicator
+          style={sharedStyles.activityIndicator}
+          color="white"
+        />
       ) : (
         <Video
           repeat

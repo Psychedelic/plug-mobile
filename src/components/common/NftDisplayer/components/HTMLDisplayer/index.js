@@ -49,7 +49,12 @@ function HTMLDisplayer({
         renderLoading={Spinner}
         style={isSendView ? sharedStyles.webViewSend : sharedStyles.webView}
       />
-      {loading && <ActivityIndicator style={sharedStyles.activityIndicator} />}
+      {loading && (
+        <ActivityIndicator
+          style={sharedStyles.activityIndicator}
+          color="white"
+        />
+      )}
     </View>
   );
 }

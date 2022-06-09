@@ -34,6 +34,7 @@ const NftDisplayer = ({ url, style, type, isDetailView, isSend }) => {
   ) : (
     <ActivityIndicator
       style={isSend ? styles.sendActivityIndicator : styles.activityIndicator}
+      color="white"
     />
   );
 };
