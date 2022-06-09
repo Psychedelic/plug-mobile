@@ -72,7 +72,7 @@ const NFTs = () => {
             ref={NFTListRef}
             renderItem={renderNFT}
             style={styles.container}
-            keyExtractor={(_, index) => index}
+            keyExtractor={({ index, canister }) => `${index}${canister}`}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.nftsContainer}
             overScrollMode="never"

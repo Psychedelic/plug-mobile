@@ -21,7 +21,7 @@ interface Option {
 
 interface Props {
   modalRef: RefObject<Modalize>;
-  onClose: () => void;
+  onClose?: () => void;
   title?: string;
   subtitle?: string;
   options: Option[];
