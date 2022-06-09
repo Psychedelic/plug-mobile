@@ -33,7 +33,10 @@ export default StyleSheet.create({
     borderRadius: 5,
     backgroundColor: Colors.Gray.Primary,
   },
-  scrollviewContent: {
+  scrollView: {
     height: '100%',
+  },
+  scrollviewContent: {
+    flexGrow: 1,
   },
 });

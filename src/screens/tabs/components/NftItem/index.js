@@ -17,7 +17,7 @@ function NftItem({ item, onOpen, isSend }) {
 
   const handleOnPress = () => {
     if (!isDisabled) {
-      onOpen(item)();
+      onOpen({ ...item, type })();
     }
   };
 

@@ -1,11 +1,17 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { StyleProp, Text, View, ViewStyle } from 'react-native';
 
 import { FontStyles } from '@/constants/theme';
 
 import styles from './styles';
 
-const Section = ({ title, children, style }) => (
+interface Props {
+  title: string;
+  children: React.ReactNode;
+  style: StyleProp<ViewStyle>;
+}
+
+const Section = ({ title, children, style }: Props) => (
   <View style={[styles.section, style]}>
     <Text style={FontStyles.Subtitle}>{title}</Text>
     <View style={styles.content}>{children}</View>

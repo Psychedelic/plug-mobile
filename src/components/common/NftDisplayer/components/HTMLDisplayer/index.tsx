@@ -1,18 +1,28 @@
 import React, { useRef } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, StyleProp, View, ViewStyle } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 import sharedStyles from '../../styles';
 
+interface Props {
+  loading?: boolean;
+  onLoad?: () => void;
+  url: string;
+  style: StyleProp<ViewStyle>;
+  isSendView?: boolean;
+  isDetailView?: boolean;
+  type: string;
+}
+
 function HTMLDisplayer({
   loading,
-  hideSpinner,
+  onLoad,
   url,
   style,
   isSendView,
   type,
   isDetailView,
-}) {
+}: Props) {
   const webViewRef = useRef(null);
 
   const Spinner = () => (
@@ -28,7 +38,7 @@ function HTMLDisplayer({
   return (
     <View style={[sharedStyles.image, style]}>
       <WebView
-        onLoad={hideSpinner}
+        onLoad={onLoad}
         ref={webViewRef}
         source={
           type?.includes('html')
@@ -49,7 +59,12 @@ function HTMLDisplayer({
         renderLoading={Spinner}
         style={isSendView ? sharedStyles.webViewSend : sharedStyles.webView}
       />
-      {loading && <ActivityIndicator style={sharedStyles.activityIndicator} />}
+      {loading && (
+        <ActivityIndicator
+          style={sharedStyles.activityIndicator}
+          color="white"
+        />
+      )}
     </View>
   );
 }
