@@ -1,8 +1,8 @@
 import MaskedView from '@react-native-masked-view/masked-view';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
 
+import Image from '@/components/common/Image';
 import { Colors } from '@/constants/theme';
 
 import HTMLDisplayer from '../../components/HTMLDisplayer';
@@ -36,12 +36,7 @@ function ImageDisplayer({ style, type, url, isSendView, isDetailView }) {
           isDetailView={isDetailView}
         />
       ) : (
-        <FastImage
-          resizeMode={FastImage.resizeMode.contain}
-          priority={FastImage.priority.high}
-          style={innerStyle}
-          source={{ uri: url }}
-        />
+        <Image resizeMode="contain" style={innerStyle} url={url} />
       )}
     </MaskedView>
   );
