@@ -104,7 +104,7 @@ $ rustup target add armv7-linux-androideabi
 $ rustup target add i686-linux-android
 ```
 
-- [Download NDK from Android Studio](https://developer.android.com/studio/projects/install-ndk), if you have M1 download the version `22.1.7171670`.
+- [Download NDK from Android Studio](https://developer.android.com/studio/projects/install-ndk) -> Download the version `22.1.7171670`.
 
 - Set in `local.properties` the NDK path like this:
   `ndk.dir=/Users/your-user-name/Library/Android/sdk/ndk-bundle` or like this `ndk.dir=/Users/your-user-name/Library/Android/sdk/ndk/22.1.7171670`.
