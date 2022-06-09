@@ -2,6 +2,7 @@ import emojis from 'emoji-datasource';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import { charFromEmojiObject } from '@/commonComponents/EmojiSelector/utils';
 import Header from '@/commonComponents/Header';
@@ -9,13 +10,13 @@ import Modal from '@/commonComponents/Modal';
 import TextInput from '@/commonComponents/TextInput';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import { FontStyles } from '@/constants/theme';
-import useContacts from '@/hooks/useContacts';
+import { addContact } from '@/redux/slices/user';
 
 import styles from './styles';
 
 function SaveContact({ modalRef, onClose, id }) {
   const { t } = useTranslation();
-  const { onCreate } = useContacts();
+  const dispatch = useDispatch();
   const [name, setName] = useState('');
   const title = t('saveContact.title');
 
@@ -30,11 +31,13 @@ function SaveContact({ modalRef, onClose, id }) {
     const randomEmoji = charFromEmojiObject(
       emojis[Math.floor(Math.random() * emojis.length)]
     );
-    onCreate({
-      id,
-      name,
-      image: randomEmoji,
-    });
+    dispatch(
+      addContact({
+        id,
+        name,
+        image: randomEmoji,
+      })
+    );
 
     modalRef.current?.close();
   };

@@ -1,7 +1,8 @@
 import Clipboard from '@react-native-community/clipboard';
 import { t } from 'i18next';
-import React, { Fragment, useRef, useState } from 'react';
+import React, { Fragment, useMemo, useRef, useState } from 'react';
 import { Platform, Text, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import CommonItem from '@/commonComponents/CommonItem';
 import Header from '@/commonComponents/Header';
@@ -10,12 +11,12 @@ import Touchable from '@/commonComponents/Touchable';
 import ActionSheet from '@/components/common/ActionSheet';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
-import useContacts from '@/hooks/useContacts';
 import CopyIcon from '@/icons/svg/material/Copy.svg';
 import DeleteIcon from '@/icons/svg/material/Delete.svg';
 import EditIcon from '@/icons/svg/material/Edit.svg';
-import { Column } from '@/layout';
-import { Row } from '@/layout';
+import { Column, Row } from '@/layout';
+import { removeContact } from '@/redux/slices/user';
+import { getFirstLetterFrom } from '@/utils/strings';
 
 import AddEditContact from './components/AddEditContact';
 import styles from './styles';
@@ -24,8 +25,26 @@ const Contacts = ({ modalRef }) => {
   const addEditContactRef = useRef(null);
   const actionSheetRef = useRef(null);
   const [actionSheetData, setActionSheetData] = useState(undefined);
+  const contacts = useSelector(state => state.user?.contacts);
+  const dispatch = useDispatch();
 
-  const { groupedContacts, onDelete } = useContacts();
+  const groupedContacts = useMemo(
+    () =>
+      contacts.reduce((list, contact) => {
+        const { name } = contact;
+        const listItem = list.find(
+          item => item.letter && item.letter === getFirstLetterFrom(name)
+        );
+        if (!listItem) {
+          list.push({ letter: getFirstLetterFrom(name), contacts: [contact] });
+        } else {
+          listItem.contacts.push(contact);
+        }
+
+        return list;
+      }, []),
+    [contacts]
+  );
 
   const [selectedContact, setSelectedContact] = useState(null);
 
@@ -59,7 +78,7 @@ const Contacts = ({ modalRef }) => {
         {
           id: 3,
           label: t('contacts.moreOptions.delete'),
-          onPress: () => onDelete(contact),
+          onPress: () => dispatch(removeContact({ contactName: contact.name })),
           icon: Platform.select({ android: DeleteIcon }),
         },
       ],

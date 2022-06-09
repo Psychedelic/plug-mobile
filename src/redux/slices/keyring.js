@@ -8,6 +8,7 @@ import { keyringStorage } from '../store';
 import { getNewAccountData, resetStores } from '../utils';
 import {
   getAssets,
+  getContacts,
   getNFTs,
   getTransactions,
   setAssetsAndTransactions,
@@ -151,6 +152,7 @@ export const login = createAsyncThunk(
         dispatch(setTransactionsLoading(true));
         dispatch(getTransactions({ icpPrice }));
         dispatch(getNFTs());
+        dispatch(getContacts());
       } else {
         handleError();
       }
@@ -214,6 +216,7 @@ export const setCurrentPrincipal = createAsyncThunk(
         getState(),
         dispatch
       );
+      dispatch(getContacts());
       dispatch(setAssetsAndTransactions({ assets, transactions }));
     } catch (e) {
       console.log('setCurrentPrincipal', e.message);

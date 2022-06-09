@@ -4,13 +4,12 @@ import { useSelector } from 'react-redux';
 
 import CommonItem from '@/commonComponents/CommonItem';
 import { FontStyles } from '@/constants/theme';
-import useContacts from '@/hooks/useContacts';
 
 import styles from '../../styles';
 
 const ContactSection = ({ onPress, filterText }) => {
-  const { contacts } = useContacts();
   const { principal } = useSelector(state => state.keyring?.currentWallet);
+  const contacts = useSelector(state => state.user?.contacts);
   const usableContacts = contacts.filter(contact => contact.id !== principal);
 
   const filteredContacts = filterText

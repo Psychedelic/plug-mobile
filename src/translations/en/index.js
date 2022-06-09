@@ -166,6 +166,7 @@ const translations = {
   },
   placeholders: {
     amount: `0${decimalSeparator}00`,
+    contactDescription: 'contact description',
   },
   validations: {
     passRequired: 'Password is required.',

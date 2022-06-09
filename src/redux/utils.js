@@ -1,9 +1,12 @@
+import { t } from 'i18next';
+
 import { ACTIVITY_STATUS } from '@/constants/business';
 import { formatAssetBySymbol, TOKEN_IMAGES, TOKENS } from '@/utils/assets';
 import { parseToFloatAmount } from '@/utils/number';
 
 import { reset } from './slices/keyring';
 import {
+  getContacts,
   getNFTs,
   getTransactions,
   privateGetAssets,
@@ -84,6 +87,7 @@ export const getNewAccountData = async (dispatch, icpPrice, state) => {
     state,
     dispatch
   );
+  dispatch(getContacts());
   dispatch(setAssetsAndLoading({ assets }));
   dispatch(setTransactionsLoading(true));
   dispatch(getTransactions({ icpPrice }));
@@ -170,4 +174,21 @@ export const mapTransaction = (icpPrice, state) => trx => {
     details: { ...trx?.details, caller: trx?.caller },
   };
   return transaction;
+};
+
+export const formatContact = contact => ({
+  image: contact?.emoji[0],
+  name: contact?.name,
+  id: contact?.value?.PrincipalId,
+});
+
+export const formatContactForController = contact => {
+  return {
+    description: [t('placeholders.contactDescription')],
+    emoji: [contact?.image],
+    name: contact?.name,
+    value: {
+      PrincipalId: contact?.id,
+    },
+  };
 };
