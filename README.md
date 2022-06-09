@@ -64,24 +64,47 @@ The code is built using React-Native and running code locally requires a Mac.
 
 - Install our dependencies:
 
+For iOS:
+
 ```bash
   cd plug-mobile
-  yarn install
+  yarn patch:ios
   cd ios && pod install && cd .. # install pods for iOS
+```
+
+For Android:
+
+```bash
+  cd plug-mobile
+  yarn patch:android
 ```
 
 - Choose the toolchain and install rust dependencies following the nexts steps:
 
-  ```bash
-  $ cargo install cargo-lipo
-  $ rustup default 1.55.0-x86_64-apple-darwin
-  $ rustup target add aarch64-apple-ios x86_64-apple-ios
-  $ rustup target add aarch64-linux-android
-  $ rustup target add armv7-linux-androideabi
-  $ rustup target add i686-linux-android
-  ```
+For Intel users:
 
-- [Download NDK from Android Studio](https://developer.android.com/studio/projects/install-ndk), if you have M1 download the version `24.0.8215888`.
+```bash
+$ cargo install cargo-lipo
+$ rustup default 1.55.0-x86_64-apple-darwin
+```
+
+For M1 users:
+
+```bash
+$ cargo install cargo-lipo
+$ rustup default 1.55.0-aarch64-apple-darwin
+```
+
+And then run:
+
+```bash
+$ rustup target add aarch64-apple-ios x86_64-apple-ios
+$ rustup target add aarch64-linux-android
+$ rustup target add armv7-linux-androideabi
+$ rustup target add i686-linux-android
+```
+
+- [Download NDK from Android Studio](https://developer.android.com/studio/projects/install-ndk), if you have M1 download the version `22.1.7171670`.
 - Install android-ndk:
 
 ```bash
@@ -89,11 +112,11 @@ brew install android-ndk
 ```
 
 - Set in `local.properties` the NDK path like this:
-  `ndk.dir=/Users/your-user-name/Library/Android/sdk/ndk-bundle` or like this `ndk.dir=/Users/your-user-name/Library/Android/sdk/ndk/24.0.8215888`.
-- Set `$NDK_HOME` in enviroment:
+  `ndk.dir=/Users/your-user-name/Library/Android/sdk/ndk-bundle` or like this `ndk.dir=/Users/your-user-name/Library/Android/sdk/ndk/22.1.7171670`.
+- Set `$NDK_HOME` in enviroment with you path:
 
 ```bash
-export NDK_HOME="/usr/local/share/android-ndk"
+export NDK_HOME="/Users/your-user-name/Library/Android/sdk/ndk/22.1.7171670"
 ```
 
 - Run `sh ./create-ndk-standalone.sh` on project's root to create the `config.toml` file.
