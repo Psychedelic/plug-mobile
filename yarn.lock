@@ -4891,11 +4891,6 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "2.1.1"
 
-figma-squircle@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/figma-squircle/-/figma-squircle-0.2.0.tgz#7f077549d1591a02ef5f46af51a35876f9032a8f"
-  integrity sha512-vjQ+StXbyGURq7Q1TNrLTWG3oRoc7tV7lcOR/4rhAVqH7R4X8IwslTmKHvultgmcU9qCF9kV4rKiyjYInkJ59w==
-
 figures@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/figures/-/figures-2.0.0.tgz#3ab1a2d2a62c8bfb431a0c94cb797a2fce27c962"
@@ -8459,19 +8454,17 @@ react-native-device-info@^8.7.1:
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-8.7.1.tgz#fbb06f87dbbc4423abe713874699fb2e6e99fd15"
   integrity sha512-cVMZztFa2Qn6qpQa601W61CtUwZQ1KXfqCOeltejAWEXmgIWivC692WGSdtGudj4upSi1UgMSaGcvKjfcpdGjg==
 
+react-native-fast-image@^8.5.11:
+  version "8.5.11"
+  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.5.11.tgz#e3dc969d0e4e8df026646bf18194465aa55cbc2b"
+  integrity sha512-cNW4bIJg3nvKaheG8vGMfqCt5LMWX9MS5+wMudgKIHbGO51spRr4sgnlhVgwHLcZ5aeNOVJ8CPRxDIWKRq/0QA==
+
 react-native-fetch-api@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/react-native-fetch-api/-/react-native-fetch-api-2.0.0.tgz#c4af188b4fce3f3eaf1f1ff4e61dae1a00d4ffa0"
   integrity sha512-GOA8tc1EVYLnHvma/TU9VTgLOyralO7eATRuCDchQveXW9Fr9vXygyq9iwqmM7YRZ8qRJfEt9xOS7OYMdJvRFw==
   dependencies:
     p-defer "^3.0.0"
-
-react-native-figma-squircle@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-figma-squircle/-/react-native-figma-squircle-0.2.0.tgz#4561956d8867cfc333a4dda44347d78a05834a06"
-  integrity sha512-BJK4c1GWwwPNAyu3AVqgh4w8GjqnzcZbR81EzyZwzQnMlvjw3TgOK5UyoUvKg/9MYMn4SfgjO2XXRbclKmMzWQ==
-  dependencies:
-    figma-squircle "^0.2.0"
 
 react-native-file-access@^2.4.1:
   version "2.4.1"

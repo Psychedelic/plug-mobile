@@ -1,14 +1,15 @@
 import MaskedView from '@react-native-masked-view/masked-view';
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { SquircleView } from 'react-native-figma-squircle';
-import Image from 'react-native-remote-svg';
+import { StyleSheet, View } from 'react-native';
+import FastImage from 'react-native-fast-image';
+
+import { Colors } from '@/constants/theme';
 
 import HTMLDisplayer from '../../components/HTMLDisplayer';
 import sharedStyles from '../../styles';
 
 function ImageDisplayer({ style, type, url, isSendView, isDetailView }) {
-  const imageStyle = isSendView
+  const innerStyle = isSendView
     ? { width: 54, height: 54 }
     : { width: '100%', height: '100%' };
 
@@ -16,27 +17,30 @@ function ImageDisplayer({ style, type, url, isSendView, isDetailView }) {
     <MaskedView
       style={[sharedStyles.image, style]}
       maskElement={
-        <SquircleView
-          style={StyleSheet.absoluteFill}
-          squircleParams={{
-            cornerRadius: isSendView ? 10 : 20,
-            cornerSmoothing: 1,
-          }}
+        <View
+          style={[
+            StyleSheet.absoluteFill,
+            {
+              borderRadius: isSendView ? 10 : 20,
+              backgroundColor: Colors.Black.Pure,
+            },
+          ]}
         />
       }>
       {type?.includes('svg') || type?.includes('html') ? (
         <HTMLDisplayer
           url={url}
-          style={style}
+          style={innerStyle}
           isSendView
           type={type}
           isDetailView={isDetailView}
         />
       ) : (
-        <Image
-          resizeMode="contain"
-          style={imageStyle}
-          source={{ uri: url, type }}
+        <FastImage
+          resizeMode={FastImage.resizeMode.contain}
+          priority={FastImage.priority.high}
+          style={innerStyle}
+          source={{ uri: url }}
         />
       )}
     </MaskedView>
