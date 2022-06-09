@@ -37,6 +37,7 @@ function Modal({
           showsVerticalScrollIndicator: false,
           overScrollMode: 'never',
           ...(fullHeight && {
+            style: styles.scrollView,
             contentContainerStyle: styles.scrollviewContent,
           }),
           ...scrollViewProps,
