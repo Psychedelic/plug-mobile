@@ -105,11 +105,6 @@ $ rustup target add i686-linux-android
 ```
 
 - [Download NDK from Android Studio](https://developer.android.com/studio/projects/install-ndk), if you have M1 download the version `22.1.7171670`.
-- Install android-ndk:
-
-```bash
-brew install android-ndk
-```
 
 - Set in `local.properties` the NDK path like this:
   `ndk.dir=/Users/your-user-name/Library/Android/sdk/ndk-bundle` or like this `ndk.dir=/Users/your-user-name/Library/Android/sdk/ndk/22.1.7171670`.
