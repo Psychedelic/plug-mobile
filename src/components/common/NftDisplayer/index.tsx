@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, StyleProp, ViewStyle } from 'react-native';
 
 import ImageDisplayer from './components/ImageDisplayer';
 import VideoDisplayer from './components/VideoDisplayer';
 import styles from './styles';
 
-const NftDisplayer = ({ url, style, type, isDetailView, isSend }) => {
+interface Props {
+  url: string;
+  style: StyleProp<ViewStyle>;
+  type: string;
+  isDetailView?: boolean;
+  isSend?: boolean;
+}
+
+const NftDisplayer = ({ url, style, type, isDetailView, isSend }: Props) => {
   const [loading, setLoading] = useState(true);
 
   const hideSpinner = () => {
@@ -18,7 +26,7 @@ const NftDisplayer = ({ url, style, type, isDetailView, isSend }) => {
         url={url}
         loading={loading}
         style={styles.image}
-        hideSpinner={hideSpinner}
+        onLoad={hideSpinner}
         isDetailView={isDetailView}
         isSendView={isSend}
       />

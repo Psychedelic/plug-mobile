@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, ViewStyle } from 'react-native';
 
 import { WINDOW_WIDTH } from '@/constants/platform';
 import { Colors } from '@/constants/theme';
@@ -11,7 +11,7 @@ const itemSize = WINDOW_WIDTH / 2 - 40;
 const commonStyle = {
   borderRadius: 20,
   alignSelf: 'center',
-};
+} as ViewStyle;
 
 const commonDetailContainer = {
   height: videoDetailSize,

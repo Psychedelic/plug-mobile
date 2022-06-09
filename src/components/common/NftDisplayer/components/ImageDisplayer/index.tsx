@@ -1,14 +1,22 @@
 import MaskedView from '@react-native-masked-view/masked-view';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import Image from '@/components/common/Image';
 import { Colors } from '@/constants/theme';
 
-import HTMLDisplayer from '../../components/HTMLDisplayer';
 import sharedStyles from '../../styles';
+import HTMLDisplayer from '../HTMLDisplayer';
 
-function ImageDisplayer({ style, type, url, isSendView, isDetailView }) {
+interface Props {
+  style: StyleProp<ViewStyle>;
+  url: string;
+  isSendView?: boolean;
+  isDetailView?: boolean;
+  type: string; //TODO: Improve this
+}
+
+function ImageDisplayer({ style, type, url, isSendView, isDetailView }: Props) {
   const innerStyle = isSendView
     ? { width: 54, height: 54 }
     : { width: '100%', height: '100%' };
