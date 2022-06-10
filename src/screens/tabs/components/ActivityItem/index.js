@@ -10,7 +10,9 @@ import shortAddress from '@/utils/shortAddress';
 
 import ActivityIcon from '../ActivityIcon';
 import { getStatus, getSubtitle, getTitle } from '../utils';
-import styles from './styles';
+import styles, { HEIGHT } from './styles';
+
+export const ITEM_HEIGHT = HEIGHT;
 
 const ActivityItem = ({
   type,
