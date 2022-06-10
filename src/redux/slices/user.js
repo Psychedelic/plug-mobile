@@ -17,6 +17,7 @@ const DEFAULT_STATE = {
   assetsError: false,
   assetsLoading: false,
   contacts: [],
+  contactsLoading: false,
   transaction: DEFAULT_TRANSACTION,
   transactions: [],
   transactionsError: false,
@@ -217,12 +218,14 @@ export const transferNFT = createAsyncThunk(
 
 export const getContacts = createAsyncThunk(
   'keyring/getContacts',
-  async (walletNumber = 0, { getState }) => {
+  async (walletNumber = 0, { getState, dispatch }) => {
     try {
+      dispatch(setContactsLoading(true));
       const state = getState();
       const res = await state.keyring.instance?.getContacts(walletNumber);
       return res?.map(formatContact);
     } catch (e) {
+      dispatch(setContactsLoading(false));
       console.log('Error getting contacts:', e);
     }
   }
@@ -230,18 +233,22 @@ export const getContacts = createAsyncThunk(
 
 export const addContact = createAsyncThunk(
   'keyring/addContact',
-  async ({ contact, walletNumber = 0 }, { getState, dispatch }) => {
+  async ({ contact, walletNumber = 0, onFinish }, { getState, dispatch }) => {
     try {
+      dispatch(setContactsLoading(true));
       const state = getState();
       const res = await state.keyring.instance?.addContact(
         formatContactForController(contact),
         walletNumber
       );
       if (res) {
-        dispatch(getContacts());
+        dispatch(getContacts())
+          .unwrap()
+          .then(() => onFinish?.());
       }
     } catch (e) {
       // TODO: We should handle this error
+      dispatch(setContactsLoading(false));
       console.log('Error adding contacts:', e);
     }
   }
@@ -251,6 +258,7 @@ export const removeContact = createAsyncThunk(
   'keyring/removeContact',
   async ({ contactName, walletNumber = 0 }, { getState, dispatch }) => {
     try {
+      dispatch(setContactsLoading(true));
       const state = getState();
       const res = await state.keyring.instance?.deleteContact(
         contactName,
@@ -261,6 +269,7 @@ export const removeContact = createAsyncThunk(
       }
     } catch (e) {
       // TODO: We should handle this error
+      dispatch(setContactsLoading(false));
       console.log('Error removing contact:', e);
     }
   }
@@ -270,6 +279,7 @@ export const editContact = createAsyncThunk(
   'keyring/editContact',
   async ({ contact, newContact, walletNumber = 0 }, { getState, dispatch }) => {
     try {
+      dispatch(setContactsLoading(true));
       const state = getState();
       const removeContactRes = await state.keyring.instance?.deleteContact(
         contact.name,
@@ -283,10 +293,12 @@ export const editContact = createAsyncThunk(
         dispatch(getContacts());
       } else {
         // TODO: We should handle this error
+        dispatch(setContactsLoading(false));
         console.log('Error editing contact:');
       }
     } catch (e) {
       // TODO: We should handle this error
+      dispatch(setContactsLoading(false));
       console.log('Error editing contact:', e);
     }
   }
@@ -298,6 +310,9 @@ export const userSlice = createSlice({
   reducers: {
     setUsingBiometrics: (state, action) => {
       state.usingBiometrics = action.payload;
+    },
+    setContactsLoading: (state, action) => {
+      state.contactsLoading = action.payload;
     },
     setBiometricsAvailable: (state, action) => {
       state.biometricsAvailable = action.payload;
@@ -349,6 +364,7 @@ export const userSlice = createSlice({
   extraReducers: {
     [getContacts.fulfilled]: (state, action) => {
       state.contacts = action.payload;
+      state.contactsLoading = false;
     },
     [sendToken.fulfilled]: (state, action) => {
       state.transaction = action.payload;
@@ -401,6 +417,7 @@ export const {
   setAssets,
   setTransactions,
   setTransaction,
+  setContactsLoading,
   setCollections,
   removeNFT,
   setTransactionsLoading,

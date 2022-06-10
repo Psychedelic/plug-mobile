@@ -1,7 +1,13 @@
 import Clipboard from '@react-native-community/clipboard';
 import { t } from 'i18next';
 import React, { Fragment, useMemo, useRef, useState } from 'react';
-import { Platform, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CommonItem from '@/commonComponents/CommonItem';
@@ -25,7 +31,7 @@ const Contacts = ({ modalRef }) => {
   const addEditContactRef = useRef(null);
   const actionSheetRef = useRef(null);
   const [actionSheetData, setActionSheetData] = useState(undefined);
-  const contacts = useSelector(state => state.user?.contacts);
+  const { contacts, contactsLoading } = useSelector(state => state.user);
   const dispatch = useDispatch();
 
   const groupedContacts = useMemo(
@@ -96,6 +102,14 @@ const Contacts = ({ modalRef }) => {
           }
         />
         <Column style={styles.container}>
+          {contactsLoading && (
+            <View style={styles.loading}>
+              <ActivityIndicator
+                style={StyleSheet.absoluteFill}
+                color="white"
+              />
+            </View>
+          )}
           <Touchable onPress={onAddContact}>
             <Row align="center" style={styles.addRow}>
               <Icon name="plus" style={styles.plusIcon} />

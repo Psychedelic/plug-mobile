@@ -2,7 +2,7 @@ import emojis from 'emoji-datasource';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { charFromEmojiObject } from '@/commonComponents/EmojiSelector/utils';
 import Header from '@/commonComponents/Header';
@@ -17,14 +17,13 @@ import styles from './styles';
 function SaveContact({ modalRef, onClose, id }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { contactsLoading } = useSelector(state => state.user);
   const [name, setName] = useState('');
   const title = t('saveContact.title');
 
   const handleClose = () => {
     setName('');
-    if (onClose) {
-      onClose();
-    }
+    onClose?.();
   };
 
   const handleSubmit = () => {
@@ -33,13 +32,14 @@ function SaveContact({ modalRef, onClose, id }) {
     );
     dispatch(
       addContact({
-        id,
-        name,
-        image: randomEmoji,
+        contact: {
+          id,
+          name,
+          image: randomEmoji,
+        },
+        onFinish: () => modalRef.current?.close(),
       })
     );
-
-    modalRef.current?.close();
   };
 
   const closeModal = () => {
@@ -66,7 +66,12 @@ function SaveContact({ modalRef, onClose, id }) {
           onChangeText={setName}
           customStyle={styles.input}
         />
-        <RainbowButton text={title} onPress={handleSubmit} disabled={!name} />
+        <RainbowButton
+          text={title}
+          onPress={handleSubmit}
+          disabled={!name || contactsLoading}
+          loading={contactsLoading}
+        />
       </View>
     </Modal>
   );

@@ -14,7 +14,6 @@ import {
   setAssetsAndLoading,
   setAssetsLoading,
   setCollections,
-  setContacts,
   setTransactions,
   setTransactionsLoading,
 } from './slices/user';
@@ -73,7 +72,6 @@ export const recursiveParseBigint = obj =>
 
 export const resetStores = dispatch => {
   dispatch(reset());
-  dispatch(setContacts([]));
   dispatch(setCollections([]));
   dispatch(setTransactions([]));
   dispatch(setAssets(DEFAULT_ASSETS));

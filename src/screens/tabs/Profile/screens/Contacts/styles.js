@@ -29,4 +29,9 @@ export default StyleSheet.create({
   contactItem: {
     marginBottom: 20,
   },
+  loading: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    zIndex: 1,
+  },
 });
