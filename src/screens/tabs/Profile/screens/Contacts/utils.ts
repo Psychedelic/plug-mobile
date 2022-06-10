@@ -1,6 +1,6 @@
 import { getFirstLetterFrom } from '@/utils/strings';
 
-interface Contact {
+export interface Contact {
   image: string;
   name: string;
   id: string;

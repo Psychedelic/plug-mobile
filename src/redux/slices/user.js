@@ -22,7 +22,6 @@ const DEFAULT_STATE = {
   transactions: [],
   transactionsError: false,
   transactionsLoading: false,
-  selectedNFT: {},
   collections: [],
   collectionsError: false,
   usingBiometrics: false,
