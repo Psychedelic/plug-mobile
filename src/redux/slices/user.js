@@ -217,14 +217,12 @@ export const transferNFT = createAsyncThunk(
 
 export const getContacts = createAsyncThunk(
   'keyring/getContacts',
-  async (walletNumber = 0, { getState, dispatch }) => {
+  async (walletNumber = 0, { getState }) => {
     try {
-      dispatch(setContactsLoading(true));
       const state = getState();
       const res = await state.keyring.instance?.getContacts(walletNumber);
       return res?.map(formatContact);
     } catch (e) {
-      dispatch(setContactsLoading(false));
       console.log('Error getting contacts:', e);
     }
   }
@@ -241,9 +239,14 @@ export const addContact = createAsyncThunk(
         walletNumber
       );
       if (res) {
-        dispatch(getContacts())
+        dispatch(setContacts([...state.user.contacts, contact]))
           .unwrap()
-          .then(() => onFinish?.());
+          .then(() => {
+            dispatch(setContactsLoading(false));
+            onFinish?.();
+          });
+        // We get the contacts again to update the contact list from dab
+        dispatch(getContacts());
       }
     } catch (e) {
       // TODO: We should handle this error
@@ -264,6 +267,12 @@ export const removeContact = createAsyncThunk(
         walletNumber
       );
       if (res) {
+        dispatch(
+          setContacts(state.user.contacts.filter(c => c.name !== contactName))
+        )
+          .unwrap()
+          .then(() => dispatch(setContactsLoading(false)));
+        // We get the contacts again to update the contact list from dab
         dispatch(getContacts());
       }
     } catch (e) {
@@ -289,6 +298,15 @@ export const editContact = createAsyncThunk(
         walletNumber
       );
       if (removeContactRes && addContactRes) {
+        dispatch(
+          setContacts([
+            ...state.user.contacts.filter(c => c.id !== contact.id),
+            newContact,
+          ])
+        )
+          .unwrap()
+          .then(() => dispatch(setContactsLoading(false)));
+        // We get the contacts again to update the contact list from dab
         dispatch(getContacts());
       } else {
         // TODO: We should handle this error
@@ -312,6 +330,9 @@ export const userSlice = createSlice({
     },
     setContactsLoading: (state, action) => {
       state.contactsLoading = action.payload;
+    },
+    setContacts: (state, action) => {
+      state.contacts = action.payload;
     },
     setBiometricsAvailable: (state, action) => {
       state.biometricsAvailable = action.payload;
@@ -363,7 +384,6 @@ export const userSlice = createSlice({
   extraReducers: {
     [getContacts.fulfilled]: (state, action) => {
       state.contacts = action.payload;
-      state.contactsLoading = false;
     },
     [sendToken.fulfilled]: (state, action) => {
       state.transaction = action.payload;
@@ -416,6 +436,7 @@ export const {
   setAssets,
   setTransactions,
   setTransaction,
+  setContacts,
   setContactsLoading,
   setCollections,
   removeNFT,
