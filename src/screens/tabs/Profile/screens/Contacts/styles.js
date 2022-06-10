@@ -18,6 +18,7 @@ export default StyleSheet.create({
   letter: {
     ...FontStyles.NormalGray,
     marginBottom: 20,
+    textTransform: 'uppercase',
   },
   addRow: {
     marginBottom: 30,

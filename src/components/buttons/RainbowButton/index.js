@@ -21,7 +21,7 @@ const RainbowButton = ({
     <Touchable
       onPress={onPress}
       onLongPress={onLongPress || onPress}
-      disabled={disabled}>
+      disabled={disabled || loading}>
       <LinearGradient
         style={[styles.button, buttonStyle]}
         {...(disabled ? DisabledRainbow : Rainbow)}

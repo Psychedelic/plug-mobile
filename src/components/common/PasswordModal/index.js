@@ -72,7 +72,6 @@ const PasswordModal = ({
           text={t('common.continue')}
           loading={loading}
           onPress={validatedSubmit}
-          disabled={loading}
         />
       </Column>
     </Modal>

@@ -69,7 +69,7 @@ function SaveContact({ modalRef, onClose, id }) {
         <RainbowButton
           text={title}
           onPress={handleSubmit}
-          disabled={!name || contactsLoading}
+          disabled={!name}
           loading={contactsLoading}
         />
       </View>

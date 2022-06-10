@@ -175,18 +175,18 @@ export const mapTransaction = (icpPrice, state) => trx => {
 };
 
 export const formatContact = contact => ({
-  image: contact?.emoji[0],
-  name: contact?.name,
-  id: contact?.value?.PrincipalId,
+  image: contact.emoji[0],
+  name: contact.name,
+  id: contact.value?.PrincipalId,
 });
 
 export const formatContactForController = contact => {
   return {
     description: [t('placeholders.contactDescription')],
-    emoji: [contact?.image],
-    name: contact?.name,
+    emoji: [contact.image],
+    name: contact.name,
     value: {
-      PrincipalId: contact?.id,
+      PrincipalId: contact.id,
     },
   };
 };

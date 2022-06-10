@@ -150,7 +150,7 @@ const CreatePassword = ({ route, navigation }) => {
             loading={loading}
             onPress={handleSubmit(handleCreate)}
             buttonStyle={styles.rainbowButton}
-            disabled={loading || !!errors.password || !getValues().password}
+            disabled={!!errors.password || !getValues().password}
           />
         </View>
       </KeyboardScrollView>

@@ -22,12 +22,12 @@ import DeleteIcon from '@/icons/svg/material/Delete.svg';
 import EditIcon from '@/icons/svg/material/Edit.svg';
 import { Column, Row } from '@/layout';
 import { removeContact } from '@/redux/slices/user';
-import { getFirstLetterFrom } from '@/utils/strings';
 
 import AddEditContact from './components/AddEditContact';
 import styles from './styles';
+import { getGroupedContacts } from './utils';
 
-const Contacts = ({ modalRef }) => {
+function Contacts({ modalRef }) {
   const addEditContactRef = useRef(null);
   const actionSheetRef = useRef(null);
   const [actionSheetData, setActionSheetData] = useState(undefined);
@@ -35,20 +35,7 @@ const Contacts = ({ modalRef }) => {
   const dispatch = useDispatch();
 
   const groupedContacts = useMemo(
-    () =>
-      contacts.reduce((list, contact) => {
-        const { name } = contact;
-        const listItem = list.find(
-          item => item.letter && item.letter === getFirstLetterFrom(name)
-        );
-        if (!listItem) {
-          list.push({ letter: getFirstLetterFrom(name), contacts: [contact] });
-        } else {
-          listItem.contacts.push(contact);
-        }
-
-        return list;
-      }, []),
+    () => getGroupedContacts(contacts),
     [contacts]
   );
 
@@ -151,6 +138,6 @@ const Contacts = ({ modalRef }) => {
       />
     </>
   );
-};
+}
 
 export default Contacts;

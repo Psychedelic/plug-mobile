@@ -195,7 +195,6 @@ const ReviewSend = ({
                   : t('reviewSend.holdToSend')
               }
               loading={loading}
-              disabled={loading}
               onLongPress={onSend}
               buttonStyle={styles.button}
             />
