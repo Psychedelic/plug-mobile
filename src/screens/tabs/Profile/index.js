@@ -13,7 +13,9 @@ import { ENABLE_NFTS } from '@/constants/nfts';
 import { Colors } from '@/constants/theme';
 import { Container, Separator } from '@/layout';
 import { getTransactions, setTransactionsLoading } from '@/redux/slices/user';
-import ActivityItem from '@/screens/tabs/components/ActivityItem';
+import ActivityItem, {
+  ITEM_HEIGHT,
+} from '@/screens/tabs/components/ActivityItem';
 
 import Accounts from './screens/Accounts';
 import Settings from './screens/Settings';
@@ -92,6 +94,11 @@ const Profile = () => {
             keyExtractor={(_, index) => index}
             showsVerticalScrollIndicator={false}
             overScrollMode="never"
+            getItemLayout={(data, index) => ({
+              length: ITEM_HEIGHT,
+              offset: ITEM_HEIGHT * index,
+              index,
+            })}
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}

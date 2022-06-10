@@ -10,7 +10,9 @@ import shortAddress from '@/utils/shortAddress';
 
 import ActivityIcon from '../ActivityIcon';
 import { getStatus, getSubtitle, getTitle } from '../utils';
-import styles from './styles';
+import styles, { HEIGHT } from './styles';
+
+export const ITEM_HEIGHT = HEIGHT;
 
 const ActivityItem = ({
   type,
@@ -65,15 +67,15 @@ const ActivityItem = ({
           <Text style={FontStyles.SmallGray}>{t('common.comingSoon')}</Text>
         ) : (
           <>
-            {amount && (
+            {amount ? (
               <Text style={FontStyles.Normal}>{`${formatToMaxDecimals(
                 Number(amount),
                 8
               )} ${symbol}`}</Text>
-            )}
-            {value && (
+            ) : null}
+            {value ? (
               <UsdFormat value={Number(value)} style={FontStyles.SmallGray} />
-            )}
+            ) : null}
           </>
         )}
       </View>
