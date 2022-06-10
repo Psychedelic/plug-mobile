@@ -108,7 +108,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
             onPress={onPress}
             loading={loading}
             buttonStyle={styles.button}
-            disabled={!isMnemonicValid || loading}
+            disabled={!isMnemonicValid}
           />
         </View>
       </KeyboardScrollView>

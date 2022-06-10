@@ -1626,10 +1626,10 @@
     axios "^0.24.0"
     cross-fetch "^3.1.4"
 
-"@psychedelic/dab-js@1.2.1":
-  version "1.2.1"
-  resolved "https://npm.pkg.github.com/download/@psychedelic/dab-js/1.2.1/2eb1669aaa75a5c8d9466678230f03094b7e909a8ac983e91bfc885a9cd694e1#02897a836bcfb2bf456d56f3428ab339bb476b39"
-  integrity sha512-C6IMT+Oj/PXxB3EPDjCLv1lYDFRHBpahFWCBx6lxbBq0Lq7JaVdXSG6mDtmdD1lVPtqRlgqkMkP46cbe5MzJ5w==
+"@psychedelic/dab-js@1.3.6":
+  version "1.3.6"
+  resolved "https://npm.pkg.github.com/download/@psychedelic/dab-js/1.3.6/400ca72089a38edb3ad6d06594926812b730a6a79e879d787a7d1b5eca7cfc2e#befe608d807c77734b8ec8ccbb7506cbc57aa10b"
+  integrity sha512-ArwSZm+ZTuaG5pbzQRdcqkJ2bbApipIXzIqfKLtJ0M+RMdefDXXVowWLlz9qld7rhgSCuPRb1cG79Bu0BTbvQA==
   dependencies:
     "@dfinity/agent" "0.9.3"
     "@dfinity/candid" "0.9.3"
@@ -1640,17 +1640,17 @@
     cross-fetch "^3.1.4"
     crypto-js "^4.1.1"
 
-"@psychedelic/plug-mobile-controller@0.2.10":
-  version "0.2.10"
-  resolved "https://npm.pkg.github.com/download/@psychedelic/plug-mobile-controller/0.2.10/84782f05a8e62d3064d018a935ec9d3b6ec3a340a1d27f723fb50daea7ce386f#19464c2273492461fc1eaeff248ca3ef1121270f"
-  integrity sha512-baNsieMZs+fhh6pzAx3Gci9R32zmPdbbkSG4NUrusS+z/otmP4Om6zWdFOnkFG/PPFNEEdxQ3PHaJHFUb/jrHg==
+"@psychedelic/plug-mobile-controller@0.2.11":
+  version "0.2.11"
+  resolved "https://npm.pkg.github.com/download/@psychedelic/plug-mobile-controller/0.2.11/1d28df926277d7d4df2d4bb270d6ceead4646647e289a17171ab76f77c0419d3#204cf56111e60c2495d65796a937425596fd7ab4"
+  integrity sha512-h/4iuKfFzSPWH/YyTJfbZ8HCfQGOXlhnkjx6fBqgsCCjELw3tMTZLxjAu1yYud2oQPTJqcvAl2YHkdt1WcfQVw==
   dependencies:
     "@dfinity/agent" "0.9.3"
     "@dfinity/candid" "0.9.3"
     "@dfinity/identity" "0.9.3"
     "@dfinity/principal" "0.9.3"
     "@psychedelic/cap-js" "0.0.7"
-    "@psychedelic/dab-js" "1.2.1"
+    "@psychedelic/dab-js" "1.3.6"
     "@types/secp256k1" "^4.0.3"
     axios "^0.21.1"
     babel-jest "^25.5.1"
