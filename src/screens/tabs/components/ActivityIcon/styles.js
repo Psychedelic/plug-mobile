@@ -16,7 +16,7 @@ export default StyleSheet.create({
     right: -5,
     top: -5,
     borderRadius: 26,
-    zIndex: 1,
+    zIndex: 2,
     height: activitySize,
     width: activitySize,
   },
