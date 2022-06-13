@@ -242,12 +242,9 @@ export const addContact = createAsyncThunk(
         walletNumber
       );
       if (res) {
-        dispatch(setContacts([...state.user.contacts, contact]))
-          .unwrap()
-          .then(() => {
-            dispatch(setContactsLoading(false));
-            onFinish?.();
-          });
+        dispatch(setContacts([...state.user.contacts, contact]));
+        dispatch(setContactsLoading(false));
+        onFinish?.();
         // We get the contacts again to update the contact list from dab
         dispatch(getContacts());
       }
@@ -272,9 +269,8 @@ export const removeContact = createAsyncThunk(
       if (res) {
         dispatch(
           setContacts(state.user.contacts.filter(c => c.name !== contactName))
-        )
-          .unwrap()
-          .then(() => dispatch(setContactsLoading(false)));
+        );
+        dispatch(setContactsLoading(false));
         // We get the contacts again to update the contact list from dab
         dispatch(getContacts());
       }
@@ -306,9 +302,8 @@ export const editContact = createAsyncThunk(
             ...state.user.contacts.filter(c => c.id !== contact.id),
             newContact,
           ])
-        )
-          .unwrap()
-          .then(() => dispatch(setContactsLoading(false)));
+        );
+        dispatch(setContactsLoading(false));
         // We get the contacts again to update the contact list from dab
         dispatch(getContacts());
       } else {

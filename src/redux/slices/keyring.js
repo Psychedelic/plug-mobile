@@ -13,6 +13,7 @@ import {
   getTransactions,
   setAssetsAndTransactions,
   setAssetsLoading,
+  setContactsLoading,
   setTransactionsLoading,
 } from './user';
 
@@ -152,7 +153,11 @@ export const login = createAsyncThunk(
         dispatch(setTransactionsLoading(true));
         dispatch(getTransactions({ icpPrice }));
         dispatch(getNFTs());
-        dispatch(getContacts());
+        // Get contacts from dab
+        dispatch(setContactsLoading(true));
+        dispatch(getContacts())
+          .unwrap()
+          .then(() => dispatch(setContactsLoading(false)));
       } else {
         handleError();
       }
