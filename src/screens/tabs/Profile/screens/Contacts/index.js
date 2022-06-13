@@ -35,7 +35,7 @@ function Contacts({ modalRef }) {
   const dispatch = useDispatch();
 
   const groupedContacts = useMemo(
-    () => (contacts ? getGroupedContacts(contacts) : []),
+    () => getGroupedContacts(contacts),
     [contacts]
   );
 

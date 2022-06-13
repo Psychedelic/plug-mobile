@@ -33,8 +33,8 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
     ? t('contacts.editContact')
     : t('contacts.addContact');
   const validId = validatePrincipalId(id);
-  const savedContact = contacts?.find(c => c.id === id);
-  const savedContactName = contacts?.find(c => c.name === name);
+  const savedContact = contacts.find(c => c.id === id);
+  const savedContactName = contacts.find(c => c.name === name);
   const nameError = savedContactName && contact?.name !== name;
   const idError = savedContact && contact?.id !== id;
 
