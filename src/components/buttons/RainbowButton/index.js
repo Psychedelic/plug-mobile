@@ -17,20 +17,21 @@ const RainbowButton = ({
   loading = false,
   ...props
 }) => {
+  const disabledOrLoading = disabled || loading;
   return (
     <Touchable
       onPress={onPress}
       onLongPress={onLongPress || onPress}
-      disabled={disabled || loading}>
+      disabled={disabledOrLoading}>
       <LinearGradient
         style={[styles.button, buttonStyle]}
-        {...(disabled ? DisabledRainbow : Rainbow)}
+        {...(disabledOrLoading ? DisabledRainbow : Rainbow)}
         {...props}>
         <Button
           buttonStyle={[styles.buttonRainbow]}
           text={text}
           textStyle={[styles.textRainbow, textStyle]}
-          disabled={disabled || loading}
+          disabled={disabledOrLoading}
           loading={loading}
           disableAnimation
           {...props}
