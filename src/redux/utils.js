@@ -14,6 +14,8 @@ import {
   setAssetsAndLoading,
   setAssetsLoading,
   setCollections,
+  setContacts,
+  setContactsLoading,
   setTransactions,
   setTransactionsLoading,
 } from './slices/user';
@@ -79,16 +81,20 @@ export const resetStores = dispatch => {
 
 export const getNewAccountData = async (dispatch, icpPrice, state) => {
   dispatch(setAssetsLoading(true));
+  dispatch(setContacts([]));
+  dispatch(setContactsLoading(true));
   dispatch(getNFTs());
   const assets = await privateGetAssets(
     { refresh: true, icpPrice },
     state,
     dispatch
   );
-  dispatch(getContacts());
   dispatch(setAssetsAndLoading({ assets }));
   dispatch(setTransactionsLoading(true));
   dispatch(getTransactions({ icpPrice }));
+  dispatch(getContacts())
+    .unwrap()
+    .then(() => dispatch(setContactsLoading(false)));
 };
 
 export const mapTransaction = (icpPrice, state) => trx => {
@@ -180,13 +186,13 @@ export const formatContact = contact => ({
   id: contact.value?.PrincipalId,
 });
 
-export const formatContactForController = contact => {
-  return {
-    description: [t('placeholders.contactDescription')],
-    emoji: [contact.image],
-    name: contact.name,
-    value: {
-      PrincipalId: contact.id,
-    },
-  };
-};
+export const formatContactForController = contact => ({
+  description: [t('placeholders.contactDescription')],
+  emoji: [contact.image],
+  name: contact.name,
+  value: {
+    PrincipalId: contact.id,
+  },
+});
+
+export const filterICNSContacts = contact => contact.id;

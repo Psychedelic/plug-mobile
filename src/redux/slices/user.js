@@ -6,6 +6,7 @@ import { formatAssets } from '@/utils/assets';
 import {
   DEFAULT_ASSETS,
   DEFAULT_TRANSACTION,
+  filterICNSContacts,
   formatContact,
   formatContactForController,
   mapTransaction,
@@ -224,7 +225,8 @@ export const getContacts = createAsyncThunk(
     try {
       const state = getState();
       const res = await state.keyring.instance?.getContacts(walletNumber);
-      return res?.map(formatContact);
+      // TODO: When ICNS is integrated in PlugMobile delete the .filter(filterICNSContacts)
+      return res?.map(formatContact).filter(filterICNSContacts);
     } catch (e) {
       console.log('Error getting contacts:', e);
     }
@@ -242,12 +244,9 @@ export const addContact = createAsyncThunk(
         walletNumber
       );
       if (res) {
-        dispatch(setContacts([...state.user.contacts, contact]))
-          .unwrap()
-          .then(() => {
-            dispatch(setContactsLoading(false));
-            onFinish?.();
-          });
+        dispatch(setContacts([...state.user.contacts, contact]));
+        dispatch(setContactsLoading(false));
+        onFinish?.();
         // We get the contacts again to update the contact list from dab
         dispatch(getContacts());
       }
@@ -272,9 +271,8 @@ export const removeContact = createAsyncThunk(
       if (res) {
         dispatch(
           setContacts(state.user.contacts.filter(c => c.name !== contactName))
-        )
-          .unwrap()
-          .then(() => dispatch(setContactsLoading(false)));
+        );
+        dispatch(setContactsLoading(false));
         // We get the contacts again to update the contact list from dab
         dispatch(getContacts());
       }
@@ -306,9 +304,8 @@ export const editContact = createAsyncThunk(
             ...state.user.contacts.filter(c => c.id !== contact.id),
             newContact,
           ])
-        )
-          .unwrap()
-          .then(() => dispatch(setContactsLoading(false)));
+        );
+        dispatch(setContactsLoading(false));
         // We get the contacts again to update the contact list from dab
         dispatch(getContacts());
       } else {
