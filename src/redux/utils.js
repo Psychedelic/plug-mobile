@@ -186,13 +186,13 @@ export const formatContact = contact => ({
   id: contact.value?.PrincipalId,
 });
 
-export const formatContactForController = contact => {
-  return {
-    description: [t('placeholders.contactDescription')],
-    emoji: [contact.image],
-    name: contact.name,
-    value: {
-      PrincipalId: contact.id,
-    },
-  };
-};
+export const formatContactForController = contact => ({
+  description: [t('placeholders.contactDescription')],
+  emoji: [contact.image],
+  name: contact.name,
+  value: {
+    PrincipalId: contact.id,
+  },
+});
+
+export const filterICNSContacts = contact => contact.id;
