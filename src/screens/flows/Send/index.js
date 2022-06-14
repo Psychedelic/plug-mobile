@@ -8,6 +8,7 @@ import Modal, { modalOffset } from '@/commonComponents/Modal';
 import PasswordModal from '@/commonComponents/PasswordModal';
 import TextInput from '@/commonComponents/TextInput';
 import { ADDRESS_TYPES } from '@/constants/addresses';
+import { NUMBER_MAX_DECIMALS } from '@/constants/business';
 import { isAndroid } from '@/constants/platform';
 import { FontStyles } from '@/constants/theme';
 import XTC_OPTIONS from '@/constants/xtc';
@@ -32,12 +33,7 @@ import ReviewSend from './components/ReviewSend';
 import SaveContact from './components/SaveContact';
 import TokenSection from './components/TokenSection';
 import styles from './styles';
-import {
-  getAvailableAmount,
-  getUsdAvailableAmount,
-  TOKEN_MAX_DECIMALS,
-  USD_MAX_DECIMALS,
-} from './utils';
+import { getAvailableAmount, getUsdAvailableAmount } from './utils';
 
 const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
 
@@ -155,7 +151,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
   };
 
   const handleSendToken = () => {
-    const amount = tokenAmount.value.toFixed(TOKEN_MAX_DECIMALS);
+    const amount = tokenAmount.value.toFixed(NUMBER_MAX_DECIMALS);
     if (sendingXTCtoCanister && destination === XTC_OPTIONS.BURN) {
       dispatch(burnXtc({ to, amount }));
     } else {
@@ -271,15 +267,12 @@ function Send({ modalRef, nft, token, onSuccess }) {
         selectedToken?.amount,
         selectedToken?.symbol,
         icpPrice
-      ).toFixed(TOKEN_MAX_DECIMALS),
+      ),
     [selectedToken]
   );
 
   const availableUsdAmount = useMemo(
-    () =>
-      getUsdAvailableAmount(availableAmount, selectedTokenPrice).toFixed(
-        USD_MAX_DECIMALS
-      ),
+    () => getUsdAvailableAmount(availableAmount, selectedTokenPrice),
     [availableAmount, selectedTokenPrice]
   );
 

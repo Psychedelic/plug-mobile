@@ -1,29 +1,50 @@
 import { t } from 'i18next';
 import React, { useRef, useState } from 'react';
-import { Keyboard, Text, TextInput, View } from 'react-native';
+import {
+  Keyboard,
+  StyleProp,
+  Text,
+  TextInput,
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import Button from '@/buttons/Button';
 import Touchable from '@/commonComponents/Touchable';
 import { Colors, Rainbow } from '@/constants/theme';
 import animationScales from '@/utils/animationScales';
-import { isDecimal } from '@/utils/number';
+import { isValidDecimal } from '@/utils/number';
 
 import styles from './styles';
+
+interface Props {
+  value?: string;
+  selected: any;
+  setSelected: (value: any) => void;
+  symbol: string;
+  autoFocus?: boolean;
+  customPlaceholder?: string;
+  onChange: (value: string) => void;
+  onMaxPress?: () => void;
+  containerStyle?: StyleProp<ViewStyle>;
+  inputStyle?: StyleProp<TextStyle>;
+}
 
 const AmountInput = ({
   value,
   onChange,
+  onMaxPress,
   selected,
   setSelected,
   customPlaceholder,
   symbol,
-  maxAmount,
   autoFocus,
   containerStyle,
   inputStyle,
-}) => {
-  const inputRef = useRef();
+}: Props) => {
+  const inputRef = useRef<TextInput>(null);
   const [isFocused, setIsFocused] = useState(false);
 
   const handleOnFocus = () => {
@@ -36,21 +57,22 @@ const AmountInput = ({
   };
 
   const handleMaxAmount = () => {
-    onChange(String(maxAmount));
+    onMaxPress?.();
   };
 
-  const handleChange = newText => {
-    if (isDecimal(newText) || !newText.length) {
+  const handleChange = (newText: string) => {
+    if (isValidDecimal(newText) || !newText.length) {
       onChange(newText);
     }
   };
 
-  const onPress = () => {
-    inputRef?.current.focus();
+  const handlePress = () => {
+    inputRef?.current?.focus();
     setSelected(symbol);
   };
+
   return (
-    <Touchable scale={animationScales.small} onPress={onPress}>
+    <Touchable scale={animationScales.small} onPress={handlePress}>
       {!!isFocused && (
         <LinearGradient
           style={[styles.focusedGradient, containerStyle]}
@@ -77,7 +99,7 @@ const AmountInput = ({
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
         />
-        {!!selected && !!maxAmount && (
+        {!!selected && !!onMaxPress && (
           <Button
             variant="gray"
             text="Max"

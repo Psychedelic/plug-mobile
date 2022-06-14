@@ -1,11 +1,18 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { StyleProp, Text, View, ViewStyle } from 'react-native';
 
 import Icon from '@/icons';
 
 import styles from './styles';
 
-const TokenIcon = ({ icon, symbol, color, customStyle, ...props }) => {
+interface Props {
+  symbol: string;
+  icon?: string;
+  customStyle?: StyleProp<ViewStyle>;
+  color?: string;
+}
+
+const TokenIcon = ({ icon, symbol, color, customStyle, ...props }: Props) => {
   return icon ? (
     <Icon name={icon} color={color} />
   ) : (

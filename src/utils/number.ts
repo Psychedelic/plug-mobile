@@ -1,10 +1,18 @@
 import { getNumberFormatSettings } from 'react-native-localize';
 
+import { VISIBLE_DECIMALS } from '@/constants/business';
+
 export const { decimalSeparator, groupingSeparator: thousandSeparator } =
   getNumberFormatSettings();
 
-export const isDecimal = (value: string) => {
-  return RegExp(`^[0-9]+[${decimalSeparator}]?[0-9]*$`, 'g').test(value);
+export const isValidDecimal = (
+  value: string,
+  maxDecimals = VISIBLE_DECIMALS
+) => {
+  return RegExp(
+    `^[0-9]+[${decimalSeparator}]?[0-9]{0,${maxDecimals}}$`,
+    'g'
+  ).test(value);
 };
 
 export const formatToMaxDecimals = (number: number, maxDecimals: number) => {
