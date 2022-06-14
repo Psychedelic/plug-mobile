@@ -12,6 +12,7 @@ import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import Icon from '@/components/icons';
 import TokenIcon from '@/components/tokens/TokenIcon';
+import { VISIBLE_DECIMALS } from '@/constants/business';
 import { Colors, FontStyles } from '@/constants/theme';
 import TokenFormat from '@/formatters/TokenFormat';
 import useGetType from '@/hooks/useGetType';
@@ -119,9 +120,9 @@ const ReviewSend = ({
         {token && (
           <Row style={styles.row}>
             <Column>
-              <Text style={FontStyles.Title2}>${value?.value}</Text>
+              <Text style={FontStyles.Title2}>${value?.display}</Text>
               <Text style={FontStyles.Subtitle3}>
-                <TokenFormat value={amount?.value} token={token.symbol} />
+                <TokenFormat value={amount?.display} token={token.symbol} />
               </Text>
             </Column>
             <TokenIcon {...token} color={Colors.Gray.Tertiary} />
@@ -170,9 +171,9 @@ const ReviewSend = ({
           <Row style={styles.row}>
             <Text style={FontStyles.Subtitle3}>
               {t('reviewSend.totalFee', {
-                value: `${currentFee} ${
-                  token?.symbol
-                } ($${currentUSDFee.toFixed(USD_MAX_DECIMALS + 2)})`,
+                value: `${currentFee} ${token?.symbol} ($${Number(
+                  currentUSDFee.toFixed(VISIBLE_DECIMALS)
+                )})`,
               })}
             </Text>
           </Row>
