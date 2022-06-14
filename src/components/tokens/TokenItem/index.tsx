@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { StyleProp, Text, View, ViewStyle } from 'react-native';
 
 import Touchable from '@/commonComponents/Touchable';
 import { FontStyles } from '@/constants/theme';
@@ -10,6 +10,17 @@ import animationScales from '@/utils/animationScales';
 
 import styles from './styles';
 
+interface Props {
+  icon: string;
+  name: string;
+  amount: string | number;
+  value: string | number;
+  symbol: string;
+  color?: string;
+  style?: StyleProp<ViewStyle>;
+  onPress?: () => void;
+}
+
 function TokenItem({
   icon,
   name,
@@ -19,15 +30,9 @@ function TokenItem({
   color,
   style,
   onPress,
-}) {
-  const handleOnPress = () => {
-    if (onPress) {
-      onPress();
-    }
-  };
-
+}: Props) {
   return (
-    <Touchable scale={animationScales.small} onPress={handleOnPress}>
+    <Touchable scale={animationScales.small} onPress={() => onPress?.()}>
       <View style={[styles.root, style]}>
         <TokenIcon icon={icon} symbol={symbol} color={color} />
         <View style={styles.leftContainer}>

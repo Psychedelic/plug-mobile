@@ -1,8 +1,14 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { StyleProp, Text, TextStyle } from 'react-native';
 import NumberFormat from 'react-number-format';
 
-function UsdFormat({ value, style, decimalScale = 2 }) {
+interface Props {
+  value?: string | number | null;
+  style?: StyleProp<TextStyle>;
+  decimalScale?: number;
+}
+
+function UsdFormat({ value, style, decimalScale = 2 }: Props) {
   return (
     <NumberFormat
       value={value}
