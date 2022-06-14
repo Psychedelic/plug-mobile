@@ -6,6 +6,7 @@ import { formatAssets } from '@/utils/assets';
 import {
   DEFAULT_ASSETS,
   DEFAULT_TRANSACTION,
+  filterICNSContacts,
   formatContact,
   formatContactForController,
   mapTransaction,
@@ -224,7 +225,8 @@ export const getContacts = createAsyncThunk(
     try {
       const state = getState();
       const res = await state.keyring.instance?.getContacts(walletNumber);
-      return res?.map(formatContact);
+      // TODO: When ICNS is integrated in PlugMobile delete the .filter(filterICNSContacts)
+      return res?.map(formatContact).filter(filterICNSContacts);
     } catch (e) {
       console.log('Error getting contacts:', e);
     }
