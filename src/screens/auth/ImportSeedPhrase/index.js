@@ -36,6 +36,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
   }, []);
 
   useEffect(() => {
+    // This is the only way to make the loading button work fine, otherwise it's laggy.
     if (importingWallet) {
       importWalletFromSeedPhrase();
     }
