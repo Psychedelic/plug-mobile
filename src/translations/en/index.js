@@ -162,7 +162,7 @@ const translations = {
     namePlaceholder: 'Name',
     idPlaceholder: 'Principal ID',
     nameTaken: 'Name is already taken!',
-    contactAlreadySaved: 'Contact already saved as {{name}}',
+    contactAlreadySaved: 'Contact already saved as {{value}}',
   },
   placeholders: {
     amount: `0${decimalSeparator}00`,
