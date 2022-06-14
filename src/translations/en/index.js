@@ -27,6 +27,7 @@ const translations = {
     copyClipboard: 'Copy to clipboard',
     revealPhrase: 'Reveal Seed Phrase',
     available: 'Available',
+    max: 'Max',
   },
   welcome: {
     title: 'Welcome to Plug',

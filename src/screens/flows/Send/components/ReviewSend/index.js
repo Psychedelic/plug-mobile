@@ -180,7 +180,6 @@ const ReviewSend = ({
         {isSuccess ? (
           token && (
             <Button
-              variant="gray"
               text={t('reviewSend.goToActivity')}
               buttonStyle={styles.button}
               onPress={handleGoToActivity}
@@ -200,7 +199,6 @@ const ReviewSend = ({
             />
             {isError && (
               <Button
-                variant="gray"
                 text={t('common.cancel')}
                 buttonStyle={styles.button}
                 onPress={handleClose}

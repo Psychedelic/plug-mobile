@@ -101,8 +101,7 @@ const AmountInput = ({
         />
         {!!selected && !!onMaxPress && (
           <Button
-            variant="gray"
-            text="Max"
+            text={t('common.max')}
             onPress={() => handleMaxAmount()}
             buttonStyle={styles.buttonStyle}
             textStyle={styles.buttonTextStyle}
