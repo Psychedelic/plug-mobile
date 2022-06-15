@@ -23,6 +23,7 @@ const shortAddress = (address, config = defaultConfig) => {
   const separator = config.separator || defaultConfig.separator;
   const replaceRules = config.replace || defaultConfig.replace;
 
+  console.log('shortAddress', replaceRules);
   const addr = replaceRules.reduce(
     (acc, rules) => acc.replace(...rules),
     address

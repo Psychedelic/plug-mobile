@@ -11,8 +11,9 @@ interface ContactList {
   letter: string;
 }
 
-export const getGroupedContacts = (contacts: Contact[]) =>
-  contacts.reduce((list: ContactList[], contact: Contact) => {
+export const getGroupedContacts = (contacts: Contact[]) => {
+  console.log('getGroupedContacts', contacts);
+  return contacts.reduce((list: ContactList[], contact: Contact) => {
     const { name } = contact;
     const listItem = list.find(
       item => item.letter && item.letter === getFirstLetterFrom(name)
@@ -25,3 +26,4 @@ export const getGroupedContacts = (contacts: Contact[]) =>
 
     return list;
   }, []);
+};

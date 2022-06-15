@@ -19,7 +19,6 @@ function WalletConnectWaitingBridge() {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      console.log('BRIDGE TIMED OUT');
       setTimedOut(true);
     }, 20000);
     dispatch(updateBridgeTimeout({ timeout, onBridgeContact }));

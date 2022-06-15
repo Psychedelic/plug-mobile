@@ -55,8 +55,9 @@ export const TRANSACTION_STATUS = {
   error: 'error',
 };
 
-export const recursiveParseBigint = obj =>
-  Object.entries(obj).reduce(
+export const recursiveParseBigint = obj => {
+  console.log('recursiveParseBigint', obj, Object.entries(obj));
+  return Object.entries(obj).reduce(
     (acum, [key, val]) => {
       if (val instanceof Object) {
         const res = Array.isArray(val)
@@ -71,6 +72,7 @@ export const recursiveParseBigint = obj =>
     },
     { ...obj }
   );
+};
 
 export const resetStores = dispatch => {
   dispatch(reset());

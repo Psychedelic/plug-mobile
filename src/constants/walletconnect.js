@@ -44,6 +44,11 @@ export const ERRORS = {
     message:
       'The transaction that was just attempted failed because it was not a valid batch transaction. Please contact the project’s developers.',
   },
+  TIMEOUT: {
+    code: 408,
+    message:
+      'The transaction that was just attempted failed because of timeout. Please contact the project’s developers.',
+  },
 };
 
 export const DEFAULT_STATE = {
@@ -71,3 +76,12 @@ export const TRANSFER_STATUS = {
   declined: 'declined',
   accepted: 'accepted',
 };
+
+export const SIGNING_METHODS = [
+  'requestTransfer',
+  'requestTransferToken',
+  'requestBurnXTC',
+  'batchTransaction',
+  'requestCall',
+  'verifyWhitelist',
+];

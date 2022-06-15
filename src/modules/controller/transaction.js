@@ -30,53 +30,56 @@ const TransactionModule = (dispatch, getState) => {
   const requestTransfer = {
     methodName: 'requestTransfer',
     handler: async (request, metadata, args) => {
+      console.log('requestTransfer HANDLER');
       const keyring = getState().keyring?.instance;
 
-      getApp(keyring.currentWalletId.toString(), metadata.url, app => {
-        if (app.status === CONNECTION_STATUS.accepted) {
-          const argsError = validateTransferArgs(args);
-          if (argsError) {
-            return dispatch(
-              walletConnectExecuteAndResponse({ ...request, error: argsError }),
-            );
-          }
-
-          const handleApprove = () => {
-            dispatch(
-              walletConnectExecuteAndResponse({
-                ...request,
-                args: [{ ...args, approve: true }],
-              }),
-            );
-          };
-
-          const handleDecline = () => {
-            dispatch(
-              walletConnectExecuteAndResponse({
-                ...request,
-                args: [{ ...args, approve: false }],
-              }),
-            );
-          };
-
-          Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
-            type: 'transfer',
-            openAutomatically: true,
-            request,
-            metadata,
-            args,
-            handleApprove,
-            handleDecline,
-          });
-        } else {
+      const app = await getApp(
+        keyring.currentWalletId.toString(),
+        metadata.url,
+      );
+      if (app.status === CONNECTION_STATUS.accepted) {
+        const argsError = validateTransferArgs(args);
+        if (argsError) {
           return dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              error: ERRORS.CONNECTION_ERROR,
-            }),
+            walletConnectExecuteAndResponse({ ...request, error: argsError }),
           );
         }
-      });
+
+        const handleApprove = () => {
+          dispatch(
+            walletConnectExecuteAndResponse({
+              ...request,
+              args: [{ ...args, approve: true }],
+            }),
+          );
+        };
+
+        const handleDecline = () => {
+          dispatch(
+            walletConnectExecuteAndResponse({
+              ...request,
+              args: [{ ...args, approve: false }],
+            }),
+          );
+        };
+
+        Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
+          type: 'transfer',
+          openAutomatically: true,
+          request,
+          metadata,
+          args,
+          handleApprove,
+          handleDecline,
+        });
+      } else {
+        return dispatch(
+          walletConnectExecuteAndResponse({
+            ...request,
+            error: ERRORS.CONNECTION_ERROR,
+          }),
+        );
+      }
     },
     executor: async (opts, { approve, amount, ...args }) => {
       if (!approve) {
@@ -107,53 +110,57 @@ const TransactionModule = (dispatch, getState) => {
   const requestTransferToken = {
     methodName: 'requestTransferToken',
     handler: async (request, metadata, args) => {
+      console.log('requestTransferToken HANDLER');
+
       const keyring = getState().keyring?.instance;
 
-      getApp(keyring.currentWalletId.toString(), metadata.url, app => {
-        if (app.status === CONNECTION_STATUS.accepted) {
-          const argsError = validateTransferArgs(args);
-          if (argsError) {
-            return dispatch(
-              walletConnectExecuteAndResponse({ ...request, error: argsError }),
-            );
-          }
-
-          const handleApprove = () => {
-            dispatch(
-              walletConnectExecuteAndResponse({
-                ...request,
-                args: [{ ...args, approve: true }],
-              }),
-            );
-          };
-
-          const handleDecline = () => {
-            dispatch(
-              walletConnectExecuteAndResponse({
-                ...request,
-                args: [{ ...args, approve: false }],
-              }),
-            );
-          };
-
-          Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
-            type: 'transfer',
-            openAutomatically: true,
-            request,
-            metadata,
-            args,
-            handleApprove,
-            handleDecline,
-          });
-        } else {
+      const app = await getApp(
+        keyring.currentWalletId.toString(),
+        metadata.url,
+      );
+      if (app.status === CONNECTION_STATUS.accepted) {
+        const argsError = validateTransferArgs(args);
+        if (argsError) {
           return dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              error: ERRORS.CONNECTION_ERROR,
-            }),
+            walletConnectExecuteAndResponse({ ...request, error: argsError }),
           );
         }
-      });
+
+        const handleApprove = () => {
+          dispatch(
+            walletConnectExecuteAndResponse({
+              ...request,
+              args: [{ ...args, approve: true }],
+            }),
+          );
+        };
+
+        const handleDecline = () => {
+          dispatch(
+            walletConnectExecuteAndResponse({
+              ...request,
+              args: [{ ...args, approve: false }],
+            }),
+          );
+        };
+
+        Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
+          type: 'transfer',
+          openAutomatically: true,
+          request,
+          metadata,
+          args,
+          handleApprove,
+          handleDecline,
+        });
+      } else {
+        return dispatch(
+          walletConnectExecuteAndResponse({
+            ...request,
+            error: ERRORS.CONNECTION_ERROR,
+          }),
+        );
+      }
     },
     executor: async (opts, { approve, amount, ...args }) => {
       if (!approve) {
@@ -189,53 +196,56 @@ const TransactionModule = (dispatch, getState) => {
   const requestBurnXTC = {
     methodName: 'requestBurnXTC',
     handler: async (request, metadata, args) => {
+      console.log('requestBurnXTC HANDLER');
+
       const keyring = getState().keyring?.instance;
-
-      getApp(keyring.currentWalletId.toString(), metadata.url, app => {
-        if (app.status === CONNECTION_STATUS.accepted) {
-          const argsError = validateBurnArgs(args);
-          if (argsError) {
-            return dispatch(
-              walletConnectExecuteAndResponse({ ...request, error: argsError }),
-            );
-          }
-
-          const handleApprove = () => {
-            dispatch(
-              walletConnectExecuteAndResponse({
-                ...request,
-                args: [{ ...args, approve: true }],
-              }),
-            );
-          };
-
-          const handleDecline = () => {
-            dispatch(
-              walletConnectExecuteAndResponse({
-                ...request,
-                args: [{ ...args, approve: false }],
-              }),
-            );
-          };
-
-          Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
-            type: 'burnXTC',
-            openAutomatically: true,
-            request,
-            metadata,
-            args,
-            handleApprove,
-            handleDecline,
-          });
-        } else {
+      const app = await getApp(
+        keyring.currentWalletId.toString(),
+        metadata.url,
+      );
+      if (app.status === CONNECTION_STATUS.accepted) {
+        const argsError = validateBurnArgs(args);
+        if (argsError) {
           return dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              error: ERRORS.CONNECTION_ERROR,
-            }),
+            walletConnectExecuteAndResponse({ ...request, error: argsError }),
           );
         }
-      });
+
+        const handleApprove = () => {
+          dispatch(
+            walletConnectExecuteAndResponse({
+              ...request,
+              args: [{ ...args, approve: true }],
+            }),
+          );
+        };
+
+        const handleDecline = () => {
+          dispatch(
+            walletConnectExecuteAndResponse({
+              ...request,
+              args: [{ ...args, approve: false }],
+            }),
+          );
+        };
+
+        Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
+          type: 'burnXTC',
+          openAutomatically: true,
+          request,
+          metadata,
+          args,
+          handleApprove,
+          handleDecline,
+        });
+      } else {
+        return dispatch(
+          walletConnectExecuteAndResponse({
+            ...request,
+            error: ERRORS.CONNECTION_ERROR,
+          }),
+        );
+      }
     },
     executor: async (opts, { approve, amount, ...args }) => {
       if (!approve) {
@@ -268,82 +278,84 @@ const TransactionModule = (dispatch, getState) => {
   const batchTransaction = {
     methodName: 'batchTransaction',
     handler: async (request, metadata, transactions) => {
+      console.log('batchTransaction HANDLER');
+
       const keyring = getState().keyring?.instance;
 
-      getApp(keyring.currentWalletId.toString(), metadata.url, app => {
-        if (app.status === CONNECTION_STATUS.accepted) {
-          const argsError = validateTransactions(transactions);
-          if (argsError) {
-            return dispatch(
-              walletConnectExecuteAndResponse({ ...request, error: argsError }),
-            );
-          }
-
-          const handleApprove = () => {
-            dispatch(
-              walletConnectExecuteAndResponse({
-                ...request,
-                args: [{ transactions, approve: true }],
-              }),
-            );
-          };
-
-          const handleDecline = () => {
-            dispatch(
-              walletConnectExecuteAndResponse({
-                ...request,
-                args: [{ transactions, approve: false }],
-              }),
-            );
-          };
-
-          Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
-            type: 'batchTransactions',
-            openAutomatically: true,
-            request,
-            metadata,
-            args: transactions,
-            handleApprove,
-            handleDecline,
-          });
-        } else {
+      const app = await getApp(
+        keyring.currentWalletId.toString(),
+        metadata.url,
+      );
+      if (app.status === CONNECTION_STATUS.accepted) {
+        const argsError = validateTransactions(transactions);
+        if (argsError) {
           return dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              error: ERRORS.CONNECTION_ERROR,
-            }),
+            walletConnectExecuteAndResponse({ ...request, error: argsError }),
           );
         }
-      });
+
+        const handleApprove = () => {
+          dispatch(
+            walletConnectExecuteAndResponse({
+              ...request,
+              args: [{ transactions, approve: true }],
+            }),
+          );
+        };
+
+        const handleDecline = () => {
+          dispatch(
+            walletConnectExecuteAndResponse({
+              ...request,
+              args: [{ transactions, approve: false }],
+            }),
+          );
+        };
+
+        Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
+          type: 'batchTransactions',
+          openAutomatically: true,
+          request,
+          metadata,
+          args: transactions,
+          handleApprove,
+          handleDecline,
+        });
+      } else {
+        return dispatch(
+          walletConnectExecuteAndResponse({
+            ...request,
+            error: ERRORS.CONNECTION_ERROR,
+          }),
+        );
+      }
     },
     executor: async (opts, { approve, transactions }) => {
       if (!approve) {
         return { error: ERRORS.TRANSACTION_REJECTED };
       }
 
-      getBatchTransactions(async (err, batchTransactions) => {
-        if (err) {
-          return { error: ERRORS.SERVER_ERROR(err) };
-        }
-        const newBatchTransactionId = randomUUID();
-        const updatedBatchTransactions = {
-          ...batchTransactions,
-          [newBatchTransactionId]: transactions.map(tx => ({
-            canisterId: tx.canisterId,
-            methodName: tx.methodName,
-            args: tx.arguments,
-          })),
-        };
-        setBatchTransactions(updatedBatchTransactions);
+      const batchTransactions = await getBatchTransactions();
+      const newBatchTransactionId = randomUUID();
+      const updatedBatchTransactions = {
+        ...batchTransactions,
+        [newBatchTransactionId]: transactions.map(tx => ({
+          canisterId: tx.canisterId,
+          methodName: tx.methodName,
+          args: tx.arguments,
+        })),
+      };
+      await setBatchTransactions(updatedBatchTransactions);
 
-        return { status: true, txId: newBatchTransactionId };
-      });
+      return { status: true, txId: newBatchTransactionId };
     },
   };
 
   const requestCall = {
     methodName: 'requestCall',
     handler: async (request, metadata, args, batchTxId) => {
+      console.log('requestCall HANDLER');
+
       const keyring = getState().keyring?.instance;
       const senderPID = getState().keyring?.currentWallet.principal;
       const { canisterId } = args;
@@ -479,9 +491,11 @@ const TransactionModule = (dispatch, getState) => {
   const requestReadState = {
     methodName: 'requestReadState',
     handler: async (request, metadata, { canisterId, paths }) => {
+      console.log('requestReadState HANDLER');
+
       const keyring = getState().keyring?.instance;
       try {
-        getApp(keyring.currentWalletId, metadata.url, app => {
+        getApp(keyring.currentWalletId.toString(), metadata.url, app => {
           if (app.status !== CONNECTION_STATUS.accepted) {
             return dispatch(
               walletConnectExecuteAndResponse({
@@ -529,26 +543,29 @@ const TransactionModule = (dispatch, getState) => {
   const requestQuery = {
     methodName: 'requestQuery',
     handler: async (request, metadata, { canisterId, methodName, arg }) => {
-      const keyring = getState().keyring?.instance;
+      console.log('requestQuery HANDLER');
       try {
-        getApp(keyring.currentWalletId, metadata.url, app => {
-          if (app.status !== CONNECTION_STATUS.accepted) {
-            return dispatch(
-              walletConnectExecuteAndResponse({
-                ...request,
-                error: ERRORS.CONNECTION_ERROR,
-              }),
-            );
-          }
+        const keyring = getState().keyring?.instance;
+        const app = await getApp(keyring.currentWalletId.toString(), metadata.url);
+
+        if (app.status !== CONNECTION_STATUS.accepted) {
+          console.log('requestQuery app not accepted');
           return dispatch(
             walletConnectExecuteAndResponse({
               ...request,
-              approve: true,
-              args: [canisterId, methodName, arg],
+              error: ERRORS.CONNECTION_ERROR,
             }),
           );
-        });
+        }
+        return dispatch(
+          walletConnectExecuteAndResponse({
+            ...request,
+            approve: true,
+            args: [canisterId, methodName, arg],
+          }),
+        );
       } catch (e) {
+        console.log('requestQuery HANDLER ERROR', e);
         dispatch(
           walletConnectExecuteAndResponse({
             ...request,
@@ -558,6 +575,7 @@ const TransactionModule = (dispatch, getState) => {
       }
     },
     executor: async (opts, canisterId, methodName, arg) => {
+      console.log('REQUEST QUERY EXECUTOR');
       const keyring = getState().keyring?.instance;
       const agent = keyring.getAgent();
       try {

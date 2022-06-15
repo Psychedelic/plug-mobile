@@ -103,6 +103,8 @@ export const callRequestHandlerFactory = (dispatch, getState) => {
     ...ConnectionModule(dispatch, getState),
   ];
 
+  console.log('modules', modules);
+
   const walletConnectHandlers = modules.reduce(
     (acum, handlerObj) => ({
       ...acum,
@@ -112,7 +114,6 @@ export const callRequestHandlerFactory = (dispatch, getState) => {
   );
 
   return methodName => {
-    console.log(methodName, walletConnectHandlers);
     const handler = walletConnectHandlers[methodName];
     if (!handler) {
       return [];

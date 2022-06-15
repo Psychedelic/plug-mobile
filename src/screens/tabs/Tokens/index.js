@@ -25,6 +25,7 @@ function Tokens() {
   );
   const { icpPrice } = useSelector(state => state.icp);
   const [refreshing, setRefresing] = useState(assetsLoading);
+  console.log('Tokens', assets);
   const usdSum = Number(
     assets.reduce((total, token) => total + Number(token?.value), 0)
   ).toFixed(2);

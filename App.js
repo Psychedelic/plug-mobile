@@ -76,11 +76,14 @@ const PersistedApp = () => {
         <SafeAreaProvider>
           <StatusBar barStyle="light-content" backgroundColor="black" />
           {!!instance && (
-            <Routes routingInstrumentation={routingInstrumentation} ref={TopLevelNavigationRef} />
+            <Routes
+              routingInstrumentation={routingInstrumentation}
+              ref={TopLevelNavigationRef}
+            />
           )}
         </SafeAreaProvider>
-      </ErrorBoundary >
-    </PersistGate >
+      </ErrorBoundary>
+    </PersistGate>
   );
 };
 

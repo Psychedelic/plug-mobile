@@ -8,43 +8,43 @@ const InformationModule = (dispatch, getState) => {
   const requestBalance = {
     methodName: 'requestBalance',
     handler: async (request, metadata, subaccount) => {
+      console.log('requestBalance HANDLER');
       const keyring = getState().keyring.instance;
-      getApp(keyring.currentWalletId.toString(), metadata.url, app => {
-        if (app.status === CONNECTION_STATUS.accepted) {
-          if (subaccount && Number.isNaN(parseInt(subaccount, 10))) {
-            return dispatch(
-              walletConnectExecuteAndResponse({
-                ...request,
-                error: ERRORS.CLIENT_ERROR('Invalid account id'),
-              }),
-            );
-          }
-          if (!keyring.isUnlocked) {
-            const handleApprove = () =>
-              dispatch(
-                walletConnectExecuteAndResponse({
-                  ...request,
-                  args: [subaccount],
-                }),
-              );
-            // TODO: show requestBalanceData screen
-          } else {
-            return dispatch(
+      const app = await getApp(keyring.currentWalletId.toString(), metadata.url)
+      if (app.status === CONNECTION_STATUS.accepted) {
+        if (subaccount && Number.isNaN(parseInt(subaccount, 10))) {
+          return dispatch(
+            walletConnectExecuteAndResponse({
+              ...request,
+              error: ERRORS.CLIENT_ERROR('Invalid account id'),
+            }),
+          );
+        }
+        if (!keyring.isUnlocked) {
+          const handleApprove = () =>
+            dispatch(
               walletConnectExecuteAndResponse({
                 ...request,
                 args: [subaccount],
               }),
             );
-          }
+          // TODO: show requestBalanceData screen
         } else {
-          dispatch(
+          return dispatch(
             walletConnectExecuteAndResponse({
               ...request,
-              error: ERRORS.CONNECTION_ERROR,
+              args: [subaccount],
             }),
           );
         }
-      });
+      } else {
+        dispatch(
+          walletConnectExecuteAndResponse({
+            ...request,
+            error: ERRORS.CONNECTION_ERROR,
+          }),
+        );
+      }
     },
     executor: async (opts, subaccount) => {
       const result = await dispatch(getBalance({ subaccount }));
@@ -54,12 +54,13 @@ const InformationModule = (dispatch, getState) => {
   const getPublicKey = {
     methodName: 'getPublicKey',
     handler: request => {
+      console.log('getPublicKey HANDLER');
       dispatch(walletConnectExecuteAndResponse({ ...request, args: [] }));
     },
     executor: async opts => {
       try {
         const keyring = getState().keyring.instance;
-        const publicKey = await keyring.getPublicKey(keyring.currentWalletId);
+        const publicKey = await keyring.getPublicKey(keyring.currentWalletId.toString());
         return { result: publicKey };
       } catch (e) {
         return { error: ERRORS.SERVER_ERROR(e) };
@@ -68,23 +69,24 @@ const InformationModule = (dispatch, getState) => {
   };
   const getPrincipal = {
     methodName: 'getPrincipal',
-    handler: (request, pageUrl) => {
+    handler: async (request, pageUrl) => {
+      console.log('getPrincipal HANDLER');
+
       const keyring = getState().keyring.instance;
-      getApp(keyring.currentWalletId.toString(), pageUrl, app => {
-        if (app.status === CONNECTION_STATUS.accepted) {
-          if (!keyring.isUnlocked) {
-            // TODO: show principal screen
-          }
-          dispatch(walletConnectExecuteAndResponse({ ...request, args: [] }));
-        } else {
-          dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              error: ERRORS.CONNECTION_ERROR,
-            }),
-          );
+      const app = await getApp(keyring.currentWalletId.toString(), pageUrl);
+      if (app.status === CONNECTION_STATUS.accepted) {
+        if (!keyring.isUnlocked) {
+          // TODO: show principal screen
         }
-      });
+        dispatch(walletConnectExecuteAndResponse({ ...request, args: [] }));
+      } else {
+        dispatch(
+          walletConnectExecuteAndResponse({
+            ...request,
+            error: ERRORS.CONNECTION_ERROR,
+          }),
+        );
+      }
     },
     executor: opts => {
       const keyring = getState().keyring.instance;
@@ -95,23 +97,24 @@ const InformationModule = (dispatch, getState) => {
   };
   const getICNSInfo = {
     methodName: 'getICNSInfo',
-    handler: (request, metadata) => {
+    handler: async (request, metadata) => {
+      console.log('getICNSInfo HANDLER');
+
       const keyring = getState().keyring.instance;
-      getApp(keyring.currentWalletId.toString(), metadata.url, app => {
-        if (app.status === CONNECTION_STATUS.accepted) {
-          if (!keyring.isUnlocked) {
-            // TODO: show principal screen
-          }
-          dispatch(walletConnectExecuteAndResponse({ ...request, args: [] }));
-        } else {
-          dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              error: ERRORS.CONNECTION_ERROR,
-            }),
-          );
+      const app = await getApp(keyring.currentWalletId.toString(), metadata.url)
+      if (app.status === CONNECTION_STATUS.accepted) {
+        if (!keyring.isUnlocked) {
+          // TODO: show principal screen
         }
-      });
+        dispatch(walletConnectExecuteAndResponse({ ...request, args: [] }));
+      } else {
+        dispatch(
+          walletConnectExecuteAndResponse({
+            ...request,
+            error: ERRORS.CONNECTION_ERROR,
+          }),
+        );
+      }
     },
     executor: async opts => {
       const icnsData = await dispatch(getICNSData({ refresh: true }));
@@ -121,7 +124,9 @@ const InformationModule = (dispatch, getState) => {
 
   const isUnlock = {
     methodName: 'isUnlock',
-    handler: request => { },
+    handler: request => {
+      console.log('isUnlock HANDLER');
+    },
     executor: () => {
       try {
         const { isUnlocked } = getState().keyring;
