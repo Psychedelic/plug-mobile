@@ -26,6 +26,7 @@ import {
   validateCanisterId,
   validatePrincipalId,
 } from '@/utils/ids';
+import { truncate } from '@/utils/number';
 
 import AmountSection from './components/AmountSection';
 import ContactSection from './components/ContactSection';
@@ -151,7 +152,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
   };
 
   const handleSendToken = () => {
-    const amount = tokenAmount.value.toFixed(NUMBER_MAX_DECIMALS);
+    const amount = truncate(tokenAmount.value, NUMBER_MAX_DECIMALS);
     if (sendingXTCtoCanister && destination === XTC_OPTIONS.BURN) {
       dispatch(burnXtc({ to, amount }));
     } else {
