@@ -23,7 +23,7 @@ import { setTransaction } from '@/redux/slices/user';
 import { TRANSACTION_STATUS } from '@/redux/utils';
 import shortAddress from '@/utils/shortAddress';
 
-import { getTransactionFee, USD_MAX_DECIMALS } from '../../utils';
+import { getTransactionFee } from '../../utils';
 import SaveContact from '../SaveContact';
 import styles from './styles';
 

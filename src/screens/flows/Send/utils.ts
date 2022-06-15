@@ -1,9 +1,6 @@
 import { DEFAULT_FEE, XTC_FEE } from '@/constants/addresses';
 import { USD_PER_TC } from '@/utils/assets';
 
-// DELETE THIS CONST
-export const USD_MAX_DECIMALS = 2;
-
 export const getAvailableAmount = (
   amount: number,
   symbol: string,
