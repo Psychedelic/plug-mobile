@@ -7,27 +7,19 @@ import TokenSelector from '@/components/tokens/TokenSelector';
 import { VISIBLE_DECIMALS } from '@/constants/business';
 import { parseLocaleNumber, toFixedLocale } from '@/utils/number';
 
+import { Amount, SelectedToken } from '../../interfaces';
 import styles from './styles';
 
 interface Props {
-  selectedToken: {
-    symbol: string;
-    amount: number;
-  };
-  tokenAmount: {
-    value: number;
-    display: string;
-  };
-  usdAmount: {
-    value: number;
-    display: string;
-  };
+  selectedToken: SelectedToken;
+  tokenAmount: Amount;
+  usdAmount: Amount;
   tokenPrice: number;
   availableAmount: number;
   availableUsdAmount: number;
-  setUsdAmount: (value: any) => void;
-  setTokenAmount: (value: any) => void;
-  setSelectedToken: (token: any) => void;
+  setUsdAmount: (value: Amount | null) => void;
+  setTokenAmount: (value: Amount | null) => void;
+  setSelectedToken: (token: SelectedToken | null) => void;
   onReview: () => void;
 }
 
