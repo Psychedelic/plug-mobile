@@ -17,11 +17,11 @@ export const isValidDecimal = (
 
 /**
  * @param amount Number to be truncated
- * @param decimals Number of digits after the decimal point
+ * @param decimals Number of digits after the decimal point. If null, returns integer part
  * @returns Returns a string representing a number in fixed-point notation.
  * Based on https://stackoverflow.com/a/11818658
  */
-export function truncate(amount: number, decimals: number): string {
+export function truncate(amount: number, decimals?: number): string {
   var re = new RegExp('^-?\\d+(?:.\\d{0,' + (decimals || -1) + '})?');
   const match = amount.toString().match(re);
   return match![0];

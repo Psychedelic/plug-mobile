@@ -1,5 +1,5 @@
 /**
- * Decimals used to do calc in the app
+ * Decimals used to do truncate an amount in the app
  */
 export const NUMBER_MAX_DECIMALS = 8;
 
