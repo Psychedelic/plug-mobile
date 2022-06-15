@@ -23,7 +23,6 @@ import Section from './components/Section';
 import styles from './styles';
 
 const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
-  const isCapCrowns = selectedNFT?.collection === 'CAP Crowns';
   const nftName = `${selectedNFT?.collection} #${selectedNFT?.index}`;
   const actionSheetRef = useRef(null);
   const userCollection = useSelector(state => state.user.collections) || [];
@@ -123,7 +122,7 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
               <RainbowButton
                 text={t('common.send')}
                 onPress={handleSend}
-                disabled={isCapCrowns || isDownloading}
+                disabled={isDownloading}
               />
             </View>
           </View>

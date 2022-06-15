@@ -30,7 +30,4 @@ export default StyleSheet.create({
   touchable: {
     ...commonContainerSize,
   },
-  disabledContainer: {
-    opacity: 0.5,
-  },
 });
