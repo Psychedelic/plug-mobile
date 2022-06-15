@@ -151,7 +151,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
   };
 
   const handleSendToken = () => {
-    const amount = tokenAmount.value.toString();
+    const amount = tokenAmount.value.toFixed(NUMBER_MAX_DECIMALS);
     if (sendingXTCtoCanister && destination === XTC_OPTIONS.BURN) {
       dispatch(burnXtc({ to, amount }));
     } else {
