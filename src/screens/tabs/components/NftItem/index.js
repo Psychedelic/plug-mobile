@@ -7,24 +7,19 @@ import useGetType from '@/hooks/useGetType';
 
 import styles from './styles';
 
-function NftItem({ item, onOpen, isSend }) {
+function NftItem({ item, onOpen }) {
   const { url, canisterId, index, collection } = item;
-  const isDisabled = collection === 'CAP Crowns' && isSend;
   const title = `${collection} #${index}`;
   const [type, setType] = useState(null);
 
   useGetType(url, setType);
 
   const handleOnPress = () => {
-    if (!isDisabled) {
-      onOpen({ ...item, type })();
-    }
+    onOpen({ ...item, type })();
   };
 
   return (
-    <View
-      key={`${canisterId}_${index}`}
-      style={[styles.item, isDisabled && styles.disabledContainer]}>
+    <View key={`${canisterId}_${index}`} style={styles.item}>
       <Touchable onPress={handleOnPress} style={styles.touchable}>
         <NftDisplayer type={type} url={url} style={styles.nftDisplayer} />
       </Touchable>
