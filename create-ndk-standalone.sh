@@ -10,10 +10,10 @@ if [ -d NDK ]; then
     exit 0
 fi
 
-MAKER="$NDK_HOME/build/tools/make_standalone_toolchain.py"
+MAKER="$ANDROID_NDK_HOME/build/tools/make_standalone_toolchain.py"
 
 if [ -x "$MAKER" ]; then
-    MAKER="$NDK_HOME/build/tools/make_standalone_toolchain.py"
+    MAKER="$ANDROID_NDK_HOME/build/tools/make_standalone_toolchain.py"
 fi
 
 if [ -x "$MAKER" ]; then
