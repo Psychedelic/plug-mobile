@@ -1,3 +1,13 @@
+/**
+ * Decimals used to do truncate an amount in the app
+ */
+export const NUMBER_MAX_DECIMALS = 8;
+
+/**
+ * Decimals shown in the app by default
+ */
+export const VISIBLE_DECIMALS = 5;
+
 export const ACTIVITY_TYPES = {
   SEND: 'SEND',
   RECEIVE: 'RECEIVE',

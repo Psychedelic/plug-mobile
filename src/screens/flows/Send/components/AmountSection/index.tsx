@@ -4,13 +4,24 @@ import { useTranslation } from 'react-i18next';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import AmountInput from '@/components/common/AmountInput';
 import TokenSelector from '@/components/tokens/TokenSelector';
-import {
-  TOKEN_MAX_DECIMALS,
-  USD_MAX_DECIMALS,
-} from '@/screens/flows/Send/utils';
+import { VISIBLE_DECIMALS } from '@/constants/business';
 import { parseLocaleNumber, toFixedLocale } from '@/utils/number';
 
+import { Amount, SelectedToken } from '../../interfaces';
 import styles from './styles';
+
+interface Props {
+  selectedToken: SelectedToken;
+  tokenAmount: Amount;
+  usdAmount: Amount;
+  tokenPrice: number;
+  availableAmount: number;
+  availableUsdAmount: number;
+  setUsdAmount: (value: Amount | null) => void;
+  setTokenAmount: (value: Amount | null) => void;
+  setSelectedToken: (token: SelectedToken | null) => void;
+  onReview: () => void;
+}
 
 const AmountSection = ({
   selectedToken,
@@ -23,16 +34,13 @@ const AmountSection = ({
   setUsdAmount,
   availableAmount,
   availableUsdAmount,
-}) => {
+}: Props) => {
   const { t } = useTranslation();
   const [selectedInput, setSelectedInput] = useState('USD');
-  const newTokenAmount = tokenAmount?.value;
-  const newUsdAmount = usdAmount?.value;
-  const newAvailableUsdAmount = Number(availableUsdAmount);
 
-  const handleSetTokenAmount = amount => {
-    // TODO: Set the correct MAX decimals for the selected token.
+  const handleSetTokenAmount = (amount: string) => {
     const formattedAmount = parseLocaleNumber(amount);
+
     setTokenAmount({
       value: formattedAmount,
       display: amount,
@@ -44,14 +52,14 @@ const AmountSection = ({
             value: formattedAmount * tokenPrice,
             display: toFixedLocale(
               formattedAmount * tokenPrice,
-              USD_MAX_DECIMALS
+              VISIBLE_DECIMALS
             ),
           }
         : null
     );
   };
 
-  const handleSetUsdAmount = amount => {
+  const handleSetUsdAmount = (amount: string) => {
     const formattedAmount = parseLocaleNumber(amount);
     setUsdAmount({
       value: formattedAmount,
@@ -64,7 +72,26 @@ const AmountSection = ({
             value: formattedAmount / tokenPrice,
             display: toFixedLocale(
               formattedAmount / tokenPrice,
-              TOKEN_MAX_DECIMALS
+              VISIBLE_DECIMALS
+            ),
+          }
+        : null
+    );
+  };
+
+  const handleMaxPress = () => {
+    setTokenAmount({
+      value: availableAmount,
+      display: availableAmount.toFixed(VISIBLE_DECIMALS),
+    });
+
+    setUsdAmount(
+      !isNaN(availableAmount) && availableAmount > 0
+        ? {
+            value: availableAmount * tokenPrice,
+            display: toFixedLocale(
+              availableAmount * tokenPrice,
+              VISIBLE_DECIMALS
             ),
           }
         : null
@@ -81,9 +108,10 @@ const AmountSection = ({
     if (!tokenAmount || !usdAmount) {
       return t('send.enterAmount');
     }
+
     if (
-      newAvailableUsdAmount < newUsdAmount ||
-      availableAmount < newTokenAmount
+      availableUsdAmount < usdAmount?.value ||
+      availableAmount < tokenAmount?.value
     ) {
       return t('send.noFunds');
     }
@@ -91,12 +119,12 @@ const AmountSection = ({
   };
 
   const isButtonDisabled = () =>
-    !newTokenAmount ||
-    newTokenAmount <= 0 ||
-    !newUsdAmount ||
-    newUsdAmount <= 0 ||
-    newUsdAmount > newAvailableUsdAmount ||
-    newTokenAmount > availableAmount;
+    !tokenAmount ||
+    tokenAmount.value <= 0 ||
+    !usdAmount ||
+    usdAmount.value <= 0 ||
+    usdAmount.value > availableUsdAmount ||
+    tokenAmount.value > availableAmount;
 
   return (
     <>
@@ -106,12 +134,13 @@ const AmountSection = ({
         availableAmount={availableAmount}
         availableUsdAmount={availableUsdAmount}
         selectedInput={selectedInput}
+        decimalScale={VISIBLE_DECIMALS}
       />
       <AmountInput
         autoFocus
         value={tokenAmount?.display}
         onChange={handleSetTokenAmount}
-        maxAmount={availableAmount}
+        onMaxPress={handleMaxPress}
         selected={selectedInput === selectedToken.symbol}
         setSelected={setSelectedInput}
         symbol={selectedToken.symbol}

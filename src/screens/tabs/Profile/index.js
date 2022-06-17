@@ -77,7 +77,6 @@ const Profile = () => {
             </Text>
           </View>
           <Button
-            variant="gray"
             text={t('common.change')}
             buttonStyle={styles.buttonStyle}
             textStyle={styles.buttonTextStyle}

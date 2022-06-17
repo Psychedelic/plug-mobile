@@ -1,18 +1,21 @@
 import { DEFAULT_FEE, XTC_FEE } from '@/constants/addresses';
 import { USD_PER_TC } from '@/utils/assets';
 
-export const USD_MAX_DECIMALS = 2;
-export const TOKEN_MAX_DECIMALS = 8;
-
-export const getAvailableAmount = (amount, symbol, icpPrice) => {
+export const getAvailableAmount = (
+  amount: number,
+  symbol: string,
+  icpPrice: number
+) => {
   const { currentFee } = getTransactionFee(symbol, icpPrice);
   return Math.max((amount || 0) - currentFee, 0);
 };
 
-export const getUsdAvailableAmount = (availableAmount, selectedTokenPrice) =>
-  availableAmount * (selectedTokenPrice || 1);
+export const getUsdAvailableAmount = (
+  availableAmount: number,
+  selectedTokenPrice: number
+) => availableAmount * (selectedTokenPrice || 1);
 
-export const getTransactionFee = (tokenSymbol, icpPrice) => {
+export const getTransactionFee = (tokenSymbol: string, icpPrice: number) => {
   let currentFee;
   let currentUSDFee;
 

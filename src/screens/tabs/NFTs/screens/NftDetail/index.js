@@ -112,7 +112,6 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
           <View style={styles.buttonContainer}>
             <View style={styles.buttonWraperLeft}>
               <Button
-                variant="gray"
                 text={t('common.more')}
                 onPress={actionSheetRef.current?.open}
                 loading={isDownloading}
