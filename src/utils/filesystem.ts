@@ -4,13 +4,21 @@ import FileViewer from 'react-native-file-viewer';
 
 import { isIos } from '@/constants/platform';
 
+interface DownloadFileProps {
+  filename: string;
+  url: string;
+  onFetched: () => void;
+  onSuccess: () => void;
+  onError: () => void;
+}
+
 export const downloadFile = ({
   filename,
   url,
   onFetched,
   onSuccess,
   onError,
-}) => {
+}: DownloadFileProps) => {
   try {
     const dirToSave = Dirs.DocumentDir;
     const path = `${dirToSave}/${filename}`;
