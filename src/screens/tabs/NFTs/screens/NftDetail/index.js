@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import React, { useMemo, useRef, useState } from 'react';
-import { Linking, Platform, Share, Text, View } from 'react-native';
+import { Linking, Platform, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import Badge from '@/commonComponents/Badge';
@@ -12,7 +12,6 @@ import RainbowButton from '@/components/buttons/RainbowButton';
 import ActionSheet from '@/components/common/ActionSheet';
 import { FontStyles } from '@/constants/theme';
 import DownloadIcon from '@/icons/svg/material/Download.svg';
-import ShareIcon from '@/icons/svg/material/Share.svg';
 import ViewIcon from '@/icons/svg/material/View.svg';
 import Send from '@/screens/flows/Send';
 import { downloadFile } from '@/utils/filesystem';
@@ -31,15 +30,6 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
     collection => collection.name === selectedNFT?.collection
   );
 
-  const handleShare = () => {
-    /* TODO: Change the link for the correct NFT View Page when it's ready */
-    Share.share({
-      message: `${selectedNFT?.url}`,
-      url: selectedNFT?.url,
-      title: nftName,
-    });
-  };
-
   const sendRef = useRef(null);
 
   const handleSend = () => {
@@ -50,11 +40,10 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
     // TODO: Handle download error
     setIsDownloading(true);
     downloadFile({
-      filename: `/NFT_${deleteWhiteSpaces(nftName)}${getAbsoluteType(
+      filename: `NFT_${deleteWhiteSpaces(nftName)}${getAbsoluteType(
         selectedNFT?.type
       )}`,
       url: selectedNFT?.url,
-      type: selectedNFT?.type,
       onFetched: () => setIsDownloading(false),
     });
   };
@@ -71,12 +60,6 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
         },
         {
           id: 2,
-          label: t('nftDetail.moreOptions.share'),
-          onPress: handleShare,
-          icon: Platform.select({ android: ShareIcon }),
-        },
-        {
-          id: 3,
           label: t('nftDetail.moreOptions.download'),
           onPress: downloadNFT,
           icon: Platform.select({ android: DownloadIcon }),

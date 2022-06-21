@@ -102,7 +102,6 @@ const translations = {
     moreTitle: 'More Options',
     moreOptions: {
       view: 'View',
-      share: 'Share',
       download: 'Download',
     },
   },
