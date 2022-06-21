@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import React, { useMemo, useRef, useState } from 'react';
-import { Linking, Platform, Share, Text, View } from 'react-native';
+import { Linking, Platform, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import Badge from '@/commonComponents/Badge';
@@ -12,7 +12,6 @@ import RainbowButton from '@/components/buttons/RainbowButton';
 import ActionSheet from '@/components/common/ActionSheet';
 import { FontStyles } from '@/constants/theme';
 import DownloadIcon from '@/icons/svg/material/Download.svg';
-import ShareIcon from '@/icons/svg/material/Share.svg';
 import ViewIcon from '@/icons/svg/material/View.svg';
 import Send from '@/screens/flows/Send';
 import { downloadFile } from '@/utils/filesystem';
