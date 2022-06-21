@@ -18,8 +18,11 @@ export const downloadFile = ({
     FileSystem.fetch(url, {
       method: 'GET',
       path,
-    }).then(res => {
+    }).then(async res => {
       onFetched?.();
+      if (!isIos) {
+        await FileSystem.cpExternal(path, filename, 'downloads');
+      }
       if (res.ok) {
         FileViewer.open(path, {
           showOpenWithDialog: true,
