@@ -305,11 +305,24 @@ function Send({ modalRef, nft, token, onSuccess }) {
       modalRef={modalRef}
       onClose={resetState}
       fullHeight
-      modalStyle={isAndroid && modalOffset && { marginTop: modalOffset }}
+      modalStyle={
+        isAndroid &&
+        modalOffset && {
+          marginTop: modalOffset,
+          minHeight: '100%',
+        }
+      }
       scrollViewProps={{
         keyboardShouldPersistTaps: 'never',
       }}>
-      <View style={styles.contentContainer}>
+      <View
+        style={[
+          styles.contentContainer,
+          isAndroid &&
+            modalOffset && {
+              paddingBottom: modalOffset,
+            },
+        ]}>
         <Header
           left={
             isValidAddress && (
