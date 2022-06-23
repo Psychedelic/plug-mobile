@@ -1,14 +1,14 @@
+import { HttpAgent } from '@dfinity/agent';
 import { blobFromBuffer } from '@dfinity/candid';
 import { getAllNFTS, getTokens } from '@psychedelic/dab-js';
-import {
-  getCanisterInfo,
-  IDLDecode,
-} from '@psychedelic/plug-mobile-controller';
+import PlugController from '@psychedelic/plug-mobile-controller';
+import { fetch } from 'react-native-fetch-api';
 
 import ErrorState from '@/components/common/ErrorState';
 import { XTC_FEE } from '@/constants/addresses';
 import { CYCLES_PER_TC } from '@/constants/assets';
 import { ASSET_CANISTER_IDS } from '@/constants/canister';
+import { IC_URL_HOST } from '@/constants/general';
 import { ERRORS } from '@/constants/walletconnect';
 import {
   ConnectionModule,
@@ -47,7 +47,7 @@ export const connectionRequestResponseHandlerFactory = (dispatch, uri) => {
     dappUrl,
   }) => {
     const { walletConnector, timedOut } = await dispatch(
-      getSession({ uri }),
+      getSession({ uri })
     ).unwrap();
 
     if (approved) {
@@ -58,7 +58,7 @@ export const connectionRequestResponseHandlerFactory = (dispatch, uri) => {
           dappScheme,
           chainId,
           accountAddress,
-        }),
+        })
       );
     } else if (!timedOut) {
       await dispatch(walletConnectRejectSession(peerId, walletConnector));
@@ -68,7 +68,7 @@ export const connectionRequestResponseHandlerFactory = (dispatch, uri) => {
 
 export const sessionRequestHandler = async (
   { dispatch, getState, uri },
-  { error, payload },
+  { error, payload }
 ) => {
   const { routeParams } = await dispatch(getSession({ uri })).unwrap();
   if (error) {
@@ -102,17 +102,15 @@ export const callRequestHandlerFactory = (dispatch, getState) => {
     ...InformationModule(dispatch, getState),
     ...ConnectionModule(dispatch, getState),
   ];
-
   const walletConnectHandlers = modules.reduce(
     (acum, handlerObj) => ({
       ...acum,
       [handlerObj.methodName]: [handlerObj.handler, handlerObj.executor],
     }),
-    {},
+    {}
   );
 
   return methodName => {
-    console.log(methodName, walletConnectHandlers);
     const handler = walletConnectHandlers[methodName];
     if (!handler) {
       return [];
@@ -127,18 +125,19 @@ export const initializeProtectedIds = async () => {
   const tokenCanisters = await getDabTokens();
   const PROTECTED_IDS = [
     ...(nftCanisters || []).map(collection =>
-      collection.principal_id.toString(),
+      collection.principal_id.toString()
     ),
     ...(tokenCanisters || []).map(token => token.principal_id.toString()),
     ...ASSET_CANISTER_IDS,
   ];
-  setProtectedIds(PROTECTED_IDS);
+  await setProtectedIds(PROTECTED_IDS);
 };
 
 export const getDabTokens = async () => {
-  const tokens = await getTokens({});
+  const agent = new HttpAgent({ fetch, host: IC_URL_HOST });
+  const tokens = await getTokens({ agent });
   const parsedTokens = (tokens || []).map(token =>
-    recursiveParseBigint(recursiveParsePrincipal(token)),
+    recursiveParseBigint(recursiveParsePrincipal(token))
   );
   return parsedTokens.map(token => ({
     ...token,
@@ -146,7 +145,10 @@ export const getDabTokens = async () => {
   }));
 };
 
-export const getDabNfts = async () => getAllNFTS({});
+export const getDabNfts = async () => {
+  const agent = new HttpAgent({ fetch, host: IC_URL_HOST });
+  return getAllNFTS({ agent });
+};
 
 export const fetchCanistersInfo = async whitelist => {
   if (whitelist && whitelist.length > 0) {
@@ -155,14 +157,17 @@ export const fetchCanistersInfo = async whitelist => {
         let canisterInfo = { id };
 
         try {
-          const fetchedCanisterInfo = await getCanisterInfo(id);
+          const fetchedCanisterInfo = await PlugController.getCanisterInfo({
+            canisterId: id,
+            fetch,
+          });
           canisterInfo = { id, ...fetchedCanisterInfo };
         } catch (error) {
           console.error(error);
         }
 
         return canisterInfo;
-      }),
+      })
     );
 
     const sortedCanistersInfo = canistersInfo.sort((a, b) => {
@@ -223,25 +228,27 @@ export const validateBurnArgs = ({ to, amount }) => {
 export const validateTransactions = transactions => {
   let message = null;
 
-  if (Array.isArray(transactions)) {
-    return ErrorState.CLIENT_ERROR(
-      'The batch transaction failes becuase transactions must be an array ',
+  if (!Array.isArray(transactions)) {
+    return ERRORS.CLIENT_ERROR(
+      'The batch transaction failes becuase transactions must be an array '
     );
   }
 
-  if (transactions.every(tx => tx.sender)) {
+  if (!transactions.every(tx => tx.sender)) {
     message =
       'The batch transaction failed because each transaction must have a sender';
   }
 
   if (
-    transactions.every(tx => tx.canisterId && validateCanisterId(tx.canisterId))
+    !transactions.every(
+      tx => tx.canisterId && validateCanisterId(tx.canisterId)
+    )
   ) {
     message =
       'The batch transaction failed because each transaction must have a valid canisterId';
   }
 
-  if (transactions.every(tx => tx.methodName)) {
+  if (!transactions.every(tx => tx.methodName)) {
     message =
       'The batch transaction failed because each transaction must have a valid methodName';
   }
@@ -251,7 +258,7 @@ export const validateTransactions = transactions => {
 
 export const generateRequestInfo = args => {
   const decodedArguments = recursiveParseBigint(
-    IDLDecode(blobFromBuffer(base64ToBuffer(args.arg))),
+    PlugController.IDLDecode(blobFromBuffer(base64ToBuffer(args.arg)))
   );
 
   return {
@@ -264,7 +271,7 @@ export const generateRequestInfo = args => {
 
 export const validateBatchTx = (
   savedTxInfo,
-  { canisterId, methodName, arguments: arg },
+  { canisterId, methodName, arguments: arg }
 ) => {
   if (
     !savedTxInfo ||

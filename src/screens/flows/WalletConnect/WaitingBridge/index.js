@@ -6,7 +6,7 @@ import { Container } from '@/layout';
 import { updateBridgeTimeout } from '@/redux/slices/walletconnect';
 import { useNavigation } from '@/utils/navigation';
 
-import styles from '../../styles';
+import styles from '../styles';
 
 function WalletConnectWaitingBridge() {
   const dispatch = useDispatch();
@@ -19,7 +19,6 @@ function WalletConnectWaitingBridge() {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      console.log('BRIDGE TIMED OUT');
       setTimedOut(true);
     }, 20000);
     dispatch(updateBridgeTimeout({ timeout, onBridgeContact }));

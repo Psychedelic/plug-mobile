@@ -19,7 +19,7 @@ function RequestConnect({ request, args, metadata }) {
       <Text style={styles.text}>{`DAP NAME: ${dappName}`}</Text>
       <Text style={styles.text}>{`DOMAINURL: ${domainUrl}`}</Text>
       <Text style={styles.text}>{`WHITELIST: ${JSON.stringify(
-        whitelist,
+        Object.keys(whitelist)
       )}`}</Text>
     </>
   );

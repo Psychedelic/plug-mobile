@@ -11,39 +11,35 @@ import {
 } from '@/utils/walletConnect';
 
 const handlerAllowAgent = getState => async (opts, url, response) => {
-  console.log('HANDLER allow Agent', response);
   const keyring = getState()?.keyring?.instance;
   if (!response.noNewEvents) {
-    getApps(keyring?.currentWalletId.toString(), async (apps = {}) => {
-      const status =
-        response.status === CONNECTION_STATUS.rejectedAgent
-          ? CONNECTION_STATUS.accepted
-          : response.status;
-      const whitelist =
-        response.status === CONNECTION_STATUS.accepted
-          ? response.whitelist
-          : [];
+    const apps = await getApps(keyring?.currentWalletId.toString());
+    const status =
+      response.status === CONNECTION_STATUS.rejectedAgent
+        ? CONNECTION_STATUS.accepted
+        : response.status;
+    const whitelist =
+      response.status === CONNECTION_STATUS.accepted ? response.whitelist : [];
 
-      const date = new Date().toISOString();
+    const date = new Date().toISOString();
 
-      const newApps = {
-        ...apps,
-        [url]: {
-          ...apps[url],
-          status: status || CONNECTION_STATUS.rejected,
-          date,
-          whitelist,
-          events: [
-            ...(apps[url]?.events || []),
-            {
-              status: status || CONNECTION_STATUS.rejected,
-              date,
-            },
-          ],
-        },
-      };
-      setApps(keyring?.currentWalletId.toString(), newApps);
-    });
+    const newApps = {
+      ...apps,
+      [url]: {
+        ...apps[url],
+        status: status || CONNECTION_STATUS.rejected,
+        date,
+        whitelist,
+        events: [
+          ...(apps[url]?.events || []),
+          {
+            status: status || CONNECTION_STATUS.rejected,
+            date,
+          },
+        ],
+      },
+    };
+    await setApps(keyring?.currentWalletId.toString(), newApps);
   }
 
   if (response?.status === CONNECTION_STATUS.accepted) {
@@ -66,35 +62,34 @@ const ConnectionModule = (dispatch, getState) => {
       const keyring = getState().keyring?.instance;
       const walletId = keyring?.currentWalletId;
 
-      getApp(walletId.toString(), url, async (app = {}) => {
-        if (app?.status === CONNECTION_STATUS.accepted) {
-          if (!this.keyring?.isUnlocked) {
-            // TODO: Show requestDonnectionData screen
-            return;
-          } else {
-            dispatch(
-              walletConnectExecuteAndResponse({
-                ...request,
-                args: [app],
-              }),
-            );
-          }
+      const app = await getApp(walletId.toString(), url);
+      if (app?.status === CONNECTION_STATUS.accepted) {
+        if (!keyring?.isUnlocked) {
+          // TODO: Show requestDonnectionData screen
+          return;
         } else {
           dispatch(
             walletConnectExecuteAndResponse({
               ...request,
-              args: [null],
-            }),
+              args: [app],
+            })
           );
         }
-      });
+      } else {
+        dispatch(
+          walletConnectExecuteAndResponse({
+            ...request,
+            args: [null],
+          })
+        );
+      }
     },
     executor: (opts, app) => {
       if (app === null) {
         return { result: null };
       }
       const keyring = getState().keyring?.instance;
-      const walletId = this.keyring?.currentWalletId;
+      const walletId = keyring?.currentWalletId;
       const publicKey = keyring?.getPublicKey(walletId);
 
       const result = {
@@ -114,15 +109,20 @@ const ConnectionModule = (dispatch, getState) => {
         walletConnectExecuteAndResponse({
           ...request,
           args: [url],
-        }),
+        })
       );
     },
-    executor: (opts, url) => {
-      removeApp(this.keyring?.currentWalletId?.toString(), url, removed => {
-        if (!removed) {
-          return { error: ERRORS.CONNECTION_ERROR };
-        }
-      });
+    executor: async (opts, url) => {
+      const keyring = getState().keyring?.instance;
+
+      const removed = await removeApp(
+        keyring?.currentWalletId?.toString(),
+        url
+      );
+
+      if (!removed) {
+        return { error: ERRORS.CONNECTION_ERROR };
+      }
     },
   };
 
@@ -130,38 +130,52 @@ const ConnectionModule = (dispatch, getState) => {
     methodName: 'requestConnect',
     handler: async (request, metadata, whitelist, timeout, host) => {
       try {
+        await initializeProtectedIds();
+        const keyring = getState().keyring?.instance;
         const isValidWhitelist = Array.isArray(whitelist) && whitelist.length;
         if (!whitelist.every(canisterId => validatePrincipalId(canisterId))) {
           dispatch(
             walletConnectExecuteAndResponse({
               ...request,
               error: ERRORS.CANISTER_ID_ERROR,
-            }),
+            })
           );
           return;
         }
+
+        const canistersInfo = isValidWhitelist
+          ? await fetchCanistersInfo(whitelist)
+          : {};
+
+        const whitelistWithInfo = canistersInfo.reduce(
+          (acum, info) => ({
+            ...acum,
+            [info.id]: { canisterId: info.id, ...info },
+          }),
+          {}
+        );
 
         const { url: domainUrl, name, icons } = metadata;
 
         const date = new Date().toISOString();
 
-        getApp(this.keyring?.currentWalletId.toString(), (apps = {}) => {
-          const newApps = {
-            ...apps,
-            [domainUrl]: {
-              url: domainUrl,
-              name,
-              status: CONNECTION_STATUS.pending,
-              icon: icons[0] || null,
-              timeout,
-              date,
-              events: [...(apps[domainUrl]?.events || [])],
-              whitelist,
-              host,
-            },
-          };
-          setApps(this.keyring?.currentWalletId.toString(), newApps);
-        });
+        const apps = await getApps(keyring?.currentWalletId.toString());
+
+        const newApps = {
+          ...apps,
+          [domainUrl]: {
+            url: domainUrl,
+            name,
+            status: CONNECTION_STATUS.pending,
+            icon: icons[0] || null,
+            timeout,
+            date,
+            events: [...(apps[domainUrl]?.events || [])],
+            whitelist: whitelistWithInfo,
+            host,
+          },
+        };
+        await setApps(keyring?.currentWalletId.toString(), newApps);
 
         const handleApprove = () => {
           dispatch(
@@ -169,9 +183,12 @@ const ConnectionModule = (dispatch, getState) => {
               ...request,
               args: [
                 domainUrl,
-                { status: CONNECTION_STATUS.accepted, whitelist },
+                {
+                  status: CONNECTION_STATUS.accepted,
+                  whitelist: whitelistWithInfo,
+                },
               ],
-            }),
+            })
           );
         };
         const handleDecline = () => {
@@ -180,9 +197,12 @@ const ConnectionModule = (dispatch, getState) => {
               ...request,
               args: [
                 domainUrl,
-                { status: CONNECTION_STATUS.refused, whitelist },
+                {
+                  status: CONNECTION_STATUS.refused,
+                  whitelist: whitelistWithInfo,
+                },
               ],
-            }),
+            })
           );
         };
 
@@ -192,7 +212,7 @@ const ConnectionModule = (dispatch, getState) => {
             openAutomatically: true,
             request,
             metadata,
-            args: { whitelist, domainUrl },
+            args: { whitelist: whitelistWithInfo, domainUrl },
             handleApprove,
             handleDecline,
           });
@@ -203,13 +223,12 @@ const ConnectionModule = (dispatch, getState) => {
             openAutomatically: true,
             request,
             metadata,
-            args: { whitelist, domainUrl },
+            args: { whitelist: whitelistWithInfo, domainUrl },
             handleApprove,
             handleDecline,
           });
         }
       } catch (e) {
-        console.log('requestConnectHandler error', e);
         walletConnectExecuteAndResponse({
           ...request,
           error: ERRORS.SERVER_ERROR(e),
@@ -222,46 +241,88 @@ const ConnectionModule = (dispatch, getState) => {
   const verifyWhitelist = {
     methodName: 'verifyWhitelist',
     handler: async (request, metadata, whitelist) => {
+      const keyring = getState().keyring?.instance;
+
       if (!whitelist.every(canisterId => validatePrincipalId(canisterId))) {
         dispatch(
           walletConnectExecuteAndResponse({
             ...request,
             error: ERRORS.CANISTER_ID_ERROR,
-          }),
+          })
         );
         return;
       }
 
-      getApps(this.keyring?.currentWalletId.toString(), async (apps = {}) => {
-        const app = apps?.[metadata.url] || {};
-        if (app?.status === CONNECTION_STATUS.accepted) {
-          const allWhitelisted = areAllElementsIn(
-            whitelist,
-            app?.whitelist ? Object.keys(app?.whitelist) : [],
-          );
+      const canisterInfo = fetchCanistersInfo(whitelist);
 
-          if (allWhitelisted) {
-            if (!this.keyring.isUnlocked) {
-              // TODO: Show allowAgent screen
-            }
-            dispatch(
-              walletConnectExecuteAndResponse({
-                ...request,
-                args: [metadata.url, { status: CONNECTION_STATUS.accepted }],
-              }),
-            );
-          } else {
-            // TODO: Show allowAgent screen
-          }
-        } else {
+      const whitelistWithInfo = whitelist.reduce(
+        (acum, canisterId) => ({
+          ...acum,
+          [canisterId]: { canisterId, ...canisterInfo[canisterId] },
+        }),
+        {}
+      );
+
+      const app = await getApp(
+        keyring?.currentWalletId.toString(),
+        metadata.url
+      );
+      if (app?.status === CONNECTION_STATUS.accepted) {
+        const allWhitelisted = areAllElementsIn(
+          whitelist,
+          app?.whitelist ? Object.keys(app?.whitelist) : []
+        );
+
+        const handleApprove = () => {
           dispatch(
             walletConnectExecuteAndResponse({
               ...request,
-              error: ERRORS.CONNECTION_ERROR,
-            }),
+              args: [
+                metadata.url,
+                {
+                  status: CONNECTION_STATUS.accepted,
+                  whitelist: whitelistWithInfo,
+                },
+              ],
+            })
           );
+        };
+        const handleDecline = () => {
+          dispatch(
+            walletConnectExecuteAndResponse({
+              ...request,
+              args: [
+                metadata.url,
+                {
+                  status: CONNECTION_STATUS.refused,
+                  whitelist: whitelistWithInfo,
+                },
+              ],
+            })
+          );
+        };
+
+        if (allWhitelisted) {
+          handleApprove();
+        } else {
+          Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
+            type: 'requestConnect',
+            openAutomatically: true,
+            request,
+            metadata,
+            args: { whitelist: whitelistWithInfo, domainUrl: metadata.url },
+            handleApprove,
+            handleDecline,
+          });
         }
-      });
+      } else {
+        dispatch(
+          walletConnectExecuteAndResponse({
+            ...request,
+            error: ERRORS.CONNECTION_ERROR,
+          })
+        );
+      }
     },
     executor: handlerAllowAgent(getState),
   };

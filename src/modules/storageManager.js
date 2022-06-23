@@ -22,145 +22,143 @@ const addDisconnectedEntry = ({ apps, appUrl }) => {
   };
 };
 
-const secureGetWrapper = (key, defaultValue, cb) => {
+const secureGetWrapper = async (key, defaultValue) => {
   try {
-    storage.get(key, cb);
+    const state = await storage.get(key);
+    return state || defaultValue;
   } catch (e) {
-    cb(defaultValue);
+    if (defaultValue) {
+      return defaultValue;
+    }
+    throw e;
   }
 };
 
-const secureSetWrapper = (setArguments, defaultValue, cb) => {
+const secureSetWrapper = async (setArguments, defaultValue) => {
   try {
-    // Callback true after setting item
-    storage.set(setArguments, () => {
-      cb(true);
-    });
+    const result = await storage.set(setArguments);
+    return result && defaultValue;
   } catch (e) {
-    cb(defaultValue);
+    if (defaultValue) {
+      return defaultValue;
+    }
+    throw e;
   }
 };
 
-export const getApps = (currentWalletId, cb) => {
+export const getApps = async currentWalletId => {
+  const defaultValue = {};
+  const state = await secureGetWrapper(currentWalletId, defaultValue);
+  return state?.apps || defaultValue;
+};
+
+export const getApp = async (currentWalletId, appUrl) => {
   const defaultValue = {};
 
-  secureGetWrapper(currentWalletId, defaultValue, state =>
-    cb(state?.[parseInt(currentWalletId, 10)]?.apps || defaultValue),
-  );
+  const state = await secureGetWrapper(currentWalletId, defaultValue);
+
+  return state?.apps?.[appUrl] || defaultValue;
 };
 
-export const getApp = (currentWalletId, appUrl, cb) => {
+export const setApps = (currentWalletId, apps) => {
+  const defaultValue = false;
+  return secureSetWrapper({ [currentWalletId]: { apps } }, defaultValue);
+};
+
+export const removeApp = async (currentWalletId, appUrl) => {
+  const defaultValue = false;
+
+  const apps = await getApps(currentWalletId, undefined);
+
+  if (apps && apps[appUrl]) {
+    const newApps = addDisconnectedEntry({ apps, appUrl });
+    return setApps(currentWalletId, newApps);
+  }
+
+  return defaultValue;
+};
+
+export const setRouter = route => {
+  const defaultValue = false;
+
+  return secureSetWrapper({ router: route }, defaultValue);
+};
+
+export const getContacts = async () => {
+  const defaultValue = [];
+
+  const state = await secureGetWrapper(['contacts'], defaultValue);
+
+  return state?.contacts || defaultValue;
+};
+
+export const setContacts = contacts => {
+  const defaultValue = false;
+
+  return secureSetWrapper({ contacts }, defaultValue);
+};
+
+export const setHiddenAccounts = hiddenAccounts => {
+  const defaultValue = false;
+
+  return secureSetWrapper({ hiddenAccounts }, defaultValue);
+};
+
+export const getHiddenAccounts = async () => {
   const defaultValue = {};
 
-  secureGetWrapper(currentWalletId, defaultValue, state =>
-    cb(state?.[parseInt(currentWalletId, 10)]?.apps?.[appUrl] || defaultValue),
-  );
+  const state = await secureGetWrapper('hiddenAccounts', defaultValue);
+
+  return state?.hiddenAccounts || defaultValue;
 };
 
-export const setApps = (currentWalletId, apps, cb = () => { }) => {
-  const defaultValue = false;
+export const getAppsKey = async () => {
+  const defaultValue = {};
 
-  secureSetWrapper({ [currentWalletId]: { apps } }, defaultValue, cb);
+  return secureGetWrapper('apps', defaultValue);
 };
 
-export const removeApp = (currentWalletId, appUrl, cb = () => { }) => {
-  const defaultValue = false;
-
-  getApps(currentWalletId, apps => {
-    if (apps?.[appUrl]) {
-      const newApps = addDisconnectedEntry({ apps, appUrl });
-      setApps(currentWalletId, newApps, cb);
-    } else {
-      cb(defaultValue);
+export const clearStorage = () => {
+  return new Promise((resolve, reject) => {
+    try {
+      storage.clear(() => resolve(true));
+    } catch (e) {
+      resolve(false);
     }
   });
 };
 
-export const setRouter = (route, cb = () => { }) => {
-  const defaultValue = false;
-
-  secureSetWrapper({ router: route }, defaultValue, cb);
+export const setProtectedIds = (protectedIds = []) => {
+  return secureSetWrapper({ protectedIds }, []);
 };
 
-export const getContacts = cb => {
+export const getProtectedIds = async () => {
   const defaultValue = [];
 
-  secureGetWrapper(['contacts'], defaultValue, state => {
-    cb(state?.contacts || defaultValue);
-  });
+  const state = await secureGetWrapper('protectedIds', defaultValue);
+  return state || defaultValue;
 };
 
-export const setContacts = (contacts, cb = () => { }) => {
-  const defaultValue = false;
-
-  secureSetWrapper({ contacts }, defaultValue, cb);
-};
-
-export const setHiddenAccounts = (hiddenAccounts, cb = () => { }) => {
-  const defaultValue = false;
-
-  secureSetWrapper({ hiddenAccounts }, defaultValue, cb);
-};
-
-export const getHiddenAccounts = cb => {
-  const defaultValue = {};
-
-  secureGetWrapper('hiddenAccounts', defaultValue, state => {
-    cb(state?.hiddenAccounts || defaultValue);
-  });
-};
-
-export const getAppsKey = cb => {
-  const defaultValue = {};
-
-  secureGetWrapper('apps', defaultValue, result => {
-    cb(result || defaultValue);
-  });
-};
-
-export const clearStorage = (cb = () => { }) => {
-  try {
-    storage.clear(cb(true));
-  } catch (e) {
-    cb(false);
-  }
-};
-
-export const setProtectedIds = (protectedIds = [], cb = () => { }) => {
-  secureSetWrapper({ protectedIds }, [], cb);
-};
-
-export const getProtectedIds = cb => {
-  const defaultValue = [];
-
-  secureGetWrapper('protectedIds', defaultValue, state => {
-    cb(state?.protectedIds || defaultValue);
-  });
-};
-
-export const setUseICNS = (useICNS, walletNumber, cb = () => { }) => {
+export const setUseICNS = (useICNS, walletNumber) => {
   const defaultValue = true;
-  secureSetWrapper({ icns: { [walletNumber]: useICNS } }, defaultValue, cb);
+  return secureSetWrapper({ icns: { [walletNumber]: useICNS } }, defaultValue);
 };
 
-export const getUseICNS = (walletNumber, cb) => {
+export const getUseICNS = async walletNumber => {
   const defaultValue = true;
-  secureGetWrapper('icns', defaultValue, state => {
-    cb(state?.icns?.[parseInt(walletNumber, 10)] ?? defaultValue);
-  });
+
+  const state = await secureGetWrapper('icns', defaultValue);
+  return state?.[parseInt(walletNumber, 10)] || defaultValue;
 };
 
-export const setBatchTransactions = (
-  batchTransactions = {},
-  cb = () => ({}),
-) => {
-  secureSetWrapper({ batchTransactions }, {}, cb);
+export const setBatchTransactions = (batchTransactions = {}) => {
+  return secureSetWrapper({ batchTransactions }, false);
 };
 
-export const getBatchTransactions = cb => {
+export const getBatchTransactions = async () => {
   const defaultValue = {};
 
-  secureGetWrapper('batchTransactions', defaultValue, state => {
-    cb(state?.batchTransactions || defaultValue);
-  });
+  const state = await secureGetWrapper('batchTransactions', defaultValue);
+
+  return state || defaultValue;
 };

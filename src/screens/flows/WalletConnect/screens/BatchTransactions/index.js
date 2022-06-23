@@ -3,13 +3,13 @@ import { Text } from 'react-native';
 
 import styles from '../../styles';
 
-function RequestCall({ request, args, metadata }) {
+function BatchTransactions({ request, args, metadata }) {
   const { methodName } = args;
   const { dappUrl, dappName } = request;
 
   return (
     <>
-      <Text style={styles.title}>{'REQUEST CALL'}</Text>
+      <Text style={styles.title}>{'BATCH TRANSACTIONS'}</Text>
       <Text style={styles.text}>{`DAP URL: ${dappUrl}`}</Text>
       <Text style={styles.text}>{`DAP NAME: ${dappName}`}</Text>
       <Text style={styles.text}>{`METHOD: ${methodName}`}</Text>
@@ -17,4 +17,4 @@ function RequestCall({ request, args, metadata }) {
   );
 }
 
-export default RequestCall;
+export default BatchTransactions;

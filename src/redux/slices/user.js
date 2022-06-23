@@ -143,6 +143,7 @@ export const privateGetAssets = async (params, state, dispatch) => {
     }
     return { assets, icpPrice };
   } catch (e) {
+    console.log('private getAssets error', e);
     dispatch(setAssetsError(true));
   }
 };
@@ -151,20 +152,21 @@ export const getBalance = createAsyncThunk(
   'keyring/getBalance',
   async (params, { getState, dispatch }) => {
     return privateGetBalance(params, getState(), dispatch);
-  },
+  }
 );
 
 export const privateGetBalance = async (params, state, dispatch) => {
   try {
     const { subaccount } = params;
     const { instance } = state.keyring;
-    const icpPrice = await dispatch(getICPPrice());
+    const icpPrice = await dispatch(getICPPrice()).unwrap();
 
     const assets = await instance?.getBalance(subaccount);
     const parsedAssets = parseAssetsAmount(assets);
 
     return formatAssets(parsedAssets, icpPrice);
   } catch (e) {
+    console.log('privateGetBalance error', e);
     dispatch(setAssetsError(true));
   }
 };
