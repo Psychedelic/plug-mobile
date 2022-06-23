@@ -33,11 +33,12 @@ const Navigator = ({ routingInstrumentation }) => {
 
   const handleAppStateChange = nextAppState => {
     if (nextAppState === 'background') {
+      clearTimeout(timeoutId.current);
       timeoutId.current = setTimeout(handleLockState, 120000);
     }
 
     if (nextAppState === 'active' && timeoutId) {
-      clearTimeout(timeoutId);
+      clearTimeout(timeoutId.current);
       timeoutId.current = null;
     }
   };
