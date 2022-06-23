@@ -17,7 +17,7 @@ import Welcome from '@/screens/auth/Welcome';
 import ConnectionError from '@/screens/error/ConnectionError';
 import WalletConnect from '@/screens/flows/WalletConnect';
 import WalletConnectScreens from '@/screens/flows/WalletConnect/screens';
-import WalletConnectWaitingBridge from '@/screens/flows/WalletConnect/screens/WaitingBridge';
+import WalletConnectWaitingBridge from '@/screens/flows/WalletConnect/WaitingBridge';
 import { handleDeepLink } from '@/utils/deepLink';
 
 import Routes from './Routes';

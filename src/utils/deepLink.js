@@ -40,5 +40,7 @@ export const handleDeepLink = url => {
         break;
       }
     }
+  } else if (urlObj.protocol === 'wc:') {
+    handleWalletConnect(url);
   }
 };

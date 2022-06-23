@@ -103,24 +103,22 @@ export const keyringStorage = {
 export const walletConnectStorage = {
   get: async key => {
     // await AsyncStorage.clear();
-    if (key) {
-      return AsyncStorage.getItem(WALLETCONNECTKEY)
-        .then(value => JSON.parse(`${value}`))
-        .then(parsedValue => parsedValue[key])
-        .then(value => (value ? JSON.parse(value) : value));
-    }
-    return AsyncStorage.getItem(WALLETCONNECTKEY).then(value =>
-      value ? JSON.parse(value) : value,
-    );
+    return AsyncStorage.getItem(WALLETCONNECTKEY)
+      .then(value => (value ? Flatted.parse(value) : value))
+      .then(parsedValue => {
+        return key && parsedValue ? parsedValue[key] : parsedValue;
+      });
   },
-  set: values =>
-    AsyncStorage.getItem(WALLETCONNECTKEY)
-      .then(savedValues => (savedValues ? JSON.parse(savedValues) : {}))
-      .then(parsedValues =>
-        AsyncStorage.setItem(
+  set: values => {
+    return AsyncStorage.getItem(WALLETCONNECTKEY)
+      .then(savedValues => (savedValues ? Flatted.parse(savedValues) : {}))
+      .then(parsedValues => {
+        return AsyncStorage.setItem(
           WALLETCONNECTKEY,
-          Flatted.stringify({ ...parsedValues, values }),
-        ),
-      ),
-  clear: AsyncStorage.setItem(WALLETCONNECTKEY, Flatted.stringify({})),
+          Flatted.stringify({ ...parsedValues, ...values })
+        );
+      });
+  },
+  clear: () =>
+    AsyncStorage.setItem(WALLETCONNECTKEY, Flatted.stringify(undefined)),
 };

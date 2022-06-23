@@ -21,12 +21,16 @@ import {
 import { useNavigation } from '@/utils/navigation';
 
 import styles from '../styles';
+import BatchTransactions from './BatchTransactions';
+import RequestCall from './RequestCall';
 import RequestConnect from './RequestConnect';
 import RequestTransfer from './RequestTransfer';
 
 const SCREENS = {
   transfer: RequestTransfer,
   requestConnect: RequestConnect,
+  requestCall: RequestCall,
+  batchTransactions: BatchTransactions,
 };
 
 function WalletConnectScreens() {
@@ -46,31 +50,10 @@ function WalletConnectScreens() {
     timedOut,
   } = params;
   const Screen = SCREENS[type];
-  const { dappScheme } = request;
 
-  const pendingRedirect = useSelector(
-    ({ walletconnect }) => walletconnect.pendingRedirect,
-  );
-
-  const closeScreen = useCallback(
-    canceled => {
-      goBack();
-
-      if (pendingRedirect) {
-        InteractionManager.runAfterInteractions(() => {
-          let type = 'sign';
-
-          if (canceled) {
-            type = `${type}-canceled`;
-          }
-          dispatch(
-            walletConnectRemovePendingRedirect({ type, scheme: dappScheme }),
-          );
-        });
-      }
-    },
-    [goBack, pendingRedirect, dappScheme, dispatch],
-  );
+  const closeScreen = useCallback(() => {
+    goBack();
+  }, [goBack]);
 
   const onCancel = useCallback(
     async error => {
@@ -83,17 +66,16 @@ function WalletConnectScreens() {
           }
         }, 300);
       } catch (e) {
-        console.log('onCancel error', e);
         dispatch(
           walletConnectExecuteAndResponse({
             ...request,
             error: ERRORS.SERVER_ERROR(e.message),
-          }),
+          })
         );
         closeScreen(true);
       }
     },
-    [closeScreen, dispatch, handleDecline, handleError],
+    [closeScreen, dispatch, handleDecline, handleError]
   );
 
   const handleConfirmTransaction = useCallback(async () => {
@@ -102,12 +84,11 @@ function WalletConnectScreens() {
         await handleApprove();
       }
     } catch (e) {
-      console.log('handleConfirmTransaction error', e);
       await dispatch(
         walletConnectExecuteAndResponse({
           ...request,
           error: ERRORS.SERVER_ERROR(e),
-        }),
+        })
       );
     }
     closeScreen(false);
@@ -144,7 +125,7 @@ function WalletConnectScreens() {
           <>
             <Image source={Plug} style={styles.plugIcon} />
             <Text style={styles.title}>Wallet Connect</Text>
-            <Screen metadta={metadata} request={request} args={args} />
+            <Screen metadata={metadata} request={request} args={args} />
             <RainbowButton
               buttonStyle={[styles.componentMargin, styles.buttonStyling]}
               text="Approve"

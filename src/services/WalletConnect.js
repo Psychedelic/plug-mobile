@@ -18,7 +18,8 @@ export const getAllValidWalletConnectSessions = async () => {
  * @desc get all wallet connect sessions
  * @return {Object}
  */
-const getAllWalletConnectSessions = () => walletConnectStorage.get(SESSION_KEY);
+const getAllWalletConnectSessions = () =>
+  walletConnectStorage.get(SESSION_KEY) || {};
 
 /**
  * @desc save wallet connect session
@@ -28,7 +29,7 @@ const getAllWalletConnectSessions = () => walletConnectStorage.get(SESSION_KEY);
 export const saveWalletConnectSession = async (peerId, session) => {
   const allSessions = await getAllValidWalletConnectSessions();
   allSessions[peerId] = session;
-  await walletConnectStorage.set(SESSION_KEY, allSessions);
+  await walletConnectStorage.set({ [SESSION_KEY]: allSessions });
 };
 
 /**
@@ -38,5 +39,5 @@ export const saveWalletConnectSession = async (peerId, session) => {
 export const removeWalletConnectSessions = async sessionIds => {
   const allSessions = await getAllWalletConnectSessions();
   const resultingSessions = omit(allSessions, sessionIds);
-  await walletConnectStorage.set(SESSION_KEY, resultingSessions);
+  await walletConnectStorage.set({ [SESSION_KEY]: resultingSessions });
 };
