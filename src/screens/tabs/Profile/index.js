@@ -87,7 +87,7 @@ const Profile = () => {
             keyExtractor={(_, index) => index}
             showsVerticalScrollIndicator={false}
             overScrollMode="never"
-            getItemLayout={(data, index) => ({
+            getItemLayout={(_, index) => ({
               length: ITEM_HEIGHT,
               offset: ITEM_HEIGHT * index,
               index,
