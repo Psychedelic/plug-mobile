@@ -31,8 +31,12 @@ const NFTs = () => {
     [collections]
   );
 
-  const renderNFT = ({ item }, index) => (
-    <NftItem key={index} item={item} onOpen={onOpen} />
+  const renderNFT = ({ item }) => (
+    <NftItem
+      key={`${item.canisterId}_${item.index}`}
+      item={item}
+      onOpen={onOpen}
+    />
   );
 
   const onOpen = nft => () => {

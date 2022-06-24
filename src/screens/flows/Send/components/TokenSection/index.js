@@ -31,8 +31,12 @@ const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }) => {
         <>
           <Text style={styles.title}>{t('common.collectibles')}</Text>
           <View style={styles.nftsContainer}>
-            {nfts.map((item, index) => (
-              <NftItem key={index} item={item} onOpen={handleOnOpenNFT} />
+            {nfts.map(item => (
+              <NftItem
+                key={`${item.canisterId}_${item.index}`}
+                item={item}
+                onOpen={handleOnOpenNFT}
+              />
             ))}
           </View>
         </>

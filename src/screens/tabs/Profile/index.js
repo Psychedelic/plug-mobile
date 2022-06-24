@@ -52,7 +52,7 @@ const Profile = () => {
 
   const renderTransaction = ({ item }, index) =>
     item?.symbol === 'NFT' && !ENABLE_NFTS ? null : (
-      <ActivityItem key={index} {...item} />
+      <ActivityItem key={`${item.date}${item.hash}`} {...item} />
     );
 
   return (
