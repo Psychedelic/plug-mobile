@@ -1,3 +1,4 @@
+import { useScrollToTop } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, RefreshControl, Text, View } from 'react-native';
@@ -26,14 +27,13 @@ const Profile = () => {
   const dispatch = useDispatch();
   const modalRef = useRef(null);
   const transactionListRef = useRef(null);
+  useScrollToTop(transactionListRef);
   const { currentWallet } = useSelector(state => state.keyring);
   const { icpPrice } = useSelector(state => state.icp);
-  const {
-    transactions,
-    transactionsLoading,
-    transactionsError,
-    scrollOnProfile,
-  } = useSelector(state => state.user, shallowEqual);
+  const { transactions, transactionsLoading, transactionsError } = useSelector(
+    state => state.user,
+    shallowEqual
+  );
   const [refreshing, setRefresing] = useState(transactionsLoading);
 
   const openAccounts = () => {
@@ -49,12 +49,6 @@ const Profile = () => {
   useEffect(() => {
     setRefresing(transactionsLoading);
   }, [transactionsLoading]);
-
-  useEffect(() => {
-    if (scrollOnProfile) {
-      transactionListRef?.current?.scrollToIndex({ index: 0 });
-    }
-  }, [scrollOnProfile]);
 
   const renderTransaction = ({ item }, index) =>
     item?.symbol === 'NFT' && !ENABLE_NFTS ? null : (
