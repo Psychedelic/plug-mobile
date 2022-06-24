@@ -71,8 +71,6 @@ export interface UserState {
   collectionsError: boolean;
   usingBiometrics: boolean;
   biometricsAvailable: boolean;
-  scrollOnProfile: boolean;
-  scrollOnNFTs: boolean;
 }
 
 export interface State {

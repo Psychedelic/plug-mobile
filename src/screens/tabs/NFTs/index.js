@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useScrollToTop } from '@react-navigation/native';
+import React, { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, RefreshControl, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,26 +20,16 @@ const NFTs = () => {
   const { t } = useTranslation();
   const detailRef = useRef(null);
   const NFTListRef = useRef(null);
+  useScrollToTop(NFTListRef);
   const dispatch = useDispatch();
   const [refreshing, setRefresing] = useState(false);
   const [selectedNft, setSelectedNft] = useState(null);
-  const { collections, collectionsError, scrollOnNFTs } = useSelector(
-    state => state.user
-  );
+  const { collections, collectionsError } = useSelector(state => state.user);
 
   const nfts = useMemo(
     () => collections?.flatMap(collection => collection?.tokens || []) || [],
     [collections]
   );
-
-  useEffect(() => {
-    if (scrollOnNFTs) {
-      // TODO: Check scrollOnNFTs and scrollOnProfile logic
-      if (nfts.length > 0) {
-        NFTListRef?.current?.scrollToIndex({ index: 0 });
-      }
-    }
-  }, [scrollOnNFTs, nfts]);
 
   const renderNFT = ({ item }, index) => (
     <NftItem key={index} item={item} onOpen={onOpen} />
