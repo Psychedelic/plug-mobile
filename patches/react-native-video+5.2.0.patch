@@ -1,0 +1,31 @@
+diff --git a/node_modules/react-native-video/Video.js b/node_modules/react-native-video/Video.js
+index b492d48..da02300 100644
+--- a/node_modules/react-native-video/Video.js
++++ b/node_modules/react-native-video/Video.js
+@@ -1,6 +1,6 @@
+ import React, { Component } from 'react';
+ import PropTypes from 'prop-types';
+-import { StyleSheet, requireNativeComponent, NativeModules, View, ViewPropTypes, Image, Platform, findNodeHandle } from 'react-native';
++import { StyleSheet, requireNativeComponent, NativeModules, View, Image, Platform, findNodeHandle } from 'react-native';
+ import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
+ import TextTrackType from './TextTrackType';
+ import FilterType from './FilterType';
+@@ -415,7 +415,7 @@ Video.propTypes = {
+   maxBitRate: PropTypes.number,
+   resizeMode: PropTypes.string,
+   poster: PropTypes.string,
+-  posterResizeMode: Image.propTypes.resizeMode,
++  posterResizeMode: PropTypes.string,
+   repeat: PropTypes.bool,
+   automaticallyWaitsToMinimizeStalling: PropTypes.bool,
+   allowsExternalPlayback: PropTypes.bool,
+@@ -505,8 +505,7 @@ Video.propTypes = {
+   scaleY: PropTypes.number,
+   translateX: PropTypes.number,
+   translateY: PropTypes.number,
+-  rotation: PropTypes.number,
+-  ...ViewPropTypes,
++  rotation: PropTypes.number
+ };
+ 
+ const RCTVideo = requireNativeComponent('RCTVideo', Video, {
