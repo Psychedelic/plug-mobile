@@ -82,7 +82,7 @@ const AmountSection = ({
   const handleMaxPress = () => {
     setTokenAmount({
       value: availableAmount,
-      display: availableAmount.toFixed(VISIBLE_DECIMALS),
+      display: toFixedLocale(availableAmount, VISIBLE_DECIMALS),
     });
 
     setUsdAmount(
