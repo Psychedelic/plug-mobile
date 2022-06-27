@@ -37,7 +37,7 @@ const BottomTabs = ({ state, navigation }) => {
 
         return (
           <Touchable onPress={onPress} key={route.name}>
-            <View key={index} style={styles.tab}>
+            <View key={iconName} style={styles.tab}>
               <Icon
                 name={iconName}
                 width={iconSize}

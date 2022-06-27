@@ -52,7 +52,7 @@ const Profile = () => {
 
   const renderTransaction = ({ item }, index) =>
     item?.symbol === 'NFT' && !ENABLE_NFTS ? null : (
-      <ActivityItem key={index} {...item} />
+      <ActivityItem key={`${item.date}${item.hash}`} {...item} />
     );
 
   return (
@@ -87,7 +87,7 @@ const Profile = () => {
             keyExtractor={(_, index) => index}
             showsVerticalScrollIndicator={false}
             overScrollMode="never"
-            getItemLayout={(data, index) => ({
+            getItemLayout={(_, index) => ({
               length: ITEM_HEIGHT,
               offset: ITEM_HEIGHT * index,
               index,

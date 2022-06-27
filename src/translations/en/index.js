@@ -74,6 +74,7 @@ const translations = {
     reviewSend: 'Review Send',
     contact: 'Contact',
     enterPassword: 'Enter your password',
+    contacts: 'Contacts',
   },
   reviewSend: {
     to: 'To',
