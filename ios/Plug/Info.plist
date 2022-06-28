@@ -42,12 +42,12 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>$(PRODUCT_NAME) Authentication with TouchId or FaceId</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Oswald-Bold.ttf</string>
-		<string>Oswald-Medium.ttf</string>
-		<string>Oswald-Regular.ttf</string>
+		<string>Inter-Medium.ttf</string>
+		<string>Inter-Regular.ttf</string>
+		<string>Inter-SemiBold.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>BootSplash</string>
