@@ -9,13 +9,20 @@ const requestStoragePermissions = async (
   onSuccess?: () => void
 ) => {
   try {
-    const granted = await PermissionsAndroid.request(
+    const hasPermission = await PermissionsAndroid.check(
       PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
     );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+    if (hasPermission) {
       onSuccess?.();
     } else {
-      onError?.();
+      const permissionRequest = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+      );
+      if (permissionRequest === PermissionsAndroid.RESULTS.GRANTED) {
+        onSuccess?.();
+      } else {
+        onError?.();
+      }
     }
   } catch (err) {
     onError?.();
