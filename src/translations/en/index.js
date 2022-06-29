@@ -38,8 +38,8 @@ const translations = {
     importNew: 'Import New Wallet',
   },
   login: {
-    submit: 'Submit',
-    unlock: 'Unlock Plug',
+    unlock: 'Unlock',
+    unlockPlug: 'Unlock Plug',
     signInBiometric: 'Sign in with biometrics',
     moreOptions: 'More options',
   },

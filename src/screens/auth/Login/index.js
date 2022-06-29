@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Keyboard, Text, View } from 'react-native';
+import { Animated, Keyboard, ScrollView, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Plug from '@/assets/icons/il_white_plug.png';
 import PasswordInput from '@/commonComponents/PasswordInput';
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
-import KeyboardScrollView from '@/components/common/KeyboardScrollView';
+import Icon from '@/components/icons';
 import { isValidPassword } from '@/constants/general';
+import { IS_MEDIUM_DEVICE } from '@/constants/platform';
 import useKeychain from '@/hooks/useKeychain';
+import useLoginAnimation from '@/hooks/useLoginAnimation';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 import { getICPPrice } from '@/redux/slices/icp';
@@ -31,6 +33,12 @@ function Login({ route, navigation }) {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [disableInput, setDisableInput] = useState(false);
+  const {
+    isKeyboardOpen,
+    animatedLogoStyle,
+    animatedTitleStyle,
+    animatedFaceIDStyle,
+  } = useLoginAnimation();
 
   useEffect(() => {
     dispatch(getICPPrice());
@@ -92,28 +100,54 @@ function Login({ route, navigation }) {
 
   return (
     <Container>
-      <KeyboardScrollView contentStyle={styles.container}>
-        <Image source={Plug} style={styles.plugIcon} />
-        <View>
-          <Text style={styles.title}>{t('login.unlock')}</Text>
+      <ScrollView
+        bounces={false}
+        contentContainerStyle={[
+          styles.container,
+          isKeyboardOpen &&
+            (!IS_MEDIUM_DEVICE
+              ? styles.containerBigDevice
+              : styles.containerSmallDevice),
+        ]}
+        keyboardShouldPersistTaps="never">
+        <View
+          style={[
+            styles.topContentContainer,
+            isKeyboardOpen && !IS_MEDIUM_DEVICE && styles.topContentBigDevice,
+          ]}>
+          <Animated.Image
+            source={Plug}
+            style={[styles.plugIcon, animatedLogoStyle]}
+          />
+          <Animated.View style={animatedTitleStyle}>
+            <Text style={styles.title}>{t('login.unlockPlug')}</Text>
+          </Animated.View>
+          {biometricsAvailable && usingBiometrics && (
+            <Animated.View
+              style={[styles.headerBiometricsButton, animatedFaceIDStyle]}>
+              <Icon name="faceIdIcon" />
+            </Animated.View>
+          )}
         </View>
-        <PasswordInput
-          autoFocus={!isManualLock}
-          error={error}
-          disabled={disableInput}
-          password={password}
-          onChange={setPassword}
-          inputStyle={styles.input}
-          onSubmit={() => handleSubmit(password)}
-        />
-        <RainbowButton
-          text={t('login.submit')}
-          onPress={() => handleSubmit(password)}
-          loading={loading}
-          disabled={!isValidPassword(password)}
-          buttonStyle={styles.buttonMargin}
-        />
-        {biometricsAvailable && usingBiometrics && (
+        <View style={styles.bottomContentContainer}>
+          <PasswordInput
+            autoFocus={!isManualLock}
+            error={error}
+            disabled={disableInput}
+            password={password}
+            onChange={setPassword}
+            inputStyle={styles.input}
+            onSubmit={() => handleSubmit(password)}
+          />
+          <RainbowButton
+            text={t('login.unlock')}
+            onPress={() => handleSubmit(password)}
+            loading={loading}
+            disabled={!isValidPassword(password)}
+            buttonStyle={styles.buttonMargin}
+          />
+        </View>
+        {biometricsAvailable && usingBiometrics && !isKeyboardOpen && (
           <Button
             iconName="faceIdIcon"
             text={t('login.signInBiometric')}
@@ -128,9 +162,15 @@ function Login({ route, navigation }) {
           onLongPress={handleGoToWelcome}
           onPress={handleGoToWelcome}
           iconStyle={styles.moreOptionsIcon}
-          buttonStyle={[styles.buttonMargin, styles.moreOptionsButton]}
+          buttonStyle={[
+            styles.buttonMargin,
+            styles.moreOptionsButton,
+            isKeyboardOpen &&
+              IS_MEDIUM_DEVICE &&
+              styles.moreOptionsButtonSmallDevice,
+          ]}
         />
-      </KeyboardScrollView>
+      </ScrollView>
     </Container>
   );
 }

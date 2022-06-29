@@ -1,38 +1,39 @@
 import { StyleSheet } from 'react-native';
 
-import { pixelRatioScale } from '@/constants/platform';
+import { isIos, pixelRatioScale } from '@/constants/platform';
 import { Colors } from '@/constants/theme';
+
+const commonMargin = 20;
 
 export default StyleSheet.create({
   container: {
     alignItems: 'center',
-    justifyContent: 'center',
     textAlign: 'center',
+    justifyContent: 'center',
     backgroundColor: Colors.Black.primary,
     padding: 30,
     width: '100%',
     flex: 1,
   },
-  input: {
-    width: '84%',
-  },
   plugIcon: {
-    height: pixelRatioScale(50),
+    height: pixelRatioScale(30),
     resizeMode: 'contain',
+    alignSelf: 'center',
   },
   title: {
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center',
     color: Colors.White.Primary,
     fontSize: 26,
     fontWeight: 'bold',
-    marginVertical: 27,
+    marginVertical: commonMargin,
   },
   componentMargin: {
-    marginTop: 27,
+    marginTop: commonMargin,
   },
   buttonMargin: {
-    marginTop: 27,
+    marginTop: commonMargin,
     minWidth: '84%',
   },
   errorText: {
@@ -54,5 +55,33 @@ export default StyleSheet.create({
   },
   biometricsIcon: {
     marginRight: 11,
+  },
+  headerBiometricsButton: {
+    alignSelf: 'flex-end',
+    borderRadius: 25,
+    backgroundColor: Colors.Black.primary,
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  topContentContainer: {
+    width: '100%',
+    flexShrink: 1,
+  },
+  bottomContentContainer: {
+    backgroundColor: Colors.Black.primary,
+  },
+  topContentBigDevice: {
+    maxHeight: isIos ? '10%' : '20%',
+  },
+  containerBigDevice: {
+    justifyContent: 'flex-start',
+  },
+  containerSmallDevice: {
+    paddingBottom: 0,
+  },
+  moreOptionsButtonSmallDevice: {
+    marginTop: 0,
   },
 });
