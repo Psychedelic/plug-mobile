@@ -8,6 +8,7 @@ import EmptyState from '@/commonComponents/EmptyState';
 import ErrorState from '@/commonComponents/ErrorState';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
+import { useStateWithCallback } from '@/hooks/useStateWithCallback';
 import { Container, Separator } from '@/layout';
 import { getNFTs } from '@/redux/slices/user';
 import NftItem from '@/screens/tabs/components/NftItem';
@@ -23,7 +24,7 @@ const NFTs = () => {
   useScrollToTop(NFTListRef);
   const dispatch = useDispatch();
   const [refreshing, setRefresing] = useState(false);
-  const [selectedNft, setSelectedNft] = useState(null);
+  const [selectedNft, setSelectedNft] = useStateWithCallback(null);
   const { collections, collectionsError } = useSelector(state => state.user);
 
   const nfts = useMemo(
@@ -40,8 +41,7 @@ const NFTs = () => {
   );
 
   const onOpen = nft => () => {
-    setSelectedNft(nft);
-    detailRef?.current.open();
+    setSelectedNft(nft, () => detailRef.current?.open());
   };
 
   const onRefresh = () => {
@@ -89,7 +89,11 @@ const NFTs = () => {
           <ErrorState onPress={onRefresh} errorType={ERROR_TYPES.FETCH_ERROR} />
         )}
       </Container>
-      <NftDetail modalRef={detailRef} selectedNFT={selectedNft} />
+      <NftDetail
+        modalRef={detailRef}
+        selectedNFT={selectedNft}
+        handleClose={() => setSelectedNft(null)}
+      />
     </>
   );
 };
