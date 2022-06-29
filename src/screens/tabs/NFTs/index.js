@@ -89,7 +89,11 @@ const NFTs = () => {
           <ErrorState onPress={onRefresh} errorType={ERROR_TYPES.FETCH_ERROR} />
         )}
       </Container>
-      <NftDetail modalRef={detailRef} selectedNFT={selectedNft} />
+      <NftDetail
+        modalRef={detailRef}
+        selectedNFT={selectedNft}
+        handleClose={() => setSelectedNft(null)}
+      />
     </>
   );
 };
