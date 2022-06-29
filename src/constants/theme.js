@@ -83,70 +83,92 @@ export const Shadow = StyleSheet.create({
   elevation: 5,
 });
 
+// TODO: Remove styles that doesnt match with the style guide in figma
 export const FontStyles = StyleSheet.create({
   Title: {
     fontSize: 22,
-    fontWeight: '600',
-    color: Colors.White.Primary,
+    fontFamily: 'Inter-SemiBold',
   },
   Title2: {
     fontSize: 24,
-    fontWeight: '600',
+    fontFamily: 'Inter-SemiBold',
     color: Colors.White.Primary,
-  },
-  Subtitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: Colors.White.Primary,
-  },
-  Subtitle2: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: Colors.White.Primary,
-  },
-  Subtitle3: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Colors.White.Secondary,
   },
   Normal: {
     fontSize: 16,
-    fontWeight: '500',
+    fontFamily: 'Inter-Medium',
     color: Colors.White.Primary,
   },
   NormalGray: {
     fontSize: 16,
-    fontWeight: '400',
+    fontFamily: 'Inter-Regular',
     color: Colors.White.Secondary,
   },
   Small: {
     fontSize: 14,
-    fontWeight: '500',
+    fontFamily: 'Inter-Medium',
     color: Colors.White.Primary,
   },
   SmallGray: {
     fontSize: 14,
-    fontWeight: '400',
+    fontFamily: 'Inter-Regular',
     color: Colors.White.Secondary,
   },
   Smaller: {
     fontSize: 12,
-    fontWeight: '400',
+    fontFamily: 'Inter-Regular',
     color: Colors.White.Primary,
   },
   SmallerGray: {
     fontSize: 12,
-    fontWeight: '500',
+    fontFamily: 'Inter-Medium',
     color: Colors.White.Secondary,
-  },
-  Button: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: Colors.White.Pure,
   },
   LinkButton: {
     fontSize: 16,
-    fontWeight: '400',
+    fontFamily: 'Inter-Regular',
     color: Colors.ActionBlue,
+  },
+  Headline1: {
+    fontSize: 28,
+    fontFamily: 'Inter-SemiBold',
+  },
+  Headline2: {
+    fontSize: 24,
+    fontFamily: 'Inter-Regular',
+  },
+  Subtitle: {
+    fontSize: 20,
+    fontFamily: 'Inter-SemiBold',
+  },
+  Subtitle2: {
+    fontSize: 18,
+    fontFamily: 'Inter-SemiBold',
+    color: Colors.White.Primary,
+  },
+  Subtitle3: {
+    fontSize: 16,
+    fontFamily: 'Inter-SemiBold',
+    color: Colors.White.Secondary,
+  },
+  Body1: {
+    fontSize: 17,
+    fontFamily: 'Inter-Regular',
+  },
+  Body2: {
+    fontSize: 17,
+    fontFamily: 'Inter-Medium',
+  },
+  Button: {
+    fontSize: 20,
+    fontFamily: 'Inter-SemiBold',
+  },
+  Caption: {
+    fontSize: 14,
+    fontFamily: 'Inter-Medium',
+  },
+  Overline: {
+    fontSize: 12,
+    fontFamily: 'Inter-Regular',
   },
 });

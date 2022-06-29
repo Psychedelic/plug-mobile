@@ -115,13 +115,13 @@ const ReviewSend = ({
       {...props}
       fullHeight={isSuccess || isError}>
       <View style={styles.content}>
-        <Header center={<Text style={FontStyles.Subtitle2}>{title}</Text>} />
+        <Header center={<Text style={styles.headerTitle}>{title}</Text>} />
         {ReviewIcon}
         {token && (
           <Row style={styles.row}>
             <Column>
-              <Text style={FontStyles.Title2}>${value?.display}</Text>
-              <Text style={FontStyles.Subtitle3}>
+              <Text style={styles.title}>${value?.display}</Text>
+              <Text style={styles.subtitle}>
                 <TokenFormat value={amount?.display} token={token.symbol} />
               </Text>
             </Column>
@@ -131,8 +131,8 @@ const ReviewSend = ({
         {nft && (
           <Row style={styles.row}>
             <Column>
-              <Text style={FontStyles.Title2}>{`#${nft.index}`}</Text>
-              <Text style={FontStyles.Subtitle3}>
+              <Text style={styles.title}>{`#${nft.index}`}</Text>
+              <Text style={styles.subtitle}>
                 {nft.name || `${nft.collection}`}
               </Text>
             </Column>
@@ -149,14 +149,14 @@ const ReviewSend = ({
           <Column>
             {selectedContact ? (
               <>
-                <Text style={FontStyles.Title2}>{selectedContact?.name}</Text>
-                <Text style={FontStyles.Subtitle3}>
+                <Text style={styles.title}>{selectedContact?.name}</Text>
+                <Text style={styles.subtitle}>
                   {shortAddress(selectedContact?.id)}
                 </Text>
               </>
             ) : (
               <>
-                <Text style={FontStyles.Title2}>{shortAddress(to)}</Text>
+                <Text style={styles.title}>{shortAddress(to)}</Text>
                 <Text
                   style={[FontStyles.Normal, styles.valid]}
                   onPress={handleSaveContact}>
@@ -169,7 +169,7 @@ const ReviewSend = ({
         </Row>
         {token && (
           <Row style={styles.row}>
-            <Text style={FontStyles.Subtitle3}>
+            <Text style={styles.subtitle}>
               {t('reviewSend.totalFee', {
                 value: `${currentFee} ${token?.symbol} ($${Number(
                   currentUSDFee.toFixed(VISIBLE_DECIMALS)

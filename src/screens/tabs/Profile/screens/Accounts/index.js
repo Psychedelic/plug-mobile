@@ -110,9 +110,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
     <>
       <Modal adjustToContentHeight modalRef={modalRef} {...props}>
         <Header
-          center={
-            <Text style={FontStyles.Subtitle2}>{t('accounts.title')}</Text>
-          }
+          center={<Text style={styles.title}>{t('accounts.title')}</Text>}
         />
         <View style={styles.content}>
           {loading && (

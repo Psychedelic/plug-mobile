@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { FontStyles } from '@/constants/theme';
+import { Colors, FontStyles } from '@/constants/theme';
 
 export default StyleSheet.create({
   token: {
@@ -8,11 +8,10 @@ export default StyleSheet.create({
   },
   title: {
     ...FontStyles.Subtitle3,
-    marginTop: 25,
+    color: Colors.White.Secondary,
   },
   nftText: {
-    ...FontStyles.SmallGray,
-    marginTop: 10,
+    marginTop: 25,
   },
   nft: {
     margin: 10,

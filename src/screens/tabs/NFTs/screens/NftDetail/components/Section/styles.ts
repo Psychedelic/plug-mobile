@@ -9,6 +9,9 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 25,
   },
+  title: {
+    color: Colors.White.Primary,
+  },
   content: {
     paddingTop: 20,
     flexDirection: 'row',

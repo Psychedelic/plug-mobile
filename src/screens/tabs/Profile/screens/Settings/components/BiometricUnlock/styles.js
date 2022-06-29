@@ -7,6 +7,7 @@ const commonPadding = 20;
 export default StyleSheet.create({
   title: {
     ...FontStyles.Subtitle2,
+    color: Colors.White.Primary,
   },
   option: {
     ...FontStyles.Normal,

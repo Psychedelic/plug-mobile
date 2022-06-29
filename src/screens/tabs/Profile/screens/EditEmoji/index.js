@@ -30,9 +30,7 @@ const EditEmoji = ({ modalRef, onSave, emoji }) => {
   return (
     <Modal adjustToContentHeight modalRef={modalRef}>
       <Header
-        center={
-          <Text style={FontStyles.Subtitle2}>{t('accounts.setEmoji')}</Text>
-        }
+        center={<Text style={styles.title}>{t('accounts.setEmoji')}</Text>}
       />
       <View style={styles.content}>
         <UserIcon icon={selectedEmoji} size="extralarge" style={styles.icon} />

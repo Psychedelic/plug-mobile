@@ -84,9 +84,7 @@ function Contacts({ modalRef }) {
     <>
       <Modal modalRef={modalRef} adjustToContentHeight>
         <Header
-          center={
-            <Text style={FontStyles.Subtitle2}>{t('contacts.title')}</Text>
-          }
+          center={<Text style={styles.title}>{t('contacts.title')}</Text>}
         />
         <Column style={styles.container}>
           {contactsLoading && (

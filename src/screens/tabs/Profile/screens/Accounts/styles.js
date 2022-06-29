@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import { Colors, FontStyles } from '@/constants/theme';
+
 export default StyleSheet.create({
   content: {
     paddingHorizontal: 20,
@@ -23,5 +25,9 @@ export default StyleSheet.create({
   },
   plusIcon: {
     marginRight: 8,
+  },
+  title: {
+    ...FontStyles.Subtitle2,
+    color: Colors.White.Primary,
   },
 });

@@ -333,7 +333,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
               </Text>
             )
           }
-          center={<Text style={FontStyles.Subtitle2}>{t('send.title')}</Text>}
+          center={<Text style={styles.centerText}>{t('send.title')}</Text>}
         />
         <TextInput
           label={t('send.inputLabel')}

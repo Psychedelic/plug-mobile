@@ -95,7 +95,7 @@ const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
             {t('common.back')}
           </Text>
         }
-        center={<Text style={FontStyles.Subtitle2}>{getName()}</Text>}
+        center={<Text style={styles.centerText}>{getName()}</Text>}
       />
       <View style={styles.content}>
         <View>

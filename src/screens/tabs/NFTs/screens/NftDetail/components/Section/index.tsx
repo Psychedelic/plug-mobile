@@ -13,7 +13,7 @@ interface Props {
 
 const Section = ({ title, children, style }: Props) => (
   <View style={[styles.section, style]}>
-    <Text style={FontStyles.Subtitle}>{title}</Text>
+    <Text style={[FontStyles.Subtitle, styles.title]}>{title}</Text>
     <View style={styles.content}>{children}</View>
   </View>
 );

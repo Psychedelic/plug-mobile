@@ -17,7 +17,7 @@ const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }) => {
 
   return (
     <>
-      <Text style={FontStyles.Subtitle3}>{t('common.tokens')}</Text>
+      <Text style={styles.title}>{t('common.tokens')}</Text>
       {tokens.map(token => (
         <TokenItem
           {...token}
@@ -29,7 +29,9 @@ const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }) => {
       ))}
       {ENABLE_NFTS && (
         <>
-          <Text style={styles.title}>{t('common.collectibles')}</Text>
+          <Text style={[styles.title, styles.nftText]}>
+            {t('common.collectibles')}
+          </Text>
           <View style={styles.nftsContainer}>
             {nfts.map(item => (
               <NftItem

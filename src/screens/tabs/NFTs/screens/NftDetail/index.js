@@ -78,7 +78,7 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
         {...props}>
         <Header
           center={
-            <Text style={FontStyles.Subtitle2}>
+            <Text style={styles.title}>
               {selectedNFT?.index ? `#${selectedNFT?.index}` : ''}
             </Text>
           }

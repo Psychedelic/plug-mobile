@@ -4,19 +4,21 @@ import { Colors, FontStyles } from '@/constants/theme';
 
 export default StyleSheet.create({
   container: {
-    paddingTop: 10,
+    justifyContent: 'space-between',
+    flex: 1,
+  },
+  infoContainer: {
     paddingHorizontal: 20,
-    marginBottom: 40,
+    paddingVertical: 30,
+  },
+  valid: {
+    color: Colors.ActionBlue,
+  },
+  version: {
+    alignSelf: 'flex-end',
   },
   title: {
     ...FontStyles.Subtitle2,
     color: Colors.White.Primary,
-  },
-  buttonStyle: {
-    marginTop: 20,
-  },
-  copyStyle: {
-    marginTop: 30,
-    alignSelf: 'center',
   },
 });

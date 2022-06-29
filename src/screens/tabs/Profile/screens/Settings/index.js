@@ -1,13 +1,13 @@
 import React, { useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Modal from '@/commonComponents/Modal';
 import Touchable from '@/commonComponents/Touchable';
 import Header from '@/components/common/Header';
 import Icon from '@/components/icons';
-import { Colors, FontStyles } from '@/constants/theme';
+import { FontStyles } from '@/constants/theme';
 import { Separator } from '@/layout';
 import { setUnlocked } from '@/redux/slices/keyring';
 import Contacts from '@/screens/tabs/Profile/screens/Contacts';
@@ -19,6 +19,7 @@ import BiometricUnlock from './components/BiometricUnlock';
 import InfoItem from './components/InfoItem';
 import SettingItem from './components/SettingItem';
 import { infoItems } from './constants';
+import styles from './styles';
 
 const Settings = () => {
   const { t } = useTranslation();
@@ -102,9 +103,7 @@ const Settings = () => {
       </Touchable>
       <Modal modalRef={modalRef} fullHeight>
         <Header
-          center={
-            <Text style={FontStyles.Subtitle2}>{t('settings.title')}</Text>
-          }
+          center={<Text style={styles.title}>{t('settings.title')}</Text>}
           right={
             <Text
               style={[FontStyles.Normal, styles.valid]}
@@ -133,20 +132,3 @@ const Settings = () => {
 };
 
 export default Settings;
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'space-between',
-    flex: 1,
-  },
-  infoContainer: {
-    paddingHorizontal: 20,
-    paddingVertical: 30,
-  },
-  valid: {
-    color: Colors.ActionBlue,
-  },
-  version: {
-    alignSelf: 'flex-end',
-  },
-});

@@ -54,7 +54,7 @@ function SaveContact({ modalRef, onClose, id }) {
             {t('common.close')}
           </Text>
         }
-        center={<Text style={FontStyles.Subtitle2}>{title}</Text>}
+        center={<Text style={styles.centerText}>{title}</Text>}
       />
       <View style={styles.container}>
         <TextInput

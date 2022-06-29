@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors } from '@/constants/theme';
+import { Colors, FontStyles } from '@/constants/theme';
 
 export default StyleSheet.create({
   valid: {
@@ -12,5 +12,9 @@ export default StyleSheet.create({
   contentContainer: {
     paddingHorizontal: 20,
     paddingBottom: 10,
+  },
+  centerText: {
+    ...FontStyles.Subtitle2,
+    color: Colors.White.Primary,
   },
 });

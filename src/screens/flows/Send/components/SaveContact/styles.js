@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors } from '@/constants/theme';
+import { Colors, FontStyles } from '@/constants/theme';
 
 const commonPadding = 20;
 
@@ -15,5 +15,9 @@ export default StyleSheet.create({
   },
   valid: {
     color: Colors.ActionBlue,
+  },
+  centerText: {
+    ...FontStyles.Subtitle2,
+    color: Colors.White.Primary,
   },
 });
