@@ -1,11 +1,12 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
-platform :ios, '15.1'
+platform :ios, '11.0'
 
 target 'Plug' do
 
   config = use_native_modules!
+  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.18.1'
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -21,11 +22,8 @@ target 'Plug' do
 
   use_flipper!
   post_install do |installer|
-    installer.pods_project.build_configurations.each do |config|
-      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.1'
-    end
     react_native_post_install(installer)
+    __apply_Xcode_12_5_M1_post_install_workaround(installer)
   end
 
 end 
