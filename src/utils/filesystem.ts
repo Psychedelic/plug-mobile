@@ -1,8 +1,33 @@
-import { Share } from 'react-native';
+import { PermissionsAndroid, Share } from 'react-native';
 import { Dirs, FileSystem } from 'react-native-file-access';
 import FileViewer from 'react-native-file-viewer';
 
-import { isIos } from '@/constants/platform';
+import { isAndroid, isIos } from '@/constants/platform';
+
+const requestStoragePermissions = async (
+  onError?: () => void,
+  onSuccess?: () => void
+) => {
+  try {
+    const hasPermission = await PermissionsAndroid.check(
+      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+    );
+    if (hasPermission) {
+      onSuccess?.();
+    } else {
+      const permissionRequest = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+      );
+      if (permissionRequest === PermissionsAndroid.RESULTS.GRANTED) {
+        onSuccess?.();
+      } else {
+        onError?.();
+      }
+    }
+  } catch (err) {
+    onError?.();
+  }
+};
 
 interface DownloadFileProps {
   filename: string;
@@ -12,7 +37,7 @@ interface DownloadFileProps {
   onError: () => void;
 }
 
-export const downloadFile = ({
+export const downloadFile = async ({
   filename,
   url,
   onFetched,
@@ -20,6 +45,9 @@ export const downloadFile = ({
   onError,
 }: DownloadFileProps) => {
   try {
+    if (isAndroid) {
+      await requestStoragePermissions(onError);
+    }
     const dirToSave = Dirs.DocumentDir;
     const path = `${dirToSave}/${filename}`;
 
@@ -28,7 +56,7 @@ export const downloadFile = ({
       path,
     }).then(async res => {
       onFetched?.();
-      if (!isIos) {
+      if (isAndroid) {
         await FileSystem.cpExternal(path, filename, 'downloads');
       }
       if (res.ok) {
