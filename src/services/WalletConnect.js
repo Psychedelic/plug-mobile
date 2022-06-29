@@ -3,7 +3,6 @@ import { omit, pickBy } from 'lodash';
 import { walletConnectStorage } from '@/redux/store';
 
 const SESSION_KEY = 'sessions';
-const APP_KEY = 'apps';
 
 /**
  * @desc get all wallet connect sessions

@@ -43,32 +43,32 @@ export const TOKENS = {
 };
 
 export const formatAssetBySymbol = (amount, symbol, icpPrice) =>
-({
-  ICP: {
-    amount,
-    value: amount * icpPrice,
-    icon: TOKEN_IMAGES.ICP,
-    symbol: 'ICP',
-  },
-  XTC: {
-    amount,
-    value: amount * USD_PER_TC,
-    icon: TOKEN_IMAGES.XTC,
-    symbol: 'XTC',
-  },
-  WTC: {
-    amount,
-    value: amount * USD_PER_TC,
-    symbol: 'WTC',
-  },
-  WICP: {
-    amount,
-    value: amount * icpPrice,
-    icon: TOKEN_IMAGES.WICP,
-    symbol: 'WICP',
-  },
-  default: { amount, value: amount },
-}[symbol || 'default'] || { amount, value: amount });
+  ({
+    ICP: {
+      amount,
+      value: amount * icpPrice,
+      icon: TOKEN_IMAGES.ICP,
+      symbol: 'ICP',
+    },
+    XTC: {
+      amount,
+      value: amount * USD_PER_TC,
+      icon: TOKEN_IMAGES.XTC,
+      symbol: 'XTC',
+    },
+    WTC: {
+      amount,
+      value: amount * USD_PER_TC,
+      symbol: 'WTC',
+    },
+    WICP: {
+      amount,
+      value: amount * icpPrice,
+      icon: TOKEN_IMAGES.WICP,
+      symbol: 'WICP',
+    },
+    default: { amount, value: amount },
+  }[symbol || 'default'] || { amount, value: amount });
 
 export const formatAssets = ({ assets = [], icpPrice }) => {
   const mappedAssets = assets.map(({ amount, name, symbol, canisterId }) => {
@@ -90,7 +90,7 @@ export const parseAssetsAmount = (assets = []) =>
 
     const parsedAmount = parseToFloatAmount(
       amount,
-      parseInt(decimals.toString(), 10),
+      parseInt(decimals.toString(), 10)
     );
 
     return {

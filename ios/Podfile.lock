@@ -318,7 +318,7 @@ PODS:
   - react-native-minimizer (1.3.3):
     - AFNetworking (~> 3.0)
     - React
-  - react-native-pager-view (5.4.15):
+  - react-native-pager-view (5.4.11):
     - React-Core
   - react-native-randombytes (3.6.1):
     - React-Core
@@ -406,7 +406,7 @@ PODS:
     - React-perflogger (= 0.66.3)
   - RNBootSplash (4.1.5):
     - React-Core
-  - RNCAsyncStorage (1.17.0):
+  - RNCAsyncStorage (1.16.1):
     - React-Core
   - RNCClipboard (1.5.1):
     - React-Core
@@ -458,9 +458,9 @@ PODS:
   - RNScreens (3.13.1):
     - React-Core
     - React-RCTImage
-  - RNSentry (3.3.4):
+  - RNSentry (3.3.2):
     - React-Core
-    - Sentry (= 7.10.2)
+    - Sentry (= 7.10.1)
   - RNSVG (12.3.0):
     - React-Core
   - RNVectorIcons (8.1.0):
@@ -471,9 +471,9 @@ PODS:
   - SDWebImageWebPCoder (0.8.4):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
-  - Sentry (7.10.2):
-    - Sentry/Core (= 7.10.2)
-  - Sentry/Core (7.10.2)
+  - Sentry (7.10.1):
+    - Sentry/Core (= 7.10.1)
+  - Sentry/Core (7.10.1)
   - SSZipArchive (2.2.3)
   - TcpSockets (3.3.2):
     - React
@@ -756,7 +756,7 @@ SPEC CHECKSUMS:
   react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
   react-native-file-access: 8c7b3c8935f7f33e31e16439b5882caa620cc493
   react-native-minimizer: b33b62100148ac712cd6b314fcfd9c9a98a8d1a3
-  react-native-pager-view: b1914469643f40042e65d78cbf3d3dfebd6fb0d9
+  react-native-pager-view: 7f00d63688f7df9fad86dfb0154814419cc5eb8d
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-safe-area-context: ebf8c413eb8b5f7c392a036a315eb7b46b96845f
   react-native-sensitive-info: d44e909d065f9c0e15734245e5dd6a24b82e3dcd
@@ -776,7 +776,7 @@ SPEC CHECKSUMS:
   React-runtimeexecutor: bbbdb3d8fcf327c6e2249ee71b6ef1764b7dc266
   ReactCommon: 9bac022ab71596f2b0fde1268272543184c63971
   RNBootSplash: 2830c475d5793d6cf12312d1e8f5f1decb0dd3e8
-  RNCAsyncStorage: 4efdcd2f7378421b29467c9de58f43552b60cf5b
+  RNCAsyncStorage: b49b4e38a1548d03b74b30e558a1d18465b94be7
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNCMaskedView: c298b644a10c0c142055b3ae24d83879ecb13ccd
   RNDeviceInfo: aad3c663b25752a52bf8fce93f2354001dd185aa
@@ -788,12 +788,12 @@ SPEC CHECKSUMS:
   RNReactNativeHapticFeedback: 4085973f5a38b40d3c6793a3ee5724773eae045e
   RNReanimated: 58b57be69a237fb02ec8099d25171057638cf41a
   RNScreens: 40a2cb40a02a609938137a1e0acfbf8fc9eebf19
-  RNSentry: 71f9eb4365afbea11c955427622cf8d038650600
+  RNSentry: f8c14c77e400a93331b38538f735c2538f8108a8
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815
-  Sentry: 7bf9bfe713692cf87812e55f0999260494ba7982
+  Sentry: ddcd9fde63cfe7e9e2243da59d98daa382413e49
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   TcpSockets: 14306fb79f9750ea7d2ddd02d8bed182abb01797
   Yoga: 32a18c0e845e185f4a2a66ec76e1fd1f958f22fa

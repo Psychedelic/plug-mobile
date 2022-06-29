@@ -22,6 +22,10 @@ function WalletConnectWaitingBridge() {
       setTimedOut(true);
     }, 20000);
     dispatch(updateBridgeTimeout({ timeout, onBridgeContact }));
+
+    return () => {
+      clearTimeout(timeout);
+    };
   }, []);
 
   return (

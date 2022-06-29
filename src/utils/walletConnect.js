@@ -4,7 +4,6 @@ import { getAllNFTS, getTokens } from '@psychedelic/dab-js';
 import PlugController from '@psychedelic/plug-mobile-controller';
 import { fetch } from 'react-native-fetch-api';
 
-import ErrorState from '@/components/common/ErrorState';
 import { XTC_FEE } from '@/constants/addresses';
 import { CYCLES_PER_TC } from '@/constants/assets';
 import { ASSET_CANISTER_IDS } from '@/constants/canister';
@@ -70,7 +69,6 @@ export const sessionRequestHandler = async (
   { dispatch, getState, uri },
   { error, payload }
 ) => {
-  const { routeParams } = await dispatch(getSession({ uri })).unwrap();
   if (error) {
     throw error;
   }
@@ -88,10 +86,10 @@ export const sessionRequestHandler = async (
     peerId,
   };
 
-  dispatch(setSession({ uri, sessionInfo: { meta } }));
+  await dispatch(setSession({ uri, sessionInfo: { meta } }));
 
   Navigation.handleAction(Routes.WALLET_CONNECT_APPROVAL_SHEET, {
-    ...routeParams,
+    uri,
     meta,
   });
 };
@@ -187,13 +185,11 @@ export const validateTransferArgs = ({ to, amount, opts, strAmount }) => {
   let message = null;
 
   if (amount && !validateAmount(amount)) {
-    message =
-      'The transaction failed because the amount entered was invalid. \n';
+    message = 'The transaction failed because the amount entered was invalid.';
   }
 
   if (strAmount && !validateFloatStrAmount(strAmount)) {
-    message =
-      'The transaction failed because the amount entered was invalid. \n';
+    message = 'The transaction failed because the amount entered was invalid.';
   }
 
   if (!validatePrincipalId(to) && !validateAccountId(to)) {
@@ -202,7 +198,7 @@ export const validateTransferArgs = ({ to, amount, opts, strAmount }) => {
   }
   if (opts?.memo && !isValidBigInt(opts?.memo)) {
     message =
-      'The transaction failed because the memo entered was invalid. It needs to be a valid BigInt \n';
+      'The transaction failed because the memo entered was invalid. It needs to be a valid BigInt';
   }
   return message ? ERRORS.CLIENT_ERROR(message) : null;
 };
@@ -211,8 +207,7 @@ export const validateBurnArgs = ({ to, amount }) => {
   let message = null;
 
   if (!validateAmount(amount)) {
-    message =
-      'The transaction failed because the amount entered was invalid. \n';
+    message = 'The transaction failed because the amount entered was invalid.';
   }
 
   if (!validateCanisterId(to)) {

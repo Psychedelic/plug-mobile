@@ -1,18 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import WalletConnect from '@walletconnect/client';
 import { parseWalletConnectUri } from '@walletconnect/utils';
-import { AppState, InteractionManager, Linking } from 'react-native';
+import { InteractionManager, Linking } from 'react-native';
 import Minimizer from 'react-native-minimizer';
 
 import {
-  BIOMETRICS_ANIMATION_DELAY,
-  DEFAULT_STATE,
   ERRORS,
   PLUG_DESCRIPTION,
   SIGNING_METHODS,
 } from '@/constants/walletconnect';
 import Routes from '@/navigation/Routes';
 import { walletConnectStorage } from '@/redux/store';
+import { DEFAULT_WALLET_CONNECT_STATE as DEFAULT_STATE } from '@/redux/utils';
 import {
   getAllValidWalletConnectSessions,
   saveWalletConnectSession,
@@ -24,8 +23,6 @@ import {
   connectionRequestResponseHandlerFactory,
   sessionRequestHandler,
 } from '@/utils/walletConnect';
-
-let showRedirectSheetThreshold = 300;
 
 const getNativeOptions = async () => {
   const nativeOptions = {
@@ -264,7 +261,7 @@ export const walletConnectExecuteAndResponse = createAsyncThunk(
     try {
       const walletConnector = getState().walletconnect.walletConnectors[peerId];
       const { pendingRedirect } = getState().walletconnect;
-      const { executor, dappScheme } =
+      const { executor } =
         getState().walletconnect.pendingCallRequests[requestId] || {};
       if (walletConnector) {
         try {
@@ -343,10 +340,7 @@ export const addCallRequestToApprove = createAsyncThunk(
     { clientId, peerId, requestId, payload, peerMeta, executor },
     { dispatch, getState }
   ) => {
-    const { walletConnectors, pendingCallRequests } = getState().walletconnect;
-
-    const walletConnector = walletConnectors[peerId];
-    const chainId = walletConnector._chainId;
+    const { pendingCallRequests } = getState().walletconnect;
 
     const imageUrl = peerMeta?.url;
     const dappName = peerMeta?.name || 'Unknown Dapp';

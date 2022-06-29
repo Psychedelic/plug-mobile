@@ -19,7 +19,7 @@ export const ERRORS = {
     message:
       'The transaction the app/page attempted failed because the destination Canister ID is invalid. Please contact this project’s developers so they can fix it.',
   },
-  SERVER_ERROR: message => ({ code: 500, message }),
+  SERVER_ERROR: (message: string) => ({ code: 500, message }),
   AGENT_REJECTED: { code: 401, message: 'The agent creation was rejected.' },
   TRANSACTION_REJECTED: {
     code: 401,
@@ -35,7 +35,7 @@ export const ERRORS = {
     message:
       'The token that was just attempted to transfer was not found. Please contact the project’s developers.',
   },
-  CANISTER_NOT_WHITLESTED_ERROR: canisterId => ({
+  CANISTER_NOT_WHITLESTED_ERROR: (canisterId: string) => ({
     code: 401,
     message: `This app tried to connect to a canister (${canisterId}) on your behalf without the proper permissions. Please contact this project’s developers and share the error with them so they can fix it.`,
   }),
@@ -49,16 +49,7 @@ export const ERRORS = {
     message:
       'The transaction that was just attempted failed because of timeout. Please contact the project’s developers.',
   },
-  CLIENT_ERROR: message => ({ code: 400, message }),
-};
-
-export const DEFAULT_STATE = {
-  pendingRedirect: false,
-  pendingSessionRequests: {},
-  pendingCallRequests: {},
-  walletConnectors: {},
-  sessions: {},
-  bridgeTimeout: { timeout: null, onBridgeContact: () => { } },
+  CLIENT_ERROR: (message: string) => ({ code: 400, message }),
 };
 
 export const BIOMETRICS_ANIMATION_DELAY = 569;

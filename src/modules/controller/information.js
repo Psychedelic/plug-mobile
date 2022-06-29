@@ -22,23 +22,12 @@ const InformationModule = (dispatch, getState) => {
             })
           );
         }
-        if (!keyring.isUnlocked) {
-          const handleApprove = () =>
-            dispatch(
-              walletConnectExecuteAndResponse({
-                ...request,
-                args: [subaccount],
-              })
-            );
-          // TODO: show requestBalanceData screen
-        } else {
-          return dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              args: [subaccount],
-            })
-          );
-        }
+        return dispatch(
+          walletConnectExecuteAndResponse({
+            ...request,
+            args: [subaccount],
+          })
+        );
       } else {
         dispatch(
           walletConnectExecuteAndResponse({
@@ -126,7 +115,7 @@ const InformationModule = (dispatch, getState) => {
 
   const isUnlock = {
     methodName: 'isUnlock',
-    handler: request => { },
+    handler: request => {},
     executor: () => {
       try {
         const { isUnlocked } = getState().keyring;

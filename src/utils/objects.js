@@ -23,7 +23,7 @@ export const recursiveParsePrincipal = data =>
       current[key] = val.map(v => recursiveParsePrincipal(v));
     } else if (val._isPrincipal) {
       current[key] = Principal.fromUint8Array(
-        new Uint8Array(Object.values(val._arr)),
+        new Uint8Array(Object.values(val._arr))
       ).toString();
     } else if (typeof val === 'object') {
       current[key] = recursiveParsePrincipal(val);

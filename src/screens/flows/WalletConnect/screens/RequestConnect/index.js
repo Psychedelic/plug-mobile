@@ -1,16 +1,11 @@
-import { useRoute } from '@react-navigation/native';
 import React from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
-
-import { Container } from '@/layout';
+import { Text } from 'react-native';
 
 import styles from '../../styles';
-import WalletConnectLayaout from '..';
 
 function RequestConnect({ request, args, metadata }) {
   const { dappUrl, dappName } = request;
   const { domainUrl, whitelist } = args;
-  const { to } = args;
 
   return (
     <>
