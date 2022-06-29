@@ -14,7 +14,6 @@ import {
   recursiveParseBigint,
   TRANSACTION_STATUS,
 } from '../utils';
-import keyring from './keyring';
 
 const DEFAULT_STATE = {
   assets: DEFAULT_ASSETS,
@@ -41,7 +40,7 @@ export const sign = createAsyncThunk(
     const { keyring } = getState();
     const result = await keyring.instance.sign(msg);
     return { response: result };
-  },
+  }
 );
 
 export const sendToken = createAsyncThunk(
@@ -359,7 +358,8 @@ export const editContact = createAsyncThunk(
 export const getICNSData = createAsyncThunk(
   'keyring/getICNSData',
   async ({ refresh }, { getState, dispatch }) => {
-    const { currentWallet } = getState().keyring;
+    const { keyring } = getState();
+    const { currentWallet } = keyring;
     const icnsData = currentWallet?.icnsData || { names: [] };
     if (!icnsData?.names?.length || refresh) {
       return keyring.getICNSData();
@@ -367,7 +367,7 @@ export const getICNSData = createAsyncThunk(
       keyring.getICNSData();
     }
     return icnsData;
-  },
+  }
 );
 
 export const userSlice = createSlice({

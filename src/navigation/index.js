@@ -57,13 +57,13 @@ const Navigator = ({ routingInstrumentation }, navigationRef) => {
       handleAppStateChange
     );
 
-    Linking.addEventListener('url', link => {
+    const deepLinkListener = Linking.addEventListener('url', link => {
       handleDeepLink(link.url);
     });
 
     return () => {
       subscription.remove();
-      Linking.removeAllListeners();
+      deepLinkListener.remove();
     };
   }, []);
 

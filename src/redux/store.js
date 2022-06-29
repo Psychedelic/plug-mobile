@@ -37,12 +37,6 @@ const userPersistConfig = {
   transforms: [transformCircular],
 };
 
-const walletConnectPersistConfig = {
-  key: 'walletconnect',
-  storage: AsyncStorage,
-  transforms: [transformCircular],
-};
-
 // REDUCER
 
 const rootReducer = combineReducers({
@@ -102,7 +96,6 @@ export const keyringStorage = {
 
 export const walletConnectStorage = {
   get: async key => {
-    // await AsyncStorage.clear();
     return AsyncStorage.getItem(WALLETCONNECTKEY)
       .then(value => (value ? Flatted.parse(value) : value))
       .then(parsedValue => {

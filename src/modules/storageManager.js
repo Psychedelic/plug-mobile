@@ -37,7 +37,7 @@ const secureGetWrapper = async (key, defaultValue) => {
 const secureSetWrapper = async (setArguments, defaultValue) => {
   try {
     const result = await storage.set(setArguments);
-    return result && defaultValue;
+    return result || defaultValue;
   } catch (e) {
     if (defaultValue) {
       return defaultValue;

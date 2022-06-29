@@ -1,5 +1,4 @@
 import { getNumberFormatSettings } from 'react-native-localize';
-import { number } from 'yup';
 
 import { VISIBLE_DECIMALS } from '@/constants/business';
 

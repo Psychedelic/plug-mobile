@@ -1,23 +1,14 @@
 import { useRoute } from '@react-navigation/native';
-import React, { Children, useCallback, useState } from 'react';
-import {
-  ActivityIndicator,
-  Image,
-  InteractionManager,
-  Text,
-  View,
-} from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useCallback, useState } from 'react';
+import { ActivityIndicator, Image, Text, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import Plug from '@/assets/icons/il_white_plug.png';
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import { ERRORS } from '@/constants/walletconnect';
 import { Container } from '@/layout';
-import {
-  walletConnectExecuteAndResponse,
-  walletConnectRemovePendingRedirect,
-} from '@/redux/slices/walletconnect';
+import { walletConnectExecuteAndResponse } from '@/redux/slices/walletconnect';
 import { useNavigation } from '@/utils/navigation';
 
 import styles from '../styles';
@@ -44,12 +35,30 @@ function WalletConnectScreens() {
     request,
     metadata,
     args,
-    handleApprove,
-    handleDecline,
+    handleApproveArgs,
+    handleDeclineArgs,
     handleError,
     timedOut,
   } = params;
+
   const Screen = SCREENS[type];
+
+  const handleApprove = () => {
+    dispatch(
+      walletConnectExecuteAndResponse({
+        ...request,
+        args: handleApproveArgs,
+      })
+    );
+  };
+  const handleDecline = () => {
+    dispatch(
+      walletConnectExecuteAndResponse({
+        ...request,
+        args: handleDeclineArgs,
+      })
+    );
+  };
 
   const closeScreen = useCallback(() => {
     goBack();
@@ -105,8 +114,7 @@ function WalletConnectScreens() {
     setIsAuthorizing(true);
     try {
       await onConfirm();
-      setIsAuthorizing(false);
-    } catch (error) {
+    } finally {
       setIsAuthorizing(false);
     }
   }, [isAuthorizing, onConfirm]);

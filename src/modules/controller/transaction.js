@@ -44,31 +44,18 @@ const TransactionModule = (dispatch, getState) => {
           );
         }
 
-        const handleApprove = () => {
-          dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              args: [{ ...args, approve: true }],
-            })
-          );
-        };
+        const handleApproveArgs = [{ ...args, approve: true }];
+        const handleDeclineArgs = [{ ...args, approve: false }];
+        const { executor: _executor, ...requestWithoutExecutor } = request;
 
-        const handleDecline = () => {
-          dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              args: [{ ...args, approve: false }],
-            })
-          );
-        };
         Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
           type: 'transfer',
           openAutomatically: true,
-          request,
+          request: requestWithoutExecutor,
           metadata,
           args,
-          handleApprove,
-          handleDecline,
+          handleApproveArgs,
+          handleDeclineArgs,
         });
       } else {
         return dispatch(
@@ -122,32 +109,18 @@ const TransactionModule = (dispatch, getState) => {
           );
         }
 
-        const handleApprove = () => {
-          dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              args: [{ ...args, approve: true }],
-            })
-          );
-        };
-
-        const handleDecline = () => {
-          dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              args: [{ ...args, approve: false }],
-            })
-          );
-        };
+        const handleApproveArgs = [{ ...args, approve: true }];
+        const handleDeclineArgs = [{ ...args, approve: false }];
+        const { executor: _executor, ...requestWithoutExecutor } = request;
 
         Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
           type: 'transfer',
           openAutomatically: true,
-          request,
+          request: requestWithoutExecutor,
           metadata,
           args,
-          handleApprove,
-          handleDecline,
+          handleApproveArgs,
+          handleDeclineArgs,
         });
       } else {
         return dispatch(
@@ -205,32 +178,18 @@ const TransactionModule = (dispatch, getState) => {
           );
         }
 
-        const handleApprove = () => {
-          dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              args: [{ ...args, approve: true }],
-            })
-          );
-        };
-
-        const handleDecline = () => {
-          dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              args: [{ ...args, approve: false }],
-            })
-          );
-        };
+        const handleApproveArgs = [{ ...args, approve: true }];
+        const handleDeclineArgs = [{ ...args, approve: false }];
+        const { executor: _executor, ...requestWithoutExecutor } = request;
 
         Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
           type: 'burnXTC',
           openAutomatically: true,
-          request,
+          request: requestWithoutExecutor,
           metadata,
           args,
-          handleApprove,
-          handleDecline,
+          handleApproveArgs,
+          handleDeclineArgs,
         });
       } else {
         return dispatch(
@@ -286,32 +245,18 @@ const TransactionModule = (dispatch, getState) => {
           );
         }
 
-        const handleApprove = () => {
-          dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              args: [{ transactions, approve: true }],
-            })
-          );
-        };
-
-        const handleDecline = () => {
-          dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              args: [{ transactions, approve: false }],
-            })
-          );
-        };
+        const handleApproveArgs = [{ transactions, approve: true }];
+        const handleDeclineArgs = [{ transactions, approve: false }];
+        const { executor: _executor, ...requestWithoutExecutor } = request;
 
         Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
           type: 'batchTransactions',
           openAutomatically: true,
-          request,
+          request: requestWithoutExecutor,
           metadata,
           args: transactions,
-          handleApprove,
-          handleDecline,
+          handleApproveArgs,
+          handleDeclineArgs,
         });
       } else {
         return dispatch(
@@ -381,32 +326,18 @@ const TransactionModule = (dispatch, getState) => {
       });
 
       if (shouldShowModal) {
-        const handleApprove = () => {
-          dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              args: [{ requestInfo, approve: true }],
-            })
-          );
-        };
-
-        const handleDecline = () => {
-          dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              args: [{ requestInfo, approve: false }],
-            })
-          );
-        };
+        const handleApproveArgs = [{ requestInfo, approve: true }];
+        const handleDeclineArgs = [{ requestInfo, approve: false }];
+        const { executor: _executor, ...requestWithoutExecutor } = request;
 
         Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
           type: 'requestCall',
           openAutomatically: true,
-          request,
+          request: requestWithoutExecutor,
           metadata,
           args: requestInfo,
-          handleApprove,
-          handleDecline,
+          handleApproveArgs,
+          handleDeclineArgs,
         });
       } else {
         const savedBatchTransactions = await getBatchTransactions();
@@ -414,7 +345,7 @@ const TransactionModule = (dispatch, getState) => {
           ? savedBatchTransactions[batchTxId].shift()
           : undefined;
         await setBatchTransactions({ ...savedBatchTransactions });
-        dispatch(
+        await dispatch(
           walletConnectExecuteAndResponse({
             ...request,
             args: [

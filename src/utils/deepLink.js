@@ -4,7 +4,6 @@ import URL from 'url-parse';
 import Routes from '@/navigation/Routes';
 import {
   walletConnectOnSessionRequest,
-  walletConnectRemovePendingRedirect,
   walletConnectSetPendingRedirect,
 } from '@/redux/slices/walletconnect';
 import { store } from '@/redux/store';
@@ -19,7 +18,7 @@ function handleWalletConnect(uri) {
     dispatch(
       walletConnectOnSessionRequest({
         uri,
-      }),
+      })
     );
   }
 }

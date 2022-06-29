@@ -177,55 +177,43 @@ const ConnectionModule = (dispatch, getState) => {
         };
         await setApps(keyring?.currentWalletId.toString(), newApps);
 
-        const handleApprove = () => {
-          dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              args: [
-                domainUrl,
-                {
-                  status: CONNECTION_STATUS.accepted,
-                  whitelist: whitelistWithInfo,
-                },
-              ],
-            })
-          );
-        };
-        const handleDecline = () => {
-          dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              args: [
-                domainUrl,
-                {
-                  status: CONNECTION_STATUS.refused,
-                  whitelist: whitelistWithInfo,
-                },
-              ],
-            })
-          );
-        };
+        const handleApproveArgs = [
+          domainUrl,
+          {
+            status: CONNECTION_STATUS.accepted,
+            whitelist: whitelistWithInfo,
+          },
+        ];
+
+        const handleDeclineArgs = [
+          domainUrl,
+          {
+            status: CONNECTION_STATUS.refused,
+            whitelist: whitelistWithInfo,
+          },
+        ];
+        const { executor: _executor, ...requestWithoutExecutor } = request;
 
         if (isValidWhitelist) {
           Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
             type: 'requestConnect',
             openAutomatically: true,
-            request,
+            request: requestWithoutExecutor,
             metadata,
             args: { whitelist: whitelistWithInfo, domainUrl },
-            handleApprove,
-            handleDecline,
+            handleApproveArgs,
+            handleDeclineArgs,
           });
         } else {
           // TODO: Show connectScreen
           Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
             type: 'requestConnect',
             openAutomatically: true,
-            request,
+            request: requestWithoutExecutor,
             metadata,
             args: { whitelist: whitelistWithInfo, domainUrl },
-            handleApprove,
-            handleDecline,
+            handleApproveArgs,
+            handleDeclineArgs,
           });
         }
       } catch (e) {
@@ -273,46 +261,38 @@ const ConnectionModule = (dispatch, getState) => {
           app?.whitelist ? Object.keys(app?.whitelist) : []
         );
 
-        const handleApprove = () => {
-          dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              args: [
-                metadata.url,
-                {
-                  status: CONNECTION_STATUS.accepted,
-                  whitelist: whitelistWithInfo,
-                },
-              ],
-            })
-          );
-        };
-        const handleDecline = () => {
-          dispatch(
-            walletConnectExecuteAndResponse({
-              ...request,
-              args: [
-                metadata.url,
-                {
-                  status: CONNECTION_STATUS.refused,
-                  whitelist: whitelistWithInfo,
-                },
-              ],
-            })
-          );
-        };
+        const handleApproveArgs = [
+          metadata.url,
+          {
+            status: CONNECTION_STATUS.accepted,
+            whitelist: whitelistWithInfo,
+          },
+        ];
+        const handleDeclineArgs = [
+          metadata.url,
+          {
+            status: CONNECTION_STATUS.refused,
+            whitelist: whitelistWithInfo,
+          },
+        ];
+        const { executor: _executor, ...requestWithoutExecutor } = request;
 
         if (allWhitelisted) {
-          handleApprove();
+          await dispatch(
+            walletConnectExecuteAndResponse({
+              ...request,
+              args: handleApproveArgs,
+            })
+          );
         } else {
           Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
             type: 'requestConnect',
             openAutomatically: true,
-            request,
+            request: requestWithoutExecutor,
             metadata,
             args: { whitelist: whitelistWithInfo, domainUrl: metadata.url },
-            handleApprove,
-            handleDecline,
+            handleApproveArgs,
+            handleDeclineArgs,
           });
         }
       } else {

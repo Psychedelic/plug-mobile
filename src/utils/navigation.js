@@ -29,7 +29,7 @@ export function useNavigation() {
 
   const handleNavigate = useCallbackOne(
     (...args) => navigate(oldNavigate, ...args),
-    [oldNavigate],
+    [oldNavigate]
   );
 
   return {
@@ -81,7 +81,7 @@ function handleAction(name, params, replace = false) {
   }
   const action = (replace ? StackActions.replace : CommonActions.navigate)(
     name,
-    params,
+    params
   );
   TopLevelNavigationRef?.dispatch(action);
 }
