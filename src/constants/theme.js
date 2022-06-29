@@ -92,7 +92,6 @@ export const FontStyles = StyleSheet.create({
   Title2: {
     fontSize: 24,
     fontFamily: 'Inter-SemiBold',
-    color: Colors.White.Primary,
   },
   Normal: {
     fontSize: 16,
