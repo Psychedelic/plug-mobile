@@ -16,8 +16,5 @@ export default StyleSheet.create({
   valid: {
     color: Colors.ActionBlue,
   },
-  centerText: {
-    ...FontStyles.Subtitle2,
-    color: Colors.White.Primary,
-  },
+  centerText: FontStyles.Subtitle2,
 });

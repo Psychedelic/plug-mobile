@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors } from '@/constants/theme';
+import { Colors, FontStyles } from '@/constants/theme';
 
 export default StyleSheet.create({
   section: {
@@ -9,9 +9,7 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 25,
   },
-  title: {
-    color: Colors.White.Primary,
-  },
+  title: FontStyles.Subtitle1,
   content: {
     paddingTop: 20,
     flexDirection: 'row',

@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native';
 
-import { FontStyles } from '@/constants/theme';
+import { Colors } from '@/constants/theme';
 
 export default StyleSheet.create({
   text: {
-    ...FontStyles.LinkButton,
+    color: Colors.ActionBlue,
+    fontSize: 16,
     fontWeight: '600',
     marginLeft: 9,
   },

@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { WINDOW_WIDTH } from '@/constants/platform';
-import { Colors, FontStyles } from '@/constants/theme';
+import { FontStyles } from '@/constants/theme';
 
 const itemSize = WINDOW_WIDTH / 2 - 40;
 
@@ -27,7 +27,6 @@ export default StyleSheet.create({
     paddingLeft: 20,
     paddingBottom: 20,
     ...FontStyles.Title,
-    color: Colors.White.Primary,
   },
   nftDisplayer: {
     ...commonContainerSize,

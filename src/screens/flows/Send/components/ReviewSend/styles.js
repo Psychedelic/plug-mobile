@@ -34,16 +34,7 @@ export default StyleSheet.create({
     marginTop: 4,
     color: Colors.ActionBlue,
   },
-  headerTitle: {
-    ...FontStyles.Subtitle2,
-    color: Colors.White.Primary,
-  },
-  title: {
-    ...FontStyles.Title2,
-    color: Colors.White.Primary,
-  },
-  subtitle: {
-    ...FontStyles.Subtitle3,
-    color: Colors.White.Secondary,
-  },
+  headerTitle: FontStyles.Subtitle2,
+  title: FontStyles.Title2,
+  subtitle: FontStyles.Subtitle3,
 });

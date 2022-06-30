@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors, FontStyles } from '@/constants/theme';
+import { FontStyles } from '@/constants/theme';
 
 export default StyleSheet.create({
   content: {
@@ -10,10 +10,7 @@ export default StyleSheet.create({
     paddingBottom: 35,
     justifyContent: 'space-between',
   },
-  title: {
-    ...FontStyles.Subtitle2,
-    color: Colors.White.Primary,
-  },
+  title: FontStyles.Subtitle2,
   icon: {
     alignSelf: 'center',
     marginBottom: 25,

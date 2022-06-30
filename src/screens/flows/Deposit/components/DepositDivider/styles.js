@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors, FontStyles } from '@/constants/theme';
+import { FontStyles } from '@/constants/theme';
 
 export default StyleSheet.create({
   divider: {
@@ -10,7 +10,6 @@ export default StyleSheet.create({
   },
   text: {
     ...FontStyles.Subtitle3,
-    color: Colors.White.Secondary,
     textTransform: 'uppercase',
   },
 });

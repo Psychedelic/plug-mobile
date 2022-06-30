@@ -1,13 +1,12 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors, FontStyles, Metrics } from '@/constants/theme';
+import { FontStyles, Metrics } from '@/constants/theme';
 
 export default StyleSheet.create({
   title: {
     paddingVertical: Metrics.Padding,
     paddingHorizontal: Metrics.Padding,
     ...FontStyles.Title,
-    color: Colors.White.Primary,
   },
   scroll: {
     flexGrow: 1,
@@ -25,8 +24,7 @@ export default StyleSheet.create({
     flex: 1,
   },
   name: {
-    ...FontStyles.Subtitle,
-    color: Colors.White.Primary,
+    ...FontStyles.Subtitle1,
     marginLeft: 12,
     maxWidth: '75%',
   },

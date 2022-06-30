@@ -13,8 +13,5 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 10,
   },
-  centerText: {
-    ...FontStyles.Subtitle2,
-    color: Colors.White.Primary,
-  },
+  centerText: FontStyles.Subtitle2,
 });

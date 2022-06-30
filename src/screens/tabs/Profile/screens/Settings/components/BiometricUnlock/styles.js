@@ -5,13 +5,8 @@ import { Colors, FontStyles } from '@/constants/theme';
 const commonPadding = 20;
 
 export default StyleSheet.create({
-  title: {
-    ...FontStyles.Subtitle2,
-    color: Colors.White.Primary,
-  },
-  option: {
-    ...FontStyles.Normal,
-  },
+  title: FontStyles.Subtitle2,
+  option: FontStyles.Normal,
   container: {
     paddingTop: commonPadding / 2,
     paddingHorizontal: commonPadding,

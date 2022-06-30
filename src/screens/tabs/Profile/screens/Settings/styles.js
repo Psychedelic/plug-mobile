@@ -17,8 +17,5 @@ export default StyleSheet.create({
   version: {
     alignSelf: 'flex-end',
   },
-  title: {
-    ...FontStyles.Subtitle2,
-    color: Colors.White.Primary,
-  },
+  title: FontStyles.Subtitle2,
 });

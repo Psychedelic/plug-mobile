@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors, FontStyles } from '@/constants/theme';
+import { FontStyles } from '@/constants/theme';
 
 export default StyleSheet.create({
   container: {
@@ -8,10 +8,7 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 40,
   },
-  title: {
-    ...FontStyles.Subtitle2,
-    color: Colors.White.Primary,
-  },
+  title: FontStyles.Subtitle2,
   buttonStyle: {
     marginTop: 20,
   },

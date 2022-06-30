@@ -23,7 +23,6 @@ export default StyleSheet.create({
   },
   title: {
     ...FontStyles.Subtitle2,
-    color: Colors.White.Primary,
     textTransform: 'capitalize',
   },
   capitalized: {

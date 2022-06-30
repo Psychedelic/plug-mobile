@@ -1,6 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from '@/constants/platform';
+import { fontMaker } from '@/utils/fonts';
+
+import { MEDIUM, REGULAR, SEMIBOLD } from './fonts';
 
 export const Metrics = {
   ScreenWidth: WINDOW_HEIGHT,
@@ -83,91 +86,60 @@ export const Shadow = StyleSheet.create({
   elevation: 5,
 });
 
-// TODO: Remove styles that doesnt match with the style guide in figma
+// TODO: Remove styles that doesnt match with the style guide in figma, and remove colors
 export const FontStyles = StyleSheet.create({
-  Title: {
-    fontSize: 22,
-    fontFamily: 'Inter-SemiBold',
-  },
-  Title2: {
-    fontSize: 24,
-    fontFamily: 'Inter-SemiBold',
-  },
-  Normal: {
-    fontSize: 16,
-    fontFamily: 'Inter-Medium',
+  Title: fontMaker({ size: 22, weight: SEMIBOLD, color: Colors.White.Primary }),
+  Title2: fontMaker({
+    size: 24,
+    weight: SEMIBOLD,
     color: Colors.White.Primary,
-  },
-  NormalGray: {
-    fontSize: 16,
-    fontFamily: 'Inter-Regular',
+  }),
+  Normal: fontMaker({ size: 16, weight: MEDIUM, color: Colors.White.Primary }),
+  NormalGray: fontMaker({
+    size: 16,
+    weight: REGULAR,
     color: Colors.White.Secondary,
-  },
-  Small: {
-    fontSize: 14,
-    fontFamily: 'Inter-Medium',
+  }),
+  Small: fontMaker({
+    size: 14,
+    weight: MEDIUM,
     color: Colors.White.Primary,
-  },
-  SmallGray: {
-    fontSize: 14,
-    fontFamily: 'Inter-Regular',
+  }),
+  SmallGray: fontMaker({
+    size: 14,
+    weight: REGULAR,
     color: Colors.White.Secondary,
-  },
-  Smaller: {
-    fontSize: 12,
-    fontFamily: 'Inter-Regular',
+  }),
+  Smaller: fontMaker({
+    size: 12,
+    weight: REGULAR,
     color: Colors.White.Primary,
-  },
-  SmallerGray: {
-    fontSize: 12,
-    fontFamily: 'Inter-Medium',
+  }),
+  SmallerGray: fontMaker({
+    size: 12,
+    weight: MEDIUM,
     color: Colors.White.Secondary,
-  },
-  LinkButton: {
-    fontSize: 16,
-    fontFamily: 'Inter-Regular',
-    color: Colors.ActionBlue,
-  },
-  Headline1: {
-    fontSize: 28,
-    fontFamily: 'Inter-SemiBold',
-  },
-  Headline2: {
-    fontSize: 24,
-    fontFamily: 'Inter-Regular',
-  },
-  Subtitle: {
-    fontSize: 20,
-    fontFamily: 'Inter-SemiBold',
-  },
-  Subtitle2: {
-    fontSize: 18,
-    fontFamily: 'Inter-SemiBold',
+  }),
+  Headline1: fontMaker({ size: 28, weight: SEMIBOLD }),
+  Headline2: fontMaker({ size: 24, weight: REGULAR }),
+  Subtitle1: fontMaker({
+    size: 20,
+    weight: SEMIBOLD,
     color: Colors.White.Primary,
-  },
-  Subtitle3: {
-    fontSize: 16,
-    fontFamily: 'Inter-SemiBold',
+  }),
+  Subtitle2: fontMaker({
+    size: 18,
+    weight: SEMIBOLD,
+    color: Colors.White.Primary,
+  }),
+  Subtitle3: fontMaker({
+    size: 16,
+    weight: SEMIBOLD,
     color: Colors.White.Secondary,
-  },
-  Body1: {
-    fontSize: 17,
-    fontFamily: 'Inter-Regular',
-  },
-  Body2: {
-    fontSize: 17,
-    fontFamily: 'Inter-Medium',
-  },
-  Button: {
-    fontSize: 20,
-    fontFamily: 'Inter-SemiBold',
-  },
-  Caption: {
-    fontSize: 14,
-    fontFamily: 'Inter-Medium',
-  },
-  Overline: {
-    fontSize: 12,
-    fontFamily: 'Inter-Regular',
-  },
+  }),
+  Body1: fontMaker({ size: 17, weight: REGULAR }),
+  Body2: fontMaker({ size: 17, weight: MEDIUM }),
+  Button: fontMaker({ size: 20, weight: SEMIBOLD }),
+  Caption: fontMaker({ size: 14, weight: MEDIUM }),
+  Overline: fontMaker({ size: 12, weight: REGULAR }),
 });

@@ -42,8 +42,5 @@ const ContactSection = ({ onPress, filterText }) => {
 export default ContactSection;
 
 const styles = StyleSheet.create({
-  title: {
-    ...FontStyles.Subtitle3,
-    color: Colors.White.Secondary,
-  },
+  title: FontStyles.Subtitle3,
 });

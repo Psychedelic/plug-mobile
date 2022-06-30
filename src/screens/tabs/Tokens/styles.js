@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors, FontStyles } from '@/constants/theme';
+import { FontStyles } from '@/constants/theme';
 
 const commonPadding = 20;
 
@@ -9,7 +9,6 @@ export default StyleSheet.create({
     paddingLeft: commonPadding,
     paddingBottom: commonPadding,
     ...FontStyles.Title,
-    color: Colors.White.Primary,
   },
   tokenItem: {
     marginTop: commonPadding,

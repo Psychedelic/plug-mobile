@@ -4,7 +4,9 @@ import { Text as RNText, TextProps } from 'react-native';
 type Type =
   | 'title'
   | 'title2'
-  | 'subtitle'
+  | 'headline1'
+  | 'headline2'
+  | 'subtitle1'
   | 'subtitle2'
   | 'subtitle3'
   | 'body1'
