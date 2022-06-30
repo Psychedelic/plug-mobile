@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Animated, Keyboard, ScrollView, Text, View } from 'react-native';
+import {
+  Animated,
+  Keyboard,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Plug from '@/assets/icons/il_white_plug.png';
@@ -122,11 +129,13 @@ function Login({ route, navigation }) {
           <Animated.View style={animatedTitleStyle}>
             <Text style={styles.title}>{t('login.unlockPlug')}</Text>
           </Animated.View>
-          {biometricsAvailable && usingBiometrics && (
-            <Animated.View
-              style={[styles.headerBiometricsButton, animatedFaceIDStyle]}>
-              <Icon name="faceIdIcon" />
-            </Animated.View>
+          {biometricsAvailable && usingBiometrics && isKeyboardOpen && (
+            <TouchableOpacity onPress={unlockUsingBiometrics}>
+              <Animated.View
+                style={[styles.headerBiometricsButton, animatedFaceIDStyle]}>
+                <Icon name="faceIdIcon" />
+              </Animated.View>
+            </TouchableOpacity>
           )}
         </View>
         <View style={styles.bottomContentContainer}>

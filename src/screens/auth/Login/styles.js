@@ -27,7 +27,7 @@ export default StyleSheet.create({
     color: Colors.White.Primary,
     fontSize: 26,
     fontWeight: 'bold',
-    marginVertical: commonMargin,
+    paddingVertical: commonMargin,
   },
   componentMargin: {
     marginTop: commonMargin,

@@ -77,7 +77,7 @@ const useLoginAnimation = () => {
           inputRange: [0, 1],
           outputRange: [
             0,
-            -refRatioScale(IS_MEDIUM_DEVICE ? 110 : isIos ? 70 : 100),
+            -refRatioScale(IS_MEDIUM_DEVICE ? 110 : isIos ? 75 : 100),
           ],
         }),
       },
