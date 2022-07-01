@@ -1,10 +1,9 @@
 import { t } from 'i18next';
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import CommonItem from '@/commonComponents/CommonItem';
-import { Colors, FontStyles } from '@/constants/theme';
+import Text from '@/components/common/Text';
 
 const ContactSection = ({ onPress, filterText }) => {
   const { principal } = useSelector(state => state.keyring?.currentWallet);
@@ -22,7 +21,7 @@ const ContactSection = ({ onPress, filterText }) => {
   return (
     usableContacts?.length > 0 && (
       <>
-        <Text style={styles.title}>{t('send.contacts')}</Text>
+        <Text type="subtitle3">{t('send.contacts')}</Text>
         {filteredContacts.map(contact => (
           <CommonItem
             name={contact.name}
@@ -30,7 +29,6 @@ const ContactSection = ({ onPress, filterText }) => {
             image={contact.image}
             key={contact.id}
             onPress={() => onPress(contact)}
-            style={styles.contactItem}
             showActions={false}
           />
         ))}
@@ -40,7 +38,3 @@ const ContactSection = ({ onPress, filterText }) => {
 };
 
 export default ContactSection;
-
-const styles = StyleSheet.create({
-  title: FontStyles.Subtitle3,
-});

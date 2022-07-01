@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, TextInput as Input, View } from 'react-native';
+import { TextInput as Input, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import Touchable from '@/commonComponents/Touchable';
@@ -7,6 +7,7 @@ import { Rainbow } from '@/constants/theme';
 import Icon from '@/icons';
 import animationScales from '@/utils/animationScales';
 
+import Text from '../Text';
 import { variants } from './constants';
 import styles from './styles';
 

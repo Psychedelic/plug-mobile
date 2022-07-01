@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text } from 'react-native';
 
 import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
+import Text from '@/commonComponents/Text';
 
 import DepositDivider from './components/DepositDivider';
 import IDDetails from './components/IDDetails';

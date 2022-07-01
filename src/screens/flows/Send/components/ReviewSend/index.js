@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/core';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import Header from '@/commonComponents/Header';
@@ -10,6 +10,7 @@ import NftDisplayer from '@/commonComponents/NftDisplayer';
 import UserIcon from '@/commonComponents/UserIcon';
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
+import Text from '@/components/common/Text';
 import Icon from '@/components/icons';
 import TokenIcon from '@/components/tokens/TokenIcon';
 import { VISIBLE_DECIMALS } from '@/constants/business';

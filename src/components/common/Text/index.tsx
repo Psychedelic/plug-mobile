@@ -2,8 +2,6 @@ import React, { useMemo } from 'react';
 import { Text as RNText, TextProps } from 'react-native';
 
 type Type =
-  | 'title'
-  | 'title2'
   | 'headline1'
   | 'headline2'
   | 'subtitle1'
@@ -16,14 +14,14 @@ type Type =
   | 'overline';
 
 interface Props extends TextProps {
-  type: Type;
+  type?: Type;
 }
 
 import styles from './styles';
 
 function Text({ style, type, ...props }: Props) {
   const baseStyle = useMemo(
-    () => [styles.base, styles[type], style],
+    () => (type ? [styles.base, styles[type], style] : [styles.base, style]),
     [type, style]
   );
 

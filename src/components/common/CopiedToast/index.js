@@ -1,9 +1,10 @@
 import { t } from 'i18next';
 import React, { useEffect, useRef } from 'react';
-import { Animated, Text, View } from 'react-native';
+import { Animated, View } from 'react-native';
 
 import { FontStyles } from '@/constants/theme';
 
+import Text from '../Text';
 import styles from './styles';
 
 const TOAST_DURATION = 2500;

@@ -88,6 +88,7 @@ export const Shadow = StyleSheet.create({
 
 // TODO: Remove styles that doesnt match with the style guide in figma, and remove colors
 export const FontStyles = StyleSheet.create({
+  Base: fontMaker({ size: 14, weight: REGULAR }),
   Title: fontMaker({ size: 22, weight: SEMIBOLD, color: Colors.White.Primary }),
   Title2: fontMaker({
     size: 24,
@@ -139,7 +140,7 @@ export const FontStyles = StyleSheet.create({
   }),
   Body1: fontMaker({ size: 17, weight: REGULAR }),
   Body2: fontMaker({ size: 17, weight: MEDIUM }),
-  Button: fontMaker({ size: 20, weight: SEMIBOLD }),
+  Button: fontMaker({ size: 20, weight: SEMIBOLD, color: Colors.White.Pure }),
   Caption: fontMaker({ size: 14, weight: MEDIUM }),
   Overline: fontMaker({ size: 12, weight: REGULAR }),
 });

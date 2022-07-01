@@ -1,9 +1,10 @@
 import React from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, View } from 'react-native';
 
+import Text from '../Text';
 import styles from './styles';
 
-const Badge = ({ name, value, icon }) => (
+const Badge = ({ name = 'hola', value, icon }) => (
   <View style={styles.root}>
     {name && <Text style={styles.name}>{name}</Text>}
     <View style={styles.valueContainer}>

@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import Touchable from '@/commonComponents/Touchable';
+import Text from '@/components/common/Text';
 import Icon from '@/components/icons';
 import { Colors } from '@/constants/theme';
 
@@ -46,11 +47,7 @@ const BottomTabs = ({ state, navigation }) => {
                   isFocused ? Colors.White.Primary : Colors.White.Secondary
                 }
               />
-              <Text
-                style={[
-                  isFocused ? styles.selected : styles.default,
-                  styles.text,
-                ]}>
+              <Text style={[styles.text, isFocused && styles.selected]}>
                 {label}
               </Text>
             </View>

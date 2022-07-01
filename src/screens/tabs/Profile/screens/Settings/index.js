@@ -1,11 +1,12 @@
 import React, { useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Modal from '@/commonComponents/Modal';
 import Touchable from '@/commonComponents/Touchable';
 import Header from '@/components/common/Header';
+import Text from '@/components/common/Text';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
 import { Separator } from '@/layout';
@@ -103,7 +104,7 @@ const Settings = () => {
       </Touchable>
       <Modal modalRef={modalRef} fullHeight>
         <Header
-          center={<Text style={styles.title}>{t('settings.title')}</Text>}
+          center={<Text type="subtitle2">{t('settings.title')}</Text>}
           right={
             <Text
               style={[FontStyles.Normal, styles.valid]}

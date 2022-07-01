@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors, FontStyles } from '@/constants/theme';
+import { Colors } from '@/constants/theme';
 
 export default StyleSheet.create({
   container: {
@@ -17,5 +17,4 @@ export default StyleSheet.create({
   version: {
     alignSelf: 'flex-end',
   },
-  title: FontStyles.Subtitle2,
 });

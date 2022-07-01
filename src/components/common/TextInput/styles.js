@@ -1,32 +1,30 @@
 import { StyleSheet } from 'react-native';
 
+import { SEMIBOLD } from '@/constants/fonts';
 import { Colors } from '@/constants/theme';
+import { fontMaker } from '@/utils/fonts';
 
 const commonBorderRadius = 15;
 const inputHeight = 60;
 
 export default StyleSheet.create({
   inputStyle: {
+    ...fontMaker({ size: 18, color: Colors.White.Pure, weight: SEMIBOLD }),
     paddingTop: 13,
     paddingLeft: 20,
     paddingBottom: 13,
     paddingRight: 20,
     height: 56,
     width: '100%',
-    color: Colors.White.Pure,
     borderRadius: 15,
-    fontWeight: '600',
-    fontSize: 18,
   },
   multiStyle: {
     height: 90,
     alignItems: 'flex-start',
   },
   innerLabelStyle: {
+    ...fontMaker({ size: 18, color: Colors.White.Pure, weight: SEMIBOLD }),
     flex: 1,
-    color: Colors.White.Pure,
-    fontSize: 18,
-    fontWeight: '600',
     minWidth: 5,
   },
   labledInputStyle: {

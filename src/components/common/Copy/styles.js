@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
 
+import { SEMIBOLD } from '@/constants/fonts';
 import { Colors } from '@/constants/theme';
+import { fontMaker } from '@/utils/fonts';
 
 export default StyleSheet.create({
   text: {
-    color: Colors.ActionBlue,
-    fontSize: 16,
-    fontWeight: '600',
+    ...fontMaker({ size: 16, weight: SEMIBOLD, color: Colors.ActionBlue }),
     marginLeft: 9,
   },
   container: {

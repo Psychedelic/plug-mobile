@@ -1,7 +1,5 @@
 import { StyleSheet } from 'react-native';
 
-import { FontStyles } from '@/constants/theme';
-
 export default StyleSheet.create({
   content: {
     flex: 1,
@@ -10,7 +8,6 @@ export default StyleSheet.create({
     paddingBottom: 35,
     justifyContent: 'space-between',
   },
-  title: FontStyles.Subtitle2,
   icon: {
     alignSelf: 'center',
     marginBottom: 25,

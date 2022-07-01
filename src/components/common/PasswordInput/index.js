@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import TextInput from '@/commonComponents/TextInput';
@@ -10,6 +10,7 @@ import { Rainbow } from '@/constants/theme';
 import Icon from '@/icons/index';
 import animationScales from '@/utils/animationScales';
 
+import Text from '../Text';
 import styles from './styles';
 
 function PasswordInput({

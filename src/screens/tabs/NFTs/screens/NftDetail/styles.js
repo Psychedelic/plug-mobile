@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 import { WINDOW_WIDTH } from '@/constants/platform';
-import { FontStyles } from '@/constants/theme';
 
 const imageSize = WINDOW_WIDTH - 40;
 
@@ -41,5 +40,4 @@ export default StyleSheet.create({
     flex: 1,
     marginLeft: 10,
   },
-  title: FontStyles.Subtitle2,
 });
