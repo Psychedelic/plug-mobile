@@ -12,6 +12,12 @@ const Routes = {
   BACKUP_SEED_PHRASE: 'BackupSeedPhrase',
   //Error Screens:
   CONNECTION_ERROR: 'ConnectionError',
+  //Wallet Connect:
+  WALLET_CONNECT_APPROVAL_SHEET: 'WalletConnect',
+  WALLET_CONNECT_SCREENS: 'WalletConnectScreens',
+  WALLET_CONNECT_WAITING_BRIDGE: 'WalletConnectWaitingBridge',
 };
+
+export const NATIVE_ROUTES = Object.values(Routes);
 
 export default Routes;

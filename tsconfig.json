@@ -17,6 +17,7 @@
       "@/config/*": ["./src/config/*"],
       "@/constants/*": ["./src/constants/*"],
       "@/hooks/*": ["./src/hooks/*"],
+      "@/modules/*": ["./src/modules/*"],
       "@/navigation/*": ["./src/navigation/*"],
       "@/redux/*": ["./src/redux/*"],
       "@/screens/*": ["./src/screens/*"],

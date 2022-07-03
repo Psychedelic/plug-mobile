@@ -1,12 +1,13 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import React, { useEffect, useRef } from 'react';
-import { AppState, StyleSheet } from 'react-native';
+import React, { forwardRef, memo, useEffect, useRef } from 'react';
+import { AppState, Linking, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Host } from 'react-native-portalize';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Colors } from '@/constants/theme';
+import SwipeNavigator from '@/navigation/navigators/SwipeNavigator';
 import { setUnlocked } from '@/redux/slices/keyring';
 import BackupSeedPhrase from '@/screens/auth/BackupSeedPhrase';
 import CreatePassword from '@/screens/auth/CreatePassword';
@@ -14,24 +15,28 @@ import ImportSeedPhrase from '@/screens/auth/ImportSeedPhrase';
 import Login from '@/screens/auth/Login';
 import Welcome from '@/screens/auth/Welcome';
 import ConnectionError from '@/screens/error/ConnectionError';
-import { navigationRef } from '@/utils/navigation';
+import WalletConnect from '@/screens/flows/WalletConnect';
+import WalletConnectScreens from '@/screens/flows/WalletConnect/screens';
+import WalletConnectWaitingBridge from '@/screens/flows/WalletConnect/WaitingBridge';
+import { handleDeepLink } from '@/utils/deepLink';
 
-import SwipeNavigator from './navigators/SwipeNavigator';
 import Routes from './Routes';
 
 const Stack = createStackNavigator();
 
-const Navigator = ({ routingInstrumentation }) => {
-  const dispatch = useDispatch();
+const Navigator = ({ routingInstrumentation }, navigationRef) => {
   const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
   const timeoutId = useRef(null);
+  const dispatch = useDispatch();
 
   const handleLockState = () => {
     dispatch(setUnlocked(false));
     timeoutId.current = null;
   };
 
-  const handleAppStateChange = nextAppState => {
+  const handleAppStateChange = async nextAppState => {
+    const initialLink = await Linking.getInitialURL();
+
     if (nextAppState === 'background') {
       clearTimeout(timeoutId.current);
       timeoutId.current = setTimeout(handleLockState, 120000);
@@ -41,6 +46,10 @@ const Navigator = ({ routingInstrumentation }) => {
       clearTimeout(timeoutId.current);
       timeoutId.current = null;
     }
+
+    if (initialLink) {
+      handleDeepLink(initialLink);
+    }
   };
 
   useEffect(() => {
@@ -49,8 +58,13 @@ const Navigator = ({ routingInstrumentation }) => {
       handleAppStateChange
     );
 
+    const deepLinkListener = Linking.addEventListener('url', link => {
+      handleDeepLink(link.url);
+    });
+
     return () => {
       subscription.remove();
+      deepLinkListener.remove();
     };
   }, []);
 
@@ -106,6 +120,18 @@ const Navigator = ({ routingInstrumentation }) => {
               name={Routes.CONNECTION_ERROR}
               component={ConnectionError}
             />
+            <Stack.Screen
+              name={Routes.WALLET_CONNECT_APPROVAL_SHEET}
+              component={WalletConnect}
+            />
+            <Stack.Screen
+              name={Routes.WALLET_CONNECT_SCREENS}
+              component={WalletConnectScreens}
+            />
+            <Stack.Screen
+              name={Routes.WALLET_CONNECT_WAITING_BRIDGE}
+              component={WalletConnectWaitingBridge}
+            />
           </Stack.Navigator>
         </Host>
       </GestureHandlerRootView>
@@ -119,4 +145,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Navigator;
+export default memo(forwardRef(Navigator));

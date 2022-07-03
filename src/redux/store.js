@@ -8,6 +8,11 @@ import Reactotron from '../config/reactotron';
 import IcpReducer from './slices/icp';
 import KeyringReducer from './slices/keyring';
 import UserReducer from './slices/user';
+import WalletConnectReducer from './slices/walletconnect';
+
+// CONSTANT
+
+export const WALLETCONNECTKEY = 'WALLETCONNECT';
 
 // PERSIST
 export const transformCircular = createTransform(
@@ -38,6 +43,7 @@ const rootReducer = combineReducers({
   keyring: KeyringReducer,
   icp: persistReducer(icpPersistConfig, IcpReducer),
   user: persistReducer(userPersistConfig, UserReducer),
+  walletconnect: WalletConnectReducer,
 });
 
 const middlewares = [thunk];
@@ -70,7 +76,7 @@ export const keyringStorage = {
       const allKeys = await AsyncStorage.getAllKeys();
       await Promise.all(
         allKeys.map(async k => {
-          if (!k.includes('@REACTOTRON')) {
+          if (!k.includes('@REACTOTRON') && !k.includes('WALLETCONNECT')) {
             const val = await AsyncStorage.getItem(k);
             state[k] = JSON.parse(val)[0];
           }
@@ -86,4 +92,26 @@ export const keyringStorage = {
       })
     ),
   clear: AsyncStorage.clear,
+};
+
+export const walletConnectStorage = {
+  get: async key => {
+    return AsyncStorage.getItem(WALLETCONNECTKEY)
+      .then(value => (value ? Flatted.parse(value) : value))
+      .then(parsedValue => {
+        return key && parsedValue ? parsedValue[key] : parsedValue;
+      });
+  },
+  set: values => {
+    return AsyncStorage.getItem(WALLETCONNECTKEY)
+      .then(savedValues => (savedValues ? Flatted.parse(savedValues) : {}))
+      .then(parsedValues => {
+        return AsyncStorage.setItem(
+          WALLETCONNECTKEY,
+          Flatted.stringify({ ...parsedValues, ...values })
+        );
+      });
+  },
+  clear: () =>
+    AsyncStorage.setItem(WALLETCONNECTKEY, Flatted.stringify(undefined)),
 };

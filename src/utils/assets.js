@@ -1,3 +1,7 @@
+import { ICP_CANISTER_ID } from '@/constants/canister';
+import { validateCanisterId } from '@/utils/ids';
+import { parseToFloatAmount } from '@/utils/number';
+
 export const CYCLES_PER_TC = 1000000000000;
 export const USD_PER_TC = 1.42656;
 export const E8S_PER_ICP = 100000000;
@@ -77,4 +81,34 @@ export const formatAssets = ({ assets = [], icpPrice }) => {
     };
   });
   return mappedAssets;
+};
+
+export const parseAssetsAmount = (assets = []) =>
+  assets.map(currentAsset => {
+    const { amount, token } = currentAsset;
+    const { decimals } = token;
+
+    const parsedAmount = parseToFloatAmount(
+      amount,
+      parseInt(decimals.toString(), 10)
+    );
+
+    return {
+      ...currentAsset,
+      amount: parsedAmount,
+    };
+  });
+
+// TokenIdentifier is SYMBOL or  CanisterID
+// Return ICP by default
+export const getToken = (tokenIdentifier, assets) => {
+  if (!tokenIdentifier) {
+    return assets.find(asset => asset.canisterId === ICP_CANISTER_ID);
+  }
+
+  if (validateCanisterId(tokenIdentifier)) {
+    return assets.find(asset => asset.canisterId === tokenIdentifier);
+  }
+
+  return assets.find(asset => asset.symbol === tokenIdentifier);
 };
