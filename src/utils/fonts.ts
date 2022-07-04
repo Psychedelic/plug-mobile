@@ -5,14 +5,14 @@ import { isAndroid } from '@/constants/platform';
 import { FontMakerOptions } from '@/interfaces/general';
 
 export const fontMaker = (options: FontMakerOptions): TextStyle => {
-  const { weight, family = Inter, size = 16, color } = options;
+  const { weight = REGULAR, family = Inter, size = 16, color } = options;
   let splitFamily = '';
   let font = {};
   if (isAndroid) {
     splitFamily = family.split('-')[0];
     font = { fontFamily: `${splitFamily}-${weight}` };
   } else {
-    const fontWeight = weights[weight!] || weights[REGULAR];
+    const fontWeight = weights[weight];
     font = { fontFamily: family, fontWeight, fontStyle: NORMAL_STYLE };
   }
   return { ...font, color, fontSize: size };
