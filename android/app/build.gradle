@@ -187,6 +187,9 @@ android {
 
     flavorDimensions "default"
     productFlavors {
+        production {
+
+        }
         stage {
 			applicationIdSuffix ".stage"
         }
