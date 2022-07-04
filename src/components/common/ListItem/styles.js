@@ -19,9 +19,11 @@ export default StyleSheet.create({
     width: 30,
   },
   text: {
-    fontWeight: 'bold',
-    fontSize: 16,
-    color: Colors.White.Primary,
+    ...fontMaker({
+      size: 16,
+      weight: SEMIBOLD,
+      color: Colors.White.Primary,
+    }),
     textAlign: 'left',
     width: 90,
   },
