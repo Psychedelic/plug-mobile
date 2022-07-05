@@ -78,6 +78,7 @@ function PasswordInput({
           placeholder={placeholder}
           disabled={disabled}
           customStyle={[styles.input, inputStyle]}
+          textStyle={styles.text}
           variant={`${showPassword ? 'text' : 'password'}`}
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
