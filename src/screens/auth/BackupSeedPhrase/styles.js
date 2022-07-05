@@ -16,11 +16,14 @@ export default StyleSheet.create({
   },
   container: {
     flex: 1,
-    padding: 30,
+  },
+  contentContainer: {
+    paddingHorizontal: 30,
     width: '100%',
   },
   button: {
     marginTop: 30,
+    marginBottom: 45,
   },
   copy: {
     marginTop: 30,

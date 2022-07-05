@@ -34,11 +34,12 @@ const SeedPhrase = ({ mnemonic, onReveal = () => null }) => {
             style={styles.absolute}
             blurType={'dark'}
             reducedTransparencyFallbackColor="black"
-          />
-          <Touchable onPress={revealSeedPhrase} style={styles.absolute}>
-            <Image source={KeyImg} />
-            <Text style={styles.reveal}>{t('common.revealPhrase')}</Text>
-          </Touchable>
+            overlayColor="transparent">
+            <Touchable onPress={revealSeedPhrase} style={styles.absolute}>
+              <Image source={KeyImg} />
+              <Text style={styles.reveal}>{t('common.revealPhrase')}</Text>
+            </Touchable>
+          </BlurView>
         </>
       )}
     </View>
