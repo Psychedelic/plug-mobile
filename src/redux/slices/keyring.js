@@ -283,16 +283,20 @@ export const keyringSlice = createSlice({
     },
     [createWallet.fulfilled]: (state, action) => {
       const { wallet, unlocked } = action.payload;
-      state.currentWallet = wallet;
-      state.wallets = [wallet];
-      state.isInitialized = true;
-      state.isUnlocked = unlocked;
+      if (Object.keys(wallet).length > 0) {
+        state.currentWallet = wallet;
+        state.wallets = [wallet];
+        state.isInitialized = true;
+        state.isUnlocked = unlocked;
+      }
     },
     [importWallet.fulfilled]: (state, action) => {
       const { wallet } = action.payload;
-      state.wallets = [wallet];
-      state.currentWallet = wallet;
-      state.isInitialized = true;
+      if (Object.keys(wallet).length > 0) {
+        state.wallets = [wallet];
+        state.currentWallet = wallet;
+        state.isInitialized = true;
+      }
     },
   },
 });
