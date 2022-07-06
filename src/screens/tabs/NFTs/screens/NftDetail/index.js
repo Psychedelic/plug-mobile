@@ -38,7 +38,7 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
   };
 
   const downloadNFT = () => {
-    // TODO: Handle download error
+    // TODO: Handle download error and permissons error
     setIsDownloading(true);
     downloadFile({
       filename: `NFT_${deleteWhiteSpaces(nftName)}${getAbsoluteType(

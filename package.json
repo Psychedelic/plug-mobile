@@ -1,6 +1,6 @@
 {
   "name": "Plug",
-  "version": "0.1.2(12)",
+  "version": "0.1.2(22)",
   "private": true,
   "scripts": {
     "rename-build": "chmod +x ./rename-ic-agent.sh && ./rename-ic-agent.sh",
@@ -45,6 +45,7 @@
     "@reduxjs/toolkit": "^1.6.1",
     "@sentry/react-native": "^3.3.2",
     "assert-browserify": "^2.0.0",
+    "axios": "0.24.0",
     "babel-plugin-transform-exponentiation-operator": "^6.24.1",
     "big-integer": "1.6.40",
     "console-browserify": "^1.2.0",
