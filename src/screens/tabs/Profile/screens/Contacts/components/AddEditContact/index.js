@@ -59,6 +59,7 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
       );
 
       modalRef.current?.close();
+      clearState();
     }
   };
 
