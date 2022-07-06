@@ -34,7 +34,5 @@ export default StyleSheet.create({
     marginTop: 4,
     color: Colors.ActionBlue,
   },
-  headerTitle: FontStyles.Subtitle2,
   title: FontStyles.Title2,
-  subtitle: FontStyles.Subtitle3,
 });

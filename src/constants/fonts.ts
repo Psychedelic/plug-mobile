@@ -19,5 +19,4 @@ export const weights: StringObject = {
 };
 
 // STYLES
-export const NORMAL = 'Normal';
 export const NORMAL_STYLE = 'normal';

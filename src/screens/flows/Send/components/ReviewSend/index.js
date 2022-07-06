@@ -116,13 +116,13 @@ const ReviewSend = ({
       {...props}
       fullHeight={isSuccess || isError}>
       <View style={styles.content}>
-        <Header center={<Text style={styles.headerTitle}>{title}</Text>} />
+        <Header center={<Text type="subtitle2">{title}</Text>} />
         {ReviewIcon}
         {token && (
           <Row style={styles.row}>
             <Column>
               <Text style={styles.title}>${value?.display}</Text>
-              <Text style={styles.subtitle}>
+              <Text type="subtitle3">
                 <TokenFormat value={amount?.display} token={token.symbol} />
               </Text>
             </Column>
@@ -133,9 +133,7 @@ const ReviewSend = ({
           <Row style={styles.row}>
             <Column>
               <Text style={styles.title}>{`#${nft.index}`}</Text>
-              <Text style={styles.subtitle}>
-                {nft.name || `${nft.collection}`}
-              </Text>
+              <Text type="subtitle3">{nft.name || `${nft.collection}`}</Text>
             </Column>
             <NftDisplayer url={nft.url} type={nftType} isSend />
           </Row>
@@ -151,7 +149,7 @@ const ReviewSend = ({
             {selectedContact ? (
               <>
                 <Text style={styles.title}>{selectedContact?.name}</Text>
-                <Text style={styles.subtitle}>
+                <Text type="subtitle3">
                   {shortAddress(selectedContact?.id)}
                 </Text>
               </>
@@ -170,7 +168,7 @@ const ReviewSend = ({
         </Row>
         {token && (
           <Row style={styles.row}>
-            <Text style={styles.subtitle}>
+            <Text type="subtitle3">
               {t('reviewSend.totalFee', {
                 value: `${currentFee} ${token?.symbol} ($${Number(
                   currentUSDFee.toFixed(VISIBLE_DECIMALS)
