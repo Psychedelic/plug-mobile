@@ -74,6 +74,7 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
     if (contact) {
       setName(contact.name);
       setId(contact.id);
+      setEmoji(contact.image);
     } else {
       clearState();
     }
