@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 
-import { FontStyles } from '../../../constants/theme';
+import Button from '@/buttons/Button';
+import { FontStyles } from '@/constants/theme';
+
 import { getErrorStateData } from './constants';
-import Button from '../../buttons/Button';
 import styles from './styles';
 
 function ErrorState({ errorType, onPress, loading, style, buttonStyle }) {
@@ -19,7 +20,6 @@ function ErrorState({ errorType, onPress, loading, style, buttonStyle }) {
       </Text>
       {onPress && (
         <Button
-          variant="gray"
           onPress={onPress}
           loading={loading}
           text={buttonTitle}

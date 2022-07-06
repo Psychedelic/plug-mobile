@@ -1,10 +1,11 @@
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import Button from '../Button';
-import { styles } from './styles';
 
-import { DisabledRainbow, Rainbow } from '../../../constants/theme';
-import Touchable from '../../animations/Touchable';
+import Button from '@/buttons/Button';
+import Touchable from '@/commonComponents/Touchable';
+import { DisabledRainbow, Rainbow } from '@/constants/theme';
+
+import { styles } from './styles';
 
 const RainbowButton = ({
   text,
@@ -16,17 +17,21 @@ const RainbowButton = ({
   loading = false,
   ...props
 }) => {
+  const disabledOrLoading = disabled || loading;
   return (
-    <Touchable onPress={onPress} onLongPress={onLongPress} disabled={disabled}>
+    <Touchable
+      onPress={onPress}
+      onLongPress={onLongPress || onPress}
+      disabled={disabledOrLoading}>
       <LinearGradient
         style={[styles.button, buttonStyle]}
-        {...(disabled ? DisabledRainbow : Rainbow)}
+        {...(disabledOrLoading ? DisabledRainbow : Rainbow)}
         {...props}>
         <Button
           buttonStyle={[styles.buttonRainbow]}
           text={text}
           textStyle={[styles.textRainbow, textStyle]}
-          disabled={disabled || loading}
+          disabled={disabledOrLoading}
           loading={loading}
           disableAnimation
           {...props}

@@ -1,19 +1,20 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import PlugController from '@psychedelic/plug-mobile-controller';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { fetch } from 'react-native-fetch-api';
 
-import { getPrivateAssetsAndTransactions } from '../../utils/keyringUtils';
 import { generateMnemonic } from '../../utils/crypto';
-import { resetStores, getNewAccountData } from '../utils';
+import { getPrivateAssetsAndTransactions } from '../../utils/keyringUtils';
 import { keyringStorage } from '../store';
-
+import { getNewAccountData, resetStores } from '../utils';
 import {
-  getNFTs,
   getAssets,
+  getContacts,
+  getNFTs,
   getTransactions,
-  setAssetsLoading,
-  setTransactionsLoading,
   setAssetsAndTransactions,
+  setAssetsLoading,
+  setContactsLoading,
+  setTransactionsLoading,
 } from './user';
 
 export const initKeyring = createAsyncThunk('keyring/init', async () => {
@@ -48,7 +49,7 @@ export const createWallet = createAsyncThunk(
     } catch (e) {
       console.log('Error at createWallet: ', e);
     }
-  },
+  }
 );
 
 export const importWallet = createAsyncThunk(
@@ -79,7 +80,7 @@ export const importWallet = createAsyncThunk(
       onError?.();
     }
     return { wallet };
-  },
+  }
 );
 
 export const validatePassword = createAsyncThunk(
@@ -101,7 +102,7 @@ export const validatePassword = createAsyncThunk(
       console.log('Validate Password:', e.message);
     }
     return isValid;
-  },
+  }
 );
 
 export const unlock = createAsyncThunk(
@@ -109,7 +110,7 @@ export const unlock = createAsyncThunk(
   async (params, { getState }) => {
     const state = getState();
     return await privateUnlock(params, state);
-  },
+  }
 );
 
 const privateUnlock = async (params, state) => {
@@ -152,6 +153,11 @@ export const login = createAsyncThunk(
         dispatch(setTransactionsLoading(true));
         dispatch(getTransactions({ icpPrice }));
         dispatch(getNFTs());
+        // Get contacts from dab
+        dispatch(setContactsLoading(true));
+        dispatch(getContacts())
+          .unwrap()
+          .then(() => dispatch(setContactsLoading(false)));
       } else {
         handleError();
       }
@@ -160,7 +166,7 @@ export const login = createAsyncThunk(
       console.log('Error at login: ', e);
       handleError();
     }
-  },
+  }
 );
 
 export const createSubaccount = createAsyncThunk(
@@ -174,7 +180,7 @@ export const createSubaccount = createAsyncThunk(
     } catch (e) {
       console.log('createSubaccount', e);
     }
-  },
+  }
 );
 
 export const editSubaccount = createAsyncThunk(
@@ -194,7 +200,7 @@ export const editSubaccount = createAsyncThunk(
     } catch (e) {
       console.log('editSubaccount', e);
     }
-  },
+  }
 );
 
 export const setCurrentPrincipal = createAsyncThunk(
@@ -213,13 +219,14 @@ export const setCurrentPrincipal = createAsyncThunk(
       const [transactions, assets] = await getPrivateAssetsAndTransactions(
         icpPrice,
         getState(),
-        dispatch,
+        dispatch
       );
+      dispatch(getContacts());
       dispatch(setAssetsAndTransactions({ assets, transactions }));
     } catch (e) {
       console.log('setCurrentPrincipal', e.message);
     }
-  },
+  }
 );
 
 const DEFAULT_STATE = {
@@ -263,7 +270,7 @@ export const keyringSlice = createSlice({
       const account = action.payload;
       if (account) {
         state.wallets = state.wallets.map(a =>
-          a.walletNumber === account.walletNumber ? account : a,
+          a.walletNumber === account.walletNumber ? account : a
         );
       }
     },

@@ -1,10 +1,12 @@
-import { Text, View } from 'react-native';
-import React, { useState, useEffect } from 'react';
 import Clipboard from '@react-native-community/clipboard';
+import { t } from 'i18next';
+import React, { useEffect, useState } from 'react';
+import { Text, View } from 'react-native';
 
-import Touchable from '../../animations/Touchable';
-import CopiedToast from '../CopiedToast';
-import Icon from '../../icons';
+import CopiedToast from '@/commonComponents/CopiedToast';
+import Touchable from '@/commonComponents/Touchable';
+import Icon from '@/icons';
+
 import styles from './styles';
 
 const Copy = ({ text, customStyle }) => {
@@ -29,7 +31,7 @@ const Copy = ({ text, customStyle }) => {
           customPointerStyle={styles.toastPointerStyle}
         />
         <Icon name="copy" />
-        <Text style={styles.text}>Copy to clipboard</Text>
+        <Text style={styles.text}>{t('common.copyClipboard')}</Text>
       </View>
     </Touchable>
   );

@@ -8,7 +8,8 @@ project.ext.envConfigFiles = [
     stagedebug: ".stage.env",
 	stagerelease: ".stage.env",
 	productiondebug: ".production.env",
-	productionrelease: ".production.env"
+	productionrelease: ".production.env",
+    "": ".dev.env",
 ]
 
 apply from: project(":react-native-config").projectDir.getPath() + "/dotenv.gradle"
@@ -89,7 +90,7 @@ apply from: project(":react-native-config").projectDir.getPath() + "/dotenv.grad
  */
 
 project.ext.react = [
-    enableHermes: false,  // clean and rebuild if changing
+    enableHermes: true,  // clean and rebuild if changing
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -142,8 +143,8 @@ android {
         applicationId "co.psychedelic.plug"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "0.1.2"
         resValue "string", "build_config_package", "co.psychedelic.plug"
     }
     splits {
@@ -161,6 +162,14 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (project.hasProperty('PLUG_PROD_STORE_FILE')) {
+                storeFile file(PLUG_PROD_STORE_FILE)
+                storePassword PLUG_PROD_STORE_PASSWORD
+                keyAlias PLUG_PROD_KEY_ALIAS
+                keyPassword PLUG_PROD_KEY_PASSWORD
+            }
+        }
     }
     buildTypes {
         debug {
@@ -170,7 +179,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
@@ -179,7 +188,7 @@ android {
     flavorDimensions "default"
     productFlavors {
         production {
-			applicationIdSuffix ".production"
+
         }
         stage {
 			applicationIdSuffix ".stage"
@@ -212,6 +221,9 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+
+    //react-native-bootsplash
+    implementation "androidx.core:core-splashscreen:1.0.0-beta01"
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

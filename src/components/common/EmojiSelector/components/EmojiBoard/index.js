@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 
 import { emojiByCategory, sortEmoji, splitToRows } from '../../utils';
 import Emoji from '../Emoji';
@@ -12,7 +12,7 @@ function EmojiBoard({ onSelect, currentCategory }) {
 
   return (
     <View style={styles.emojiBoard}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} overScrollMode="never">
         {rowsToDisplay.map((row, index) => {
           const isLastRow = rowsToDisplay?.length === index + 1;
           return (

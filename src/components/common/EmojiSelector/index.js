@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
 
-import EmojiCategoryTitle from './components/EmojiCategoryTitle';
-import EmojiBoard from './components/EmojiBoard';
 import EmojiBar from './components/EmojiBar';
-import { Categories } from './utils';
+import EmojiBoard from './components/EmojiBoard';
+import EmojiCategoryTitle from './components/EmojiCategoryTitle';
 import styles from './styles';
+import { Categories } from './utils';
 
 function EmojiSelector({ onSelect }) {
   const [currentCategory, setCurrentCategory] = useState(Categories.emotion);

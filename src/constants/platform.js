@@ -1,5 +1,5 @@
-import DeviceInfo, { getUniqueId } from 'react-native-device-info';
-import { Platform, StatusBar, Dimensions, PixelRatio } from 'react-native';
+import { Dimensions, PixelRatio, Platform, StatusBar } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 
 export const isAndroid = Platform.OS === 'android';
 export const isIos = Platform.OS === 'ios';
@@ -30,7 +30,5 @@ export const REF_RATIO = USE_WIDTH
   : WINDOW_HEIGHT / REFERENCE_HEIGHT;
 
 export const refRatioScale = value => value * REF_RATIO;
-
-export const UNIQUE_DEVICE_ID = getUniqueId();
 
 export const pixelRatioScale = value => value * PixelRatio.get();

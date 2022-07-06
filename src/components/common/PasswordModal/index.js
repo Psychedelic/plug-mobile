@@ -1,16 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text } from 'react-native';
+import { useDispatch } from 'react-redux';
 
-import { validatePassword } from '../../../redux/slices/keyring';
-import RainbowButton from '../../buttons/RainbowButton';
-import PasswordInput from '../PasswordInput';
-import Column from '../../layout/Column';
-import Modal from '../../modal';
-import Header from '../Header';
+import Header from '@/commonComponents/Header';
+import Modal from '@/commonComponents/Modal';
+import PasswordInput from '@/commonComponents/PasswordInput';
+import RainbowButton from '@/components/buttons/RainbowButton';
+import { Column } from '@/layout';
+import { validatePassword } from '@/redux/slices/keyring';
+
 import styles from './styles';
 
-const PasswordModal = ({ modalRef, handleClose = () => {}, handleSubmit }) => {
+const PasswordModal = ({
+  modalRef,
+  title,
+  handleClose = () => {},
+  handleSubmit,
+}) => {
+  const { t } = useTranslation();
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -31,7 +39,7 @@ const PasswordModal = ({ modalRef, handleClose = () => {}, handleSubmit }) => {
           setError(true);
           setLoading(false);
         },
-      }),
+      })
     );
   };
 
@@ -52,7 +60,7 @@ const PasswordModal = ({ modalRef, handleClose = () => {}, handleSubmit }) => {
 
   return (
     <Modal modalRef={modalRef} onClose={handleOnClose} adjustToContentHeight>
-      <Header center={<Text style={styles.title}>Enter your password</Text>} />
+      <Header center={<Text style={styles.title}>{title}</Text>} />
       <Column style={styles.container}>
         <PasswordInput
           error={error}
@@ -61,10 +69,9 @@ const PasswordModal = ({ modalRef, handleClose = () => {}, handleSubmit }) => {
         />
         <RainbowButton
           buttonStyle={styles.buttonStyle}
-          text="Continue"
+          text={t('common.continue')}
           loading={loading}
           onPress={validatedSubmit}
-          disabled={loading}
         />
       </Column>
     </Modal>

@@ -1,19 +1,23 @@
-import { AppState } from 'react-native';
-import Config from 'react-native-config';
-import codePush from 'react-native-code-push';
+import '@/config/logs';
+import '@/config/i18n';
+import '@/config/reactotron';
+
 import * as Sentry from '@sentry/react-native';
 import React, { useEffect, useRef } from 'react';
-import Reactotron from 'reactotron-react-native';
-import SplashScreen from 'react-native-splash-screen';
-import { PersistGate } from 'redux-persist/integration/react';
+import { AppState, StatusBar } from 'react-native';
+import RNBootSplash from 'react-native-bootsplash';
+import codePush from 'react-native-code-push';
+import Config from 'react-native-config';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider, useDispatch, useSelector } from 'react-redux';
+import Reactotron from 'reactotron-react-native';
+import { PersistGate } from 'redux-persist/integration/react';
 
-import ErrorBoundary from './src/components/common/ErrorBoundary';
-import { initKeyring } from './src/redux/slices/keyring';
-import { persistor, store } from './src/redux/store';
-import { isIos } from './src/constants/platform';
-import Routes from './src/navigation';
-import './reactotronConfig';
+import ErrorBoundary from '@/commonComponents/ErrorBoundary';
+import { isIos } from '@/constants/platform';
+import Routes from '@/navigation';
+import { initKeyring } from '@/redux/slices/keyring';
+import { persistor, store } from '@/redux/store';
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
 
@@ -59,9 +63,8 @@ const PersistedApp = () => {
 
   useEffect(() => {
     if (instance) {
-      SplashScreen.hide();
+      RNBootSplash.hide({ fade: true });
     } else {
-      console.log('init');
       dispatch(initKeyring());
     }
   }, [instance]);
@@ -69,9 +72,12 @@ const PersistedApp = () => {
   return (
     <PersistGate loading={null} persistor={persistor}>
       <ErrorBoundary>
-        {!!instance && (
-          <Routes routingInstrumentation={routingInstrumentation} />
-        )}
+        <SafeAreaProvider>
+          <StatusBar barStyle="light-content" backgroundColor="black" />
+          {!!instance && (
+            <Routes routingInstrumentation={routingInstrumentation} />
+          )}
+        </SafeAreaProvider>
       </ErrorBoundary>
     </PersistGate>
   );

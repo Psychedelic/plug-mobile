@@ -1,10 +1,10 @@
 import React from 'react';
 import Svg, {
-  Path,
-  G,
-  Rect,
   Defs,
+  G,
+  Path,
   RadialGradient,
+  Rect,
   Stop,
 } from 'react-native-svg';
 

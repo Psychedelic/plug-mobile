@@ -1,18 +1,22 @@
-import { formatAssetBySymbol, TOKEN_IMAGES, TOKENS } from '@utils/assets';
-import { ACTIVITY_STATUS } from '@screens/Profile/components/constants';
-import { parseToFloatAmount } from '@utils/number';
+import { t } from 'i18next';
+
+import { ACTIVITY_STATUS } from '@/constants/business';
+import { formatAssetBySymbol, TOKEN_IMAGES, TOKENS } from '@/utils/assets';
+import { parseToFloatAmount } from '@/utils/number';
 
 import { reset } from './slices/keyring';
 import {
+  getContacts,
   getNFTs,
-  setAssets,
-  setContacts,
-  setCollections,
   getTransactions,
   privateGetAssets,
-  setTransactions,
-  setAssetsLoading,
+  setAssets,
   setAssetsAndLoading,
+  setAssetsLoading,
+  setCollections,
+  setContacts,
+  setContactsLoading,
+  setTransactions,
   setTransactionsLoading,
 } from './slices/user';
 
@@ -65,12 +69,11 @@ export const recursiveParseBigint = obj =>
       }
       return { ...acum, [key]: val };
     },
-    { ...obj },
+    { ...obj }
   );
 
 export const resetStores = dispatch => {
   dispatch(reset());
-  dispatch(setContacts([]));
   dispatch(setCollections([]));
   dispatch(setTransactions([]));
   dispatch(setAssets(DEFAULT_ASSETS));
@@ -78,15 +81,20 @@ export const resetStores = dispatch => {
 
 export const getNewAccountData = async (dispatch, icpPrice, state) => {
   dispatch(setAssetsLoading(true));
+  dispatch(setContacts([]));
+  dispatch(setContactsLoading(true));
   dispatch(getNFTs());
   const assets = await privateGetAssets(
     { refresh: true, icpPrice },
     state,
-    dispatch,
+    dispatch
   );
   dispatch(setAssetsAndLoading({ assets }));
   dispatch(setTransactionsLoading(true));
   dispatch(getTransactions({ icpPrice }));
+  dispatch(getContacts())
+    .unwrap()
+    .then(() => dispatch(setContactsLoading(false)));
 };
 
 export const mapTransaction = (icpPrice, state) => trx => {
@@ -123,12 +131,12 @@ export const mapTransaction = (icpPrice, state) => trx => {
   const symbol = getSymbol();
   const parsedAmount = parseToFloatAmount(
     amount,
-    decimals || TOKENS[sonicData?.token?.details?.symbol]?.decimals,
+    decimals || TOKENS[sonicData?.token?.details?.symbol]?.decimals
   );
   const asset = formatAssetBySymbol(
     isSonic ? parsedAmount : amount,
     symbol,
-    icpPrice,
+    icpPrice
   );
   const isOwnTx = [principal, accountId].includes(trx?.caller);
 
@@ -171,3 +179,20 @@ export const mapTransaction = (icpPrice, state) => trx => {
   };
   return transaction;
 };
+
+export const formatContact = contact => ({
+  image: contact.emoji[0],
+  name: contact.name,
+  id: contact.value?.PrincipalId,
+});
+
+export const formatContactForController = contact => ({
+  description: [t('placeholders.contactDescription')],
+  emoji: [contact.image],
+  name: contact.name,
+  value: {
+    PrincipalId: contact.id,
+  },
+});
+
+export const filterICNSContacts = contact => contact.id;

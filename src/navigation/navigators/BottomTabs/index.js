@@ -1,16 +1,13 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { Text, View } from 'react-native';
 
-import { setScrollOnProfile, setScrollOnNFTs } from '@redux/slices/user';
-import Touchable from '@components/animations/Touchable';
-import { Colors } from '@constants/theme';
-import Icon from '@components/icons';
+import Touchable from '@/commonComponents/Touchable';
+import Icon from '@/components/icons';
+import { Colors } from '@/constants/theme';
 
 import styles from './styles';
 
 const BottomTabs = ({ state, navigation }) => {
-  const dispatch = useDispatch();
   const getTabStatus = index => ({
     isProfile: index === 0,
     isTokens: index === 1,
@@ -36,22 +33,11 @@ const BottomTabs = ({ state, navigation }) => {
           if (!isFocused && !event.defaultPrevented) {
             navigation.navigate({ name: route.name, merge: true });
           }
-
-          // Tap to scroll to top feature:
-          if (isFocused && !isTokens) {
-            const actionToDispatch = isProfile
-              ? setScrollOnProfile
-              : setScrollOnNFTs;
-            dispatch(actionToDispatch(true));
-            setTimeout(() => {
-              dispatch(actionToDispatch(false));
-            }, 1000);
-          }
         };
 
         return (
           <Touchable onPress={onPress} key={route.name}>
-            <View key={index} style={styles.tab}>
+            <View key={iconName} style={styles.tab}>
               <Icon
                 name={iconName}
                 width={iconSize}

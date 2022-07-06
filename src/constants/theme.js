@@ -1,4 +1,6 @@
-import { WINDOW_HEIGHT, WINDOW_WIDTH } from '../constants/platform';
+import { StyleSheet } from 'react-native';
+
+import { WINDOW_HEIGHT, WINDOW_WIDTH } from '@/constants/platform';
 
 export const Metrics = {
   ScreenWidth: WINDOW_HEIGHT,
@@ -33,6 +35,7 @@ export const Colors = {
     Green: '#09DF66',
     Teal: '#05DCC8',
   },
+  Red: '#FF453A',
 };
 
 export const Rainbow = {
@@ -69,7 +72,7 @@ export const DisabledRainbow = {
   ],
 };
 
-export const Shadow = {
+export const Shadow = StyleSheet.create({
   shadowColor: Colors.Black.Primary,
   shadowOffset: {
     width: 0,
@@ -78,9 +81,9 @@ export const Shadow = {
   shadowOpacity: 0.3,
   shadowRadius: 4.65,
   elevation: 5,
-};
+});
 
-export const FontStyles = {
+export const FontStyles = StyleSheet.create({
   Title: {
     fontSize: 22,
     fontWeight: '600',
@@ -146,4 +149,4 @@ export const FontStyles = {
     fontWeight: '400',
     color: Colors.ActionBlue,
   },
-};
+});

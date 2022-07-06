@@ -1,0 +1,152 @@
+diff --git a/node_modules/@dfinity/candid/lib/cjs/idl.js b/node_modules/@dfinity/candid/lib/cjs/idl.js
+index d97a72b..8401d05 100644
+--- a/node_modules/@dfinity/candid/lib/cjs/idl.js
++++ b/node_modules/@dfinity/candid/lib/cjs/idl.js
+@@ -13,6 +13,8 @@ const types_1 = require("./types");
+ const hash_1 = require("./utils/hash");
+ const leb128_1 = require("./utils/leb128");
+ const leb128_2 = require("./utils/leb128");
++import JSBI from 'jsbi';
++
+ const magicNumber = 'DIDL';
+ function zipWith(xs, ys, f) {
+     return xs.map((x, i) => f(x, ys[i]));
+@@ -376,7 +378,8 @@ class NatClass extends PrimitiveType {
+     covariant(x) {
+         // We allow encoding of JavaScript plain numbers.
+         // But we will always decode to bigint.
+-        return (typeof x === 'bigint' && x >= BigInt(0)) || (Number.isInteger(x) && x >= 0);
++        // return (typeof x === 'bigint' && x >= BigInt(0)) || (Number.isInteger(x) && x >= 0);
++        return JSBI.greaterThanOrEqual(JSBI.BigInt(x),JSBI.BigInt(0));
+     }
+     encodeValue(x) {
+         return leb128_1.lebEncode(x);
+@@ -457,8 +460,8 @@ class FixedIntClass extends PrimitiveType {
+         return v.visitFixedInt(this, d);
+     }
+     covariant(x) {
+-        const min = BigInt(2) ** BigInt(this._bits - 1) * BigInt(-1);
+-        const max = BigInt(2) ** BigInt(this._bits - 1) - BigInt(1);
++        const min = BigInt(Math.pow(2, this._bits - 1)) * BigInt(-1);
++        const max = BigInt(Math.pow(2, this._bits - 1)) - BigInt(1);
+         if (typeof x === 'bigint') {
+             return x >= min && x <= max;
+         }
+@@ -507,17 +510,12 @@ class FixedNatClass extends PrimitiveType {
+         return v.visitFixedNat(this, d);
+     }
+     covariant(x) {
+-        const max = BigInt(2) ** BigInt(this.bits);
+-        if (typeof x === 'bigint' && x >= BigInt(0)) {
+-            return x < max;
+-        }
+-        else if (Number.isInteger(x) && x >= 0) {
+-            const v = BigInt(x);
+-            return v < max;
+-        }
+-        else {
+-            return false;
++        const v = JSBI.BigInt(x);
++        const max = JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(this.bits));
++        if (JSBI.greaterThanOrEqual(v, JSBI.BigInt(0))) {
++            return JSBI.LT(v, max);
+         }
++        return false;
+     }
+     encodeValue(x) {
+         return leb128_2.writeUIntLE(x, this.bits / 8);
+diff --git a/node_modules/@dfinity/candid/lib/cjs/utils/leb128.js b/node_modules/@dfinity/candid/lib/cjs/utils/leb128.js
+index aacdb30..3bf80fc 100644
+--- a/node_modules/@dfinity/candid/lib/cjs/utils/leb128.js
++++ b/node_modules/@dfinity/candid/lib/cjs/utils/leb128.js
+@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
+ exports.readIntLE = exports.readUIntLE = exports.writeIntLE = exports.writeUIntLE = exports.slebDecode = exports.slebEncode = exports.lebDecode = exports.lebEncode = exports.safeRead = void 0;
+ const buffer_pipe_1 = __importDefault(require("buffer-pipe"));
+ const buffer_1 = require("buffer/");
++import JSBI from 'jsbi';
+ /**
+  *
+  * @param pipe Pipe from buffer-pipe
+@@ -35,7 +36,8 @@ function lebEncode(value) {
+     while (true) {
+         const i = Number(value & BigInt(0x7f));
+         value /= BigInt(0x80);
+-        if (value === BigInt(0)) {
++        value = Math.floor(value);
++        if (value === 0) {
+             pipe.write([i]);
+             break;
+         }
+@@ -69,20 +71,18 @@ exports.lebDecode = lebDecode;
+  * @param value The number to encode.
+  */
+ function slebEncode(value) {
+-    if (typeof value === 'number') {
+-        value = BigInt(value);
+-    }
+-    const isNeg = value < BigInt(0);
++    value = JSBI.BigInt(value);
++    const isNeg = JSBI.LT(value, JSBI.BigInt(0));
+     if (isNeg) {
+-        value = -value - BigInt(1);
++        value = JSBI.subtract(JSBI.multiply(value, JSBI.BigInt(-1)), JSBI.BigInt(1));
+     }
+     const pipe = new buffer_pipe_1.default();
+     while (true) {
+         const i = getLowerBytes(value);
+-        value /= BigInt(0x80);
++        value = JSBI.divide(value, JSBI.BigInt(0x80));
++        const isZero = JSBI.equal(value, JSBI.BigInt(0));
+         // prettier-ignore
+-        if ((isNeg && value === BigInt(0) && (i & 0x40) !== 0)
+-            || (!isNeg && value === BigInt(0) && (i & 0x40) === 0)) {
++        if ((isNeg && isZero && (i & 0x40) !== 0) || (!isNeg && isZero && (i & 0x40) === 0)) {
+             pipe.write([i]);
+             break;
+         }
+@@ -91,13 +91,15 @@ function slebEncode(value) {
+         }
+     }
+     function getLowerBytes(num) {
+-        const bytes = num % BigInt(0x80);
++        const bytes = JSBI.remainder(num, JSBI.BigInt(0x80));
+         if (isNeg) {
+             // We swap the bits here again, and remove 1 to do two's complement.
+-            return Number(BigInt(0x80) - bytes - BigInt(1));
++            return JSBI.toNumber(
++                JSBI.subtract(JSBI.subtract(JSBI.BigInt(0x80), bytes), JSBI.BigInt(1))
++            );
+         }
+         else {
+-            return Number(bytes);
++            return JSBI.toNumber(bytes);
+         }
+     }
+     return new buffer_1.Buffer(pipe.buffer);
+diff --git a/node_modules/@dfinity/candid/lib/esm/utils/leb128.js b/node_modules/@dfinity/candid/lib/esm/utils/leb128.js
+index 70a0d61..4e39a57 100644
+--- a/node_modules/@dfinity/candid/lib/esm/utils/leb128.js
++++ b/node_modules/@dfinity/candid/lib/esm/utils/leb128.js
+@@ -28,7 +28,8 @@ export function lebEncode(value) {
+     while (true) {
+         const i = Number(value & BigInt(0x7f));
+         value /= BigInt(0x80);
+-        if (value === BigInt(0)) {
++        value = Math.trunc(value);
++        if (value === 0) {
+             pipe.write([i]);
+             break;
+         }
+@@ -71,9 +72,10 @@ export function slebEncode(value) {
+     while (true) {
+         const i = getLowerBytes(value);
+         value /= BigInt(0x80);
++        value = Math.trunc(value);
+         // prettier-ignore
+-        if ((isNeg && value === BigInt(0) && (i & 0x40) !== 0)
+-            || (!isNeg && value === BigInt(0) && (i & 0x40) === 0)) {
++        if ((isNeg && value === 0 && (i & 0x40) !== 0)
++            || (!isNeg && value === 0 && (i & 0x40) === 0)) {
+             pipe.write([i]);
+             break;
+         }

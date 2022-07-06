@@ -1,12 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { formatAssets } from '@utils/assets';
+
+import { ENABLE_NFTS } from '@/constants/nfts';
+import { formatAssets } from '@/utils/assets';
 
 import {
   DEFAULT_ASSETS,
-  TRANSACTION_STATUS,
   DEFAULT_TRANSACTION,
-  recursiveParseBigint,
+  filterICNSContacts,
+  formatContact,
+  formatContactForController,
   mapTransaction,
+  recursiveParseBigint,
+  TRANSACTION_STATUS,
 } from '../utils';
 
 const DEFAULT_STATE = {
@@ -14,17 +19,15 @@ const DEFAULT_STATE = {
   assetsError: false,
   assetsLoading: false,
   contacts: [],
+  contactsLoading: false,
   transaction: DEFAULT_TRANSACTION,
   transactions: [],
   transactionsError: false,
   transactionsLoading: false,
-  selectedNFT: {},
   collections: [],
   collectionsError: false,
   usingBiometrics: false,
   biometricsAvailable: false,
-  scrollOnProfile: false,
-  scrollOnNFTs: false,
 };
 
 export const sendToken = createAsyncThunk(
@@ -37,7 +40,7 @@ export const sendToken = createAsyncThunk(
         to,
         amount,
         canisterId,
-        opts,
+        opts
       );
       if (transactionId || height) {
         dispatch(setAssetsLoading(true));
@@ -53,13 +56,12 @@ export const sendToken = createAsyncThunk(
         status: TRANSACTION_STATUS.success,
       };
     } catch (e) {
-      console.log('sendToken', e);
       return {
         error: e.message,
         status: TRANSACTION_STATUS.error,
       };
     }
-  },
+  }
 );
 
 export const burnXtc = createAsyncThunk(
@@ -73,13 +75,12 @@ export const burnXtc = createAsyncThunk(
         status: TRANSACTION_STATUS.success,
       };
     } catch (e) {
-      console.log('burnXtc', e);
       return {
         error: e.message,
         status: TRANSACTION_STATUS.error,
       };
     }
-  },
+  }
 );
 
 export const setAssetsAndTransactions = createAsyncThunk(
@@ -89,7 +90,7 @@ export const setAssetsAndTransactions = createAsyncThunk(
     dispatch(setAssetsAndLoading({ assets }));
     dispatch(setTransactions(transactions || []));
     dispatch(setTransactionsLoading(false));
-  },
+  }
 );
 
 export const setAssetsAndLoading = createAsyncThunk(
@@ -98,17 +99,17 @@ export const setAssetsAndLoading = createAsyncThunk(
     const { assets } = params;
     const formattedAssets = formatAssets(assets);
     dispatch(
-      setAssets(formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS),
+      setAssets(formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS)
     );
     dispatch(setAssetsLoading(false));
-  },
+  }
 );
 
 export const getAssets = createAsyncThunk(
   'keyring/getAssets',
   async (params, { getState, dispatch }) => {
     return privateGetAssets(params, getState(), dispatch);
-  },
+  }
 );
 
 export const privateGetAssets = async (params, state, dispatch) => {
@@ -130,7 +131,6 @@ export const privateGetAssets = async (params, state, dispatch) => {
     }
     return { assets, icpPrice };
   } catch (e) {
-    console.log('getAssets', e);
     dispatch(setAssetsError(true));
   }
 };
@@ -138,8 +138,10 @@ export const privateGetAssets = async (params, state, dispatch) => {
 export const getNFTs = createAsyncThunk(
   'keyring/getNFTs',
   async (params, { getState, dispatch }) => {
-    return privateGetNFTs(params, getState(), dispatch);
-  },
+    if (ENABLE_NFTS) {
+      return privateGetNFTs(params, getState(), dispatch);
+    }
+  }
 );
 
 export const privateGetNFTs = async (refresh, state, dispatch) => {
@@ -151,10 +153,9 @@ export const privateGetNFTs = async (refresh, state, dispatch) => {
     let collections = [];
     collections = await instance.getNFTs(currentWalletId, refresh);
     return (collections || [])?.map(collection =>
-      recursiveParseBigint(collection),
+      recursiveParseBigint(collection)
     );
   } catch (e) {
-    console.log('getNFTs', e);
     dispatch(setCollectionsError(true));
   }
 };
@@ -163,7 +164,7 @@ export const getTransactions = createAsyncThunk(
   'keyring/getTransactions',
   async (params, { getState, dispatch }) => {
     return privateGetTransactions(params, getState(), dispatch);
-  },
+  }
 );
 
 export const privateGetTransactions = async (params, state, dispatch) => {
@@ -177,7 +178,6 @@ export const privateGetTransactions = async (params, state, dispatch) => {
     dispatch(setTransactionsLoading(false));
     return parsedTrx;
   } catch (e) {
-    console.log('getTransactions', e);
     dispatch(setTransactionsError(true));
     return {
       error: e.message,
@@ -208,14 +208,115 @@ export const transferNFT = createAsyncThunk(
         status: TRANSACTION_STATUS.success,
       };
     } catch (e) {
-      console.log('transferNFT', e);
       console.trace(e.stack);
       return {
         error: e.message,
         status: TRANSACTION_STATUS.error,
       };
     }
-  },
+  }
+);
+
+export const getContacts = createAsyncThunk(
+  'keyring/getContacts',
+  async (walletNumber = 0, { getState }) => {
+    try {
+      const state = getState();
+      const res = await state.keyring.instance?.getContacts(walletNumber);
+      // TODO: When ICNS is integrated in PlugMobile delete the .filter(filterICNSContacts)
+      return res?.map(formatContact).filter(filterICNSContacts);
+    } catch (e) {
+      console.log('Error getting contacts:', e);
+    }
+  }
+);
+
+export const addContact = createAsyncThunk(
+  'keyring/addContact',
+  async ({ contact, walletNumber = 0, onFinish }, { getState, dispatch }) => {
+    try {
+      dispatch(setContactsLoading(true));
+      const state = getState();
+      const res = await state.keyring.instance?.addContact(
+        formatContactForController(contact),
+        walletNumber
+      );
+      if (res) {
+        dispatch(setContacts([...state.user.contacts, contact]));
+        dispatch(setContactsLoading(false));
+        onFinish?.();
+        // We get the contacts again to update the contact list from dab
+        dispatch(getContacts());
+      }
+    } catch (e) {
+      // TODO: We should handle this error
+      dispatch(setContactsLoading(false));
+      console.log('Error adding contacts:', e);
+    }
+  }
+);
+
+export const removeContact = createAsyncThunk(
+  'keyring/removeContact',
+  async ({ contactName, walletNumber = 0 }, { getState, dispatch }) => {
+    try {
+      dispatch(setContactsLoading(true));
+      const state = getState();
+      const res = await state.keyring.instance?.deleteContact(
+        contactName,
+        walletNumber
+      );
+      if (res) {
+        dispatch(
+          setContacts(state.user.contacts.filter(c => c.name !== contactName))
+        );
+        dispatch(setContactsLoading(false));
+        // We get the contacts again to update the contact list from dab
+        dispatch(getContacts());
+      }
+    } catch (e) {
+      // TODO: We should handle this error
+      dispatch(setContactsLoading(false));
+      console.log('Error removing contact:', e);
+    }
+  }
+);
+
+export const editContact = createAsyncThunk(
+  'keyring/editContact',
+  async ({ contact, newContact, walletNumber = 0 }, { getState, dispatch }) => {
+    try {
+      dispatch(setContactsLoading(true));
+      const state = getState();
+      const removeContactRes = await state.keyring.instance?.deleteContact(
+        contact.name,
+        walletNumber
+      );
+      const addContactRes = await state.keyring.instance?.addContact(
+        formatContactForController(newContact),
+        walletNumber
+      );
+      if (removeContactRes && addContactRes) {
+        dispatch(
+          setContacts([
+            ...state.user.contacts.filter(c => c.id !== contact.id),
+            newContact,
+          ])
+        );
+        dispatch(setContactsLoading(false));
+        // We get the contacts again to update the contact list from dab
+        dispatch(getContacts());
+      } else {
+        // TODO: We should handle this error
+        dispatch(setContactsLoading(false));
+        console.log('Error editing contact:');
+      }
+    } catch (e) {
+      // TODO: We should handle this error
+      dispatch(setContactsLoading(false));
+      console.log('Error editing contact:', e);
+    }
+  }
 );
 
 export const userSlice = createSlice({
@@ -225,31 +326,20 @@ export const userSlice = createSlice({
     setUsingBiometrics: (state, action) => {
       state.usingBiometrics = action.payload;
     },
-    setBiometricsAvailable: (state, action) => {
-      state.biometricsAvailable = action.payload;
+    setContactsLoading: (state, action) => {
+      state.contactsLoading = action.payload;
     },
     setContacts: (state, action) => {
       state.contacts = action.payload;
     },
-    addContact: (state, action) => {
-      state.contacts.push(action.payload);
-    },
-    removeContact: (state, action) => {
-      state.contacts = state.contacts.filter(
-        contact => contact.id !== action.payload.id,
-      );
+    setBiometricsAvailable: (state, action) => {
+      state.biometricsAvailable = action.payload;
     },
     setAssetsLoading: (state, action) => {
       state.assetsLoading = action.payload;
     },
     setAssets: (state, action) => {
       state.assets = action.payload;
-    },
-    setScrollOnProfile: (state, action) => {
-      state.scrollOnProfile = action.payload;
-    },
-    setScrollOnNFTs: (state, action) => {
-      state.scrollOnNFTs = action.payload;
     },
     setAssetsError: (state, action) => {
       state.assetsError = action.payload;
@@ -284,6 +374,9 @@ export const userSlice = createSlice({
     },
   },
   extraReducers: {
+    [getContacts.fulfilled]: (state, action) => {
+      state.contacts = action.payload;
+    },
     [sendToken.fulfilled]: (state, action) => {
       state.transaction = action.payload;
     },
@@ -324,20 +417,17 @@ export const userSlice = createSlice({
 });
 
 export const {
-  setScrollOnNFTs,
-  setScrollOnProfile,
   setTransactionsError,
   setCollectionsError,
   setAssetsError,
   setUsingBiometrics,
   setBiometricsAvailable,
-  setContacts,
-  addContact,
-  removeContact,
   setAssetsLoading,
   setAssets,
   setTransactions,
   setTransaction,
+  setContacts,
+  setContactsLoading,
   setCollections,
   removeNFT,
   setTransactionsLoading,
