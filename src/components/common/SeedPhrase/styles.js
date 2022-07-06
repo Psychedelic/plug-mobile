@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { SEMIBOLD } from '@/constants/fonts';
-import { Colors, FontStyles } from '@/constants/theme';
+import { Colors } from '@/constants/theme';
 import { fontMaker } from '@/utils/fonts';
 
 export default StyleSheet.create({
