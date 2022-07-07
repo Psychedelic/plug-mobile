@@ -15,7 +15,6 @@ import Icon from '@/components/icons';
 import TokenIcon from '@/components/tokens/TokenIcon';
 import { VISIBLE_DECIMALS } from '@/constants/business';
 import { Colors, FontStyles } from '@/constants/theme';
-import TokenFormat from '@/formatters/TokenFormat';
 import useGetType from '@/hooks/useGetType';
 import { Column } from '@/layout';
 import { Row } from '@/layout';
@@ -123,7 +122,7 @@ const ReviewSend = ({
             <Column>
               <Text style={styles.title}>${value?.display}</Text>
               <Text type="subtitle3">
-                <TokenFormat value={amount?.display} token={token.symbol} />
+                <Text>{`${amount?.display} ${token.symbol}`}</Text>
               </Text>
             </Column>
             <TokenIcon {...token} color={Colors.Gray.Tertiary} />
