@@ -12,7 +12,9 @@ function BatchTransactions({ request, args, metadata }) {
       <Text style={styles.title}>{'BATCH TRANSACTIONS'}</Text>
       <Text style={styles.text}>{`DAP URL: ${dappUrl}`}</Text>
       <Text style={styles.text}>{`DAP NAME: ${dappName}`}</Text>
-      <Text style={styles.text}>{`METHOD: ${methodName}`}</Text>
+      <Text style={styles.text}>{`METHOD: ${args.map(
+        tx => tx.methodName
+      )}`}</Text>
     </>
   );
 }

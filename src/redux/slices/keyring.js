@@ -1,5 +1,6 @@
-import PlugController from '@psychedelic/plug-mobile-controller';
+import PlugController from '@psychedelic/plug-controller';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import RNCryptoJS from 'react-native-crypto-js';
 import { fetch } from 'react-native-fetch-api';
 
 import { generateMnemonic } from '../../utils/crypto';
@@ -18,7 +19,11 @@ import {
 } from './user';
 
 export const initKeyring = createAsyncThunk('keyring/init', async () => {
-  let keyring = new PlugController.PlugKeyRing(keyringStorage, fetch);
+  let keyring = new PlugController.PlugKeyRing(
+    keyringStorage,
+    RNCryptoJS,
+    fetch
+  );
   await keyring.init();
   if (keyring?.isUnlocked) {
     const state = await keyring.getState();
