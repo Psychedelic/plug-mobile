@@ -6,6 +6,9 @@ import { formatAssets } from '@/utils/assets';
 import {
   DEFAULT_ASSETS,
   DEFAULT_TRANSACTION,
+  filterICNSContacts,
+  formatContact,
+  formatContactForController,
   mapTransaction,
   recursiveParseBigint,
   TRANSACTION_STATUS,
@@ -16,17 +19,15 @@ const DEFAULT_STATE = {
   assetsError: false,
   assetsLoading: false,
   contacts: [],
+  contactsLoading: false,
   transaction: DEFAULT_TRANSACTION,
   transactions: [],
   transactionsError: false,
   transactionsLoading: false,
-  selectedNFT: {},
   collections: [],
   collectionsError: false,
   usingBiometrics: false,
   biometricsAvailable: false,
-  scrollOnProfile: false,
-  scrollOnNFTs: false,
 };
 
 export const sendToken = createAsyncThunk(
@@ -216,6 +217,108 @@ export const transferNFT = createAsyncThunk(
   }
 );
 
+export const getContacts = createAsyncThunk(
+  'keyring/getContacts',
+  async (walletNumber = 0, { getState }) => {
+    try {
+      const state = getState();
+      const res = await state.keyring.instance?.getContacts(walletNumber);
+      // TODO: When ICNS is integrated in PlugMobile delete the .filter(filterICNSContacts)
+      return res?.map(formatContact).filter(filterICNSContacts);
+    } catch (e) {
+      console.log('Error getting contacts:', e);
+    }
+  }
+);
+
+export const addContact = createAsyncThunk(
+  'keyring/addContact',
+  async ({ contact, walletNumber = 0, onFinish }, { getState, dispatch }) => {
+    try {
+      dispatch(setContactsLoading(true));
+      const state = getState();
+      const res = await state.keyring.instance?.addContact(
+        formatContactForController(contact),
+        walletNumber
+      );
+      if (res) {
+        dispatch(setContacts([...state.user.contacts, contact]));
+        dispatch(setContactsLoading(false));
+        onFinish?.();
+        // We get the contacts again to update the contact list from dab
+        dispatch(getContacts());
+      }
+    } catch (e) {
+      // TODO: We should handle this error
+      dispatch(setContactsLoading(false));
+      console.log('Error adding contacts:', e);
+    }
+  }
+);
+
+export const removeContact = createAsyncThunk(
+  'keyring/removeContact',
+  async ({ contactName, walletNumber = 0 }, { getState, dispatch }) => {
+    try {
+      dispatch(setContactsLoading(true));
+      const state = getState();
+      const res = await state.keyring.instance?.deleteContact(
+        contactName,
+        walletNumber
+      );
+      if (res) {
+        dispatch(
+          setContacts(state.user.contacts.filter(c => c.name !== contactName))
+        );
+        dispatch(setContactsLoading(false));
+        // We get the contacts again to update the contact list from dab
+        dispatch(getContacts());
+      }
+    } catch (e) {
+      // TODO: We should handle this error
+      dispatch(setContactsLoading(false));
+      console.log('Error removing contact:', e);
+    }
+  }
+);
+
+export const editContact = createAsyncThunk(
+  'keyring/editContact',
+  async ({ contact, newContact, walletNumber = 0 }, { getState, dispatch }) => {
+    try {
+      dispatch(setContactsLoading(true));
+      const state = getState();
+      const removeContactRes = await state.keyring.instance?.deleteContact(
+        contact.name,
+        walletNumber
+      );
+      const addContactRes = await state.keyring.instance?.addContact(
+        formatContactForController(newContact),
+        walletNumber
+      );
+      if (removeContactRes && addContactRes) {
+        dispatch(
+          setContacts([
+            ...state.user.contacts.filter(c => c.id !== contact.id),
+            newContact,
+          ])
+        );
+        dispatch(setContactsLoading(false));
+        // We get the contacts again to update the contact list from dab
+        dispatch(getContacts());
+      } else {
+        // TODO: We should handle this error
+        dispatch(setContactsLoading(false));
+        console.log('Error editing contact:');
+      }
+    } catch (e) {
+      // TODO: We should handle this error
+      dispatch(setContactsLoading(false));
+      console.log('Error editing contact:', e);
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: 'user',
   initialState: DEFAULT_STATE,
@@ -223,31 +326,20 @@ export const userSlice = createSlice({
     setUsingBiometrics: (state, action) => {
       state.usingBiometrics = action.payload;
     },
-    setBiometricsAvailable: (state, action) => {
-      state.biometricsAvailable = action.payload;
+    setContactsLoading: (state, action) => {
+      state.contactsLoading = action.payload;
     },
     setContacts: (state, action) => {
       state.contacts = action.payload;
     },
-    addContact: (state, action) => {
-      state.contacts.push(action.payload);
-    },
-    removeContact: (state, action) => {
-      state.contacts = state.contacts.filter(
-        contact => contact.id !== action.payload.id
-      );
+    setBiometricsAvailable: (state, action) => {
+      state.biometricsAvailable = action.payload;
     },
     setAssetsLoading: (state, action) => {
       state.assetsLoading = action.payload;
     },
     setAssets: (state, action) => {
       state.assets = action.payload;
-    },
-    setScrollOnProfile: (state, action) => {
-      state.scrollOnProfile = action.payload;
-    },
-    setScrollOnNFTs: (state, action) => {
-      state.scrollOnNFTs = action.payload;
     },
     setAssetsError: (state, action) => {
       state.assetsError = action.payload;
@@ -282,6 +374,9 @@ export const userSlice = createSlice({
     },
   },
   extraReducers: {
+    [getContacts.fulfilled]: (state, action) => {
+      state.contacts = action.payload;
+    },
     [sendToken.fulfilled]: (state, action) => {
       state.transaction = action.payload;
     },
@@ -322,20 +417,17 @@ export const userSlice = createSlice({
 });
 
 export const {
-  setScrollOnNFTs,
-  setScrollOnProfile,
   setTransactionsError,
   setCollectionsError,
   setAssetsError,
   setUsingBiometrics,
   setBiometricsAvailable,
-  setContacts,
-  addContact,
-  removeContact,
   setAssetsLoading,
   setAssets,
   setTransactions,
   setTransaction,
+  setContacts,
+  setContactsLoading,
   setCollections,
   removeNFT,
   setTransactionsLoading,

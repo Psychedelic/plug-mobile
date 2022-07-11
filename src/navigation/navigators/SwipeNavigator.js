@@ -16,12 +16,16 @@ const SwipeNavigator = ({ route, navigation }) => {
   const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
   const isLogin = route.name === Routes.LOGIN_SCREEN;
 
+  const goToLogin = () => {
+    navigation.reset({
+      index: 1,
+      routes: [{ name: Routes.LOGIN_SCREEN, params: { manualLock: true } }],
+    });
+  };
+
   useEffect(() => {
     if (!isUnlocked && isInitialized && !isLogin) {
-      navigation.reset({
-        index: 1,
-        routes: [{ name: Routes.LOGIN_SCREEN, params: { manualLock: true } }],
-      });
+      goToLogin();
     }
   }, [isUnlocked, isInitialized, isLogin]);
 

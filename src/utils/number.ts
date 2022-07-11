@@ -1,11 +1,31 @@
 import { getNumberFormatSettings } from 'react-native-localize';
 
+import { VISIBLE_DECIMALS } from '@/constants/business';
+
 export const { decimalSeparator, groupingSeparator: thousandSeparator } =
   getNumberFormatSettings();
 
-export const isDecimal = (value: string) => {
-  return RegExp(`^[0-9]+[${decimalSeparator}]?[0-9]*$`, 'g').test(value);
+export const isValidDecimal = (
+  value: string,
+  maxDecimals = VISIBLE_DECIMALS
+) => {
+  return RegExp(
+    `^[0-9]+[${decimalSeparator}]?[0-9]{0,${maxDecimals}}$`,
+    'g'
+  ).test(value);
 };
+
+/**
+ * @param amount Number to be truncated
+ * @param decimals Number of digits after the decimal point. If null, returns integer part
+ * @returns Returns a string representing a number in fixed-point notation.
+ * Based on https://stackoverflow.com/a/11818658
+ */
+export function truncate(amount: number, decimals?: number): string {
+  var re = new RegExp('^-?\\d+(?:.\\d{0,' + (decimals || -1) + '})?');
+  const match = amount.toString().match(re);
+  return match![0];
+}
 
 export const formatToMaxDecimals = (number: number, maxDecimals: number) => {
   const stringifyAmount = `${number}`.split('.')[1];

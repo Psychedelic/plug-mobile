@@ -86,6 +86,7 @@ function BiometricUnlock({ modalRef }) {
               error={error}
               password={password}
               onChange={setPassword}
+              onSubmit={handleSubmit}
             />
             <RainbowButton
               text={t('common.continue')}

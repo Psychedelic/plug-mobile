@@ -27,7 +27,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
   const { password, shouldSaveBiometrics } = route?.params || {};
 
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [importingWallet, setImportingWallet] = useState(false);
   const [seedPhrase, setSeedPhrase] = useState(null);
   const [invalidSeedPhrase, setInvalidSeedPhrase] = useState(false);
 
@@ -35,8 +35,14 @@ const ImportSeedPhrase = ({ navigation, route }) => {
     dispatch(getICPPrice());
   }, []);
 
-  const onPress = async () => {
-    setLoading(true);
+  useEffect(() => {
+    // This is the only way to make the loading button work fine, otherwise it's laggy.
+    if (importingWallet) {
+      importWalletFromSeedPhrase();
+    }
+  }, [importingWallet, setImportingWallet]);
+
+  const importWalletFromSeedPhrase = async () => {
     try {
       dispatch(reset());
       dispatch(
@@ -46,13 +52,13 @@ const ImportSeedPhrase = ({ navigation, route }) => {
           password,
           onError: () => {
             setError(true);
-            setLoading(false);
+            setImportingWallet(false);
           },
           onSuccess: async () => {
             if (shouldSaveBiometrics) {
               await saveBiometrics(password);
             }
-            setLoading(false);
+            setImportingWallet(false);
             setError(false);
             navigation.navigate(Routes.SWIPE_LAYOUT);
           },
@@ -105,10 +111,10 @@ const ImportSeedPhrase = ({ navigation, route }) => {
           )}
           <RainbowButton
             text={t('common.continue')}
-            onPress={onPress}
-            loading={loading}
+            onPress={() => setImportingWallet(true)}
+            loading={importingWallet}
             buttonStyle={styles.button}
-            disabled={!isMnemonicValid || loading}
+            disabled={!isMnemonicValid}
           />
         </View>
       </KeyboardScrollView>

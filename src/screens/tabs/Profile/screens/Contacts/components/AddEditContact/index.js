@@ -2,7 +2,7 @@ import emojis from 'emoji-datasource';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Keyboard, Text, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { charFromEmojiObject } from '@/commonComponents/EmojiSelector/utils';
 import Header from '@/commonComponents/Header';
@@ -11,7 +11,7 @@ import TextInput from '@/commonComponents/TextInput';
 import UserIcon from '@/commonComponents/UserIcon';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import { FontStyles } from '@/constants/theme';
-import useContacts from '@/hooks/useContacts';
+import { addContact, editContact } from '@/redux/slices/user';
 import { validatePrincipalId } from '@/utils/ids';
 
 import EditEmoji from '../../../EditEmoji';
@@ -20,8 +20,8 @@ import styles from './styles';
 const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
   const { t } = useTranslation();
   const { contacts } = useSelector(state => state.user);
-  const { onCreate, onEdit } = useContacts();
   const editEmojiRef = useRef(null);
+  const dispatch = useDispatch();
 
   const [id, setId] = useState('');
   const [name, setName] = useState('');
@@ -46,15 +46,20 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
       const randomEmoji = charFromEmojiObject(
         emojis[Math.floor(Math.random() * emojis.length)]
       );
-      isEditContact
-        ? onEdit({ contact, newContact: { id, name, image: emoji } })
-        : onCreate({
-            id,
-            name,
-            image: randomEmoji,
-          });
+      dispatch(
+        isEditContact
+          ? editContact({ contact, newContact: { id, name, image: emoji } })
+          : addContact({
+              contact: {
+                id,
+                name,
+                image: randomEmoji,
+              },
+            })
+      );
 
       modalRef.current?.close();
+      clearState();
     }
   };
 
@@ -69,6 +74,7 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
     if (contact) {
       setName(contact.name);
       setId(contact.id);
+      setEmoji(contact.image);
     } else {
       clearState();
     }

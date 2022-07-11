@@ -20,7 +20,6 @@ function ErrorState({ errorType, onPress, loading, style, buttonStyle }) {
       </Text>
       {onPress && (
         <Button
-          variant="gray"
           onPress={onPress}
           loading={loading}
           text={buttonTitle}

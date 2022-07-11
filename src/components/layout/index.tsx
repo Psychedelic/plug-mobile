@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { FlexStyle, StyleProp, View, ViewStyle } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import styles from './styles';
@@ -8,7 +8,19 @@ import styles from './styles';
 
 export const Separator = () => <View style={styles.separator} />;
 
-export const Row = ({ align, justify, children, style }) => {
+interface Props {
+  children: React.ReactNode;
+  align?: FlexStyle['alignItems'];
+  justify?: FlexStyle['justifyContent'];
+  style?: StyleProp<ViewStyle>;
+}
+
+interface ContainerProps {
+  children: React.ReactNode;
+  customStyle?: StyleProp<ViewStyle>;
+}
+
+export const Row = ({ align, justify, children, style }: Props) => {
   return (
     <View
       style={[
@@ -22,7 +34,7 @@ export const Row = ({ align, justify, children, style }) => {
   );
 };
 
-export const Column = ({ align, justify, children, style }) => {
+export const Column = ({ align, justify, children, style }: Props) => {
   return (
     <View
       style={[
@@ -36,7 +48,7 @@ export const Column = ({ align, justify, children, style }) => {
   );
 };
 
-export const Container = ({ children, customStyle }) => {
+export const Container = ({ children, customStyle }: ContainerProps) => {
   const { top } = useSafeAreaInsets();
 
   return (

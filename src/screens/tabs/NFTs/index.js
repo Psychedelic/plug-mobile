@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useScrollToTop } from '@react-navigation/native';
+import React, { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, RefreshControl, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,6 +8,7 @@ import EmptyState from '@/commonComponents/EmptyState';
 import ErrorState from '@/commonComponents/ErrorState';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
+import { useStateWithCallback } from '@/hooks/useStateWithCallback';
 import { Container, Separator } from '@/layout';
 import { getNFTs } from '@/redux/slices/user';
 import NftItem from '@/screens/tabs/components/NftItem';
@@ -19,34 +21,27 @@ const NFTs = () => {
   const { t } = useTranslation();
   const detailRef = useRef(null);
   const NFTListRef = useRef(null);
+  useScrollToTop(NFTListRef);
   const dispatch = useDispatch();
   const [refreshing, setRefresing] = useState(false);
-  const [selectedNft, setSelectedNft] = useState(null);
-  const { collections, collectionsError, scrollOnNFTs } = useSelector(
-    state => state.user
-  );
+  const [selectedNft, setSelectedNft] = useStateWithCallback(null);
+  const { collections, collectionsError } = useSelector(state => state.user);
 
   const nfts = useMemo(
     () => collections?.flatMap(collection => collection?.tokens || []) || [],
     [collections]
   );
 
-  useEffect(() => {
-    if (scrollOnNFTs) {
-      // TODO: Check scrollOnNFTs and scrollOnProfile logic
-      if (nfts.length > 0) {
-        NFTListRef?.current?.scrollToIndex({ index: 0 });
-      }
-    }
-  }, [scrollOnNFTs, nfts]);
-
-  const renderNFT = ({ item }, index) => (
-    <NftItem key={index} item={item} onOpen={onOpen} />
+  const renderNFT = ({ item }) => (
+    <NftItem
+      key={`${item.canisterId}_${item.index}`}
+      item={item}
+      onOpen={onOpen}
+    />
   );
 
   const onOpen = nft => () => {
-    setSelectedNft(nft);
-    detailRef?.current.open();
+    setSelectedNft(nft, () => detailRef.current?.open());
   };
 
   const onRefresh = () => {
@@ -94,7 +89,11 @@ const NFTs = () => {
           <ErrorState onPress={onRefresh} errorType={ERROR_TYPES.FETCH_ERROR} />
         )}
       </Container>
-      <NftDetail modalRef={detailRef} selectedNFT={selectedNft} />
+      <NftDetail
+        modalRef={detailRef}
+        selectedNFT={selectedNft}
+        handleClose={() => setSelectedNft(null)}
+      />
     </>
   );
 };

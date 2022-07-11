@@ -12,8 +12,8 @@ import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import Icon from '@/components/icons';
 import TokenIcon from '@/components/tokens/TokenIcon';
+import { VISIBLE_DECIMALS } from '@/constants/business';
 import { Colors, FontStyles } from '@/constants/theme';
-import TokenFormat from '@/formatters/TokenFormat';
 import useGetType from '@/hooks/useGetType';
 import { Column } from '@/layout';
 import { Row } from '@/layout';
@@ -22,7 +22,7 @@ import { setTransaction } from '@/redux/slices/user';
 import { TRANSACTION_STATUS } from '@/redux/utils';
 import shortAddress from '@/utils/shortAddress';
 
-import { getTransactionFee, USD_MAX_DECIMALS } from '../../utils';
+import { getTransactionFee } from '../../utils';
 import SaveContact from '../SaveContact';
 import styles from './styles';
 
@@ -119,9 +119,9 @@ const ReviewSend = ({
         {token && (
           <Row style={styles.row}>
             <Column>
-              <Text style={FontStyles.Title2}>${value?.value}</Text>
+              <Text style={FontStyles.Title2}>${value?.display}</Text>
               <Text style={FontStyles.Subtitle3}>
-                <TokenFormat value={amount?.value} token={token.symbol} />
+                <Text>{`${amount?.display} ${token.symbol}`}</Text>
               </Text>
             </Column>
             <TokenIcon {...token} color={Colors.Gray.Tertiary} />
@@ -170,9 +170,9 @@ const ReviewSend = ({
           <Row style={styles.row}>
             <Text style={FontStyles.Subtitle3}>
               {t('reviewSend.totalFee', {
-                value: `${currentFee} ${
-                  token?.symbol
-                } ($${currentUSDFee.toFixed(USD_MAX_DECIMALS + 2)})`,
+                value: `${currentFee} ${token?.symbol} ($${Number(
+                  currentUSDFee.toFixed(VISIBLE_DECIMALS)
+                )})`,
               })}
             </Text>
           </Row>
@@ -180,7 +180,6 @@ const ReviewSend = ({
         {isSuccess ? (
           token && (
             <Button
-              variant="gray"
               text={t('reviewSend.goToActivity')}
               buttonStyle={styles.button}
               onPress={handleGoToActivity}
@@ -195,13 +194,11 @@ const ReviewSend = ({
                   : t('reviewSend.holdToSend')
               }
               loading={loading}
-              disabled={loading}
               onLongPress={onSend}
               buttonStyle={styles.button}
             />
             {isError && (
               <Button
-                variant="gray"
                 text={t('common.cancel')}
                 buttonStyle={styles.button}
                 onPress={handleClose}

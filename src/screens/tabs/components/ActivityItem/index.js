@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 
+import { VISIBLE_DECIMALS } from '@/constants/business';
 import { FontStyles } from '@/constants/theme';
 import UsdFormat from '@/formatters/UsdFormat';
 import { formatDate } from '@/utils/dates';
@@ -70,7 +71,7 @@ const ActivityItem = ({
             {amount ? (
               <Text style={FontStyles.Normal}>{`${formatToMaxDecimals(
                 Number(amount),
-                8
+                VISIBLE_DECIMALS
               )} ${symbol}`}</Text>
             ) : null}
             {value ? (

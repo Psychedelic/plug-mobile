@@ -8,10 +8,12 @@ import { keyringStorage } from '../store';
 import { getNewAccountData, resetStores } from '../utils';
 import {
   getAssets,
+  getContacts,
   getNFTs,
   getTransactions,
   setAssetsAndTransactions,
   setAssetsLoading,
+  setContactsLoading,
   setTransactionsLoading,
 } from './user';
 
@@ -151,6 +153,11 @@ export const login = createAsyncThunk(
         dispatch(setTransactionsLoading(true));
         dispatch(getTransactions({ icpPrice }));
         dispatch(getNFTs());
+        // Get contacts from dab
+        dispatch(setContactsLoading(true));
+        dispatch(getContacts())
+          .unwrap()
+          .then(() => dispatch(setContactsLoading(false)));
       } else {
         handleError();
       }
@@ -214,6 +221,7 @@ export const setCurrentPrincipal = createAsyncThunk(
         getState(),
         dispatch
       );
+      dispatch(getContacts());
       dispatch(setAssetsAndTransactions({ assets, transactions }));
     } catch (e) {
       console.log('setCurrentPrincipal', e.message);
@@ -275,16 +283,20 @@ export const keyringSlice = createSlice({
     },
     [createWallet.fulfilled]: (state, action) => {
       const { wallet, unlocked } = action.payload;
-      state.currentWallet = wallet;
-      state.wallets = [wallet];
-      state.isInitialized = true;
-      state.isUnlocked = unlocked;
+      if (Object.keys(wallet).length > 0) {
+        state.currentWallet = wallet;
+        state.wallets = [wallet];
+        state.isInitialized = true;
+        state.isUnlocked = unlocked;
+      }
     },
     [importWallet.fulfilled]: (state, action) => {
       const { wallet } = action.payload;
-      state.wallets = [wallet];
-      state.currentWallet = wallet;
-      state.isInitialized = true;
+      if (Object.keys(wallet).length > 0) {
+        state.wallets = [wallet];
+        state.currentWallet = wallet;
+        state.isInitialized = true;
+      }
     },
   },
 });

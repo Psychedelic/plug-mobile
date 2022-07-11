@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { StyleProp, Text, View, ViewStyle } from 'react-native';
 
 import Touchable from '@/commonComponents/Touchable';
 import { Colors, FontStyles } from '@/constants/theme';
@@ -12,6 +12,18 @@ import TokenIcon from '@/tokens/TokenIcon';
 
 import styles from './styles';
 
+interface Props {
+  icon?: string;
+  name?: string;
+  symbol: string;
+  onPress: () => void;
+  style?: StyleProp<ViewStyle>;
+  availableAmount: number;
+  availableUsdAmount: number;
+  selectedInput: string;
+  decimalScale?: number;
+}
+
 const TokenSelector = ({
   icon,
   name,
@@ -21,7 +33,8 @@ const TokenSelector = ({
   availableAmount,
   availableUsdAmount,
   selectedInput,
-}) => (
+  decimalScale,
+}: Props) => (
   <Touchable onPress={onPress}>
     <View style={[styles.root, style]}>
       <TokenIcon icon={icon} symbol={symbol} color={Colors.Gray.Tertiary} />
@@ -33,12 +46,14 @@ const TokenSelector = ({
             <UsdFormat
               value={availableUsdAmount}
               style={FontStyles.NormalGray}
+              decimalScale={decimalScale}
             />
           ) : (
             <TokenFormat
               value={availableAmount}
               token={symbol}
               style={FontStyles.NormalGray}
+              decimalScale={decimalScale}
             />
           )}
           <Text style={styles.available}>{t('common.available')}</Text>

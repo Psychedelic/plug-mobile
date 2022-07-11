@@ -1,7 +1,14 @@
 import Clipboard from '@react-native-community/clipboard';
 import { t } from 'i18next';
-import React, { Fragment, useRef, useState } from 'react';
-import { Platform, Text, View } from 'react-native';
+import React, { Fragment, useMemo, useRef, useState } from 'react';
+import {
+  ActivityIndicator,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import CommonItem from '@/commonComponents/CommonItem';
 import Header from '@/commonComponents/Header';
@@ -10,22 +17,27 @@ import Touchable from '@/commonComponents/Touchable';
 import ActionSheet from '@/components/common/ActionSheet';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
-import useContacts from '@/hooks/useContacts';
 import CopyIcon from '@/icons/svg/material/Copy.svg';
 import DeleteIcon from '@/icons/svg/material/Delete.svg';
 import EditIcon from '@/icons/svg/material/Edit.svg';
-import { Column } from '@/layout';
-import { Row } from '@/layout';
+import { Column, Row } from '@/layout';
+import { removeContact } from '@/redux/slices/user';
 
 import AddEditContact from './components/AddEditContact';
 import styles from './styles';
+import { getGroupedContacts } from './utils';
 
-const Contacts = ({ modalRef }) => {
+function Contacts({ modalRef }) {
   const addEditContactRef = useRef(null);
   const actionSheetRef = useRef(null);
   const [actionSheetData, setActionSheetData] = useState(undefined);
+  const { contacts, contactsLoading } = useSelector(state => state.user);
+  const dispatch = useDispatch();
 
-  const { groupedContacts, onDelete } = useContacts();
+  const groupedContacts = useMemo(
+    () => getGroupedContacts(contacts),
+    [contacts]
+  );
 
   const [selectedContact, setSelectedContact] = useState(null);
 
@@ -59,7 +71,7 @@ const Contacts = ({ modalRef }) => {
         {
           id: 3,
           label: t('contacts.moreOptions.delete'),
-          onPress: () => onDelete(contact),
+          onPress: () => dispatch(removeContact({ contactName: contact.name })),
           icon: Platform.select({ android: DeleteIcon }),
         },
       ],
@@ -77,6 +89,14 @@ const Contacts = ({ modalRef }) => {
           }
         />
         <Column style={styles.container}>
+          {contactsLoading && (
+            <View style={styles.loading}>
+              <ActivityIndicator
+                style={StyleSheet.absoluteFill}
+                color="white"
+              />
+            </View>
+          )}
           <Touchable onPress={onAddContact}>
             <Row align="center" style={styles.addRow}>
               <Icon name="plus" style={styles.plusIcon} />
@@ -118,6 +138,6 @@ const Contacts = ({ modalRef }) => {
       />
     </>
   );
-};
+}
 
 export default Contacts;

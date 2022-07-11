@@ -1,16 +1,16 @@
+import { t } from 'i18next';
 import React from 'react';
 import { Text } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import CommonItem from '@/commonComponents/CommonItem';
 import { FontStyles } from '@/constants/theme';
-import useContacts from '@/hooks/useContacts';
 
 import styles from '../../styles';
 
 const ContactSection = ({ onPress, filterText }) => {
-  const { contacts } = useContacts();
   const { principal } = useSelector(state => state.keyring?.currentWallet);
+  const contacts = useSelector(state => state.user?.contacts);
   const usableContacts = contacts.filter(contact => contact.id !== principal);
 
   const filteredContacts = filterText
@@ -24,13 +24,13 @@ const ContactSection = ({ onPress, filterText }) => {
   return (
     usableContacts?.length > 0 && (
       <>
-        <Text style={FontStyles.Subtitle3}>Contacts</Text>
-        {filteredContacts.map((contact, index) => (
+        <Text style={FontStyles.Subtitle3}>{t('send.contacts')}</Text>
+        {filteredContacts.map(contact => (
           <CommonItem
             name={contact.name}
             id={contact.id}
             image={contact.image}
-            key={index}
+            key={contact.id}
             onPress={() => onPress(contact)}
             style={styles.contactItem}
             showActions={false}

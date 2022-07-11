@@ -27,6 +27,7 @@ const translations = {
     copyClipboard: 'Copy to clipboard',
     revealPhrase: 'Reveal Seed Phrase',
     available: 'Available',
+    max: 'Max',
   },
   welcome: {
     title: 'Welcome to Plug',
@@ -73,6 +74,7 @@ const translations = {
     reviewSend: 'Review Send',
     contact: 'Contact',
     enterPassword: 'Enter your password',
+    contacts: 'Contacts',
   },
   reviewSend: {
     to: 'To',
@@ -101,7 +103,6 @@ const translations = {
     moreTitle: 'More Options',
     moreOptions: {
       view: 'View',
-      share: 'Share',
       download: 'Download',
     },
   },
@@ -162,10 +163,11 @@ const translations = {
     namePlaceholder: 'Name',
     idPlaceholder: 'Principal ID',
     nameTaken: 'Name is already taken!',
-    contactAlreadySaved: 'Contact already saved as {{name}}',
+    contactAlreadySaved: 'Contact already saved as {{value}}',
   },
   placeholders: {
     amount: `0${decimalSeparator}00`,
+    contactDescription: 'contact description',
   },
   validations: {
     passRequired: 'Password is required.',

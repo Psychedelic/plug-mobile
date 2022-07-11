@@ -1,9 +1,12 @@
+import { t } from 'i18next';
+
 import { ACTIVITY_STATUS } from '@/constants/business';
 import { formatAssetBySymbol, TOKEN_IMAGES, TOKENS } from '@/utils/assets';
 import { parseToFloatAmount } from '@/utils/number';
 
 import { reset } from './slices/keyring';
 import {
+  getContacts,
   getNFTs,
   getTransactions,
   privateGetAssets,
@@ -12,6 +15,7 @@ import {
   setAssetsLoading,
   setCollections,
   setContacts,
+  setContactsLoading,
   setTransactions,
   setTransactionsLoading,
 } from './slices/user';
@@ -70,7 +74,6 @@ export const recursiveParseBigint = obj =>
 
 export const resetStores = dispatch => {
   dispatch(reset());
-  dispatch(setContacts([]));
   dispatch(setCollections([]));
   dispatch(setTransactions([]));
   dispatch(setAssets(DEFAULT_ASSETS));
@@ -78,6 +81,8 @@ export const resetStores = dispatch => {
 
 export const getNewAccountData = async (dispatch, icpPrice, state) => {
   dispatch(setAssetsLoading(true));
+  dispatch(setContacts([]));
+  dispatch(setContactsLoading(true));
   dispatch(getNFTs());
   const assets = await privateGetAssets(
     { refresh: true, icpPrice },
@@ -87,6 +92,9 @@ export const getNewAccountData = async (dispatch, icpPrice, state) => {
   dispatch(setAssetsAndLoading({ assets }));
   dispatch(setTransactionsLoading(true));
   dispatch(getTransactions({ icpPrice }));
+  dispatch(getContacts())
+    .unwrap()
+    .then(() => dispatch(setContactsLoading(false)));
 };
 
 export const mapTransaction = (icpPrice, state) => trx => {
@@ -171,3 +179,20 @@ export const mapTransaction = (icpPrice, state) => trx => {
   };
   return transaction;
 };
+
+export const formatContact = contact => ({
+  image: contact.emoji[0],
+  name: contact.name,
+  id: contact.value?.PrincipalId,
+});
+
+export const formatContactForController = contact => ({
+  description: [t('placeholders.contactDescription')],
+  emoji: [contact.image],
+  name: contact.name,
+  value: {
+    PrincipalId: contact.id,
+  },
+});
+
+export const filterICNSContacts = contact => contact.id;
