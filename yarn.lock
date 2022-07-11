@@ -1640,10 +1640,10 @@
     cross-fetch "^3.1.4"
     crypto-js "^4.1.1"
 
-"@psychedelic/plug-mobile-controller@0.2.11":
-  version "0.2.11"
-  resolved "https://npm.pkg.github.com/download/@psychedelic/plug-mobile-controller/0.2.11/1d28df926277d7d4df2d4bb270d6ceead4646647e289a17171ab76f77c0419d3#204cf56111e60c2495d65796a937425596fd7ab4"
-  integrity sha512-h/4iuKfFzSPWH/YyTJfbZ8HCfQGOXlhnkjx6fBqgsCCjELw3tMTZLxjAu1yYud2oQPTJqcvAl2YHkdt1WcfQVw==
+"@psychedelic/plug-mobile-controller@0.2.12":
+  version "0.2.12"
+  resolved "https://npm.pkg.github.com/download/@psychedelic/plug-mobile-controller/0.2.12/a980274032caa7562264219d7a28a5c6564bbd088a7bdbf26d5721f0b94256ab#72edfb09f8553b0635f150fbf7576cea0269f194"
+  integrity sha512-fS3zApLrUEqLVM9mQrfVemYX4XxjFE2vtYYQFN70MQjht4JdSFOhAQPYPaGh95YEw6UwgS6CtVx05L0WQucPoQ==
   dependencies:
     "@dfinity/agent" "0.9.3"
     "@dfinity/candid" "0.9.3"
@@ -8407,14 +8407,14 @@ react-native-bip39@^2.3.0:
     react-native-randombytes "^2.2.0"
     unorm "^1.3.3"
 
-react-native-bootsplash@^4.1.5:
-  version "4.1.5"
-  resolved "https://registry.yarnpkg.com/react-native-bootsplash/-/react-native-bootsplash-4.1.5.tgz#c2911fd006bc3c555cc3803bc267d1aeafea6525"
-  integrity sha512-4daDemujTdfukHq1wIeEdRgdFALNAwGZDrGHkxkf9h4Rgjiiyckc5ulZMIYaZwp31z26uUjcGXVxU+H1WDNRvg==
+react-native-bootsplash@^4.2.3:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/react-native-bootsplash/-/react-native-bootsplash-4.2.3.tgz#9914fbe2e749ee4cbfa7a2c731cc530bee488431"
+  integrity sha512-IqE12pdM7DYozZBgoE3WdcxSPj7p2QY41sUzjgKJGKkl0urCk/QauKst+5jdHAcOUqB3Gym6EtihFwq0QXh2uw==
   dependencies:
-    chalk "^4.1.2"
     fs-extra "^10.1.0"
     jimp "^0.16.1"
+    picocolors "^1.0.0"
 
 react-native-code-push@^7.0.4:
   version "7.0.4"
