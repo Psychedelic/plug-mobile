@@ -32,9 +32,9 @@ Sentry.init({
   dsn: Config.SENTRY_DSN,
   tracesSampleRate: 1.0,
   dist: baseDist,
+  debug: __DEV__,
   release: baseRelease,
   environment: __DEV__ ? 'local' : 'productive',
-  maxBreadcrumbs: 100,
   normalizeDepth: 10,
   enableOutOfMemoryTracking: false,
   integrations: [

@@ -6,7 +6,7 @@ platform :ios, '11.0'
 target 'Plug' do
 
   config = use_native_modules!
-  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.18.1'
+  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.20.0'
 
   use_react_native!(
     :path => config[:reactNativePath],
