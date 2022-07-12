@@ -223,7 +223,6 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				09CBCE7B73838E84A27E1DC5 /* [CP] Embed Pods Frameworks */,
 				F6708863A62E05255120F2A5 /* [CP] Copy Pods Resources */,
-				7C5AC6D6D6B24A7C9BF7161B /* Upload Debug Symbols to Sentry */,
 			);
 			buildRules = (
 			);
@@ -307,7 +306,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport EXTRA_PACKAGER_ARGS=\"--sourcemap-output $DERIVED_FILE_DIR/main.jsbundle.map\"\nset -e\n\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh\n";
+			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
 		022265165C544813637AE8A6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -347,20 +346,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Plug/Pods-Plug-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		7C5AC6D6D6B24A7C9BF7161B /* Upload Debug Symbols to Sentry */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Upload Debug Symbols to Sentry";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export SENTRY_PROPERTIES=sentry.properties\n../node_modules/@sentry/cli/bin/sentry-cli upload-dsym";
 		};
 		946F09C398454066DBB65286 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

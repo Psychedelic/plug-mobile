@@ -2,7 +2,7 @@ import '@/config/logs';
 import '@/config/i18n';
 import '@/config/reactotron';
 
-import * as Sentry from '@sentry/react-native';
+// import * as Sentry from '@sentry/react-native';
 import React, { useEffect, useRef } from 'react';
 import { AppState, StatusBar } from 'react-native';
 import RNBootSplash from 'react-native-bootsplash';
@@ -19,16 +19,16 @@ import Routes from '@/navigation';
 import { initKeyring } from '@/redux/slices/keyring';
 import { persistor, store } from '@/redux/store';
 
-const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
+// const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
 
-Sentry.init({
-  dsn: Config.SENTRY_DSN,
-  integrations: [
-    new Sentry.ReactNativeTracing({
-      routingInstrumentation,
-    }),
-  ],
-});
+// Sentry.init({
+//   dsn: Config.SENTRY_DSN,
+//   integrations: [
+//     new Sentry.ReactNativeTracing({
+//       routingInstrumentation,
+//     }),
+//   ],
+// });
 
 const PersistedApp = () => {
   const { instance } = useSelector(state => state.keyring);
@@ -75,7 +75,9 @@ const PersistedApp = () => {
         <SafeAreaProvider>
           <StatusBar barStyle="light-content" backgroundColor="black" />
           {!!instance && (
-            <Routes routingInstrumentation={routingInstrumentation} />
+            <Routes
+            // routingInstrumentation={routingInstrumentation}
+            />
           )}
         </SafeAreaProvider>
       </ErrorBoundary>
@@ -89,11 +91,11 @@ const App = () => (
   </Provider>
 );
 
-const AppWithSentry = Sentry.wrap(__DEV__ ? Reactotron.overlay(App) : App);
+// const AppWithSentry = Sentry.wrap(__DEV__ ? Reactotron.overlay(App) : App);
 
 export default codePush({
   checkfrecuency: codePush.CheckFrequency.MANUAL,
   deploymentKey: isIos
     ? Config.CODE_PUSH_IOS_DEPLOY_KEY
     : Config.CODE_PUSH_ANDROID_DEPLOY_KEY,
-})(AppWithSentry);
+})(__DEV__ ? Reactotron.overlay(App) : App);
