@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Text, View } from 'react-native';
+import { Image, ScrollView, Text, View } from 'react-native';
 
 import PlugLogo from '@/assets/icons/plug-logo-full.png';
 import Back from '@/commonComponents/Back';
@@ -40,7 +40,11 @@ const BackupSeedPhrase = ({ route, navigation }) => {
           </View>
         }
       />
-      <View style={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.contentContainer}
+        style={styles.container}
+        bounces={false}
+        overScrollMode="never">
         <Text style={styles.title}>{t('backupSeed.title')}</Text>
         <Text style={styles.subtitle}>{t('backupSeed.subtitle')}</Text>
         <SeedPhrase mnemonic={mnemonic.split(' ')} onReveal={onReveal} />
@@ -51,7 +55,7 @@ const BackupSeedPhrase = ({ route, navigation }) => {
           onPress={onPress}
           disabled={!revealed}
         />
-      </View>
+      </ScrollView>
     </Container>
   );
 };
