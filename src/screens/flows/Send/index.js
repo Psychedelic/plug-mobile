@@ -8,9 +8,7 @@ import Modal, { modalOffset } from '@/commonComponents/Modal';
 import PasswordModal from '@/commonComponents/PasswordModal';
 import TextInput from '@/commonComponents/TextInput';
 import { ADDRESS_TYPES } from '@/constants/addresses';
-import { USD_PER_TC } from '@/constants/assets';
-import { TOKENS } from '@/constants/assets';
-import { NUMBER_MAX_DECIMALS } from '@/constants/business';
+import { TOKENS, USD_PER_TC } from '@/constants/assets';
 import { isAndroid } from '@/constants/platform';
 import { FontStyles } from '@/constants/theme';
 import XTC_OPTIONS from '@/constants/xtc';
@@ -27,7 +25,6 @@ import {
   validateCanisterId,
   validatePrincipalId,
 } from '@/utils/ids';
-import { truncate } from '@/utils/number';
 
 import AmountSection from './components/AmountSection';
 import ContactSection from './components/ContactSection';
@@ -153,9 +150,9 @@ function Send({ modalRef, nft, token, onSuccess }) {
   };
 
   const handleSendToken = () => {
-    const amount = truncate(tokenAmount.value, NUMBER_MAX_DECIMALS);
+    const amount = tokenAmount.value;
     if (sendingXTCtoCanister && destination === XTC_OPTIONS.BURN) {
-      dispatch(burnXtc({ to, amount }));
+      dispatch(burnXtc({ to, amount: amount.toString() }));
     } else {
       dispatch(
         sendToken({

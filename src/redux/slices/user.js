@@ -2,7 +2,11 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { ENABLE_NFTS } from '@/constants/nfts';
 import { getICPPrice } from '@/redux/slices/icp';
-import { formatAssets, parseAssetsAmount } from '@/utils/currencies';
+import {
+  formatAssets,
+  parseAssetsAmount,
+  parseToBigIntString,
+} from '@/utils/currencies';
 import { recursiveParseBigint } from '@/utils/objects';
 
 import {
@@ -48,10 +52,13 @@ export const sendToken = createAsyncThunk(
   async (params, { getState, dispatch }) => {
     try {
       const { to, amount, canisterId, opts, icpPrice } = params;
-      const state = getState();
-      const { height, transactionId } = await state.keyring.instance?.send(
+      const { keyring } = getState();
+      const { token } = await keyring.getTokenInfo(canisterId);
+      const { decimals } = token;
+      const parsedAmount = parseToBigIntString(amount, parseInt(decimals, 10));
+      const { height, transactionId } = await keyring.instance?.send(
         to,
-        amount,
+        parsedAmount,
         canisterId,
         opts
       );
@@ -63,8 +70,10 @@ export const sendToken = createAsyncThunk(
       }
       return {
         response: {
-          height: parseInt(height?.toString?.(), 10),
-          transactionId: parseInt(transactionId?.toString?.(), 10),
+          height: height ? parseInt(height, 10) : undefined,
+          transactionId: transactionId
+            ? parseInt(transactionId, 10)
+            : undefined,
         },
         status: TRANSACTION_STATUS.success,
       };
@@ -81,8 +90,8 @@ export const burnXtc = createAsyncThunk(
   'keyring/burnXtc',
   async (params, { getState }) => {
     try {
-      const state = getState();
-      const response = await state.keyring.instance?.burnXTC(params);
+      const { keyring } = getState();
+      const response = await keyring.instance?.burnXTC(params);
       return {
         response: recursiveParseBigint(response),
         status: TRANSACTION_STATUS.success,
