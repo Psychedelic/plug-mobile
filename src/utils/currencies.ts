@@ -1,39 +1,7 @@
 import { Asset as KeyringAsset } from 'src/interfaces/keyring';
 import { Asset } from 'src/interfaces/redux';
 
-import { USD_PER_TC } from '@/constants/assets';
-
-export const AMOUNT_ERROR = 'Error';
-
-export const TOKEN_IMAGES = {
-  XTC: 'xtc',
-  ICP: 'dfinity',
-  WICP: 'wicp',
-};
-
-export const CURRENCIES = new Map([
-  [
-    'ICP',
-    {
-      id: 'ICP',
-      name: 'ICP',
-      value: 'ICP',
-      symbol: 'ICP',
-      icon: TOKEN_IMAGES.ICP,
-    },
-  ],
-  [
-    'XTC',
-    {
-      id: 'XTC',
-      name: 'Cycles',
-      value: 'XTC',
-      icon: TOKEN_IMAGES.XTC,
-      symbol: 'XTC',
-      price: USD_PER_TC,
-    },
-  ],
-]);
+import { TOKEN_IMAGES, USD_PER_TC } from '@/constants/assets';
 
 export const formatAssetBySymbol = (
   _amount: string,
@@ -158,34 +126,4 @@ export const formatAssets = (
   });
 
   return mappedAssets;
-};
-
-export const TOKENS = {
-  ICP: {
-    symbol: 'ICP',
-    canisterId: 'ryjl3-tyaaa-aaaaa-aaaba-cai',
-    name: 'ICP',
-    decimals: 8,
-    amount: 0,
-    value: 0,
-    icon: TOKEN_IMAGES.ICP,
-  },
-  XTC: {
-    symbol: 'XTC',
-    canisterId: 'aanaa-xaaaa-aaaah-aaeiq-cai',
-    name: 'Cycles',
-    decimals: 12,
-    amount: 0,
-    value: 0,
-    icon: TOKEN_IMAGES.XTC,
-  },
-  WICP: {
-    symbol: 'WICP',
-    canisterId: 'aanaa-xaaaa-aaaah-aaeiq-cai',
-    name: 'Wrapped ICP',
-    decimals: 8,
-    amount: 0,
-    value: 0,
-    icon: TOKEN_IMAGES.WICP,
-  },
 };

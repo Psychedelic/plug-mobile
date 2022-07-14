@@ -1,7 +1,8 @@
 import { t } from 'i18next';
 
+import { TOKEN_IMAGES, TOKENS } from '@/constants/assets';
 import { ACTIVITY_STATUS } from '@/constants/business';
-import { formatAssetBySymbol, TOKEN_IMAGES, TOKENS } from '@/utils/currencies';
+import { formatAssetBySymbol } from '@/utils/currencies';
 import { parseToFloatAmount } from '@/utils/number';
 
 import { reset } from './slices/keyring';

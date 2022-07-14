@@ -9,6 +9,7 @@ import PasswordModal from '@/commonComponents/PasswordModal';
 import TextInput from '@/commonComponents/TextInput';
 import { ADDRESS_TYPES } from '@/constants/addresses';
 import { USD_PER_TC } from '@/constants/assets';
+import { TOKENS } from '@/constants/assets';
 import { NUMBER_MAX_DECIMALS } from '@/constants/business';
 import { isAndroid } from '@/constants/platform';
 import { FontStyles } from '@/constants/theme';
@@ -21,7 +22,6 @@ import {
   setTransaction,
   transferNFT,
 } from '@/redux/slices/user';
-import { TOKENS } from '@/utils/currencies';
 import {
   validateAccountId,
   validateCanisterId,

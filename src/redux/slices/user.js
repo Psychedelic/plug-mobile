@@ -2,11 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { ENABLE_NFTS } from '@/constants/nfts';
 import { getICPPrice } from '@/redux/slices/icp';
-import {
-  AMOUNT_ERROR,
-  formatAssets,
-  parseAssetsAmount,
-} from '@/utils/currencies';
+import { formatAssets, parseAssetsAmount } from '@/utils/currencies';
 import { recursiveParseBigint } from '@/utils/objects';
 
 import {
@@ -137,7 +133,7 @@ export const privateGetAssets = async (params, state, dispatch) => {
 
     const shouldUpdate =
       Object.values(assets)?.every(asset => !Number(asset.amount)) ||
-      Object.values(assets)?.some(asset => asset.amount === AMOUNT_ERROR) ||
+      Object.values(assets)?.some(asset => Number.isNaN(asset.amount)) ||
       refresh;
 
     if (shouldUpdate) {
