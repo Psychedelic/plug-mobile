@@ -45,17 +45,14 @@ export interface Transaction {
   details?: TransactionDetails;
 }
 
-export interface AssetToken {
-  symbol: string;
-  canisterId: string;
-  name: string;
-  decimals: number;
-  standard: string; // TODO: Should we add an enum here? Ask Rocky
-}
-
 export interface Asset {
-  token: AssetToken;
-  amount: string;
+  amount: number;
+  value: number;
+  icon: string;
+  symbol: string;
+  decimals: number;
+  name: string;
+  canisterId: string;
 }
 
 export interface IcpState {
