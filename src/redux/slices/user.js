@@ -35,7 +35,7 @@ const DEFAULT_STATE = {
 
 export const sign = createAsyncThunk(
   'keyring/sign',
-  async (params, { getState, dispatch }) => {
+  async (params, { getState }) => {
     const { msg } = params;
     const { keyring } = getState();
     const result = await keyring.instance.sign(msg);

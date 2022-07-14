@@ -27,21 +27,21 @@ export const DEFAULT_ASSETS = [
     name: 'ICP',
     amount: 0,
     value: 0,
-    image: TOKEN_IMAGES.ICP,
+    icon: TOKEN_IMAGES.ICP,
   },
   {
     symbol: 'XTC',
     name: 'Cycles',
     amount: 0,
     value: 0,
-    image: TOKEN_IMAGES.XTC,
+    icon: TOKEN_IMAGES.XTC,
   },
   {
     symbol: 'WICP',
     name: 'Wrapped ICP',
     amount: 0,
     value: 0,
-    image: TOKEN_IMAGES.WICP,
+    icon: TOKEN_IMAGES.WICP,
   },
 ];
 
