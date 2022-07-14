@@ -1,6 +1,6 @@
 import { Contact } from '@/screens/tabs/Profile/screens/Contacts/utils';
 
-export interface Token {
+export interface CollectionToken {
   id: string;
   index: number | string;
   canister: string;
@@ -16,7 +16,7 @@ export interface Collection {
   standar: string;
   descirption: string;
   icon: string;
-  tokens: Token[];
+  tokens: CollectionToken[];
 }
 
 export interface CanisterInfo {
@@ -45,8 +45,17 @@ export interface Transaction {
   details?: TransactionDetails;
 }
 
-export interface Assets {
-  //TODO: Add types here
+export interface AssetToken {
+  symbol: string;
+  canisterId: string;
+  name: string;
+  decimals: number;
+  standard: string; // TODO: Should we add an enum here? Ask Rocky
+}
+
+export interface Asset {
+  token: AssetToken;
+  amount: string;
 }
 
 export interface IcpState {
@@ -58,7 +67,7 @@ export interface KeyringState {
 }
 
 export interface UserState {
-  assets: Assets;
+  assets: Asset[];
   assetsError: boolean;
   assetsLoading: boolean;
   contacts: Contact[];

@@ -2,7 +2,12 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { ENABLE_NFTS } from '@/constants/nfts';
 import { getICPPrice } from '@/redux/slices/icp';
-import { formatAssets, parseAssetsAmount } from '@/utils/assets';
+import {
+  AMOUNT_ERROR,
+  formatAssets,
+  parseAssetsAmount,
+} from '@/utils/currencies';
+import { recursiveParseBigint } from '@/utils/objects';
 
 import {
   DEFAULT_ASSETS,
@@ -11,7 +16,6 @@ import {
   formatContact,
   formatContactForController,
   mapTransaction,
-  recursiveParseBigint,
   TRANSACTION_STATUS,
 } from '../utils';
 
@@ -58,7 +62,7 @@ export const sendToken = createAsyncThunk(
       if (transactionId || height) {
         dispatch(setAssetsLoading(true));
         dispatch(setTransactionsLoading(true));
-        dispatch(getAssets({ refresh: true, icpPrice }));
+        dispatch(getAssets({ refresh: true }));
         dispatch(getTransactions({ icpPrice }));
       }
       return {
@@ -110,10 +114,7 @@ export const setAssetsAndLoading = createAsyncThunk(
   'keyring/setAssetsAndTransactions',
   async (params, { dispatch }) => {
     const { assets } = params;
-    const formattedAssets = formatAssets(assets);
-    dispatch(
-      setAssets(formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS)
-    );
+    dispatch(setAssets(assets?.length > 0 ? assets : DEFAULT_ASSETS));
     dispatch(setAssetsLoading(false));
   }
 );
@@ -128,21 +129,29 @@ export const getAssets = createAsyncThunk(
 export const privateGetAssets = async (params, state, dispatch) => {
   try {
     dispatch(setAssetsError(false));
-    const { refresh, icpPrice } = params;
+    const { refresh } = params;
     const { instance } = state.keyring;
     const response = await instance?.getState();
     const { wallets, currentWalletId } = response || {};
     let assets = wallets?.[currentWalletId]?.assets || [];
-    if (
-      !assets.length ||
-      assets?.every(asset => parseFloat(asset.amount) <= 0) ||
-      refresh
-    ) {
+
+    const shouldUpdate =
+      Object.values(assets)?.every(asset => !Number(asset.amount)) ||
+      Object.values(assets)?.some(asset => asset.amount === AMOUNT_ERROR) ||
+      refresh;
+
+    if (shouldUpdate) {
       assets = await instance?.getBalance();
     } else {
       instance?.getBalance();
     }
-    return { assets, icpPrice };
+
+    const icpPrice = await dispatch(getICPPrice()).unwrap();
+    assets = parseAssetsAmount(assets).map(asset =>
+      recursiveParseBigint(asset)
+    );
+
+    return formatAssets(assets, icpPrice);
   } catch (e) {
     console.log('private getAssets error', e);
     dispatch(setAssetsError(true));
@@ -441,9 +450,8 @@ export const userSlice = createSlice({
       state.transaction = action.payload;
     },
     [getAssets.fulfilled]: (state, action) => {
-      const formattedAssets = formatAssets(action.payload || []);
-      state.assets =
-        formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS;
+      const assets = action.payload;
+      state.assets = assets?.length > 0 ? assets : DEFAULT_ASSETS;
       state.assetsLoading = false;
     },
     [getNFTs.fulfilled]: (state, action) => {

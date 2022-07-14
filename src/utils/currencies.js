@@ -1,0 +1,177 @@
+import { USD_PER_TC } from '@/constants/assets';
+
+export const AMOUNT_ERROR = 'Error';
+
+export const TOKEN_IMAGES = {
+  XTC: 'xtc',
+  ICP: 'dfinity',
+  WICP: 'wicp',
+};
+
+export const CURRENCIES = new Map([
+  [
+    'ICP',
+    {
+      id: 'ICP',
+      name: 'ICP',
+      value: 'ICP',
+      symbol: 'ICP',
+      icon: TOKEN_IMAGES.ICP,
+    },
+  ],
+  [
+    'XTC',
+    {
+      id: 'XTC',
+      name: 'Cycles',
+      value: 'XTC',
+      icon: TOKEN_IMAGES.XTC,
+      symbol: 'XTC',
+      price: USD_PER_TC,
+    },
+  ],
+]);
+
+export const formatAssetBySymbol = (_amount, symbol, icpPrice) => {
+  const amount = Number.isNaN(_amount) ? AMOUNT_ERROR : parseFloat(_amount, 10);
+  const icpValue = Number.isNaN(amount) ? AMOUNT_ERROR : amount * icpPrice;
+  const tcValue = Number.isNaN(amount) ? AMOUNT_ERROR : amount * USD_PER_TC;
+
+  return (
+    {
+      ICP: {
+        amount,
+        value: icpValue,
+        icon: TOKEN_IMAGES.ICP,
+        symbol: 'ICP',
+        decimals: 8,
+      },
+      XTC: {
+        amount,
+        value: tcValue,
+        icon: TOKEN_IMAGES.XTC,
+        symbol: 'XTC',
+        decimals: 12,
+      },
+      WTC: {
+        amount,
+        value: tcValue,
+        symbol: 'WTC',
+        decimals: 12,
+      },
+      WICP: {
+        amount,
+        value: icpValue,
+        icon: TOKEN_IMAGES.WICP,
+        symbol: 'WICP',
+        decimals: 8,
+      },
+      default: { amount },
+    }[symbol || 'default'] || { amount }
+  );
+};
+
+export const parseToFloatAmount = (amount, decimals) => {
+  let amountString = `${amount}`;
+  let prefix = '';
+
+  if (amountString[0] === '-') {
+    prefix = '-';
+    amountString = amountString.slice(1, amountString.length);
+  }
+
+  const difference = decimals - amountString.length;
+
+  if (decimals >= amountString.length) {
+    const formatedString = '0'.repeat(difference + 1) + amountString;
+
+    return `${prefix + formatedString[0]}.${formatedString.slice(
+      1,
+      formatedString.length
+    )}`;
+  }
+
+  return `${
+    prefix + amountString.slice(0, Math.abs(difference))
+  }.${amountString.slice(Math.abs(difference))}`;
+};
+
+/* Parse a string representing a floating point number to a string representing a BigNumber. */
+export const parseToBigIntString = (amount, decimalPlaces) => {
+  if (amount < 10 ** -decimalPlaces) {
+    return '0';
+  }
+  const amountString = `${amount}`.slice(0, decimalPlaces + 2);
+  let decimalsToFill = 0;
+  if (amountString.includes('e-')) {
+    const [base, exponent] = amountString.split('e-');
+    return parseToBigIntString(base, decimalPlaces - exponent);
+  }
+  const [main, decimals] = amountString.split('.');
+  decimalsToFill = Math.max(decimalPlaces - Number(decimals?.length || 0), 0);
+  const completeDecimals = (decimals || '') + '0'.repeat(decimalsToFill);
+  return `${main}${completeDecimals}`;
+};
+
+export const parseAssetsAmount = (assets = []) =>
+  assets.map(currentAsset => {
+    console.tron.log(currentAsset);
+    const { amount, token } = currentAsset;
+    const { decimals } = token;
+
+    const parsedAmount = parseToFloatAmount(
+      amount,
+      parseInt(decimals.toString(), 10)
+    );
+
+    return {
+      ...currentAsset,
+      amount: parsedAmount,
+    };
+  });
+
+export const formatAssets = (assets = [], icpPrice) => {
+  const mappedAssets = assets.map(({ amount, token }) => {
+    const { name, symbol, canisterId, image } = token;
+    const asset = formatAssetBySymbol(amount, symbol, icpPrice);
+    return {
+      image,
+      ...asset,
+      name,
+      symbol,
+      canisterId,
+    };
+  });
+
+  return mappedAssets;
+};
+
+export const TOKENS = {
+  ICP: {
+    symbol: 'ICP',
+    canisterId: 'ryjl3-tyaaa-aaaaa-aaaba-cai',
+    name: 'ICP',
+    decimals: 8,
+    amount: 0,
+    value: 0,
+    image: TOKEN_IMAGES.ICP,
+  },
+  XTC: {
+    symbol: 'XTC',
+    canisterId: 'aanaa-xaaaa-aaaah-aaeiq-cai',
+    name: 'Cycles',
+    decimals: 12,
+    amount: 0,
+    value: 0,
+    image: TOKEN_IMAGES.XTC,
+  },
+  WICP: {
+    symbol: 'WICP',
+    canisterId: 'aanaa-xaaaa-aaaah-aaeiq-cai',
+    name: 'Wrapped ICP',
+    decimals: 8,
+    amount: 0,
+    value: 0,
+    image: TOKEN_IMAGES.WICP,
+  },
+};

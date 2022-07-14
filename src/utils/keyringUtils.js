@@ -7,5 +7,5 @@ export const getPrivateAssetsAndTransactions = async (
 ) =>
   Promise.all([
     privateGetTransactions({ icpPrice }, state, dispatch),
-    privateGetAssets({ refresh: true, icpPrice }, state, dispatch),
+    privateGetAssets({ refresh: true }, state, dispatch),
   ]);

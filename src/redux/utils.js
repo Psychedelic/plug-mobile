@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 
 import { ACTIVITY_STATUS } from '@/constants/business';
-import { formatAssetBySymbol, TOKEN_IMAGES, TOKENS } from '@/utils/assets';
+import { formatAssetBySymbol, TOKEN_IMAGES, TOKENS } from '@/utils/currencies';
 import { parseToFloatAmount } from '@/utils/number';
 
 import { reset } from './slices/keyring';
@@ -26,21 +26,21 @@ export const DEFAULT_ASSETS = [
     name: 'ICP',
     amount: 0,
     value: 0,
-    icon: 'dfinity',
+    image: TOKEN_IMAGES.ICP,
   },
   {
     symbol: 'XTC',
     name: 'Cycles',
     amount: 0,
     value: 0,
-    icon: 'xtc',
+    image: TOKEN_IMAGES.XTC,
   },
   {
     symbol: 'WICP',
     name: 'Wrapped ICP',
     amount: 0,
     value: 0,
-    icon: 'wicp',
+    image: TOKEN_IMAGES.WICP,
   },
 ];
 
@@ -55,23 +55,6 @@ export const TRANSACTION_STATUS = {
   error: 'error',
 };
 
-export const recursiveParseBigint = obj =>
-  Object.entries(obj).reduce(
-    (acum, [key, val]) => {
-      if (val instanceof Object) {
-        const res = Array.isArray(val)
-          ? val.map(el => recursiveParseBigint(el))
-          : recursiveParseBigint(val);
-        return { ...acum, [key]: res };
-      }
-      if (typeof val === 'bigint') {
-        return { ...acum, [key]: parseInt(val.toString(), 10) };
-      }
-      return { ...acum, [key]: val };
-    },
-    { ...obj }
-  );
-
 export const resetStores = dispatch => {
   dispatch(reset());
   dispatch(setCollections([]));
@@ -84,11 +67,7 @@ export const getNewAccountData = async (dispatch, icpPrice, state) => {
   dispatch(setContacts([]));
   dispatch(setContactsLoading(true));
   dispatch(getNFTs());
-  const assets = await privateGetAssets(
-    { refresh: true, icpPrice },
-    state,
-    dispatch
-  );
+  const assets = await privateGetAssets({ refresh: true }, state, dispatch);
   dispatch(setAssetsAndLoading({ assets }));
   dispatch(setTransactionsLoading(true));
   dispatch(getTransactions({ icpPrice }));

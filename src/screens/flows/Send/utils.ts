@@ -1,5 +1,5 @@
 import { DEFAULT_FEE, XTC_FEE } from '@/constants/addresses';
-import { USD_PER_TC } from '@/utils/assets';
+import { USD_PER_TC } from '@/constants/assets';
 
 export const getAvailableAmount = (
   amount: number,

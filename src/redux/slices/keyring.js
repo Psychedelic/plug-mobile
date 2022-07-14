@@ -149,7 +149,7 @@ export const login = createAsyncThunk(
         dispatch(setCurrentWallet(wallets[currentWalletId]));
         dispatch(setWallets(wallets));
         dispatch(setAssetsLoading(true));
-        dispatch(getAssets({ refresh: true, icpPrice }));
+        dispatch(getAssets({ refresh: true }));
         dispatch(setTransactionsLoading(true));
         dispatch(getTransactions({ icpPrice }));
         dispatch(getNFTs());
