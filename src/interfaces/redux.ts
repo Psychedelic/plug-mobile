@@ -48,7 +48,7 @@ export interface Transaction {
 export interface Asset {
   amount: number;
   value: number;
-  icon: string;
+  icon?: string;
   symbol: string;
   decimals: number;
   name: string;

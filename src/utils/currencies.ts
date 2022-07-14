@@ -1,3 +1,6 @@
+import { Asset as KeyringAsset } from 'src/interfaces/keyring';
+import { Asset } from 'src/interfaces/redux';
+
 import { USD_PER_TC } from '@/constants/assets';
 
 export const AMOUNT_ERROR = 'Error';
@@ -32,10 +35,14 @@ export const CURRENCIES = new Map([
   ],
 ]);
 
-export const formatAssetBySymbol = (_amount, symbol, icpPrice) => {
-  const amount = Number.isNaN(_amount) ? AMOUNT_ERROR : parseFloat(_amount, 10);
-  const icpValue = Number.isNaN(amount) ? AMOUNT_ERROR : amount * icpPrice;
-  const tcValue = Number.isNaN(amount) ? AMOUNT_ERROR : amount * USD_PER_TC;
+export const formatAssetBySymbol = (
+  _amount: string,
+  symbol: string,
+  icpPrice: number
+): Asset | { amount: number; value: number } => {
+  const amount = Number.isNaN(_amount) ? NaN : parseFloat(_amount);
+  const icpValue = Number.isNaN(amount) ? NaN : amount * icpPrice;
+  const tcValue = Number.isNaN(amount) ? NaN : amount * USD_PER_TC;
 
   return (
     {
@@ -56,6 +63,7 @@ export const formatAssetBySymbol = (_amount, symbol, icpPrice) => {
       WTC: {
         amount,
         value: tcValue,
+        icon: undefined, //TODO: should we add a default icon?
         symbol: 'WTC',
         decimals: 12,
       },
@@ -66,12 +74,11 @@ export const formatAssetBySymbol = (_amount, symbol, icpPrice) => {
         symbol: 'WICP',
         decimals: 8,
       },
-      default: { amount },
-    }[symbol || 'default'] || { amount }
+    }[symbol] || { amount, value: 0 } // What should we do if we don't know the value?
   );
 };
 
-export const parseToFloatAmount = (amount, decimals) => {
+export const parseToFloatAmount = (amount: string, decimals: number) => {
   let amountString = `${amount}`;
   let prefix = '';
 
@@ -97,7 +104,10 @@ export const parseToFloatAmount = (amount, decimals) => {
 };
 
 /* Parse a string representing a floating point number to a string representing a BigNumber. */
-export const parseToBigIntString = (amount, decimalPlaces) => {
+export const parseToBigIntString = (
+  amount: number,
+  decimalPlaces: number
+): string => {
   if (amount < 10 ** -decimalPlaces) {
     return '0';
   }
@@ -105,7 +115,7 @@ export const parseToBigIntString = (amount, decimalPlaces) => {
   let decimalsToFill = 0;
   if (amountString.includes('e-')) {
     const [base, exponent] = amountString.split('e-');
-    return parseToBigIntString(base, decimalPlaces - exponent);
+    return parseToBigIntString(Number(base), decimalPlaces - Number(exponent));
   }
   const [main, decimals] = amountString.split('.');
   decimalsToFill = Math.max(decimalPlaces - Number(decimals?.length || 0), 0);
@@ -113,9 +123,10 @@ export const parseToBigIntString = (amount, decimalPlaces) => {
   return `${main}${completeDecimals}`;
 };
 
-export const parseAssetsAmount = (assets = []) =>
+export const parseAssetsAmount = (
+  assets: KeyringAsset[] = []
+): KeyringAsset[] =>
   assets.map(currentAsset => {
-    console.tron.log(currentAsset);
     const { amount, token } = currentAsset;
     const { decimals } = token;
 
@@ -130,15 +141,19 @@ export const parseAssetsAmount = (assets = []) =>
     };
   });
 
-export const formatAssets = (assets = [], icpPrice) => {
+export const formatAssets = (
+  assets: KeyringAsset[] = [],
+  icpPrice: number
+): Asset[] => {
   const mappedAssets = assets.map(({ amount, token }) => {
-    const { name, symbol, canisterId } = token;
+    const { name, symbol, canisterId, decimals } = token;
     const asset = formatAssetBySymbol(amount, symbol, icpPrice);
     return {
-      ...asset,
       name,
       symbol,
       canisterId,
+      decimals,
+      ...asset,
     };
   });
 
@@ -153,7 +168,7 @@ export const TOKENS = {
     decimals: 8,
     amount: 0,
     value: 0,
-    image: TOKEN_IMAGES.ICP,
+    icon: TOKEN_IMAGES.ICP,
   },
   XTC: {
     symbol: 'XTC',
@@ -162,7 +177,7 @@ export const TOKENS = {
     decimals: 12,
     amount: 0,
     value: 0,
-    image: TOKEN_IMAGES.XTC,
+    icon: TOKEN_IMAGES.XTC,
   },
   WICP: {
     symbol: 'WICP',
@@ -171,6 +186,6 @@ export const TOKENS = {
     decimals: 8,
     amount: 0,
     value: 0,
-    image: TOKEN_IMAGES.WICP,
+    icon: TOKEN_IMAGES.WICP,
   },
 };
