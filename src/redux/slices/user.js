@@ -2,16 +2,12 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { ENABLE_NFTS } from '@/constants/nfts';
 import { getICPPrice } from '@/redux/slices/icp';
-<<<<<<< HEAD
 import {
   formatAssets,
   parseAssetsAmount,
   parseToBigIntString,
 } from '@/utils/currencies';
 import { recursiveParseBigint } from '@/utils/objects';
-=======
-import { formatAssets, parseAssetsAmount } from '@/utils/assets';
->>>>>>> wallet-connect
 
 import {
   DEFAULT_ASSETS,
@@ -41,11 +37,7 @@ const DEFAULT_STATE = {
 
 export const sign = createAsyncThunk(
   'keyring/sign',
-<<<<<<< HEAD
   async (params, { getState }) => {
-=======
-  async (params, { getState, dispatch }) => {
->>>>>>> wallet-connect
     const { msg } = params;
     const { keyring } = getState();
     const result = await keyring.instance.sign(msg);
@@ -140,7 +132,7 @@ export const getBalance = createAsyncThunk(
 export const asyncGetBalance = async (params, state, dispatch) => {
   try {
     dispatch(setAssetsError(false));
-    const { refresh = true, subaccount } = params;
+    const { refresh = true, subaccount } = params || {};
     const { instance } = state.keyring;
     const response = await instance?.getState();
     const { wallets, currentWalletId } = response || {};
@@ -152,9 +144,9 @@ export const asyncGetBalance = async (params, state, dispatch) => {
       refresh;
 
     if (shouldUpdate) {
-      assets = await instance?.getBalance(subaccount);
+      assets = await instance?.getBalances(subaccount);
     } else {
-      instance?.getBalance(subaccount);
+      instance?.getBalances(subaccount);
     }
 
     const icpPrice = await dispatch(getICPPrice()).unwrap();

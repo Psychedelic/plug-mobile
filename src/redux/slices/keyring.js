@@ -1,4 +1,4 @@
-import PlugController from '@psychedelic/plug-controller';
+import PlugController from '@psychedelic/plug-controller-beta';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import RNCryptoJS from 'react-native-crypto-js';
 import { fetch } from 'react-native-fetch-api';
