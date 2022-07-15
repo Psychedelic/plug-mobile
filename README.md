@@ -108,10 +108,10 @@ $ rustup target add i686-linux-android
 
 - Set in `local.properties` the NDK path like this:
   `ndk.dir=/Users/your-user-name/Library/Android/sdk/ndk-bundle` or like this `ndk.dir=/Users/your-user-name/Library/Android/sdk/ndk/22.1.7171670`.
-- Set `$NDK_HOME` in enviroment with you path:
+- Set `$ANDROID_NDK_HOME` in enviroment with you path:
 
 ```bash
-export NDK_HOME="/Users/your-user-name/Library/Android/sdk/ndk/22.1.7171670"
+export ANDROID_NDK_HOME="/Users/your-user-name/Library/Android/sdk/ndk/22.1.7171670"
 ```
 
 - Run `sh ./create-ndk-standalone.sh` on project's root to create the `config.toml` file.

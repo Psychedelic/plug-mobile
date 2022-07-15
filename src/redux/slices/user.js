@@ -2,12 +2,16 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { ENABLE_NFTS } from '@/constants/nfts';
 import { getICPPrice } from '@/redux/slices/icp';
+<<<<<<< HEAD
 import {
   formatAssets,
   parseAssetsAmount,
   parseToBigIntString,
 } from '@/utils/currencies';
 import { recursiveParseBigint } from '@/utils/objects';
+=======
+import { formatAssets, parseAssetsAmount } from '@/utils/assets';
+>>>>>>> wallet-connect
 
 import {
   DEFAULT_ASSETS,
@@ -33,13 +37,15 @@ const DEFAULT_STATE = {
   collectionsError: false,
   usingBiometrics: false,
   biometricsAvailable: false,
-  scrollOnProfile: false,
-  scrollOnNFTs: false,
 };
 
 export const sign = createAsyncThunk(
   'keyring/sign',
+<<<<<<< HEAD
   async (params, { getState }) => {
+=======
+  async (params, { getState, dispatch }) => {
+>>>>>>> wallet-connect
     const { msg } = params;
     const { keyring } = getState();
     const result = await keyring.instance.sign(msg);
@@ -383,12 +389,6 @@ export const userSlice = createSlice({
     setAssets: (state, action) => {
       state.assets = action.payload;
     },
-    setScrollOnProfile: (state, action) => {
-      state.scrollOnProfile = action.payload;
-    },
-    setScrollOnNFTs: (state, action) => {
-      state.scrollOnNFTs = action.payload;
-    },
     setAssetsError: (state, action) => {
       state.assetsError = action.payload;
     },
@@ -464,8 +464,6 @@ export const userSlice = createSlice({
 });
 
 export const {
-  setScrollOnNFTs,
-  setScrollOnProfile,
   setTransactionsError,
   setCollectionsError,
   setAssetsError,

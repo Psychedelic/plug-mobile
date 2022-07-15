@@ -38,11 +38,12 @@ const Navigator = ({ routingInstrumentation }, navigationRef) => {
     const initialLink = await Linking.getInitialURL();
 
     if (nextAppState === 'background') {
+      clearTimeout(timeoutId.current);
       timeoutId.current = setTimeout(handleLockState, 120000);
     }
 
     if (nextAppState === 'active' && timeoutId) {
-      clearTimeout(timeoutId);
+      clearTimeout(timeoutId.current);
       timeoutId.current = null;
     }
 

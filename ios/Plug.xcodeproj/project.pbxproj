@@ -581,7 +581,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = co.psychedelic.plug;
 				PRODUCT_NAME = Plug;
-				PROVISIONING_PROFILE_SPECIFIER = PlugMobileDev.co.psychedelic.plug;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Plug-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -624,7 +624,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = co.psychedelic.plug;
 				PRODUCT_NAME = Plug;
-				PROVISIONING_PROFILE_SPECIFIER = PlugMobileDev.co.psychedelic.plug;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Plug-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

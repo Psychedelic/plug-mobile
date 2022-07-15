@@ -3,6 +3,8 @@ import { StyleSheet } from 'react-native';
 import { pixelRatioScale } from '@/constants/platform';
 import { Colors } from '@/constants/theme';
 
+const commonMargin = 20;
+
 export default StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -14,10 +16,10 @@ export default StyleSheet.create({
     flex: 1,
   },
   input: {
-    width: '84%',
+    width: '100%',
   },
   plugIcon: {
-    height: pixelRatioScale(50),
+    height: pixelRatioScale(30),
     resizeMode: 'contain',
   },
   title: {
@@ -26,14 +28,14 @@ export default StyleSheet.create({
     color: Colors.White.Primary,
     fontSize: 26,
     fontWeight: 'bold',
-    marginVertical: 27,
+    paddingVertical: commonMargin,
   },
   componentMargin: {
-    marginTop: 27,
+    marginTop: commonMargin,
   },
   buttonMargin: {
-    marginTop: 27,
-    minWidth: '84%',
+    marginTop: commonMargin,
+    minWidth: '100%',
   },
   errorText: {
     marginTop: 5,
