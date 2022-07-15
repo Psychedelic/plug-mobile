@@ -1,3 +1,5 @@
+//TODO Should this be in the controller package?
+
 export interface Token {
   symbol: string;
   canisterId: string;
