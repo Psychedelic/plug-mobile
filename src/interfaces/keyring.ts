@@ -1,14 +1,19 @@
 //TODO Should this be in the controller package?
 
-export interface Token {
+export type Standard = 'DIP20' | 'XTC' | 'WICP' | 'EXT' | 'ICP';
+
+export interface StandardToken {
+  name: string;
   symbol: string;
   canisterId: string;
-  name: string;
+  standard: Standard;
   decimals: number;
-  standard: string; // TODO: Should we add an enum here? Ask Rocky
+  color?: string;
+  image?: string;
 }
 
-export interface Asset {
-  token: Token;
+export interface TokenBalance {
   amount: string;
+  token: StandardToken;
+  error?: string;
 }

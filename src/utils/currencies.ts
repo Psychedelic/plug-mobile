@@ -1,4 +1,4 @@
-import { Asset as KeyringAsset } from 'src/interfaces/keyring';
+import { TokenBalance } from 'src/interfaces/keyring';
 import { Asset } from 'src/interfaces/redux';
 
 import { TOKEN_IMAGES, USD_PER_TC } from '@/constants/assets';
@@ -92,8 +92,8 @@ export const parseToBigIntString = (
 };
 
 export const parseAssetsAmount = (
-  assets: KeyringAsset[] = []
-): KeyringAsset[] =>
+  assets: TokenBalance[] = []
+): TokenBalance[] =>
   assets.map(currentAsset => {
     const { amount, token } = currentAsset;
     const { decimals } = token;
@@ -110,7 +110,7 @@ export const parseAssetsAmount = (
   });
 
 export const formatAssets = (
-  assets: KeyringAsset[] = [],
+  assets: TokenBalance[] = [],
   icpPrice: number
 ): Asset[] => {
   const mappedAssets = assets.map(({ amount, token }) => {
