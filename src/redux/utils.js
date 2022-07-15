@@ -7,10 +7,10 @@ import { parseToFloatAmount } from '@/utils/number';
 
 import { reset } from './slices/keyring';
 import {
+  asyncGetBalance,
   getContacts,
   getNFTs,
   getTransactions,
-  privateGetAssets,
   setAssets,
   setAssetsAndLoading,
   setAssetsLoading,
@@ -68,7 +68,7 @@ export const getNewAccountData = async (dispatch, icpPrice, state) => {
   dispatch(setContacts([]));
   dispatch(setContactsLoading(true));
   dispatch(getNFTs());
-  const assets = await privateGetAssets({ refresh: true }, state, dispatch);
+  const assets = await asyncGetBalance(undefined, state, dispatch);
   dispatch(setAssetsAndLoading({ assets }));
   dispatch(setTransactionsLoading(true));
   dispatch(getTransactions({ icpPrice }));

@@ -7,7 +7,7 @@ import { getPrivateAssetsAndTransactions } from '../../utils/keyringUtils';
 import { keyringStorage } from '../store';
 import { getNewAccountData, resetStores } from '../utils';
 import {
-  getAssets,
+  getBalance,
   getContacts,
   getNFTs,
   getTransactions,
@@ -149,7 +149,7 @@ export const login = createAsyncThunk(
         dispatch(setCurrentWallet(wallets[currentWalletId]));
         dispatch(setWallets(wallets));
         dispatch(setAssetsLoading(true));
-        dispatch(getAssets({ refresh: true }));
+        dispatch(getBalance());
         dispatch(setTransactionsLoading(true));
         dispatch(getTransactions({ icpPrice }));
         dispatch(getNFTs());

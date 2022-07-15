@@ -8,7 +8,7 @@ import TokenItem from '@/components/tokens/TokenItem';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
 import { Container, Row, Separator } from '@/layout';
-import { getAssets, setAssetsLoading } from '@/redux/slices/user';
+import { getBalance, setAssetsLoading } from '@/redux/slices/user';
 import Send from '@/screens/flows/Send';
 
 import WalletHeader from '../components/WalletHeader';
@@ -35,7 +35,7 @@ function Tokens() {
   const onRefresh = () => {
     setRefresing(true);
     dispatch(setAssetsLoading(true));
-    dispatch(getAssets({ refresh: true }));
+    dispatch(getBalance());
   };
 
   const handleRefresh = () => {

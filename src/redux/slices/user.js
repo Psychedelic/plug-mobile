@@ -65,7 +65,7 @@ export const sendToken = createAsyncThunk(
       if (transactionId || height) {
         dispatch(setAssetsLoading(true));
         dispatch(setTransactionsLoading(true));
-        dispatch(getAssets({ refresh: true }));
+        dispatch(getBalance());
         dispatch(getTransactions({ icpPrice }));
       }
       return {
@@ -124,17 +124,17 @@ export const setAssetsAndLoading = createAsyncThunk(
   }
 );
 
-export const getAssets = createAsyncThunk(
-  'keyring/getAssets',
+export const getBalance = createAsyncThunk(
+  'keyring/getBalance',
   async (params, { getState, dispatch }) => {
-    return privateGetAssets(params, getState(), dispatch);
+    return asyncGetBalance(params, getState(), dispatch);
   }
 );
 
-export const privateGetAssets = async (params, state, dispatch) => {
+export const asyncGetBalance = async (params, state, dispatch) => {
   try {
     dispatch(setAssetsError(false));
-    const { refresh } = params;
+    const { refresh = true, subaccount } = params;
     const { instance } = state.keyring;
     const response = await instance?.getState();
     const { wallets, currentWalletId } = response || {};
@@ -146,9 +146,9 @@ export const privateGetAssets = async (params, state, dispatch) => {
       refresh;
 
     if (shouldUpdate) {
-      assets = await instance?.getBalance();
+      assets = await instance?.getBalance(subaccount);
     } else {
-      instance?.getBalance();
+      instance?.getBalance(subaccount);
     }
 
     const icpPrice = await dispatch(getICPPrice()).unwrap();
@@ -158,30 +158,7 @@ export const privateGetAssets = async (params, state, dispatch) => {
 
     return formatAssets(assets, icpPrice);
   } catch (e) {
-    console.log('private getAssets error', e);
-    dispatch(setAssetsError(true));
-  }
-};
-
-export const getBalance = createAsyncThunk(
-  'keyring/getBalance',
-  async (params, { getState, dispatch }) => {
-    return privateGetBalance(params, getState(), dispatch);
-  }
-);
-
-export const privateGetBalance = async (params, state, dispatch) => {
-  try {
-    const { subaccount } = params;
-    const { instance } = state.keyring;
-    const icpPrice = await dispatch(getICPPrice()).unwrap();
-
-    const assets = await instance?.getBalance(subaccount);
-    const parsedAssets = parseAssetsAmount(assets);
-
-    return formatAssets(parsedAssets, icpPrice);
-  } catch (e) {
-    console.log('privateGetBalance error', e);
+    console.log('asyncGetBalance error', e);
     dispatch(setAssetsError(true));
   }
 };
@@ -454,7 +431,7 @@ export const userSlice = createSlice({
     [burnXtc.fulfilled]: (state, action) => {
       state.transaction = action.payload;
     },
-    [getAssets.fulfilled]: (state, action) => {
+    [getBalance.fulfilled]: (state, action) => {
       const assets = action.payload;
       state.assets = assets?.length > 0 ? assets : DEFAULT_ASSETS;
       state.assetsLoading = false;
