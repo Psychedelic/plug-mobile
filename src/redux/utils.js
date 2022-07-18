@@ -163,7 +163,7 @@ export const mapTransaction = (icpPrice, state) => trx => {
 export const formatContact = contact => ({
   image: contact.emoji[0],
   name: contact.name,
-  id: contact.value?.PrincipalId,
+  id: contact.value?.PrincipalId?.toText(), //TODO Check this logic. What happens if principal doesnt come from the contact?
 });
 
 export const formatContactForController = contact => ({
