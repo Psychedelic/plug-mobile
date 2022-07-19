@@ -4,20 +4,18 @@ import React, { forwardRef, memo, useEffect, useRef } from 'react';
 import { AppState, Linking, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Host } from 'react-native-portalize';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { Colors } from '@/constants/theme';
 import SwipeNavigator from '@/navigation/navigators/SwipeNavigator';
-import { setUnlocked } from '@/redux/slices/keyring';
 import BackupSeedPhrase from '@/screens/auth/BackupSeedPhrase';
 import CreatePassword from '@/screens/auth/CreatePassword';
 import ImportSeedPhrase from '@/screens/auth/ImportSeedPhrase';
 import Login from '@/screens/auth/Login';
 import Welcome from '@/screens/auth/Welcome';
 import ConnectionError from '@/screens/error/ConnectionError';
-import WalletConnect from '@/screens/flows/WalletConnect';
-import WalletConnectScreens from '@/screens/flows/WalletConnect/screens';
-import WalletConnectWaitingBridge from '@/screens/flows/WalletConnect/WaitingBridge';
+import WCFlows from '@/screens/flows/WalletConnect/screens/Flows';
+import WCInitialConnection from '@/screens/flows/WalletConnect/screens/InitialConnection';
 import { handleDeepLink } from '@/utils/deepLink';
 
 import Routes from './Routes';
@@ -27,10 +25,9 @@ const Stack = createStackNavigator();
 const Navigator = ({ routingInstrumentation }, navigationRef) => {
   const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
   const timeoutId = useRef(null);
-  const dispatch = useDispatch();
 
   const handleLockState = () => {
-    dispatch(setUnlocked(false));
+    // dispatch(setUnlocked(false));
     timeoutId.current = null;
   };
 
@@ -120,16 +117,12 @@ const Navigator = ({ routingInstrumentation }, navigationRef) => {
               component={ConnectionError}
             />
             <Stack.Screen
-              name={Routes.WALLET_CONNECT_APPROVAL_SHEET}
-              component={WalletConnect}
+              name={Routes.WALLET_CONNECT_INITAL_CONNECTION}
+              component={WCInitialConnection}
             />
             <Stack.Screen
-              name={Routes.WALLET_CONNECT_SCREENS}
-              component={WalletConnectScreens}
-            />
-            <Stack.Screen
-              name={Routes.WALLET_CONNECT_WAITING_BRIDGE}
-              component={WalletConnectWaitingBridge}
+              name={Routes.WALLET_CONNECT_FLOWS}
+              component={WCFlows}
             />
           </Stack.Navigator>
         </Host>

@@ -88,7 +88,8 @@ export const sessionRequestHandler = async (
 
   await dispatch(setSession({ uri, sessionInfo: { meta } }));
 
-  Navigation.handleAction(Routes.WALLET_CONNECT_APPROVAL_SHEET, {
+  // Aca te manda a la del inicio
+  Navigation.handleAction(Routes.WALLET_CONNECT_INITAL_CONNECTION, {
     uri,
     meta,
   });

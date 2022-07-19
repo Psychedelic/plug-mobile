@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 
 import Touchable from '@/commonComponents/Touchable';
 import UserIcon from '@/commonComponents/UserIcon';
@@ -12,11 +12,13 @@ import styles from './styles';
 
 function CommonItem({
   image,
+  imageUri,
   name,
   id,
   style,
   onPress,
   onLongPress,
+  actionIconName = 'threeDots',
   showActions = true,
 }) {
   return (
@@ -26,7 +28,11 @@ function CommonItem({
         onPress={onPress}
         onLongPress={onLongPress}>
         <View style={styles.root}>
-          <UserIcon icon={image} disabled />
+          {imageUri ? (
+            <Image source={{ uri: imageUri }} style={styles.image} />
+          ) : (
+            <UserIcon icon={image} disabled />
+          )}
           <View style={styles.leftContainer}>
             <Text style={FontStyles.Normal}>{name}</Text>
             <Text style={FontStyles.NormalGray}>{shortAddress(id)}</Text>
@@ -37,7 +43,7 @@ function CommonItem({
                 onPress={onLongPress}
                 scale={animationScales.large}
                 hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}>
-                <Icon name="threeDots" />
+                <Icon name={actionIconName} />
               </Touchable>
             </View>
           )}

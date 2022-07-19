@@ -28,6 +28,7 @@ const translations = {
     revealPhrase: 'Reveal Seed Phrase',
     available: 'Available',
     max: 'Max',
+    questionMark: '?',
   },
   welcome: {
     title: 'Welcome to Plug',
@@ -197,6 +198,15 @@ const translations = {
       buttonTitle: '  Join Discord',
       buttonImage: 'discord',
     },
+  },
+  walletConnect: {
+    changeWallet: 'Change Wallet',
+    decline: 'Decline',
+    allow: 'Allow',
+    connect: 'Connect',
+    connectTitle: 'Connect your Wallet',
+    connectTo: 'Would you like to connect your wallet to ',
+    cannisterPermission: 'wants pemission to use these canisters:',
   },
 };
 

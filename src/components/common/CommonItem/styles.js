@@ -15,4 +15,9 @@ export default StyleSheet.create({
     marginLeft: 'auto',
     justifyContent: 'center',
   },
+  image: {
+    width: 40,
+    height: 40,
+    borderRadius: 25,
+  },
 });

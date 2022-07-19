@@ -121,12 +121,12 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
           );
 
           walletConnector?.on('session_request', (error, payload) => {
+            console.log('session_request', error, payload);
             const {
-              bridgeTimeout: { timeout, onBridgeContact },
+              bridgeTimeout: { timeout },
             } = getState().walletconnect;
             if (timeout) {
               clearTimeout(timeout);
-              onBridgeContact();
               dispatch(updateBridgeTimeout(DEFAULT_STATE.bridgeTimeout));
             }
             sessionRequestHandler(
@@ -152,12 +152,12 @@ const listenOnNewMessages = createAsyncThunk(
       getState
     );
     walletConnector.on('call_request', async (error, payload) => {
+      console.log('call_request', error, payload);
       const {
-        bridgeTimeout: { timeout, onBridgeContact },
+        bridgeTimeout: { timeout },
       } = getState().walletconnect;
       if (timeout) {
         clearTimeout(timeout);
-        onBridgeContact();
         dispatch(updateBridgeTimeout(DEFAULT_STATE.bridgeTimeout));
       }
       if (error) {
@@ -395,8 +395,9 @@ export const setSession = createAsyncThunk(
 
 export const getSession = createAsyncThunk(
   'walletconnect/getSession',
-  ({ uri }, { dispatch, getState }) => {
+  ({ uri }, { getState }) => {
     const { sessions } = getState().walletconnect;
+    console.tron.log('Sessions: ', sessions);
     return sessions[uri];
   }
 );

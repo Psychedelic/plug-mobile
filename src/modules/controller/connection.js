@@ -195,18 +195,8 @@ const ConnectionModule = (dispatch, getState) => {
         const { executor: _executor, ...requestWithoutExecutor } = request;
 
         if (isValidWhitelist) {
-          Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
-            type: 'requestConnect',
-            openAutomatically: true,
-            request: requestWithoutExecutor,
-            metadata,
-            args: { whitelist: whitelistWithInfo, domainUrl },
-            handleApproveArgs,
-            handleDeclineArgs,
-          });
-        } else {
-          // TODO: Show connectScreen
-          Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
+          // Aca manda a la pantalla de Cannister List
+          Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
             type: 'requestConnect',
             openAutomatically: true,
             request: requestWithoutExecutor,
@@ -285,7 +275,7 @@ const ConnectionModule = (dispatch, getState) => {
             })
           );
         } else {
-          Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
+          Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
             type: 'requestConnect',
             openAutomatically: true,
             request: requestWithoutExecutor,

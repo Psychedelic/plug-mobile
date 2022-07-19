@@ -25,6 +25,7 @@ import PasswordEyeClosedIcon from './svg/PasswordEyeClosedIcon';
 import PasswordEyeIcon from './svg/PasswordEyeIcon';
 import PlusIcon from './svg/PlusIcon';
 import ProfileIcon from './svg/ProfileIcon';
+import RedirectArrowIcon from './svg/RedirectArrowIcon';
 import SendIcon from './svg/SendIcon';
 import SwapArrowsIcon from './svg/SwapArrowsIcon';
 import SwapIcon from './svg/SwapIcon';
@@ -63,6 +64,7 @@ export const IconTypes = (type: string) =>
     chevronRight: ChevronRightIcon,
     mintActivity: MintActivityIcon,
     passwordEyeIcon: PasswordEyeIcon,
+    redirectArrow: RedirectArrowIcon,
     groupedActions: GroupedActionsIcon,
     activityReceive: ActivityReceiveIcon,
     arrowDownAccount: ArrowDownAccountIcon,

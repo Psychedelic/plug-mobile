@@ -20,11 +20,11 @@ const SwipeNavigator = ({ route }) => {
   const { deepLink } = useDeepLink();
   const navigation = useNavigation();
 
-  useEffect(() => {
-    if (deepLink) {
-      navigation.navigate(Routes.WALLET_CONNECT);
-    }
-  }, [deepLink]);
+  // useEffect(() => {
+  //   if (deepLink) {
+  //     navigation.navigate(Routes.WALLET_CONNECT);
+  //   }
+  // }, [deepLink]);
 
   const goToLogin = () => {
     navigation.reset({

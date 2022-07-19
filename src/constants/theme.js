@@ -36,6 +36,7 @@ export const Colors = {
     Teal: '#05DCC8',
   },
   Red: '#FF453A',
+  Transparent: '#ffffff00',
 };
 
 export const Rainbow = {

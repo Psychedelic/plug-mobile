@@ -12,7 +12,10 @@ import Navigation from '@/utils/navigation';
 function handleWalletConnect(uri) {
   const { dispatch } = store;
   dispatch(walletConnectSetPendingRedirect());
-  Navigation.handleAction(Routes.WALLET_CONNECT_WAITING_BRIDGE);
+  Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
+    loading: true,
+  });
+
   const { query } = new URL(uri);
   if (uri && query) {
     dispatch(

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-import styles from '../../styles';
+import styles from '../../../InitialConnection/styles';
 
 function RequestTransfer({ request, args, metadata }) {
   const { dappUrl, dappName } = request;

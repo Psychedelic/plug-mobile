@@ -48,7 +48,7 @@ const TransactionModule = (dispatch, getState) => {
         const handleDeclineArgs = [{ ...args, approve: false }];
         const { executor: _executor, ...requestWithoutExecutor } = request;
 
-        Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
+        Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
           type: 'transfer',
           openAutomatically: true,
           request: requestWithoutExecutor,
@@ -113,7 +113,7 @@ const TransactionModule = (dispatch, getState) => {
         const handleDeclineArgs = [{ ...args, approve: false }];
         const { executor: _executor, ...requestWithoutExecutor } = request;
 
-        Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
+        Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
           type: 'transfer',
           openAutomatically: true,
           request: requestWithoutExecutor,
@@ -182,7 +182,7 @@ const TransactionModule = (dispatch, getState) => {
         const handleDeclineArgs = [{ ...args, approve: false }];
         const { executor: _executor, ...requestWithoutExecutor } = request;
 
-        Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
+        Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
           type: 'burnXTC',
           openAutomatically: true,
           request: requestWithoutExecutor,
@@ -249,7 +249,7 @@ const TransactionModule = (dispatch, getState) => {
         const handleDeclineArgs = [{ transactions, approve: false }];
         const { executor: _executor, ...requestWithoutExecutor } = request;
 
-        Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
+        Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
           type: 'batchTransactions',
           openAutomatically: true,
           request: requestWithoutExecutor,
@@ -330,7 +330,7 @@ const TransactionModule = (dispatch, getState) => {
         const handleDeclineArgs = [{ requestInfo, approve: false }];
         const { executor: _executor, ...requestWithoutExecutor } = request;
 
-        Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
+        Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
           type: 'requestCall',
           openAutomatically: true,
           request: requestWithoutExecutor,
