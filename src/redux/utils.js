@@ -132,8 +132,7 @@ const getTransactionSymbol = details => {
   );
 };
 
-const getTransactionType = (transaction, isOwnTx) => {
-  const type = transaction?.type;
+const getTransactionType = (type, isOwnTx) => {
   if (!type) {
     return '';
   }
@@ -151,16 +150,16 @@ export const mapTransaction = (icpPrice, state) => trx => {
 
   let parsedTransaction = recursiveParseBigint(parseTransaction(trx));
   const { details, hash, caller, timestamp } = parsedTransaction || {};
+  const isOwnTx = [principal, accountId].includes(caller);
 
   const symbol = getTransactionSymbol(details);
-
   const asset = formatAssetBySymbol(details?.amount, symbol, icpPrice);
-
-  const isOwnTx = [principal, accountId].includes(trx?.caller);
-  const type = getTransactionType(parsedTransaction, isOwnTx);
+  const type = getTransactionType(parsedTransaction?.type, isOwnTx);
 
   const transaction = {
-    ...asset,
+    amount: asset.amount,
+    value: asset.value,
+    icon: asset.icon,
     type,
     hash,
     to: details?.to?.principal,
