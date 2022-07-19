@@ -51,15 +51,15 @@ export const sendToken = createAsyncThunk(
     try {
       const { to, amount, canisterId, opts, icpPrice } = params;
       const { keyring } = getState();
-      const { token } = await keyring.getTokenInfo(canisterId);
+      const { token } = await keyring?.instance?.getTokenInfo({ canisterId });
       const { decimals } = token;
       const parsedAmount = parseToBigIntString(amount, parseInt(decimals, 10));
-      const { height, transactionId } = await keyring.instance?.send(
+      const { height, transactionId } = await keyring.instance?.send({
         to,
-        parsedAmount,
+        amount: parsedAmount,
         canisterId,
-        opts
-      );
+        opts,
+      });
       if (transactionId || height) {
         dispatch(setAssetsLoading(true));
         dispatch(setTransactionsLoading(true));
