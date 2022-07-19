@@ -3,11 +3,13 @@ import { Asset } from 'src/interfaces/redux';
 
 import { TOKEN_IMAGES, USD_PER_TC } from '@/constants/assets';
 
+import { recursiveParseBigint } from './objects';
+
 export const formatAssetBySymbol = (
   _amount: string,
   symbol: string,
   icpPrice: number
-): Asset | { amount: number; value: number } => {
+) => {
   const amount = Number.isNaN(_amount) ? NaN : parseFloat(_amount);
   const icpValue = Number.isNaN(amount) ? NaN : amount * icpPrice;
   const tcValue = Number.isNaN(amount) ? NaN : amount * USD_PER_TC;
@@ -18,31 +20,23 @@ export const formatAssetBySymbol = (
         amount,
         value: icpValue,
         icon: TOKEN_IMAGES.ICP,
-        symbol: 'ICP',
-        decimals: 8,
       },
       XTC: {
         amount,
         value: tcValue,
         icon: TOKEN_IMAGES.XTC,
-        symbol: 'XTC',
-        decimals: 12,
       },
       WTC: {
         amount,
         value: tcValue,
         icon: undefined, //TODO: should we add a default icon?
-        symbol: 'WTC',
-        decimals: 12,
       },
       WICP: {
         amount,
         value: icpValue,
         icon: TOKEN_IMAGES.WICP,
-        symbol: 'WICP',
-        decimals: 8,
       },
-    }[symbol] || { amount, value: 0 } // What should we do if we don't know the value?
+    }[symbol] || { amount, value: 0, icon: undefined } // What should we do if we don't know the value?
   );
 };
 
@@ -91,39 +85,26 @@ export const parseToBigIntString = (
   return `${main}${completeDecimals}`;
 };
 
-export const parseAssetsAmount = (
-  assets: TokenBalance[] = []
-): TokenBalance[] =>
+export const formatAssets = (
+  assets: TokenBalance[] = [],
+  icpPrice: number
+): Asset[] =>
   assets.map(currentAsset => {
     const { amount, token } = currentAsset;
-    const { decimals } = token;
+    const { name, canisterId, symbol, decimals } = token;
 
     const parsedAmount = parseToFloatAmount(
       amount,
       parseInt(decimals.toString(), 10)
     );
 
-    return {
-      ...currentAsset,
-      amount: parsedAmount,
-    };
-  });
-
-export const formatAssets = (
-  assets: TokenBalance[] = [],
-  icpPrice: number
-): Asset[] => {
-  const mappedAssets = assets.map(({ amount, token }) => {
-    const { name, symbol, canisterId, decimals } = token;
-    const asset = formatAssetBySymbol(amount, symbol, icpPrice);
-    return {
+    const formattedAsset = {
       name,
       symbol,
       canisterId,
       decimals,
-      ...asset,
+      ...formatAssetBySymbol(parsedAmount, symbol, icpPrice),
     };
-  });
 
-  return mappedAssets;
-};
+    return recursiveParseBigint(formattedAsset);
+  });

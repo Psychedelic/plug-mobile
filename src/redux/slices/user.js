@@ -2,11 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import { ENABLE_NFTS } from '@/constants/nfts';
 import { getICPPrice } from '@/redux/slices/icp';
-import {
-  formatAssets,
-  parseAssetsAmount,
-  parseToBigIntString,
-} from '@/utils/currencies';
+import { formatAssets, parseToBigIntString } from '@/utils/currencies';
 import { recursiveParseBigint } from '@/utils/objects';
 
 import {
@@ -150,10 +146,6 @@ export const asyncGetBalance = async (params, state, dispatch) => {
     }
 
     const icpPrice = await dispatch(getICPPrice()).unwrap();
-    assets = parseAssetsAmount(assets).map(asset =>
-      recursiveParseBigint(asset)
-    );
-
     return formatAssets(assets, icpPrice);
   } catch (e) {
     console.log('asyncGetBalance error', e);
