@@ -1,4 +1,9 @@
-export const isValidPassword = password => password && password.length >= 12;
+export const isValidPassword = password => {
+  if (!password) {
+    return false;
+  }
+  return password.trim() !== '' && password.length >= 8;
+};
 
 export const ERROR_TYPES = {
   CONNECTION_ERROR: 'CONNECTION_ERROR',
