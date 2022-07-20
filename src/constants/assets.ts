@@ -10,7 +10,6 @@ export const TOKEN_IMAGES = {
   WICP: 'wicp',
 };
 
-// Is this const OK? We should use keyring.getTokenInfo() instead.
 export const TOKENS = {
   ICP: {
     symbol: 'ICP',

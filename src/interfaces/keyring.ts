@@ -1,5 +1,3 @@
-//TODO Should this be in the controller package?
-
 export type Standard = 'DIP20' | 'XTC' | 'WICP' | 'EXT' | 'ICP';
 
 export interface StandardToken {
