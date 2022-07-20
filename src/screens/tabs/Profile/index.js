@@ -10,7 +10,6 @@ import Header from '@/commonComponents/Header';
 import UserIcon from '@/commonComponents/UserIcon';
 import Button from '@/components/buttons/Button';
 import { ERROR_TYPES } from '@/constants/general';
-import { ENABLE_NFTS } from '@/constants/nfts';
 import { Colors } from '@/constants/theme';
 import { Container, Separator } from '@/layout';
 import { getTransactions, setTransactionsLoading } from '@/redux/slices/user';
