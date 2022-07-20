@@ -50,11 +50,9 @@ const Profile = () => {
     setRefresing(transactionsLoading);
   }, [transactionsLoading]);
 
-  const renderTransaction = ({ item }, index) =>
-    item?.symbol === 'NFT' && !ENABLE_NFTS ? null : (
-      <ActivityItem key={`${item.date}${item.hash}`} {...item} />
-    );
-
+  const renderTransaction = ({ item }) => (
+    <ActivityItem key={`${item.date}${item.hash}`} {...item} />
+  );
   return (
     <>
       <Container>

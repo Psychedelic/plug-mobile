@@ -145,7 +145,7 @@ const getTransactionType = (type, isOwnTx) => {
   return type.toUpperCase();
 };
 
-export const mapTransaction = (icpPrice, state) => trx => {
+export const formatTransaction = (icpPrice, state) => trx => {
   const { principal, accountId } = state.keyring?.currentWallet;
 
   let parsedTransaction = recursiveParseBigint(parseTransaction(trx));

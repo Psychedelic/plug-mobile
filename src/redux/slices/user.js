@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+import { JELLY_CANISTER_ID } from '@/constants/canister';
 import { ENABLE_NFTS } from '@/constants/nfts';
 import { getICPPrice } from '@/redux/slices/icp';
 import { formatAssets, parseToBigIntString } from '@/utils/currencies';
@@ -11,7 +12,7 @@ import {
   filterICNSContacts,
   formatContact,
   formatContactForController,
-  mapTransaction,
+  formatTransaction,
   TRANSACTION_STATUS,
 } from '../utils';
 
@@ -190,10 +191,21 @@ export const privateGetTransactions = async (params, state, dispatch) => {
     dispatch(setTransactionsError(false));
     const { icpPrice } = params;
     const response = await state.keyring.instance?.getTransactions();
-    const parsedTrx =
-      response?.transactions?.map(mapTransaction(icpPrice, state)) || [];
+    let parsedTrx =
+      response?.transactions?.map(formatTransaction(icpPrice, state)) || [];
 
     dispatch(setTransactionsLoading(false));
+
+    if (!ENABLE_NFTS) {
+      parsedTrx = parsedTrx.filter(
+        item =>
+          !(
+            item?.symbol === 'NFT' ||
+            item?.details.canisterId === JELLY_CANISTER_ID
+          )
+      );
+    }
+
     return parsedTrx;
   } catch (e) {
     dispatch(setTransactionsError(true));
