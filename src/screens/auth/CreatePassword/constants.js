@@ -1,6 +1,7 @@
 import { t } from 'i18next';
 
 import { ALPHANUM_AND_SPECIAL_CHARS_REGEX } from '@/constants/addresses';
+import { MIN_PASSWORD_LENGTH } from '@/constants/general';
 
 export const MIN_LENGTH_MESSAGE = t('validations.passMinLength');
 
@@ -11,7 +12,7 @@ export const createPasswordRules = {
     message: t('validations.invalidChar'),
   },
   minLength: {
-    value: 12,
+    value: MIN_PASSWORD_LENGTH,
     message: t('validations.passMinLength'),
   },
 };
