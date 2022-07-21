@@ -20,9 +20,7 @@ const handlerAllowAgent = getState => async (opts, url, response) => {
         : response.status;
     const whitelist =
       response.status === CONNECTION_STATUS.accepted ? response.whitelist : [];
-
     const date = new Date().toISOString();
-
     const newApps = {
       ...apps,
       [url]: {
@@ -39,6 +37,7 @@ const handlerAllowAgent = getState => async (opts, url, response) => {
         ],
       },
     };
+
     await setApps(keyring?.currentWalletId.toString(), newApps);
   }
 

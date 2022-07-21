@@ -66,7 +66,7 @@ export const connectionRequestResponseHandlerFactory = (dispatch, uri) => {
 };
 
 export const sessionRequestHandler = async (
-  { dispatch, getState, uri },
+  { dispatch, uri },
   { error, payload }
 ) => {
   if (error) {
@@ -77,6 +77,7 @@ export const sessionRequestHandler = async (
   const dappName = peerMeta?.name;
   const dappUrl = peerMeta?.url;
   const dappScheme = peerMeta?.scheme;
+  const dappImageUrl = peerMeta?.icons?.[0];
 
   const meta = {
     chainId,
@@ -84,6 +85,7 @@ export const sessionRequestHandler = async (
     dappScheme,
     dappUrl,
     peerId,
+    dappImageUrl,
   };
 
   await dispatch(setSession({ uri, sessionInfo: { meta } }));

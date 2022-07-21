@@ -10,6 +10,7 @@ import BurnActivityIcon from './svg/BurnActivityIcon';
 import ChevronLeftIcon from './svg/ChevronLeftIcon';
 import ChevronRightIcon from './svg/ChevronRightIcon';
 import ConfirmIcon from './svg/ConfirmIcon';
+import ConnectDefaultIcon from './svg/ConnectDefaultIcon';
 import CopyIcon from './svg/CopyIcon';
 import DepositIcon from './svg/DepositIcon';
 import DiscordIcon from './svg/DiscordIcon';
@@ -63,6 +64,7 @@ export const IconTypes = (type: string) =>
     burnActivity: BurnActivityIcon,
     chevronRight: ChevronRightIcon,
     mintActivity: MintActivityIcon,
+    connectIcon: ConnectDefaultIcon,
     passwordEyeIcon: PasswordEyeIcon,
     redirectArrow: RedirectArrowIcon,
     groupedActions: GroupedActionsIcon,

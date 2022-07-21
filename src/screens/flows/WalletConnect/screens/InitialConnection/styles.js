@@ -11,29 +11,59 @@ export default StyleSheet.create({
     width: '100%',
     flex: 1,
   },
-  plugIcon: {
-    height: 110,
+  dappIcon: {
+    height: 45,
     resizeMode: 'contain',
-    marginBottom: 20,
   },
   validText: {
     color: Colors.ActionBlue,
     textDecorationLine: 'underline',
   },
-  rainbowButton: {
-    minWidth: '100%',
-    marginBottom: 18,
+  buttonStyle: {
+    minWidth: '48%',
   },
   buttonsContainer: {
-    padding: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingTop: 30,
   },
   subtitle: {
     textAlign: 'center',
-    paddingHorizontal: 80,
+    paddingHorizontal: 70,
     paddingTop: 20,
   },
   title: {
     color: 'white',
     fontSize: 30,
+  },
+  changeWalletContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  userContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  user: {
+    marginLeft: 10,
+  },
+  onlyValid: {
+    color: Colors.ActionBlue,
+  },
+  imageContainer: {
+    backgroundColor: Colors.Gray.Tertiary,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    borderRadius: 14,
+    marginBottom: 10,
+  },
+  defaultIcon: {
+    alignSelf: 'center',
+  },
+  bottomContainer: {
+    padding: 20,
   },
 });

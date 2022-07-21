@@ -4,6 +4,7 @@ import { ActivityIndicator, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { ERRORS } from '@/constants/walletconnect';
+import useDisableBack from '@/hooks/useDisableBack';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 import {
@@ -25,13 +26,11 @@ const SCREENS = {
   batchTransactions: BatchTransactions,
 };
 
-// PANTALLAS, EJ: APPROVE CANNISTER LIST
 function WCFlows() {
   const dispatch = useDispatch();
   const { params } = useRoute();
-  const { goBack, reset } = useNavigation();
+  const { reset } = useNavigation();
   const [sendLoading, setSendLoading] = useState(false);
-  // Este timeout es por si wallet connect no nos responde, mostrar error
   const [wcTimeout, setWCTimeout] = useState(false);
   const {
     type,
@@ -45,14 +44,12 @@ function WCFlows() {
   } = params || {};
   const Screen = SCREENS[type];
 
+  useDisableBack();
+
   useEffect(() => {
-    console.log('entra a wcTimeout', wcTimeout);
     if (wcTimeout) {
       // TODO: Handle Error.
-      reset({
-        index: 1,
-        routes: [{ name: Routes.TOKENS }],
-      });
+      closeScreen();
     }
   }, [wcTimeout]);
 
@@ -67,43 +64,38 @@ function WCFlows() {
     };
   }, []);
 
-  const handleAction = (approve = false) => {
+  const handleAction = ({ approve = false, error = false }) => {
+    const handleActionParams = {
+      ...(error
+        ? { error }
+        : { args: approve ? handleApproveArgs : handleDeclineArgs }),
+    };
+
     dispatch(
       walletConnectExecuteAndResponse({
         ...request,
-        args: approve ? handleApproveArgs : handleDeclineArgs,
+        ...handleActionParams,
       })
     );
   };
 
-  // que onda el true o el false de closeScreen?
-  const closeScreen = useCallback(() => {
-    goBack();
-    // REFACTOR
-    // reset({
-    //   index: 1,
-    //   routes: [{ name: Routes.TOKENS }],
-    // });
-  }, [goBack]);
+  const closeScreen = () => {
+    reset({
+      index: 1,
+      routes: [{ name: Routes.SWIPE_LAYOUT }],
+    });
+  };
 
   const onCancel = useCallback(
     async error => {
       try {
-        closeScreen(true);
+        closeScreen();
         setTimeout(async () => {
-          if (handleAction) {
-            // por que el if?
-            handleAction();
-          }
+          handleAction({ error });
         }, 300);
       } catch (e) {
-        dispatch(
-          walletConnectExecuteAndResponse({
-            ...request,
-            error: ERRORS.SERVER_ERROR(e.message),
-          })
-        );
-        closeScreen(true);
+        handleAction({ error: ERRORS.SERVER_ERROR(e.message) });
+        closeScreen();
       }
     },
     [closeScreen, dispatch, handleAction, handleError]
@@ -111,18 +103,11 @@ function WCFlows() {
 
   const handleConfirmTransaction = useCallback(async () => {
     try {
-      if (handleAction) {
-        await handleAction(true);
-      }
+      await handleAction({ approve: true });
     } catch (e) {
-      await dispatch(
-        walletConnectExecuteAndResponse({
-          ...request,
-          error: ERRORS.SERVER_ERROR(e),
-        })
-      );
+      await handleAction({ error: ERRORS.SERVER_ERROR(e) });
     }
-    closeScreen(false);
+    closeScreen();
   }, [closeScreen, dispatch, handleAction]);
 
   const onConfirm = useCallback(async () => {
@@ -132,7 +117,6 @@ function WCFlows() {
   const onPressCancel = useCallback(() => onCancel(), [onCancel]);
 
   const onPressSend = useCallback(async () => {
-    // onConfirm can change depending on the flow type
     setSendLoading(true);
     try {
       await onConfirm();
@@ -156,7 +140,6 @@ function WCFlows() {
           onPressSend={onPressSend}
           onPressCancel={onPressCancel}
         />
-        // Poner botones?
       )}
     </Container>
   );

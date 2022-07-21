@@ -3,26 +3,10 @@ import { StyleSheet } from 'react-native';
 import { Colors } from '@/constants/theme';
 
 export default StyleSheet.create({
-  valid: {
-    color: Colors.ActionBlue,
-  },
   buttonStyle: {
     minWidth: '48%',
   },
   buttonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingTop: 30,
-  },
-  user: {
-    marginLeft: 10,
-  },
-  userContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  changeWalletContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -33,6 +17,7 @@ export default StyleSheet.create({
   dappName: {
     paddingTop: 12,
     paddingBottom: 6,
+    color: Colors.ActionBlue,
   },
   backgroundLogo: {
     width: 52,
@@ -51,8 +36,7 @@ export default StyleSheet.create({
   },
   bottomContainer: {
     width: '100%',
-    paddingBottom: 36,
-    paddingTop: 20,
+    paddingBottom: 30,
   },
   cannisterItem: {
     marginVertical: 8,
@@ -61,8 +45,8 @@ export default StyleSheet.create({
     paddingBottom: 10,
   },
   gradient: {
-    top: -20,
-    height: 20,
+    top: -30,
+    height: 30,
     width: '100%',
     position: 'absolute',
   },

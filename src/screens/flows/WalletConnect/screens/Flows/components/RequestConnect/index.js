@@ -1,13 +1,11 @@
 import { t } from 'i18next';
 import React from 'react';
-import { Image, ScrollView, Text, View } from 'react-native';
+import { Image, Linking, ScrollView, Text, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { useSelector } from 'react-redux';
 
 import CommonItem from '@/commonComponents/CommonItem';
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
-import UserIcon from '@/components/common/UserIcon';
 import { Colors, FontStyles } from '@/constants/theme';
 
 import styles from './styles';
@@ -20,11 +18,8 @@ function RequestConnect({
   onPressSend,
   onPressCancel,
 }) {
-  const { currentWallet } = useSelector(state => state.keyring);
-  const { dappUrl, dappName } = request;
-  const { domainUrl, whitelist } = args;
-  // console.tron.log('args', args);
-  // console.tron.log('request', request);
+  const { dappName } = request;
+  const { whitelist } = args;
   const whiteListArray = Object.entries(whitelist);
 
   const renderWhiteList = (item, index) => {
@@ -36,7 +31,9 @@ function RequestConnect({
         key={index}
         imageUri={icon}
         id={cannisterId}
-        // onPress={() => onPress(contact)}
+        onPress={() => {
+          Linking.openURL(`https://icscan.io/canister/${cannisterId}`);
+        }}
         style={styles.cannisterItem}
         actionIconName="redirectArrow"
       />
@@ -46,11 +43,7 @@ function RequestConnect({
   return (
     <View style={styles.container}>
       <View style={styles.backgroundLogo}>
-        <Image
-          source={{ uri: 'https://sonic.ooo/images/logo.png' }}
-          // source={{ uri: request.imageUrl }}
-          style={styles.logo}
-        />
+        <Image source={{ uri: metadata?.icons[0] }} style={styles.logo} />
       </View>
       <Text style={[FontStyles.Title, styles.dappName]}>{dappName}</Text>
       <Text style={[FontStyles.NormalGray, styles.subtitle]}>
@@ -67,17 +60,6 @@ function RequestConnect({
           colors={[Colors.Transparent, Colors.Black.Primary]}
           style={styles.gradient}
         />
-        <View style={styles.changeWalletContainer}>
-          <View style={styles.userContainer}>
-            <UserIcon size="small" />
-            <Text style={[FontStyles.Normal, styles.user]}>
-              {currentWallet?.name}
-            </Text>
-          </View>
-          <Text style={[FontStyles.NormalGray, styles.valid]}>
-            {t('walletConnect.changeWallet')}
-          </Text>
-        </View>
         <View style={styles.buttonContainer}>
           <Button
             text={t('walletConnect.decline')}

@@ -76,6 +76,8 @@ const Navigator = ({ routingInstrumentation }, navigationRef) => {
     },
   };
 
+  const disableGesturesOption = { gestureEnabled: false };
+
   return (
     <NavigationContainer
       ref={navigationRef}
@@ -110,7 +112,7 @@ const Navigator = ({ routingInstrumentation }, navigationRef) => {
             <Stack.Screen
               name={Routes.SWIPE_LAYOUT}
               component={SwipeNavigator}
-              options={{ gestureEnabled: false }}
+              options={disableGesturesOption}
             />
             <Stack.Screen
               name={Routes.CONNECTION_ERROR}
@@ -119,10 +121,12 @@ const Navigator = ({ routingInstrumentation }, navigationRef) => {
             <Stack.Screen
               name={Routes.WALLET_CONNECT_INITAL_CONNECTION}
               component={WCInitialConnection}
+              options={disableGesturesOption}
             />
             <Stack.Screen
               name={Routes.WALLET_CONNECT_FLOWS}
               component={WCFlows}
+              options={disableGesturesOption}
             />
           </Stack.Navigator>
         </Host>

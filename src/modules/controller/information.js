@@ -65,9 +65,6 @@ const InformationModule = (dispatch, getState) => {
       const keyring = getState().keyring.instance;
       const app = await getApp(keyring.currentWalletId.toString(), pageUrl);
       if (app.status === CONNECTION_STATUS.accepted) {
-        if (!keyring.isUnlocked) {
-          // TODO: show principal screen
-        }
         dispatch(walletConnectExecuteAndResponse({ ...request, args: [] }));
       } else {
         dispatch(
@@ -94,9 +91,6 @@ const InformationModule = (dispatch, getState) => {
         metadata.url
       );
       if (app.status === CONNECTION_STATUS.accepted) {
-        if (!keyring.isUnlocked) {
-          // TODO: show principal screen
-        }
         dispatch(walletConnectExecuteAndResponse({ ...request, args: [] }));
       } else {
         dispatch(
@@ -115,7 +109,7 @@ const InformationModule = (dispatch, getState) => {
 
   const isUnlock = {
     methodName: 'isUnlock',
-    handler: request => {},
+    handler: () => {},
     executor: () => {
       try {
         const { isUnlocked } = getState().keyring;

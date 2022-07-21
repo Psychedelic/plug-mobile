@@ -204,7 +204,7 @@ const translations = {
     decline: 'Decline',
     allow: 'Allow',
     connect: 'Connect',
-    connectTitle: 'Connect your Wallet',
+    connectTitle: 'Connect Wallet',
     connectTo: 'Would you like to connect your wallet to ',
     cannisterPermission: 'wants pemission to use these canisters:',
   },
