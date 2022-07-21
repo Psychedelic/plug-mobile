@@ -4,10 +4,15 @@ import '@/config/reactotron';
 
 // import * as Sentry from '@sentry/react-native';
 import React, { useEffect, useRef } from 'react';
-import { AppState, StatusBar } from 'react-native';
+import { AppState, Platform, StatusBar } from 'react-native';
 import RNBootSplash from 'react-native-bootsplash';
 import codePush from 'react-native-code-push';
 import Config from 'react-native-config';
+import {
+  getBuildNumber,
+  getBundleId,
+  getVersion,
+} from 'react-native-device-info';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import Reactotron from 'reactotron-react-native';
@@ -19,16 +24,25 @@ import Routes from '@/navigation';
 import { initKeyring } from '@/redux/slices/keyring';
 import { persistor, store } from '@/redux/store';
 
-// const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
+const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
+const baseDist = getBuildNumber();
+const baseRelease = `${getBundleId()}@${getVersion()}:${Platform.OS}`;
 
-// Sentry.init({
-//   dsn: Config.SENTRY_DSN,
-//   integrations: [
-//     new Sentry.ReactNativeTracing({
-//       routingInstrumentation,
-//     }),
-//   ],
-// });
+Sentry.init({
+  dsn: Config.SENTRY_DSN,
+  tracesSampleRate: 1.0,
+  dist: baseDist,
+  debug: __DEV__,
+  release: baseRelease,
+  environment: __DEV__ ? 'local' : 'productive',
+  normalizeDepth: 10,
+  enableOutOfMemoryTracking: false,
+  integrations: [
+    new Sentry.ReactNativeTracing({
+      routingInstrumentation,
+    }),
+  ],
+});
 
 const PersistedApp = () => {
   const { instance } = useSelector(state => state.keyring);
@@ -76,7 +90,7 @@ const PersistedApp = () => {
           <StatusBar barStyle="light-content" backgroundColor="black" />
           {!!instance && (
             <Routes
-            // routingInstrumentation={routingInstrumentation}
+            routingInstrumentation={routingInstrumentation}
             />
           )}
         </SafeAreaProvider>
@@ -91,11 +105,11 @@ const App = () => (
   </Provider>
 );
 
-// const AppWithSentry = Sentry.wrap(__DEV__ ? Reactotron.overlay(App) : App);
+const AppWithSentry = Sentry.wrap(__DEV__ ? Reactotron.overlay(App) : App);
 
 export default codePush({
   checkfrecuency: codePush.CheckFrequency.MANUAL,
   deploymentKey: isIos
     ? Config.CODE_PUSH_IOS_DEPLOY_KEY
     : Config.CODE_PUSH_ANDROID_DEPLOY_KEY,
-})(__DEV__ ? Reactotron.overlay(App) : App);
+})(AppWithSentry);

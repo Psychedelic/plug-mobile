@@ -453,6 +453,9 @@ PODS:
   - RNScreens (3.15.0):
     - React-Core
     - React-RCTImage
+  - RNSentry (4.1.2):
+    - React-Core
+    - Sentry (= 7.20.0)
   - RNSVG (12.3.0):
     - React-Core
   - SDWebImage (5.11.1):
@@ -462,6 +465,9 @@ PODS:
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
   - SocketRocket (0.6.0)
+  - Sentry (7.20.0):
+    - Sentry/Core (= 7.20.0)
+  - Sentry/Core (7.20.0)
   - SSZipArchive (2.2.3)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -548,6 +554,8 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `7.20.0`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -688,8 +696,18 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
+  Sentry:
+    :git: https://github.com/getsentry/sentry-cocoa.git
+    :tag: 7.20.0
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
+
+CHECKOUT OPTIONS:
+  Sentry:
+    :git: https://github.com/getsentry/sentry-cocoa.git
+    :tag: 7.20.0
 
 SPEC CHECKSUMS:
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
@@ -762,17 +780,19 @@ SPEC CHECKSUMS:
   RNGestureHandler: 61628a2c859172551aa2100d3e73d1e57878392f
   RNLocalize: 95a43f85e41a966be7bc9cff2437128911c52da0
   RNReactNativeHapticFeedback: 4085973f5a38b40d3c6793a3ee5724773eae045e
-  RNReanimated: a645c3f296dc3b792a5019ec23602c0b3d5ac635
-  RNScreens: 4a1af06327774490d97342c00aee0c2bafb497b7
+  RNReanimated: 58b57be69a237fb02ec8099d25171057638cf41a
+  RNScreens: 40a2cb40a02a609938137a1e0acfbf8fc9eebf19
+  RNSentry: b7b82fd671772dda9ae063af0b4873251aa04bdb
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
+  Sentry: 9e8ec837fa37e7b397f19f75542800461b138d0e
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: 7ab6e3ee4ce47d7b789d1cb520163833e515f452
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: e5b05a5e23082aabee4af9ae23be863a68d06d24
+PODFILE CHECKSUM: c68ccd93418d297964f420a5a0684e1a60ef7c24
 
 COCOAPODS: 1.11.3
