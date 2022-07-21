@@ -1,8 +1,8 @@
 PODS:
   - Base64 (1.1.2)
   - boost (1.76.0)
-  - BVLinearGradient (2.5.6):
-    - React
+  - BVLinearGradient (2.6.2):
+    - React-Core
   - CocoaAsyncSocket (7.6.5)
   - CodePush (7.0.4):
     - Base64 (~> 1.1)
@@ -312,9 +312,9 @@ PODS:
     - react-native-config/App (= 1.4.5)
   - react-native-config/App (1.4.5):
     - React-Core
-  - react-native-file-access (2.4.1):
+  - react-native-file-access (2.4.3):
     - React-Core
-    - ZIPFoundation (< 0.9.12)
+    - ZIPFoundation (= 0.9.11)
   - react-native-pager-view (5.4.11):
     - React-Core
   - react-native-randombytes (3.6.1):
@@ -333,7 +333,7 @@ PODS:
   - react-native-video/Video (6.0.0-alpha.1):
     - PromisesSwift
     - React-Core
-  - react-native-webview (11.22.5):
+  - react-native-webview (11.22.7):
     - React-Core
   - React-perflogger (0.69.1)
   - React-RCTActionSheet (0.69.1):
@@ -417,13 +417,13 @@ PODS:
     - SDWebImageWebPCoder (~> 0.8.4)
   - RNFileViewer (2.1.5):
     - React-Core
-  - RNGestureHandler (2.4.2):
+  - RNGestureHandler (2.5.0):
     - React-Core
   - RNLocalize (2.2.2):
     - React-Core
-  - RNReactNativeHapticFeedback (1.13.1):
+  - RNReactNativeHapticFeedback (1.14.0):
     - React-Core
-  - RNReanimated (2.8.0):
+  - RNReanimated (2.9.1):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -453,10 +453,7 @@ PODS:
   - RNScreens (3.15.0):
     - React-Core
     - React-RCTImage
-  - RNSentry (4.1.2):
-    - React-Core
-    - Sentry (= 7.20.0)
-  - RNSVG (12.3.0):
+  - RNSVG (12.4.0):
     - React-Core
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
@@ -464,10 +461,10 @@ PODS:
   - SDWebImageWebPCoder (0.8.4):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
-  - SocketRocket (0.6.0)
   - Sentry (7.20.0):
     - Sentry/Core (= 7.20.0)
   - Sentry/Core (7.20.0)
+  - SocketRocket (0.6.0)
   - SSZipArchive (2.2.3)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -554,7 +551,6 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
-  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `7.20.0`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -696,8 +692,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSVG:
     :path: "../node_modules/react-native-svg"
-  RNVectorIcons:
-    :path: "../node_modules/react-native-vector-icons"
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
     :tag: 7.20.0
@@ -712,7 +706,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: a7c83b31436843459a1961bfd74b96033dc77234
-  BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
+  BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   CodePush: b51b7ac64c07d4eacfc8cc5750a1dd28adbf2528
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
@@ -735,7 +729,7 @@ SPEC CHECKSUMS:
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   PromisesSwift: 99fddfe4a0ec88a56486644c0da106694c92a604
-  RCT-Folly: 4d8508a426467c48885f1151029bc15fa5d7b3b8
+  RCT-Folly: b9d9fe1fc70114b751c076104e52f3b1b5e5a95a
   RCTRequired: ae07282b2ec9c90d7eb98251603bc3f82403d239
   RCTTypeSafety: a04dc1339af2e1da759ccd093bf11c310dce1ef6
   React: dbd201f781b180eab148aa961683943c72f67dcf
@@ -751,13 +745,13 @@ SPEC CHECKSUMS:
   React-logger: ca970551cb7eea2fd814d0d5f6fc1a471eb53b76
   react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
-  react-native-file-access: 8c7b3c8935f7f33e31e16439b5882caa620cc493
+  react-native-file-access: cb3caef2103575aa15876624f91ac81d37182840
   react-native-pager-view: 7f00d63688f7df9fad86dfb0154814419cc5eb8d
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-safe-area-context: 6c12e3859b6f27b25de4fee8201cfb858432d8de
   react-native-sensitive-info: d44e909d065f9c0e15734245e5dd6a24b82e3dcd
   react-native-video: bb6f12a7198db53b261fefb5d609dc77417acc8b
-  react-native-webview: 28557a39f4c1f3f8faa69dae22858335ba63e7f9
+  react-native-webview: 227ba9205abb8579116b69ea5774d9744267c65a
   React-perflogger: c9161ff0f1c769993cd11d2751e4331ff4ceb7cd
   React-RCTActionSheet: 2d885b0bea76a5254ef852939273edd8de116180
   React-RCTAnimation: 353fa4fc3c19060068832dd32e555182ec07be45
@@ -777,22 +771,21 @@ SPEC CHECKSUMS:
   RNDeviceInfo: 71e6e72867022612a537b9d36528e391c80369ad
   RNFastImage: 1f2cab428712a4baaf78d6169eaec7f622556dd7
   RNFileViewer: ce7ca3ac370e18554d35d6355cffd7c30437c592
-  RNGestureHandler: 61628a2c859172551aa2100d3e73d1e57878392f
+  RNGestureHandler: bad495418bcbd3ab47017a38d93d290ebd406f50
   RNLocalize: 95a43f85e41a966be7bc9cff2437128911c52da0
-  RNReactNativeHapticFeedback: 4085973f5a38b40d3c6793a3ee5724773eae045e
-  RNReanimated: 58b57be69a237fb02ec8099d25171057638cf41a
-  RNScreens: 40a2cb40a02a609938137a1e0acfbf8fc9eebf19
-  RNSentry: b7b82fd671772dda9ae063af0b4873251aa04bdb
-  RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
+  RNReactNativeHapticFeedback: 1e3efeca9628ff9876ee7cdd9edec1b336913f8c
+  RNReanimated: 2cf7451318bb9cc430abeec8d67693f9cf4e039c
+  RNScreens: 4a1af06327774490d97342c00aee0c2bafb497b7
+  RNSVG: 3dd44d99d1c18e1342aee4bfa53ab3f6a8c4865f
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815
-  SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   Sentry: 9e8ec837fa37e7b397f19f75542800461b138d0e
+  SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: 7ab6e3ee4ce47d7b789d1cb520163833e515f452
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: c68ccd93418d297964f420a5a0684e1a60ef7c24
+PODFILE CHECKSUM: a6655c642f088935c35dd96324c7f2d31843b0f4
 
 COCOAPODS: 1.11.3
