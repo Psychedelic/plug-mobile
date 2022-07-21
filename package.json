@@ -43,10 +43,7 @@
     "@react-navigation/native": "^6.0.11",
     "@react-navigation/stack": "^6.2.2",
     "@reduxjs/toolkit": "^1.6.1",
-<<<<<<< HEAD
-=======
     "@sentry/react-native": "^4.1.2",
->>>>>>> develop
     "assert-browserify": "^2.0.0",
     "axios": "0.24.0",
     "babel-plugin-transform-exponentiation-operator": "^6.24.1",
