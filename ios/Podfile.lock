@@ -306,8 +306,8 @@ PODS:
   - React-jsinspector (0.69.1)
   - React-logger (0.69.1):
     - glog
-  - react-native-blur (0.8.0):
-    - React
+  - react-native-blur (4.0.0):
+    - React-Core
   - react-native-config (1.4.5):
     - react-native-config/App (= 1.4.5)
   - react-native-config/App (1.4.5):
@@ -743,7 +743,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 758e70947c232828a66b5ddc42d02b4d010fa26e
   React-jsinspector: 55605caf04e02f9b0e05842b786f1c12dde08f4b
   React-logger: ca970551cb7eea2fd814d0d5f6fc1a471eb53b76
-  react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
+  react-native-blur: 6f035c57f0f9a62494b56f28ef5d6716abbbcaf0
   react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
   react-native-file-access: cb3caef2103575aa15876624f91ac81d37182840
   react-native-pager-view: 7f00d63688f7df9fad86dfb0154814419cc5eb8d

@@ -34,7 +34,7 @@
     "@hookform/error-message": "^2.0.0",
     "@psychedelic/plug-mobile-controller": "0.2.12",
     "@react-native-async-storage/async-storage": "^1.17.7",
-    "@react-native-community/blur": "^3.6.0",
+    "@react-native-community/blur": "^4.0.0",
     "@react-native-community/clipboard": "^1.5.1",
     "@react-native-masked-view/masked-view": "^0.2.6",
     "@react-navigation/bottom-tabs": "^6.3.2",
