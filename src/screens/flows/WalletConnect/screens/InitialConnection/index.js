@@ -19,35 +19,26 @@ import { useNavigation } from '@/utils/navigation';
 import styles from './styles';
 
 function WCInitialConnection() {
+  useDisableBack();
   const { params } = useRoute();
   const modalRef = useRef(null);
   const dispatch = useDispatch();
   const { reset } = useNavigation();
   const { currentWallet } = useSelector(state => state.keyring);
-  const [handleResponse, setHandleResponse] = useState(null);
-  const [istTimedOut, setIsTimedOut] = useState(false);
 
-  useDisableBack();
+  const [handleResponse, setHandleResponse] = useState(null);
+  const [connectLoading, setConnectLoading] = useState(false);
+
   const { meta, uri } = params;
   const { dappName, dappUrl, dappScheme, peerId, dappImageUrl } = meta || {};
-
-  useEffect(() => {
-    // Este timeout no funciona
-    if (istTimedOut) {
-      // TODO: Handle Error.
-      closeScreen();
-    }
-  }, [istTimedOut]);
 
   useEffect(() => {
     try {
       const getRouteParams = async () => {
         const {
           routeParams: { callback },
-          timedOut,
         } = await dispatch(getSession({ uri })).unwrap();
         setHandleResponse(() => callback);
-        setIsTimedOut(timedOut);
       };
       getRouteParams();
     } catch (e) {
@@ -63,7 +54,7 @@ function WCInitialConnection() {
             handleResponse({
               approved: success,
               chainId: 1,
-              accountAddress: 'approvalAccount.address',
+              accountAddress: currentWallet.principal,
               peerId,
               dappScheme,
               dappName,
@@ -73,22 +64,16 @@ function WCInitialConnection() {
         );
       }
     },
-    [
-      'approvalAccount.address',
-      handleResponse,
-      peerId,
-      dappScheme,
-      dappName,
-      dappUrl,
-    ]
+    [handleResponse, peerId, dappScheme, dappName, currentWallet, dappUrl]
   );
 
   const onPress = () => {
+    setConnectLoading(true);
     handleSuccess(true);
-    closeScreen();
   };
 
   const onCancel = () => {
+    setConnectLoading(false);
     closeScreen();
   };
 
@@ -148,6 +133,7 @@ function WCInitialConnection() {
           />
           <RainbowButton
             onPress={onPress}
+            loading={connectLoading}
             text={t('walletConnect.connect')}
             buttonStyle={styles.buttonStyle}
           />

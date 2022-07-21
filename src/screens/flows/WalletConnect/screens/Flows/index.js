@@ -75,6 +75,9 @@ function WCFlows() {
       walletConnectExecuteAndResponse({
         ...request,
         ...handleActionParams,
+        onSuccess: () => {
+          closeScreen();
+        },
       })
     );
   };
@@ -107,7 +110,6 @@ function WCFlows() {
     } catch (e) {
       await handleAction({ error: ERRORS.SERVER_ERROR(e) });
     }
-    closeScreen();
   }, [closeScreen, dispatch, handleAction]);
 
   const onConfirm = useCallback(async () => {

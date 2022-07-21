@@ -117,7 +117,6 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
           );
 
           walletConnector?.on('session_request', (error, payload) => {
-            console.log('session_request', error, payload);
             const {
               bridgeTimeout: { timeout },
             } = getState().walletconnect;
@@ -148,7 +147,6 @@ const listenOnNewMessages = createAsyncThunk(
       getState
     );
     walletConnector.on('call_request', async (error, payload) => {
-      console.log('call_request', error, payload);
       const {
         bridgeTimeout: { timeout },
       } = getState().walletconnect;
@@ -251,7 +249,10 @@ const listenOnNewMessages = createAsyncThunk(
 
 export const walletConnectExecuteAndResponse = createAsyncThunk(
   'walletconnect/executeAndResponse',
-  async ({ peerId, requestId, args, opts, error }, { dispatch, getState }) => {
+  async (
+    { peerId, requestId, args, opts, error, onSuccess },
+    { dispatch, getState }
+  ) => {
     try {
       const walletConnector = getState().walletconnect.walletConnectors[peerId];
       const { pendingRedirect } = getState().walletconnect;
@@ -271,6 +272,7 @@ export const walletConnectExecuteAndResponse = createAsyncThunk(
             );
             if (result !== undefined) {
               await walletConnector.approveRequest({ id: requestId, result });
+              onSuccess?.();
             } else {
               await walletConnector.rejectRequest({
                 error: resultError,

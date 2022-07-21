@@ -1,4 +1,3 @@
-// Routes.WALLET_CONNECT_INITAL_CONNECTION
 export interface WalletConnectMetadata {
   chainId: number;
   dappName: string;
@@ -26,4 +25,34 @@ export interface WalletConnectSession {
   timedOut: false;
   timeout: null;
   routeParams: WallectConnectSessionRouteParams;
+}
+
+export interface WallectConnectFlowsData {
+  request: FlowsRequest;
+  metadata: FlowsMetadata;
+  args: FlowsArgs;
+}
+
+interface FlowsRequest {
+  clientId: string;
+  dappName: string;
+  dappScheme: any;
+  dappUrl: string;
+  imageUrl: string;
+  methodName: string;
+  peerId: string;
+  requestId: number;
+  args: [];
+}
+
+interface FlowsMetadata {
+  url: string;
+  name: string;
+  pageWidth: number;
+  icons: [];
+}
+
+interface FlowsArgs {
+  domainUrl: string;
+  whitelist: any;
 }
