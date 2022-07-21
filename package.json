@@ -34,7 +34,7 @@
     "@dfinity/principal": "^0.9.3",
     "@hookform/error-message": "^2.0.0",
     "@psychedelic/plug-controller": "^0.17.4",
-    "@psychedelic/plug-controller-beta": "^0.18.5",
+    "@psychedelic/plug-controller-beta": "^0.18.6",
     "@psychedelic/plug-mobile-controller": "^0.2.12",
     "@react-native-async-storage/async-storage": "^1.15.11",
     "@react-native-community/blur": "^3.6.0",
