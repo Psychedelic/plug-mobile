@@ -3,6 +3,7 @@ import React from 'react';
 import { Text } from 'react-native';
 
 import { ACTIVITY_STATUS } from '@/constants/business';
+import { JELLY_CANISTER_ID } from '@/constants/canister';
 import shortAddress from '@/utils/shortAddress';
 
 export const parseImageName = name => name.replace('.png', '').toLowerCase();
@@ -12,13 +13,27 @@ export const getTitle = (type, symbol, swapData, plug) => {
   switch (type) {
     case 'SWAP':
       return swapData?.currency.name
-        ? t('common.swapFor', {
+        ? t('transactionTypes.swapFor', {
             from: symbol,
             to: swapData?.currency.name,
           })
-        : t('common.swap');
+        : t('transactionTypes.swap');
     case 'PLUG':
       return t('common.pluggedInto', { name: plug.name });
+    case 'DIRECTBUY':
+      return t('transactionTypes.buyNTF');
+    case 'MAKELISTING':
+      return t('transactionTypes.listNFT');
+    case 'CANCELLISTING':
+      return t('transactionTypes.cancelListingNFT');
+    case 'MAKEOFFER':
+      return t('transactionTypes.makeOfferNFT');
+    case 'ACCEPTOFFER':
+      return t('transactionTypes.acceptOfferNFT');
+    case 'CANCELOFFER':
+      return t('transactionTypes.cancelOfferNFT');
+    case 'DENYOFFER':
+      return t('transactionTypes.denyOfferNFT');
     default:
       if (type.includes('Liquidity')) {
         return type;
@@ -62,3 +77,11 @@ export const getAddress = (type, to, from, canisterId) =>
   }[type] ||
   canisterId ||
   '');
+
+export const getCanisterName = (canisterInfo, canisterId) => {
+  // TODO: change this when jelly supports multi-collections
+  if (canisterId === JELLY_CANISTER_ID) {
+    return 'Crowns';
+  }
+  return canisterInfo?.name || canisterId;
+};

@@ -1,4 +1,4 @@
-import PlugController from '@psychedelic/plug-controller';
+import PlugController from '@psychedelic/plug-controller-beta';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import RNCryptoJS from 'react-native-crypto-js';
 import { fetch } from 'react-native-fetch-api';
@@ -8,7 +8,7 @@ import { getPrivateAssetsAndTransactions } from '../../utils/keyringUtils';
 import { keyringStorage } from '../store';
 import { getNewAccountData, resetStores } from '../utils';
 import {
-  getAssets,
+  getBalance,
   getContacts,
   getNFTs,
   getTransactions,
@@ -154,7 +154,7 @@ export const login = createAsyncThunk(
         dispatch(setCurrentWallet(wallets[currentWalletId]));
         dispatch(setWallets(wallets));
         dispatch(setAssetsLoading(true));
-        dispatch(getAssets({ refresh: true, icpPrice }));
+        dispatch(getBalance());
         dispatch(setTransactionsLoading(true));
         dispatch(getTransactions({ icpPrice }));
         dispatch(getNFTs());
