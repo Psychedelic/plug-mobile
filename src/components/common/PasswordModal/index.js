@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import Header from '@/commonComponents/Header';
@@ -10,6 +9,7 @@ import RainbowButton from '@/components/buttons/RainbowButton';
 import { Column } from '@/layout';
 import { validatePassword } from '@/redux/slices/keyring';
 
+import Text from '../Text';
 import styles from './styles';
 
 const PasswordModal = ({

@@ -19,9 +19,7 @@ export default StyleSheet.create({
     ...FontStyles.SmallerGray,
     textTransform: 'uppercase',
   },
-  value: {
-    ...FontStyles.Small,
-  },
+  value: FontStyles.Small,
   valueContainer: {
     flexDirection: 'row',
     alignItems: 'center',

@@ -1,7 +1,9 @@
 import { StyleSheet } from 'react-native';
 
+import { SEMIBOLD } from '@/constants/fonts';
 import { pixelRatioScale } from '@/constants/platform';
 import { Colors } from '@/constants/theme';
+import { fontMaker } from '@/utils/fonts';
 
 const commonMargin = 20;
 
@@ -23,11 +25,13 @@ export default StyleSheet.create({
     resizeMode: 'contain',
   },
   title: {
+    ...fontMaker({
+      size: 26,
+      weight: SEMIBOLD,
+      color: Colors.White.Primary,
+    }),
     justifyContent: 'center',
     alignItems: 'center',
-    color: Colors.White.Primary,
-    fontSize: 26,
-    fontWeight: 'bold',
     paddingVertical: commonMargin,
   },
   componentMargin: {

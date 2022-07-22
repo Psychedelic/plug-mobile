@@ -1,8 +1,9 @@
 import { t } from 'i18next';
 import React from 'react';
-import { StyleProp, Text, View, ViewStyle } from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 
 import Touchable from '@/commonComponents/Touchable';
+import Text from '@/components/common/Text';
 import { Colors, FontStyles } from '@/constants/theme';
 import TokenFormat from '@/formatters/TokenFormat';
 import UsdFormat from '@/formatters/UsdFormat';

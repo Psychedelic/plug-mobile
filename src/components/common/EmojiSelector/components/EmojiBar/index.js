@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
+import Text from '@/commonComponents/Text';
 import Touchable from '@/commonComponents/Touchable';
 
 import { Categories, categoryKeys } from '../../utils';

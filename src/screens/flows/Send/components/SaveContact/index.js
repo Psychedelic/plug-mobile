@@ -1,7 +1,7 @@
 import emojis from 'emoji-datasource';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { charFromEmojiObject } from '@/commonComponents/EmojiSelector/utils';
@@ -9,6 +9,7 @@ import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
 import TextInput from '@/commonComponents/TextInput';
 import RainbowButton from '@/components/buttons/RainbowButton';
+import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
 import { addContact } from '@/redux/slices/user';
 
@@ -54,7 +55,7 @@ function SaveContact({ modalRef, onClose, id }) {
             {t('common.close')}
           </Text>
         }
-        center={<Text style={FontStyles.Subtitle2}>{title}</Text>}
+        center={<Text type="subtitle2">{title}</Text>}
       />
       <View style={styles.container}>
         <TextInput

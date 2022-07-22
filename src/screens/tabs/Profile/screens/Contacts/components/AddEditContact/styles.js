@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors, FontStyles } from '@/constants/theme';
+import { Colors } from '@/constants/theme';
 
 export default StyleSheet.create({
   container: {
@@ -22,7 +22,6 @@ export default StyleSheet.create({
     color: Colors.ActionBlue,
   },
   title: {
-    ...FontStyles.Subtitle2,
     textTransform: 'capitalize',
   },
   capitalized: {

@@ -3,11 +3,6 @@ import { StyleSheet } from 'react-native';
 import { Colors } from '@/constants/theme';
 
 export default StyleSheet.create({
-  text: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: Colors.White.Pure,
-  },
   button: {
     borderRadius: 15,
     width: '100%',

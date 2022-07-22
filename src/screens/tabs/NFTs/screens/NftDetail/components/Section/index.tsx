@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleProp, Text, View, ViewStyle } from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 
-import { FontStyles } from '@/constants/theme';
+import Text from '@/components/common/Text';
 
 import styles from './styles';
 
@@ -13,7 +13,7 @@ interface Props {
 
 const Section = ({ title, children, style }: Props) => (
   <View style={[styles.section, style]}>
-    <Text style={FontStyles.Subtitle}>{title}</Text>
+    <Text type="subtitle1">{title}</Text>
     <View style={styles.content}>{children}</View>
   </View>
 );

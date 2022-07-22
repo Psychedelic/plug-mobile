@@ -1,13 +1,7 @@
 import Clipboard from '@react-native-community/clipboard';
 import { t } from 'i18next';
 import React, { Fragment, useMemo, useRef, useState } from 'react';
-import {
-  ActivityIndicator,
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { ActivityIndicator, Platform, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CommonItem from '@/commonComponents/CommonItem';
@@ -15,6 +9,7 @@ import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
 import Touchable from '@/commonComponents/Touchable';
 import ActionSheet from '@/components/common/ActionSheet';
+import Text from '@/components/common/Text';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
 import CopyIcon from '@/icons/svg/material/Copy.svg';
@@ -83,11 +78,7 @@ function Contacts({ modalRef }) {
   return (
     <>
       <Modal modalRef={modalRef} adjustToContentHeight>
-        <Header
-          center={
-            <Text style={FontStyles.Subtitle2}>{t('contacts.title')}</Text>
-          }
-        />
+        <Header center={<Text type="subtitle2">{t('contacts.title')}</Text>} />
         <Column style={styles.container}>
           {contactsLoading && (
             <View style={styles.loading}>

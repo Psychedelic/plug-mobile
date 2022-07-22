@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text } from 'react-native';
 
 import Touchable from '@/commonComponents/Touchable';
+import Text from '@/components/common/Text';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
 import { Column, Row } from '@/layout';

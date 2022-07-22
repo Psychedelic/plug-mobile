@@ -3,13 +3,13 @@ import {
   ActivityIndicator,
   StyleProp,
   StyleSheet,
-  Text,
   TextStyle,
   View,
   ViewStyle,
 } from 'react-native';
 
 import Touchable from '@/commonComponents/Touchable';
+import Text from '@/components/common/Text';
 import Icon from '@/icons';
 import animationScales from '@/utils/animationScales';
 
@@ -52,7 +52,9 @@ const Button = ({
           <ActivityIndicator style={StyleSheet.absoluteFill} color="white" />
         ) : (
           <>
-            <Text style={[styles.text, textStyle, disabled && styles.disabled]}>
+            <Text
+              type="button"
+              style={[textStyle, disabled && styles.disabled]}>
               {text}
             </Text>
             {iconName && <Icon name={iconName} style={iconStyle} />}

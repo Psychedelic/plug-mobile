@@ -1,7 +1,8 @@
 import MaskedView from '@react-native-masked-view/masked-view';
 import React from 'react';
-import { Text } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+
+import Text from '../Text';
 
 const GradientText = ({ colors, style, ...props }) => {
   return (

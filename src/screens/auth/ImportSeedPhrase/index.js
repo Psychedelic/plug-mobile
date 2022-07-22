@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Text, View } from 'react-native';
+import { Image, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import PlugLogo from '@/assets/icons/plug-logo-full.png';
@@ -9,6 +9,7 @@ import Header from '@/commonComponents/Header';
 import TextInput from '@/commonComponents/TextInput';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import KeyboardScrollView from '@/components/common/KeyboardScrollView';
+import Text from '@/components/common/Text';
 import { TestIds } from '@/constants/testIds';
 import useKeychain from '@/hooks/useKeychain';
 import { Container } from '@/layout';

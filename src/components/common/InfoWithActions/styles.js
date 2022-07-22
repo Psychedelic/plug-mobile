@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 
+import { SEMIBOLD } from '@/constants/fonts';
 import { Colors } from '@/constants/theme';
+import { fontMaker } from '@/utils/fonts';
 
 export default StyleSheet.create({
   container: {
@@ -16,11 +18,11 @@ export default StyleSheet.create({
     padding: 1,
     borderRadius: 15,
   },
-  text: {
+  text: fontMaker({
     color: Colors.White.Primary,
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
+    size: 16,
+    weight: SEMIBOLD,
+  }),
   action: {
     marginLeft: 10,
   },

@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { Colors } from '@/constants/theme';
+import { fontMaker } from '@/utils/fonts';
 
 const inputHeight = 60;
 const commonBorderRadius = 15;
@@ -33,5 +34,10 @@ export default StyleSheet.create({
     backgroundColor: Colors.Gray.Secondary,
     borderRadius: commonBorderRadius,
     marginHorizontal: 2,
+  },
+  text: {
+    ...fontMaker({ size: 18, color: Colors.White.Pure }),
+    fontFamily: null, // Disabling custom font because of problem with Inter and secure text entry
+    fontWeight: 'bold',
   },
 });

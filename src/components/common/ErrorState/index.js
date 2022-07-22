@@ -1,9 +1,10 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import Button from '@/buttons/Button';
 import { FontStyles } from '@/constants/theme';
 
+import Text from '../Text';
 import { getErrorStateData } from './constants';
 import styles from './styles';
 

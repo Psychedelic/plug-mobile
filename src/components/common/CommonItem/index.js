@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import Touchable from '@/commonComponents/Touchable';
 import UserIcon from '@/commonComponents/UserIcon';
@@ -8,6 +8,7 @@ import { FontStyles } from '@/constants/theme';
 import animationScales from '@/utils/animationScales';
 import shortAddress from '@/utils/shortAddress';
 
+import Text from '../Text';
 import styles from './styles';
 
 function CommonItem({

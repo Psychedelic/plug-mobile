@@ -2,7 +2,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Image, Keyboard, Switch, Text, View } from 'react-native';
+import { Image, Keyboard, Switch, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import PlugLogo from '@/assets/icons/plug-logo-full.png';
@@ -11,6 +11,7 @@ import Header from '@/commonComponents/Header';
 import PasswordInput from '@/commonComponents/PasswordInput';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import KeyboardScrollView from '@/components/common/KeyboardScrollView';
+import Text from '@/components/common/Text';
 import { Colors } from '@/constants/theme';
 import useKeychain from '@/hooks/useKeychain';
 import { Container } from '@/layout';

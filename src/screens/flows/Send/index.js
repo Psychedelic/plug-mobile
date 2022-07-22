@@ -1,12 +1,13 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Keyboard, Text, View } from 'react-native';
+import { Keyboard, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Header from '@/commonComponents/Header';
 import Modal, { modalOffset } from '@/commonComponents/Modal';
 import PasswordModal from '@/commonComponents/PasswordModal';
 import TextInput from '@/commonComponents/TextInput';
+import Text from '@/components/common/Text';
 import { ADDRESS_TYPES } from '@/constants/addresses';
 import { NUMBER_MAX_DECIMALS } from '@/constants/business';
 import { isAndroid } from '@/constants/platform';
@@ -333,7 +334,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
               </Text>
             )
           }
-          center={<Text style={FontStyles.Subtitle2}>{t('send.title')}</Text>}
+          center={<Text style={styles.centerText}>{t('send.title')}</Text>}
         />
         <TextInput
           label={t('send.inputLabel')}

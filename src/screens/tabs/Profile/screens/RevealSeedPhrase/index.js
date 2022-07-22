@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Copy from '@/commonComponents/Copy';
@@ -9,6 +8,7 @@ import Modal from '@/commonComponents/Modal';
 import PasswordInput from '@/commonComponents/PasswordInput';
 import SeedPhrase from '@/commonComponents/SeedPhrase';
 import RainbowButton from '@/components/buttons/RainbowButton';
+import Text from '@/components/common/Text';
 import { isValidPassword } from '@/constants/general';
 import { Column } from '@/layout';
 import { validatePassword } from '@/redux/slices/keyring';
@@ -54,7 +54,7 @@ function RevealSeedPhrase({ modalRef }) {
       <Modal modalRef={modalRef} onClose={clearState} adjustToContentHeight>
         <Header
           center={
-            <Text style={styles.title}>{t('settings.items.phrase.name')}</Text>
+            <Text type="subtitle2">{t('settings.items.phrase.name')}</Text>
           }
         />
         <Column style={styles.container}>

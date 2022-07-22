@@ -8,9 +8,7 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 60,
   },
-  title: {
-    ...FontStyles.Subtitle3,
-  },
+  title: FontStyles.Subtitle3,
   text: {
     ...FontStyles.NormalGray,
     marginVertical: 20,

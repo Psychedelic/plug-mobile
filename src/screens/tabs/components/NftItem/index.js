@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import NftDisplayer from '@/commonComponents/NftDisplayer';
+import Text from '@/commonComponents/Text';
 import Touchable from '@/commonComponents/Touchable';
 import useGetType from '@/hooks/useGetType';
 

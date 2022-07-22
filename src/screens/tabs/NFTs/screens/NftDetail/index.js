@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import React, { useMemo, useRef, useState } from 'react';
-import { Linking, Platform, Text, View } from 'react-native';
+import { Linking, Platform, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import Badge from '@/commonComponents/Badge';
@@ -10,6 +10,7 @@ import NftDisplayer from '@/commonComponents/NftDisplayer';
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import ActionSheet from '@/components/common/ActionSheet';
+import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
 import DownloadIcon from '@/icons/svg/material/Download.svg';
 import ViewIcon from '@/icons/svg/material/View.svg';
@@ -78,7 +79,7 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
         {...props}>
         <Header
           center={
-            <Text style={FontStyles.Subtitle2}>
+            <Text type="subtitle2">
               {selectedNFT?.index ? `#${selectedNFT?.index}` : ''}
             </Text>
           }

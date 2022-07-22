@@ -1,5 +1,8 @@
 import { StyleSheet } from 'react-native';
 
+import { SEMIBOLD } from '@/constants/fonts';
+import { fontMaker } from '@/utils/fonts';
+
 export default StyleSheet.create({
   genericToken: {
     width: 41,
@@ -9,10 +12,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  text: {
-    fontSize: 10,
-    fontWeight: 'bold',
-  },
+  text: fontMaker({ weight: SEMIBOLD, size: 10 }),
   blackBackground: {
     backgroundColor: 'black',
   },

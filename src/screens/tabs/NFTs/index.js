@@ -1,11 +1,12 @@
 import { useScrollToTop } from '@react-navigation/native';
 import React, { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, RefreshControl, Text } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import EmptyState from '@/commonComponents/EmptyState';
 import ErrorState from '@/commonComponents/ErrorState';
+import Text from '@/components/common/Text';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
 import { useStateWithCallback } from '@/hooks/useStateWithCallback';

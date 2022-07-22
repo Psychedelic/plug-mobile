@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { FontStyles } from '@/constants/theme';
+import { Colors } from '@/constants/theme';
 
 export default StyleSheet.create({
   container: {
@@ -8,7 +8,7 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    ...FontStyles.LinkButton,
+    color: Colors.ActionBlue,
     fontSize: 17,
     marginLeft: 5,
   },

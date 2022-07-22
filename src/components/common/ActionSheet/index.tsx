@@ -1,6 +1,6 @@
 import i18next from 'i18next';
 import React, { RefObject } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { Portal } from 'react-native-portalize';
 import { SvgProps } from 'react-native-svg';
@@ -8,6 +8,7 @@ import { SvgProps } from 'react-native-svg';
 import { isAndroid } from '@/constants/platform';
 import Close from '@/icons/svg/material/Close.svg';
 
+import Text from '../Text';
 import Touchable from '../Touchable';
 import styles, { ICON_COLOR } from './styles';
 

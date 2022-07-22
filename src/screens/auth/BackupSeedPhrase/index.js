@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, ScrollView, Text, View } from 'react-native';
+import { Image, ScrollView, View } from 'react-native';
 
 import PlugLogo from '@/assets/icons/plug-logo-full.png';
 import Back from '@/commonComponents/Back';
@@ -8,6 +8,7 @@ import Copy from '@/commonComponents/Copy';
 import Header from '@/commonComponents/Header';
 import SeedPhrase from '@/commonComponents/SeedPhrase';
 import RainbowButton from '@/components/buttons/RainbowButton';
+import Text from '@/components/common/Text';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 

@@ -3,7 +3,6 @@ import React, { useRef, useState } from 'react';
 import {
   Keyboard,
   StyleProp,
-  Text,
   TextInput,
   TextStyle,
   View,
@@ -17,6 +16,7 @@ import { Colors, Rainbow } from '@/constants/theme';
 import animationScales from '@/utils/animationScales';
 import { isValidDecimal } from '@/utils/number';
 
+import Text from '../Text';
 import styles from './styles';
 
 interface Props {
