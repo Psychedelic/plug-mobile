@@ -384,7 +384,7 @@ PODS:
     - React-jsi (= 0.66.3)
     - React-logger (= 0.66.3)
     - React-perflogger (= 0.66.3)
-  - RNBootSplash (4.1.5):
+  - RNBootSplash (4.2.3):
     - React-Core
   - RNCAsyncStorage (1.16.1):
     - React-Core
@@ -436,9 +436,9 @@ PODS:
   - RNScreens (3.13.1):
     - React-Core
     - React-RCTImage
-  - RNSentry (3.3.2):
+  - RNSentry (4.1.2):
     - React-Core
-    - Sentry (= 7.10.1)
+    - Sentry (= 7.20.0)
   - RNSVG (12.3.0):
     - React-Core
   - RNVectorIcons (8.1.0):
@@ -449,9 +449,9 @@ PODS:
   - SDWebImageWebPCoder (0.8.4):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
-  - Sentry (7.10.1):
-    - Sentry/Core (= 7.10.1)
-  - Sentry/Core (7.10.1)
+  - Sentry (7.20.0):
+    - Sentry/Core (= 7.20.0)
+  - Sentry/Core (7.20.0)
   - SSZipArchive (2.2.3)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
@@ -537,6 +537,7 @@ DEPENDENCIES:
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNSVG (from `../node_modules/react-native-svg`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `7.20.0`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -559,7 +560,6 @@ SPEC REPOS:
     - OpenSSL-Universal
     - SDWebImage
     - SDWebImageWebPCoder
-    - Sentry
     - SSZipArchive
     - YogaKit
     - ZIPFoundation
@@ -675,8 +675,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
+  Sentry:
+    :git: https://github.com/getsentry/sentry-cocoa.git
+    :tag: 7.20.0
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
+
+CHECKOUT OPTIONS:
+  Sentry:
+    :git: https://github.com/getsentry/sentry-cocoa.git
+    :tag: 7.20.0
 
 SPEC CHECKSUMS:
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
@@ -735,7 +743,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 50cfe7049167cfc7e83ac5542c6fff0c76791a9b
   React-runtimeexecutor: bbbdb3d8fcf327c6e2249ee71b6ef1764b7dc266
   ReactCommon: 9bac022ab71596f2b0fde1268272543184c63971
-  RNBootSplash: 2830c475d5793d6cf12312d1e8f5f1decb0dd3e8
+  RNBootSplash: e8a36a88f8c868769ec998c5afe3082032e82fc2
   RNCAsyncStorage: b49b4e38a1548d03b74b30e558a1d18465b94be7
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNCMaskedView: c298b644a10c0c142055b3ae24d83879ecb13ccd
@@ -747,17 +755,17 @@ SPEC CHECKSUMS:
   RNReactNativeHapticFeedback: 4085973f5a38b40d3c6793a3ee5724773eae045e
   RNReanimated: 58b57be69a237fb02ec8099d25171057638cf41a
   RNScreens: 40a2cb40a02a609938137a1e0acfbf8fc9eebf19
-  RNSentry: f8c14c77e400a93331b38538f735c2538f8108a8
+  RNSentry: b7b82fd671772dda9ae063af0b4873251aa04bdb
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815
-  Sentry: ddcd9fde63cfe7e9e2243da59d98daa382413e49
+  Sentry: 9e8ec837fa37e7b397f19f75542800461b138d0e
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: 32a18c0e845e185f4a2a66ec76e1fd1f958f22fa
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: fbe8decbdb8543fcbcd025f66306ed5d55e6c8c4
+PODFILE CHECKSUM: c68ccd93418d297964f420a5a0684e1a60ef7c24
 
 COCOAPODS: 1.11.3
