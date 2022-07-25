@@ -14,6 +14,7 @@ export const Colors = {
   ActionBlue: '#3574F4',
   Black: {
     Primary: '#15161C',
+    Secondary: '#1E1F27',
     Pure: '#000000',
   },
   White: {

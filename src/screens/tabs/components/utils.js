@@ -4,9 +4,9 @@ import { Text } from 'react-native';
 
 import { ACTIVITY_STATUS } from '@/constants/business';
 import shortAddress from '@/utils/shortAddress';
+import { capitalize } from '@/utils/strings.js';
 
 export const parseImageName = name => name.replace('.png', '').toLowerCase();
-const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
 export const getTitle = (type, symbol, swapData, plug) => {
   switch (type) {

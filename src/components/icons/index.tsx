@@ -5,6 +5,7 @@ import ActivityReceiveIcon from './svg/ActivityReceiveIcon';
 import ActivitySendIcon from './svg/ActivitySendIcon';
 import ArrowDownAccountIcon from './svg/ArrowDownAccountIcon';
 import ArrowDownIcon from './svg/ArrowDownIcon';
+import ArrowDownSecondaryIcon from './svg/ArrowDownSecondaryIcon';
 import ArrowRightIcon from './svg/ArrowRightIcon';
 import BurnActivityIcon from './svg/BurnActivityIcon';
 import ChevronLeftIcon from './svg/ChevronLeftIcon';
@@ -71,6 +72,7 @@ export const IconTypes = (type: string) =>
     activityReceive: ActivityReceiveIcon,
     arrowDownAccount: ArrowDownAccountIcon,
     lightingActivity: LightingActivityIcon,
+    arrowDownSecondary: ArrowDownSecondaryIcon,
     passwordEyeClosedIcon: PasswordEyeClosedIcon,
   }[type]);
 

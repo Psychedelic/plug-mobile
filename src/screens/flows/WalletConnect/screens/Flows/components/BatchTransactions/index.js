@@ -1,19 +1,48 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { FlatList, Image, Text, View } from 'react-native';
 
-import styles from '../../../InitialConnection/styles';
+import { FontStyles } from '@/constants/theme';
+import Icon from '@/icons';
+import { capitalize } from '@/utils/strings.js';
 
-function BatchTransactions({ request, args, metadata }) {
-  const { methodName } = args;
-  const { dappUrl, dappName } = request;
+import styles from './styles.js';
+
+function BatchTransactions({ request, metadata }) {
+  const appIcon = metadata.icons[0];
+
+  const renderTransaction = ({ item: { methodName } }) => {
+    // TODO: Change the subtitle value
+    return (
+      <View style={styles.itemContainer}>
+        <View>
+          <Text style={FontStyles.Subtitle2}>{capitalize(methodName)}</Text>
+          <Text style={[FontStyles.Small, styles.itemSubtitle]}>
+            {`${capitalize(methodName)} Backend`}
+          </Text>
+        </View>
+        <View style={styles.appIconContainer}>
+          <Image source={{ uri: appIcon }} style={styles.appIcon} />
+        </View>
+      </View>
+    );
+  };
+
+  const renderSeparator = () => (
+    <View style={styles.separatorContainer}>
+      <Icon name="arrowDownSecondary" />
+    </View>
+  );
 
   return (
-    <>
-      <Text style={styles.title}>{'BATCH TRANSACTIONS'}</Text>
-      <Text style={styles.text}>{`DAP URL: ${dappUrl}`}</Text>
-      <Text style={styles.text}>{`DAP NAME: ${dappName}`}</Text>
-      <Text style={styles.text}>{`METHOD: ${methodName}`}</Text>
-    </>
+    <FlatList
+      bounces={false}
+      data={request.args[1]}
+      renderItem={renderTransaction}
+      style={styles.flatListContainer}
+      showsVerticalScrollIndicator={false}
+      ItemSeparatorComponent={renderSeparator}
+      contentContainerStyle={styles.flatListContentContainer}
+    />
   );
 }
 

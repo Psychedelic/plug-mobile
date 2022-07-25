@@ -207,6 +207,7 @@ const translations = {
     connectTitle: 'Connect Wallet',
     connectTo: 'Would you like to connect your wallet to ',
     cannisterPermission: 'wants pemission to use these canisters:',
+    actionsPermission: 'wants pemission to perform the following actions:',
   },
 };
 

@@ -1,8 +1,14 @@
 import { useRoute } from '@react-navigation/native';
+import { t } from 'i18next';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, Image, Text, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch } from 'react-redux';
 
+import Button from '@/components/buttons/Button';
+import RainbowButton from '@/components/buttons/RainbowButton';
+import { FontStyles } from '@/constants/theme';
+import { Colors } from '@/constants/theme';
 import { ERRORS } from '@/constants/walletconnect';
 import useDisableBack from '@/hooks/useDisableBack';
 import { Container } from '@/layout';
@@ -19,7 +25,7 @@ import RequestConnect from './components/RequestConnect';
 import RequestTransfer from './components/RequestTransfer';
 import styles from './styles';
 
-const SCREENS = {
+const COMPONENTS = {
   transfer: RequestTransfer,
   requestConnect: RequestConnect,
   requestCall: RequestCall,
@@ -42,14 +48,15 @@ function WCFlows() {
     handleError,
     loading,
   } = params || {};
-  const Screen = SCREENS[type];
+  const dappImage = request?.args[0]?.icons[0];
+  const DisplayComponent = COMPONENTS[type];
 
   useDisableBack();
 
   useEffect(() => {
     if (wcTimeout) {
       // TODO: Handle Error.
-      closeScreen();
+      // closeScreen();
     }
   }, [wcTimeout]);
 
@@ -134,14 +141,38 @@ function WCFlows() {
           <ActivityIndicator size="large" color="white" />
         </View>
       ) : (
-        <Screen
-          args={args}
-          request={request}
-          metadata={metadata}
-          sendLoading={sendLoading}
-          onPressSend={onPressSend}
-          onPressCancel={onPressCancel}
-        />
+        <View style={styles.container}>
+          <View style={styles.backgroundLogo}>
+            <Image source={{ uri: dappImage }} style={styles.logo} />
+          </View>
+          <Text style={[FontStyles.Title, styles.dappName]}>
+            {request?.dappName}
+          </Text>
+          <Text style={[FontStyles.NormalGray, styles.subtitle]}>
+            {t('walletConnect.cannisterPermission')}
+          </Text>
+          <DisplayComponent args={args} request={request} metadata={metadata} />
+          <View style={styles.bottomContainer}>
+            <LinearGradient
+              colors={[Colors.Transparent, Colors.Black.Primary]}
+              style={styles.gradient}
+            />
+            <View style={styles.buttonContainer}>
+              <Button
+                text={t('walletConnect.decline')}
+                buttonStyle={styles.buttonStyle}
+                onPress={onPressCancel}
+              />
+              <RainbowButton
+                loading={sendLoading}
+                text={t('walletConnect.allow')}
+                buttonStyle={styles.buttonStyle}
+                onPress={onPressSend}
+                // Hacer que para patch sea Confirm
+              />
+            </View>
+          </View>
+        </View>
       )}
     </Container>
   );

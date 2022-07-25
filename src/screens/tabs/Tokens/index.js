@@ -11,6 +11,7 @@ import { Container, Row, Separator } from '@/layout';
 import { getICPPrice } from '@/redux/slices/icp';
 import { getAssets, setAssetsLoading } from '@/redux/slices/user';
 import Send from '@/screens/flows/Send';
+import Navigation from '@/utils/navigation';
 
 import WalletHeader from '../components/WalletHeader';
 import styles from './styles';
