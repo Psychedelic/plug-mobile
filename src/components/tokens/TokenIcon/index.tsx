@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleProp, Text, View, ViewStyle } from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 
+import Text from '@/components/common/Text';
 import Icon from '@/icons';
 
 import styles from './styles';

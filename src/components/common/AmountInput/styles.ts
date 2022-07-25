@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 
+import { MEDIUM } from '@/constants/fonts';
 import { Colors, FontStyles } from '@/constants/theme';
+import { fontMaker } from '@/utils/fonts';
 
 const inputHeight = 63;
 const commonBorderRadius = 15;
@@ -21,8 +23,11 @@ export default StyleSheet.create({
     paddingHorizontal: 15,
   },
   symbol: {
-    ...FontStyles.NormalGray,
-    fontWeight: '500',
+    ...fontMaker({
+      size: 16,
+      weight: MEDIUM,
+      color: Colors.White.Secondary,
+    }),
     marginLeft: 12,
   },
   focusedGradient: {

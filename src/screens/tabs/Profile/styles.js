@@ -24,7 +24,6 @@ export default StyleSheet.create({
     flex: 1,
   },
   name: {
-    ...FontStyles.Subtitle,
     marginLeft: 12,
     maxWidth: '75%',
   },

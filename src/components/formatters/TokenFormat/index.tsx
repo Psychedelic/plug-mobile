@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleProp, Text, TextStyle } from 'react-native';
+import { StyleProp, TextStyle } from 'react-native';
 import NumberFormat from 'react-number-format';
 
+import Text from '@/components/common/Text';
 import { VISIBLE_DECIMALS } from '@/constants/business';
 
 interface Props {

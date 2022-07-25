@@ -1,9 +1,10 @@
 import { t } from 'i18next';
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 import Icon from '@/icons';
 
+import Text from '../Text';
 import styles from './styles';
 
 function Back({ onPress }) {

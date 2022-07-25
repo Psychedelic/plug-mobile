@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text } from 'react-native';
 
+import Text from '@/components/common/Text';
 import { Row, Separator } from '@/layout';
 
 import styles from './styles';

@@ -1,7 +1,7 @@
 import { useScrollToTop } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, RefreshControl, Text, View } from 'react-native';
+import { FlatList, RefreshControl, View } from 'react-native';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import EmptyState from '@/commonComponents/EmptyState';
@@ -9,6 +9,7 @@ import ErrorState from '@/commonComponents/ErrorState';
 import Header from '@/commonComponents/Header';
 import UserIcon from '@/commonComponents/UserIcon';
 import Button from '@/components/buttons/Button';
+import Text from '@/components/common/Text';
 import { ERROR_TYPES } from '@/constants/general';
 import { ENABLE_NFTS } from '@/constants/nfts';
 import { Colors } from '@/constants/theme';
@@ -66,7 +67,11 @@ const Profile = () => {
               size="large"
               onPress={openAccounts}
             />
-            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.name}>
+            <Text
+              type="subtitle1"
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={styles.name}>
               {currentWallet?.name}
             </Text>
           </View>

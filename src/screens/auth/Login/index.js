@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Keyboard, Text, View } from 'react-native';
+import { Image, Keyboard, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Plug from '@/assets/icons/il_white_plug.png';
@@ -8,6 +8,7 @@ import PasswordInput from '@/commonComponents/PasswordInput';
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import KeyboardScrollView from '@/components/common/KeyboardScrollView';
+import Text from '@/components/common/Text';
 import { isValidPassword } from '@/constants/general';
 import useKeychain from '@/hooks/useKeychain';
 import { Container } from '@/layout';

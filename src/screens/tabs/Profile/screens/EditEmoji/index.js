@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import EmojiSelector from '@/commonComponents/EmojiSelector';
 import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
 import UserIcon from '@/commonComponents/UserIcon';
 import RainbowButton from '@/components/buttons/RainbowButton';
-import { FontStyles } from '@/constants/theme';
+import Text from '@/components/common/Text';
 
 import styles from './styles';
 
@@ -29,11 +29,7 @@ const EditEmoji = ({ modalRef, onSave, emoji }) => {
 
   return (
     <Modal adjustToContentHeight modalRef={modalRef}>
-      <Header
-        center={
-          <Text style={FontStyles.Subtitle2}>{t('accounts.setEmoji')}</Text>
-        }
-      />
+      <Header center={<Text type="subtitle2">{t('accounts.setEmoji')}</Text>} />
       <View style={styles.content}>
         <UserIcon icon={selectedEmoji} size="extralarge" style={styles.icon} />
         <EmojiSelector onSelect={setSelectedEmoji} />
