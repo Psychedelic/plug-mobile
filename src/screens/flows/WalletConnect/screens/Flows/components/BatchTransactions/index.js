@@ -1,48 +1,50 @@
 import React from 'react';
-import { FlatList, Image, Text, View } from 'react-native';
+import { Image, ScrollView, Text, View } from 'react-native';
 
+import CachedImage from '@/components/common/Image';
 import { FontStyles } from '@/constants/theme';
-import Icon from '@/icons';
-import { capitalize } from '@/utils/strings.js';
+import { capitalize } from '@/utils/strings';
 
-import styles from './styles.js';
+import ArrowIcon from '../../assets/ArrowDown.png';
+import styles from './styles';
 
 function BatchTransactions({ request, metadata }) {
   const appIcon = metadata.icons[0];
 
-  const renderTransaction = ({ item: { methodName } }) => {
+  const renderTransaction = ({ methodName }, showSeparator) => {
     // TODO: Change the subtitle value
     return (
-      <View style={styles.itemContainer}>
-        <View>
-          <Text style={FontStyles.Subtitle2}>{capitalize(methodName)}</Text>
-          <Text style={[FontStyles.Small, styles.itemSubtitle]}>
-            {`${capitalize(methodName)} Backend`}
-          </Text>
+      <View style={styles.item}>
+        <View style={styles.itemDataContainer}>
+          <View>
+            <Text style={FontStyles.Subtitle2}>{capitalize(methodName)}</Text>
+            <Text style={[FontStyles.Small, styles.itemSubtitle]}>
+              {`${capitalize(methodName)} Backend`}
+            </Text>
+          </View>
+          <View style={styles.appIconContainer}>
+            <CachedImage url={appIcon} style={styles.appIcon} />
+          </View>
         </View>
-        <View style={styles.appIconContainer}>
-          <Image source={{ uri: appIcon }} style={styles.appIcon} />
-        </View>
+        {showSeparator && (
+          <View style={styles.separatorContainer}>
+            <Image source={ArrowIcon} />
+          </View>
+        )}
       </View>
     );
   };
 
-  const renderSeparator = () => (
-    <View style={styles.separatorContainer}>
-      <Icon name="arrowDownSecondary" />
-    </View>
-  );
-
   return (
-    <FlatList
+    <ScrollView
       bounces={false}
-      data={request.args[1]}
-      renderItem={renderTransaction}
-      style={styles.flatListContainer}
-      showsVerticalScrollIndicator={false}
-      ItemSeparatorComponent={renderSeparator}
-      contentContainerStyle={styles.flatListContentContainer}
-    />
+      style={styles.list}
+      overScrollMode="never"
+      contentContainerStyle={styles.listContentContainer}>
+      {request.args[1].map((item, index) =>
+        renderTransaction(item, index !== request.args[1].length - 1)
+      )}
+    </ScrollView>
   );
 }
 
