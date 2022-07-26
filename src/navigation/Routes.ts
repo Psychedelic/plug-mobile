@@ -1,4 +1,8 @@
-const Routes = {
+import { StringObject } from '@/interfaces/general';
+
+import { RootStackParamList } from './index';
+
+const Routes: StringObject = {
   // Tabs Screens:
   NFTS: 'NFTs',
   TOKENS: 'Tokens',
@@ -18,5 +22,8 @@ const Routes = {
 };
 
 export const NATIVE_ROUTES = Object.values(Routes);
+
+export const getScreenName = (route: string) =>
+  route as keyof RootStackParamList;
 
 export default Routes;

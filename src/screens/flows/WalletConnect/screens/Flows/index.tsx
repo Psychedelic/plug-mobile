@@ -1,7 +1,11 @@
-import { useRoute } from '@react-navigation/native';
+import {
+  NavigationProp,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import { t } from 'i18next';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, Image, Text, View } from 'react-native';
+import { ActivityIndicator, Image, Text, View, ViewStyle } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useDispatch } from 'react-redux';
 
@@ -11,13 +15,14 @@ import { FontStyles } from '@/constants/theme';
 import { Colors } from '@/constants/theme';
 import { ERRORS } from '@/constants/walletconnect';
 import useDisableBack from '@/hooks/useDisableBack';
+import { FlowsParams, WCFlowTypes } from '@/interfaces/walletConnect';
 import { Container } from '@/layout';
-import Routes from '@/navigation/Routes';
+import { RootStackParamList } from '@/navigation/index';
+import Routes, { getScreenName } from '@/navigation/Routes';
 import {
   updateBridgeTimeout,
   walletConnectExecuteAndResponse,
 } from '@/redux/slices/walletconnect';
-import { useNavigation } from '@/utils/navigation';
 
 import BatchTransactions from './components/BatchTransactions';
 import RequestCall from './components/RequestCall';
@@ -26,16 +31,16 @@ import RequestTransfer from './components/RequestTransfer';
 import styles from './styles';
 
 const COMPONENTS = {
-  transfer: RequestTransfer,
-  requestConnect: RequestConnect,
-  requestCall: RequestCall,
-  batchTransactions: BatchTransactions,
+  [WCFlowTypes.transfer]: RequestTransfer,
+  [WCFlowTypes.requestConnect]: RequestConnect,
+  [WCFlowTypes.requestCall]: RequestCall,
+  [WCFlowTypes.batchTransactions]: BatchTransactions,
 };
 
 function WCFlows() {
   const dispatch = useDispatch();
   const { params } = useRoute();
-  const { reset } = useNavigation();
+  const { reset } = useNavigation<NavigationProp<RootStackParamList>>();
   const [sendLoading, setSendLoading] = useState(false);
   const [wcTimeout, setWCTimeout] = useState(false);
   const {
@@ -47,16 +52,17 @@ function WCFlows() {
     handleDeclineArgs,
     handleError,
     loading,
-  } = params || {};
+  } = (params || {}) as FlowsParams;
   const dappImage = request?.args[0]?.icons[0];
   const DisplayComponent = COMPONENTS[type];
-  const isBatchTransactions = type === 'batchTransactions';
+  const isBatchTransactions = type === WCFlowTypes.batchTransactions;
 
   useDisableBack();
 
   useEffect(() => {
     if (wcTimeout) {
       // TODO: Handle Error.
+      // Matt Ale
       closeScreen();
     }
   }, [wcTimeout]);
@@ -72,7 +78,13 @@ function WCFlows() {
     };
   }, []);
 
-  const handleAction = ({ approve = false, error = false }) => {
+  const handleAction = ({
+    approve = false,
+    error,
+  }: {
+    approve?: boolean;
+    error?: { code: number; message: string };
+  }) => {
     const handleActionParams = {
       ...(error
         ? { error }
@@ -83,9 +95,7 @@ function WCFlows() {
       walletConnectExecuteAndResponse({
         ...request,
         ...handleActionParams,
-        onSuccess: () => {
-          closeScreen();
-        },
+        onSuccess: () => closeScreen(),
       })
     );
   };
@@ -93,18 +103,18 @@ function WCFlows() {
   const closeScreen = () => {
     reset({
       index: 1,
-      routes: [{ name: Routes.SWIPE_LAYOUT }],
+      routes: [{ name: getScreenName(Routes.SWIPE_LAYOUT) }],
     });
   };
 
   const onCancel = useCallback(
-    async error => {
+    async (error?: any) => {
       try {
         closeScreen();
         setTimeout(async () => {
           handleAction({ error });
         }, 300);
-      } catch (e) {
+      } catch (e: any) {
         handleAction({ error: ERRORS.SERVER_ERROR(e.message) });
         closeScreen();
       }
@@ -115,7 +125,7 @@ function WCFlows() {
   const handleConfirmTransaction = useCallback(async () => {
     try {
       await handleAction({ approve: true });
-    } catch (e) {
+    } catch (e: any) {
       await handleAction({ error: ERRORS.SERVER_ERROR(e) });
     }
   }, [closeScreen, dispatch, handleAction]);
@@ -173,7 +183,7 @@ function WCFlows() {
                     ? t('walletConnect.confirm')
                     : t('walletConnect.allow')
                 }
-                buttonStyle={styles.buttonStyle}
+                buttonStyle={styles.buttonStyle as ViewStyle}
                 onPress={onPressSend}
               />
             </View>

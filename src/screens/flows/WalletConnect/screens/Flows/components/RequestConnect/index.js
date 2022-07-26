@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, Linking, ScrollView } from 'react-native';
+import { FlatList, Linking } from 'react-native';
 
 import CommonItem from '@/commonComponents/CommonItem';
 

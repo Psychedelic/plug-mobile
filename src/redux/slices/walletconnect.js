@@ -249,10 +249,9 @@ const listenOnNewMessages = createAsyncThunk(
 
 export const walletConnectExecuteAndResponse = createAsyncThunk(
   'walletconnect/executeAndResponse',
-  async (
-    { peerId, requestId, args, opts, error, onSuccess },
-    { dispatch, getState }
-  ) => {
+  /**  @param params { any } */
+  async (params, { dispatch, getState }) => {
+    const { peerId, requestId, args, opts, error, onSuccess } = params;
     try {
       const walletConnector = getState().walletconnect.walletConnectors[peerId];
       const { pendingRedirect } = getState().walletconnect;

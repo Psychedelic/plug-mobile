@@ -1,4 +1,4 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, Theme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React, { forwardRef, memo, useEffect, useRef } from 'react';
 import { AppState, Linking, StyleSheet } from 'react-native';
@@ -7,6 +7,7 @@ import { Host } from 'react-native-portalize';
 import { useSelector } from 'react-redux';
 
 import { Colors } from '@/constants/theme';
+import { State } from '@/interfaces/redux';
 import SwipeNavigator from '@/navigation/navigators/SwipeNavigator';
 import BackupSeedPhrase from '@/screens/auth/BackupSeedPhrase';
 import CreatePassword from '@/screens/auth/CreatePassword';
@@ -18,20 +19,39 @@ import WCFlows from '@/screens/flows/WalletConnect/screens/Flows';
 import WCInitialConnection from '@/screens/flows/WalletConnect/screens/InitialConnection';
 import { handleDeepLink } from '@/utils/deepLink';
 
-import Routes from './Routes';
+import Routes, { getScreenName } from './Routes';
 
-const Stack = createStackNavigator();
+// TODO: Change this with the correct values
+export type RootStackParamList = {
+  NFTs: undefined;
+  Tokens: undefined;
+  Profile: undefined;
+  SwipeLayout: undefined;
+  LoginScreen: { manualLock: boolean };
+  WelcomeScreen: undefined;
+  CreatePassword: undefined;
+  ImportSeedPhrase: undefined;
+  BackupSeedPhrase: undefined;
+  ConnectionError: undefined;
+  WCInitialConnection: undefined;
+  WCFlows: undefined;
+};
 
-const Navigator = ({ routingInstrumentation }, navigationRef) => {
-  const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
-  const timeoutId = useRef(null);
+const Stack = createStackNavigator<RootStackParamList>();
+
+const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
+  const { isInitialized, isUnlocked } = useSelector(
+    (state: State) => state.keyring
+  );
+  const timeoutId = useRef<any>(null);
 
   const handleLockState = () => {
+    // Matt
     // dispatch(setUnlocked(false));
     timeoutId.current = null;
   };
 
-  const handleAppStateChange = async nextAppState => {
+  const handleAppStateChange = async (nextAppState: string) => {
     const initialLink = await Linking.getInitialURL();
 
     if (nextAppState === 'background') {
@@ -39,7 +59,7 @@ const Navigator = ({ routingInstrumentation }, navigationRef) => {
     }
 
     if (nextAppState === 'active' && timeoutId) {
-      clearTimeout(timeoutId);
+      clearTimeout(timeoutId.current);
       timeoutId.current = null;
     }
 
@@ -74,7 +94,7 @@ const Navigator = ({ routingInstrumentation }, navigationRef) => {
     colors: {
       background: Colors.Black.Primary,
     },
-  };
+  } as Theme;
 
   const disableGesturesOption = { gestureEnabled: false };
 
@@ -88,43 +108,49 @@ const Navigator = ({ routingInstrumentation }, navigationRef) => {
       <GestureHandlerRootView style={styles.container}>
         <Host>
           <Stack.Navigator
-            initialRouteName={initialRoute}
+            initialRouteName={getScreenName(initialRoute)}
             screenOptions={{
               headerShown: false,
               cardStyle: { backgroundColor: Colors.Black.Primary },
               gestureEnabled: true,
               gestureDirection: 'horizontal',
             }}>
-            <Stack.Screen name={Routes.WELCOME_SCREEN} component={Welcome} />
-            <Stack.Screen name={Routes.LOGIN_SCREEN} component={Login} />
             <Stack.Screen
-              name={Routes.CREATE_PASSWORD}
+              name={getScreenName(Routes.WELCOME_SCREEN)}
+              component={Welcome}
+            />
+            <Stack.Screen
+              name={getScreenName(Routes.LOGIN_SCREEN)}
+              component={Login}
+            />
+            <Stack.Screen
+              name={getScreenName(Routes.CREATE_PASSWORD)}
               component={CreatePassword}
             />
             <Stack.Screen
-              name={Routes.BACKUP_SEED_PHRASE}
+              name={getScreenName(Routes.BACKUP_SEED_PHRASE)}
               component={BackupSeedPhrase}
             />
             <Stack.Screen
-              name={Routes.IMPORT_SEED_PHRASE}
+              name={getScreenName(Routes.IMPORT_SEED_PHRASE)}
               component={ImportSeedPhrase}
             />
             <Stack.Screen
-              name={Routes.SWIPE_LAYOUT}
+              name={getScreenName(Routes.SWIPE_LAYOUT)}
               component={SwipeNavigator}
               options={disableGesturesOption}
             />
             <Stack.Screen
-              name={Routes.CONNECTION_ERROR}
+              name={getScreenName(Routes.CONNECTION_ERROR)}
               component={ConnectionError}
             />
             <Stack.Screen
-              name={Routes.WALLET_CONNECT_INITAL_CONNECTION}
+              name={getScreenName(Routes.WALLET_CONNECT_INITAL_CONNECTION)}
               component={WCInitialConnection}
               options={disableGesturesOption}
             />
             <Stack.Screen
-              name={Routes.WALLET_CONNECT_FLOWS}
+              name={getScreenName(Routes.WALLET_CONNECT_FLOWS)}
               component={WCFlows}
               options={disableGesturesOption}
             />

@@ -11,7 +11,9 @@ export interface WallectConnectAgent {
   meta: WalletConnectMetadata;
 }
 
-interface WalletConnector {}
+interface WalletConnector {
+  // TODO: Add types
+}
 
 interface WallectConnectSessionRouteParams {
   callback: () => void;
@@ -42,17 +44,52 @@ interface FlowsRequest {
   methodName: string;
   peerId: string;
   requestId: number;
-  args: [];
+  args: [FlowsMetadata, WCWhiteList, number, string];
 }
 
 interface FlowsMetadata {
   url: string;
   name: string;
   pageWidth: number;
-  icons: [];
+  icons: string[];
 }
 
 interface FlowsArgs {
   domainUrl: string;
-  whitelist: any;
+  whitelist: WCWhiteList;
+}
+
+enum WCHandleActionStatus {
+  accepted = 'accepted',
+  refused = 'refused',
+}
+
+interface WCWhiteList {
+  // TODO: add whitelist types
+}
+
+export enum WCFlowTypes {
+  transfer = 'transfer',
+  requestConnect = 'requestConnect',
+  requestCall = 'requestCall',
+  batchTransactions = 'batchTransactions',
+}
+
+export interface FlowsParams {
+  handleError: () => void;
+  loading: boolean;
+  //
+  type: WCFlowTypes;
+  openAutomatically: boolean;
+  request: FlowsRequest;
+  metadata: FlowsMetadata;
+  args: FlowsArgs;
+  handleApproveArgs: [
+    string,
+    { status: WCHandleActionStatus.accepted; whitelist: WCWhiteList }
+  ];
+  handleDeclineArgs: [
+    string,
+    { status: WCHandleActionStatus.refused; whitelist: WCWhiteList }
+  ];
 }

@@ -194,8 +194,7 @@ const ConnectionModule = (dispatch, getState) => {
         const { executor: _executor, ...requestWithoutExecutor } = request;
 
         if (isValidWhitelist) {
-          // Aca manda a la pantalla de Cannister List
-          Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
+          const params = {
             type: 'requestConnect',
             openAutomatically: true,
             request: requestWithoutExecutor,
@@ -203,7 +202,10 @@ const ConnectionModule = (dispatch, getState) => {
             args: { whitelist: whitelistWithInfo, domainUrl },
             handleApproveArgs,
             handleDeclineArgs,
-          });
+          };
+
+          console.tron.log('params', params);
+          Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, params);
         }
       } catch (e) {
         walletConnectExecuteAndResponse({

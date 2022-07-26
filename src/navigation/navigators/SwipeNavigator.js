@@ -20,6 +20,7 @@ const SwipeNavigator = ({ route }) => {
   const { deepLink } = useDeepLink();
   const navigation = useNavigation();
 
+  // Ale y Matt
   // useEffect(() => {
   //   if (deepLink) {
   //     navigation.navigate(Routes.WALLET_CONNECT);

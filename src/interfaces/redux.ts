@@ -55,6 +55,11 @@ export interface IcpState {
 
 export interface KeyringState {
   //TODO: Add types here
+  instance: any;
+  isInitialized: boolean;
+  isUnlocked: boolean;
+  currentWallet: any;
+  wallets: [];
 }
 
 export interface UserState {
