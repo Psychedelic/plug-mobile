@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Switch, Text, View } from 'react-native';
+import { Switch, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
 import PasswordInput from '@/commonComponents/PasswordInput';
 import RainbowButton from '@/components/buttons/RainbowButton';
+import Text from '@/components/common/Text';
 import { isValidPassword } from '@/constants/general';
 import { FontStyles } from '@/constants/theme';
 import { Colors } from '@/constants/theme';
@@ -76,7 +77,7 @@ function BiometricUnlock({ modalRef }) {
           </Text>
         }
         center={
-          <Text style={styles.title}>{t('settings.items.biometric.name')}</Text>
+          <Text type="subtitle2">{t('settings.items.biometric.name')}</Text>
         }
       />
       <Column style={styles.container}>
@@ -86,6 +87,7 @@ function BiometricUnlock({ modalRef }) {
               error={error}
               password={password}
               onChange={setPassword}
+              onSubmit={handleSubmit}
             />
             <RainbowButton
               text={t('common.continue')}

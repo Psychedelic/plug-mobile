@@ -1,37 +1,73 @@
 import { Contact } from '@/screens/tabs/Profile/screens/Contacts/utils';
 
-export interface Token {
+export interface CollectionToken {
   id: string;
   index: number | string;
   canister: string;
   url: string;
   standard: string;
   collection: string;
-  metadata?: [];
+  owner?: string;
+  metadata?: any;
 }
 
 export interface Collection {
   name: string;
   canisterId: string;
-  standar: string;
-  descirption: string;
+  standard: string;
+  description: string;
   icon: string;
-  tokens: Token[];
+  tokens: CollectionToken[];
 }
 
 export interface CanisterInfo {
-  //TODO: Add types here
+  thumbnail: string;
+  name: string;
+  frontend: string[];
+  description: string;
+  details: {
+    standard: string;
+    symbol?: string;
+    total_supply?: number;
+    verified?: boolean;
+    decimals?: number;
+    fee?: number;
+  };
+  principal_id: {
+    _arr: any;
+    _isPrincipal: boolean;
+  };
+  logo?: string;
+  icon?: string;
+  website?: string;
+  standard: string;
+  total_supply?: number[];
+  symbol?: string;
+}
+
+interface Currency {
+  symbol: string;
+  decimals: number;
 }
 
 export interface TransactionDetails {
-  //TODO: Add types here
+  status: string; //check if this is correct
+  fee: {
+    amount: string;
+    currency: Currency;
+  };
+  from: string;
+  amount: string;
+  currency: Currency;
+  to: string;
+  caller: string;
 }
 
 export interface Transaction {
   amount: string | number;
   value: string | number;
   icon: string;
-  type: string;
+  type: string; //TODO: Add types here SEND/RECEIVE. Check ACTIVITY_TYPES
   symbol: string;
   hash: string;
   to: string;
@@ -40,17 +76,23 @@ export interface Transaction {
   status?: number | string;
   image: string;
   canisterId?: string;
-  plug?: null;
+  plug?: null; //TODO: What's this?
   canisterInfo?: CanisterInfo;
   details?: TransactionDetails;
 }
 
-export interface Assets {
-  //TODO: Add types here
+export interface Asset {
+  amount: number;
+  value: number;
+  icon?: string;
+  symbol: string;
+  decimals: number;
+  name: string;
+  canisterId: string;
 }
 
 export interface IcpState {
-  //TODO: Add types here
+  icpPrice: number;
 }
 
 export interface KeyringState {
@@ -63,7 +105,7 @@ export interface KeyringState {
 }
 
 export interface UserState {
-  assets: Assets;
+  assets: Asset[];
   assetsError: boolean;
   assetsLoading: boolean;
   contacts: Contact[];
@@ -76,8 +118,6 @@ export interface UserState {
   collectionsError: boolean;
   usingBiometrics: boolean;
   biometricsAvailable: boolean;
-  scrollOnProfile: boolean;
-  scrollOnNFTs: boolean;
 }
 
 export interface State {

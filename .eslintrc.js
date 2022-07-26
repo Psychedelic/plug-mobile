@@ -8,4 +8,7 @@ module.exports = {
     'react-hooks/exhaustive-deps': 0,
     'simple-import-sort/imports': 'error',
   },
+  globals: {
+    BigInt: true,
+  },
 };

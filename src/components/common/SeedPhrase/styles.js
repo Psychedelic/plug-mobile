@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors, FontStyles } from '@/constants/theme';
+import { SEMIBOLD } from '@/constants/fonts';
+import { Colors } from '@/constants/theme';
+import { fontMaker } from '@/utils/fonts';
 
 export default StyleSheet.create({
   container: {
@@ -14,6 +16,7 @@ export default StyleSheet.create({
     paddingVertical: 25,
     alignContent: 'space-between',
     position: 'relative',
+    overflow: 'hidden',
     borderColor: Colors.Gray.Secondary,
     borderWidth: 1,
   },
@@ -27,13 +30,11 @@ export default StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
   },
   reveal: {
-    ...FontStyles.Normal,
-    fontWeight: 'bold',
+    ...fontMaker({ size: 16, weight: SEMIBOLD, color: Colors.White.Primary }),
     marginTop: 6,
   },
 });

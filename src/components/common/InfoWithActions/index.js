@@ -1,11 +1,12 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import Touchable from '@/commonComponents/Touchable';
 import Icon from '@/icons';
 import animationScales from '@/utils/animationScales';
 
+import Text from '../Text';
 import styles from './styles';
 
 const InfoWithActions = ({ text, colors, actions }) => {

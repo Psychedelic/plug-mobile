@@ -1,7 +1,11 @@
 import { StyleSheet } from 'react-native';
 
+import { SEMIBOLD } from '@/constants/fonts';
 import { pixelRatioScale } from '@/constants/platform';
 import { Colors } from '@/constants/theme';
+import { fontMaker } from '@/utils/fonts';
+
+const commonMargin = 20;
 
 export default StyleSheet.create({
   container: {
@@ -14,26 +18,28 @@ export default StyleSheet.create({
     flex: 1,
   },
   input: {
-    width: '84%',
+    width: '100%',
   },
   plugIcon: {
-    height: pixelRatioScale(50),
+    height: pixelRatioScale(30),
     resizeMode: 'contain',
   },
   title: {
+    ...fontMaker({
+      size: 26,
+      weight: SEMIBOLD,
+      color: Colors.White.Primary,
+    }),
     justifyContent: 'center',
     alignItems: 'center',
-    color: Colors.White.Primary,
-    fontSize: 26,
-    fontWeight: 'bold',
-    marginVertical: 27,
+    paddingVertical: commonMargin,
   },
   componentMargin: {
-    marginTop: 27,
+    marginTop: commonMargin,
   },
   buttonMargin: {
-    marginTop: 27,
-    minWidth: '84%',
+    marginTop: commonMargin,
+    minWidth: '100%',
   },
   errorText: {
     marginTop: 5,

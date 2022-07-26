@@ -1,5 +1,6 @@
-import PlugController from '@psychedelic/plug-mobile-controller';
+import PlugController from '@psychedelic/plug-controller-beta';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import RNCryptoJS from 'react-native-crypto-js';
 import { fetch } from 'react-native-fetch-api';
 
 import { generateMnemonic } from '../../utils/crypto';
@@ -7,7 +8,7 @@ import { getPrivateAssetsAndTransactions } from '../../utils/keyringUtils';
 import { keyringStorage } from '../store';
 import { getNewAccountData, resetStores } from '../utils';
 import {
-  getAssets,
+  getBalance,
   getContacts,
   getNFTs,
   getTransactions,
@@ -18,7 +19,11 @@ import {
 } from './user';
 
 export const initKeyring = createAsyncThunk('keyring/init', async () => {
-  let keyring = new PlugController.PlugKeyRing(keyringStorage, fetch);
+  let keyring = new PlugController.PlugKeyRing(
+    keyringStorage,
+    RNCryptoJS,
+    fetch
+  );
   await keyring.init();
   if (keyring?.isUnlocked) {
     const state = await keyring.getState();
@@ -149,7 +154,7 @@ export const login = createAsyncThunk(
         dispatch(setCurrentWallet(wallets[currentWalletId]));
         dispatch(setWallets(wallets));
         dispatch(setAssetsLoading(true));
-        dispatch(getAssets({ refresh: true, icpPrice }));
+        dispatch(getBalance());
         dispatch(setTransactionsLoading(true));
         dispatch(getTransactions({ icpPrice }));
         dispatch(getNFTs());
@@ -283,16 +288,20 @@ export const keyringSlice = createSlice({
     },
     [createWallet.fulfilled]: (state, action) => {
       const { wallet, unlocked } = action.payload;
-      state.currentWallet = wallet;
-      state.wallets = [wallet];
-      state.isInitialized = true;
-      state.isUnlocked = unlocked;
+      if (Object.keys(wallet).length > 0) {
+        state.currentWallet = wallet;
+        state.wallets = [wallet];
+        state.isInitialized = true;
+        state.isUnlocked = unlocked;
+      }
     },
     [importWallet.fulfilled]: (state, action) => {
       const { wallet } = action.payload;
-      state.wallets = [wallet];
-      state.currentWallet = wallet;
-      state.isInitialized = true;
+      if (Object.keys(wallet).length > 0) {
+        state.wallets = [wallet];
+        state.currentWallet = wallet;
+        state.isInitialized = true;
+      }
     },
   },
 });

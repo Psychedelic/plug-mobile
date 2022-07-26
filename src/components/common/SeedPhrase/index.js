@@ -1,13 +1,14 @@
 import { BlurView } from '@react-native-community/blur';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Text, View } from 'react-native';
+import { Image, View } from 'react-native';
 
 import KeyImg from '@/assets/icons/key.png';
 import ListItem from '@/commonComponents/ListItem';
 import Touchable from '@/commonComponents/Touchable';
 import { TestIds } from '@/constants/testIds';
 
+import Text from '../Text';
 import styles from './styles';
 
 const SeedPhrase = ({ mnemonic, onReveal = () => null }) => {
@@ -34,11 +35,12 @@ const SeedPhrase = ({ mnemonic, onReveal = () => null }) => {
             style={styles.absolute}
             blurType={'dark'}
             reducedTransparencyFallbackColor="black"
-          />
-          <Touchable onPress={revealSeedPhrase} style={styles.absolute}>
-            <Image source={KeyImg} />
-            <Text style={styles.reveal}>{t('common.revealPhrase')}</Text>
-          </Touchable>
+            overlayColor="transparent">
+            <Touchable onPress={revealSeedPhrase} style={styles.absolute}>
+              <Image source={KeyImg} />
+              <Text style={styles.reveal}>{t('common.revealPhrase')}</Text>
+            </Touchable>
+          </BlurView>
         </>
       )}
     </View>

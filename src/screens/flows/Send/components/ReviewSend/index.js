@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/core';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import Header from '@/commonComponents/Header';
@@ -10,11 +10,11 @@ import NftDisplayer from '@/commonComponents/NftDisplayer';
 import UserIcon from '@/commonComponents/UserIcon';
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
+import Text from '@/components/common/Text';
 import Icon from '@/components/icons';
 import TokenIcon from '@/components/tokens/TokenIcon';
 import { VISIBLE_DECIMALS } from '@/constants/business';
 import { Colors, FontStyles } from '@/constants/theme';
-import TokenFormat from '@/formatters/TokenFormat';
 import useGetType from '@/hooks/useGetType';
 import { Column } from '@/layout';
 import { Row } from '@/layout';
@@ -115,14 +115,14 @@ const ReviewSend = ({
       {...props}
       fullHeight={isSuccess || isError}>
       <View style={styles.content}>
-        <Header center={<Text style={FontStyles.Subtitle2}>{title}</Text>} />
+        <Header center={<Text type="subtitle2">{title}</Text>} />
         {ReviewIcon}
         {token && (
           <Row style={styles.row}>
             <Column>
-              <Text style={FontStyles.Title2}>${value?.display}</Text>
-              <Text style={FontStyles.Subtitle3}>
-                <TokenFormat value={amount?.display} token={token.symbol} />
+              <Text style={styles.title}>${value?.display}</Text>
+              <Text type="subtitle3">
+                <Text>{`${amount?.display} ${token.symbol}`}</Text>
               </Text>
             </Column>
             <TokenIcon {...token} color={Colors.Gray.Tertiary} />
@@ -131,10 +131,8 @@ const ReviewSend = ({
         {nft && (
           <Row style={styles.row}>
             <Column>
-              <Text style={FontStyles.Title2}>{`#${nft.index}`}</Text>
-              <Text style={FontStyles.Subtitle3}>
-                {nft.name || `${nft.collection}`}
-              </Text>
+              <Text style={styles.title}>{`#${nft.index}`}</Text>
+              <Text type="subtitle3">{nft.name || `${nft.collection}`}</Text>
             </Column>
             <NftDisplayer url={nft.url} type={nftType} isSend />
           </Row>
@@ -149,14 +147,14 @@ const ReviewSend = ({
           <Column>
             {selectedContact ? (
               <>
-                <Text style={FontStyles.Title2}>{selectedContact?.name}</Text>
-                <Text style={FontStyles.Subtitle3}>
+                <Text style={styles.title}>{selectedContact?.name}</Text>
+                <Text type="subtitle3">
                   {shortAddress(selectedContact?.id)}
                 </Text>
               </>
             ) : (
               <>
-                <Text style={FontStyles.Title2}>{shortAddress(to)}</Text>
+                <Text style={styles.title}>{shortAddress(to)}</Text>
                 <Text
                   style={[FontStyles.Normal, styles.valid]}
                   onPress={handleSaveContact}>
@@ -169,7 +167,7 @@ const ReviewSend = ({
         </Row>
         {token && (
           <Row style={styles.row}>
-            <Text style={FontStyles.Subtitle3}>
+            <Text type="subtitle3">
               {t('reviewSend.totalFee', {
                 value: `${currentFee} ${token?.symbol} ($${Number(
                   currentUSDFee.toFixed(VISIBLE_DECIMALS)

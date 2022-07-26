@@ -1,8 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+import { JELLY_CANISTER_ID } from '@/constants/canister';
 import { ENABLE_NFTS } from '@/constants/nfts';
 import { getICPPrice } from '@/redux/slices/icp';
-import { formatAssets, parseAssetsAmount } from '@/utils/assets';
+import { formatAssets, parseToBigIntString } from '@/utils/currencies';
+import { recursiveParseBigint } from '@/utils/objects';
 
 import {
   DEFAULT_ASSETS,
@@ -10,8 +12,7 @@ import {
   filterICNSContacts,
   formatContact,
   formatContactForController,
-  mapTransaction,
-  recursiveParseBigint,
+  formatTransaction,
   TRANSACTION_STATUS,
 } from '../utils';
 
@@ -29,13 +30,11 @@ const DEFAULT_STATE = {
   collectionsError: false,
   usingBiometrics: false,
   biometricsAvailable: false,
-  scrollOnProfile: false,
-  scrollOnNFTs: false,
 };
 
 export const sign = createAsyncThunk(
   'keyring/sign',
-  async (params, { getState, dispatch }) => {
+  async (params, { getState }) => {
     const { msg } = params;
     const { keyring } = getState();
     const result = await keyring.instance.sign(msg);
@@ -48,23 +47,28 @@ export const sendToken = createAsyncThunk(
   async (params, { getState, dispatch }) => {
     try {
       const { to, amount, canisterId, opts, icpPrice } = params;
-      const state = getState();
-      const { height, transactionId } = await state.keyring.instance?.send(
+      const { keyring } = getState();
+      const { token } = await keyring?.instance?.getTokenInfo({ canisterId });
+      const { decimals } = token;
+      const parsedAmount = parseToBigIntString(amount, parseInt(decimals, 10));
+      const { height, transactionId } = await keyring.instance?.send({
         to,
-        amount,
+        amount: parsedAmount,
         canisterId,
-        opts
-      );
+        opts,
+      });
       if (transactionId || height) {
         dispatch(setAssetsLoading(true));
         dispatch(setTransactionsLoading(true));
-        dispatch(getAssets({ refresh: true, icpPrice }));
+        dispatch(getBalance());
         dispatch(getTransactions({ icpPrice }));
       }
       return {
         response: {
-          height: parseInt(height?.toString?.(), 10),
-          transactionId: parseInt(transactionId?.toString?.(), 10),
+          height: height ? parseInt(height, 10) : undefined,
+          transactionId: transactionId
+            ? parseInt(transactionId, 10)
+            : undefined,
         },
         status: TRANSACTION_STATUS.success,
       };
@@ -81,8 +85,8 @@ export const burnXtc = createAsyncThunk(
   'keyring/burnXtc',
   async (params, { getState }) => {
     try {
-      const state = getState();
-      const response = await state.keyring.instance?.burnXTC(params);
+      const { keyring } = getState();
+      const response = await keyring.instance?.burnXTC(params);
       return {
         response: recursiveParseBigint(response),
         status: TRANSACTION_STATUS.success,
@@ -110,64 +114,42 @@ export const setAssetsAndLoading = createAsyncThunk(
   'keyring/setAssetsAndTransactions',
   async (params, { dispatch }) => {
     const { assets } = params;
-    const formattedAssets = formatAssets(assets);
-    dispatch(
-      setAssets(formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS)
-    );
+    dispatch(setAssets(assets?.length > 0 ? assets : DEFAULT_ASSETS));
     dispatch(setAssetsLoading(false));
   }
 );
 
-export const getAssets = createAsyncThunk(
-  'keyring/getAssets',
+export const getBalance = createAsyncThunk(
+  'keyring/getBalance',
   async (params, { getState, dispatch }) => {
-    return privateGetAssets(params, getState(), dispatch);
+    return asyncGetBalance(params, getState(), dispatch);
   }
 );
 
-export const privateGetAssets = async (params, state, dispatch) => {
+export const asyncGetBalance = async (params, state, dispatch) => {
   try {
     dispatch(setAssetsError(false));
-    const { refresh, icpPrice } = params;
+    const { refresh = true, subaccount } = params || {};
     const { instance } = state.keyring;
     const response = await instance?.getState();
     const { wallets, currentWalletId } = response || {};
     let assets = wallets?.[currentWalletId]?.assets || [];
-    if (
-      !assets.length ||
-      assets?.every(asset => parseFloat(asset.amount) <= 0) ||
-      refresh
-    ) {
-      assets = await instance?.getBalance();
+
+    const shouldUpdate =
+      Object.values(assets)?.every(asset => !Number(asset.amount)) ||
+      Object.values(assets)?.some(asset => Number.isNaN(asset.amount)) ||
+      refresh;
+
+    if (shouldUpdate) {
+      assets = await instance?.getBalances(subaccount);
     } else {
-      instance?.getBalance();
+      instance?.getBalances(subaccount);
     }
-    return { assets, icpPrice };
-  } catch (e) {
-    console.log('private getAssets error', e);
-    dispatch(setAssetsError(true));
-  }
-};
 
-export const getBalance = createAsyncThunk(
-  'keyring/getBalance',
-  async (params, { getState, dispatch }) => {
-    return privateGetBalance(params, getState(), dispatch);
-  }
-);
-
-export const privateGetBalance = async (params, state, dispatch) => {
-  try {
-    const { subaccount } = params;
-    const { instance } = state.keyring;
     const icpPrice = await dispatch(getICPPrice()).unwrap();
-
-    const assets = await instance?.getBalance(subaccount);
-    const parsedAssets = parseAssetsAmount(assets);
-
-    return formatAssets(parsedAssets, icpPrice);
+    return formatAssets(assets, icpPrice);
   } catch (e) {
-    console.log('privateGetBalance error', e);
+    console.log('asyncGetBalance error', e);
     dispatch(setAssetsError(true));
   }
 };
@@ -209,10 +191,21 @@ export const privateGetTransactions = async (params, state, dispatch) => {
     dispatch(setTransactionsError(false));
     const { icpPrice } = params;
     const response = await state.keyring.instance?.getTransactions();
-    const parsedTrx =
-      response?.transactions?.map(mapTransaction(icpPrice, state)) || [];
+    let parsedTrx =
+      response?.transactions?.map(formatTransaction(icpPrice, state)) || [];
 
     dispatch(setTransactionsLoading(false));
+
+    if (!ENABLE_NFTS) {
+      parsedTrx = parsedTrx.filter(
+        item =>
+          !(
+            item?.symbol === 'NFT' ||
+            item?.details.canisterId === JELLY_CANISTER_ID
+          )
+      );
+    }
+
     return parsedTrx;
   } catch (e) {
     dispatch(setTransactionsError(true));
@@ -392,12 +385,6 @@ export const userSlice = createSlice({
     setAssets: (state, action) => {
       state.assets = action.payload;
     },
-    setScrollOnProfile: (state, action) => {
-      state.scrollOnProfile = action.payload;
-    },
-    setScrollOnNFTs: (state, action) => {
-      state.scrollOnNFTs = action.payload;
-    },
     setAssetsError: (state, action) => {
       state.assetsError = action.payload;
     },
@@ -440,10 +427,9 @@ export const userSlice = createSlice({
     [burnXtc.fulfilled]: (state, action) => {
       state.transaction = action.payload;
     },
-    [getAssets.fulfilled]: (state, action) => {
-      const formattedAssets = formatAssets(action.payload || []);
-      state.assets =
-        formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS;
+    [getBalance.fulfilled]: (state, action) => {
+      const assets = action.payload;
+      state.assets = assets?.length > 0 ? assets : DEFAULT_ASSETS;
       state.assetsLoading = false;
     },
     [getNFTs.fulfilled]: (state, action) => {
@@ -474,8 +460,6 @@ export const userSlice = createSlice({
 });
 
 export const {
-  setScrollOnNFTs,
-  setScrollOnProfile,
   setTransactionsError,
   setCollectionsError,
   setAssetsError,

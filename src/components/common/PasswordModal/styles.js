@@ -8,9 +8,7 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 40,
   },
-  title: {
-    ...FontStyles.Subtitle2,
-  },
+  title: FontStyles.Subtitle2,
   buttonStyle: {
     marginTop: 20,
   },

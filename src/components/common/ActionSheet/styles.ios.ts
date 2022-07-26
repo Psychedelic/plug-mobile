@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 
+import { SEMIBOLD } from '@/constants/fonts';
 import { Colors } from '@/constants/theme';
+import { fontMaker } from '@/utils/fonts';
 
 const ITEM_RADIUS = 14;
 export const ICON_COLOR = Colors.White.Secondary;
@@ -51,7 +53,5 @@ export default StyleSheet.create({
     marginHorizontal: 8,
     marginBottom: 8,
   },
-  cancelText: {
-    fontWeight: 'bold',
-  },
+  cancelText: fontMaker({ weight: SEMIBOLD }),
 });

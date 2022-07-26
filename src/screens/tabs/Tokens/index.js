@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RefreshControl, ScrollView, Text } from 'react-native';
+import { RefreshControl, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ErrorState from '@/commonComponents/ErrorState';
+import Text from '@/components/common/Text';
 import TokenItem from '@/components/tokens/TokenItem';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
 import { Container, Row, Separator } from '@/layout';
-import { getICPPrice } from '@/redux/slices/icp';
-import { getAssets, setAssetsLoading } from '@/redux/slices/user';
+import { getBalance, setAssetsLoading } from '@/redux/slices/user';
 import Send from '@/screens/flows/Send';
 import Navigation from '@/utils/navigation';
 
@@ -24,25 +24,20 @@ function Tokens() {
   const { assets, assetsLoading, assetsError } = useSelector(
     state => state.user
   );
-  const { icpPrice } = useSelector(state => state.icp);
+
   const [refreshing, setRefresing] = useState(assetsLoading);
   const usdSum = Number(
     assets.reduce((total, token) => total + Number(token?.value), 0)
   ).toFixed(2);
 
   useEffect(() => {
-    dispatch(getICPPrice());
-  }, []);
-
-  useEffect(() => {
     setRefresing(assetsLoading);
   }, [assetsLoading]);
 
   const onRefresh = () => {
-    dispatch(getICPPrice());
     setRefresing(true);
     dispatch(setAssetsLoading(true));
-    dispatch(getAssets({ refresh: true, icpPrice }));
+    dispatch(getBalance());
   };
 
   const handleRefresh = () => {
@@ -75,8 +70,8 @@ function Tokens() {
           }>
           {assets?.map(token => (
             <TokenItem
-              key={token.symbol}
               {...token}
+              key={token.symbol}
               color={Colors.Gray.Tertiary}
               onPress={openSend(token)}
               style={styles.tokenItem}

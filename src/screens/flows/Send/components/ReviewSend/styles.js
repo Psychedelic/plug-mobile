@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors } from '@/constants/theme';
+import { Colors, FontStyles } from '@/constants/theme';
 
 export default StyleSheet.create({
   content: {
@@ -34,4 +34,5 @@ export default StyleSheet.create({
     marginTop: 4,
     color: Colors.ActionBlue,
   },
+  title: FontStyles.Title2,
 });

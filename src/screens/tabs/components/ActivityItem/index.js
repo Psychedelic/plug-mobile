@@ -1,7 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
+import Text from '@/components/common/Text';
 import { VISIBLE_DECIMALS } from '@/constants/business';
 import { FontStyles } from '@/constants/theme';
 import UsdFormat from '@/formatters/UsdFormat';
@@ -10,7 +11,7 @@ import { formatToMaxDecimals } from '@/utils/number';
 import shortAddress from '@/utils/shortAddress';
 
 import ActivityIcon from '../ActivityIcon';
-import { getStatus, getSubtitle, getTitle } from '../utils';
+import { getCanisterName, getStatus, getSubtitle, getTitle } from '../utils';
 import styles, { HEIGHT } from './styles';
 
 export const ITEM_HEIGHT = HEIGHT;
@@ -61,7 +62,7 @@ const ActivityItem = ({
               numberOfLines={1}
               ellipsizeMode="tail"
               style={[FontStyles.SmallGray, styles.canisterName]}>
-              {canisterInfo?.name || canisterId}
+              {getCanisterName(canisterInfo, canisterId)}
             </Text>
           </>
         ) : isSwap || isLiquidity ? (

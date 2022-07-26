@@ -1,7 +1,7 @@
 import emojis from 'emoji-datasource';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Keyboard, Text, View } from 'react-native';
+import { Keyboard, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { charFromEmojiObject } from '@/commonComponents/EmojiSelector/utils';
@@ -10,6 +10,7 @@ import Modal from '@/commonComponents/Modal';
 import TextInput from '@/commonComponents/TextInput';
 import UserIcon from '@/commonComponents/UserIcon';
 import RainbowButton from '@/components/buttons/RainbowButton';
+import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
 import { addContact, editContact } from '@/redux/slices/user';
 import { validatePrincipalId } from '@/utils/ids';
@@ -59,6 +60,7 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
       );
 
       modalRef.current?.close();
+      clearState();
     }
   };
 
@@ -73,6 +75,7 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
     if (contact) {
       setName(contact.name);
       setId(contact.id);
+      setEmoji(contact.image);
     } else {
       clearState();
     }
@@ -127,7 +130,7 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
             {t('common.back')}
           </Text>
         }
-        center={<Text style={styles.title}>{title}</Text>}
+        center={<Text type="subtitle2">{title}</Text>}
       />
       <View style={styles.container}>
         {isEditContact && (

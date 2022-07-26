@@ -4,11 +4,12 @@ import React, { forwardRef, memo, useEffect, useRef } from 'react';
 import { AppState, Linking, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Host } from 'react-native-portalize';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Colors } from '@/constants/theme';
 import { State } from '@/interfaces/redux';
 import SwipeNavigator from '@/navigation/navigators/SwipeNavigator';
+import { setUnlocked } from '@/redux/slices/keyring';
 import BackupSeedPhrase from '@/screens/auth/BackupSeedPhrase';
 import CreatePassword from '@/screens/auth/CreatePassword';
 import ImportSeedPhrase from '@/screens/auth/ImportSeedPhrase';
@@ -43,24 +44,28 @@ const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
   const { isInitialized, isUnlocked } = useSelector(
     (state: State) => state.keyring
   );
-  const timeoutId = useRef<any>(null);
+  const dispatch = useDispatch();
+  const backgroundTime = useRef<any>(null);
 
   const handleLockState = () => {
-    // Matt
-    // dispatch(setUnlocked(false));
-    timeoutId.current = null;
+    dispatch(setUnlocked(false));
   };
 
   const handleAppStateChange = async (nextAppState: string) => {
     const initialLink = await Linking.getInitialURL();
 
     if (nextAppState === 'background') {
-      timeoutId.current = setTimeout(handleLockState, 120000);
+      backgroundTime.current = Date.now();
     }
 
-    if (nextAppState === 'active' && timeoutId) {
-      clearTimeout(timeoutId.current);
-      timeoutId.current = null;
+    if (nextAppState === 'active') {
+      if (backgroundTime.current) {
+        const timeDiff = Date.now() - backgroundTime.current;
+        if (timeDiff > 120000) {
+          handleLockState();
+        }
+      }
+      backgroundTime.current = null;
     }
 
     if (initialLink) {

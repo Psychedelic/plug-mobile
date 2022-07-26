@@ -16,6 +16,7 @@ module.exports = {
           '@/hooks': './src/hooks',
           '@/interfaces': './src/interfaces',
           '@/modules': './src/modules',
+          '@/interfaces': './src/interfaces',
           '@/navigation': './src/navigation',
           '@/redux': './src/redux',
           '@/screens': './src/screens',

@@ -1,5 +1,8 @@
 import { StyleSheet } from 'react-native';
 
+import { SEMIBOLD } from '@/constants/fonts';
+import { fontMaker } from '@/utils/fonts';
+
 export default StyleSheet.create({
   buttons: {
     height: 165,
@@ -16,8 +19,7 @@ export default StyleSheet.create({
     width: 75,
   },
   text: {
-    fontWeight: '600',
-    fontSize: 16,
+    ...fontMaker({ size: 16, weight: SEMIBOLD }),
     marginTop: 4,
   },
 });

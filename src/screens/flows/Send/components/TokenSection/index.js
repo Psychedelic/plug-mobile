@@ -1,10 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
+import Text from '@/components/common/Text';
 import TokenItem from '@/components/tokens/TokenItem';
 import { ENABLE_NFTS } from '@/constants/nfts';
-import { Colors, FontStyles } from '@/constants/theme';
+import { Colors } from '@/constants/theme';
 import NftItem from '@/screens/tabs/components/NftItem';
 
 import styles from './styles';
@@ -17,7 +18,7 @@ const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }) => {
 
   return (
     <>
-      <Text style={FontStyles.Subtitle3}>{t('common.tokens')}</Text>
+      <Text type="subtitle3">{t('common.tokens')}</Text>
       {tokens.map(token => (
         <TokenItem
           {...token}
@@ -29,10 +30,16 @@ const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }) => {
       ))}
       {ENABLE_NFTS && (
         <>
-          <Text style={styles.title}>{t('common.collectibles')}</Text>
+          <Text type="subtitle3" style={styles.nftText}>
+            {t('common.collectibles')}
+          </Text>
           <View style={styles.nftsContainer}>
-            {nfts.map((item, index) => (
-              <NftItem key={index} item={item} onOpen={handleOnOpenNFT} />
+            {nfts.map(item => (
+              <NftItem
+                key={`${item.canisterId}_${item.index}`}
+                item={item}
+                onOpen={handleOnOpenNFT}
+              />
             ))}
           </View>
         </>
