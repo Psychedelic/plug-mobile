@@ -15,10 +15,10 @@ import { FontStyles } from '@/constants/theme';
 import { Colors } from '@/constants/theme';
 import { ERRORS } from '@/constants/walletconnect';
 import useDisableBack from '@/hooks/useDisableBack';
+import { RootStackParamList } from '@/interfaces/navigation';
 import { FlowsParams, WCFlowTypes } from '@/interfaces/walletConnect';
 import { Container } from '@/layout';
-import { RootStackParamList } from '@/navigation/index';
-import Routes, { getScreenName } from '@/navigation/Routes';
+import Routes from '@/navigation/Routes';
 import {
   updateBridgeTimeout,
   walletConnectExecuteAndResponse,
@@ -103,7 +103,7 @@ function WCFlows() {
   const closeScreen = () => {
     reset({
       index: 1,
-      routes: [{ name: getScreenName(Routes.SWIPE_LAYOUT) }],
+      routes: [{ name: Routes.SWIPE_LAYOUT }],
     });
   };
 
