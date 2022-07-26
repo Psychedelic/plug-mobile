@@ -26,25 +26,28 @@ const Stack = createStackNavigator();
 
 const Navigator = ({ routingInstrumentation }, navigationRef) => {
   const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
-  const timeoutId = useRef(null);
   const dispatch = useDispatch();
+  const backgroundTime = useRef(null);
 
   const handleLockState = () => {
     dispatch(setUnlocked(false));
-    timeoutId.current = null;
   };
 
   const handleAppStateChange = async nextAppState => {
     const initialLink = await Linking.getInitialURL();
 
     if (nextAppState === 'background') {
-      clearTimeout(timeoutId.current);
-      timeoutId.current = setTimeout(handleLockState, 120000);
+      backgroundTime.current = Date.now();
     }
 
-    if (nextAppState === 'active' && timeoutId) {
-      clearTimeout(timeoutId.current);
-      timeoutId.current = null;
+    if (nextAppState === 'active') {
+      if (backgroundTime.current) {
+        const timeDiff = Date.now() - backgroundTime.current;
+        if (timeDiff > 120000) {
+          handleLockState();
+        }
+      }
+      backgroundTime.current = null;
     }
 
     if (initialLink) {

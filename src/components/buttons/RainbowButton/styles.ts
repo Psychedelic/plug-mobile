@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors } from '@/constants/theme';
+import { FontStyles } from '@/constants/theme';
 
 export const styles = StyleSheet.create({
   button: {
@@ -10,11 +10,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  textRainbow: {
-    color: Colors.White.Pure,
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
+  textRainbow: FontStyles.Button,
   buttonRainbow: {
     backgroundColor: 'transparent',
   },

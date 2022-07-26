@@ -15,6 +15,7 @@ module.exports = {
           '@/constants': './src/constants',
           '@/hooks': './src/hooks',
           '@/modules': './src/modules',
+          '@/interfaces': './src/interfaces',
           '@/navigation': './src/navigation',
           '@/redux': './src/redux',
           '@/screens': './src/screens',

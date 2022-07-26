@@ -1,7 +1,7 @@
 import Clipboard from '@react-native-community/clipboard';
 import { t } from 'i18next';
 import React, { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Platform, Text, View } from 'react-native';
+import { ActivityIndicator, Platform, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CommonItem from '@/commonComponents/CommonItem';
@@ -9,6 +9,7 @@ import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
 import Touchable from '@/commonComponents/Touchable';
 import ActionSheet from '@/components/common/ActionSheet';
+import Text from '@/components/common/Text';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
 import CopyIcon from '@/icons/svg/material/Copy.svg';
@@ -109,11 +110,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
   return (
     <>
       <Modal adjustToContentHeight modalRef={modalRef} {...props}>
-        <Header
-          center={
-            <Text style={FontStyles.Subtitle2}>{t('accounts.title')}</Text>
-          }
-        />
+        <Header center={<Text type="subtitle2">{t('accounts.title')}</Text>} />
         <View style={styles.content}>
           {loading && (
             <View style={styles.loading}>

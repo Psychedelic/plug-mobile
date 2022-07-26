@@ -1,7 +1,7 @@
 import { getNumberFormatSettings } from 'react-native-localize';
 
 import { ACTIVITY_STATUS } from '@/constants/business';
-import { ERROR_TYPES } from '@/constants/general';
+import { ERROR_TYPES, MIN_PASSWORD_LENGTH } from '@/constants/general';
 
 const { decimalSeparator } = getNumberFormatSettings();
 
@@ -181,7 +181,7 @@ const translations = {
   },
   validations: {
     passRequired: 'Password is required.',
-    passMinLength: 'Password must be at least 12 characters long.',
+    passMinLength: `Password must be at least ${MIN_PASSWORD_LENGTH} characters long.`,
     passIncorrect: 'The password is incorrect',
     invalidChar: 'Invalid character.',
   },

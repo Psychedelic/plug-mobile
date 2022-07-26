@@ -1,70 +1,66 @@
 import { StyleSheet } from 'react-native';
 
+import { SEMIBOLD } from '@/constants/fonts';
 import { Colors } from '@/constants/theme';
+import { fontMaker } from '@/utils/fonts';
 
 const commonBorderRadius = 15;
 const inputHeight = 60;
 
 export default StyleSheet.create({
   inputStyle: {
-    paddingTop: 13,
-    paddingLeft: 20,
-    paddingBottom: 13,
-    paddingRight: 20,
-    height: 56,
-    width: '100%',
-    color: Colors.White.Pure,
+    ...fontMaker({ size: 18, color: Colors.White.Pure, weight: SEMIBOLD }),
+    paddingHorizontal: 20,
+    paddingVertical: 13,
     borderRadius: 15,
-    fontWeight: '600',
-    fontSize: 18,
+    width: '100%',
+    height: 56,
   },
   multiStyle: {
-    height: 90,
     alignItems: 'flex-start',
+    height: 90,
   },
   innerLabelStyle: {
-    flex: 1,
-    color: Colors.White.Pure,
-    fontSize: 18,
-    fontWeight: '600',
+    ...fontMaker({ size: 18, color: Colors.White.Pure, weight: SEMIBOLD }),
     minWidth: 5,
+    flex: 1,
   },
   labledInputStyle: {
-    flex: 12,
     paddingLeft: 0,
+    flex: 12,
   },
   viewStyle: {
-    flexDirection: 'row',
+    backgroundColor: Colors.Black.Primary,
     alignItems: 'center',
+    flexDirection: 'row',
+    borderRadius: 15,
     height: 56,
     flexGrow: 0,
-    borderRadius: 15,
-    backgroundColor: Colors.Black.Primary,
   },
   viewInnerStyle: {
+    backgroundColor: Colors.Black.Primary,
+    borderRadius: 15,
     height: 56,
     flexGrow: 0,
-    borderRadius: 15,
-    backgroundColor: Colors.Black.Primary,
   },
   labledViewStyle: {
-    flexDirection: 'row',
     alignItems: 'center',
+    flexDirection: 'row',
     flexWrap: 'nowrap',
-    paddingTop: 5,
     paddingBottom: 5,
+    paddingTop: 5,
   },
   keyboardBG: {
-    height: '100%',
     color: Colors.Black.Primary,
+    height: '100%',
   },
   focusedGradient: {
     borderRadius: commonBorderRadius,
+    position: 'absolute',
     height: inputHeight,
     width: '101%',
-    top: -2,
     left: -2,
-    position: 'absolute',
+    top: -2,
   },
   multiLineGradient: {
     height: 94,

@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import React from 'react';
-import { Text } from 'react-native';
 
+import Text from '@/components/common/Text';
 import { ACTIVITY_STATUS } from '@/constants/business';
 import { JELLY_CANISTER_ID } from '@/constants/canister';
 import shortAddress from '@/utils/shortAddress';
