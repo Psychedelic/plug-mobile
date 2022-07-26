@@ -50,13 +50,14 @@ function WCFlows() {
   } = params || {};
   const dappImage = request?.args[0]?.icons[0];
   const DisplayComponent = COMPONENTS[type];
+  const isBatchTransactions = type === 'batchTransactions';
 
   useDisableBack();
 
   useEffect(() => {
     if (wcTimeout) {
       // TODO: Handle Error.
-      // closeScreen();
+      closeScreen();
     }
   }, [wcTimeout]);
 
@@ -149,7 +150,9 @@ function WCFlows() {
             {request?.dappName}
           </Text>
           <Text style={[FontStyles.NormalGray, styles.subtitle]}>
-            {t('walletConnect.cannisterPermission')}
+            {isBatchTransactions
+              ? t('walletConnect.actionsPermission')
+              : t('walletConnect.cannisterPermission')}
           </Text>
           <DisplayComponent args={args} request={request} metadata={metadata} />
           <View style={styles.bottomContainer}>
@@ -165,10 +168,13 @@ function WCFlows() {
               />
               <RainbowButton
                 loading={sendLoading}
-                text={t('walletConnect.allow')}
+                text={
+                  isBatchTransactions
+                    ? t('walletConnect.confirm')
+                    : t('walletConnect.allow')
+                }
                 buttonStyle={styles.buttonStyle}
                 onPress={onPressSend}
-                // Hacer que para patch sea Confirm
               />
             </View>
           </View>

@@ -10,11 +10,13 @@ import styles from './styles';
 
 function BatchTransactions({ request, metadata }) {
   const appIcon = metadata.icons[0];
+  const transactions = request.args[1];
 
-  const renderTransaction = ({ methodName }, showSeparator) => {
+  const renderTransaction = ({ methodName }, index) => {
+    const showSeparator = index !== transactions.length - 1;
     // TODO: Change the subtitle value
     return (
-      <View style={styles.item}>
+      <View key={`${methodName}${index}`} style={styles.item}>
         <View style={styles.itemDataContainer}>
           <View>
             <Text style={FontStyles.Subtitle2}>{capitalize(methodName)}</Text>
@@ -41,9 +43,7 @@ function BatchTransactions({ request, metadata }) {
       style={styles.list}
       overScrollMode="never"
       contentContainerStyle={styles.listContentContainer}>
-      {request.args[1].map((item, index) =>
-        renderTransaction(item, index !== request.args[1].length - 1)
-      )}
+      {transactions.map(renderTransaction)}
     </ScrollView>
   );
 }

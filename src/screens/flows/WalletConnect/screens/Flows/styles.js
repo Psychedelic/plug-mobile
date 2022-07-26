@@ -35,6 +35,7 @@ export default StyleSheet.create({
   subtitle: {
     paddingBottom: 10,
     color: Colors.White.Pure,
+    textAlign: 'center',
   },
   buttonContainer: {
     flexDirection: 'row',

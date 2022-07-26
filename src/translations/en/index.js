@@ -203,11 +203,12 @@ const translations = {
     changeWallet: 'Change Wallet',
     decline: 'Decline',
     allow: 'Allow',
+    confirm: 'Confirm',
     connect: 'Connect',
     connectTitle: 'Connect Wallet',
     connectTo: 'Would you like to connect your wallet to ',
     cannisterPermission: 'wants pemission to use these canisters:',
-    actionsPermission: 'wants pemission to perform the following actions:',
+    actionsPermission: 'wants pemission to perform the\nfollowing actions:',
   },
 };
 
