@@ -369,7 +369,7 @@ const TransactionModule = (dispatch, getState) => {
       }
 
       const keyring = getState().keyring?.instance;
-      const agent = keyring.getAgent();
+      const agent = await keyring.getAgent();
 
       const arg = blobFromBuffer(base64ToBuffer(requestInfo.arguments));
       try {
@@ -442,7 +442,7 @@ const TransactionModule = (dispatch, getState) => {
     },
     executor: async (opts, canisterId, paths) => {
       const keyring = getState().keyring?.instance;
-      const agent = keyring.getAgent();
+      const agent = await keyring.getAgent();
       try {
         const response = await agent.readState(canisterId, {
           paths: [paths.map(path => blobFromBuffer(base64ToBuffer(path)))],
@@ -495,7 +495,7 @@ const TransactionModule = (dispatch, getState) => {
     },
     executor: async (opts, canisterId, methodName, arg) => {
       const keyring = getState().keyring?.instance;
-      const agent = keyring.getAgent();
+      const agent = await keyring.getAgent();
       try {
         const response = await agent.query(canisterId, {
           methodName,
