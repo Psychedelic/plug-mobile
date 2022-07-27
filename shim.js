@@ -17,7 +17,7 @@ if (typeof process === 'undefined') {
 
 process.browser = false;
 if (typeof Buffer === 'undefined') {
-  global.Buffer = require('buffer').Buffer;
+  global.Buffer = require('@craftzdog/react-native-buffer').Buffer;
 }
 
 // global.location = global.location || { port: 80 }
@@ -27,10 +27,11 @@ if (typeof localStorage !== 'undefined') {
   // eslint-disable-next-line no-undef
   localStorage.debug = isDev ? '*' : '';
 }
+
 if (typeof BigInt === 'undefined') {
   global.BigInt = require('big-integer');
 }
 
 // If using the crypto shim, uncomment the following line to ensure
 // crypto is loaded first, so it can populate global.crypto
-require('crypto');
+// require('crypto');

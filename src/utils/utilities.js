@@ -1,4 +1,4 @@
-import { Buffer } from 'buffer';
+import { Buffer } from '@craftzdog/react-native-buffer';
 
 export const delay = ms => {
   return new Promise(resolve => setTimeout(resolve, ms));
