@@ -1,0 +1,16 @@
+diff --git a/node_modules/react-native-bip39/index.js b/node_modules/react-native-bip39/index.js
+index f11edc4..1b51116 100644
+--- a/node_modules/react-native-bip39/index.js
++++ b/node_modules/react-native-bip39/index.js
+@@ -1,8 +1,8 @@
+ var unorm = require('unorm')
+ var assert = require('assert')
+-var pbkdf2 = require('react-native-crypto').pbkdf2Sync
+-var createHash = require('react-native-crypto').createHash
+-var randomBytes = require('react-native-randombytes').randomBytes
++var pbkdf2 = require('react-native-quick-crypto').pbkdf2Sync
++var createHash = require('react-native-quick-crypto').createHash
++var randomBytes = require('react-native-quick-crypto').randomBytes
+ 
+ var DEFAULT_WORDLIST = require('./wordlists/en.json')
+ 
