@@ -1,6 +1,6 @@
 import { NavigationContainer, Theme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import React, { forwardRef, memo, useEffect, useRef } from 'react';
+import React, { forwardRef, memo, useCallback, useEffect, useRef } from 'react';
 import { AppState, Linking, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Host } from 'react-native-portalize';
@@ -29,12 +29,20 @@ const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
   const { isInitialized, isUnlocked } = useSelector(
     (state: State) => state.keyring
   );
+
   const dispatch = useDispatch();
   const backgroundTime = useRef<any>(null);
 
   const handleLockState = () => {
     dispatch(setUnlocked(false));
   };
+
+  const handleDeepLinkHandler = useCallback(
+    link => {
+      handleDeepLink(link, isUnlocked);
+    },
+    [isUnlocked]
+  );
 
   const handleAppStateChange = async (nextAppState: string) => {
     const initialLink = await Linking.getInitialURL();
@@ -54,7 +62,7 @@ const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
     }
 
     if (initialLink) {
-      handleDeepLink(initialLink);
+      handleDeepLinkHandler(initialLink);
     }
   };
 
@@ -65,7 +73,7 @@ const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
     );
 
     const deepLinkListener = Linking.addEventListener('url', link => {
-      handleDeepLink(link.url);
+      handleDeepLinkHandler(link.url);
     });
 
     return () => {
