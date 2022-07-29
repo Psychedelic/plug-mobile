@@ -204,7 +204,6 @@ const ConnectionModule = (dispatch, getState) => {
             handleDeclineArgs,
           };
 
-          console.tron.log('params', params);
           Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, params);
         }
       } catch (e) {

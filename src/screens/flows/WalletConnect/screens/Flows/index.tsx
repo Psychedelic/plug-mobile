@@ -3,29 +3,24 @@ import {
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
-import { t } from 'i18next';
 import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, Image, Text, View, ViewStyle } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { ActivityIndicator, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import Button from '@/components/buttons/Button';
-import RainbowButton from '@/components/buttons/RainbowButton';
-import { FontStyles } from '@/constants/theme';
-import { Colors } from '@/constants/theme';
 import { ERRORS } from '@/constants/walletconnect';
 import useDisableBack from '@/hooks/useDisableBack';
 import { RootStackParamList } from '@/interfaces/navigation';
 import { FlowsParams, WCFlowTypes } from '@/interfaces/walletConnect';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
-import { setUnlocked } from '@/redux/slices/keyring';
 import {
   updateBridgeTimeout,
   walletConnectExecuteAndResponse,
 } from '@/redux/slices/walletconnect';
 
 import BatchTransactions from './components/BatchTransactions';
+import BottomContainer from './components/BottomContainer';
+import Header from './components/Header';
 import RequestCall from './components/RequestCall';
 import RequestConnect from './components/RequestConnect';
 import RequestTransfer from './components/RequestTransfer';
@@ -54,7 +49,7 @@ function WCFlows() {
     handleError,
     loading,
   } = (params || {}) as FlowsParams;
-  const dappImage = request?.args[0]?.icons[0];
+
   const DisplayComponent = COMPONENTS[type];
   const isBatchTransactions = type === WCFlowTypes.batchTransactions;
 
@@ -96,11 +91,6 @@ function WCFlows() {
         ...request,
         ...handleActionParams,
         onSuccess: () => {
-          // TOOD: Ale borrar esto y dejar solo la llamda a closeScreen();
-          if (type === WCFlowTypes.requestConnect) {
-            console.log('entro padre');
-            dispatch(setUnlocked(false));
-          }
           closeScreen();
         },
       })
@@ -160,41 +150,14 @@ function WCFlows() {
         </View>
       ) : (
         <View style={styles.container}>
-          <View style={styles.backgroundLogo}>
-            <Image source={{ uri: dappImage }} style={styles.logo} />
-          </View>
-          <Text style={[FontStyles.Title, styles.dappName]}>
-            {request?.dappName}
-          </Text>
-          <Text style={[FontStyles.NormalGray, styles.subtitle]}>
-            {isBatchTransactions
-              ? t('walletConnect.actionsPermission')
-              : t('walletConnect.cannisterPermission')}
-          </Text>
+          <Header isBatchTransactions={isBatchTransactions} request={request} />
           <DisplayComponent args={args} request={request} metadata={metadata} />
-          <View style={styles.bottomContainer}>
-            <LinearGradient
-              colors={[Colors.Transparent, Colors.Black.Primary]}
-              style={styles.gradient}
-            />
-            <View style={styles.buttonContainer}>
-              <Button
-                text={t('walletConnect.decline')}
-                buttonStyle={styles.buttonStyle}
-                onPress={onPressCancel}
-              />
-              <RainbowButton
-                loading={sendLoading}
-                text={
-                  isBatchTransactions
-                    ? t('walletConnect.confirm')
-                    : t('walletConnect.allow')
-                }
-                buttonStyle={styles.buttonStyle as ViewStyle}
-                onPress={onPressSend}
-              />
-            </View>
-          </View>
+          <BottomContainer
+            sendLoading={sendLoading}
+            onPressSend={onPressSend}
+            onPressCancel={onPressCancel}
+            isBatchTransactions={isBatchTransactions}
+          />
         </View>
       )}
     </Container>

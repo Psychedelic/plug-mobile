@@ -3,16 +3,20 @@ import { Image, ScrollView, Text, View } from 'react-native';
 
 import CachedImage from '@/components/common/Image';
 import { FontStyles } from '@/constants/theme';
+import { WallectConnectFlowsData } from '@/interfaces/walletConnect';
 import { capitalize } from '@/utils/strings';
 
 import ArrowIcon from '../../assets/ArrowDown.png';
 import styles from './styles';
 
-function BatchTransactions({ request, metadata }) {
+function BatchTransactions({ request, metadata }: WallectConnectFlowsData) {
   const appIcon = metadata.icons[0];
   const transactions = request.args[1];
 
-  const renderTransaction = ({ methodName }, index) => {
+  const renderTransaction = (
+    { methodName }: { methodName: string },
+    index: number
+  ) => {
     const showSeparator = index !== transactions.length - 1;
     // TODO: Change the subtitle value
     return (
