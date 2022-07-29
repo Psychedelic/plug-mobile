@@ -70,16 +70,17 @@ const TransactionModule = (dispatch, getState) => {
       if (!approve) {
         return { error: ERRORS.TRANSACTION_REJECTED };
       }
-      const assets = await dispatch(getBalance());
+      const assets = await dispatch(getBalance()).unwrap();
+      const icp = assets.find(asset => asset.canisterId === ICP_CANISTER_ID);
       const parsedAmount = amount / E8S_PER_ICP;
-      if (assets?.[0].amount > parsedAmount) {
+      if (icp?.amount > parsedAmount) {
         const response = await dispatch(
           sendToken({
             ...args,
             amount: parsedAmount,
             canisterId: ICP_CANISTER_ID,
           })
-        );
+        ).unwrap();
 
         if (response.error) {
           return { error: ERRORS.SERVER_ERROR(response.error) };

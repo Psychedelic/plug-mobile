@@ -133,7 +133,7 @@ export const asyncGetBalance = async (params, state, dispatch) => {
     const { instance } = state.keyring;
     const response = await instance?.getState();
     const { wallets, currentWalletId } = response || {};
-    let assets = wallets?.[currentWalletId]?.assets || [];
+    let assets = Object.values(wallets?.[currentWalletId]?.assets);
 
     const shouldUpdate =
       Object.values(assets)?.every(asset => !Number(asset.amount)) ||
@@ -145,12 +145,12 @@ export const asyncGetBalance = async (params, state, dispatch) => {
     } else {
       instance?.getBalances(subaccount);
     }
-
     const icpPrice = await dispatch(getICPPrice()).unwrap();
     return formatAssets(assets, icpPrice);
   } catch (e) {
     console.log('asyncGetBalance error', e);
     dispatch(setAssetsError(true));
+    return { error: e.message };
   }
 };
 
