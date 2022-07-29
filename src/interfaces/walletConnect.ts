@@ -1,3 +1,5 @@
+import { Nullable } from './general';
+
 export interface WalletConnectMetadata {
   chainId: number;
   dappName: string;
@@ -35,7 +37,7 @@ export interface WallectConnectFlowsData {
   args: FlowsArgs;
 }
 
-interface FlowsRequest {
+export interface FlowsRequest {
   clientId: string;
   dappName: string;
   dappScheme: any;
@@ -44,17 +46,26 @@ interface FlowsRequest {
   methodName: string;
   peerId: string;
   requestId: number;
-  args: [FlowsMetadata, WCWhiteList, number, string];
+  args: [FlowsMetadata, WCTransactions[], number, string];
 }
-
-interface FlowsMetadata {
+interface WCTransactions {
+  methodName: string;
+  canisterId: string;
+  sender: string;
+  arguments: string;
+  preApprove: boolean;
+  requestType: string;
+  decodedArguments: any;
+}
+export interface FlowsMetadata {
   url: string;
   name: string;
   pageWidth: number;
   icons: string[];
 }
 
-interface FlowsArgs {
+export interface FlowsArgs {
+  methodName: string;
   domainUrl: string;
   whitelist: WCWhiteList;
 }
@@ -64,8 +75,19 @@ enum WCHandleActionStatus {
   refused = 'refused',
 }
 
-interface WCWhiteList {
-  // TODO: add whitelist types
+export type WCWhiteList = {
+  [key: string]: WCWhiteListItem;
+};
+
+export interface WCWhiteListItem {
+  canisterId: string;
+  id: string;
+  url: string;
+  name: string;
+  description: string;
+  version: Nullable<number>;
+  logo_url: string;
+  icon: string;
 }
 
 export enum WCFlowTypes {
@@ -78,7 +100,6 @@ export enum WCFlowTypes {
 export interface FlowsParams {
   handleError: () => void;
   loading: boolean;
-  //
   type: WCFlowTypes;
   openAutomatically: boolean;
   request: FlowsRequest;

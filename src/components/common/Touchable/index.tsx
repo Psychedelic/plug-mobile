@@ -6,6 +6,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
+import { ReactObjectType } from '@/interfaces/general';
 import scales from '@/utils/animationScales';
 import haptics, { HapticFeedbackTypes } from '@/utils/haptics';
 
@@ -16,6 +17,7 @@ interface Props {
   hapticType?: string;
   scale?: number;
   disabled?: boolean;
+  hitSlop?: ReactObjectType;
   style?: StyleProp<ViewStyle>;
 }
 

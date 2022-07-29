@@ -3,7 +3,13 @@ import { Text } from 'react-native';
 
 import styles from '../../../InitialConnection/styles';
 
-function RequestTransfer({ request, args, metadata }) {
+interface Props {
+  request: any;
+  args: any;
+  metadata?: any;
+}
+
+function RequestTransfer({ request, args }: Props) {
   const { dappUrl, dappName } = request;
   const { to } = args;
 

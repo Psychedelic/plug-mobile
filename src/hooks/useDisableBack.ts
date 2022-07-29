@@ -8,14 +8,13 @@ import { BackHandler } from 'react-native';
  */
 function useDisableBack() {
   useEffect(() => {
-    const handleBackPress = () => {
-      return true;
-    };
-
-    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => true
+    );
 
     return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+      backHandler.remove();
     };
   }, []);
 }
