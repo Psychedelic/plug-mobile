@@ -25,4 +25,7 @@ export default StyleSheet.create({
     color: Colors.White.Pure,
     textAlign: 'center',
   },
+  topTitle: {
+    marginBottom: 6,
+  },
 });

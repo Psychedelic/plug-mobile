@@ -1,25 +1,43 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 
-import styles from '../../../InitialConnection/styles';
+import {
+  WallectConnectFlowsData,
+  WCFlowTypes,
+} from '@/interfaces/walletConnect';
 
-interface Props {
-  request: any;
-  args: any;
-  metadata?: any;
+// import styles from './styles';
+
+interface Props extends WallectConnectFlowsData {
+  type: WCFlowTypes;
 }
 
-function RequestTransfer({ request, args }: Props) {
+// Matt-TODO:THIS IS A WIP SCREEN
+function RequestTransfer({ request, args, type }: Props) {
   const { dappUrl, dappName } = request;
-  const { to } = args;
+  console.log('args:', args);
+  console.log('type:', type);
+  // const { to } = args;
 
   return (
-    <>
-      <Text style={styles.title}>{'REQUEST TRANSFER'}</Text>
-      <Text style={styles.text}>{`DAP URL: ${dappUrl}`}</Text>
-      <Text style={styles.text}>{`DAP NAME: ${dappName}`}</Text>
-      <Text style={styles.text}>{`TO: ${to}`}</Text>
-    </>
+    <View style={{ flexGrow: 1 }}>
+      <View style={{ flexDirection: 'row' }}>
+        {/* <Image /> */}
+        <View>
+          <View>
+            <Text>Transaction</Text>
+            <Text>Request</Text>
+          </View>
+          <View>
+            <View>
+              {/* <Image /> */}
+              <Text>1.10 WICP</Text>
+            </View>
+            <Text>$12.11 USD</Text>
+          </View>
+        </View>
+      </View>
+    </View>
   );
 }
 

@@ -42,13 +42,6 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  userContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  user: {
-    marginLeft: 10,
-  },
   onlyValid: {
     color: Colors.ActionBlue,
   },

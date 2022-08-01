@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
-import UserIcon from '@/components/common/UserIcon';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
 import useDisableBack from '@/hooks/useDisableBack';
@@ -16,6 +15,7 @@ import { getSession } from '@/redux/slices/walletconnect';
 import Accounts from '@/screens/tabs/Profile/screens/Accounts';
 import { useNavigation } from '@/utils/navigation';
 
+import UserShowcase from '../Flows/components/UserShowcase';
 import styles from './styles';
 
 function WCInitialConnection() {
@@ -95,6 +95,7 @@ function WCInitialConnection() {
   return (
     <Container>
       <View style={styles.container}>
+        {/* Change to DappInfo */}
         <View style={styles.imageContainer}>
           {dappImageUrl ? (
             <Image source={{ uri: dappImageUrl }} style={styles.dappIcon} />
@@ -113,12 +114,7 @@ function WCInitialConnection() {
       </View>
       <View style={styles.bottomContainer}>
         <View style={styles.changeWalletContainer}>
-          <View style={styles.userContainer}>
-            <UserIcon icon={currentWallet?.icon} size="small" />
-            <Text style={[FontStyles.Normal, styles.user]}>
-              {currentWallet?.name}
-            </Text>
-          </View>
+          <UserShowcase currentWallet={currentWallet} />
           <Text
             onPress={handleChangeWallet}
             style={[FontStyles.NormalGray, styles.onlyValid]}>

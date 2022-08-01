@@ -20,7 +20,7 @@ import {
 
 import BatchTransactions from './components/BatchTransactions';
 import BottomContainer from './components/BottomContainer';
-import Header from './components/Header';
+import DappInfo from './components/DappInfo';
 import RequestCall from './components/RequestCall';
 import RequestConnect from './components/RequestConnect';
 import RequestTransfer from './components/RequestTransfer';
@@ -59,7 +59,7 @@ function WCFlows() {
     if (wcTimeout) {
       // TODO: Handle Error.
       // Matt Ale
-      closeScreen();
+      // closeScreen();
     }
   }, [wcTimeout]);
 
@@ -150,8 +150,13 @@ function WCFlows() {
         </View>
       ) : (
         <View style={styles.container}>
-          <Header isBatchTransactions={isBatchTransactions} request={request} />
-          <DisplayComponent args={args} request={request} metadata={metadata} />
+          <DappInfo type={type} request={request} />
+          <DisplayComponent
+            type={type}
+            args={args}
+            request={request}
+            metadata={metadata}
+          />
           <BottomContainer
             sendLoading={sendLoading}
             onPressSend={onPressSend}

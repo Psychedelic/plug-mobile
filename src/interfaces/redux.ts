@@ -95,12 +95,24 @@ export interface IcpState {
   icpPrice: number;
 }
 
+export interface CurrentWallet {
+  name: string;
+  walletNumber: number;
+  principal: string;
+  accountId: string;
+  connectedApps: any[];
+  assets: any;
+  icon: string;
+  nftCollections: any[];
+  icnsData: any;
+}
+
 export interface KeyringState {
   //TODO: Add types here
   instance: any;
   isInitialized: boolean;
   isUnlocked: boolean;
-  currentWallet: any;
+  currentWallet: CurrentWallet;
   wallets: [];
 }
 
