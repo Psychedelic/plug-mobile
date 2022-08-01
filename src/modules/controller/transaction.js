@@ -70,16 +70,17 @@ const TransactionModule = (dispatch, getState) => {
       if (!approve) {
         return { error: ERRORS.TRANSACTION_REJECTED };
       }
-      const assets = await dispatch(getBalance());
+      const assets = await dispatch(getBalance()).unwrap();
+      const icp = assets.find(asset => asset.canisterId === ICP_CANISTER_ID);
       const parsedAmount = amount / E8S_PER_ICP;
-      if (assets?.[0].amount > parsedAmount) {
+      if (icp?.amount > parsedAmount) {
         const response = await dispatch(
           sendToken({
             ...args,
             amount: parsedAmount,
             canisterId: ICP_CANISTER_ID,
           })
-        );
+        ).unwrap();
 
         if (response.error) {
           return { error: ERRORS.SERVER_ERROR(response.error) };
@@ -369,7 +370,7 @@ const TransactionModule = (dispatch, getState) => {
       }
 
       const keyring = getState().keyring?.instance;
-      const agent = keyring.getAgent();
+      const agent = await keyring.getAgent();
 
       const arg = blobFromBuffer(base64ToBuffer(requestInfo.arguments));
       try {
@@ -442,7 +443,7 @@ const TransactionModule = (dispatch, getState) => {
     },
     executor: async (opts, canisterId, paths) => {
       const keyring = getState().keyring?.instance;
-      const agent = keyring.getAgent();
+      const agent = await keyring.getAgent();
       try {
         const response = await agent.readState(canisterId, {
           paths: [paths.map(path => blobFromBuffer(base64ToBuffer(path)))],
@@ -495,7 +496,7 @@ const TransactionModule = (dispatch, getState) => {
     },
     executor: async (opts, canisterId, methodName, arg) => {
       const keyring = getState().keyring?.instance;
-      const agent = keyring.getAgent();
+      const agent = await keyring.getAgent();
       try {
         const response = await agent.query(canisterId, {
           methodName,

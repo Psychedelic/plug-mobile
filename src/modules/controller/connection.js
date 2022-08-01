@@ -216,6 +216,41 @@ const ConnectionModule = (dispatch, getState) => {
     executor: handlerAllowAgent(getState),
   };
 
+  const allWhiteListed = {
+    methodName: 'allWhiteListed',
+    handler: async (request, metadata, whitelist) => {
+      const keyring = getState().keyring?.instance;
+
+      const app = await getApp(
+        keyring?.currentWalletId.toString(),
+        metadata.url
+      );
+      if (app?.status === CONNECTION_STATUS.accepted) {
+        const areAllWhiteListed = areAllElementsIn(
+          whitelist,
+          app?.whitelist ? Object.keys(app?.whitelist) : []
+        );
+
+        dispatch(
+          walletConnectExecuteAndResponse({
+            ...request,
+            args: [areAllWhiteListed],
+          })
+        );
+      } else {
+        dispatch(
+          walletConnectExecuteAndResponse({
+            ...request,
+            error: ERRORS.CONNECTION_ERROR,
+          })
+        );
+      }
+    },
+    executor: (opts, areAllWhiteListed) => ({
+      result: areAllWhiteListed,
+    }),
+  };
+
   const verifyWhitelist = {
     methodName: 'verifyWhitelist',
     handler: async (request, metadata, whitelist) => {
@@ -297,7 +332,13 @@ const ConnectionModule = (dispatch, getState) => {
     executor: handlerAllowAgent(getState),
   };
 
-  return [getConnectionData, disconnect, requestConnect, verifyWhitelist];
+  return [
+    getConnectionData,
+    disconnect,
+    requestConnect,
+    verifyWhitelist,
+    allWhiteListed,
+  ];
 };
 
 export default ConnectionModule;
