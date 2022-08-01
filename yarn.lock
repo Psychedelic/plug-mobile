@@ -1626,20 +1626,6 @@
     axios "^0.24.0"
     cross-fetch "^3.1.4"
 
-"@psychedelic/dab-js@1.3.6":
-  version "1.3.6"
-  resolved "https://npm.pkg.github.com/download/@psychedelic/dab-js/1.3.6/400ca72089a38edb3ad6d06594926812b730a6a79e879d787a7d1b5eca7cfc2e#befe608d807c77734b8ec8ccbb7506cbc57aa10b"
-  integrity sha512-ArwSZm+ZTuaG5pbzQRdcqkJ2bbApipIXzIqfKLtJ0M+RMdefDXXVowWLlz9qld7rhgSCuPRb1cG79Bu0BTbvQA==
-  dependencies:
-    "@dfinity/agent" "0.9.3"
-    "@dfinity/candid" "0.9.3"
-    "@dfinity/identity" "0.9.3"
-    "@dfinity/principal" "0.9.3"
-    axios "^0.24.0"
-    buffer-crc32 "^0.2.13"
-    cross-fetch "^3.1.4"
-    crypto-js "^4.1.1"
-
 "@psychedelic/dab-js@1.4.3":
   version "1.4.3"
   resolved "https://npm.pkg.github.com/download/@psychedelic/dab-js/1.4.3/9265ba76868a9e51b1903c8adb3d1c64142b52afaa9899e994f6328638d27d93#4a233113ba319e1bd27e459ca198ccca1143b3f8"
@@ -1654,10 +1640,10 @@
     cross-fetch "^3.1.4"
     crypto-js "^4.1.1"
 
-"@psychedelic/plug-controller-beta@^0.19.0":
+"@psychedelic/plug-controller@0.19.0":
   version "0.19.0"
-  resolved "https://npm.pkg.github.com/download/@psychedelic/plug-controller-beta/0.19.0/12142abfcb1b458bde8592be596d2925d403badee469fc52766cbfca23ce9d57#192043facfce251d8aa6ea27c1f969f9deb1ac36"
-  integrity sha512-LvFDeTUiL57yS+llR9gvDYwqYPiibNOnm1kuXVxLYdGQRGAjEVZF7wynnWd43+KuW5CLl5iPtf2KPpyPLpggyw==
+  resolved "https://npm.pkg.github.com/download/@psychedelic/plug-controller/0.19.0/0c4e45656f645c203fffc490cbab2de9d1187ebe9b6e65e3a96ad8f5571bb85c#705ee3b6127d2c4904fde8c541edcc2d66569dab"
+  integrity sha512-LMvb8+KI2keqoZuheR3rCGI48d9CurFxW/xVKMHe4s5YRQ9COlwJ1oq19ieq0CO/kDRlm7Fewh1HqEG9f0wvbg==
   dependencies:
     "@dfinity/agent" "0.9.3"
     "@dfinity/candid" "0.9.3"
@@ -1686,70 +1672,6 @@
     text-encoding-shim "^1.0.5"
     tweetnacl "^1.0.3"
     uuidv4 "^6.2.13"
-
-"@psychedelic/plug-controller@^0.17.4":
-  version "0.17.4"
-  resolved "https://npm.pkg.github.com/download/@psychedelic/plug-controller/0.17.4/2727fca087c41c4da4dbae0a01fbaf9ee6fe4ab543ca9c7e47321637dd02a043#ce9f392c9bf660f5ab19f576660d5aa75ecc32d3"
-  integrity sha512-Hn35dYRn6GGkEL59pdntdb7M09+CNGZz25g6kbvBAT20+zxx4UNYXfXbVemqSlNa+Yl6GJQCUYJOQg2x1xqV4w==
-  dependencies:
-    "@dfinity/agent" "0.9.3"
-    "@dfinity/candid" "0.9.3"
-    "@dfinity/identity" "0.9.3"
-    "@dfinity/principal" "0.9.3"
-    "@psychedelic/cap-js" "0.0.7"
-    "@psychedelic/dab-js" "1.3.6"
-    "@types/secp256k1" "^4.0.3"
-    axios "^0.21.1"
-    babel-jest "^25.5.1"
-    bigint-conversion "^2.2.1"
-    bip39 "^3.0.4"
-    buffer-crc32 "^0.2.13"
-    create-hmac "^1.1.7"
-    cross-fetch "^3.1.4"
-    crypto-js "^4.0.0"
-    ed25519-hd-key "^1.2.0"
-    extensionizer "^1.0.1"
-    hdkey "^2.0.1"
-    js-sha256 "^0.9.0"
-    json-bigint "^1.0.0"
-    random-color "^1.0.1"
-    reflect-metadata "^0.1.13"
-    secp256k1 "^4.0.2"
-    text-encoding "^0.7.0"
-    text-encoding-shim "^1.0.5"
-    tweetnacl "^1.0.3"
-
-"@psychedelic/plug-mobile-controller@^0.2.12":
-  version "0.2.12"
-  resolved "https://npm.pkg.github.com/download/@psychedelic/plug-mobile-controller/0.2.12/a980274032caa7562264219d7a28a5c6564bbd088a7bdbf26d5721f0b94256ab#72edfb09f8553b0635f150fbf7576cea0269f194"
-  integrity sha512-fS3zApLrUEqLVM9mQrfVemYX4XxjFE2vtYYQFN70MQjht4JdSFOhAQPYPaGh95YEw6UwgS6CtVx05L0WQucPoQ==
-  dependencies:
-    "@dfinity/agent" "0.9.3"
-    "@dfinity/candid" "0.9.3"
-    "@dfinity/identity" "0.9.3"
-    "@dfinity/principal" "0.9.3"
-    "@psychedelic/cap-js" "0.0.7"
-    "@psychedelic/dab-js" "1.3.6"
-    "@types/secp256k1" "^4.0.3"
-    axios "^0.21.1"
-    babel-jest "^25.5.1"
-    bigint-conversion "^2.2.1"
-    bip39 "^3.0.4"
-    buffer-crc32 "^0.2.13"
-    create-hmac "^1.1.7"
-    cross-fetch "^3.1.4"
-    ed25519-hd-key "^1.2.0"
-    extensionizer "^1.0.1"
-    hdkey "^2.0.1"
-    js-sha256 "^0.9.0"
-    json-bigint "^1.0.0"
-    random-color "^1.0.1"
-    react-native-crypto-js "^1.0.0"
-    reflect-metadata "^0.1.13"
-    secp256k1 "^4.0.2"
-    text-encoding "^0.7.0"
-    text-encoding-shim "^1.0.5"
-    tweetnacl "^1.0.3"
 
 "@react-native-async-storage/async-storage@^1.15.11":
   version "1.16.1"

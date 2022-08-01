@@ -1,7 +1,7 @@
 import { HttpAgent } from '@dfinity/agent';
 import { blobFromBuffer } from '@dfinity/candid';
 import { getAllNFTS, getTokens } from '@psychedelic/dab-js';
-import PlugController from '@psychedelic/plug-mobile-controller';
+import PlugController from '@psychedelic/plug-controller';
 import { fetch } from 'react-native-fetch-api';
 
 import { XTC_FEE } from '@/constants/addresses';
