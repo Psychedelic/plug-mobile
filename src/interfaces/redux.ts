@@ -76,7 +76,7 @@ export interface Transaction {
   status?: number | string;
   image: string;
   canisterId?: string;
-  plug?: null; //TODO: What's this?
+  plug?: any;
   canisterInfo?: CanisterInfo;
   details?: TransactionDetails;
 }

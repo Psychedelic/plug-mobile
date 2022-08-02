@@ -52,6 +52,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Plug/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Plug/main.m; sourceTree = "<group>"; };
 		1F25339C284E554700B76386 /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = Plug/BootSplash.storyboard; sourceTree = "<group>"; };
+		1FF442DA28999BC30086AFD3 /* Plug.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = Plug.entitlements; path = Plug/Plug.entitlements; sourceTree = "<group>"; };
 		33E5DE36FA63D06ED1690823 /* Pods-Plug-PlugTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Plug-PlugTests.release.xcconfig"; path = "Target Support Files/Pods-Plug-PlugTests/Pods-Plug-PlugTests.release.xcconfig"; sourceTree = "<group>"; };
 		3809386EBD20482F923CAB29 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-SemiBold.ttf"; path = "../assets/fonts/Inter-SemiBold.ttf"; sourceTree = "<group>"; };
 		4ABFD47BAF2E44B9AE285C85 /* Inter-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Regular.ttf"; path = "../assets/fonts/Inter-Regular.ttf"; sourceTree = "<group>"; };
@@ -116,7 +117,7 @@
 		13B07FAE1A68108700A75B9A /* Plug */ = {
 			isa = PBXGroup;
 			children = (
-				E3682A6327EA6D8500C5BCB5 /* Plug.entitlements */,
+				1FF442DA28999BC30086AFD3 /* Plug.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				1F25339C284E554700B76386 /* BootSplash.storyboard */,
