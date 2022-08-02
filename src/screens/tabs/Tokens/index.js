@@ -11,7 +11,6 @@ import { Colors } from '@/constants/theme';
 import { Container, Row, Separator } from '@/layout';
 import { getBalance, setAssetsLoading } from '@/redux/slices/user';
 import Send from '@/screens/flows/Send';
-import Navigation from '@/utils/navigation';
 
 import WalletHeader from '../components/WalletHeader';
 import styles from './styles';

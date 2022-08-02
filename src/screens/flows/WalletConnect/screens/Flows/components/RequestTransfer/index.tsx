@@ -13,8 +13,8 @@ interface Props extends WallectConnectFlowsData {
 }
 
 // Matt-TODO:THIS IS A WIP SCREEN
-function RequestTransfer({ request, args, type }: Props) {
-  const { dappUrl, dappName } = request;
+function RequestTransfer({ args, type }: Props) {
+  //const { dappUrl, dappName } = request;
   console.log('args:', args);
   console.log('type:', type);
   // const { to } = args;

@@ -203,5 +203,5 @@ export const DEFAULT_WALLET_CONNECT_STATE = {
   pendingCallRequests: {},
   walletConnectors: {},
   sessions: {},
-  bridgeTimeout: { timeout: null, onBridgeContact: () => { } },
+  bridgeTimeout: { timeout: null, onBridgeContact: () => {} },
 };
