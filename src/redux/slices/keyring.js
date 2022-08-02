@@ -96,7 +96,7 @@ export const validatePassword = createAsyncThunk(
     const { password, onError, onSuccess } = params;
     try {
       const instance = state.keyring?.instance;
-      isValid = await instance?.isValidPassword(password);
+      isValid = await instance?.checkPassword(password);
       if (isValid) {
         onSuccess?.();
       } else {
