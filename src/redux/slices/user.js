@@ -48,7 +48,12 @@ export const sendToken = createAsyncThunk(
     try {
       const { to, amount, canisterId, opts, icpPrice } = params;
       const { keyring } = getState();
-      const { token } = await keyring?.instance?.getTokenInfo({ canisterId });
+      const { assets } = keyring.currentWallet;
+      const standard = assets[canisterId].token.standard;
+      const { token } = await keyring?.instance?.getTokenInfo({
+        canisterId,
+        standard,
+      });
       const { decimals } = token;
       const parsedAmount = parseToBigIntString(amount, parseInt(decimals, 10));
       const { height, transactionId } = await keyring.instance?.send({
@@ -73,6 +78,7 @@ export const sendToken = createAsyncThunk(
         status: TRANSACTION_STATUS.success,
       };
     } catch (e) {
+      console.log('e', e);
       return {
         error: e.message,
         status: TRANSACTION_STATUS.error,
@@ -133,7 +139,7 @@ export const asyncGetBalance = async (params, state, dispatch) => {
     const { instance } = state.keyring;
     const response = await instance?.getState();
     const { wallets, currentWalletId } = response || {};
-    let assets = wallets?.[currentWalletId]?.assets || [];
+    let assets = Object.values(wallets?.[currentWalletId]?.assets);
 
     const shouldUpdate =
       Object.values(assets)?.every(asset => !Number(asset.amount)) ||
@@ -145,12 +151,12 @@ export const asyncGetBalance = async (params, state, dispatch) => {
     } else {
       instance?.getBalances(subaccount);
     }
-
     const icpPrice = await dispatch(getICPPrice()).unwrap();
     return formatAssets(assets, icpPrice);
   } catch (e) {
     console.log('asyncGetBalance error', e);
     dispatch(setAssetsError(true));
+    return { error: e.message };
   }
 };
 
@@ -267,10 +273,10 @@ export const addContact = createAsyncThunk(
     try {
       dispatch(setContactsLoading(true));
       const state = getState();
-      const res = await state.keyring.instance?.addContact(
-        formatContactForController(contact),
-        walletNumber
-      );
+      const res = await state.keyring.instance?.addContact({
+        contact: formatContactForController(contact),
+        subaccount: walletNumber,
+      });
       if (res) {
         dispatch(setContacts([...state.user.contacts, contact]));
         dispatch(setContactsLoading(false));
@@ -292,10 +298,10 @@ export const removeContact = createAsyncThunk(
     try {
       dispatch(setContactsLoading(true));
       const state = getState();
-      const res = await state.keyring.instance?.deleteContact(
-        contactName,
-        walletNumber
-      );
+      const res = await state.keyring.instance?.deleteContact({
+        addressName: contactName,
+        subaccount: walletNumber,
+      });
       if (res) {
         dispatch(
           setContacts(state.user.contacts.filter(c => c.name !== contactName))
@@ -318,14 +324,16 @@ export const editContact = createAsyncThunk(
     try {
       dispatch(setContactsLoading(true));
       const state = getState();
-      const removeContactRes = await state.keyring.instance?.deleteContact(
-        contact.name,
-        walletNumber
-      );
-      const addContactRes = await state.keyring.instance?.addContact(
-        formatContactForController(newContact),
-        walletNumber
-      );
+      const removeContactRes = await state.keyring.instance?.deleteContact({
+        addressName: contact.name,
+        subaccount: walletNumber,
+      });
+
+      const addContactRes = await state.keyring.instance?.addContact({
+        contact: formatContactForController(newContact),
+        subaccount: walletNumber,
+      });
+
       if (removeContactRes && addContactRes) {
         dispatch(
           setContacts([

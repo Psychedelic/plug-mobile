@@ -1,4 +1,4 @@
-import PlugController from '@psychedelic/plug-controller-beta';
+import PlugController from '@psychedelic/plug-controller';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import RNCryptoJS from 'react-native-crypto-js';
 import { fetch } from 'react-native-fetch-api';
@@ -96,7 +96,7 @@ export const validatePassword = createAsyncThunk(
     const { password, onError, onSuccess } = params;
     try {
       const instance = state.keyring?.instance;
-      isValid = await instance?.isValidPassword(password);
+      isValid = await instance?.checkPassword(password);
       if (isValid) {
         onSuccess?.();
       } else {
@@ -107,6 +107,27 @@ export const validatePassword = createAsyncThunk(
       console.log('Validate Password:', e.message);
     }
     return isValid;
+  }
+);
+
+export const getMnemonic = createAsyncThunk(
+  'keyring/getMnemonic',
+  async (params, { getState }) => {
+    const state = getState();
+    let mnemonic = '';
+    const { onError, onSuccess, password } = params;
+    try {
+      const instance = state.keyring?.instance;
+      mnemonic = await instance?.getMnemonic(password);
+      if (mnemonic) {
+        onSuccess?.(mnemonic);
+      } else {
+        onError?.();
+      }
+    } catch (e) {
+      onError?.();
+      console.log('Get Mnemonic:', e.message);
+    }
   }
 );
 

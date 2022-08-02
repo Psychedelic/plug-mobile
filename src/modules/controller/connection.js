@@ -20,9 +20,7 @@ const handlerAllowAgent = getState => async (opts, url, response) => {
         : response.status;
     const whitelist =
       response.status === CONNECTION_STATUS.accepted ? response.whitelist : [];
-
     const date = new Date().toISOString();
-
     const newApps = {
       ...apps,
       [url]: {
@@ -39,6 +37,7 @@ const handlerAllowAgent = getState => async (opts, url, response) => {
         ],
       },
     };
+
     await setApps(keyring?.currentWalletId.toString(), newApps);
   }
 
@@ -195,7 +194,7 @@ const ConnectionModule = (dispatch, getState) => {
         const { executor: _executor, ...requestWithoutExecutor } = request;
 
         if (isValidWhitelist) {
-          Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
+          const params = {
             type: 'requestConnect',
             openAutomatically: true,
             request: requestWithoutExecutor,
@@ -203,18 +202,9 @@ const ConnectionModule = (dispatch, getState) => {
             args: { whitelist: whitelistWithInfo, domainUrl },
             handleApproveArgs,
             handleDeclineArgs,
-          });
-        } else {
-          // TODO: Show connectScreen
-          Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
-            type: 'requestConnect',
-            openAutomatically: true,
-            request: requestWithoutExecutor,
-            metadata,
-            args: { whitelist: whitelistWithInfo, domainUrl },
-            handleApproveArgs,
-            handleDeclineArgs,
-          });
+          };
+
+          Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, params);
         }
       } catch (e) {
         walletConnectExecuteAndResponse({
@@ -224,6 +214,41 @@ const ConnectionModule = (dispatch, getState) => {
       }
     },
     executor: handlerAllowAgent(getState),
+  };
+
+  const allWhiteListed = {
+    methodName: 'allWhiteListed',
+    handler: async (request, metadata, whitelist) => {
+      const keyring = getState().keyring?.instance;
+
+      const app = await getApp(
+        keyring?.currentWalletId.toString(),
+        metadata.url
+      );
+      if (app?.status === CONNECTION_STATUS.accepted) {
+        const areAllWhiteListed = areAllElementsIn(
+          whitelist,
+          app?.whitelist ? Object.keys(app?.whitelist) : []
+        );
+
+        dispatch(
+          walletConnectExecuteAndResponse({
+            ...request,
+            args: [areAllWhiteListed],
+          })
+        );
+      } else {
+        dispatch(
+          walletConnectExecuteAndResponse({
+            ...request,
+            error: ERRORS.CONNECTION_ERROR,
+          })
+        );
+      }
+    },
+    executor: (opts, areAllWhiteListed) => ({
+      result: areAllWhiteListed,
+    }),
   };
 
   const verifyWhitelist = {
@@ -285,7 +310,7 @@ const ConnectionModule = (dispatch, getState) => {
             })
           );
         } else {
-          Navigation.handleAction(Routes.WALLET_CONNECT_SCREENS, {
+          Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
             type: 'requestConnect',
             openAutomatically: true,
             request: requestWithoutExecutor,
@@ -307,7 +332,13 @@ const ConnectionModule = (dispatch, getState) => {
     executor: handlerAllowAgent(getState),
   };
 
-  return [getConnectionData, disconnect, requestConnect, verifyWhitelist];
+  return [
+    getConnectionData,
+    disconnect,
+    requestConnect,
+    verifyWhitelist,
+    allWhiteListed,
+  ];
 };
 
 export default ConnectionModule;

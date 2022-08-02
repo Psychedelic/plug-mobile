@@ -17,6 +17,7 @@ export const Colors = {
   ActionBlue: '#3574F4',
   Black: {
     Primary: '#15161C',
+    Secondary: '#1E1F27',
     Pure: '#000000',
   },
   White: {
@@ -39,6 +40,7 @@ export const Colors = {
     Teal: '#05DCC8',
   },
   Red: '#FF453A',
+  Transparent: '#ffffff00',
 };
 
 export const Rainbow = {

@@ -9,10 +9,14 @@ import {
 import { store } from '@/redux/store';
 import Navigation from '@/utils/navigation';
 
-function handleWalletConnect(uri) {
+function handleWalletConnect(uri, isUnlocked) {
   const { dispatch } = store;
   dispatch(walletConnectSetPendingRedirect());
-  Navigation.handleAction(Routes.WALLET_CONNECT_WAITING_BRIDGE);
+  if (isUnlocked) {
+    Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
+      loading: true,
+    });
+  }
   const { query } = new URL(uri);
   if (uri && query) {
     dispatch(
@@ -23,7 +27,7 @@ function handleWalletConnect(uri) {
   }
 }
 
-export const handleDeepLink = url => {
+export const handleDeepLink = (url, isUnlocked) => {
   if (!url) {
     return;
   }
@@ -35,11 +39,11 @@ export const handleDeepLink = url => {
       // We could add more actions here
       case 'wc': {
         const { uri } = qs.parse(urlObj.query.substring(1));
-        handleWalletConnect(uri);
+        handleWalletConnect(uri, isUnlocked);
         break;
       }
     }
   } else if (urlObj.protocol === 'wc:') {
-    handleWalletConnect(url);
+    handleWalletConnect(url, isUnlocked);
   }
 };

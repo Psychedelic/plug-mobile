@@ -1,7 +1,7 @@
 import { HttpAgent } from '@dfinity/agent';
 import { blobFromBuffer } from '@dfinity/candid';
 import { getAllNFTS, getTokens } from '@psychedelic/dab-js';
-import PlugController from '@psychedelic/plug-mobile-controller';
+import PlugController from '@psychedelic/plug-controller';
 import { fetch } from 'react-native-fetch-api';
 
 import { XTC_FEE } from '@/constants/addresses';
@@ -66,7 +66,7 @@ export const connectionRequestResponseHandlerFactory = (dispatch, uri) => {
 };
 
 export const sessionRequestHandler = async (
-  { dispatch, getState, uri },
+  { dispatch, uri },
   { error, payload }
 ) => {
   if (error) {
@@ -77,6 +77,7 @@ export const sessionRequestHandler = async (
   const dappName = peerMeta?.name;
   const dappUrl = peerMeta?.url;
   const dappScheme = peerMeta?.scheme;
+  const dappImageUrl = peerMeta?.icons?.[0];
 
   const meta = {
     chainId,
@@ -84,11 +85,12 @@ export const sessionRequestHandler = async (
     dappScheme,
     dappUrl,
     peerId,
+    dappImageUrl,
   };
 
   await dispatch(setSession({ uri, sessionInfo: { meta } }));
 
-  Navigation.handleAction(Routes.WALLET_CONNECT_APPROVAL_SHEET, {
+  Navigation.handleAction(Routes.WALLET_CONNECT_INITIAL_CONNECTION, {
     uri,
     meta,
   });

@@ -24,24 +24,20 @@ import {
   sessionRequestHandler,
 } from '@/utils/walletConnect';
 
-const getNativeOptions = async () => {
-  const nativeOptions = {
-    clientMeta: PLUG_DESCRIPTION,
-  };
-
-  return nativeOptions;
-};
+const getNativeOptions = async () => ({
+  clientMeta: PLUG_DESCRIPTION,
+});
 
 export const walletConnectSetPendingRedirect = createAsyncThunk(
   'walletconnect/setPendingRedirect',
-  (params, { getState, dispatch }) => {
+  (_, { dispatch }) => {
     dispatch(setPendingRedirect());
   }
 );
 
 export const walletConnectRemovePendingRedirect = createAsyncThunk(
   'walletconnect/removePendingRedirect',
-  ({ type, scheme }, { dispatch }) => {
+  ({ scheme }, { dispatch }) => {
     dispatch(removePendingRedirect());
     if (scheme) {
       Linking.openURL(`${scheme}://`);
@@ -122,11 +118,10 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
 
           walletConnector?.on('session_request', (error, payload) => {
             const {
-              bridgeTimeout: { timeout, onBridgeContact },
+              bridgeTimeout: { timeout },
             } = getState().walletconnect;
             if (timeout) {
               clearTimeout(timeout);
-              onBridgeContact();
               dispatch(updateBridgeTimeout(DEFAULT_STATE.bridgeTimeout));
             }
             sessionRequestHandler(
@@ -153,11 +148,10 @@ const listenOnNewMessages = createAsyncThunk(
     );
     walletConnector.on('call_request', async (error, payload) => {
       const {
-        bridgeTimeout: { timeout, onBridgeContact },
+        bridgeTimeout: { timeout },
       } = getState().walletconnect;
       if (timeout) {
         clearTimeout(timeout);
-        onBridgeContact();
         dispatch(updateBridgeTimeout(DEFAULT_STATE.bridgeTimeout));
       }
       if (error) {
@@ -209,8 +203,6 @@ const listenOnNewMessages = createAsyncThunk(
                 })
               );
             }, 20000);
-
-            //Navigation.handleAction(Routes.LOGIN_SCREEN);
           }
 
           if (
@@ -257,7 +249,9 @@ const listenOnNewMessages = createAsyncThunk(
 
 export const walletConnectExecuteAndResponse = createAsyncThunk(
   'walletconnect/executeAndResponse',
-  async ({ peerId, requestId, args, opts, error }, { dispatch, getState }) => {
+  /**  @param params { any } */
+  async (params, { dispatch, getState }) => {
+    const { peerId, requestId, args, opts, error, onSuccess } = params;
     try {
       const walletConnector = getState().walletconnect.walletConnectors[peerId];
       const { pendingRedirect } = getState().walletconnect;
@@ -277,6 +271,7 @@ export const walletConnectExecuteAndResponse = createAsyncThunk(
             );
             if (result !== undefined) {
               await walletConnector.approveRequest({ id: requestId, result });
+              onSuccess?.();
             } else {
               await walletConnector.rejectRequest({
                 error: resultError,
@@ -316,7 +311,7 @@ export const setPendingSessionRequest = createAsyncThunk(
 
 export const getPendingSessionRequest = createAsyncThunk(
   'walletconnect/getPendingsSessionRequest',
-  ({ peerId }, { dispatch, getState }) => {
+  ({ peerId }, { getState }) => {
     const { pendingSessionRequests } = getState().walletconnect;
     return pendingSessionRequests[peerId];
   }
@@ -346,13 +341,11 @@ export const addCallRequestToApprove = createAsyncThunk(
     const dappName = peerMeta?.name || 'Unknown Dapp';
     const dappUrl = peerMeta?.url || 'Unknown Url';
     const dappScheme = peerMeta?.scheme || null;
-
     const request = {
       clientId,
       dappName,
       dappScheme,
       dappUrl,
-      displayDetails: {},
       imageUrl,
       methodName: payload.method,
       args: payload.params,
@@ -395,7 +388,7 @@ export const setSession = createAsyncThunk(
 
 export const getSession = createAsyncThunk(
   'walletconnect/getSession',
-  ({ uri }, { dispatch, getState }) => {
+  ({ uri }, { getState }) => {
     const { sessions } = getState().walletconnect;
     return sessions[uri];
   }
@@ -445,10 +438,8 @@ export const removeWalletConnector = createAsyncThunk(
 
 export const walletConnectApproveSession = createAsyncThunk(
   'walletconnect/approveSession',
-  async (
-    { peerId, dappScheme, chainId, accountAddress },
-    { dispatch, getState }
-  ) => {
+  async ({ peerId, chainId, accountAddress }, { dispatch, getState }) => {
+    // TODO: We're going to use accountAddres later.
     const { pendingSessionRequests } = getState().walletconnect;
     const walletConnector = pendingSessionRequests[peerId];
 
@@ -510,19 +501,19 @@ export const walletconnectSlice = createSlice({
         walletConnectors: action.payload,
       };
     },
-    clearState: (state, action) => {
+    clearState: state => {
       return {
         ...state,
         ...DEFAULT_STATE,
       };
     },
-    setPendingRedirect: (state, action) => {
+    setPendingRedirect: state => {
       return {
         ...state,
         pendingRedirect: true,
       };
     },
-    removePendingRedirect: (state, action) => {
+    removePendingRedirect: state => {
       return {
         ...state,
         pendingRedirect: false,

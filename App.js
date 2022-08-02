@@ -33,7 +33,7 @@ Sentry.init({
   dsn: Config.SENTRY_DSN,
   tracesSampleRate: 1.0,
   dist: baseDist,
-  debug: __DEV__,
+  debug: false,
   release: baseRelease,
   environment: __DEV__ ? 'local' : 'productive',
   normalizeDepth: 10,

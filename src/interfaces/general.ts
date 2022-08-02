@@ -4,10 +4,26 @@ export type GenericObjectInterface<T> = {
 };
 
 export type StringObject = GenericObjectInterface<string>;
+export type NumberObject = GenericObjectInterface<number>;
+
+export type Nullable<T> = T | null;
 
 export interface FontMakerOptions {
   size?: number;
   color?: string;
   weight?: string;
   family?: string;
+}
+
+declare global {
+  interface Console {
+    tron: any;
+  }
+}
+
+export interface ReactObjectType {
+  bottom?: number | null;
+  left?: number | null;
+  right?: number | null;
+  top?: number | null;
 }

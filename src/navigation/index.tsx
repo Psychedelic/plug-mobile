@@ -1,12 +1,14 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, Theme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import React, { forwardRef, memo, useEffect, useRef } from 'react';
+import React, { forwardRef, memo, useCallback, useEffect, useRef } from 'react';
 import { AppState, Linking, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Host } from 'react-native-portalize';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Colors } from '@/constants/theme';
+import { RootStackParamList } from '@/interfaces/navigation';
+import { State } from '@/interfaces/redux';
 import SwipeNavigator from '@/navigation/navigators/SwipeNavigator';
 import { setUnlocked } from '@/redux/slices/keyring';
 import BackupSeedPhrase from '@/screens/auth/BackupSeedPhrase';
@@ -15,25 +17,34 @@ import ImportSeedPhrase from '@/screens/auth/ImportSeedPhrase';
 import Login from '@/screens/auth/Login';
 import Welcome from '@/screens/auth/Welcome';
 import ConnectionError from '@/screens/error/ConnectionError';
-import WalletConnect from '@/screens/flows/WalletConnect';
-import WalletConnectScreens from '@/screens/flows/WalletConnect/screens';
-import WalletConnectWaitingBridge from '@/screens/flows/WalletConnect/WaitingBridge';
+import WCFlows from '@/screens/flows/WalletConnect/screens/Flows';
+import WCInitialConnection from '@/screens/flows/WalletConnect/screens/InitialConnection';
 import { handleDeepLink } from '@/utils/deepLink';
 
 import Routes from './Routes';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
-const Navigator = ({ routingInstrumentation }, navigationRef) => {
-  const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
+const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
+  const { isInitialized, isUnlocked } = useSelector(
+    (state: State) => state.keyring
+  );
+
   const dispatch = useDispatch();
-  const backgroundTime = useRef(null);
+  const backgroundTime = useRef<any>(null);
 
   const handleLockState = () => {
     dispatch(setUnlocked(false));
   };
 
-  const handleAppStateChange = async nextAppState => {
+  const handleDeepLinkHandler = useCallback(
+    link => {
+      handleDeepLink(link, isUnlocked);
+    },
+    [isUnlocked]
+  );
+
+  const handleAppStateChange = async (nextAppState: string) => {
     const initialLink = await Linking.getInitialURL();
 
     if (nextAppState === 'background') {
@@ -51,7 +62,7 @@ const Navigator = ({ routingInstrumentation }, navigationRef) => {
     }
 
     if (initialLink) {
-      handleDeepLink(initialLink);
+      handleDeepLinkHandler(initialLink);
     }
   };
 
@@ -62,7 +73,7 @@ const Navigator = ({ routingInstrumentation }, navigationRef) => {
     );
 
     const deepLinkListener = Linking.addEventListener('url', link => {
-      handleDeepLink(link.url);
+      handleDeepLinkHandler(link.url);
     });
 
     return () => {
@@ -81,7 +92,9 @@ const Navigator = ({ routingInstrumentation }, navigationRef) => {
     colors: {
       background: Colors.Black.Primary,
     },
-  };
+  } as Theme;
+
+  const disableGesturesOption = { gestureEnabled: false };
 
   return (
     <NavigationContainer
@@ -117,23 +130,21 @@ const Navigator = ({ routingInstrumentation }, navigationRef) => {
             <Stack.Screen
               name={Routes.SWIPE_LAYOUT}
               component={SwipeNavigator}
-              options={{ gestureEnabled: false }}
+              options={disableGesturesOption}
             />
             <Stack.Screen
               name={Routes.CONNECTION_ERROR}
               component={ConnectionError}
             />
             <Stack.Screen
-              name={Routes.WALLET_CONNECT_APPROVAL_SHEET}
-              component={WalletConnect}
+              name={Routes.WALLET_CONNECT_INITIAL_CONNECTION}
+              component={WCInitialConnection}
+              options={disableGesturesOption}
             />
             <Stack.Screen
-              name={Routes.WALLET_CONNECT_SCREENS}
-              component={WalletConnectScreens}
-            />
-            <Stack.Screen
-              name={Routes.WALLET_CONNECT_WAITING_BRIDGE}
-              component={WalletConnectWaitingBridge}
+              name={Routes.WALLET_CONNECT_FLOWS}
+              component={WCFlows}
+              options={disableGesturesOption}
             />
           </Stack.Navigator>
         </Host>
