@@ -11,13 +11,14 @@ import RainbowButton from '@/components/buttons/RainbowButton';
 import Text from '@/components/common/Text';
 import { isValidPassword } from '@/constants/general';
 import { Column } from '@/layout';
-import { validatePassword } from '@/redux/slices/keyring';
+import { getMnemonic } from '@/redux/slices/keyring';
 
 import styles from './styles';
 
 function RevealSeedPhrase({ modalRef }) {
   const { t } = useTranslation();
   const [loggedIn, setLoggedIn] = useState(false);
+  const [words, setWords] = useState([]);
   const [password, setPassword] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -34,14 +35,15 @@ function RevealSeedPhrase({ modalRef }) {
   const handleSubmit = async () => {
     setLoading(true);
     dispatch(
-      validatePassword({
+      getMnemonic({
         password,
         onError: () => {
           setError(true);
           setLoading(false);
         },
-        onSuccess: () => {
+        onSuccess: mnemonic => {
           clearState();
+          setWords(mnemonic?.split(' '));
           setLoggedIn(true);
           setLoading(false);
         },
@@ -76,9 +78,7 @@ function RevealSeedPhrase({ modalRef }) {
             </>
           ) : (
             <>
-              <SeedPhrase
-                mnemonic={instance?.state?.mnemonic.split(' ') || []}
-              />
+              <SeedPhrase mnemonic={words || []} />
               <Copy
                 text={instance?.state?.mnemonic}
                 customStyle={styles.copyStyle}

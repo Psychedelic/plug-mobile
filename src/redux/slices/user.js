@@ -298,10 +298,10 @@ export const removeContact = createAsyncThunk(
     try {
       dispatch(setContactsLoading(true));
       const state = getState();
-      const res = await state.keyring.instance?.deleteContact(
-        contactName,
-        walletNumber
-      );
+      const res = await state.keyring.instance?.deleteContact({
+        addressName: contactName,
+        subaccount: walletNumber,
+      });
       if (res) {
         dispatch(
           setContacts(state.user.contacts.filter(c => c.name !== contactName))
@@ -324,14 +324,16 @@ export const editContact = createAsyncThunk(
     try {
       dispatch(setContactsLoading(true));
       const state = getState();
-      const removeContactRes = await state.keyring.instance?.deleteContact(
-        contact.name,
-        walletNumber
-      );
-      const addContactRes = await state.keyring.instance?.addContact(
-        formatContactForController(newContact),
-        walletNumber
-      );
+      const removeContactRes = await state.keyring.instance?.deleteContact({
+        addressName: contact.name,
+        subaccount: walletNumber,
+      });
+
+      const addContactRes = await state.keyring.instance?.addContact({
+        contact: formatContactForController(newContact),
+        subaccount: walletNumber,
+      });
+
       if (removeContactRes && addContactRes) {
         dispatch(
           setContacts([
