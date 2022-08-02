@@ -48,7 +48,12 @@ export const sendToken = createAsyncThunk(
     try {
       const { to, amount, canisterId, opts, icpPrice } = params;
       const { keyring } = getState();
-      const { token } = await keyring?.instance?.getTokenInfo({ canisterId });
+      const { assets } = keyring.currentWallet;
+      const standard = assets[canisterId].token.standard;
+      const { token } = await keyring?.instance?.getTokenInfo({
+        canisterId,
+        standard,
+      });
       const { decimals } = token;
       const parsedAmount = parseToBigIntString(amount, parseInt(decimals, 10));
       const { height, transactionId } = await keyring.instance?.send({
@@ -73,6 +78,7 @@ export const sendToken = createAsyncThunk(
         status: TRANSACTION_STATUS.success,
       };
     } catch (e) {
+      console.log('e', e);
       return {
         error: e.message,
         status: TRANSACTION_STATUS.error,
@@ -267,10 +273,10 @@ export const addContact = createAsyncThunk(
     try {
       dispatch(setContactsLoading(true));
       const state = getState();
-      const res = await state.keyring.instance?.addContact(
-        formatContactForController(contact),
-        walletNumber
-      );
+      const res = await state.keyring.instance?.addContact({
+        contact: formatContactForController(contact),
+        subaccount: walletNumber,
+      });
       if (res) {
         dispatch(setContacts([...state.user.contacts, contact]));
         dispatch(setContactsLoading(false));

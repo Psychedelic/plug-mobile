@@ -1,3 +1,4 @@
+import { Principal } from '@dfinity/principal';
 import { t } from 'i18next';
 
 import { TOKEN_IMAGES, TOKENS } from '@/constants/assets';
@@ -190,7 +191,7 @@ export const formatContactForController = contact => ({
   emoji: [contact.image],
   name: contact.name,
   value: {
-    PrincipalId: contact.id,
+    PrincipalId: Principal.fromText(contact.id),
   },
 });
 
@@ -202,5 +203,5 @@ export const DEFAULT_WALLET_CONNECT_STATE = {
   pendingCallRequests: {},
   walletConnectors: {},
   sessions: {},
-  bridgeTimeout: { timeout: null, onBridgeContact: () => {} },
+  bridgeTimeout: { timeout: null, onBridgeContact: () => { } },
 };
