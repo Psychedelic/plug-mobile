@@ -152,32 +152,23 @@ export const getDabNfts = async () => {
 
 export const fetchCanistersInfo = async whitelist => {
   if (whitelist && whitelist.length > 0) {
-    const canistersInfo = await Promise.all(
-      whitelist.map(async id => {
-        let canisterInfo = { id };
-
-        try {
-          const fetchedCanisterInfo = await PlugController.getCanisterInfo({
-            canisterId: id,
-            fetch,
-          });
-          canisterInfo = { id, ...fetchedCanisterInfo };
-        } catch (error) {
-          console.error(error);
+    try {
+      const canistersInfo = await PlugController.getMultipleCanisterInfo(
+        whitelist,
+        undefined,
+        fetch
+      );
+      const sortedCanistersInfo = canistersInfo.sort((a, b) => {
+        if (a.name && !b.name) {
+          return -1;
         }
+        return 1;
+      });
 
-        return canisterInfo;
-      })
-    );
-
-    const sortedCanistersInfo = canistersInfo.sort((a, b) => {
-      if (a.name && !b.name) {
-        return -1;
-      }
-      return 1;
-    });
-
-    return sortedCanistersInfo;
+      return sortedCanistersInfo;
+    } catch (e) {
+      console.log('error fetching canisters info', e);
+    }
   }
 
   return [];

@@ -149,7 +149,7 @@ const ConnectionModule = (dispatch, getState) => {
         const whitelistWithInfo = canistersInfo.reduce(
           (acum, info) => ({
             ...acum,
-            [info.id]: { canisterId: info.id, ...info },
+            [info.canisterId]: { ...info },
           }),
           {}
         );
