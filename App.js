@@ -23,6 +23,7 @@ import { isIos } from '@/constants/platform';
 import Routes from '@/navigation';
 import { initKeyring } from '@/redux/slices/keyring';
 import { persistor, store } from '@/redux/store';
+import { TopLevelNavigationRef } from '@/utils/navigation';
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
 const baseDist = getBuildNumber();
@@ -32,7 +33,7 @@ Sentry.init({
   dsn: Config.SENTRY_DSN,
   tracesSampleRate: 1.0,
   dist: baseDist,
-  debug: __DEV__,
+  debug: false,
   release: baseRelease,
   environment: __DEV__ ? 'local' : 'productive',
   normalizeDepth: 10,
@@ -89,7 +90,10 @@ const PersistedApp = () => {
         <SafeAreaProvider>
           <StatusBar barStyle="light-content" backgroundColor="black" />
           {!!instance && (
-            <Routes routingInstrumentation={routingInstrumentation} />
+            <Routes
+              routingInstrumentation={routingInstrumentation}
+              ref={TopLevelNavigationRef}
+            />
           )}
         </SafeAreaProvider>
       </ErrorBoundary>

@@ -11,7 +11,6 @@ import UserIcon from '@/commonComponents/UserIcon';
 import Button from '@/components/buttons/Button';
 import Text from '@/components/common/Text';
 import { ERROR_TYPES } from '@/constants/general';
-import { ENABLE_NFTS } from '@/constants/nfts';
 import { Colors } from '@/constants/theme';
 import { Container, Separator } from '@/layout';
 import { getTransactions, setTransactionsLoading } from '@/redux/slices/user';
@@ -51,11 +50,9 @@ const Profile = () => {
     setRefresing(transactionsLoading);
   }, [transactionsLoading]);
 
-  const renderTransaction = ({ item }, index) =>
-    item?.symbol === 'NFT' && !ENABLE_NFTS ? null : (
-      <ActivityItem key={`${item.date}${item.hash}`} {...item} />
-    );
-
+  const renderTransaction = ({ item }) => (
+    <ActivityItem key={`${item.date}${item.hash}`} {...item} />
+  );
   return (
     <>
       <Container>

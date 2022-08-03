@@ -1,7 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+import { JELLY_CANISTER_ID } from '@/constants/canister';
 import { ENABLE_NFTS } from '@/constants/nfts';
-import { formatAssets } from '@/utils/assets';
+import { getICPPrice } from '@/redux/slices/icp';
+import { formatAssets, parseToBigIntString } from '@/utils/currencies';
+import { recursiveParseBigint } from '@/utils/objects';
 
 import {
   DEFAULT_ASSETS,
@@ -9,8 +12,7 @@ import {
   filterICNSContacts,
   formatContact,
   formatContactForController,
-  mapTransaction,
-  recursiveParseBigint,
+  formatTransaction,
   TRANSACTION_STATUS,
 } from '../utils';
 
@@ -30,32 +32,53 @@ const DEFAULT_STATE = {
   biometricsAvailable: false,
 };
 
+export const sign = createAsyncThunk(
+  'keyring/sign',
+  async (params, { getState }) => {
+    const { msg } = params;
+    const { keyring } = getState();
+    const result = await keyring.instance.sign(msg);
+    return { response: result };
+  }
+);
+
 export const sendToken = createAsyncThunk(
   'keyring/sendToken',
   async (params, { getState, dispatch }) => {
     try {
       const { to, amount, canisterId, opts, icpPrice } = params;
-      const state = getState();
-      const { height, transactionId } = await state.keyring.instance?.send(
-        to,
-        amount,
+      const { keyring } = getState();
+      const { assets } = keyring.currentWallet;
+      const standard = assets[canisterId].token.standard;
+      const { token } = await keyring?.instance?.getTokenInfo({
         canisterId,
-        opts
-      );
+        standard,
+      });
+      const { decimals } = token;
+      const parsedAmount = parseToBigIntString(amount, parseInt(decimals, 10));
+      const { height, transactionId } = await keyring.instance?.send({
+        to,
+        amount: parsedAmount,
+        canisterId,
+        opts,
+      });
       if (transactionId || height) {
         dispatch(setAssetsLoading(true));
         dispatch(setTransactionsLoading(true));
-        dispatch(getAssets({ refresh: true, icpPrice }));
+        dispatch(getBalance());
         dispatch(getTransactions({ icpPrice }));
       }
       return {
         response: {
-          height: parseInt(height?.toString?.(), 10),
-          transactionId: parseInt(transactionId?.toString?.(), 10),
+          height: height ? parseInt(height, 10) : undefined,
+          transactionId: transactionId
+            ? parseInt(transactionId, 10)
+            : undefined,
         },
         status: TRANSACTION_STATUS.success,
       };
     } catch (e) {
+      console.log('e', e);
       return {
         error: e.message,
         status: TRANSACTION_STATUS.error,
@@ -68,8 +91,8 @@ export const burnXtc = createAsyncThunk(
   'keyring/burnXtc',
   async (params, { getState }) => {
     try {
-      const state = getState();
-      const response = await state.keyring.instance?.burnXTC(params);
+      const { keyring } = getState();
+      const response = await keyring.instance?.burnXTC(params);
       return {
         response: recursiveParseBigint(response),
         status: TRANSACTION_STATUS.success,
@@ -97,41 +120,43 @@ export const setAssetsAndLoading = createAsyncThunk(
   'keyring/setAssetsAndTransactions',
   async (params, { dispatch }) => {
     const { assets } = params;
-    const formattedAssets = formatAssets(assets);
-    dispatch(
-      setAssets(formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS)
-    );
+    dispatch(setAssets(assets?.length > 0 ? assets : DEFAULT_ASSETS));
     dispatch(setAssetsLoading(false));
   }
 );
 
-export const getAssets = createAsyncThunk(
-  'keyring/getAssets',
+export const getBalance = createAsyncThunk(
+  'keyring/getBalance',
   async (params, { getState, dispatch }) => {
-    return privateGetAssets(params, getState(), dispatch);
+    return asyncGetBalance(params, getState(), dispatch);
   }
 );
 
-export const privateGetAssets = async (params, state, dispatch) => {
+export const asyncGetBalance = async (params, state, dispatch) => {
   try {
     dispatch(setAssetsError(false));
-    const { refresh, icpPrice } = params;
+    const { refresh = true, subaccount } = params || {};
     const { instance } = state.keyring;
     const response = await instance?.getState();
     const { wallets, currentWalletId } = response || {};
-    let assets = wallets?.[currentWalletId]?.assets || [];
-    if (
-      !assets.length ||
-      assets?.every(asset => parseFloat(asset.amount) <= 0) ||
-      refresh
-    ) {
-      assets = await instance?.getBalance();
+    let assets = Object.values(wallets?.[currentWalletId]?.assets);
+
+    const shouldUpdate =
+      Object.values(assets)?.every(asset => !Number(asset.amount)) ||
+      Object.values(assets)?.some(asset => Number.isNaN(asset.amount)) ||
+      refresh;
+
+    if (shouldUpdate) {
+      assets = await instance?.getBalances(subaccount);
     } else {
-      instance?.getBalance();
+      instance?.getBalances(subaccount);
     }
-    return { assets, icpPrice };
+    const icpPrice = await dispatch(getICPPrice()).unwrap();
+    return formatAssets(assets, icpPrice);
   } catch (e) {
+    console.log('asyncGetBalance error', e);
     dispatch(setAssetsError(true));
+    return { error: e.message };
   }
 };
 
@@ -172,10 +197,21 @@ export const privateGetTransactions = async (params, state, dispatch) => {
     dispatch(setTransactionsError(false));
     const { icpPrice } = params;
     const response = await state.keyring.instance?.getTransactions();
-    const parsedTrx =
-      response?.transactions?.map(mapTransaction(icpPrice, state)) || [];
+    let parsedTrx =
+      response?.transactions?.map(formatTransaction(icpPrice, state)) || [];
 
     dispatch(setTransactionsLoading(false));
+
+    if (!ENABLE_NFTS) {
+      parsedTrx = parsedTrx.filter(
+        item =>
+          !(
+            item?.symbol === 'NFT' ||
+            item?.details.canisterId === JELLY_CANISTER_ID
+          )
+      );
+    }
+
     return parsedTrx;
   } catch (e) {
     dispatch(setTransactionsError(true));
@@ -237,10 +273,10 @@ export const addContact = createAsyncThunk(
     try {
       dispatch(setContactsLoading(true));
       const state = getState();
-      const res = await state.keyring.instance?.addContact(
-        formatContactForController(contact),
-        walletNumber
-      );
+      const res = await state.keyring.instance?.addContact({
+        contact: formatContactForController(contact),
+        subaccount: walletNumber,
+      });
       if (res) {
         dispatch(setContacts([...state.user.contacts, contact]));
         dispatch(setContactsLoading(false));
@@ -262,10 +298,10 @@ export const removeContact = createAsyncThunk(
     try {
       dispatch(setContactsLoading(true));
       const state = getState();
-      const res = await state.keyring.instance?.deleteContact(
-        contactName,
-        walletNumber
-      );
+      const res = await state.keyring.instance?.deleteContact({
+        addressName: contactName,
+        subaccount: walletNumber,
+      });
       if (res) {
         dispatch(
           setContacts(state.user.contacts.filter(c => c.name !== contactName))
@@ -288,14 +324,16 @@ export const editContact = createAsyncThunk(
     try {
       dispatch(setContactsLoading(true));
       const state = getState();
-      const removeContactRes = await state.keyring.instance?.deleteContact(
-        contact.name,
-        walletNumber
-      );
-      const addContactRes = await state.keyring.instance?.addContact(
-        formatContactForController(newContact),
-        walletNumber
-      );
+      const removeContactRes = await state.keyring.instance?.deleteContact({
+        addressName: contact.name,
+        subaccount: walletNumber,
+      });
+
+      const addContactRes = await state.keyring.instance?.addContact({
+        contact: formatContactForController(newContact),
+        subaccount: walletNumber,
+      });
+
       if (removeContactRes && addContactRes) {
         dispatch(
           setContacts([
@@ -316,6 +354,20 @@ export const editContact = createAsyncThunk(
       dispatch(setContactsLoading(false));
       console.log('Error editing contact:', e);
     }
+  }
+);
+export const getICNSData = createAsyncThunk(
+  'keyring/getICNSData',
+  async ({ refresh }, { getState, dispatch }) => {
+    const { keyring } = getState();
+    const { currentWallet } = keyring;
+    const icnsData = currentWallet?.icnsData || { names: [] };
+    if (!icnsData?.names?.length || refresh) {
+      return keyring.getICNSData();
+    } else {
+      keyring.getICNSData();
+    }
+    return icnsData;
   }
 );
 
@@ -383,10 +435,9 @@ export const userSlice = createSlice({
     [burnXtc.fulfilled]: (state, action) => {
       state.transaction = action.payload;
     },
-    [getAssets.fulfilled]: (state, action) => {
-      const formattedAssets = formatAssets(action.payload || []);
-      state.assets =
-        formattedAssets?.length > 0 ? formattedAssets : DEFAULT_ASSETS;
+    [getBalance.fulfilled]: (state, action) => {
+      const assets = action.payload;
+      state.assets = assets?.length > 0 ? assets : DEFAULT_ASSETS;
       state.assetsLoading = false;
     },
     [getNFTs.fulfilled]: (state, action) => {

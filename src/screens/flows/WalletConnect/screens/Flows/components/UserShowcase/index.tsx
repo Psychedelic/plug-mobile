@@ -1,0 +1,25 @@
+import React from 'react';
+import { Text, View } from 'react-native';
+
+import UserIcon from '@/components/common/UserIcon';
+import { FontStyles } from '@/constants/theme';
+import { CurrentWallet } from '@/interfaces/redux';
+
+import styles from './styles';
+
+interface Props {
+  currentWallet: CurrentWallet;
+}
+
+function UserShowcase({ currentWallet }: Props) {
+  return (
+    <View style={styles.userContainer}>
+      <UserIcon icon={currentWallet?.icon} size="small" />
+      <Text style={[FontStyles.Normal, styles.user]}>
+        {currentWallet?.name}
+      </Text>
+    </View>
+  );
+}
+
+export default UserShowcase;

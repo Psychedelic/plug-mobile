@@ -78,3 +78,18 @@ export function toFixedLocale(value: number, numDigits: number): string {
     return standardFixedString; // Locale matches JavaScript default
   }
 }
+
+export const validateAmount = (amount: number) =>
+  !Number.isNaN(amount) && Number.isInteger(amount) && amount >= 0;
+
+export const validateFloatStrAmount = (amount: string) =>
+  !Number.isNaN(parseFloat(amount)) && parseFloat(amount) >= 0;
+
+export const isValidBigInt = (str: string) => {
+  try {
+    BigInt(str);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};

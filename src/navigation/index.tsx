@@ -1,12 +1,15 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, Theme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import React, { useEffect, useRef } from 'react';
-import { AppState, StyleSheet } from 'react-native';
+import React, { forwardRef, memo, useCallback, useEffect, useRef } from 'react';
+import { AppState, Linking, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Host } from 'react-native-portalize';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Colors } from '@/constants/theme';
+import { RootStackParamList } from '@/interfaces/navigation';
+import { State } from '@/interfaces/redux';
+import SwipeNavigator from '@/navigation/navigators/SwipeNavigator';
 import { setUnlocked } from '@/redux/slices/keyring';
 import BackupSeedPhrase from '@/screens/auth/BackupSeedPhrase';
 import CreatePassword from '@/screens/auth/CreatePassword';
@@ -14,23 +17,36 @@ import ImportSeedPhrase from '@/screens/auth/ImportSeedPhrase';
 import Login from '@/screens/auth/Login';
 import Welcome from '@/screens/auth/Welcome';
 import ConnectionError from '@/screens/error/ConnectionError';
-import { navigationRef } from '@/utils/navigation';
+import WCFlows from '@/screens/flows/WalletConnect/screens/Flows';
+import WCInitialConnection from '@/screens/flows/WalletConnect/screens/InitialConnection';
+import { handleDeepLink } from '@/utils/deepLink';
 
-import SwipeNavigator from './navigators/SwipeNavigator';
 import Routes from './Routes';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
-const Navigator = ({ routingInstrumentation }) => {
+const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
+  const { isInitialized, isUnlocked } = useSelector(
+    (state: State) => state.keyring
+  );
+
   const dispatch = useDispatch();
-  const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
-  const backgroundTime = useRef(null);
+  const backgroundTime = useRef<any>(null);
 
   const handleLockState = () => {
     dispatch(setUnlocked(false));
   };
 
-  const handleAppStateChange = nextAppState => {
+  const handleDeepLinkHandler = useCallback(
+    link => {
+      handleDeepLink(link, isUnlocked);
+    },
+    [isUnlocked]
+  );
+
+  const handleAppStateChange = async (nextAppState: string) => {
+    const initialLink = await Linking.getInitialURL();
+
     if (nextAppState === 'background') {
       backgroundTime.current = Date.now();
     }
@@ -44,6 +60,10 @@ const Navigator = ({ routingInstrumentation }) => {
       }
       backgroundTime.current = null;
     }
+
+    if (initialLink) {
+      handleDeepLinkHandler(initialLink);
+    }
   };
 
   useEffect(() => {
@@ -52,8 +72,13 @@ const Navigator = ({ routingInstrumentation }) => {
       handleAppStateChange
     );
 
+    const deepLinkListener = Linking.addEventListener('url', link => {
+      handleDeepLinkHandler(link.url);
+    });
+
     return () => {
       subscription.remove();
+      deepLinkListener.remove();
     };
   }, []);
 
@@ -67,7 +92,9 @@ const Navigator = ({ routingInstrumentation }) => {
     colors: {
       background: Colors.Black.Primary,
     },
-  };
+  } as Theme;
+
+  const disableGesturesOption = { gestureEnabled: false };
 
   return (
     <NavigationContainer
@@ -103,11 +130,21 @@ const Navigator = ({ routingInstrumentation }) => {
             <Stack.Screen
               name={Routes.SWIPE_LAYOUT}
               component={SwipeNavigator}
-              options={{ gestureEnabled: false }}
+              options={disableGesturesOption}
             />
             <Stack.Screen
               name={Routes.CONNECTION_ERROR}
               component={ConnectionError}
+            />
+            <Stack.Screen
+              name={Routes.WALLET_CONNECT_INITIAL_CONNECTION}
+              component={WCInitialConnection}
+              options={disableGesturesOption}
+            />
+            <Stack.Screen
+              name={Routes.WALLET_CONNECT_FLOWS}
+              component={WCFlows}
+              options={disableGesturesOption}
             />
           </Stack.Navigator>
         </Host>
@@ -122,4 +159,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Navigator;
+export default memo(forwardRef(Navigator));

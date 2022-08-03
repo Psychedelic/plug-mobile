@@ -20,7 +20,6 @@ const translations = {
     pluggedInto: 'Plugged into {{name}}',
     send: 'Send',
     swap: 'Swap',
-    swapFor: 'Swap {{from}} for {{to}}',
     tokens: 'Tokens',
     biometricSignIn: 'Sign in with biometrics?',
     copied: 'Copied!',
@@ -28,6 +27,7 @@ const translations = {
     revealPhrase: 'Reveal Seed Phrase',
     available: 'Available',
     max: 'Max',
+    questionMark: '?',
   },
   welcome: {
     title: 'Welcome to Plug',
@@ -75,6 +75,17 @@ const translations = {
     contact: 'Contact',
     enterPassword: 'Enter your password',
     contacts: 'Contacts',
+  },
+  transactionTypes: {
+    swap: 'Swap',
+    swapFor: 'Swap {{from}} for {{to}}',
+    buyNTF: 'Buy NFT',
+    listNFT: 'List NFT',
+    cancelListingNFT: 'Cancel NFT Listing',
+    makeOfferNFT: 'Make Offer',
+    acceptOfferNFT: 'Accept Offer',
+    cancelOfferNFT: 'Cancel Offer',
+    denyOfferNFT: 'Deny Offer',
   },
   reviewSend: {
     to: 'To',
@@ -198,6 +209,17 @@ const translations = {
       buttonTitle: '  Join Discord',
       buttonImage: 'discord',
     },
+  },
+  walletConnect: {
+    changeWallet: 'Change Wallet',
+    decline: 'Decline',
+    allow: 'Allow',
+    confirm: 'Confirm',
+    connect: 'Connect',
+    connectTitle: 'Connect Wallet',
+    connectTo: 'Would you like to connect your wallet to ',
+    cannisterPermission: 'wants pemission to use these canisters:',
+    actionsPermission: 'wants pemission to perform the\nfollowing actions:',
   },
 };
 

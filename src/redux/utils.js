@@ -1,15 +1,18 @@
+import { Principal } from '@dfinity/principal';
 import { t } from 'i18next';
 
+import { TOKEN_IMAGES, TOKENS } from '@/constants/assets';
 import { ACTIVITY_STATUS } from '@/constants/business';
-import { formatAssetBySymbol, TOKEN_IMAGES, TOKENS } from '@/utils/assets';
+import { formatAssetBySymbol } from '@/utils/currencies';
 import { parseToFloatAmount } from '@/utils/number';
+import { recursiveParseBigint } from '@/utils/objects';
 
 import { reset } from './slices/keyring';
 import {
+  asyncGetBalance,
   getContacts,
   getNFTs,
   getTransactions,
-  privateGetAssets,
   setAssets,
   setAssetsAndLoading,
   setAssetsLoading,
@@ -26,21 +29,21 @@ export const DEFAULT_ASSETS = [
     name: 'ICP',
     amount: 0,
     value: 0,
-    icon: 'dfinity',
+    icon: TOKEN_IMAGES.ICP,
   },
   {
     symbol: 'XTC',
     name: 'Cycles',
     amount: 0,
     value: 0,
-    icon: 'xtc',
+    icon: TOKEN_IMAGES.XTC,
   },
   {
     symbol: 'WICP',
     name: 'Wrapped ICP',
     amount: 0,
     value: 0,
-    icon: 'wicp',
+    icon: TOKEN_IMAGES.WICP,
   },
 ];
 
@@ -55,23 +58,6 @@ export const TRANSACTION_STATUS = {
   error: 'error',
 };
 
-export const recursiveParseBigint = obj =>
-  Object.entries(obj).reduce(
-    (acum, [key, val]) => {
-      if (val instanceof Object) {
-        const res = Array.isArray(val)
-          ? val.map(el => recursiveParseBigint(el))
-          : recursiveParseBigint(val);
-        return { ...acum, [key]: res };
-      }
-      if (typeof val === 'bigint') {
-        return { ...acum, [key]: parseInt(val.toString(), 10) };
-      }
-      return { ...acum, [key]: val };
-    },
-    { ...obj }
-  );
-
 export const resetStores = dispatch => {
   dispatch(reset());
   dispatch(setCollections([]));
@@ -84,11 +70,7 @@ export const getNewAccountData = async (dispatch, icpPrice, state) => {
   dispatch(setContacts([]));
   dispatch(setContactsLoading(true));
   dispatch(getNFTs());
-  const assets = await privateGetAssets(
-    { refresh: true, icpPrice },
-    state,
-    dispatch
-  );
+  const assets = await asyncGetBalance(undefined, state, dispatch);
   dispatch(setAssetsAndLoading({ assets }));
   dispatch(setTransactionsLoading(true));
   dispatch(getTransactions({ icpPrice }));
@@ -97,85 +79,103 @@ export const getNewAccountData = async (dispatch, icpPrice, state) => {
     .then(() => dispatch(setContactsLoading(false)));
 };
 
-export const mapTransaction = (icpPrice, state) => trx => {
-  const { principal, accountId } = state.keyring?.currentWallet;
-  const { amount, currency, token, sonicData } = trx?.details || {};
-  const { decimals } = {
-    ...currency,
-    ...token,
-    ...(sonicData?.token ?? {}),
-  };
-  const isSonic = !!sonicData;
+const parseTransactionObject = transactionObject => {
+  const { amount, currency, token, sonicData } = transactionObject;
 
-  const getSymbol = () => {
-    if ('tokenRegistryInfo' in (trx?.details?.canisterInfo || [])) {
-      return trx?.details?.canisterInfo.tokenRegistryInfo.symbol;
-    }
-    if (
-      'nftRegistryInfo' in
-      (trx?.details?.canisterInfo || trx?.details?.details || [])
-    ) {
-      return 'NFT';
-    }
-    if (trx?.details?.details?.name?.includes('Swap')) {
-      return '';
-    }
-    return (
-      trx?.details?.currency?.symbol ??
-      sonicData?.token?.details?.symbol ??
-      trx?.details?.details?.name ??
-      ''
-    );
-  };
-
-  const symbol = getSymbol();
+  const { decimals } = { ...currency, ...token, ...(sonicData?.token ?? {}) };
+  // TODO: Decimals are currently not in DAB. Remove once they are added.
   const parsedAmount = parseToFloatAmount(
     amount,
     decimals || TOKENS[sonicData?.token?.details?.symbol]?.decimals
   );
-  const asset = formatAssetBySymbol(
-    isSonic ? parsedAmount : amount,
-    symbol,
-    icpPrice
-  );
-  const isOwnTx = [principal, accountId].includes(trx?.caller);
 
-  const getType = () => {
-    const type = trx?.type;
-    if (type.includes('transfer')) {
-      return isOwnTx ? 'SEND' : 'RECEIVE';
-    }
-    if (type.includes('Liquidity')) {
-      return `${type.includes('removeLiquidity') ? 'Remove' : 'Add'} Liquidity`;
-    }
-    return type.toUpperCase();
+  return {
+    ...transactionObject,
+    amount: parsedAmount,
   };
+};
 
-  const canisterInfo =
-    trx?.details?.tokenRegistryInfo ||
-    trx?.details?.nftRegistryInfo ||
-    trx?.details?.details?.nftRegistryInfo ||
-    trx?.details?.details?.tokenRegistryInfo;
+const parseTransaction = transaction => {
+  const { details } = transaction;
+  const { fee } = details;
+
+  const parsedDetails = parseTransactionObject(details);
+  let parsedFee = fee;
+
+  if (fee instanceof Object && ('token' in fee || 'currency' in fee)) {
+    parsedFee = parseTransactionObject(fee);
+  }
+
+  return {
+    ...transaction,
+    details: {
+      ...parsedDetails,
+      fee: parsedFee,
+    },
+  };
+};
+
+const getTransactionSymbol = details => {
+  if (!details) {
+    return '';
+  }
+  if ('tokenRegistryInfo' in (details?.canisterInfo || [])) {
+    return details?.canisterInfo.tokenRegistryInfo.symbol;
+  }
+  if ('nftRegistryInfo' in (details?.canisterInfo || [])) {
+    return 'NFT';
+  }
+  return (
+    details?.currency?.symbol ??
+    details?.sonicData?.token?.details?.symbol ??
+    details?.details?.name ??
+    ''
+  );
+};
+
+const getTransactionType = (type, isOwnTx) => {
+  if (!type) {
+    return '';
+  }
+  if (type.includes('transfer')) {
+    return isOwnTx ? 'SEND' : 'RECEIVE';
+  }
+  if (type.includes('Liquidity')) {
+    return `${type.includes('removeLiquidity') ? 'Remove' : 'Add'} Liquidity`;
+  }
+  return type.toUpperCase();
+};
+
+export const formatTransaction = (icpPrice, state) => trx => {
+  const { principal, accountId } = state.keyring?.currentWallet;
+
+  let parsedTransaction = recursiveParseBigint(parseTransaction(trx));
+  const { details, hash, caller, timestamp } = parsedTransaction || {};
+  const isOwnTx = [principal, accountId].includes(caller);
+
+  const symbol = getTransactionSymbol(details);
+  const asset = formatAssetBySymbol(details?.amount, symbol, icpPrice);
+  const type = getTransactionType(parsedTransaction?.type, isOwnTx);
 
   const transaction = {
-    ...asset,
-    type: getType(),
-    hash: trx?.hash,
-    to: trx?.details?.to,
-    from: trx?.details?.from || trx?.caller,
-    date: new Date(trx?.timestamp),
-    status: ACTIVITY_STATUS[trx?.details?.status],
-    image:
-      trx?.details?.details?.icon ||
-      trx?.details?.icon ||
-      TOKEN_IMAGES[symbol] ||
-      canisterInfo?.icon ||
-      '',
+    amount: asset.amount,
+    value: asset.value,
+    icon: asset.icon,
+    type,
+    hash,
+    to: details?.to?.principal,
+    from: details?.from?.principal || caller,
+    date: new Date(timestamp),
+    status: ACTIVITY_STATUS[details?.status],
+    image: details?.canisterInfo?.icon || TOKEN_IMAGES[symbol] || '',
     symbol,
-    canisterId: trx?.details?.canisterId,
+    canisterId: details?.canisterId,
     plug: null,
-    canisterInfo,
-    details: { ...trx?.details, caller: trx?.caller },
+    canisterInfo: details?.canisterInfo,
+    details: {
+      ...details,
+      caller,
+    },
   };
   return transaction;
 };
@@ -183,7 +183,7 @@ export const mapTransaction = (icpPrice, state) => trx => {
 export const formatContact = contact => ({
   image: contact.emoji[0],
   name: contact.name,
-  id: contact.value?.PrincipalId,
+  id: contact.value?.PrincipalId?.toText(), //TODO Check this logic. What happens if principal doesnt come from the contact?
 });
 
 export const formatContactForController = contact => ({
@@ -191,8 +191,17 @@ export const formatContactForController = contact => ({
   emoji: [contact.image],
   name: contact.name,
   value: {
-    PrincipalId: contact.id,
+    PrincipalId: Principal.fromText(contact.id),
   },
 });
 
 export const filterICNSContacts = contact => contact.id;
+
+export const DEFAULT_WALLET_CONNECT_STATE = {
+  pendingRedirect: false,
+  pendingSessionRequests: {},
+  pendingCallRequests: {},
+  walletConnectors: {},
+  sessions: {},
+  bridgeTimeout: { timeout: null, onBridgeContact: () => {} },
+};
