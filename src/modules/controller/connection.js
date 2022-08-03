@@ -27,7 +27,7 @@ const handlerAllowAgent = getState => async (opts, url, response) => {
         ...apps[url],
         status: status || CONNECTION_STATUS.rejected,
         date,
-        whitelist,
+        whitelist: { ...apps[url]?.whitelist, ...whitelist },
         events: [
           ...(apps[url]?.events || []),
           {
@@ -146,13 +146,15 @@ const ConnectionModule = (dispatch, getState) => {
           ? await fetchCanistersInfo(whitelist)
           : {};
 
-        const whitelistWithInfo = canistersInfo.reduce(
-          (acum, info) => ({
-            ...acum,
-            [info.canisterId]: { ...info },
-          }),
-          {}
-        );
+        const whitelistWithInfo = canistersInfo
+          .concat(whitelist.map(wh => ({ canisterId: wh })))
+          .reduce(
+            (acum, info) => ({
+              ...acum,
+              [info.canisterId]: { ...info, ...acum[info.canisterId] },
+            }),
+            {}
+          );
 
         const { url: domainUrl, name, icons } = metadata;
 
@@ -266,15 +268,17 @@ const ConnectionModule = (dispatch, getState) => {
         return;
       }
 
-      const canisterInfo = fetchCanistersInfo(whitelist);
+      const canisterInfo = await fetchCanistersInfo(whitelist);
 
-      const whitelistWithInfo = whitelist.reduce(
-        (acum, canisterId) => ({
-          ...acum,
-          [canisterId]: { canisterId, ...canisterInfo[canisterId] },
-        }),
-        {}
-      );
+      const whitelistWithInfo = canisterInfo
+        .concat(whitelist.map(wh => ({ canisterId: wh })))
+        .reduce(
+          (acum, info) => ({
+            ...acum,
+            [info.canisterId]: { ...info, ...acum[info.canisterId] },
+          }),
+          {}
+        );
 
       const app = await getApp(
         keyring?.currentWalletId.toString(),

@@ -319,7 +319,7 @@ const TransactionModule = (dispatch, getState) => {
       const canisterInfo = app.whitelist[canisterId];
       const shouldShowModal =
         (!batchTxId || batchTxId.lenght === 0) &&
-        protectedIds.includes(canisterInfo.id);
+        protectedIds.includes(canisterInfo.canisterId);
 
       const requestInfo = generateRequestInfo({
         ...args,
