@@ -31,6 +31,8 @@ const TransactionModule = (dispatch, getState) => {
     methodName: 'requestTransfer',
     handler: async (request, metadata, args) => {
       const keyring = getState().keyring?.instance;
+      const assets = await dispatch(getBalance()).unwrap();
+      const token = assets.find(tk => tk.canisterId === ICP_CANISTER_ID);
 
       const app = await getApp(
         keyring.currentWalletId.toString(),
@@ -54,6 +56,7 @@ const TransactionModule = (dispatch, getState) => {
           request: requestWithoutExecutor,
           metadata,
           args,
+          token,
           handleApproveArgs,
           handleDeclineArgs,
         });
