@@ -1,5 +1,12 @@
 import React, { useState } from 'react';
-import { TextInput as Input, View } from 'react-native';
+import {
+  StyleProp,
+  TextInput as Input,
+  TextInputProps,
+  TextStyle,
+  View,
+  ViewStyle,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import Touchable from '@/commonComponents/Touchable';
@@ -8,14 +15,29 @@ import Icon from '@/icons';
 import animationScales from '@/utils/animationScales';
 
 import Text from '../Text';
-import { variants } from './constants';
-import styles from './styles';
+import styles, { variants } from './styles';
+
+interface Props extends TextInputProps {
+  label: string;
+  ref?: React.RefObject<Input>;
+  value?: string;
+  variant?: 'text' | 'password' | 'multi' | 'innerLabel';
+  onChangeText?: (text: string) => void;
+  hideGradient?: boolean;
+  placeholder?: string;
+  onSubmitEditing?: () => void;
+  customStyle?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
+  disabled?: boolean;
+  maxLength?: number;
+  saveContactRef?: React.RefObject<any>;
+}
 
 const TextInput = ({
   label,
   ref,
   value,
-  variant,
+  variant = 'text',
   onChangeText,
   hideGradient,
   placeholder,
@@ -23,18 +45,16 @@ const TextInput = ({
   customStyle,
   textStyle,
   disabled,
-  maxLenght,
+  maxLength,
   saveContactRef,
   testID,
   ...props
-}) => {
+}: Props) => {
   const {
     viewStyle,
     inputStyle,
     innerLabelStyle,
     placeholderTextColor,
-    autoCorrect,
-    autoCapitalize,
     secureTextEntry,
   } = variants[variant];
   const [isFocused, setIsFocused] = useState(false);
@@ -53,7 +73,7 @@ const TextInput = ({
   };
 
   return (
-    <Touchable scale={animationScales.small}>
+    <Touchable scale={animationScales.small} onPress={() => {}}>
       {isFocused && !hideGradient && (
         <LinearGradient
           style={[
@@ -72,13 +92,12 @@ const TextInput = ({
           style={[inputStyle, textStyle]}
           placeholderTextColor={placeholderTextColor}
           onChangeText={onChangeText}
-          autoCorrect={autoCorrect}
-          autoCapitalize={autoCapitalize}
+          autoCorrect={false}
           secureTextEntry={secureTextEntry}
           placeholder={placeholder}
           onSubmitEditing={onSubmitEditing}
           blurOnSubmit={false}
-          maxLength={maxLenght}
+          maxLength={maxLength}
           value={value}
           editable={!disabled}
           ref={ref}

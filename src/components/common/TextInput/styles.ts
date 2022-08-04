@@ -6,7 +6,7 @@ import { fontMaker } from '@/utils/fonts';
 
 const commonBorderRadius = 16;
 
-export default StyleSheet.create({
+const styles = StyleSheet.create({
   inputStyle: {
     ...fontMaker({ size: 18, color: Colors.White.Pure, weight: SEMIBOLD }),
     paddingHorizontal: 20,
@@ -65,3 +65,36 @@ export default StyleSheet.create({
     height: 94,
   },
 });
+
+export const variants = {
+  text: {
+    viewStyle: styles.viewStyle,
+    inputStyle: styles.inputStyle,
+    innerLabelStyle: undefined,
+    placeholderTextColor: Colors.White.Secondary,
+    secureTextEntry: false,
+  },
+  multi: {
+    viewStyle: { ...styles.viewStyle, ...styles.multiStyle },
+    inputStyle: { ...styles.inputStyle, ...styles.multiStyle },
+    innerLabelStyle: undefined,
+    placeholderTextColor: Colors.White.Secondary,
+    secureTextEntry: false,
+  },
+  password: {
+    viewStyle: styles.viewStyle,
+    inputStyle: styles.inputStyle,
+    innerLabelStyle: undefined,
+    placeholderTextColor: Colors.White.Secondary,
+    secureTextEntry: true,
+  },
+  innerLabel: {
+    viewStyle: { ...styles.labledViewStyle },
+    inputStyle: { ...styles.inputStyle, ...styles.labledInputStyle },
+    innerLabelStyle: styles.innerLabelStyle,
+    placeholderTextColor: Colors.White.Secondary,
+    secureTextEntry: false,
+  },
+};
+
+export default styles;

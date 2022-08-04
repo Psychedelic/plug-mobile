@@ -146,7 +146,7 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
           autoFocus
           value={name}
           variant="text"
-          maxLenght={22}
+          maxLength={22}
           placeholder={t('contacts.namePlaceholder')}
           onChangeText={handleOnChangeName}
         />
