@@ -4,15 +4,14 @@ import { SEMIBOLD } from '@/constants/fonts';
 import { Colors } from '@/constants/theme';
 import { fontMaker } from '@/utils/fonts';
 
-const commonBorderRadius = 15;
-const inputHeight = 60;
+const commonBorderRadius = 16;
 
 export default StyleSheet.create({
   inputStyle: {
     ...fontMaker({ size: 18, color: Colors.White.Pure, weight: SEMIBOLD }),
     paddingHorizontal: 20,
     paddingVertical: 13,
-    borderRadius: 15,
+    borderRadius: commonBorderRadius,
     width: '100%',
     height: 56,
   },
@@ -33,13 +32,13 @@ export default StyleSheet.create({
     backgroundColor: Colors.Black.Primary,
     alignItems: 'center',
     flexDirection: 'row',
-    borderRadius: 15,
+    borderRadius: commonBorderRadius,
     height: 56,
     flexGrow: 0,
   },
   viewInnerStyle: {
     backgroundColor: Colors.Black.Primary,
-    borderRadius: 15,
+    borderRadius: commonBorderRadius,
     height: 56,
     flexGrow: 0,
   },
@@ -57,7 +56,7 @@ export default StyleSheet.create({
   focusedGradient: {
     borderRadius: commonBorderRadius,
     position: 'absolute',
-    height: inputHeight,
+    height: 60,
     width: '101%',
     left: -2,
     top: -2,

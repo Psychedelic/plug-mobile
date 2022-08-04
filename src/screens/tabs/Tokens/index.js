@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RefreshControl, ScrollView } from 'react-native';
+import { Pressable, RefreshControl, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ErrorState from '@/commonComponents/ErrorState';
@@ -13,6 +13,7 @@ import { getBalance, setAssetsLoading } from '@/redux/slices/user';
 import Send from '@/screens/flows/Send';
 
 import WalletHeader from '../components/WalletHeader';
+import { AddToken } from './components/AddToken';
 import styles from './styles';
 
 function Tokens() {
@@ -57,26 +58,29 @@ function Tokens() {
       </Row>
       <Separator />
       {!assetsError ? (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          overScrollMode="never"
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              tintColor={Colors.White.Primary}
-            />
-          }>
-          {assets?.map(token => (
-            <TokenItem
-              {...token}
-              key={token.symbol}
-              color={Colors.Gray.Tertiary}
-              onPress={openSend(token)}
-              style={styles.tokenItem}
-            />
-          ))}
-        </ScrollView>
+        <>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            overScrollMode="never"
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                tintColor={Colors.White.Primary}
+              />
+            }>
+            {assets?.map(token => (
+              <TokenItem
+                {...token}
+                key={token.symbol}
+                color={Colors.Gray.Tertiary}
+                onPress={openSend(token)}
+                style={styles.tokenItem}
+              />
+            ))}
+          </ScrollView>
+          <AddToken />
+        </>
       ) : (
         <ErrorState
           onPress={handleRefresh}

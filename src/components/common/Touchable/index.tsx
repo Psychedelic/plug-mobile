@@ -1,12 +1,16 @@
 import React from 'react';
-import { StyleProp, TouchableWithoutFeedback, ViewStyle } from 'react-native';
+import {
+  Insets,
+  StyleProp,
+  TouchableWithoutFeedback,
+  ViewStyle,
+} from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
 
-import { ReactObjectType } from '@/interfaces/general';
 import scales from '@/utils/animationScales';
 import haptics, { HapticFeedbackTypes } from '@/utils/haptics';
 
@@ -17,7 +21,7 @@ interface Props {
   hapticType?: string;
   scale?: number;
   disabled?: boolean;
-  hitSlop?: ReactObjectType;
+  hitSlop?: Insets;
   style?: StyleProp<ViewStyle>;
 }
 

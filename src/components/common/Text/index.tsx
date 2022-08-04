@@ -11,7 +11,8 @@ type Type =
   | 'body2'
   | 'button'
   | 'caption'
-  | 'overline';
+  | 'overline'
+  | 'normal';
 
 interface Props extends TextProps {
   type?: Type;

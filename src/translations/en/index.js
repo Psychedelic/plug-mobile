@@ -210,6 +210,11 @@ const translations = {
       buttonImage: 'discord',
     },
   },
+  addToken: {
+    title: 'Add Token',
+    availableTokens: 'Available Tokens',
+    search: 'Search Tokens',
+  },
   walletConnect: {
     changeWallet: 'Change Wallet',
     decline: 'Decline',
