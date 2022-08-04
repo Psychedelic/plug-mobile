@@ -25,7 +25,8 @@ export default StyleSheet.create({
     color: Colors.White.Pure,
     textAlign: 'center',
   },
-  topTitle: {
-    marginBottom: 6,
+  container: {
+    alignItems: 'center',
+    paddingTop: 30,
   },
 });

@@ -42,6 +42,7 @@ function WCInitialConnection() {
       };
       getRouteParams();
     } catch (e) {
+      // TODO: handle error.
       console.log('GET ROUTE PARAMS', e);
     }
   }, []);

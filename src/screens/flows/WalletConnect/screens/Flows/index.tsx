@@ -3,13 +3,16 @@ import {
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
-import React, { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { t } from 'i18next';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { ActivityIndicator, Text, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { FontStyles } from '@/constants/theme';
 import { ERRORS } from '@/constants/walletconnect';
 import useDisableBack from '@/hooks/useDisableBack';
 import { RootStackParamList } from '@/interfaces/navigation';
+import { State } from '@/interfaces/redux';
 import { FlowsParams, WCFlowTypes } from '@/interfaces/walletConnect';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
@@ -24,6 +27,7 @@ import DappInfo from './components/DappInfo';
 import RequestCall from './components/RequestCall';
 import RequestConnect from './components/RequestConnect';
 import RequestTransfer from './components/RequestTransfer';
+import UserShowcase from './components/UserShowcase';
 import styles from './styles';
 
 const COMPONENTS = {
@@ -36,6 +40,7 @@ const COMPONENTS = {
 function WCFlows() {
   const dispatch = useDispatch();
   const { params } = useRoute();
+  const { currentWallet } = useSelector((state: State) => state.keyring);
   const { reset } = useNavigation<NavigationProp<RootStackParamList>>();
   const [sendLoading, setSendLoading] = useState(false);
   const [wcTimeout, setWCTimeout] = useState(false);
@@ -50,7 +55,8 @@ function WCFlows() {
     loading,
   } = (params || {}) as FlowsParams;
 
-  const DisplayComponent = COMPONENTS[type];
+  const DisplayComponent = useMemo(() => COMPONENTS[type], [type]);
+  const isRequestTransfer = type === WCFlowTypes.transfer;
   const isBatchTransactions = type === WCFlowTypes.batchTransactions;
 
   useDisableBack();
@@ -104,6 +110,8 @@ function WCFlows() {
     });
   };
 
+  // TODO: Check if useCallback is needed.
+
   const onCancel = useCallback(
     async (error?: any) => {
       try {
@@ -150,13 +158,31 @@ function WCFlows() {
         </View>
       ) : (
         <View style={styles.container}>
-          <DappInfo type={type} request={request} />
-          <DisplayComponent
-            type={type}
-            args={args}
-            request={request}
-            metadata={metadata}
-          />
+          {isRequestTransfer && (
+            <View style={styles.infoUserHeader}>
+              <View style={styles.leftContainer}>
+                <Text style={[FontStyles.NormalGray, styles.topTitle]}>
+                  {t('walletConnect.wallet')}
+                </Text>
+                <UserShowcase currentWallet={currentWallet} />
+              </View>
+              <View style={styles.rightContainer}>
+                <Text style={FontStyles.NormalGray}>
+                  {t('walletConnect.balance')}
+                </Text>
+                <Text style={FontStyles.Normal}>417.23 WICP</Text>
+              </View>
+            </View>
+          )}
+          <View style={styles.showcaseContainer}>
+            <DappInfo type={type} request={request} />
+            <DisplayComponent
+              type={type}
+              args={args}
+              request={request}
+              metadata={metadata}
+            />
+          </View>
           <BottomContainer
             sendLoading={sendLoading}
             onPressSend={onPressSend}

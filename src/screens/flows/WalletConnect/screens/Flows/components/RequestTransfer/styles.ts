@@ -1,30 +1,38 @@
 import { StyleSheet } from 'react-native';
 
+import { Colors } from '@/constants/theme';
+
 export default StyleSheet.create({
-  buttonContainer: {
+  symbol: {
+    width: 20,
+    height: 20,
+    resizeMode: 'contain',
+    marginRight: 4,
+  },
+  assetAmountContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  rightContainer: {
+    alignItems: 'flex-end',
+  },
+  icon: {
+    width: 32,
+    height: 32,
+    resizeMode: 'contain',
+    marginRight: 8,
+  },
+  leftContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  itemContainer: {
+    flexDirection: 'row',
+    backgroundColor: Colors.Black.Secondary,
     justifyContent: 'space-between',
-    marginTop: 10,
-  },
-  buttonStyle: {
-    minWidth: '48%',
-  },
-  gradient: {
-    top: -30,
-    height: 30,
-    width: '100%',
-    alignSelf: 'center',
-    position: 'absolute',
-  },
-  bottomContainer: {
-    width: '100%',
-    paddingBottom: 20,
-  },
-  text: {
-    color: 'white',
-  },
-  title: {
-    color: 'white',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 26,
+    borderRadius: 14,
   },
 });

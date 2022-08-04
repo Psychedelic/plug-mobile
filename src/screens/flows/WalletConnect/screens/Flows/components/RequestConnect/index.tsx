@@ -15,18 +15,11 @@ function RequestConnect({ args }: WallectConnectFlowsData) {
     (key: string) => whitelist[key]
   ) as WCWhiteListItem[];
 
-  const renderWhiteList = ({
-    item,
-    index,
-  }: {
-    item: WCWhiteListItem;
-    index: number;
-  }) => {
+  const renderWhiteList = ({ item }: { item: WCWhiteListItem }) => {
     const { canisterId, name, icon } = item;
     return (
       <CommonItem
         name={name}
-        key={index}
         imageUri={icon}
         id={canisterId}
         onPress={() =>
@@ -42,6 +35,7 @@ function RequestConnect({ args }: WallectConnectFlowsData) {
     <FlatList<WCWhiteListItem>
       bounces={false}
       data={whiteListArray}
+      style={styles.container}
       renderItem={renderWhiteList}
       keyExtractor={item => item.canisterId}
       showsVerticalScrollIndicator={false}
