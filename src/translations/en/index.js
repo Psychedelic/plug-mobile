@@ -219,7 +219,10 @@ const translations = {
     connectTitle: 'Connect Wallet',
     connectTo: 'Would you like to connect your wallet to ',
     cannisterPermission: 'wants pemission to use these canisters:',
-    actionsPermission: 'wants pemission to perform the\nfollowing actions:',
+    actionsPermission: {
+      transfer: 'wants pemission to perform the\nfollowing action:',
+      batchTransactions: 'wants pemission to perform the\nfollowing actions:',
+    },
     transaction: 'Transaction',
     request: 'Request',
     balance: 'Balance',

@@ -16,22 +16,4 @@ export default StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
   },
-  topTitle: {
-    marginBottom: 6,
-  },
-  leftContainer: {
-    alignItems: 'flex-start',
-  },
-  rightContainer: {
-    alignItems: 'flex-end',
-  },
-  infoUserHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderBottomColor: '#ffffff16',
-    borderBottomWidth: 1,
-    width: '100%',
-    paddingVertical: 24,
-  },
 });

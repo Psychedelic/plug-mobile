@@ -21,7 +21,7 @@ export default StyleSheet.create({
     color: Colors.ActionBlue,
   },
   subtitle: {
-    paddingBottom: 10,
+    paddingBottom: 24,
     color: Colors.White.Pure,
     textAlign: 'center',
   },

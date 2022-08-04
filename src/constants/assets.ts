@@ -4,6 +4,16 @@ export const E8S_PER_ICP = 100000000;
 export const CYCLES_PER_TC = 1000000000000;
 export const USD_PER_TC = 1.42656;
 
+export const getTokenPrices = (symbol: string, icpPrice: number) => {
+  switch (symbol) {
+    case TOKENS.XTC.symbol:
+    case 'WTC':
+      return USD_PER_TC;
+    default:
+      return icpPrice;
+  }
+};
+
 export const TOKEN_IMAGES = {
   XTC: 'xtc',
   ICP: 'dfinity',

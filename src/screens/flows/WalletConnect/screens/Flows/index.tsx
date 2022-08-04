@@ -3,16 +3,13 @@ import {
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
-import { t } from 'i18next';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { ActivityIndicator, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
-import { FontStyles } from '@/constants/theme';
 import { ERRORS } from '@/constants/walletconnect';
 import useDisableBack from '@/hooks/useDisableBack';
 import { RootStackParamList } from '@/interfaces/navigation';
-import { State } from '@/interfaces/redux';
 import { FlowsParams, WCFlowTypes } from '@/interfaces/walletConnect';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
@@ -27,7 +24,7 @@ import DappInfo from './components/DappInfo';
 import RequestCall from './components/RequestCall';
 import RequestConnect from './components/RequestConnect';
 import RequestTransfer from './components/RequestTransfer';
-import UserShowcase from './components/UserShowcase';
+import RequestTransferHeader from './components/RequestTransferHeader';
 import styles from './styles';
 
 const COMPONENTS = {
@@ -38,9 +35,9 @@ const COMPONENTS = {
 };
 
 function WCFlows() {
-  const dispatch = useDispatch();
+  useDisableBack();
   const { params } = useRoute();
-  const { currentWallet } = useSelector((state: State) => state.keyring);
+  const dispatch = useDispatch();
   const { reset } = useNavigation<NavigationProp<RootStackParamList>>();
   const [sendLoading, setSendLoading] = useState(false);
   const [wcTimeout, setWCTimeout] = useState(false);
@@ -49,6 +46,7 @@ function WCFlows() {
     request,
     metadata,
     args,
+    token,
     handleApproveArgs,
     handleDeclineArgs,
     handleError,
@@ -57,9 +55,6 @@ function WCFlows() {
 
   const DisplayComponent = useMemo(() => COMPONENTS[type], [type]);
   const isRequestTransfer = type === WCFlowTypes.transfer;
-  const isBatchTransactions = type === WCFlowTypes.batchTransactions;
-
-  useDisableBack();
 
   useEffect(() => {
     if (wcTimeout) {
@@ -158,36 +153,21 @@ function WCFlows() {
         </View>
       ) : (
         <View style={styles.container}>
-          {isRequestTransfer && (
-            <View style={styles.infoUserHeader}>
-              <View style={styles.leftContainer}>
-                <Text style={[FontStyles.NormalGray, styles.topTitle]}>
-                  {t('walletConnect.wallet')}
-                </Text>
-                <UserShowcase currentWallet={currentWallet} />
-              </View>
-              <View style={styles.rightContainer}>
-                <Text style={FontStyles.NormalGray}>
-                  {t('walletConnect.balance')}
-                </Text>
-                <Text style={FontStyles.Normal}>417.23 WICP</Text>
-              </View>
-            </View>
-          )}
+          {isRequestTransfer && <RequestTransferHeader token={token} />}
           <View style={styles.showcaseContainer}>
             <DappInfo type={type} request={request} />
             <DisplayComponent
-              type={type}
               args={args}
               request={request}
               metadata={metadata}
+              token={token}
             />
           </View>
           <BottomContainer
             sendLoading={sendLoading}
             onPressSend={onPressSend}
             onPressCancel={onPressCancel}
-            isBatchTransactions={isBatchTransactions}
+            type={type}
           />
         </View>
       )}

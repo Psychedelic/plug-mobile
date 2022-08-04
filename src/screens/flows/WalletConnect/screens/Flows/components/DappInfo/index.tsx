@@ -12,12 +12,10 @@ interface Props {
   type: WCFlowTypes;
 }
 
-// Matt-TODO: This is a WIP SCREEN
 function WCFlowDappInfo({ request, type }: Props) {
-  // TODO: Show balance of selected asset at requestTransfer.
-  // const { assets } = useSelector((state: State) => state.user);
   const dappImage = request?.args[0]?.icons[0];
-  const isBatchTransactions = type === WCFlowTypes.batchTransactions;
+  const showActionPermission =
+    type === WCFlowTypes.transfer || type === WCFlowTypes.batchTransactions;
 
   return (
     <View style={styles.container}>
@@ -28,8 +26,8 @@ function WCFlowDappInfo({ request, type }: Props) {
         {request?.dappName}
       </Text>
       <Text style={[FontStyles.NormalGray, styles.subtitle]}>
-        {isBatchTransactions // Add prurals for request transfer.
-          ? t('walletConnect.actionsPermission')
+        {showActionPermission
+          ? t(`walletConnect.actionsPermission.${type}`)
           : t('walletConnect.cannisterPermission')}
       </Text>
     </View>

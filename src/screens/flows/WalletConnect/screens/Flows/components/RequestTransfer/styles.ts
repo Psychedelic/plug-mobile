@@ -4,10 +4,9 @@ import { Colors } from '@/constants/theme';
 
 export default StyleSheet.create({
   symbol: {
-    width: 20,
-    height: 20,
+    maxWidth: 20,
     resizeMode: 'contain',
-    marginRight: 4,
+    marginRight: 5,
   },
   assetAmountContainer: {
     flexDirection: 'row',
