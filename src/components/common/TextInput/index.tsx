@@ -11,26 +11,20 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import Touchable from '@/commonComponents/Touchable';
 import { Rainbow } from '@/constants/theme';
-import Icon from '@/icons';
 import animationScales from '@/utils/animationScales';
 
 import Text from '../Text';
 import styles, { variants } from './styles';
 
 interface Props extends TextInputProps {
-  label: string;
+  label?: string;
   ref?: React.RefObject<Input>;
-  value?: string;
   variant?: 'text' | 'password' | 'multi' | 'innerLabel';
-  onChangeText?: (text: string) => void;
   hideGradient?: boolean;
-  placeholder?: string;
-  onSubmitEditing?: () => void;
   customStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
   disabled?: boolean;
-  maxLength?: number;
-  saveContactRef?: React.RefObject<any>;
+  right?: () => React.ReactNode;
 }
 
 const TextInput = ({
@@ -46,7 +40,7 @@ const TextInput = ({
   textStyle,
   disabled,
   maxLength,
-  saveContactRef,
+  right,
   testID,
   ...props
 }: Props) => {
@@ -66,10 +60,6 @@ const TextInput = ({
 
   const handleOnBlur = () => {
     setIsFocused(false);
-  };
-
-  const handleAddContact = () => {
-    saveContactRef?.current.open();
   };
 
   return (
@@ -107,11 +97,7 @@ const TextInput = ({
           testID={testID}
           {...props}
         />
-        {saveContactRef && (
-          <Touchable onPress={handleAddContact}>
-            <Icon name="plus" />
-          </Touchable>
-        )}
+        {right}
       </View>
     </Touchable>
   );

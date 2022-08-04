@@ -8,6 +8,8 @@ import Modal, { modalOffset } from '@/commonComponents/Modal';
 import PasswordModal from '@/commonComponents/PasswordModal';
 import TextInput from '@/commonComponents/TextInput';
 import Text from '@/components/common/Text';
+import Touchable from '@/components/common/Touchable';
+import Icon from '@/components/icons';
 import { ADDRESS_TYPES } from '@/constants/addresses';
 import { TOKENS, USD_PER_TC } from '@/constants/assets';
 import { isAndroid } from '@/constants/platform';
@@ -276,14 +278,6 @@ function Send({ modalRef, nft, token, onSuccess }) {
     [availableAmount, selectedTokenPrice]
   );
 
-  const getSaveContactRef = () => {
-    if (selectedContact || !isValidAddress) {
-      return null;
-    } else {
-      return saveContactRef;
-    }
-  };
-
   const handleBack = () => {
     setAddress(null);
     setSelectedContact(null);
@@ -343,7 +337,13 @@ function Send({ modalRef, nft, token, onSuccess }) {
           onChangeText={onChangeText}
           textStyle={isValidAddress ? styles.valid : null}
           autoFocus
-          saveContactRef={getSaveContactRef()}
+          right={
+            !selectedContact && isValidAddress ? (
+              <Touchable onPress={saveContactRef?.current?.open}>
+                <Icon name="plus" />
+              </Touchable>
+            ) : null
+          }
         />
         {!isValidAddress && (
           <ContactSection filterText={address} onPress={onContactPress} />
