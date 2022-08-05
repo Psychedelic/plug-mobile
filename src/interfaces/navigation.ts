@@ -16,6 +16,7 @@ export type RootStackParamList = {
   [Routes.CONNECTION_ERROR]: undefined;
   [Routes.WALLET_CONNECT_INITIAL_CONNECTION]: undefined;
   [Routes.WALLET_CONNECT_FLOWS]: undefined;
+  [Routes.WALLET_CONNECT_ERROR]: { dappName: string; dappUrl: string };
 };
 
 export type TNavigation<R extends keyof RootStackParamList> = {

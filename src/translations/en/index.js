@@ -28,6 +28,7 @@ const translations = {
     available: 'Available',
     max: 'Max',
     questionMark: '?',
+    the: 'The',
   },
   welcome: {
     title: 'Welcome to Plug',
@@ -227,6 +228,9 @@ const translations = {
     request: 'Request',
     balance: 'Balance',
     wallet: 'Wallet',
+    startAgain: 'Start Again',
+    timeOutTitle: 'The connection has timed out',
+    timeOutSubtitle: 'took to long to respond',
   },
 };
 

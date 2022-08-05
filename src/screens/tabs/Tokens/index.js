@@ -29,12 +29,6 @@ function Tokens() {
     assets.reduce((total, token) => total + Number(token?.value), 0)
   ).toFixed(2);
 
-  // useEffect(() => {
-  //   Navigation.handleAction('WCFlows', {
-  //     type: 'transfer',
-  //   });
-  // }, []);
-
   useEffect(() => {
     setRefresing(assetsLoading);
   }, [assetsLoading]);
