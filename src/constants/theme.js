@@ -41,6 +41,9 @@ export const Colors = {
   },
   Red: '#FF453A',
   Transparent: '#ffffff00',
+  Divider: {
+    16: '#3D3D3D',
+  },
 };
 
 export const Rainbow = {

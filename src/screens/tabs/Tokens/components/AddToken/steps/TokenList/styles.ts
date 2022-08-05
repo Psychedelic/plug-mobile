@@ -22,6 +22,8 @@ export default StyleSheet.create({
     width: ITEM_HEIGHT,
     borderRadius: 100,
     marginRight: 12,
+    borderWidth: 1,
+    borderColor: Colors.Divider[16],
   },
   loader: {
     flex: 1,

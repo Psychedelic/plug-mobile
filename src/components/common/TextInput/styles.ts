@@ -9,7 +9,6 @@ const commonBorderRadius = 16;
 const styles = StyleSheet.create({
   inputStyle: {
     ...fontMaker({ size: 18, color: Colors.White.Pure, weight: SEMIBOLD }),
-    paddingHorizontal: 20,
     paddingVertical: 13,
     borderRadius: commonBorderRadius,
     width: '100%',
@@ -18,11 +17,6 @@ const styles = StyleSheet.create({
   multiStyle: {
     alignItems: 'flex-start',
     height: 90,
-  },
-  innerLabelStyle: {
-    ...fontMaker({ size: 18, color: Colors.White.Pure, weight: SEMIBOLD }),
-    minWidth: 5,
-    flex: 1,
   },
   labledInputStyle: {
     paddingLeft: 0,
@@ -35,6 +29,7 @@ const styles = StyleSheet.create({
     borderRadius: commonBorderRadius,
     height: 56,
     flexGrow: 0,
+    paddingHorizontal: 16,
   },
   viewInnerStyle: {
     backgroundColor: Colors.Black.Primary,
@@ -70,28 +65,24 @@ export const variants = {
   text: {
     viewStyle: styles.viewStyle,
     inputStyle: styles.inputStyle,
-    innerLabelStyle: undefined,
     placeholderTextColor: Colors.White.Secondary,
     secureTextEntry: false,
   },
   multi: {
     viewStyle: { ...styles.viewStyle, ...styles.multiStyle },
     inputStyle: { ...styles.inputStyle, ...styles.multiStyle },
-    innerLabelStyle: undefined,
     placeholderTextColor: Colors.White.Secondary,
     secureTextEntry: false,
   },
   password: {
     viewStyle: styles.viewStyle,
     inputStyle: styles.inputStyle,
-    innerLabelStyle: undefined,
     placeholderTextColor: Colors.White.Secondary,
     secureTextEntry: true,
   },
   innerLabel: {
     viewStyle: { ...styles.labledViewStyle },
     inputStyle: { ...styles.inputStyle, ...styles.labledInputStyle },
-    innerLabelStyle: styles.innerLabelStyle,
     placeholderTextColor: Colors.White.Secondary,
     secureTextEntry: false,
   },

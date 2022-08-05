@@ -329,14 +329,13 @@ function Send({ modalRef, nft, token, onSuccess }) {
           center={<Text style={styles.centerText}>{t('send.title')}</Text>}
         />
         <TextInput
-          label={t('send.inputLabel')}
           placeholder={t('send.inputPlaceholder')}
-          variant="innerLabel"
           hideGradient
           value={selectedContact ? selectedContact.name : address}
           onChangeText={onChangeText}
           textStyle={isValidAddress ? styles.valid : null}
           autoFocus
+          left={<Text style={styles.inputLabel}>{t('send.inputLabel')}</Text>}
           right={
             !selectedContact && isValidAddress ? (
               <Touchable onPress={saveContactRef?.current?.open}>

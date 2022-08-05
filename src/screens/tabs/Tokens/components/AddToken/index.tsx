@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { Modalize } from 'react-native-modalize';
 
 import Header from '@/components/common/Header';
 import Modal from '@/components/common/Modal';
@@ -9,7 +10,7 @@ import animationScales from '@/utils/animationScales';
 import useSteps from './hooks/useSteps';
 
 export function AddToken() {
-  const modalRef = useRef(null);
+  const modalRef = useRef<Modalize>(null);
   const { center, component } = useSteps();
 
   return (

@@ -42,8 +42,6 @@ export function TokenList({ onSelectedToken }: Props) {
     getTokens();
   }, []);
 
-  console.tron.log(tokens);
-
   return (
     <>
       <View style={styles.container}>

@@ -1,8 +1,12 @@
 import React from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 
+import Search from '@/components/icons/svg/Search.svg';
+import animationScales from '@/utils/animationScales';
+
 import TextInput from '../TextInput';
-import styles from './styles';
+import Touchable from '../Touchable';
+import styles, { searchColor } from './styles';
 
 interface Props {
   placeholder: string;
@@ -11,12 +15,14 @@ interface Props {
 
 function SearchBar({ placeholder, style }: Props) {
   return (
-    <View style={style}>
+    <View style={[styles.container, style]}>
       <TextInput
         placeholder={placeholder}
         variant="text"
         customStyle={styles.input}
+        left={<Search fill={searchColor} style={styles.icon} />}
       />
+      <Touchable scale={animationScales.small} style={styles.addButton} />
     </View>
   );
 }

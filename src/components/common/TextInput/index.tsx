@@ -13,22 +13,20 @@ import Touchable from '@/commonComponents/Touchable';
 import { Rainbow } from '@/constants/theme';
 import animationScales from '@/utils/animationScales';
 
-import Text from '../Text';
 import styles, { variants } from './styles';
 
 interface Props extends TextInputProps {
-  label?: string;
   ref?: React.RefObject<Input>;
   variant?: 'text' | 'password' | 'multi' | 'innerLabel';
   hideGradient?: boolean;
   customStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
   disabled?: boolean;
-  right?: () => React.ReactNode;
+  left?: React.ReactNode;
+  right?: React.ReactNode;
 }
 
 const TextInput = ({
-  label,
   ref,
   value,
   variant = 'text',
@@ -40,17 +38,13 @@ const TextInput = ({
   textStyle,
   disabled,
   maxLength,
+  left,
   right,
   testID,
   ...props
 }: Props) => {
-  const {
-    viewStyle,
-    inputStyle,
-    innerLabelStyle,
-    placeholderTextColor,
-    secureTextEntry,
-  } = variants[variant];
+  const { viewStyle, inputStyle, placeholderTextColor, secureTextEntry } =
+    variants[variant];
   const [isFocused, setIsFocused] = useState(false);
   const isMultiline = variant === 'multi';
 
@@ -75,9 +69,7 @@ const TextInput = ({
         />
       )}
       <View style={[viewStyle, customStyle]}>
-        {variant === 'innerLabel' && (
-          <Text style={innerLabelStyle}>{label}</Text>
-        )}
+        {left}
         <Input
           style={[inputStyle, textStyle]}
           placeholderTextColor={placeholderTextColor}
