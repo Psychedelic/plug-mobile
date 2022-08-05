@@ -5,6 +5,7 @@ import { Colors } from '@/constants/theme';
 import { fontMaker } from '@/utils/fonts';
 
 const commonBorderRadius = 16;
+export const defaultPlaceholderTextColor = Colors.White.Secondary;
 
 const styles = StyleSheet.create({
   inputStyle: {
@@ -18,10 +19,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     height: 90,
   },
-  labledInputStyle: {
-    paddingLeft: 0,
-    flex: 12,
-  },
   viewStyle: {
     backgroundColor: Colors.Black.Primary,
     alignItems: 'center',
@@ -30,23 +27,6 @@ const styles = StyleSheet.create({
     height: 56,
     flexGrow: 0,
     paddingHorizontal: 16,
-  },
-  viewInnerStyle: {
-    backgroundColor: Colors.Black.Primary,
-    borderRadius: commonBorderRadius,
-    height: 56,
-    flexGrow: 0,
-  },
-  labledViewStyle: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    flexWrap: 'nowrap',
-    paddingBottom: 5,
-    paddingTop: 5,
-  },
-  keyboardBG: {
-    color: Colors.Black.Primary,
-    height: '100%',
   },
   focusedGradient: {
     borderRadius: commonBorderRadius,
@@ -60,32 +40,5 @@ const styles = StyleSheet.create({
     height: 94,
   },
 });
-
-export const variants = {
-  text: {
-    viewStyle: styles.viewStyle,
-    inputStyle: styles.inputStyle,
-    placeholderTextColor: Colors.White.Secondary,
-    secureTextEntry: false,
-  },
-  multi: {
-    viewStyle: { ...styles.viewStyle, ...styles.multiStyle },
-    inputStyle: { ...styles.inputStyle, ...styles.multiStyle },
-    placeholderTextColor: Colors.White.Secondary,
-    secureTextEntry: false,
-  },
-  password: {
-    viewStyle: styles.viewStyle,
-    inputStyle: styles.inputStyle,
-    placeholderTextColor: Colors.White.Secondary,
-    secureTextEntry: true,
-  },
-  innerLabel: {
-    viewStyle: { ...styles.labledViewStyle },
-    inputStyle: { ...styles.inputStyle, ...styles.labledInputStyle },
-    placeholderTextColor: Colors.White.Secondary,
-    secureTextEntry: false,
-  },
-};
 
 export default styles;

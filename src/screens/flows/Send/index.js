@@ -333,12 +333,20 @@ function Send({ modalRef, nft, token, onSuccess }) {
           hideGradient
           value={selectedContact ? selectedContact.name : address}
           onChangeText={onChangeText}
-          textStyle={isValidAddress ? styles.valid : null}
+          textStyle={[
+            styles.inputText,
+            isValidAddress && styles.inputTextValid,
+          ]}
           autoFocus
-          left={<Text style={styles.inputLabel}>{t('send.inputLabel')}</Text>}
+          customStyle={styles.input}
+          left={
+            <Text style={styles.inputLeftLabel}>{t('send.inputLabel')}</Text>
+          }
           right={
             !selectedContact && isValidAddress ? (
-              <Touchable onPress={saveContactRef?.current?.open}>
+              <Touchable
+                style={styles.addIcon}
+                onPress={saveContactRef?.current?.open}>
                 <Icon name="plus" />
               </Touchable>
             ) : null

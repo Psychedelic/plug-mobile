@@ -79,7 +79,7 @@ function PasswordInput({
           disabled={disabled}
           customStyle={[styles.input, inputStyle]}
           textStyle={styles.text}
-          variant={`${showPassword ? 'text' : 'password'}`}
+          secureTextEntry={!showPassword}
           onFocus={handleOnFocus}
           onBlur={handleOnBlur}
           onSubmitEditing={handleOnSubmit}

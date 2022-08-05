@@ -116,7 +116,6 @@ const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
         </View>
         <TextInput
           autoFocus
-          variant="text"
           maxLength={22}
           value={accountName}
           placeholder={t('accounts.accountNamePlaceholder')}

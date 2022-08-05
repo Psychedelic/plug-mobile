@@ -61,7 +61,6 @@ function SaveContact({ modalRef, onClose, id }) {
         <TextInput
           autoFocus
           value={name}
-          variant="text"
           maxLength={22}
           placeholder={t('saveContact.namePlaceholder')}
           onChangeText={setName}

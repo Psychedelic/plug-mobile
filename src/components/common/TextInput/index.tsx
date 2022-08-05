@@ -13,11 +13,10 @@ import Touchable from '@/commonComponents/Touchable';
 import { Rainbow } from '@/constants/theme';
 import animationScales from '@/utils/animationScales';
 
-import styles, { variants } from './styles';
+import styles, { defaultPlaceholderTextColor } from './styles';
 
 interface Props extends TextInputProps {
   ref?: React.RefObject<Input>;
-  variant?: 'text' | 'password' | 'multi' | 'innerLabel';
   hideGradient?: boolean;
   customStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
@@ -29,7 +28,6 @@ interface Props extends TextInputProps {
 const TextInput = ({
   ref,
   value,
-  variant = 'text',
   onChangeText,
   hideGradient,
   placeholder,
@@ -41,12 +39,14 @@ const TextInput = ({
   left,
   right,
   testID,
+  placeholderTextColor = defaultPlaceholderTextColor,
+  secureTextEntry,
+  multiline,
   ...props
 }: Props) => {
-  const { viewStyle, inputStyle, placeholderTextColor, secureTextEntry } =
-    variants[variant];
+  const viewStyle = [styles.viewStyle, multiline && styles.multiStyle];
+  const baseInputStyle = [styles.inputStyle, multiline && styles.multiStyle];
   const [isFocused, setIsFocused] = useState(false);
-  const isMultiline = variant === 'multi';
 
   const handleOnFocus = () => {
     setIsFocused(true);
@@ -62,7 +62,7 @@ const TextInput = ({
         <LinearGradient
           style={[
             styles.focusedGradient,
-            isMultiline && styles.multiLineGradient,
+            multiline && styles.multiLineGradient,
             customStyle,
           ]}
           {...Rainbow}
@@ -71,7 +71,7 @@ const TextInput = ({
       <View style={[viewStyle, customStyle]}>
         {left}
         <Input
-          style={[inputStyle, textStyle]}
+          style={[baseInputStyle, textStyle]}
           placeholderTextColor={placeholderTextColor}
           onChangeText={onChangeText}
           autoCorrect={false}

@@ -145,14 +145,12 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
         <TextInput
           autoFocus
           value={name}
-          variant="text"
           maxLength={22}
           placeholder={t('contacts.namePlaceholder')}
           onChangeText={handleOnChangeName}
         />
         <TextInput
           value={id}
-          variant="text"
           onChangeText={handleOnChangeId}
           placeholder={t('contacts.idPlaceholder')}
           customStyle={styles.marginedContainer}

@@ -5,9 +5,6 @@ import { Colors, FontStyles } from '@/constants/theme';
 import { fontMaker } from '@/utils/fonts';
 
 export default StyleSheet.create({
-  valid: {
-    color: Colors.ActionBlue,
-  },
   contactItem: {
     marginTop: 15,
   },
@@ -16,8 +13,22 @@ export default StyleSheet.create({
     paddingBottom: 10,
   },
   centerText: FontStyles.Subtitle2,
-  inputLabel: {
+  input: {
+    backgroundColor: Colors.Black.Pure,
+    paddingHorizontal: 0,
+    marginVertical: 6,
+  },
+  inputLeftLabel: {
     ...fontMaker({ size: 18, color: Colors.White.Pure, weight: SEMIBOLD }),
     width: 32,
+  },
+  inputText: {
+    flex: 1,
+  },
+  inputTextValid: {
+    color: Colors.ActionBlue,
+  },
+  addIcon: {
+    marginLeft: 4,
   },
 });
