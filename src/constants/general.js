@@ -15,3 +15,5 @@ export const ERROR_TYPES = {
 
 export const PLUG_PROXY_HOST = 'https://mainnet.plugwallet.ooo/';
 export const IC_URL_HOST = 'https://ic0.app/';
+export const TRUST_AND_SECURITY_URL =
+  'https://docs.plugwallet.ooo/resources/app-trust-and-security/';

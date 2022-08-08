@@ -221,8 +221,8 @@ const translations = {
     connectTo: 'Would you like to connect your wallet to ',
     cannisterPermission: 'wants pemission to use these canisters:',
     actionsPermission: {
-      transfer: 'wants pemission to perform the\nfollowing action:',
-      batchTransactions: 'wants pemission to perform the\nfollowing actions:',
+      one: 'wants pemission to perform the\nfollowing action:',
+      several: 'wants pemission to perform the\nfollowing actions:',
     },
     transaction: 'Transaction',
     request: 'Request',
@@ -231,6 +231,10 @@ const translations = {
     startAgain: 'Start Again',
     timeOutTitle: 'The connection has timed out',
     timeOutSubtitle: 'took to long to respond',
+    unsafeDappName: 'Unknown DApp',
+    unknown: 'Unknown',
+    unknownArguments: 'Unknown arguments',
+    learnMore: 'Learn More',
   },
 };
 

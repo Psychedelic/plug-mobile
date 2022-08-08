@@ -5,6 +5,7 @@ import { Image, Text, View } from 'react-native';
 import { FontStyles } from '@/constants/theme';
 import { FlowsRequest, WCFlowTypes } from '@/interfaces/walletConnect';
 
+import unknownDappIcon from '../../assets/unknownIcon.png';
 import styles from './styles';
 
 interface Props {
@@ -12,23 +13,34 @@ interface Props {
   type: WCFlowTypes;
 }
 
+const getSubtitle = (type: WCFlowTypes) => {
+  switch (type) {
+    case WCFlowTypes.requestCall:
+    case WCFlowTypes.transfer:
+      return t('walletConnect.actionsPermission.one');
+    case WCFlowTypes.batchTransactions:
+      return t('walletConnect.actionsPermission.several');
+    default:
+      return t('walletConnect.cannisterPermission');
+  }
+};
+
 function WCFlowDappInfo({ request, type }: Props) {
   const dappImage = request?.args[0]?.icons[0];
-  const showActionPermission =
-    type === WCFlowTypes.transfer || type === WCFlowTypes.batchTransactions;
 
   return (
     <View style={styles.container}>
       <View style={styles.backgroundLogo}>
-        <Image source={{ uri: dappImage }} style={styles.logo} />
+        <Image
+          source={dappImage ? { uri: dappImage } : unknownDappIcon}
+          style={[styles.logo, !dappImage && styles.unknownLogo]}
+        />
       </View>
       <Text style={[FontStyles.Title, styles.dappName]}>
-        {request?.dappName}
+        {request?.dappName || t('walletConnect.unsafeDappName')}
       </Text>
       <Text style={[FontStyles.NormalGray, styles.subtitle]}>
-        {showActionPermission
-          ? t(`walletConnect.actionsPermission.${type}`)
-          : t('walletConnect.cannisterPermission')}
+        {getSubtitle(type)}
       </Text>
     </View>
   );

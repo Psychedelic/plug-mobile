@@ -68,6 +68,7 @@ export interface FlowsArgs {
   methodName: string;
   domainUrl: string;
   whitelist: WCWhiteList;
+  shouldWarn?: boolean;
 }
 
 enum WCHandleActionStatus {

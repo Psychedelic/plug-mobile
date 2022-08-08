@@ -14,6 +14,10 @@ export default StyleSheet.create({
   logo: {
     height: 30,
     resizeMode: 'contain',
+    alignSelf: 'center',
+  },
+  unknownLogo: {
+    height: 40,
   },
   dappName: {
     paddingTop: 12,

@@ -38,7 +38,8 @@ function WCFlows() {
   useDisableBack();
   const { params } = useRoute();
   const dispatch = useDispatch();
-  const { reset } = useNavigation<NavigationProp<RootStackParamList>>();
+  const { reset, navigate } =
+    useNavigation<NavigationProp<RootStackParamList>>();
   const [sendLoading, setSendLoading] = useState(false);
   const [wcTimeout, setWCTimeout] = useState(false);
   const {
@@ -55,12 +56,15 @@ function WCFlows() {
 
   const DisplayComponent = useMemo(() => COMPONENTS[type], [type]);
   const isRequestTransfer = type === WCFlowTypes.transfer;
+  console.tron.log(`t: ${type}`, params);
 
   useEffect(() => {
     if (wcTimeout) {
-      // TODO: Handle Error.
-      // Matt Ale
-      // closeScreen();
+      // TODO: Matt Ale
+      // navigate(Routes.WALLET_CONNECT_ERROR, {
+      //   dappName: request?.dappName,
+      //   dappUrl: request?.dappUrl,
+      // });
     }
   }, [wcTimeout]);
 
@@ -158,16 +162,16 @@ function WCFlows() {
             <DappInfo type={type} request={request} />
             <DisplayComponent
               args={args}
+              token={token}
               request={request}
               metadata={metadata}
-              token={token}
             />
           </View>
           <BottomContainer
+            type={type}
             sendLoading={sendLoading}
             onPressSend={onPressSend}
             onPressCancel={onPressCancel}
-            type={type}
           />
         </View>
       )}
