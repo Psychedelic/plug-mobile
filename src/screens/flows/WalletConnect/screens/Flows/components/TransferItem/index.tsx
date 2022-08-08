@@ -6,22 +6,22 @@ import TokenFormat from '@/components/formatters/TokenFormat';
 import UsdFormat from '@/components/formatters/UsdFormat';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
+import { useToken } from '@/hooks/useToken';
 
 import questionMark from '../../assets/questionMark.png';
 import transferRequest from '../../assets/transferRequest.png';
 import styles from './styles';
 
 interface Props {
-  item?: {
-    usdValue: number;
-    icon: string;
-    amount: number;
-    symbol: string;
-  };
+  canisterId: string;
   unknown?: boolean;
 }
 
-function TransferItem({ item, unknown }: Props) {
+function TransferItem({ canisterId, unknown }: Props) {
+  const { token, usdValue } = useToken(canisterId);
+
+  const item = token && { icon: 'unknown', usdValue, ...token };
+
   return (
     <View style={styles.itemContainer}>
       <View style={styles.leftContainer}>
