@@ -319,9 +319,6 @@ const TransactionModule = (dispatch, getState) => {
       }
       const protectedIds = await getProtectedIds();
       const canisterInfo = app.whitelist[canisterId];
-
-      console.log('canisterInfo', JSON.stringify(canisterInfo, undefined, 2));
-
       const shouldShowModal =
         (!batchTxId || batchTxId.lenght === 0) &&
         protectedIds.includes(canisterInfo.canisterId);
