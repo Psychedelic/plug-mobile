@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyleProp, ViewStyle } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { Portal } from 'react-native-portalize';
 
@@ -7,6 +8,16 @@ import { isIos, withNotch } from '@/constants/platform';
 import styles from './styles';
 
 export const modalOffset = withNotch ? undefined : isIos ? 10 : 35;
+
+interface Props {
+  children: React.ReactNode;
+  modalRef: React.RefObject<Modalize>;
+  onClose?: () => void;
+  fullHeight?: boolean;
+  adjustToContentHeight?: boolean;
+  scrollViewProps?: any;
+  modalStyle?: StyleProp<ViewStyle>;
+}
 
 function Modal({
   children,
@@ -17,7 +28,7 @@ function Modal({
   scrollViewProps,
   modalStyle,
   ...props
-}) {
+}: Props) {
   return (
     <Portal>
       <Modalize

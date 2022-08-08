@@ -15,7 +15,7 @@ import scales from '@/utils/animationScales';
 import haptics, { HapticFeedbackTypes } from '@/utils/haptics';
 
 interface Props {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   onPress: () => void;
   onLongPress?: () => void;
   hapticType?: string;
