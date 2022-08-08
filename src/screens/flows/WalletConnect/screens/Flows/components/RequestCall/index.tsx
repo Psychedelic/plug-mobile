@@ -10,8 +10,6 @@ import warningIcon from '../../assets/warningIcon.png';
 import TransferItem from '../TransferItem';
 import styles from './styles';
 
-// import RequestTransfer from '../RequestTransfer';
-
 function RequestCall(props: WallectConnectFlowsData) {
   const { shouldWarn } = props.args;
   const goToLearnMore = () => Linking.openURL(TRUST_AND_SECURITY_URL);
@@ -25,7 +23,7 @@ function RequestCall(props: WallectConnectFlowsData) {
             <View style={styles.unknownContainer}>
               <Image source={warningIcon} style={styles.warningIcon} />
               <Text style={[FontStyles.Normal, styles.unknownTitle]}>
-                {t('walletConnect.unknown')}
+                {t('walletConnect.unknownArguments')}
               </Text>
             </View>
             <Text
