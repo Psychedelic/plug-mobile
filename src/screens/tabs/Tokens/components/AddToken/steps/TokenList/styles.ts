@@ -31,8 +31,23 @@ export default StyleSheet.create({
   },
   listTitle: {
     ...fontMaker({ size: 16, weight: SEMIBOLD, color: Colors.White.Secondary }),
+    marginTop: 24,
+    marginBottom: 12,
   },
-  searchBar: {
-    marginBottom: 24,
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 50,
+  },
+  emoji: {
+    fontSize: 34,
+    marginBottom: 8,
+  },
+  emptyText: {
+    color: Colors.White.Secondary,
+  },
+  emptyLink: {
+    color: Colors.ActionBlue,
   },
 });

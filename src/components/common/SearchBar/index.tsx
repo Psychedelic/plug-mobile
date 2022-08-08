@@ -9,16 +9,18 @@ import Touchable from '../Touchable';
 import styles, { searchColor } from './styles';
 
 interface Props {
+  onChangeText: (text: string) => void;
   placeholder: string;
   style?: StyleProp<ViewStyle>;
 }
 
-function SearchBar({ placeholder, style }: Props) {
+function SearchBar({ placeholder, style, onChangeText }: Props) {
   return (
-    <View style={[styles.container, style]}>
+    <View style={style}>
       <TextInput
         placeholder={placeholder}
         customStyle={styles.input}
+        onChangeText={onChangeText}
         left={<Search fill={searchColor} style={styles.icon} />}
       />
       <Touchable scale={animationScales.small} style={styles.addButton} />

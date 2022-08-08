@@ -214,6 +214,8 @@ const translations = {
     title: 'Add Token',
     availableTokens: 'Available Tokens',
     search: 'Search Tokens',
+    noResults: 'No search results found.',
+    addToken: 'Add custom token',
   },
   walletConnect: {
     changeWallet: 'Change Wallet',

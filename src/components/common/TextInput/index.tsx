@@ -87,6 +87,7 @@ const TextInput = ({
           onBlur={handleOnBlur}
           keyboardAppearance="dark"
           testID={testID}
+          multiline={multiline}
           {...props}
         />
         {right}
