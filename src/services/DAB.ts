@@ -34,6 +34,7 @@ export const getTokenBalance = async (
   user: Principal | string
 ) => {
   const agent = new HttpAgent({
+    fetch,
     host: 'https://mainnet.dfinity.network',
   });
   const tokenActor = await getTokenActor({

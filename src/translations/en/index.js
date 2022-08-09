@@ -212,10 +212,15 @@ const translations = {
   },
   addToken: {
     title: 'Add Token',
+    reviewTitle: 'Review Token',
     availableTokens: 'Available Tokens',
     search: 'Search Tokens',
+    searchResults: 'Search Results',
     noResults: 'No search results found.',
-    addToken: 'Add custom token',
+    addCustomToken: 'Add custom token',
+    addButton: 'Add Token',
+    safetyAlert:
+      'Token Safety Alert: For your security, make sure to do proper research before interacting with any token.',
   },
   walletConnect: {
     changeWallet: 'Change Wallet',

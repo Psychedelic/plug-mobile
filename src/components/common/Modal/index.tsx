@@ -13,6 +13,7 @@ interface Props {
   children: React.ReactNode;
   modalRef: React.RefObject<Modalize>;
   onClose?: () => void;
+  onClosed?: () => void;
   fullHeight?: boolean;
   adjustToContentHeight?: boolean;
   scrollViewProps?: any;
@@ -23,6 +24,7 @@ function Modal({
   children,
   modalRef,
   onClose,
+  onClosed,
   fullHeight,
   adjustToContentHeight,
   scrollViewProps,
@@ -58,6 +60,7 @@ function Modal({
         modalTopOffset={modalOffset}
         onOverlayPress={onClose}
         onClose={onClose}
+        onClosed={onClosed}
         adjustToContentHeight={adjustToContentHeight}
         threshold={15}>
         {children}

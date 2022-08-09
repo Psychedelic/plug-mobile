@@ -7,13 +7,13 @@ import Header from '@/commonComponents/Header';
 import Modal, { modalOffset } from '@/commonComponents/Modal';
 import PasswordModal from '@/commonComponents/PasswordModal';
 import TextInput from '@/commonComponents/TextInput';
+import ActionButton from '@/components/common/ActionButton';
 import Text from '@/components/common/Text';
 import Touchable from '@/components/common/Touchable';
 import Icon from '@/components/icons';
 import { ADDRESS_TYPES } from '@/constants/addresses';
 import { TOKENS, USD_PER_TC } from '@/constants/assets';
 import { isAndroid } from '@/constants/platform';
-import { FontStyles } from '@/constants/theme';
 import XTC_OPTIONS from '@/constants/xtc';
 import useKeychain from '@/hooks/useKeychain';
 import { getICPPrice } from '@/redux/slices/icp';
@@ -319,11 +319,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
         <Header
           left={
             isValidAddress && (
-              <Text
-                style={[FontStyles.Normal, styles.valid]}
-                onPress={handleBack}>
-                {t('common.back')}
-              </Text>
+              <ActionButton onPress={handleBack} label={t('common.back')} />
             )
           }
           center={<Text style={styles.centerText}>{t('send.title')}</Text>}

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { Image } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
@@ -14,7 +14,12 @@ import styles from './styles';
 
 export function AddToken() {
   const modalRef = useRef<Modalize>(null);
-  const { center, component } = useSteps();
+
+  const handleModalClose = useCallback(() => {
+    modalRef.current?.close();
+  }, [modalRef]);
+
+  const { currentStep, setStep } = useSteps({ handleModalClose });
 
   return (
     <>
@@ -24,9 +29,20 @@ export function AddToken() {
         style={styles.buttonContainer}>
         <Image source={Add} />
       </Touchable>
-      <Modal modalRef={modalRef}>
-        <Header center={<Text type="subtitle2">{center}</Text>} />
-        {component}
+      <Modal
+        modalRef={modalRef}
+        adjustToContentHeight={currentStep?.adjustModalContent}
+        onClosed={() => setStep(0)}>
+        <Header
+          left={currentStep?.left}
+          right={currentStep?.right}
+          center={
+            <Text style={styles.title} type="subtitle3">
+              {currentStep?.center}
+            </Text>
+          }
+        />
+        {currentStep.component}
       </Modal>
     </>
   );

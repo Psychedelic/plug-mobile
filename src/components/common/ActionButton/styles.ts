@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { Colors } from '@/constants/theme';
+import { fontMaker } from '@/utils/fonts';
 
 export default StyleSheet.create({
   container: {
@@ -8,8 +9,7 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    color: Colors.ActionBlue,
-    fontSize: 17,
+    ...fontMaker({ color: Colors.ActionBlue }),
     marginLeft: 5,
   },
 });

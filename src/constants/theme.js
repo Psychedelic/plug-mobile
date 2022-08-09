@@ -147,5 +147,5 @@ export const FontStyles = StyleSheet.create({
   Body2: fontMaker({ size: 17, weight: MEDIUM }),
   Button: fontMaker({ size: 20, weight: SEMIBOLD, color: Colors.White.Pure }),
   Caption: fontMaker({ size: 14, weight: MEDIUM }),
-  Overline: fontMaker({ size: 12, weight: REGULAR }),
+  Overline: fontMaker({ size: 10, weight: REGULAR }),
 });
