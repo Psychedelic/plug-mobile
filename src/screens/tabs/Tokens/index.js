@@ -27,7 +27,10 @@ function Tokens() {
 
   const [refreshing, setRefresing] = useState(assetsLoading);
   const usdSum = Number(
-    assets.reduce((total, token) => total + Number(token?.value), 0)
+    assets.reduce(
+      (total, token) => (token?.value ? total + Number(token?.value) : total),
+      0
+    )
   ).toFixed(2);
 
   useEffect(() => {

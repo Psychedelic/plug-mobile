@@ -64,7 +64,9 @@ const useSteps = ({ handleModalClose }: Props): Return => {
           adjustModalContent: false,
         },
         {
-          component: <ReviewToken token={selectedToken} />,
+          component: (
+            <ReviewToken token={selectedToken} onClose={handleClose} />
+          ),
           left: (
             <ActionButton
               onPress={() => handleChangeStep(0)}

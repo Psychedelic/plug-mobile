@@ -151,6 +151,7 @@ export const asyncGetBalance = async (params, state, dispatch) => {
     } else {
       instance?.getBalances(subaccount);
     }
+
     const icpPrice = await dispatch(getICPPrice()).unwrap();
     return formatAssets(assets, icpPrice);
   } catch (e) {
@@ -356,6 +357,7 @@ export const editContact = createAsyncThunk(
     }
   }
 );
+
 export const getICNSData = createAsyncThunk(
   'keyring/getICNSData',
   async ({ refresh }, { getState, dispatch }) => {
@@ -368,6 +370,26 @@ export const getICNSData = createAsyncThunk(
       keyring.getICNSData();
     }
     return icnsData;
+  }
+);
+
+export const addCustomToken = createAsyncThunk(
+  'keyring/addCustomToken',
+  /**
+   * @param {{token: DABToken, callback: () => void}} param
+   */
+  async ({ token, callback }, { getState, dispatch }) => {
+    const { keyring } = getState();
+    const response = await keyring?.instance?.getState();
+    const { currentWalletId } = response || {};
+    const { canisterId, standard, logo } = token;
+    const tokenList = await keyring?.instance?.registerToken({
+      canisterId,
+      standard,
+      subaccount: currentWalletId,
+      logo,
+    });
+    callback?.(tokenList);
   }
 );
 

@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import RainbowButton from '@/components/buttons/RainbowButton';
 import Image from '@/components/common/Image';
@@ -9,6 +9,7 @@ import Text from '@/components/common/Text';
 import TokenFormat from '@/components/formatters/TokenFormat';
 import UsdFormat from '@/components/formatters/UsdFormat';
 import { DABToken } from '@/interfaces/dab';
+import { addCustomToken, getBalance } from '@/redux/slices/user';
 import { getTokenBalance } from '@/services/DAB';
 
 import { parseToken } from '../../utils';
@@ -16,13 +17,15 @@ import styles, { loaderColor } from './styles';
 
 interface Props {
   token?: DABToken;
+  onClose: () => void;
 }
 
-export function ReviewToken({ token }: Props) {
+export function ReviewToken({ token, onClose }: Props) {
   const { principal } = useSelector(state => state.keyring?.currentWallet);
   const { icpPrice } = useSelector(state => state.icp);
   const [balance, setBalance] = useState<{ amount: number; value?: number }>();
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
   function renderToken() {
     return (
@@ -55,17 +58,27 @@ export function ReviewToken({ token }: Props) {
     );
   }
 
+  const handleAddToken = () => {
+    dispatch(
+      addCustomToken({
+        token,
+        callback: () => {
+          dispatch(getBalance());
+          onClose?.();
+        },
+      })
+    );
+  };
+
   useEffect(() => {
-    const getBalance = async () => {
+    const _getBalance = async () => {
       setLoading(true);
       const res = await getTokenBalance(token!, principal);
       setBalance(parseToken(token!, res, icpPrice));
       setLoading(false);
     };
-    getBalance();
+    _getBalance();
   }, [token]);
-
-  console.log(balance);
 
   return (
     <View style={styles.container}>
@@ -75,7 +88,7 @@ export function ReviewToken({ token }: Props) {
       {renderToken()}
       <RainbowButton
         text={t('addToken.addButton')}
-        onPress={() => {}}
+        onPress={handleAddToken}
         disabled={loading}
       />
     </View>
