@@ -89,6 +89,7 @@ export interface Asset {
   decimals: number;
   name: string;
   canisterId: string;
+  logo?: string;
 }
 
 export interface IcpState {

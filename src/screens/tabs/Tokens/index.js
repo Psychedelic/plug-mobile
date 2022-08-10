@@ -65,6 +65,7 @@ function Tokens() {
           <ScrollView
             showsVerticalScrollIndicator={false}
             overScrollMode="never"
+            contentContainerStyle={styles.scrollContent}
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}
@@ -74,7 +75,7 @@ function Tokens() {
             }>
             {assets?.map(token => (
               <TokenItem
-                {...token}
+                token={token}
                 key={token.symbol}
                 color={Colors.Gray.Tertiary}
                 onPress={openSend(token)}

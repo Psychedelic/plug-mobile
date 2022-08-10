@@ -376,20 +376,25 @@ export const getICNSData = createAsyncThunk(
 export const addCustomToken = createAsyncThunk(
   'keyring/addCustomToken',
   /**
-   * @param {{token: DABToken, callback: () => void}} param
+   * @param {{token: DABToken, onSuccess: () => void}} param
    */
-  async ({ token, callback }, { getState, dispatch }) => {
-    const { keyring } = getState();
-    const response = await keyring?.instance?.getState();
-    const { currentWalletId } = response || {};
+  async ({ token, onSuccess }, { getState, dispatch }) => {
+    const { keyring, icp } = getState();
+    const currentWalletId = keyring?.instance?.currentWalletId;
     const { canisterId, standard, logo } = token;
-    const tokenList = await keyring?.instance?.registerToken({
-      canisterId,
-      standard,
-      subaccount: currentWalletId,
-      logo,
-    });
-    callback?.(tokenList);
+    try {
+      const tokenList = await keyring?.instance?.registerToken({
+        canisterId,
+        standard,
+        subaccount: currentWalletId,
+        logo,
+      });
+      dispatch(setAssets(formatAssets(tokenList, icp.icpPrice)));
+      onSuccess?.();
+    } catch (error) {
+      // TODO handle error
+      console.log(error);
+    }
   }
 );
 

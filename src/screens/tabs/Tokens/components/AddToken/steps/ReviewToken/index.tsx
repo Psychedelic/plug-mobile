@@ -9,7 +9,7 @@ import Text from '@/components/common/Text';
 import TokenFormat from '@/components/formatters/TokenFormat';
 import UsdFormat from '@/components/formatters/UsdFormat';
 import { DABToken } from '@/interfaces/dab';
-import { addCustomToken, getBalance } from '@/redux/slices/user';
+import { addCustomToken } from '@/redux/slices/user';
 import { getTokenBalance } from '@/services/DAB';
 
 import { parseToken } from '../../utils';
@@ -24,13 +24,15 @@ export function ReviewToken({ token, onClose }: Props) {
   const { principal } = useSelector(state => state.keyring?.currentWallet);
   const { icpPrice } = useSelector(state => state.icp);
   const [balance, setBalance] = useState<{ amount: number; value?: number }>();
-  const [loading, setLoading] = useState(true);
+  const [loadingBalance, setLoadingBalance] = useState(true);
+  const [loadingRegister, setLoadingRegister] = useState(false);
+
   const dispatch = useDispatch();
 
   function renderToken() {
     return (
       <View style={styles.tokenContainer}>
-        {loading ? (
+        {loadingBalance ? (
           <ActivityIndicator color={loaderColor} size="small" />
         ) : (
           <>
@@ -59,12 +61,13 @@ export function ReviewToken({ token, onClose }: Props) {
   }
 
   const handleAddToken = () => {
+    setLoadingRegister(true);
     dispatch(
       addCustomToken({
         token,
-        callback: () => {
-          dispatch(getBalance());
+        onSuccess: () => {
           onClose?.();
+          setLoadingRegister(false);
         },
       })
     );
@@ -72,10 +75,10 @@ export function ReviewToken({ token, onClose }: Props) {
 
   useEffect(() => {
     const _getBalance = async () => {
-      setLoading(true);
+      setLoadingBalance(true);
       const res = await getTokenBalance(token!, principal);
       setBalance(parseToken(token!, res, icpPrice));
-      setLoading(false);
+      setLoadingBalance(false);
     };
     _getBalance();
   }, [token]);
@@ -89,7 +92,8 @@ export function ReviewToken({ token, onClose }: Props) {
       <RainbowButton
         text={t('addToken.addButton')}
         onPress={handleAddToken}
-        disabled={loading}
+        disabled={loadingBalance}
+        loading={loadingRegister}
       />
     </View>
   );

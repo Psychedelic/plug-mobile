@@ -6,6 +6,7 @@ import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
 import TokenFormat from '@/formatters/TokenFormat';
 import UsdFormat from '@/formatters/UsdFormat';
+import { Asset } from '@/interfaces/redux';
 import TokenIcon from '@/tokens/TokenIcon';
 import animationScales from '@/utils/animationScales';
 
@@ -16,26 +17,20 @@ interface Props {
   name: string;
   amount: string | number;
   value: string | number;
+  logo?: string;
   symbol: string;
   color?: string;
   style?: StyleProp<ViewStyle>;
   onPress?: () => void;
+  token: Asset;
 }
 
-function TokenItem({
-  icon,
-  name,
-  amount,
-  value,
-  symbol,
-  color,
-  style,
-  onPress,
-}: Props) {
+function TokenItem({ color, style, onPress, token }: Props) {
+  const { amount, symbol, icon, logo, name, value } = token;
   return (
     <Touchable scale={animationScales.small} onPress={() => onPress?.()}>
       <View style={[styles.root, style]}>
-        <TokenIcon icon={icon} symbol={symbol} color={color} />
+        <TokenIcon icon={icon} logo={logo} symbol={symbol} color={color} />
         <View style={styles.leftContainer}>
           <Text style={FontStyles.Normal}>{name}</Text>
           <TokenFormat
