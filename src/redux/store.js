@@ -78,7 +78,7 @@ export const keyringStorage = {
         allKeys.map(async k => {
           if (!k.includes('@REACTOTRON') && !k.includes('WALLETCONNECT')) {
             const val = await AsyncStorage.getItem(k);
-            state[k] = JSON.parse(val)[0];
+            state[k] = JSON.parse(val);
           }
         })
       );
@@ -88,7 +88,7 @@ export const keyringStorage = {
   set: async values =>
     Promise.all(
       Object.entries(values).map(async ([key, val]) => {
-        await AsyncStorage.setItem(key, Flatted.stringify(val));
+        await AsyncStorage.setItem(key, JSON.stringify(val));
       })
     ),
   clear: AsyncStorage.clear,
