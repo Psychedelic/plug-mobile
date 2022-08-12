@@ -63,6 +63,18 @@ export const Rainbow = {
   ],
 };
 
+export const TransparentGradient = {
+  start: {
+    x: 0,
+    y: 0,
+  },
+  end: {
+    x: 1,
+    y: 1,
+  },
+  colors: ['transparent', 'transparent'],
+};
+
 export const DisabledRainbow = {
   start: {
     x: 0,

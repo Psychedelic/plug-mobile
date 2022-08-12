@@ -329,12 +329,13 @@ function Send({ modalRef, nft, token, onSuccess }) {
           hideGradient
           value={selectedContact ? selectedContact.name : address}
           onChangeText={onChangeText}
-          textStyle={[
+          inputStyle={[
             styles.inputText,
             isValidAddress && styles.inputTextValid,
           ]}
           autoFocus
-          customStyle={styles.input}
+          style={styles.input}
+          contentContainerStyle={styles.inputContent}
           left={
             <Text style={styles.inputLeftLabel}>{t('send.inputLabel')}</Text>
           }

@@ -104,7 +104,6 @@ function Login({ route, navigation }) {
           disabled={disableInput}
           password={password}
           onChange={setPassword}
-          inputStyle={styles.input}
           onSubmit={() => handleSubmit(password)}
         />
         <RainbowButton

@@ -119,7 +119,7 @@ const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
           maxLength={22}
           value={accountName}
           placeholder={t('accounts.accountNamePlaceholder')}
-          customStyle={styles.input}
+          style={styles.input}
           onChangeText={setAccountName}
         />
         <RainbowButton

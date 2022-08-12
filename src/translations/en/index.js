@@ -28,6 +28,7 @@ const translations = {
     available: 'Available',
     max: 'Max',
     questionMark: '?',
+    enterPassword: 'Enter Password',
   },
   welcome: {
     title: 'Welcome to Plug',

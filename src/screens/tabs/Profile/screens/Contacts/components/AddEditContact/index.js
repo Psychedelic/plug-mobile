@@ -153,7 +153,7 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
           value={id}
           onChangeText={handleOnChangeId}
           placeholder={t('contacts.idPlaceholder')}
-          customStyle={styles.marginedContainer}
+          style={styles.marginedContainer}
         />
         {error && (
           <Text style={styles.savedContactText}>

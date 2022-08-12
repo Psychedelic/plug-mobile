@@ -64,7 +64,7 @@ function SaveContact({ modalRef, onClose, id }) {
           maxLength={22}
           placeholder={t('saveContact.namePlaceholder')}
           onChangeText={setName}
-          customStyle={styles.input}
+          style={styles.input}
         />
         <RainbowButton
           text={title}

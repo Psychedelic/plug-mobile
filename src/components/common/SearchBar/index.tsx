@@ -20,7 +20,8 @@ function SearchBar({ placeholder, style, onChangeText }: Props) {
     <View style={[styles.container, style]}>
       <TextInput
         placeholder={placeholder}
-        customStyle={styles.input}
+        contentContainerStyle={styles.inputContent}
+        style={styles.input}
         onChangeText={onChangeText}
         left={<Search fill={searchColor} style={styles.searchIcon} />}
       />

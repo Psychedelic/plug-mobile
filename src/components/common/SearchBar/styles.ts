@@ -4,6 +4,8 @@ import { Colors } from '@/constants/theme';
 
 export const searchColor = Colors.White.Secondary;
 
+const BAR_HEIGHT = 48;
+
 export default StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -11,17 +13,18 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
   },
   input: {
+    height: BAR_HEIGHT,
+  },
+  inputContent: {
     backgroundColor: Colors.Black.Pure,
-    flexGrow: 1,
-    // height: 48,
   },
   searchIcon: {
     marginRight: 4,
   },
   addButton: {
     backgroundColor: Colors.Black.Primary,
-    height: 48,
-    width: 48,
+    height: BAR_HEIGHT,
+    width: BAR_HEIGHT,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 16,

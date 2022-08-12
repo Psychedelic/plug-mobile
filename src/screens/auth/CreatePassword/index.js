@@ -112,7 +112,7 @@ const CreatePassword = ({ route, navigation }) => {
                 onBlur={onBlur}
                 password={value}
                 onChange={onChange}
-                customStyle={styles.passwordInput}
+                style={styles.passwordInput}
                 onSubmit={Keyboard.dismiss}
               />
             )}

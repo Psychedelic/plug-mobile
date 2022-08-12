@@ -14,9 +14,11 @@ export default StyleSheet.create({
   },
   centerText: FontStyles.Subtitle2,
   input: {
+    marginVertical: 6,
+  },
+  inputContent: {
     backgroundColor: Colors.Black.Pure,
     paddingHorizontal: 0,
-    marginVertical: 6,
   },
   inputLeftLabel: {
     ...fontMaker({ size: 18, color: Colors.White.Pure, weight: SEMIBOLD }),

@@ -101,7 +101,8 @@ const ImportSeedPhrase = ({ navigation, route }) => {
             value={seedPhrase}
             onChangeText={onChangeText}
             placeholder={t('importSeedPhrase.secretPhrase')}
-            customStyle={styles.input}
+            style={styles.input}
+            contentContainerStyle={styles.inputContainer}
             testID={TestIds.IMPORT_SEED_PHRASE.PHRASE_INPUT}
           />
           {error && (
