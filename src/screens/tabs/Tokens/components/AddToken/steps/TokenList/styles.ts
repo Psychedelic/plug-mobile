@@ -23,7 +23,7 @@ export default StyleSheet.create({
     borderRadius: 100,
     marginRight: 12,
     borderWidth: 1,
-    borderColor: Colors.Divider[16],
+    borderColor: Colors.Divider[1],
   },
   loader: {
     flex: 1,

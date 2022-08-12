@@ -14,8 +14,11 @@ export default StyleSheet.create({
   },
   input: {
     height: BAR_HEIGHT,
+    flex: 1,
   },
   inputContent: {
+    borderColor: Colors.Divider[1],
+    borderWidth: 1,
     backgroundColor: Colors.Black.Pure,
   },
   searchIcon: {

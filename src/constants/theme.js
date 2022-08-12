@@ -42,7 +42,8 @@ export const Colors = {
   Red: '#FF453A',
   Transparent: '#ffffff00',
   Divider: {
-    16: '#3D3D3D',
+    1: '#3A3B40',
+    2: '#737377',
   },
 };
 

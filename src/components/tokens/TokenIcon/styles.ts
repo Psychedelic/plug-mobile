@@ -12,7 +12,7 @@ export default StyleSheet.create({
     borderRadius: 41,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: Colors.Divider[16],
+    borderColor: Colors.Divider[1],
     borderWidth: 1,
   },
   text: fontMaker({ weight: SEMIBOLD, size: 10 }),
