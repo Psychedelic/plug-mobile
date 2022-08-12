@@ -29,7 +29,7 @@ import {
 const TransactionModule = (dispatch, getState) => {
   const requestTransfer = {
     methodName: 'requestTransfer',
-    handler: async (request, metadata, args) => {
+    handler: async (requestId, metadata, args) => {
       const keyring = getState().keyring?.instance;
 
       const app = await getApp(
@@ -40,18 +40,16 @@ const TransactionModule = (dispatch, getState) => {
         const argsError = validateTransferArgs(args);
         if (argsError) {
           return dispatch(
-            walletConnectExecuteAndResponse({ ...request, error: argsError })
+            walletConnectExecuteAndResponse({ requestId, error: argsError })
           );
         }
 
         const handleApproveArgs = [{ ...args, approve: true }];
         const handleDeclineArgs = [{ ...args, approve: false }];
-        const { executor: _executor, ...requestWithoutExecutor } = request;
 
         Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
           type: 'transfer',
-          openAutomatically: true,
-          request: requestWithoutExecutor,
+          requestId,
           metadata,
           args,
           handleApproveArgs,
@@ -60,7 +58,7 @@ const TransactionModule = (dispatch, getState) => {
       } else {
         return dispatch(
           walletConnectExecuteAndResponse({
-            ...request,
+            requestId,
             error: ERRORS.CONNECTION_ERROR,
           })
         );
@@ -95,7 +93,7 @@ const TransactionModule = (dispatch, getState) => {
 
   const requestTransferToken = {
     methodName: 'requestTransferToken',
-    handler: async (request, metadata, args) => {
+    handler: async (requestId, metadata, args) => {
       const keyring = getState().keyring?.instance;
 
       const app = await getApp(
@@ -106,18 +104,16 @@ const TransactionModule = (dispatch, getState) => {
         const argsError = validateTransferArgs(args);
         if (argsError) {
           return dispatch(
-            walletConnectExecuteAndResponse({ ...request, error: argsError })
+            walletConnectExecuteAndResponse({ requestId, error: argsError })
           );
         }
 
         const handleApproveArgs = [{ ...args, approve: true }];
         const handleDeclineArgs = [{ ...args, approve: false }];
-        const { executor: _executor, ...requestWithoutExecutor } = request;
 
         Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
           type: 'transfer',
-          openAutomatically: true,
-          request: requestWithoutExecutor,
+          requestId,
           metadata,
           args,
           handleApproveArgs,
@@ -126,7 +122,7 @@ const TransactionModule = (dispatch, getState) => {
       } else {
         return dispatch(
           walletConnectExecuteAndResponse({
-            ...request,
+            requestId,
             error: ERRORS.CONNECTION_ERROR,
           })
         );
@@ -165,7 +161,7 @@ const TransactionModule = (dispatch, getState) => {
 
   const requestBurnXTC = {
     methodName: 'requestBurnXTC',
-    handler: async (request, metadata, args) => {
+    handler: async (requestId, metadata, args) => {
       const keyring = getState().keyring?.instance;
       const app = await getApp(
         keyring.currentWalletId.toString(),
@@ -175,18 +171,16 @@ const TransactionModule = (dispatch, getState) => {
         const argsError = validateBurnArgs(args);
         if (argsError) {
           return dispatch(
-            walletConnectExecuteAndResponse({ ...request, error: argsError })
+            walletConnectExecuteAndResponse({ requestId, error: argsError })
           );
         }
 
         const handleApproveArgs = [{ ...args, approve: true }];
         const handleDeclineArgs = [{ ...args, approve: false }];
-        const { executor: _executor, ...requestWithoutExecutor } = request;
 
         Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
           type: 'burnXTC',
-          openAutomatically: true,
-          request: requestWithoutExecutor,
+          requestId,
           metadata,
           args,
           handleApproveArgs,
@@ -195,7 +189,7 @@ const TransactionModule = (dispatch, getState) => {
       } else {
         return dispatch(
           walletConnectExecuteAndResponse({
-            ...request,
+            requestId,
             error: ERRORS.CONNECTION_ERROR,
           })
         );
@@ -231,7 +225,7 @@ const TransactionModule = (dispatch, getState) => {
 
   const batchTransactions = {
     methodName: 'batchTransactions',
-    handler: async (request, metadata, transactions) => {
+    handler: async (requestId, metadata, transactions) => {
       const keyring = getState().keyring?.instance;
 
       const app = await getApp(
@@ -242,18 +236,16 @@ const TransactionModule = (dispatch, getState) => {
         const argsError = validateTransactions(transactions);
         if (argsError) {
           return dispatch(
-            walletConnectExecuteAndResponse({ ...request, error: argsError })
+            walletConnectExecuteAndResponse({ requestId, error: argsError })
           );
         }
 
         const handleApproveArgs = [{ transactions, approve: true }];
         const handleDeclineArgs = [{ transactions, approve: false }];
-        const { executor: _executor, ...requestWithoutExecutor } = request;
 
         Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
           type: 'batchTransactions',
-          openAutomatically: true,
-          request: requestWithoutExecutor,
+          requestId,
           metadata,
           args: transactions,
           handleApproveArgs,
@@ -262,7 +254,7 @@ const TransactionModule = (dispatch, getState) => {
       } else {
         return dispatch(
           walletConnectExecuteAndResponse({
-            ...request,
+            requestId,
             error: ERRORS.CONNECTION_ERROR,
           })
         );
@@ -291,7 +283,7 @@ const TransactionModule = (dispatch, getState) => {
 
   const requestCall = {
     methodName: 'requestCall',
-    handler: async (request, metadata, args, batchTxId) => {
+    handler: async (requestId, metadata, args, batchTxId) => {
       const keyring = getState().keyring?.instance;
       const senderPID = getState().keyring?.currentWallet.principal;
       const { canisterId } = args;
@@ -302,7 +294,7 @@ const TransactionModule = (dispatch, getState) => {
       if (app.status !== CONNECTION_STATUS.accepted) {
         return dispatch(
           walletConnectExecuteAndResponse({
-            ...request,
+            requestId,
             error: ERRORS.CONNECTION_ERROR,
           })
         );
@@ -310,7 +302,7 @@ const TransactionModule = (dispatch, getState) => {
       if (canisterId && !(canisterId in app.whitelist)) {
         return dispatch(
           walletConnectExecuteAndResponse({
-            ...request,
+            requestId,
             error: ERRORS.CANISTER_NOT_WHITLESTED_ERROR(canisterId),
           })
         );
@@ -329,12 +321,10 @@ const TransactionModule = (dispatch, getState) => {
       if (shouldShowModal) {
         const handleApproveArgs = [{ requestInfo, approve: true }];
         const handleDeclineArgs = [{ requestInfo, approve: false }];
-        const { executor: _executor, ...requestWithoutExecutor } = request;
 
         Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
           type: 'requestCall',
-          openAutomatically: true,
-          request: requestWithoutExecutor,
+          requestId,
           metadata,
           args: requestInfo,
           handleApproveArgs,
@@ -348,7 +338,7 @@ const TransactionModule = (dispatch, getState) => {
         await setBatchTransactions({ ...savedBatchTransactions });
         await dispatch(
           walletConnectExecuteAndResponse({
-            ...request,
+            requestId,
             args: [
               {
                 requestInfo,
@@ -410,7 +400,7 @@ const TransactionModule = (dispatch, getState) => {
 
   const requestReadState = {
     methodName: 'requestReadState',
-    handler: async (request, metadata, { canisterId, paths }) => {
+    handler: async (requestId, metadata, { canisterId, paths }) => {
       const keyring = getState().keyring?.instance;
       try {
         const app = await getApp(
@@ -420,14 +410,14 @@ const TransactionModule = (dispatch, getState) => {
         if (app.status !== CONNECTION_STATUS.accepted) {
           return dispatch(
             walletConnectExecuteAndResponse({
-              ...request,
+              requestId,
               error: ERRORS.CONNECTION_ERROR,
             })
           );
         }
         return dispatch(
           walletConnectExecuteAndResponse({
-            ...request,
+            requestId,
             approve: true,
             args: [canisterId, paths],
           })
@@ -435,7 +425,7 @@ const TransactionModule = (dispatch, getState) => {
       } catch (e) {
         dispatch(
           walletConnectExecuteAndResponse({
-            ...request,
+            requestId,
             error: ERRORS.SERVER_ERROR(e),
           })
         );
@@ -462,7 +452,7 @@ const TransactionModule = (dispatch, getState) => {
 
   const requestQuery = {
     methodName: 'requestQuery',
-    handler: async (request, metadata, { canisterId, methodName, arg }) => {
+    handler: async (requestId, metadata, { canisterId, methodName, arg }) => {
       try {
         const keyring = getState().keyring?.instance;
         const app = await getApp(
@@ -473,14 +463,14 @@ const TransactionModule = (dispatch, getState) => {
         if (app.status !== CONNECTION_STATUS.accepted) {
           return dispatch(
             walletConnectExecuteAndResponse({
-              ...request,
+              requestId,
               error: ERRORS.CONNECTION_ERROR,
             })
           );
         }
         return dispatch(
           walletConnectExecuteAndResponse({
-            ...request,
+            requestId,
             approve: true,
             args: [canisterId, methodName, arg],
           })
@@ -488,7 +478,7 @@ const TransactionModule = (dispatch, getState) => {
       } catch (e) {
         dispatch(
           walletConnectExecuteAndResponse({
-            ...request,
+            requestId,
             error: ERRORS.SERVER_ERROR(e),
           })
         );

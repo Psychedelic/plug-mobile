@@ -102,7 +102,7 @@ export interface FlowsParams {
   loading: boolean;
   type: WCFlowTypes;
   openAutomatically: boolean;
-  request: FlowsRequest;
+  requestId: string;
   metadata: FlowsMetadata;
   args: FlowsArgs;
   handleApproveArgs: [

@@ -5,7 +5,7 @@ import {
 } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ERRORS } from '@/constants/walletconnect';
 import useDisableBack from '@/hooks/useDisableBack';
@@ -41,7 +41,7 @@ function WCFlows() {
   const [wcTimeout, setWCTimeout] = useState(false);
   const {
     type,
-    request,
+    requestId,
     metadata,
     args,
     handleApproveArgs,
@@ -49,6 +49,9 @@ function WCFlows() {
     handleError,
     loading,
   } = (params || {}) as FlowsParams;
+  const request = useSelector(
+    (state: any) => state.walletconnect.pendingCallRequests[requestId]
+  );
 
   const DisplayComponent = COMPONENTS[type];
   const isBatchTransactions = type === WCFlowTypes.batchTransactions;
@@ -88,7 +91,7 @@ function WCFlows() {
     };
     dispatch(
       walletConnectExecuteAndResponse({
-        ...request,
+        requestId,
         ...handleActionParams,
         onSuccess: () => {
           closeScreen();
@@ -144,7 +147,7 @@ function WCFlows() {
 
   return (
     <Container>
-      {loading ? (
+      {loading || !request ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="white" />
         </View>
