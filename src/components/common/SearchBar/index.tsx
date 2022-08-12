@@ -13,9 +13,10 @@ interface Props {
   onChangeText: (text: string) => void;
   placeholder: string;
   style?: StyleProp<ViewStyle>;
+  onActionPress?: () => void;
 }
 
-function SearchBar({ placeholder, style, onChangeText }: Props) {
+function SearchBar({ placeholder, style, onChangeText, onActionPress }: Props) {
   return (
     <View style={[styles.container, style]}>
       <TextInput
@@ -25,9 +26,14 @@ function SearchBar({ placeholder, style, onChangeText }: Props) {
         onChangeText={onChangeText}
         left={<Search fill={searchColor} style={styles.searchIcon} />}
       />
-      <Touchable scale={animationScales.medium} style={styles.addButton}>
-        <Add width={24} height={24} />
-      </Touchable>
+      {onActionPress && (
+        <Touchable
+          scale={animationScales.medium}
+          style={styles.addButton}
+          onPress={onActionPress}>
+          <Add width={24} height={24} />
+        </Touchable>
+      )}
     </View>
   );
 }

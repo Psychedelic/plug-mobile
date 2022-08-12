@@ -214,6 +214,7 @@ const translations = {
   addToken: {
     title: 'Add Token',
     reviewTitle: 'Review Token',
+    customTokenTitle: 'Custom Token',
     availableTokens: 'Available Tokens',
     search: 'Search Tokens',
     searchResults: 'Search Results',
@@ -222,6 +223,8 @@ const translations = {
     addButton: 'Add Token',
     safetyAlert:
       'Token Safety Alert: For your security, make sure to do proper research before interacting with any token.',
+    customTokenId: 'Token Canister ID',
+    customTokenStandard: "Token's Interface Standard",
   },
   walletConnect: {
     changeWallet: 'Change Wallet',

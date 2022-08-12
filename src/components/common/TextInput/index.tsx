@@ -45,6 +45,7 @@ const TextInput = ({
   contentContainerStyle,
   onBlur,
   onFocus,
+  blurOnSubmit = false,
   ...props
 }: Props) => {
   const adjustInnerHeight = useMemo(
@@ -88,7 +89,7 @@ const TextInput = ({
           secureTextEntry={secureTextEntry}
           placeholder={placeholder}
           onSubmitEditing={onSubmitEditing}
-          blurOnSubmit={false}
+          blurOnSubmit={blurOnSubmit}
           maxLength={maxLength}
           value={value}
           editable={!disabled}

@@ -1,7 +1,7 @@
 import { Principal } from '@dfinity/principal';
 import { Token } from '@psychedelic/dab-js/dist/interfaces/token';
 
-import { Standard } from './keyring';
+import { FungibleStandard, Standard } from './keyring';
 
 export type { BalanceResponse } from '@psychedelic/dab-js/dist/interfaces/token';
 
@@ -16,4 +16,9 @@ export interface DABToken extends Token {
     decimals: number;
     fee: number;
   };
+}
+
+export interface CustomToken {
+  canisterId: Principal;
+  standard: FungibleStandard;
 }

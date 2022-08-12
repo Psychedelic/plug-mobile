@@ -22,13 +22,21 @@ interface Option {
 
 interface Props {
   modalRef: RefObject<Modalize>;
-  onClose?: () => void;
-  title?: string;
-  subtitle?: string;
   options: Option[];
+  onClose?: () => void;
+  showIcons?: boolean;
+  subtitle?: string;
+  title?: string;
 }
 
-function ActionSheet({ modalRef, onClose, title, subtitle, options }: Props) {
+function ActionSheet({
+  modalRef,
+  onClose,
+  title,
+  subtitle,
+  options,
+  showIcons = isAndroid,
+}: Props) {
   const handleClose = () => {
     modalRef?.current?.close();
     onClose?.();
@@ -59,7 +67,9 @@ function ActionSheet({ modalRef, onClose, title, subtitle, options }: Props) {
                 key={option.id}
                 onPress={() => handleItemPress(option)}
                 style={[styles.item, index > 0 && styles.itemBorder]}>
-                {Icon && <Icon fill={ICON_COLOR} style={styles.icon} />}
+                {showIcons && Icon && (
+                  <Icon fill={ICON_COLOR} style={styles.icon} />
+                )}
                 <Text
                   style={[
                     styles.itemText,
@@ -73,7 +83,7 @@ function ActionSheet({ modalRef, onClose, title, subtitle, options }: Props) {
           <Touchable
             onPress={handleClose}
             style={[styles.item, styles.cancelContainer]}>
-            {isAndroid && <Close fill={ICON_COLOR} style={styles.icon} />}
+            {showIcons && <Close fill={ICON_COLOR} style={styles.icon} />}
             <Text style={[styles.itemText, styles.cancelText]}>
               {i18next.t('common.cancel')}
             </Text>

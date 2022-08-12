@@ -398,6 +398,25 @@ export const addCustomToken = createAsyncThunk(
   }
 );
 
+export const getTokenInfo = createAsyncThunk(
+  'keyring/getTokenInfo',
+  async ({ canisterId, standard }, { getState }) => {
+    const { keyring } = getState();
+    const currentWalletId = keyring?.instance?.currentWalletId;
+    try {
+      const tokenInfo = await keyring?.instance?.getTokenInfo({
+        subaccount: currentWalletId,
+        canisterId,
+        standard,
+      });
+      return { ...tokenInfo, amount: tokenInfo.amount.toString() };
+    } catch (error) {
+      // TODO handle error
+      console.log('Error while fetching token info', error);
+    }
+  }
+);
+
 export const userSlice = createSlice({
   name: 'user',
   initialState: DEFAULT_STATE,

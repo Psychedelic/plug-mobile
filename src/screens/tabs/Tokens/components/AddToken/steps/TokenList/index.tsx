@@ -1,6 +1,7 @@
 import { t } from 'i18next';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
+import { Modalize } from 'react-native-modalize';
 
 import Image from '@/components/common/Image';
 import SearchBar from '@/components/common/SearchBar';
@@ -9,6 +10,7 @@ import Touchable from '@/components/common/Touchable';
 import { DABToken } from '@/interfaces/dab';
 import animationScales from '@/utils/animationScales';
 
+import CustomToken from '../../../CustomToken';
 import styles from './styles';
 
 interface Props {
@@ -20,6 +22,7 @@ interface Props {
 export function TokenList({ onSelectedToken, tokens, loading }: Props) {
   const [filteredTokens, setFilteredTokens] = useState<DABToken[]>(tokens);
   const [search, setSearch] = useState('');
+  const modalRef = useRef<Modalize>(null);
 
   function renderToken(token: DABToken) {
     return (
@@ -67,6 +70,7 @@ export function TokenList({ onSelectedToken, tokens, loading }: Props) {
         <SearchBar
           placeholder={t('addToken.search')}
           onChangeText={setSearch}
+          onActionPress={() => modalRef?.current?.open()}
         />
         {loading ? (
           <ActivityIndicator style={styles.loader} size="small" color="white" />
@@ -78,6 +82,7 @@ export function TokenList({ onSelectedToken, tokens, loading }: Props) {
                 : t('addToken.availableTokens')}
             </Text>
             {filteredTokens.map((token: DABToken) => renderToken(token))}
+            <CustomToken modalRef={modalRef} />
           </>
         ) : (
           renderEmptyState()
