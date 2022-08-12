@@ -102,8 +102,8 @@ function Login({ route, navigation }) {
           autoFocus={!isManualLock}
           error={error}
           disabled={disableInput}
-          password={password}
-          onChange={setPassword}
+          value={password}
+          onChangeText={setPassword}
           onSubmit={() => handleSubmit(password)}
         />
         <RainbowButton

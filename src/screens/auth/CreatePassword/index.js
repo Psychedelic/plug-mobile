@@ -110,8 +110,8 @@ const CreatePassword = ({ route, navigation }) => {
               <PasswordInput
                 maxLength={24}
                 onBlur={onBlur}
-                password={value}
-                onChange={onChange}
+                value={value}
+                onChangeText={onChange}
                 style={styles.passwordInput}
                 onSubmit={Keyboard.dismiss}
               />

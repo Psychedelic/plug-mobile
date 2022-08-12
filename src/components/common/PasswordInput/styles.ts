@@ -19,7 +19,7 @@ export default StyleSheet.create({
   },
   textInput: {
     ...fontMaker({ size: 18, color: Colors.White.Pure }),
-    fontFamily: null, // Disabling custom font because of problem with Inter and secure text entry
+    fontFamily: undefined, // Disabling custom font because of problem with Inter and secure text entry
     fontWeight: 'bold',
   },
 });

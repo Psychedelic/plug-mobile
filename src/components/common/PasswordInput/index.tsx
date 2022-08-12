@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { StyleProp, TextInputProps, TextStyle, View } from 'react-native';
 
 import TextInput from '@/commonComponents/TextInput';
 import Touchable from '@/commonComponents/Touchable';
@@ -11,9 +11,17 @@ import animationScales from '@/utils/animationScales';
 import Text from '../Text';
 import styles from './styles';
 
+interface Props extends TextInputProps {
+  inputStyle?: StyleProp<TextStyle>;
+  error?: string;
+  disabled?: boolean;
+  inputProps?: TextInputProps;
+  onSubmit?: () => void;
+}
+
 function PasswordInput({
-  onChange,
-  password,
+  onChangeText,
+  value,
   style,
   inputStyle,
   error,
@@ -24,7 +32,7 @@ function PasswordInput({
   inputProps,
   onBlur,
   onSubmit,
-}) {
+}: Props) {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -42,9 +50,9 @@ function PasswordInput({
     <View
       style={[styles.container, disabled && styles.disabledContainer, style]}>
       <TextInput
-        value={password}
+        value={value}
         autoFocus={autoFocus}
-        onChangeText={onChange}
+        onChangeText={onChangeText}
         maxLength={maxLength}
         placeholder={placeholder || t('common.enterPassword')}
         disabled={disabled}
