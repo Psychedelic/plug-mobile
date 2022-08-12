@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
   },
   multilineContainer: {
     alignItems: 'flex-start',
-    // height: 90,
   },
   gradientContainer: {
     borderRadius: commonBorderRadius,
