@@ -10,7 +10,6 @@ import {
   SIGNING_METHODS,
 } from '@/constants/walletconnect';
 import Routes from '@/navigation/Routes';
-import { walletConnectStorage } from '@/redux/store';
 import { DEFAULT_WALLET_CONNECT_STATE as DEFAULT_STATE } from '@/redux/utils';
 import {
   getAllValidWalletConnectSessions,
@@ -20,7 +19,6 @@ import Navigation from '@/utils/navigation';
 import { delay } from '@/utils/utilities';
 import {
   callRequestHandlerFactory,
-  connectionRequestResponseHandlerFactory,
   sessionRequestHandler,
 } from '@/utils/walletConnect';
 
@@ -30,31 +28,40 @@ const getNativeOptions = async () => ({
 
 export const walletConnectSetPendingRedirect = createAsyncThunk(
   'walletconnect/setPendingRedirect',
-  (_, { dispatch }) => {
-    dispatch(setPendingRedirect());
+  ({ requestId, redirect }, { dispatch, getState }) => {
+    const { pendingRedirect } = getState().walletconnect;
+    const updatedPendingRedirect = {
+      ...pendingRedirect,
+      [requestId]: redirect,
+    };
+    dispatch(updatePendingRedirect(updatedPendingRedirect));
   }
 );
 
 export const walletConnectRemovePendingRedirect = createAsyncThunk(
   'walletconnect/removePendingRedirect',
-  ({ scheme }, { dispatch }) => {
-    dispatch(removePendingRedirect());
-    if (scheme) {
-      Linking.openURL(`${scheme}://`);
-    } else {
-      setTimeout(() => {
-        Minimizer.goBack();
-      }, 300);
+  ({ requestId }, { dispatch, getState }) => {
+    const { pendingRedirect } = getState().walletconnect;
+    const { [requestId]: redirect, ...updatedPendingRedirect } =
+      pendingRedirect;
+    if (redirect) {
+      if (redirect.scheme) {
+        Linking.openURL(`${redirect.scheme}://`);
+      } else {
+        setTimeout(() => {
+          Minimizer.goBack();
+        }, 300);
+      }
     }
+
+    dispatch(updatePendingRedirect(updatedPendingRedirect));
   }
 );
 
 export const walletConnectOnSessionRequest = createAsyncThunk(
   'walletconnect/onSessionRequest',
   async ({ uri }, { dispatch, getState }) => {
-    const receivedTimestamp = Date.now();
     try {
-      await walletConnectStorage.clear();
       const { clientMeta } = await getNativeOptions();
       try {
         // Don't initiate a new session if we have already established one using this walletconnect URI
@@ -97,26 +104,9 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
             clientMeta,
             uri,
           });
-          const routeParams = {
-            callback: connectionRequestResponseHandlerFactory(dispatch, uri),
-            receivedTimestamp,
-          };
 
-          await dispatch(
-            setSession({
-              sessionInfo: {
-                walletConnector,
-                meta: null,
-                navigate: false,
-                timedOut: false,
-                timeout: null,
-                routeParams,
-              },
-              uri,
-            })
-          );
-
-          walletConnector?.on('session_request', (error, payload) => {
+          walletConnector?.on('session_request', async (error, payload) => {
+            const { peerId } = payload.params[0];
             const {
               bridgeTimeout: { timeout },
             } = getState().walletconnect;
@@ -124,10 +114,17 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
               clearTimeout(timeout);
               dispatch(updateBridgeTimeout(DEFAULT_STATE.bridgeTimeout));
             }
-            sessionRequestHandler(
-              { dispatch, getState, uri },
-              { error, payload }
+            await dispatch(
+              setSession({
+                sessionInfo: {
+                  walletConnector,
+                  pending: true,
+                },
+                peerId,
+              })
             );
+
+            sessionRequestHandler({ error, payload });
           });
         });
       } catch (error) {
@@ -142,10 +139,7 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
 const listenOnNewMessages = createAsyncThunk(
   'walletconnect/listenOnNewMessages',
   (walletConnector, { dispatch, getState }) => {
-    const getWalletConnectHandlers = callRequestHandlerFactory(
-      dispatch,
-      getState
-    );
+    const getHandlerAndExecutor = callRequestHandlerFactory(dispatch, getState);
     walletConnector.on('call_request', async (error, payload) => {
       const {
         bridgeTimeout: { timeout },
@@ -162,17 +156,7 @@ const listenOnNewMessages = createAsyncThunk(
       try {
         const { pendingCallRequests } = getState().walletconnect;
         if (!pendingCallRequests[requestId]) {
-          const [handler, executor] = getWalletConnectHandlers(payload.method);
-
-          if (!handler) {
-            return dispatch(
-              walletConnectExecuteAndResponse({
-                peerId,
-                requestId,
-                error: ERRORS.NOT_METHOD,
-              })
-            );
-          }
+          const [handler, executor] = getHandlerAndExecutor(payload.method);
 
           const request = await dispatch(
             addCallRequestToApprove({
@@ -185,10 +169,20 @@ const listenOnNewMessages = createAsyncThunk(
             })
           ).unwrap();
 
+          if (!handler || !executor) {
+            return dispatch(
+              walletConnectExecuteAndResponse({
+                peerId,
+                requestId,
+                error: ERRORS.NOT_METHOD,
+              })
+            );
+          }
+
           // If the method is isUnlock we have NOT to check if it is locked and just run the executor
           if (payload.method === 'isUnlock') {
             return dispatch(
-              walletConnectExecuteAndResponse({ peerId, requestId, args: [] })
+              walletConnectExecuteAndResponse({ requestId, args: [] })
             );
           }
 
@@ -197,7 +191,6 @@ const listenOnNewMessages = createAsyncThunk(
             unlockTimeOut = setTimeout(() => {
               return dispatch(
                 walletConnectExecuteAndResponse({
-                  peerId,
                   requestId,
                   error: ERRORS.TIMEOUT,
                 })
@@ -221,10 +214,10 @@ const listenOnNewMessages = createAsyncThunk(
               if (unlockTimeOut) {
                 clearTimeout(unlockTimeOut);
               }
-              await handler(request, ...request.args);
+              await handler(requestId, ...request.args);
             });
           } else {
-            await handler(request, ...request.args);
+            await handler(requestId, ...request.args);
           }
         }
       } catch (e) {
@@ -251,12 +244,13 @@ export const walletConnectExecuteAndResponse = createAsyncThunk(
   'walletconnect/executeAndResponse',
   /**  @param params { any } */
   async (params, { dispatch, getState }) => {
-    const { peerId, requestId, args, opts, error, onSuccess } = params;
+    console.log('walletConnectExecuteAndResponse', params);
+    const { requestId, args, opts, error, onSuccess } = params;
     try {
-      const walletConnector = getState().walletconnect.walletConnectors[peerId];
-      const { pendingRedirect } = getState().walletconnect;
-      const { executor } =
-        getState().walletconnect.pendingCallRequests[requestId] || {};
+      const request = getState().walletconnect.pendingCallRequests[requestId];
+      const { walletConnector } =
+        getState().walletconnect.sessions[request.peerId];
+      const { executor } = request;
       if (walletConnector) {
         try {
           if (error || !executor) {
@@ -280,9 +274,7 @@ export const walletConnectExecuteAndResponse = createAsyncThunk(
             }
           }
           await dispatch(removeCallRequestToApprove({ requestId }));
-          if (pendingRedirect) {
-            await dispatch(walletConnectRemovePendingRedirect({}));
-          }
+          await dispatch(walletConnectRemovePendingRedirect({ requestId }));
         } catch (e) {
           console.log('Failed to send request status to WalletConnect.', e);
         }
@@ -294,38 +286,6 @@ export const walletConnectExecuteAndResponse = createAsyncThunk(
     } catch (e) {
       console.log('EXECUTE AND RESPONSE ERROR', e);
     }
-  }
-);
-
-export const setPendingSessionRequest = createAsyncThunk(
-  'walletconnect/setPendingSessionRequest',
-  ({ peerId, walletConnector }, { dispatch, getState }) => {
-    const { pendingSessionRequests } = getState().walletconnect;
-    const updatedPendingSessionRequests = {
-      ...pendingSessionRequests,
-      [peerId]: walletConnector,
-    };
-    dispatch(updateSessionRequest(updatedPendingSessionRequests));
-  }
-);
-
-export const getPendingSessionRequest = createAsyncThunk(
-  'walletconnect/getPendingsSessionRequest',
-  ({ peerId }, { getState }) => {
-    const { pendingSessionRequests } = getState().walletconnect;
-    return pendingSessionRequests[peerId];
-  }
-);
-
-export const removePendingRequest = createAsyncThunk(
-  'walletconnect/removePendingRequest',
-  ({ peerId }, { dispatch, getState }) => {
-    const { pendingRequests } = getState().walletconnect;
-    const updatedPendingRequests = pendingRequests;
-    if (updatedPendingRequests[peerId]) {
-      delete updatedPendingRequests[peerId];
-    }
-    dispatch(updateSessionRequest(updatedPendingRequests));
   }
 );
 
@@ -376,11 +336,11 @@ export const removeCallRequestToApprove = createAsyncThunk(
 
 export const setSession = createAsyncThunk(
   'walletconnect/setSession',
-  ({ uri, sessionInfo }, { dispatch, getState }) => {
+  ({ peerId, sessionInfo }, { dispatch, getState }) => {
     const { sessions } = getState().walletconnect;
     const updatedSessions = {
       ...sessions,
-      [uri]: { ...(sessions[uri] || {}), ...sessionInfo },
+      [peerId]: { ...(sessions[peerId] || {}), ...sessionInfo },
     };
     dispatch(updateSessions(updatedSessions));
   }
@@ -388,51 +348,18 @@ export const setSession = createAsyncThunk(
 
 export const getSession = createAsyncThunk(
   'walletconnect/getSession',
-  ({ uri }, { getState }) => {
+  ({ peerId }, { getState }) => {
     const { sessions } = getState().walletconnect;
-    return sessions[uri];
+    return sessions[peerId];
   }
 );
 
 export const clearSession = createAsyncThunk(
   'walletconnect/clearSession',
-  ({ uri }, { dispatch, getState }) => {
+  ({ peerId }, { dispatch, getState }) => {
     const { sessions } = getState().walletconnect;
-    const updatedSessions = { ...sessions, [uri]: {} };
+    const updatedSessions = { ...sessions, [peerId]: {} };
     dispatch(updateSessions(updatedSessions));
-  }
-);
-
-export const setWalletConnector = createAsyncThunk(
-  'walletconnect/setWalletConnector',
-  ({ walletConnector }, { dispatch, getState }) => {
-    const { walletConnectors } = getState().walletconnect;
-    const updatedWalletConnectors = {
-      ...walletConnectors,
-      [walletConnector.peerId]: walletConnector,
-    };
-    dispatch(updateConnectors(updatedWalletConnectors));
-  }
-);
-
-export const getWalletConnector = createAsyncThunk(
-  'walletconnect/getWalletConnector',
-  ({ peerId }, { dispatch, getState }) => {
-    const { walletConnectors } = getState().walletconnect;
-    const walletConnector = walletConnectors[peerId];
-    return walletConnector;
-  }
-);
-
-export const removeWalletConnector = createAsyncThunk(
-  'walletconnect/removeWalletConnector',
-  ({ peerId }, { dispatch, getState }) => {
-    const { walletConnectors } = getState().walletconnect;
-    const updatedWalletConnectors = walletConnectors;
-    if (updatedWalletConnectors[peerId]) {
-      delete updatedWalletConnectors[peerId];
-    }
-    dispatch(updateConnectors(updatedWalletConnectors));
   }
 );
 
@@ -440,36 +367,27 @@ export const walletConnectApproveSession = createAsyncThunk(
   'walletconnect/approveSession',
   async ({ peerId, chainId, accountAddress }, { dispatch, getState }) => {
     // TODO: We're going to use accountAddres later.
-    const { pendingSessionRequests } = getState().walletconnect;
-    const walletConnector = pendingSessionRequests[peerId];
+    const { sessions } = getState().walletconnect;
+    const { walletConnector } = sessions[peerId];
 
     walletConnector.approveSession({
-      accounts: [
-        'MFYwEAYHKoZIzj0CAQYFK4EEAAoDQgAEPdfv1T20KMFZRKBYZZDTDMSZ5MWw/+ReiwC9GF6LAUFTER1TZN4qdkXETOHDP0R6UkS6VD0jIjHyPov6pM4Qtw==',
-      ],
+      accounts: [accountAddress],
       chainId,
     });
 
-    dispatch(removePendingRequest({ peerId }));
     saveWalletConnectSession(walletConnector.peerId, walletConnector.session);
 
-    const listeningWalletConnector = await dispatch(
-      listenOnNewMessages(walletConnector)
-    ).unwrap();
-
-    dispatch(
-      setWalletConnector({
-        walletConnector: listeningWalletConnector,
-      })
-    );
+    await dispatch(listenOnNewMessages(walletConnector));
   }
 );
 
 export const walletConnectRejectSession = createAsyncThunk(
   'walletconnect/rejectSession',
-  ([peerId, walletConnector], { dispatch }) => {
-    walletConnector.rejectSession();
-    dispatch(removePendingRequest({ peerId }));
+  ({ peerId }, { getState }) => {
+    const { sessions } = getState().walletconnect;
+    const { walletConnector } = sessions[peerId];
+
+    walletConnector.rejectSesison();
   }
 );
 
@@ -483,22 +401,10 @@ export const walletconnectSlice = createSlice({
         pendingCallRequests: action.payload,
       };
     },
-    updateSessionRequest: (state, action) => {
-      return {
-        ...state,
-        pendingSessionRequests: action.payload,
-      };
-    },
     updateSessions: (state, action) => {
       return {
         ...state,
         sessions: action.payload,
-      };
-    },
-    updateConnectors: (state, action) => {
-      return {
-        ...state,
-        walletConnectors: action.payload,
       };
     },
     clearState: state => {
@@ -507,16 +413,10 @@ export const walletconnectSlice = createSlice({
         ...DEFAULT_STATE,
       };
     },
-    setPendingRedirect: state => {
+    updatePendingRedirect: (state, action) => {
       return {
         ...state,
-        pendingRedirect: true,
-      };
-    },
-    removePendingRedirect: state => {
-      return {
-        ...state,
-        pendingRedirect: false,
+        pendingRedirect: action.payload,
       };
     },
     updateBridgeTimeout: (state, action) => {
@@ -531,12 +431,9 @@ export const walletconnectSlice = createSlice({
 
 export const {
   updateCallRequests,
-  updateSessionRequest,
-  updateConnectors,
   updateSessions,
   clearState,
-  setPendingRedirect,
-  removePendingRedirect,
+  updatePendingRedirect,
   updateBridgeTimeout,
 } = walletconnectSlice.actions;
 

@@ -7,7 +7,7 @@ import { getApp } from '../storageManager';
 const InformationModule = (dispatch, getState) => {
   const requestBalance = {
     methodName: 'requestBalance',
-    handler: async (request, metadata, subaccount) => {
+    handler: async (requestId, metadata, subaccount) => {
       const keyring = getState().keyring.instance;
       const app = await getApp(
         keyring.currentWalletId.toString(),
@@ -17,21 +17,21 @@ const InformationModule = (dispatch, getState) => {
         if (subaccount && Number.isNaN(parseInt(subaccount, 10))) {
           return dispatch(
             walletConnectExecuteAndResponse({
-              ...request,
+              requestId,
               error: ERRORS.CLIENT_ERROR('Invalid account id'),
             })
           );
         }
         return dispatch(
           walletConnectExecuteAndResponse({
-            ...request,
+            requestId,
             args: [subaccount],
           })
         );
       } else {
         dispatch(
           walletConnectExecuteAndResponse({
-            ...request,
+            requestId,
             error: ERRORS.CONNECTION_ERROR,
           })
         );
@@ -44,8 +44,8 @@ const InformationModule = (dispatch, getState) => {
   };
   const getPublicKey = {
     methodName: 'getPublicKey',
-    handler: request => {
-      dispatch(walletConnectExecuteAndResponse({ ...request, args: [] }));
+    handler: requestId => {
+      dispatch(walletConnectExecuteAndResponse({ requestId, args: [] }));
     },
     executor: async opts => {
       try {
@@ -61,15 +61,15 @@ const InformationModule = (dispatch, getState) => {
   };
   const getPrincipal = {
     methodName: 'getPrincipal',
-    handler: async (request, pageUrl) => {
+    handler: async (requestId, pageUrl) => {
       const keyring = getState().keyring.instance;
       const app = await getApp(keyring.currentWalletId.toString(), pageUrl);
       if (app.status === CONNECTION_STATUS.accepted) {
-        dispatch(walletConnectExecuteAndResponse({ ...request, args: [] }));
+        dispatch(walletConnectExecuteAndResponse({ requestId, args: [] }));
       } else {
         dispatch(
           walletConnectExecuteAndResponse({
-            ...request,
+            requestId,
             error: ERRORS.CONNECTION_ERROR,
           })
         );
@@ -84,18 +84,18 @@ const InformationModule = (dispatch, getState) => {
   };
   const getICNSInfo = {
     methodName: 'getICNSInfo',
-    handler: async (request, metadata) => {
+    handler: async (requestId, metadata) => {
       const keyring = getState().keyring.instance;
       const app = await getApp(
         keyring.currentWalletId.toString(),
         metadata.url
       );
       if (app.status === CONNECTION_STATUS.accepted) {
-        dispatch(walletConnectExecuteAndResponse({ ...request, args: [] }));
+        dispatch(walletConnectExecuteAndResponse({ requestId, args: [] }));
       } else {
         dispatch(
           walletConnectExecuteAndResponse({
-            ...request,
+            requestId,
             error: ERRORS.CONNECTION_ERROR,
           })
         );
@@ -109,7 +109,7 @@ const InformationModule = (dispatch, getState) => {
 
   const isUnlock = {
     methodName: 'isUnlock',
-    handler: () => {},
+    handler: () => { },
     executor: () => {
       try {
         const { isUnlocked } = getState().keyring;
