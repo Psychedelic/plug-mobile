@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ERRORS } from '@/constants/walletconnect';
 import useDisableBack from '@/hooks/useDisableBack';
 import { RootStackParamList } from '@/interfaces/navigation';
+import { State } from '@/interfaces/redux';
 import { FlowsParams, WCFlowTypes } from '@/interfaces/walletConnect';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
@@ -50,7 +51,7 @@ function WCFlows() {
     loading,
   } = (params || {}) as FlowsParams;
   const request = useSelector(
-    (state: any) => state.walletconnect.pendingCallRequests[requestId]
+    (state: State) => state.walletconnect.pendingCallRequests[requestId]
   );
 
   const DisplayComponent = COMPONENTS[type];
