@@ -198,10 +198,8 @@ export const formatContactForController = contact => ({
 export const filterICNSContacts = contact => contact.id;
 
 export const DEFAULT_WALLET_CONNECT_STATE = {
-  pendingRedirect: false,
-  pendingSessionRequests: {},
+  pendingRedirect: {},
   pendingCallRequests: {},
-  walletConnectors: {},
   sessions: {},
-  bridgeTimeout: { timeout: null, onBridgeContact: () => {} },
+  bridgeTimeout: { timeout: null, onBridgeContact: () => { } },
 };

@@ -1,3 +1,5 @@
+import WalletConnect from '@walletconnect/client';
+
 import { Contact } from '@/screens/tabs/Profile/screens/Contacts/utils';
 
 export interface CollectionToken {
@@ -132,8 +134,45 @@ export interface UserState {
   biometricsAvailable: boolean;
 }
 
+export interface WalletConnectCallRequest {
+  clientId: string;
+  dappName: string;
+  dappScheme: string;
+  dappUrl: string;
+  imageUrl: string;
+  methodName: string;
+  args: any;
+  peerId: string;
+  requestId: number;
+  executor: any;
+}
+
+export interface WalletConnectSession {
+  pending: boolean;
+  walletConnector: WalletConnect;
+  meta: any;
+}
+
+export interface WalletConnectState {
+  pendingRedirect: {
+    [requestId: string]: {
+      pending: boolean;
+      schema?: string;
+    };
+  };
+  pendingCallRequests: { [requestId: number]: WalletConnectCallRequest };
+  sessions: {
+    [peerId: string]: WalletConnectSession;
+  };
+  bridgeTimeout: {
+    timeout: number;
+    onBridgeContact: any;
+  };
+}
+
 export interface State {
   icp: IcpState;
   keyring: KeyringState;
   user: UserState;
+  walletconnect: WalletConnectState;
 }

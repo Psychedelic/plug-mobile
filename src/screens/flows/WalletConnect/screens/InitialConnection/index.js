@@ -1,6 +1,6 @@
 import { useRoute } from '@react-navigation/native';
 import { t } from 'i18next';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Image, Linking, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,9 +11,9 @@ import { FontStyles } from '@/constants/theme';
 import useDisableBack from '@/hooks/useDisableBack';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
-import { getSession } from '@/redux/slices/walletconnect';
 import Accounts from '@/screens/tabs/Profile/screens/Accounts';
 import { useNavigation } from '@/utils/navigation';
+import { responseSessionRequest } from '@/utils/walletConnect';
 
 import UserShowcase from '../Flows/components/UserShowcase';
 import styles from './styles';
@@ -26,46 +26,27 @@ function WCInitialConnection() {
   const { reset } = useNavigation();
   const { currentWallet } = useSelector(state => state.keyring);
 
-  const [handleResponse, setHandleResponse] = useState(null);
   const [connectLoading, setConnectLoading] = useState(false);
 
-  const { meta, uri } = params;
+  const { meta } = params;
   const { dappName, dappUrl, dappScheme, peerId, dappImageUrl } = meta || {};
-
-  useEffect(() => {
-    try {
-      const getRouteParams = async () => {
-        const {
-          routeParams: { callback },
-        } = await dispatch(getSession({ uri })).unwrap();
-        setHandleResponse(() => callback);
-      };
-      getRouteParams();
-    } catch (e) {
-      // TODO: handle error.
-      console.log('GET ROUTE PARAMS', e);
-    }
-  }, []);
 
   const handleSuccess = useCallback(
     (success = false) => {
-      if (handleResponse) {
-        setTimeout(
-          () =>
-            handleResponse({
+      setTimeout(
+        () =>
+          responseSessionRequest(
+            {
               approved: success,
-              chainId: 1,
               accountAddress: currentWallet.principal,
-              peerId,
-              dappScheme,
-              dappName,
-              dappUrl,
-            }),
-          300
-        );
-      }
+              ...meta,
+            },
+            dispatch
+          ),
+        300
+      );
     },
-    [handleResponse, peerId, dappScheme, dappName, currentWallet, dappUrl]
+    [peerId, dappScheme, dappName, currentWallet, dappUrl]
   );
 
   const onPress = () => {

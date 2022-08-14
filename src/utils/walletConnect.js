@@ -35,40 +35,27 @@ import { recursiveParseBigint, recursiveParsePrincipal } from '@/utils/objects';
 
 import { base64ToBuffer } from './utilities';
 
-export const connectionRequestResponseHandlerFactory = (dispatch, uri) => {
-  return async ({
-    approved,
-    chainId,
-    accountAddress,
-    peerId,
-    dappScheme,
-    dappName,
-    dappUrl,
-  }) => {
-    const { walletConnector, timedOut } = await dispatch(
-      getSession({ uri })
-    ).unwrap();
+export const responseSessionRequest = async (meta, dispatch) => {
+  const { approved, chainId, accountAddress, peerId, dappScheme } = meta;
+  const { walletConnector } = await dispatch(getSession({ peerId })).unwrap();
 
-    if (approved) {
-      dispatch(setPendingSessionRequest({ peerId, walletConnector }));
-      dispatch(
-        walletConnectApproveSession({
-          peerId,
-          dappScheme,
-          chainId,
-          accountAddress,
-        })
-      );
-    } else if (!timedOut) {
-      await dispatch(walletConnectRejectSession(peerId, walletConnector));
-    }
-  };
+  if (approved) {
+    await dispatch(
+      walletConnectApproveSession({
+        peerId,
+        dappScheme,
+        chainId,
+        accountAddress,
+      })
+    );
+  } else if (!approved) {
+    await dispatch(walletConnectRejectSession({ peerId, walletConnector }));
+  }
+
+  await dispatch(setSession({ peerId, sessionInfo: { pending: false, meta } }));
 };
 
-export const sessionRequestHandler = async (
-  { dispatch, uri },
-  { error, payload }
-) => {
+export const sessionRequestHandler = async ({ error, payload }) => {
   if (error) {
     throw error;
   }
@@ -88,10 +75,7 @@ export const sessionRequestHandler = async (
     dappImageUrl,
   };
 
-  await dispatch(setSession({ uri, sessionInfo: { meta } }));
-
   Navigation.handleAction(Routes.WALLET_CONNECT_INITIAL_CONNECTION, {
-    uri,
     meta,
   });
 };
@@ -103,9 +87,9 @@ export const callRequestHandlerFactory = (dispatch, getState) => {
     ...ConnectionModule(dispatch, getState),
   ];
   const walletConnectHandlers = modules.reduce(
-    (acum, handlerObj) => ({
+    (acum, { methodName, handler, executor }) => ({
       ...acum,
-      [handlerObj.methodName]: [handlerObj.handler, handlerObj.executor],
+      [methodName]: [handler, executor],
     }),
     {}
   );

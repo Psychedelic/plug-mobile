@@ -115,7 +115,7 @@ export interface FlowsParams {
   token: WCToken;
   type: WCFlowTypes;
   openAutomatically: boolean;
-  request: FlowsRequest;
+  requestId: number;
   metadata: FlowsMetadata;
   args: FlowsArgs;
   handleApproveArgs: [

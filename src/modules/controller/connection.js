@@ -56,7 +56,7 @@ const handlerAllowAgent = getState => async (opts, url, response) => {
 const ConnectionModule = (dispatch, getState) => {
   const getConnectionData = {
     methodName: 'getConnectionData',
-    handler: async (request, url) => {
+    handler: async (requestId, url) => {
       initializeProtectedIds();
       const keyring = getState().keyring?.instance;
       const walletId = keyring?.currentWalletId;
@@ -69,7 +69,7 @@ const ConnectionModule = (dispatch, getState) => {
         } else {
           dispatch(
             walletConnectExecuteAndResponse({
-              ...request,
+              requestId,
               args: [app],
             })
           );
@@ -77,7 +77,7 @@ const ConnectionModule = (dispatch, getState) => {
       } else {
         dispatch(
           walletConnectExecuteAndResponse({
-            ...request,
+            requestId,
             args: [null],
           })
         );
@@ -103,10 +103,10 @@ const ConnectionModule = (dispatch, getState) => {
   };
   const disconnect = {
     methodName: 'disconnect',
-    handler: async (request, url) => {
+    handler: async (requestId, url) => {
       dispatch(
         walletConnectExecuteAndResponse({
-          ...request,
+          requestId,
           args: [url],
         })
       );
@@ -127,7 +127,7 @@ const ConnectionModule = (dispatch, getState) => {
 
   const requestConnect = {
     methodName: 'requestConnect',
-    handler: async (request, metadata, whitelist, timeout, host) => {
+    handler: async (requestId, metadata, whitelist, timeout, host) => {
       try {
         await initializeProtectedIds();
         const keyring = getState().keyring?.instance;
@@ -135,7 +135,7 @@ const ConnectionModule = (dispatch, getState) => {
         if (!whitelist.every(canisterId => validatePrincipalId(canisterId))) {
           dispatch(
             walletConnectExecuteAndResponse({
-              ...request,
+              requestId,
               error: ERRORS.CANISTER_ID_ERROR,
             })
           );
@@ -193,13 +193,11 @@ const ConnectionModule = (dispatch, getState) => {
             whitelist: whitelistWithInfo,
           },
         ];
-        const { executor: _executor, ...requestWithoutExecutor } = request;
-
         if (isValidWhitelist) {
           const params = {
             type: 'requestConnect',
             openAutomatically: true,
-            request: requestWithoutExecutor,
+            requestId,
             metadata,
             args: { whitelist: whitelistWithInfo, domainUrl },
             handleApproveArgs,
@@ -210,7 +208,7 @@ const ConnectionModule = (dispatch, getState) => {
         }
       } catch (e) {
         walletConnectExecuteAndResponse({
-          ...request,
+          requestId,
           error: ERRORS.SERVER_ERROR(e),
         });
       }
@@ -220,7 +218,7 @@ const ConnectionModule = (dispatch, getState) => {
 
   const allWhiteListed = {
     methodName: 'allWhiteListed',
-    handler: async (request, metadata, whitelist) => {
+    handler: async (requestId, metadata, whitelist) => {
       const keyring = getState().keyring?.instance;
 
       const app = await getApp(
@@ -235,14 +233,14 @@ const ConnectionModule = (dispatch, getState) => {
 
         dispatch(
           walletConnectExecuteAndResponse({
-            ...request,
+            requestId,
             args: [areAllWhiteListed],
           })
         );
       } else {
         dispatch(
           walletConnectExecuteAndResponse({
-            ...request,
+            requestId,
             error: ERRORS.CONNECTION_ERROR,
           })
         );
@@ -255,13 +253,13 @@ const ConnectionModule = (dispatch, getState) => {
 
   const verifyWhitelist = {
     methodName: 'verifyWhitelist',
-    handler: async (request, metadata, whitelist) => {
+    handler: async (requestId, metadata, whitelist) => {
       const keyring = getState().keyring?.instance;
 
       if (!whitelist.every(canisterId => validatePrincipalId(canisterId))) {
         dispatch(
           walletConnectExecuteAndResponse({
-            ...request,
+            requestId,
             error: ERRORS.CANISTER_ID_ERROR,
           })
         );
@@ -304,20 +302,17 @@ const ConnectionModule = (dispatch, getState) => {
             whitelist: whitelistWithInfo,
           },
         ];
-        const { executor: _executor, ...requestWithoutExecutor } = request;
-
         if (allWhitelisted) {
           await dispatch(
             walletConnectExecuteAndResponse({
-              ...request,
+              requestId,
               args: handleApproveArgs,
             })
           );
         } else {
           Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
             type: 'requestConnect',
-            openAutomatically: true,
-            request: requestWithoutExecutor,
+            requestId,
             metadata,
             args: { whitelist: whitelistWithInfo, domainUrl: metadata.url },
             handleApproveArgs,
@@ -327,7 +322,7 @@ const ConnectionModule = (dispatch, getState) => {
       } else {
         dispatch(
           walletConnectExecuteAndResponse({
-            ...request,
+            requestId,
             error: ERRORS.CONNECTION_ERROR,
           })
         );

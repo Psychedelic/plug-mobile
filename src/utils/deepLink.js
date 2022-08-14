@@ -11,14 +11,17 @@ import Navigation from '@/utils/navigation';
 
 function handleWalletConnect(uri, isUnlocked) {
   const { dispatch } = store;
-  dispatch(walletConnectSetPendingRedirect());
+  const { query } = new URL(uri);
+  const { bridge, requestId } = qs.parse(query.substring(1));
+  dispatch(
+    walletConnectSetPendingRedirect({ requestId, redirect: { pending: true } })
+  );
   if (isUnlocked) {
     Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
       loading: true,
     });
   }
-  const { query } = new URL(uri);
-  if (uri && query) {
+  if (uri && bridge) {
     dispatch(
       walletConnectOnSessionRequest({
         uri,
