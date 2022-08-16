@@ -11,12 +11,14 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import { Rainbow, TransparentGradient } from '@/constants/theme';
 
-import styles, { defaultPlaceholderTextColor } from './styles';
+import styles, {
+  defaultPlaceholderTextColor,
+  getCustomGradient,
+} from './styles';
 
 interface Props extends TextInputProps {
   ref?: React.RefObject<Input>;
   hideGradient?: boolean;
-  customStyle?: StyleProp<ViewStyle>;
   contentContainerStyle?: StyleProp<ViewStyle>;
   inputStyle?: StyleProp<TextStyle>;
   disabled?: boolean;
@@ -31,7 +33,6 @@ const TextInput = ({
   hideGradient,
   placeholder,
   onSubmitEditing,
-  customStyle,
   inputStyle,
   disabled,
   maxLength,
@@ -48,20 +49,28 @@ const TextInput = ({
   blurOnSubmit = false,
   ...props
 }: Props) => {
-  const adjustInnerHeight = useMemo(
-    () => (style ? Object.keys(style).includes('height') : false),
-    [style]
+  const customBackgroundColor = useMemo(
+    () =>
+      contentContainerStyle &&
+      Object.keys(contentContainerStyle).includes('backgroundColor')
+        ? (contentContainerStyle as ViewStyle).backgroundColor
+        : false,
+    [contentContainerStyle]
   );
 
   const innerContainerStyle = [
     styles.innerContainer,
-    adjustInnerHeight && styles.grow,
     multiline && styles.multilineContainer,
   ];
 
   const [isFocused, setIsFocused] = useState(false);
   const gradient = useMemo(
-    () => (isFocused && !hideGradient ? Rainbow : TransparentGradient),
+    () =>
+      isFocused && !hideGradient
+        ? Rainbow
+        : customBackgroundColor
+        ? getCustomGradient(customBackgroundColor as string)
+        : TransparentGradient,
     [isFocused, hideGradient]
   );
 
@@ -77,7 +86,7 @@ const TextInput = ({
 
   return (
     <LinearGradient
-      style={[styles.gradientContainer, customStyle, style]}
+      style={[styles.gradientContainer, !multiline && styles.singleLine, style]}
       {...gradient}>
       <View style={[innerContainerStyle, contentContainerStyle]}>
         {left}

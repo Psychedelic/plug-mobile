@@ -68,9 +68,7 @@ function PasswordInput({
             scale={animationScales.medium}
             onPress={toggleShowPassowrd}>
             <Icon
-              name={`${
-                showPassword ? 'passwordEyeClosedIcon' : 'passwordEyeIcon'
-              }`}
+              name={showPassword ? 'passwordEyeClosedIcon' : 'passwordEyeIcon'}
             />
           </Touchable>
         }
