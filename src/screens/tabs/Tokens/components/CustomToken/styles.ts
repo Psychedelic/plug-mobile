@@ -34,8 +34,6 @@ export default StyleSheet.create({
   },
   standardIcon: {
     transform: [{ rotate: '90deg' }],
-    height: 18,
-    width: 12,
   },
   button: {
     marginVertical: 16,

@@ -20,7 +20,7 @@ const SettingItem = ({ icon, name, description, onPress, iconName }) => (
         <Text style={[FontStyles.Normal, styles.name]}>{name}</Text>
         <Text style={FontStyles.NormalGray}>{description}</Text>
       </Column>
-      <Icon name="chevronRight" style={styles.chevron} />
+      <Icon name="chevronRight" style={styles.chevron} height={18} />
     </Row>
   </Touchable>
 );

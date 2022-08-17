@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import React, { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, Keyboard, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
 import Alert from '@/components/common/Alert';
@@ -53,12 +53,20 @@ export function TokenList({ onSelectedToken, tokens, loading }: Props) {
         <Text type="body2" style={styles.emptyText}>
           {t('addToken.noResults')}
         </Text>
-        <Text type="body2" style={styles.emptyLink}>
+        <Text
+          type="body2"
+          style={styles.emptyLink}
+          onPress={handleCustomModalOpen}>
           {t('addToken.addCustomToken')}
         </Text>
       </View>
     );
   }
+
+  const handleCustomModalOpen = () => {
+    Keyboard.dismiss();
+    modalRef?.current?.open();
+  };
 
   useEffect(() => {
     if (search === '') {
@@ -79,7 +87,7 @@ export function TokenList({ onSelectedToken, tokens, loading }: Props) {
         <SearchBar
           placeholder={t('addToken.search')}
           onChangeText={setSearch}
-          onActionPress={() => modalRef?.current?.open()}
+          onActionPress={handleCustomModalOpen}
         />
         {loading ? (
           <ActivityIndicator style={styles.loader} size="small" color="white" />
@@ -91,15 +99,12 @@ export function TokenList({ onSelectedToken, tokens, loading }: Props) {
                 : t('addToken.availableTokens')}
             </Text>
             {filteredTokens.map((token: DABToken) => renderToken(token))}
-            <CustomToken
-              modalRef={modalRef}
-              onSelectedToken={onSelectedToken}
-            />
           </>
         ) : (
           renderEmptyState()
         )}
       </View>
+      <CustomToken modalRef={modalRef} onSelectedToken={onSelectedToken} />
       {/* <Alert
         caption={t('addToken.dabCaption')}
         style={styles.alert}

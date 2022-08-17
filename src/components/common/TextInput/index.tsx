@@ -48,7 +48,7 @@ const TextInput = ({
   contentContainerStyle,
   onBlur,
   onFocus,
-  blurOnSubmit = false,
+  blurOnSubmit,
   error,
   ...props
 }: Props) => {

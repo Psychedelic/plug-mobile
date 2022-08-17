@@ -164,7 +164,8 @@ function CustomToken({ modalRef, onSelectedToken }: Props) {
             standard ? styles.standardText : styles.standardTextPlaceholder
           }
           iconStyle={styles.standardIcon}
-          iconName="chevronRight" // TODO: Modify button to receive the icon as prop
+          iconName="chevronRight"
+          iconProps={{ height: 18 }}
         />
         {showStandardError ? (
           renderError(tokenError.message, tokenError.showMore)
