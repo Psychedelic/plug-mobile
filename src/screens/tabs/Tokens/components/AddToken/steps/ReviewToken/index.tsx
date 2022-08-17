@@ -8,12 +8,13 @@ import Image from '@/components/common/Image';
 import Text from '@/components/common/Text';
 import TokenFormat from '@/components/formatters/TokenFormat';
 import UsdFormat from '@/components/formatters/UsdFormat';
+import IncognitoLogo from '@/components/icons/svg/Incognito.svg';
 import { DABToken } from '@/interfaces/dab';
 import { addCustomToken } from '@/redux/slices/user';
 import { getTokenBalance } from '@/services/DAB';
 
 import { parseToken } from '../../utils';
-import styles, { loaderColor } from './styles';
+import styles, { incognitoColor, loaderColor } from './styles';
 
 interface Props {
   token?: DABToken;
@@ -36,7 +37,13 @@ export function ReviewToken({ token, onClose }: Props) {
           <ActivityIndicator color={loaderColor} size="small" />
         ) : (
           <>
-            <Image url={token?.thumbnail} style={styles.logo} />
+            {token?.thumbnail || token?.logo ? (
+              <Image url={token.thumbnail || token.logo} style={styles.logo} />
+            ) : (
+              <View style={[styles.logo, styles.incognitoLogo]}>
+                <IncognitoLogo fill={incognitoColor} width={34} height={34} />
+              </View>
+            )}
             <View style={styles.textContainer}>
               <View style={styles.topRow}>
                 <Text type="body2" numberOfLines={1} style={styles.textWhite}>

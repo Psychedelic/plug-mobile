@@ -6,6 +6,7 @@ import { fontMaker } from '@/utils/fonts';
 
 const commonBorderRadius = 16;
 export const defaultPlaceholderTextColor = Colors.White.Secondary;
+export const errorColor = Colors.Red;
 
 export const getCustomGradient = (color: string) => ({
   start: {

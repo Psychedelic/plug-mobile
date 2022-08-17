@@ -30,7 +30,7 @@ export const getDabNfts = async () => {
 };
 
 export const getTokenBalance = async (
-  token: Token,
+  token: DABToken,
   user: Principal | string
 ) => {
   const agent = new HttpAgent({
@@ -38,7 +38,7 @@ export const getTokenBalance = async (
     host: 'https://mainnet.dfinity.network',
   });
   const tokenActor = await getTokenActor({
-    canisterId: token.principal_id.toString(),
+    canisterId: token.canisterId.toString(),
     agent,
     standard: token.standard,
   });

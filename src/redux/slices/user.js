@@ -400,19 +400,23 @@ export const addCustomToken = createAsyncThunk(
 
 export const getTokenInfo = createAsyncThunk(
   'keyring/getTokenInfo',
-  async ({ canisterId, standard }, { getState }) => {
+  /**
+   * @param {{token: DABToken, onSuccess: (token: DABToken) => void, onError: (err: string) => void}} param
+   */
+  async ({ token, onSuccess, onError }, { getState }) => {
     const { keyring } = getState();
     const currentWalletId = keyring?.instance?.currentWalletId;
     try {
       const tokenInfo = await keyring?.instance?.getTokenInfo({
         subaccount: currentWalletId,
-        canisterId,
-        standard,
+        canisterId: token.canisterId,
+        standard: token.standard,
       });
-      return { ...tokenInfo, amount: tokenInfo.amount.toString() };
+      onSuccess?.({ ...tokenInfo, amount: tokenInfo.amount.toString() });
     } catch (error) {
       // TODO handle error
       console.log('Error while fetching token info', error);
+      onError?.(error.message);
     }
   }
 );

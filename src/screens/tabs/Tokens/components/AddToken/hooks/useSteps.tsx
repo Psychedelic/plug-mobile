@@ -15,6 +15,7 @@ interface Return {
     left?: React.ReactNode;
     right?: React.ReactNode;
     adjustModalContent?: boolean;
+    fullHeight?: boolean;
   };
   setStep: (step: number) => void;
 }
@@ -62,6 +63,7 @@ const useSteps = ({ handleModalClose }: Props): Return => {
           ),
           center: t('addToken.title'),
           adjustModalContent: false,
+          fullHeight: true,
         },
         {
           component: (

@@ -13,6 +13,7 @@ import { Rainbow, TransparentGradient } from '@/constants/theme';
 
 import styles, {
   defaultPlaceholderTextColor,
+  errorColor,
   getCustomGradient,
 } from './styles';
 
@@ -24,6 +25,7 @@ interface Props extends TextInputProps {
   disabled?: boolean;
   left?: React.ReactNode;
   right?: React.ReactNode;
+  error?: boolean;
 }
 
 const TextInput = ({
@@ -47,6 +49,7 @@ const TextInput = ({
   onBlur,
   onFocus,
   blurOnSubmit = false,
+  error,
   ...props
 }: Props) => {
   const customBackgroundColor = useMemo(
@@ -66,12 +69,14 @@ const TextInput = ({
   const [isFocused, setIsFocused] = useState(false);
   const gradient = useMemo(
     () =>
-      isFocused && !hideGradient
+      error
+        ? getCustomGradient(errorColor)
+        : isFocused && !hideGradient
         ? Rainbow
         : customBackgroundColor
         ? getCustomGradient(customBackgroundColor as string)
         : TransparentGradient,
-    [isFocused, hideGradient]
+    [isFocused, hideGradient, error, customBackgroundColor]
   );
 
   const handleOnFocus = (event: any) => {

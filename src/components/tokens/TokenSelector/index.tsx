@@ -38,7 +38,6 @@ const TokenSelector = ({
       <TokenIcon
         icon={token.icon}
         logo={token.logo}
-        symbol={token.symbol}
         color={Colors.Gray.Tertiary}
       />
       <View style={styles.leftContainer}>

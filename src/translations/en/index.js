@@ -225,6 +225,14 @@ const translations = {
       'Token Safety Alert: For your security, make sure to do proper research before interacting with any token.',
     customTokenId: 'Token Canister ID',
     customTokenStandard: "Token's Interface Standard",
+    customCaption: 'This allows tokens to be used by Plug',
+    dabCaption:
+      'Helping improve dicoverability, reputation, and trust in IC tokens.',
+    invalidInterfaceTokenError:
+      'Invalid token’s standard. Select a valid option for the current canister ID.',
+    invalidCanisterTokenError: 'Invalid Canister ID.',
+    nftTokenError: 'Custom non-fungible tokens are not supported yet.',
+    learnMore: 'Learn More',
   },
   walletConnect: {
     changeWallet: 'Change Wallet',

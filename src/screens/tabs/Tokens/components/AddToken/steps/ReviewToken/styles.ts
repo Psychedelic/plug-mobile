@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { Colors } from '@/constants/theme';
 
 export const loaderColor = Colors.White.Primary;
+export const incognitoColor = Colors.White.Pure;
 
 export default StyleSheet.create({
   container: {
@@ -32,6 +33,11 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderRadius: 100,
     marginRight: 12,
+  },
+  incognitoLogo: {
+    backgroundColor: Colors.Black.Primary,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   textContainer: {
     flex: 1,
