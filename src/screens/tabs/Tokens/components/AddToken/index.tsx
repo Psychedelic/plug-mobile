@@ -33,6 +33,7 @@ export function AddToken() {
         modalRef={modalRef}
         adjustToContentHeight={currentStep?.adjustModalContent}
         fullHeight={currentStep?.fullHeight}
+        FloatingComponent={currentStep.floatingComponent}
         onClosed={() => setStep(0)}>
         <Header
           left={currentStep?.left}

@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { SEMIBOLD } from '@/constants/fonts';
+import { isIos } from '@/constants/platform';
 import { Colors } from '@/constants/theme';
 import { fontMaker } from '@/utils/fonts';
 
@@ -23,7 +24,6 @@ export const getCustomGradient = (color: string) => ({
 const styles = StyleSheet.create({
   textInput: {
     ...fontMaker({ size: 18, color: Colors.White.Pure, weight: SEMIBOLD }),
-    borderRadius: commonBorderRadius,
     flexGrow: 1,
   },
   singleLine: {
@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   multilineContainer: {
+    paddingTop: isIos ? 8 : undefined,
     alignItems: 'flex-start',
   },
   gradientContainer: {

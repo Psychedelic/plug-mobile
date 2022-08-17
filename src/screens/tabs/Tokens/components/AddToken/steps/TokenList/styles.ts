@@ -11,6 +11,8 @@ const ITEM_HEIGHT = 40;
 export default StyleSheet.create({
   container: {
     paddingHorizontal: 16,
+    position: 'relative',
+    paddingBottom: 100,
   },
   item: {
     height: ITEM_HEIGHT,
@@ -55,10 +57,5 @@ export default StyleSheet.create({
   },
   emptyLink: {
     color: Colors.ActionBlue,
-  },
-  alert: {
-    position: 'absolute',
-    alignSelf: 'center',
-    bottom: 10,
   },
 });

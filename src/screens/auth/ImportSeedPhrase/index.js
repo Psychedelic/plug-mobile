@@ -104,6 +104,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
             style={styles.input}
             contentContainerStyle={styles.inputContainer}
             testID={TestIds.IMPORT_SEED_PHRASE.PHRASE_INPUT}
+            autoFocus
           />
           {error && (
             <Text style={styles.errorText}>

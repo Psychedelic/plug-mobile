@@ -1,5 +1,14 @@
 import { Contact } from '@/screens/tabs/Profile/screens/Contacts/utils';
 
+// Override the default state interface
+declare module 'react-redux' {
+  interface DefaultRootState {
+    icp: IcpState;
+    keyring: KeyringState;
+    user: UserState;
+  }
+}
+
 export interface CollectionToken {
   id: string;
   index: number | string;
@@ -131,10 +140,4 @@ export interface UserState {
   collectionsError: boolean;
   usingBiometrics: boolean;
   biometricsAvailable: boolean;
-}
-
-export interface State {
-  icp: IcpState;
-  keyring: KeyringState;
-  user: UserState;
 }
