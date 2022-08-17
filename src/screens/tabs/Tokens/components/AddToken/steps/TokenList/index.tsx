@@ -96,9 +96,7 @@ export function TokenList({ onSelectedToken, tokens, loading }: Props) {
                 ? t('addToken.searchResults')
                 : t('addToken.availableTokens')}
             </Text>
-            {[...filteredTokens, ...filteredTokens].map((token: DABToken) =>
-              renderToken(token)
-            )}
+            {filteredTokens.map((token: DABToken) => renderToken(token))}
           </>
         ) : (
           renderEmptyState()
