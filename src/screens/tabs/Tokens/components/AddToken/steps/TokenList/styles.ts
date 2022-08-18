@@ -26,21 +26,11 @@ export default StyleSheet.create({
     marginTop: 24,
     marginBottom: 12,
   },
-  emptyContainer: {
+  emptyState: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 50,
-  },
-  emoji: {
-    fontSize: 34,
-    marginBottom: 8,
-  },
-  emptyText: {
-    color: Colors.White.Secondary,
-  },
-  emptyLink: {
-    color: Colors.ActionBlue,
   },
   dabContainer: {
     marginTop: 32,

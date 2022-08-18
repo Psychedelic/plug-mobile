@@ -26,7 +26,7 @@ export function ReviewToken({ token, onClose }: Props) {
   const [loadingRegister, setLoadingRegister] = useState(false);
 
   const dispatch = useDispatch();
-  console.log('balance', balance);
+
   function renderToken() {
     return (
       <View style={[styles.tokenContainer, loadingBalance && styles.loader]}>

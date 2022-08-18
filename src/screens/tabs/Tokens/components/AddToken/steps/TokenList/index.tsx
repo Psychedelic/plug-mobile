@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Keyboard, Linking, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
-import { SearchBar, Text, Touchable } from '@/components/common';
+import { EmptyState, SearchBar, Text, Touchable } from '@/components/common';
 import DABLogo from '@/components/icons/svg/DAB.svg';
 import TokenItem from '@/components/tokens/TokenItem';
 import { dabFormUrl } from '@/constants/urls';
@@ -39,18 +39,12 @@ export function TokenList({ onSelectedToken, tokens, loading }: Props) {
 
   function renderEmptyState() {
     return (
-      <View style={styles.emptyContainer}>
-        <Text style={styles.emoji}>🤔</Text>
-        <Text type="body2" style={styles.emptyText}>
-          {t('addToken.noResults')}
-        </Text>
-        <Text
-          type="body2"
-          style={styles.emptyLink}
-          onPress={handleCustomModalOpen}>
-          {t('addToken.addCustomToken')}
-        </Text>
-      </View>
+      <EmptyState
+        title={t('addToken.noResults')}
+        text={t('addToken.addCustomToken')}
+        style={styles.emptyState}
+        onTextPress={handleCustomModalOpen}
+      />
     );
   }
 

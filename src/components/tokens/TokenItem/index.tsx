@@ -33,7 +33,7 @@ function TokenItem({ color, style, onPress, token }: Props) {
   return (
     <Touchable scale={animationScales.small} onPress={onPress}>
       <View style={[styles.root, style]}>
-        <TokenIcon icon={icon} logo={logo || thumbnail} color={color} />
+        <TokenIcon icon={icon} logo={thumbnail || logo} color={color} />
         <View style={styles.leftContainer}>
           {name ? <Text style={FontStyles.Normal}>{name}</Text> : null}
           {symbol ? (
