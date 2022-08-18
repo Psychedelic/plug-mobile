@@ -3,15 +3,14 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Keyboard, Linking, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
-import { Image, SearchBar, Text, Touchable } from '@/components/common';
+import { SearchBar, Text, Touchable } from '@/components/common';
 import DABLogo from '@/components/icons/svg/DAB.svg';
-import IncognitoLogo from '@/components/icons/svg/Incognito.svg';
+import TokenItem from '@/components/tokens/TokenItem';
 import { dabFormUrl } from '@/constants/urls';
 import { DABToken } from '@/interfaces/dab';
-import animationScales from '@/utils/animationScales';
 
 import CustomToken from '../CustomToken';
-import styles, { incognitoColor } from './styles';
+import styles from './styles';
 
 interface Props {
   onSelectedToken: (token: DABToken) => void;
@@ -26,20 +25,15 @@ export function TokenList({ onSelectedToken, tokens, loading }: Props) {
 
   function renderToken(token: DABToken) {
     return (
-      <Touchable
-        scale={animationScales.small}
-        key={token.name}
+      <TokenItem
+        token={{
+          name: token.name,
+          logo: token.logo,
+          thumbnail: token.thumbnail,
+        }}
         style={styles.item}
-        onPress={() => onSelectedToken(token)}>
-        {token.thumbnail || token.logo ? (
-          <Image url={token.thumbnail || token.logo} style={styles.logo} />
-        ) : (
-          <View style={[styles.logo, styles.incognitoLogo]}>
-            <IncognitoLogo fill={incognitoColor} width={34} height={34} />
-          </View>
-        )}
-        <Text type="normal">{token.name}</Text>
-      </Touchable>
+        onPress={() => onSelectedToken(token)}
+      />
     );
   }
 

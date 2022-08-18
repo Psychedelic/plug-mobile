@@ -4,16 +4,14 @@ import { ActivityIndicator, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import RainbowButton from '@/components/buttons/RainbowButton';
-import { Image, Text } from '@/components/common';
-import TokenFormat from '@/components/formatters/TokenFormat';
-import UsdFormat from '@/components/formatters/UsdFormat';
-import IncognitoLogo from '@/components/icons/svg/Incognito.svg';
+import { Text } from '@/components/common';
+import TokenItem from '@/components/tokens/TokenItem';
 import { DABToken } from '@/interfaces/dab';
 import { addCustomToken } from '@/redux/slices/user';
 import { getTokenBalance } from '@/services/DAB';
 
 import { parseToken } from '../../utils';
-import styles, { incognitoColor, loaderColor } from './styles';
+import styles from './styles';
 
 interface Props {
   token?: DABToken;
@@ -28,39 +26,20 @@ export function ReviewToken({ token, onClose }: Props) {
   const [loadingRegister, setLoadingRegister] = useState(false);
 
   const dispatch = useDispatch();
-
+  console.log('balance', balance);
   function renderToken() {
     return (
-      <View style={styles.tokenContainer}>
+      <View style={[styles.tokenContainer, loadingBalance && styles.loader]}>
         {loadingBalance ? (
-          <ActivityIndicator color={loaderColor} size="small" />
+          <ActivityIndicator color="white" size="small" />
         ) : (
-          <>
-            {token?.thumbnail || token?.logo ? (
-              <Image url={token.thumbnail || token.logo} style={styles.logo} />
-            ) : (
-              <View style={[styles.logo, styles.incognitoLogo]}>
-                <IncognitoLogo fill={incognitoColor} width={34} height={34} />
-              </View>
-            )}
-            <View style={styles.textContainer}>
-              <View style={styles.topRow}>
-                <Text type="body2" numberOfLines={1} style={styles.textWhite}>
-                  {token?.name}
-                </Text>
-                {balance?.value && (
-                  <UsdFormat value={balance?.value} style={styles.textWhite} />
-                )}
-              </View>
-              {token && balance && (
-                <TokenFormat
-                  value={balance.amount}
-                  token={token.symbol}
-                  style={styles.amount}
-                />
-              )}
-            </View>
-          </>
+          <TokenItem
+            token={{
+              ...token,
+              value: balance?.value,
+              amount: balance?.amount,
+            }}
+          />
         )}
       </View>
     );

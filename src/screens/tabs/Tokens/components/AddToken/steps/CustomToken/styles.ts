@@ -15,7 +15,6 @@ export default StyleSheet.create({
   },
   standardButton: {
     marginTop: 16,
-    // marginBottom: 8,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,

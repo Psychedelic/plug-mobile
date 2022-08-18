@@ -5,7 +5,6 @@ import { WINDOW_HEIGHT } from '@/constants/platform';
 import { Colors } from '@/constants/theme';
 import { fontMaker } from '@/utils/fonts';
 
-export const incognitoColor = Colors.White.Pure;
 const ITEM_HEIGHT = 40;
 
 export default StyleSheet.create({
@@ -16,22 +15,7 @@ export default StyleSheet.create({
   },
   item: {
     height: ITEM_HEIGHT,
-    flexDirection: 'row',
-    alignItems: 'center',
     marginVertical: 12,
-  },
-  logo: {
-    height: ITEM_HEIGHT,
-    width: ITEM_HEIGHT,
-    borderRadius: 100,
-    marginRight: 12,
-    borderWidth: 1,
-    borderColor: Colors.Divider[1],
-  },
-  incognitoLogo: {
-    backgroundColor: Colors.Black.Primary,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   loader: {
     flex: 1,
