@@ -18,6 +18,8 @@ interface Props {
   adjustToContentHeight?: boolean;
   scrollViewProps?: any;
   modalStyle?: StyleProp<ViewStyle>;
+  HeaderComponent?: React.ReactNode;
+  FooterComponent?: React.ReactNode;
   FloatingComponent?: React.ReactNode;
 }
 
@@ -30,6 +32,8 @@ function Modal({
   adjustToContentHeight,
   scrollViewProps,
   modalStyle,
+  HeaderComponent,
+  FooterComponent,
   FloatingComponent,
   ...props
 }: Props) {
@@ -64,6 +68,8 @@ function Modal({
         onClose={onClose}
         onClosed={onClosed}
         adjustToContentHeight={adjustToContentHeight}
+        HeaderComponent={HeaderComponent}
+        FooterComponent={FooterComponent}
         FloatingComponent={FloatingComponent}
         threshold={15}>
         {children}

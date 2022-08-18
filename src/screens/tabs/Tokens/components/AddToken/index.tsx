@@ -2,9 +2,7 @@ import React, { useCallback, useRef } from 'react';
 import { Image } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
-import Header from '@/components/common/Header';
 import Modal from '@/components/common/Modal';
-import Text from '@/components/common/Text';
 import Touchable from '@/components/common/Touchable';
 import animationScales from '@/utils/animationScales';
 
@@ -33,17 +31,8 @@ export function AddToken() {
         modalRef={modalRef}
         adjustToContentHeight={currentStep?.adjustModalContent}
         fullHeight={currentStep?.fullHeight}
-        FloatingComponent={currentStep.floatingComponent}
+        HeaderComponent={currentStep.header}
         onClosed={() => setStep(0)}>
-        <Header
-          left={currentStep?.left}
-          right={currentStep?.right}
-          center={
-            <Text style={styles.title} type="subtitle3">
-              {currentStep?.center}
-            </Text>
-          }
-        />
         {currentStep.component}
       </Modal>
     </>

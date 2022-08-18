@@ -1,7 +1,11 @@
 import { t } from 'i18next';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { StyleSheet } from 'react-native';
 
 import ActionButton from '@/components/common/ActionButton';
+import Header from '@/components/common/Header';
+import Text from '@/components/common/Text';
+import { Colors } from '@/constants/theme';
 import { DABToken } from '@/interfaces/dab';
 import { getDabTokens } from '@/services/DAB';
 
@@ -11,9 +15,7 @@ import { TokenList } from '../steps/TokenList';
 interface Return {
   currentStep: {
     component: React.ReactNode;
-    center?: string;
-    left?: React.ReactNode;
-    right?: React.ReactNode;
+    header?: React.ReactNode;
     adjustModalContent?: boolean;
     fullHeight?: boolean;
   };
@@ -61,6 +63,15 @@ const useSteps = ({ handleModalClose }: Props): Return => {
               loading={tokensLoading}
             />
           ),
+          header: (
+            <Header
+              center={
+                <Text style={styles.title} type="subtitle3">
+                  {t('addToken.title')}
+                </Text>
+              }
+            />
+          ),
           center: t('addToken.title'),
           adjustModalContent: false,
           fullHeight: true,
@@ -69,16 +80,24 @@ const useSteps = ({ handleModalClose }: Props): Return => {
           component: (
             <ReviewToken token={selectedToken} onClose={handleClose} />
           ),
-          left: (
-            <ActionButton
-              onPress={() => handleChangeStep(0)}
-              label={t('common.back')}
+          header: (
+            <Header
+              left={
+                <ActionButton
+                  onPress={() => handleChangeStep(0)}
+                  label={t('common.back')}
+                />
+              }
+              right={
+                <ActionButton onPress={handleClose} label={t('common.close')} />
+              }
+              center={
+                <Text style={styles.title} type="subtitle3">
+                  {t('addToken.reviewTitle')}
+                </Text>
+              }
             />
           ),
-          right: (
-            <ActionButton onPress={handleClose} label={t('common.close')} />
-          ),
-          center: t('addToken.reviewTitle'),
           adjustModalContent: true,
         },
       ][step],
@@ -87,5 +106,11 @@ const useSteps = ({ handleModalClose }: Props): Return => {
 
   return { currentStep, setStep };
 };
+
+const styles = StyleSheet.create({
+  title: {
+    color: Colors.White.Primary,
+  },
+});
 
 export default useSteps;
