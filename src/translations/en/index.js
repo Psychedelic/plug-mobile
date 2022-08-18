@@ -233,6 +233,7 @@ const translations = {
     invalidCanisterTokenError: 'Invalid Canister ID.',
     nftTokenError: 'Custom non-fungible tokens are not supported yet.',
     learnMore: 'Learn More',
+    poweredByDab: 'POWERED BY DAB',
   },
   walletConnect: {
     changeWallet: 'Change Wallet',

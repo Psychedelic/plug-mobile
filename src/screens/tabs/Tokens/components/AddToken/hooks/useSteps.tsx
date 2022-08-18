@@ -1,11 +1,7 @@
 import { t } from 'i18next';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Linking, StyleSheet } from 'react-native';
 
 import ActionButton from '@/components/common/ActionButton';
-import Alert from '@/components/common/Alert';
-import DABLogo from '@/components/icons/svg/DAB.svg';
-import { dabFormUrl } from '@/constants/urls';
 import { DABToken } from '@/interfaces/dab';
 import { getDabTokens } from '@/services/DAB';
 
@@ -20,7 +16,6 @@ interface Return {
     right?: React.ReactNode;
     adjustModalContent?: boolean;
     fullHeight?: boolean;
-    floatingComponent?: React.ReactNode;
   };
   setStep: (step: number) => void;
 }
@@ -38,10 +33,6 @@ const useSteps = ({ handleModalClose }: Props): Return => {
   const handleSelectedToken = useCallback((token: DABToken) => {
     setSelectedToken(token);
     setStep(1);
-  }, []);
-
-  const handleOpenDabForm = useCallback(() => {
-    Linking.canOpenURL(dabFormUrl).then(() => Linking.openURL(dabFormUrl));
   }, []);
 
   const handleChangeStep = (index: number) => setStep(index);
@@ -70,15 +61,6 @@ const useSteps = ({ handleModalClose }: Props): Return => {
               loading={tokensLoading}
             />
           ),
-          // floatingComponent: (
-          //   <Alert
-          //     caption={t('addToken.dabCaption')}
-          //     actionLabel={t('addToken.learnMore')}
-          //     onActionPress={handleOpenDabForm}
-          //     style={styles.alert}
-          //     left={<DABLogo height={40} style={styles.icon} />}
-          //   />
-          // ),
           center: t('addToken.title'),
           adjustModalContent: false,
           fullHeight: true,
@@ -105,10 +87,5 @@ const useSteps = ({ handleModalClose }: Props): Return => {
 
   return { currentStep, setStep };
 };
-
-const styles = StyleSheet.create({
-  alert: { margin: 16, zIndex: 1, position: 'absolute', bottom: 0 },
-  icon: { marginRight: 16 },
-});
 
 export default useSteps;

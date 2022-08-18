@@ -58,4 +58,14 @@ export default StyleSheet.create({
   emptyLink: {
     color: Colors.ActionBlue,
   },
+  dabContainer: {
+    marginTop: 32,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dabText: {
+    marginLeft: 8,
+    color: '#7479E6',
+  },
 });

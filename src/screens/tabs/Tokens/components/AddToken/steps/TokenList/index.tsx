@@ -1,13 +1,15 @@
 import { t } from 'i18next';
-import React, { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Keyboard, View } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Keyboard, Linking, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
 import Image from '@/components/common/Image';
 import SearchBar from '@/components/common/SearchBar';
 import Text from '@/components/common/Text';
 import Touchable from '@/components/common/Touchable';
+import DABLogo from '@/components/icons/svg/DAB.svg';
 import IncognitoLogo from '@/components/icons/svg/Incognito.svg';
+import { dabFormUrl } from '@/constants/urls';
 import { DABToken } from '@/interfaces/dab';
 import animationScales from '@/utils/animationScales';
 
@@ -66,6 +68,10 @@ export function TokenList({ onSelectedToken, tokens, loading }: Props) {
     modalRef?.current?.open();
   };
 
+  const handleOpenDabForm = useCallback(() => {
+    Linking.canOpenURL(dabFormUrl).then(() => Linking.openURL(dabFormUrl));
+  }, []);
+
   useEffect(() => {
     if (search === '') {
       setFilteredTokens(tokens);
@@ -97,6 +103,16 @@ export function TokenList({ onSelectedToken, tokens, loading }: Props) {
                 : t('addToken.availableTokens')}
             </Text>
             {filteredTokens.map((token: DABToken) => renderToken(token))}
+            {!search && (
+              <Touchable
+                style={styles.dabContainer}
+                onPress={handleOpenDabForm}>
+                <DABLogo height={27} width={27} />
+                <Text type="subtitle3" style={styles.dabText}>
+                  {t('addToken.poweredByDab')}
+                </Text>
+              </Touchable>
+            )}
           </>
         ) : (
           renderEmptyState()
