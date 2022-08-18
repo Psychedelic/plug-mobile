@@ -3,10 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Keyboard, Linking, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
-import Image from '@/components/common/Image';
-import SearchBar from '@/components/common/SearchBar';
-import Text from '@/components/common/Text';
-import Touchable from '@/components/common/Touchable';
+import { Image, SearchBar, Text, Touchable } from '@/components/common';
 import DABLogo from '@/components/icons/svg/DAB.svg';
 import IncognitoLogo from '@/components/icons/svg/Incognito.svg';
 import { dabFormUrl } from '@/constants/urls';

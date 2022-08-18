@@ -6,12 +6,14 @@ import { useDispatch } from 'react-redux';
 
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
-import ActionButton from '@/components/common/ActionButton';
-import ActionSheet from '@/components/common/ActionSheet';
-import Header from '@/components/common/Header';
-import Modal from '@/components/common/Modal';
-import Text from '@/components/common/Text';
-import TextInput from '@/components/common/TextInput';
+import {
+  ActionButton,
+  ActionSheet,
+  Header,
+  Modal,
+  Text,
+  TextInput,
+} from '@/components/common';
 import ErrorIcon from '@/components/icons/svg/Error.svg';
 import Info from '@/components/icons/svg/Info.svg';
 import { customTokensUrl } from '@/constants/urls';

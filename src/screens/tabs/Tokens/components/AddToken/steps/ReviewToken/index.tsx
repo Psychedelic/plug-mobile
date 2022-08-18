@@ -4,8 +4,7 @@ import { ActivityIndicator, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import RainbowButton from '@/components/buttons/RainbowButton';
-import Image from '@/components/common/Image';
-import Text from '@/components/common/Text';
+import { Image, Text } from '@/components/common';
 import TokenFormat from '@/components/formatters/TokenFormat';
 import UsdFormat from '@/components/formatters/UsdFormat';
 import IncognitoLogo from '@/components/icons/svg/Incognito.svg';

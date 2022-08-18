@@ -2,8 +2,7 @@ import React, { useCallback, useRef } from 'react';
 import { Image } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
-import Modal from '@/components/common/Modal';
-import Touchable from '@/components/common/Touchable';
+import { Modal, Touchable } from '@/components/common';
 import animationScales from '@/utils/animationScales';
 
 import Add from './assets/Add.png';

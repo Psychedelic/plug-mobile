@@ -2,9 +2,7 @@ import { t } from 'i18next';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 
-import ActionButton from '@/components/common/ActionButton';
-import Header from '@/components/common/Header';
-import Text from '@/components/common/Text';
+import { ActionButton, Header, Text } from '@/components/common';
 import { Colors } from '@/constants/theme';
 import { DABToken } from '@/interfaces/dab';
 import { getDabTokens } from '@/services/DAB';
