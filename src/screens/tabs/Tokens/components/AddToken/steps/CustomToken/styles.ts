@@ -58,4 +58,10 @@ export default StyleSheet.create({
   errorLink: {
     textDecorationLine: 'underline',
   },
+  optionsText: {
+    color: Colors.White.Primary,
+  },
+  cancelText: {
+    color: Colors.Red,
+  },
 });

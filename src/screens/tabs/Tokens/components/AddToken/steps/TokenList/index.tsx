@@ -26,6 +26,7 @@ export function TokenList({ onSelectedToken, tokens, loading }: Props) {
   function renderToken(token: DABToken) {
     return (
       <TokenItem
+        key={token.name}
         token={{
           name: token.name,
           logo: token.logo,

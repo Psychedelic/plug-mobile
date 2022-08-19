@@ -1,6 +1,6 @@
 import i18next from 'i18next';
 import React, { RefObject } from 'react';
-import { View } from 'react-native';
+import { StyleProp, TextStyle, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { Portal } from 'react-native-portalize';
 import { SvgProps } from 'react-native-svg';
@@ -27,6 +27,8 @@ interface Props {
   showIcons?: boolean;
   subtitle?: string;
   title?: string;
+  cancelTextStyle?: StyleProp<TextStyle>;
+  optionTextStyle?: StyleProp<TextStyle>;
 }
 
 function ActionSheet({
@@ -36,6 +38,8 @@ function ActionSheet({
   subtitle,
   options,
   showIcons = isAndroid,
+  optionTextStyle,
+  cancelTextStyle,
 }: Props) {
   const handleClose = () => {
     modalRef?.current?.close();
@@ -71,8 +75,10 @@ function ActionSheet({
                   <Icon fill={ICON_COLOR} style={styles.icon} />
                 )}
                 <Text
+                  type="body2"
                   style={[
                     styles.itemText,
+                    optionTextStyle,
                     option.destructive && styles.destructiveText,
                   ]}>
                   {option.label}
@@ -84,7 +90,9 @@ function ActionSheet({
             onPress={handleClose}
             style={[styles.item, styles.cancelContainer]}>
             {showIcons && <Close fill={ICON_COLOR} style={styles.icon} />}
-            <Text style={[styles.itemText, styles.cancelText]}>
+            <Text
+              type="body2"
+              style={[styles.itemText, styles.cancelText, cancelTextStyle]}>
               {i18next.t('common.cancel')}
             </Text>
           </Touchable>

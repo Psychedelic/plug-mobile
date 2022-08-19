@@ -492,7 +492,8 @@ export const userSlice = createSlice({
     },
     [getNFTs.fulfilled]: (state, action) => {
       // TODO: remove this when ICNS is fully implemented
-      const filteredNFTS = action.payload.filter(nft => nft.name !== 'ICNS');
+      const filteredNFTS =
+        action.payload?.filter(nft => nft.name !== 'ICNS') || [];
       state.collections = filteredNFTS;
     },
     [getTransactions.fulfilled]: (state, action) => {

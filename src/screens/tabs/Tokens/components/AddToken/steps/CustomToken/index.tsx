@@ -190,6 +190,8 @@ function CustomToken({ modalRef, onSelectedToken }: Props) {
           modalRef={optionsRef}
           showIcons={false}
           options={standardList}
+          cancelTextStyle={styles.cancelText}
+          optionTextStyle={styles.optionsText}
         />
       </View>
     </Modal>

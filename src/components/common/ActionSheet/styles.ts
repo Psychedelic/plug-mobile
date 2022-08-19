@@ -37,7 +37,6 @@ export default StyleSheet.create({
   },
   itemBorder: {},
   itemText: {
-    fontSize: 16,
     color: Colors.White.Primary,
   },
   destructiveText: {
