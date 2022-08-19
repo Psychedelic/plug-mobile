@@ -66,10 +66,34 @@ if (__DEV__ && Reactotron.setReduxStore) {
 }
 
 // KEYRING STORAGE
+const keyToLog = ['currentWalletId', 'isInitialized', 'isUnlocked'];
 
 export const keyringStorage = {
   get: async key => {
     const state = {};
+    const isUnflatted = await AsyncStorage.getItem('unflatted');
+    if (!isUnflatted) {
+      const allKeys = await AsyncStorage.getAllKeys();
+      await Promise.all(
+        allKeys.map(async k => {
+          if (!k.includes('@REACTOTRON') && !k.includes('WALLETCONNECT')) {
+            const val = await AsyncStorage.getItem(k);
+            if (JSON.parse(val)[0]) {
+              console.log(`${k} value is undefined`);
+            }
+            const unflattedVal = JSON.parse(val)[0] || JSON.parse(`${val}`);
+            await AsyncStorage.setItem(k, JSON.stringify(unflattedVal));
+            console.log(
+              `${k} UNFLATTED`,
+              keyToLog.includes(k)
+                ? `${val} => ${JSON.stringify(unflattedVal)} SAVED: ${await AsyncStorage.getItem(k)}`
+                : 'unflattedVal'
+            );
+          }
+        })
+      );
+      await AsyncStorage.setItem('unflatted', 'true');
+    }
     if (key) {
       return AsyncStorage.getItem(key).then(value => JSON.parse(`${value}`));
     } else {
@@ -88,6 +112,7 @@ export const keyringStorage = {
   set: async values =>
     Promise.all(
       Object.entries(values).map(async ([key, val]) => {
+        console.log('SETTING');
         await AsyncStorage.setItem(key, JSON.stringify(val));
       })
     ),
