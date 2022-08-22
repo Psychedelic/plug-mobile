@@ -45,14 +45,8 @@ function Send({ modalRef, nft, token, onSuccess }) {
   const { isSensorAvailable, getPassword } = useKeychain();
   const { icpPrice } = useSelector(state => state.icp);
   const { currentWallet } = useSelector(state => state.keyring);
-  const {
-    assets,
-    contacts,
-    transaction,
-    collections,
-    usingBiometrics,
-    transactionsLoading,
-  } = useSelector(state => state.user);
+  const { assets, contacts, transaction, collections, usingBiometrics } =
+    useSelector(state => state.user);
 
   const reviewRef = useRef(null);
   const saveContactRef = useRef(null);
@@ -395,7 +389,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
         }}
         onClose={partialReset}
         transaction={transaction}
-        loading={loading || transactionsLoading}
+        loading={loading}
       />
       <SaveContact id={address} modalRef={saveContactRef} />
       <PasswordModal
