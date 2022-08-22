@@ -11,7 +11,7 @@ export default StyleSheet.create({
   container: {
     paddingHorizontal: 16,
     position: 'relative',
-    paddingBottom: 100,
+    paddingBottom: 16,
   },
   item: {
     height: ITEM_HEIGHT,
