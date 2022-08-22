@@ -59,7 +59,7 @@ export function TokenList({ onSelectedToken, tokens, loading }: Props) {
   }, []);
 
   useEffect(() => {
-    if (search === '') {
+    if (!search) {
       setFilteredTokens(tokens);
     } else {
       const filtered = tokens.filter(
@@ -84,7 +84,7 @@ export function TokenList({ onSelectedToken, tokens, loading }: Props) {
         ) : filteredTokens.length ? (
           <>
             <Text style={styles.listTitle}>
-              {search.length
+              {search?.length
                 ? t('addToken.searchResults')
                 : t('addToken.availableTokens')}
             </Text>

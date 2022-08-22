@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
   textInput: {
     ...fontMaker({ size: 18, color: Colors.White.Pure, weight: SEMIBOLD }),
     flexGrow: 1,
+    flex: 1,
   },
   singleLine: {
     height: 56,
