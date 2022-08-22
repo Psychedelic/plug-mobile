@@ -1,13 +1,10 @@
-import { HttpAgent } from '@dfinity/agent';
 import { blobFromBuffer } from '@dfinity/candid';
-import { getAllNFTS, getTokens } from '@psychedelic/dab-js';
 import PlugController from '@psychedelic/plug-controller';
 import { fetch } from 'react-native-fetch-api';
 
 import { XTC_FEE } from '@/constants/addresses';
 import { CYCLES_PER_TC } from '@/constants/assets';
 import { ASSET_CANISTER_IDS } from '@/constants/canister';
-import { IC_URL_HOST } from '@/constants/general';
 import { ERRORS } from '@/constants/walletconnect';
 import {
   ConnectionModule,
@@ -23,6 +20,7 @@ import {
   walletConnectApproveSession,
   walletConnectRejectSession,
 } from '@/redux/slices/walletconnect';
+import { getDabNfts, getDabTokens } from '@/services/DAB';
 import { validateAccountId, validatePrincipalId } from '@/utils/ids';
 import { validateCanisterId } from '@/utils/ids';
 import Navigation from '@/utils/navigation';
@@ -31,7 +29,7 @@ import {
   validateAmount,
   validateFloatStrAmount,
 } from '@/utils/number';
-import { recursiveParseBigint, recursiveParsePrincipal } from '@/utils/objects';
+import { recursiveParseBigint } from '@/utils/objects';
 
 import { base64ToBuffer } from './utilities';
 
@@ -131,23 +129,6 @@ export const initializeProtectedIds = async () => {
     ...ASSET_CANISTER_IDS,
   ];
   await setProtectedIds(PROTECTED_IDS);
-};
-
-export const getDabTokens = async () => {
-  const agent = new HttpAgent({ fetch, host: IC_URL_HOST });
-  const tokens = await getTokens({ agent });
-  const parsedTokens = (tokens || []).map(token =>
-    recursiveParseBigint(recursiveParsePrincipal(token))
-  );
-  return parsedTokens.map(token => ({
-    ...token,
-    canisterId: token?.principal_id,
-  }));
-};
-
-export const getDabNfts = async () => {
-  const agent = new HttpAgent({ fetch, host: IC_URL_HOST });
-  return getAllNFTS({ agent });
 };
 
 export const fetchCanistersInfo = async whitelist => {

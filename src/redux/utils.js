@@ -3,8 +3,7 @@ import { t } from 'i18next';
 
 import { TOKEN_IMAGES, TOKENS } from '@/constants/assets';
 import { ACTIVITY_STATUS } from '@/constants/business';
-import { formatAssetBySymbol } from '@/utils/currencies';
-import { parseToFloatAmount } from '@/utils/number';
+import { formatAssetBySymbol, parseToFloatAmount } from '@/utils/currencies';
 import { recursiveParseBigint } from '@/utils/objects';
 
 import { reset } from './slices/keyring';

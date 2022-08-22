@@ -21,7 +21,7 @@ const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }) => {
       <Text type="subtitle3">{t('common.tokens')}</Text>
       {tokens.map(token => (
         <TokenItem
-          {...token}
+          token={token}
           key={token.symbol}
           onPress={() => onTokenPress(token)}
           color={Colors.Gray.Tertiary}

@@ -28,6 +28,7 @@ const translations = {
     available: 'Available',
     max: 'Max',
     questionMark: '?',
+    enterPassword: 'Enter Password',
   },
   welcome: {
     title: 'Welcome to Plug',
@@ -209,6 +210,30 @@ const translations = {
       buttonTitle: '  Join Discord',
       buttonImage: 'discord',
     },
+  },
+  addToken: {
+    title: 'Add Token',
+    reviewTitle: 'Review Token',
+    customTokenTitle: 'Custom Token',
+    availableTokens: 'Available Tokens',
+    search: 'Search Tokens',
+    searchResults: 'Search Results',
+    noResults: 'No search results found.',
+    addCustomToken: 'Add custom token',
+    addButton: 'Add Token',
+    safetyAlert:
+      'Token Safety Alert: For your security, make sure to do proper research before interacting with any token.',
+    customTokenId: 'Token Canister ID',
+    customTokenStandard: "Token's Interface Standard",
+    customCaption: 'This allows tokens to be used by Plug',
+    dabCaption:
+      'Helping improve dicoverability, reputation, and trust in IC tokens.',
+    invalidInterfaceTokenError:
+      'Invalid token’s standard. Select a valid option for the current canister ID.',
+    invalidCanisterTokenError: 'Invalid Canister ID.',
+    nftTokenError: 'Custom non-fungible tokens are not supported yet.',
+    learnMore: 'Learn More',
+    poweredByDab: 'POWERED BY DAB',
   },
   walletConnect: {
     changeWallet: 'Change Wallet',

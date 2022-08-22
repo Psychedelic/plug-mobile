@@ -21,7 +21,11 @@ function TokenFormat({ value, token, style, decimalScale }: Props) {
       fixedDecimalScale
       decimalScale={decimalScale || (value && value > 0) ? VISIBLE_DECIMALS : 2}
       suffix={` ${token}`}
-      renderText={textValue => <Text style={style}>{textValue}</Text>}
+      renderText={textValue => (
+        <Text type="body2" style={style}>
+          {textValue}
+        </Text>
+      )}
     />
   );
 }

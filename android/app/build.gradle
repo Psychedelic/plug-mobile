@@ -143,8 +143,8 @@ android {
         applicationId "co.psychedelic.plug"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 4
-        versionName "0.1.4"
+        versionCode 5
+        versionName "0.2.0"
         resValue "string", "build_config_package", "co.psychedelic.plug"
     }
     splits {

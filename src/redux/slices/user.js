@@ -151,6 +151,7 @@ export const asyncGetBalance = async (params, state, dispatch) => {
     } else {
       instance?.getBalances(subaccount);
     }
+
     const icpPrice = await dispatch(getICPPrice()).unwrap();
     return formatAssets(assets, icpPrice);
   } catch (e) {
@@ -356,6 +357,7 @@ export const editContact = createAsyncThunk(
     }
   }
 );
+
 export const getICNSData = createAsyncThunk(
   'keyring/getICNSData',
   async ({ refresh }, { getState, dispatch }) => {
@@ -368,6 +370,54 @@ export const getICNSData = createAsyncThunk(
       keyring.getICNSData();
     }
     return icnsData;
+  }
+);
+
+export const addCustomToken = createAsyncThunk(
+  'keyring/addCustomToken',
+  /**
+   * @param {{token: DABToken, onSuccess: () => void}} param
+   */
+  async ({ token, onSuccess }, { getState, dispatch }) => {
+    const { keyring, icp } = getState();
+    const currentWalletId = keyring?.instance?.currentWalletId;
+    const { canisterId, standard, logo } = token;
+    try {
+      const tokenList = await keyring?.instance?.registerToken({
+        canisterId,
+        standard,
+        subaccount: currentWalletId,
+        logo,
+      });
+      dispatch(setAssets(formatAssets(tokenList, icp.icpPrice)));
+      onSuccess?.();
+    } catch (error) {
+      // TODO handle error
+      console.log(error);
+    }
+  }
+);
+
+export const getTokenInfo = createAsyncThunk(
+  'keyring/getTokenInfo',
+  /**
+   * @param {{token: DABToken, onSuccess: (token: DABToken) => void, onError: (err: string) => void}} param
+   */
+  async ({ token, onSuccess, onError }, { getState }) => {
+    const { keyring } = getState();
+    const currentWalletId = keyring?.instance?.currentWalletId;
+    try {
+      const tokenInfo = await keyring?.instance?.getTokenInfo({
+        subaccount: currentWalletId,
+        canisterId: token.canisterId,
+        standard: token.standard,
+      });
+      onSuccess?.({ ...tokenInfo, amount: tokenInfo.amount.toString() });
+    } catch (error) {
+      // TODO handle error
+      console.log('Error while fetching token info', error);
+      onError?.(error.message);
+    }
   }
 );
 
@@ -441,7 +491,10 @@ export const userSlice = createSlice({
       state.assetsLoading = false;
     },
     [getNFTs.fulfilled]: (state, action) => {
-      state.collections = action.payload;
+      // TODO: remove this when ICNS is fully implemented
+      const filteredNFTS =
+        action.payload?.filter(nft => nft.name !== 'ICNS') || [];
+      state.collections = filteredNFTS;
     },
     [getTransactions.fulfilled]: (state, action) => {
       if (!action.payload.error) {

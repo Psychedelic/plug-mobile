@@ -5,13 +5,14 @@ import RainbowButton from '@/components/buttons/RainbowButton';
 import AmountInput from '@/components/common/AmountInput';
 import TokenSelector from '@/components/tokens/TokenSelector';
 import { VISIBLE_DECIMALS } from '@/constants/business';
+import { Asset } from '@/interfaces/redux';
 import { parseLocaleNumber, toFixedLocale } from '@/utils/number';
 
-import { Amount, SelectedToken } from '../../interfaces';
+import { Amount } from '../../interfaces';
 import styles from './styles';
 
 interface Props {
-  selectedToken: SelectedToken;
+  selectedToken: Asset;
   tokenAmount: Amount;
   usdAmount: Amount;
   tokenPrice: number;
@@ -19,7 +20,7 @@ interface Props {
   availableUsdAmount: number;
   setUsdAmount: (value: Amount | null) => void;
   setTokenAmount: (value: Amount | null) => void;
-  setSelectedToken: (token: SelectedToken | null) => void;
+  setSelectedToken: (token: Asset | null) => void;
   onReview: () => void;
 }
 
@@ -129,7 +130,7 @@ const AmountSection = ({
   return (
     <>
       <TokenSelector
-        {...selectedToken}
+        token={selectedToken}
         onPress={onTokenChange}
         availableAmount={availableAmount}
         availableUsdAmount={availableUsdAmount}

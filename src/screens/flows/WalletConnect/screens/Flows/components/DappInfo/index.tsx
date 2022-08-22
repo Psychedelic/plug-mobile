@@ -4,7 +4,6 @@ import { Image, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { FontStyles } from '@/constants/theme';
-import { State } from '@/interfaces/redux';
 import { FlowsRequest, WCFlowTypes } from '@/interfaces/walletConnect';
 
 import UserShowcase from '../UserShowcase';
@@ -17,7 +16,7 @@ interface Props {
 
 // Matt-TODO: This is a WIP SCREEN
 function WCFlowDappInfo({ request, type }: Props) {
-  const { currentWallet } = useSelector((state: State) => state.keyring);
+  const { currentWallet } = useSelector(state => state.keyring);
   // TODO: Show balance of selected asset at requestTransfer.
   // const { assets } = useSelector((state: State) => state.user);
   const dappImage = request?.args[0]?.icons[0];

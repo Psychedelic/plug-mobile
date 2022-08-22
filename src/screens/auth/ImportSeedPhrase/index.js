@@ -4,10 +4,10 @@ import { Image, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import PlugLogo from '@/assets/icons/plug-logo-full.png';
-import Back from '@/commonComponents/Back';
 import Header from '@/commonComponents/Header';
 import TextInput from '@/commonComponents/TextInput';
 import RainbowButton from '@/components/buttons/RainbowButton';
+import ActionButton from '@/components/common/ActionButton';
 import KeyboardScrollView from '@/components/common/KeyboardScrollView';
 import Text from '@/components/common/Text';
 import { TestIds } from '@/constants/testIds';
@@ -83,7 +83,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
   return (
     <Container>
       <Header
-        left={<Back onPress={goBack} />}
+        left={<ActionButton onPress={goBack} label={t('common.back')} />}
         center={
           <View style={styles.plugLogoContainer}>
             <Image style={styles.plugLogo} source={PlugLogo} />
@@ -98,12 +98,13 @@ const ImportSeedPhrase = ({ navigation, route }) => {
           </Text>
           <TextInput
             multiline
-            variant="multi"
             value={seedPhrase}
             onChangeText={onChangeText}
             placeholder={t('importSeedPhrase.secretPhrase')}
-            customStyle={styles.input}
+            style={styles.input}
+            contentContainerStyle={styles.inputContainer}
             testID={TestIds.IMPORT_SEED_PHRASE.PHRASE_INPUT}
+            autoFocus
           />
           {error && (
             <Text style={styles.errorText}>

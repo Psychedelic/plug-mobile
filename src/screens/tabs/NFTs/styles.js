@@ -37,4 +37,7 @@ export default StyleSheet.create({
   disabledContainer: {
     opacity: 0.5,
   },
+  emptyState: {
+    marginTop: 60,
+  },
 });
