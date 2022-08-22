@@ -15,6 +15,7 @@ import {
   formatTransaction,
   TRANSACTION_STATUS,
 } from '../utils';
+import { setCurrentWallet, setWallets } from './keyring';
 
 const DEFAULT_STATE = {
   assets: DEFAULT_ASSETS,
@@ -390,6 +391,10 @@ export const addCustomToken = createAsyncThunk(
         logo,
       });
       dispatch(setAssets(formatAssets(tokenList, icp.icpPrice)));
+
+      const { wallets } = await keyring?.instance?.getState();
+      dispatch(setWallets(wallets));
+      dispatch(setCurrentWallet(wallets[currentWalletId]));
       onSuccess?.();
     } catch (error) {
       // TODO handle error
