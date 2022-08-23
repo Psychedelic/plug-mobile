@@ -17,9 +17,9 @@ const TokenIcon = ({ icon, color, logo, ...props }: Props) => {
   return icon ? (
     <Icon name={icon} color={color} />
   ) : logo ? (
-    <Image url={logo} style={styles.genericToken} />
+    <Image url={logo} style={styles.token} />
   ) : (
-    <View style={[styles.genericToken, styles.incognitoContainer]} {...props}>
+    <View style={[styles.token, styles.incognitoContainer]} {...props}>
       <IncognitoLogo fill={incognitoColor} width={34} height={34} />
     </View>
   );

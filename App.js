@@ -1,6 +1,7 @@
 import '@/config/logs';
 import '@/config/i18n';
 import '@/config/reactotron';
+import '@/config/extensions';
 
 import * as Sentry from '@sentry/react-native';
 import React, { useEffect, useRef } from 'react';
