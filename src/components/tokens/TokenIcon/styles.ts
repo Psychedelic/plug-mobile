@@ -7,18 +7,17 @@ import { fontMaker } from '@/utils/fonts';
 export const incognitoColor = Colors.White.Pure;
 
 export default StyleSheet.create({
-  genericToken: {
+  token: {
     width: 41,
     height: 41,
-    textAlign: 'center',
     borderRadius: 41,
-    justifyContent: 'center',
-    alignItems: 'center',
     borderColor: Colors.Divider[1],
     borderWidth: 1,
   },
   text: fontMaker({ weight: SEMIBOLD, size: 10 }),
   incognitoContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: Colors.Black.Primary,
   },
 });
