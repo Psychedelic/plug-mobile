@@ -69,6 +69,10 @@ export interface FlowsArgs {
   domainUrl: string;
   whitelist: WCWhiteList;
   shouldWarn?: boolean;
+  canisterId: string;
+  decodedArguments: any[];
+  amount?: number;
+  strAmount?: string;
 }
 
 enum WCHandleActionStatus {
@@ -114,6 +118,8 @@ export interface FlowsParams {
   loading: boolean;
   token: WCToken;
   type: WCFlowTypes;
+  canisterInfo: WCWhiteListItem;
+  canisterId: string;
   openAutomatically: boolean;
   requestId: number;
   metadata: FlowsMetadata;

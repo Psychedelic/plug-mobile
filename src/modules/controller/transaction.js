@@ -330,6 +330,7 @@ const TransactionModule = (dispatch, getState) => {
         Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
           type: 'requestCall',
           requestId,
+          canisterInfo,
           metadata,
           args: requestInfo,
           canisterId,

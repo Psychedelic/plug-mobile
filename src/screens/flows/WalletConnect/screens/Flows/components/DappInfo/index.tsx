@@ -30,7 +30,8 @@ function WCFlowDappInfo({ request, type }: Props) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.backgroundLogo}>
+      <View
+        style={[styles.backgroundLogo, !dappImage && styles.backgroundUnknown]}>
         <Image
           source={dappImage ? { uri: dappImage } : unknownDappIcon}
           style={[styles.logo, !dappImage && styles.unknownLogo]}

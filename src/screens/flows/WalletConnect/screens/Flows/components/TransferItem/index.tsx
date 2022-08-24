@@ -6,22 +6,22 @@ import TokenFormat from '@/components/formatters/TokenFormat';
 import UsdFormat from '@/components/formatters/UsdFormat';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
-import { useToken } from '@/hooks/useToken';
 
 import questionMark from '../../assets/questionMark.png';
 import transferRequest from '../../assets/transferRequest.png';
 import styles from './styles';
 
 interface Props {
-  canisterId: string;
   unknown?: boolean;
+  token: {
+    icon: string;
+    amount: number | string;
+    symbol: string;
+    usdValue: number | string;
+  };
 }
 
-function TransferItem({ canisterId, unknown }: Props) {
-  const { token, usdValue } = useToken(canisterId);
-
-  const item = token && { icon: 'unknown', usdValue, ...token };
-
+function TransferItem({ unknown, token }: Props) {
   return (
     <View style={styles.itemContainer}>
       <View style={styles.leftContainer}>
@@ -34,19 +34,20 @@ function TransferItem({ canisterId, unknown }: Props) {
         </View>
       </View>
       <View style={styles.rightContainer}>
-        {item && !unknown ? (
+        {token && !unknown ? (
           <>
             <View style={styles.assetAmountContainer}>
-              <Icon name={item.icon} style={styles.symbol} />
+              <Icon name={token.icon || 'unknown'} style={styles.symbol} />
               <TokenFormat
-                value={item.amount}
-                token={item.symbol}
+                decimalScale={4}
+                value={token.amount}
+                token={token.symbol}
                 style={FontStyles.Normal}
               />
             </View>
             <UsdFormat
               showSuffix
-              value={item.usdValue}
+              value={token.usdValue}
               style={FontStyles.Subtitle3}
             />
           </>

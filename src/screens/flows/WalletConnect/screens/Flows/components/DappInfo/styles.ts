@@ -11,10 +11,12 @@ export default StyleSheet.create({
     alignContent: 'center',
     backgroundColor: Colors.Gray.Secondary,
   },
+  backgroundUnknown: {
+    alignItems: 'center',
+  },
   logo: {
     height: 30,
     resizeMode: 'contain',
-    alignSelf: 'center',
   },
   unknownLogo: {
     height: 40,

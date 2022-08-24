@@ -27,6 +27,7 @@ import RequestConnect from './components/RequestConnect';
 import RequestTransfer from './components/RequestTransfer';
 import RequestTransferHeader from './components/RequestTransferHeader';
 import styles from './styles';
+import { TRANSFER_METHOD_NAMES } from './utils';
 
 const COMPONENTS = {
   [WCFlowTypes.transfer]: RequestTransfer,
@@ -46,29 +47,29 @@ function WCFlows() {
   const {
     type,
     requestId,
+    canisterInfo,
     metadata,
     args,
-    token,
     handleApproveArgs,
     handleDeclineArgs,
+    canisterId,
     handleError,
     loading,
   } = (params || {}) as FlowsParams;
   const request = useSelector(
     (state: State) => state.walletconnect.pendingCallRequests[requestId]
   );
-
   const DisplayComponent = useMemo(() => COMPONENTS[type], [type]);
-  const isRequestTransfer = type === WCFlowTypes.transfer;
-  console.tron.log(`t: ${type}`, params);
+  const isTransfer =
+    type === WCFlowTypes.transfer ||
+    TRANSFER_METHOD_NAMES.includes(args?.methodName);
 
   useEffect(() => {
     if (wcTimeout) {
-      // TODO: Matt Ale
-      // navigate(Routes.WALLET_CONNECT_ERROR, {
-      //   dappName: request?.dappName,
-      //   dappUrl: request?.dappUrl,
-      // });
+      navigate(Routes.WALLET_CONNECT_ERROR, {
+        dappName: request?.dappName,
+        dappUrl: request?.dappUrl,
+      });
     }
   }, [wcTimeout]);
 
@@ -161,14 +162,15 @@ function WCFlows() {
         </View>
       ) : (
         <View style={styles.container}>
-          {isRequestTransfer && <RequestTransferHeader token={token} />}
+          {isTransfer && <RequestTransferHeader canisterId={canisterId} />}
           <View style={styles.showcaseContainer}>
             <DappInfo type={type} request={request} />
             <DisplayComponent
               args={args}
-              token={token}
               request={request}
               metadata={metadata}
+              canisterId={canisterId}
+              canisterInfo={canisterInfo}
             />
           </View>
           <BottomContainer

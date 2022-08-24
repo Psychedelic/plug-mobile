@@ -5,18 +5,19 @@ import { useSelector } from 'react-redux';
 
 import TokenFormat from '@/components/formatters/TokenFormat';
 import { FontStyles } from '@/constants/theme';
+import { useToken } from '@/hooks/useToken';
 import { State } from '@/interfaces/redux';
-import { WCToken } from '@/interfaces/walletConnect';
 
 import UserShowcase from '../UserShowcase';
 import styles from './styles';
 
 interface Props {
-  token: WCToken;
+  canisterId: string;
 }
 
-function RequestTransferHeader({ token }: Props) {
+function RequestTransferHeader({ canisterId }: Props) {
   const { currentWallet } = useSelector((state: State) => state.keyring);
+  const { token } = useToken(canisterId);
 
   return (
     <View style={styles.infoUserHeader}>
@@ -29,8 +30,8 @@ function RequestTransferHeader({ token }: Props) {
       <View style={styles.rightContainer}>
         <Text style={FontStyles.NormalGray}>{t('walletConnect.balance')}</Text>
         <TokenFormat
-          value={token.amount}
-          token={token.symbol}
+          value={token?.amount}
+          token={token?.symbol!}
           style={FontStyles.Normal}
         />
       </View>

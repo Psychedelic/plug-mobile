@@ -1,13 +1,15 @@
-import React from 'react';
-import { Image, StyleProp, View, ViewStyle } from 'react-native';
+import React, { useState } from 'react';
+import { StyleProp, View, ViewStyle } from 'react-native';
 
 import Touchable from '@/commonComponents/Touchable';
 import UserIcon from '@/commonComponents/UserIcon';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
+import useGetType from '@/hooks/useGetType';
 import animationScales from '@/utils/animationScales';
 import shortAddress from '@/utils/shortAddress';
 
+import ImageDisplayer from '../NftDisplayer/components/ImageDisplayer';
 import Text from '../Text';
 import styles from './styles';
 
@@ -34,6 +36,9 @@ function CommonItem({
   actionIconName = 'threeDots',
   showActions = true,
 }: Props) {
+  const [imageType, setImageType] = useState('');
+  useGetType(imageUri, setImageType);
+
   return (
     <View style={style}>
       <Touchable
@@ -42,7 +47,11 @@ function CommonItem({
         onLongPress={onLongPress}>
         <View style={styles.root}>
           {imageUri ? (
-            <Image source={{ uri: imageUri }} style={styles.image} />
+            <ImageDisplayer
+              url={imageUri}
+              type={imageType}
+              style={styles.image}
+            />
           ) : (
             <UserIcon icon={image} />
           )}
