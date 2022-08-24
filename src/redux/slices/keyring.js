@@ -278,7 +278,7 @@ export const keyringSlice = createSlice({
       state.wallets = action.payload;
     },
     reset: state => {
-      state = { ...DEFAULT_STATE, instance: state.instance };
+      return { ...DEFAULT_STATE, instance: state.instance };
     },
   },
   extraReducers: {
