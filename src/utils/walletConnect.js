@@ -18,7 +18,6 @@ import { setProtectedIds } from '@/modules/storageManager';
 import Routes from '@/navigation/Routes';
 import {
   getSession,
-  setPendingSessionRequest,
   setSession,
   walletConnectApproveSession,
   walletConnectRejectSession,
