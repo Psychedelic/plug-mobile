@@ -8804,11 +8804,6 @@ react-native-localize@^2.2.2:
   resolved "https://registry.yarnpkg.com/react-native-localize/-/react-native-localize-2.2.2.tgz#a1c6369000c9dae6800eded8ddb1673bf090f84e"
   integrity sha512-j9aAYyuZblq27XPW3h/cZuBP2WA1OOsEPjTHszPQ/YcM9VrrrYnfpJObP4IyghxmS8i+7Jhoh7qp8CjunfrFjw==
 
-react-native-minimizer@^1.3.0:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/react-native-minimizer/-/react-native-minimizer-1.3.3.tgz#4e6a253cb9b39ea2c7eeb93052c00836b6725c28"
-  integrity sha512-M0Jpyyy21lAVOkmH4kl0PKViPS81eEPMjdwAEcoHHe6XLcU/J/Ra5xuSPQdPL3zmsYoQxIh/ooe9chsa9DBDXA==
-
 react-native-modalize@^2.0.13:
   version "2.0.13"
   resolved "https://registry.yarnpkg.com/react-native-modalize/-/react-native-modalize-2.0.13.tgz#51517cddd726ddbc19c080d15e7721ade4ee7a66"
