@@ -19,7 +19,7 @@ function RequestTransferHeader({ canisterId }: Props) {
   const { currentWallet } = useSelector((state: State) => state.keyring);
   const { token } = useToken(canisterId);
 
-  return (
+  return token ? (
     <View style={styles.infoUserHeader}>
       <View style={styles.leftContainer}>
         <Text style={[FontStyles.NormalGray, styles.topTitle]}>
@@ -30,13 +30,13 @@ function RequestTransferHeader({ canisterId }: Props) {
       <View style={styles.rightContainer}>
         <Text style={FontStyles.NormalGray}>{t('walletConnect.balance')}</Text>
         <TokenFormat
-          value={token?.amount}
-          token={token?.symbol!}
+          value={token.amount}
+          token={token.symbol}
           style={FontStyles.Normal}
         />
       </View>
     </View>
-  );
+  ) : null;
 }
 
 export default RequestTransferHeader;

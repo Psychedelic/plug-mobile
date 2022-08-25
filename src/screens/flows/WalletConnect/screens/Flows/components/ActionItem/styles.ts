@@ -18,6 +18,7 @@ export default StyleSheet.create({
   itemSubtitle: {
     color: Colors.White.Secondary,
     marginTop: 2,
+    maxWidth: '80%',
   },
   itemDataContainer: {
     width: '100%',

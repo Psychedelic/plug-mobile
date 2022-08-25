@@ -56,6 +56,7 @@ function WCFlows() {
     handleError,
     loading,
   } = (params || {}) as FlowsParams;
+
   const request = useSelector(
     (state: State) => state.walletconnect.pendingCallRequests[requestId]
   );

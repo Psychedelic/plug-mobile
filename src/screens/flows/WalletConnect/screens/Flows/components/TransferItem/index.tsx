@@ -9,16 +9,12 @@ import { FontStyles } from '@/constants/theme';
 
 import questionMark from '../../assets/questionMark.png';
 import transferRequest from '../../assets/transferRequest.png';
+import { TransferToken } from '../RequestCall';
 import styles from './styles';
 
 interface Props {
   unknown?: boolean;
-  token: {
-    icon: string;
-    amount: number | string;
-    symbol: string;
-    usdValue: number | string;
-  };
+  token: TransferToken;
 }
 
 function TransferItem({ unknown, token }: Props) {

@@ -22,7 +22,12 @@ function ActionItem({ title, subtitle, iconUrl }: Props) {
     <View style={styles.itemDataContainer}>
       <View>
         <Text style={FontStyles.Subtitle2}>{capitalize(title)}</Text>
-        <Text style={[FontStyles.Small, styles.itemSubtitle]}>{subtitle}</Text>
+        <Text
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={[FontStyles.Small, styles.itemSubtitle]}>
+          {subtitle}
+        </Text>
       </View>
       <View style={styles.appIconContainer}>
         <ImageDisplayer url={iconUrl} type={imageType} style={styles.appIcon} />

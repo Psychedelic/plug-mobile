@@ -35,3 +35,12 @@ export const getAssetAmount = (request, standard) => {
   }[standard?.toUpperCase?.()];
   return amountInArgs(request?.decodedArguments);
 };
+
+export const getNFTId = ({ methodName, decodedArguments }) => {
+  const indexInArgs = {
+    transfer: args => args?.[0]?.token || args?.[1],
+    transfer_to: args => args?.[1],
+  }[methodName];
+
+  return indexInArgs(decodedArguments);
+};
