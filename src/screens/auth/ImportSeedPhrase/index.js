@@ -15,7 +15,7 @@ import useKeychain from '@/hooks/useKeychain';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 import { getICPPrice } from '@/redux/slices/icp';
-import { importWallet, reset } from '@/redux/slices/keyring';
+import { clear, importWallet } from '@/redux/slices/keyring';
 
 import styles from './styles';
 
@@ -45,7 +45,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
 
   const importWalletFromSeedPhrase = async () => {
     try {
-      dispatch(reset());
+      dispatch(clear());
       dispatch(
         importWallet({
           icpPrice,

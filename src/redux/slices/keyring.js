@@ -18,7 +18,15 @@ import {
   setTransactionsLoading,
 } from './user';
 
-export const initKeyring = createAsyncThunk('keyring/init', async () => {
+const DEFAULT_STATE = {
+  instance: null,
+  isInitialized: false,
+  isUnlocked: false,
+  currentWallet: null,
+  wallets: [],
+};
+
+export const initKeyring = createAsyncThunk('keyring/init', async params => {
   let keyring = new PlugController.PlugKeyRing(
     keyringStorage,
     RNCryptoJS,
@@ -31,6 +39,7 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
       await keyring.lock();
     }
   }
+  params?.callback?.();
   return keyring;
 });
 
@@ -255,15 +264,6 @@ export const setCurrentPrincipal = createAsyncThunk(
   }
 );
 
-const DEFAULT_STATE = {
-  instance: null,
-  isInitialized: false,
-  isUnlocked: false,
-  currentWallet: null,
-  wallets: [],
-  password: '',
-};
-
 export const keyringSlice = createSlice({
   name: 'keyring',
   initialState: DEFAULT_STATE,
@@ -277,8 +277,16 @@ export const keyringSlice = createSlice({
     setWallets: (state, action) => {
       state.wallets = action.payload;
     },
-    reset: state => {
+    clear: state => {
       return { ...DEFAULT_STATE, instance: state.instance };
+    },
+    reset: () => {
+      let instance = new PlugController.PlugKeyRing(
+        keyringStorage,
+        RNCryptoJS,
+        fetch
+      );
+      return { ...DEFAULT_STATE, instance };
     },
   },
   extraReducers: {
@@ -327,7 +335,7 @@ export const keyringSlice = createSlice({
   },
 });
 
-export const { setCurrentWallet, setUnlocked, setWallets, reset } =
+export const { setCurrentWallet, setUnlocked, setWallets, clear, reset } =
   keyringSlice.actions;
 
 export default keyringSlice.reducer;

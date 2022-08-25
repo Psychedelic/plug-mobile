@@ -62,10 +62,10 @@ const Settings = () => {
 
   const handleDeleteWallet = () => {
     clearStorage();
-    dispatch(resetKeyringStore());
     dispatch(resetUserStore());
     dispatch(resetICPStore());
     dispatch(resetWalletConnectStore());
+    dispatch(resetKeyringStore());
     deleteWalletRef.current?.close();
     navigation.reset({
       index: 0,

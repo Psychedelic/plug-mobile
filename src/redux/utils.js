@@ -6,7 +6,7 @@ import { ACTIVITY_STATUS } from '@/constants/business';
 import { formatAssetBySymbol, parseToFloatAmount } from '@/utils/currencies';
 import { recursiveParseBigint } from '@/utils/objects';
 
-import { reset } from './slices/keyring';
+import { clear } from './slices/keyring';
 import {
   asyncGetBalance,
   getContacts,
@@ -58,7 +58,7 @@ export const TRANSACTION_STATUS = {
 };
 
 export const resetStores = dispatch => {
-  dispatch(reset());
+  dispatch(clear());
   dispatch(setCollections([]));
   dispatch(setTransactions([]));
   dispatch(setAssets(DEFAULT_ASSETS));
