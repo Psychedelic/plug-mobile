@@ -22,12 +22,6 @@ export const transformCircular = createTransform(
   outboundState => Flatted.parse(outboundState)
 );
 
-const persistConfig = {
-  key: 'root',
-  storage: AsyncStorage,
-  transforms: [transformCircular],
-};
-
 const icpPersistConfig = {
   key: 'icp',
   storage: AsyncStorage,
@@ -57,9 +51,7 @@ if (__DEV__) {
   enhancers.push(Reactotron.createEnhancer(true));
 }
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-export const store = createStore(persistedReducer, compose(...enhancers));
+export const store = createStore(rootReducer, compose(...enhancers));
 
 export const persistor = persistStore(store);
 
