@@ -17,16 +17,27 @@ function RequestConnect({ args }: WallectConnectFlowsData) {
 
   const renderWhiteList = ({ item }: { item: WCWhiteListItem }) => {
     const { canisterId, name, icon } = item;
+    const showcaseImage = {
+      ...(icon
+        ? {
+            imageUri: icon,
+          }
+        : {
+            image: 'unknown',
+          }),
+    };
+
     return (
       <CommonItem
+        longId
         name={name}
-        imageUri={icon}
         id={canisterId}
         onPress={() =>
           Linking.openURL(`https://icscan.io/canister/${canisterId}`)
         }
         style={styles.cannisterItem}
         actionIconName="redirectArrow"
+        {...showcaseImage}
       />
     );
   };

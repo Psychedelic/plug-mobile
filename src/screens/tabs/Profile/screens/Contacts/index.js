@@ -108,7 +108,7 @@ function Contacts({ modalRef }) {
                       <CommonItem
                         name={contact.name}
                         id={contact.id}
-                        image={contact.image}
+                        icon={contact.image}
                         onLongPress={() => onLongPress(contact)}
                       />
                     </View>

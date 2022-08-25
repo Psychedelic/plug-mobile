@@ -28,7 +28,7 @@ const ContactSection = ({ onPress, filterText }) => {
           <CommonItem
             name={contact.name}
             id={contact.id}
-            image={contact.image}
+            icon={contact.image}
             key={contact.id}
             style={styles.contactItem}
             onPress={() => onPress(contact)}
