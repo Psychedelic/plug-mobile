@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { Portal } from 'react-native-portalize';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { isIos, withNotch } from '@/constants/platform';
 
@@ -37,6 +38,7 @@ function Modal({
   FloatingComponent,
   ...props
 }: Props) {
+  const { bottom } = useSafeAreaInsets();
   return (
     <Portal>
       <Modalize
@@ -55,10 +57,11 @@ function Modal({
           keyboardDismissMode: 'none',
           showsVerticalScrollIndicator: false,
           overScrollMode: 'never',
-          ...(fullHeight && {
-            style: styles.scrollView,
-            contentContainerStyle: styles.scrollviewContent,
-          }),
+          style: fullHeight && styles.scrollView,
+          contentContainerStyle: [
+            fullHeight && styles.scrollviewContent,
+            !!bottom && styles.extraBottom,
+          ],
           ...scrollViewProps,
         }}
         closeOnOverlayTap

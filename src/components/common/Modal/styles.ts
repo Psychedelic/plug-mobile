@@ -39,4 +39,7 @@ export default StyleSheet.create({
   scrollviewContent: {
     flexGrow: 1,
   },
+  extraBottom: {
+    paddingBottom: 16,
+  },
 });
