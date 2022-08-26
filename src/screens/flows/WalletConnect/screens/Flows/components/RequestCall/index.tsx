@@ -13,6 +13,7 @@ import {
   WCWhiteListItem,
 } from '@/interfaces/walletConnect';
 import { getUsdAvailableAmount } from '@/screens/flows/Send/utils';
+import { addSpacesAndCapitalize } from '@/utils/strings';
 import { getDabNfts } from '@/utils/walletConnect';
 
 import warningIcon from '../../assets/warningIcon.png';
@@ -40,7 +41,7 @@ function RequestCall(props: Props) {
   const canisterInfo = props.canisterInfo;
   const { shouldWarn, canisterId, methodName, decodedArguments } = props.args;
   const { icpPrice } = useSelector((state: State) => state.icp);
-
+  const formattedMethodName = addSpacesAndCapitalize(methodName);
   const [token, setToken] = useState<Nullable<TransferToken>>(null);
   const [nftId, setNFTId] = useState<Nullable<string>>(null);
   const isTransfer = TRANSFER_METHOD_NAMES.includes(methodName);
@@ -108,7 +109,7 @@ function RequestCall(props: Props) {
         ) : (
           nftId && (
             <ActionItem
-              title={methodName}
+              title={formattedMethodName}
               subtitle={nftId}
               iconUrl={canisterInfo.icon}
             />
@@ -116,7 +117,7 @@ function RequestCall(props: Props) {
         )
       ) : (
         <ActionItem
-          title={methodName}
+          title={formattedMethodName}
           subtitle={canisterId}
           iconUrl={canisterInfo.icon}
         />

@@ -4,7 +4,7 @@ import { Image, ScrollView, Text, View } from 'react-native';
 import CachedImage from '@/components/common/Image';
 import { FontStyles } from '@/constants/theme';
 import { WallectConnectFlowsData } from '@/interfaces/walletConnect';
-import { capitalize } from '@/utils/strings';
+import { addSpacesAndCapitalize } from '@/utils/strings';
 
 import ArrowIcon from '../../assets/ArrowDown.png';
 import styles from './styles';
@@ -18,14 +18,15 @@ function BatchTransactions({ request, metadata }: WallectConnectFlowsData) {
     index: number
   ) => {
     const showSeparator = index !== transactions.length - 1;
-    // TODO: Change the subtitle value
+    const formattedMethodName = addSpacesAndCapitalize(methodName);
+
     return (
       <View key={`${methodName}${index}`} style={styles.item}>
         <View style={styles.itemDataContainer}>
           <View>
-            <Text style={FontStyles.Subtitle2}>{capitalize(methodName)}</Text>
+            <Text style={FontStyles.Subtitle2}>{formattedMethodName}</Text>
             <Text style={[FontStyles.Small, styles.itemSubtitle]}>
-              {`${capitalize(methodName)} Backend`}
+              {`${formattedMethodName} Backend`}
             </Text>
           </View>
           <View style={styles.appIconContainer}>
