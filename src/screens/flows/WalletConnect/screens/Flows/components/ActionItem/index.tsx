@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import ImageDisplayer from '@/components/common/NftDisplayer/components/ImageDisplayer';
+import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
 import useGetType from '@/hooks/useGetType';
-import { capitalize } from '@/utils/strings';
 
 import styles from './styles';
 
@@ -21,7 +21,9 @@ function ActionItem({ title, subtitle, iconUrl }: Props) {
   return (
     <View style={styles.itemDataContainer}>
       <View>
-        <Text style={FontStyles.Subtitle2}>{capitalize(title)}</Text>
+        <Text type="subtitle2" style={styles.title}>
+          {title}
+        </Text>
         <Text
           ellipsizeMode="tail"
           numberOfLines={1}

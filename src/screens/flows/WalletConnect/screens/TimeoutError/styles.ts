@@ -14,6 +14,9 @@ export default StyleSheet.create({
     color: Colors.ActionBlue,
     textDecorationLine: 'underline',
   },
+  title: {
+    color: Colors.White.Pure,
+  },
   icon: {
     fontSize: 40,
     marginBottom: 24,

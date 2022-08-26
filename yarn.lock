@@ -1640,7 +1640,7 @@
     cross-fetch "^3.1.4"
     crypto-js "^4.1.1"
 
-"@psychedelic/dab-js@^1.4.6":
+"@psychedelic/dab-js@1.4.6":
   version "1.4.6"
   resolved "https://npm.pkg.github.com/download/@Psychedelic/dab-js/1.4.6/8c06156d4c51634e2a35a837e3b89d18f246ce0e#8c06156d4c51634e2a35a837e3b89d18f246ce0e"
   integrity sha512-p5MhoUikpqb+osqjg4dthiKFYt9X4EMKPOBbe6OD20iOxvmTIqQ3dqejwXSJO28ohFCnZseRG+UQsfoz+6jhTw==

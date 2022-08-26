@@ -1,12 +1,14 @@
 import { t } from 'i18next';
 import React from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, View } from 'react-native';
 
+import Text from '@/components/common/Text';
 import TokenFormat from '@/components/formatters/TokenFormat';
 import UsdFormat from '@/components/formatters/UsdFormat';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
 
+// TODO: Pass .png to .svg after 0.2.0 merge
 import questionMark from '../../assets/questionMark.png';
 import transferRequest from '../../assets/transferRequest.png';
 import { TransferToken } from '../RequestCall';
@@ -26,7 +28,7 @@ function TransferItem({ unknown, token }: Props) {
           <Text style={FontStyles.Normal}>
             {t('walletConnect.transaction')}
           </Text>
-          <Text style={FontStyles.Subtitle3}>{t('walletConnect.request')}</Text>
+          <Text type="subtitle3">{t('walletConnect.request')}</Text>
         </View>
       </View>
       <View style={styles.rightContainer}>
@@ -42,7 +44,7 @@ function TransferItem({ unknown, token }: Props) {
               />
             </View>
             <UsdFormat
-              showSuffix
+              suffix="USD"
               value={token.usdValue}
               style={FontStyles.Subtitle3}
             />
