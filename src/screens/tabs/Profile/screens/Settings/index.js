@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Modal from '@/commonComponents/Modal';
 import Touchable from '@/commonComponents/Touchable';
+import { ActionButton } from '@/components/common';
 import Header from '@/components/common/Header';
 import Text from '@/components/common/Text';
 import Icon from '@/components/icons';
@@ -147,17 +148,20 @@ const Settings = () => {
       <Touchable scale={animationScales.large} onPress={modalRef.current?.open}>
         <Icon name="gear" />
       </Touchable>
-      <Modal modalRef={modalRef} fullHeight>
-        <Header
-          center={<Text type="subtitle2">{t('settings.title')}</Text>}
-          right={
-            <Text
-              style={[FontStyles.Normal, styles.valid]}
-              onPress={modalRef.current?.close}>
-              {t('common.close')}
-            </Text>
-          }
-        />
+      <Modal
+        modalRef={modalRef}
+        fullHeight
+        HeaderComponent={
+          <Header
+            center={<Text type="subtitle2">{t('settings.title')}</Text>}
+            right={
+              <ActionButton
+                label={t('common.close')}
+                onPress={modalRef.current?.close}
+              />
+            }
+          />
+        }>
         <View style={styles.container}>
           <View>{settingsItems.map(renderSettingsItem)}</View>
           <View style={styles.infoContainer}>
