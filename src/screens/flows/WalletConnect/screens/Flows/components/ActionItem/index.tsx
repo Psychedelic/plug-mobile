@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import ImageDisplayer from '@/components/common/NftDisplayer/components/ImageDisplayer';
-import CustomText from '@/components/common/Text';
+import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
 import useGetType from '@/hooks/useGetType';
 
@@ -21,9 +21,9 @@ function ActionItem({ title, subtitle, iconUrl }: Props) {
   return (
     <View style={styles.itemDataContainer}>
       <View>
-        <CustomText type="subtitle2" style={styles.title}>
+        <Text type="subtitle2" style={styles.title}>
           {title}
-        </CustomText>
+        </Text>
         <Text
           ellipsizeMode="tail"
           numberOfLines={1}

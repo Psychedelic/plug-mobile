@@ -1,8 +1,8 @@
 import { t } from 'i18next';
 import React from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, View } from 'react-native';
 
-import CustomText from '@/components/common/Text';
+import Text from '@/components/common/Text';
 import TokenFormat from '@/components/formatters/TokenFormat';
 import UsdFormat from '@/components/formatters/UsdFormat';
 import Icon from '@/components/icons';
@@ -28,7 +28,7 @@ function TransferItem({ unknown, token }: Props) {
           <Text style={FontStyles.Normal}>
             {t('walletConnect.transaction')}
           </Text>
-          <CustomText type="subtitle3">{t('walletConnect.request')}</CustomText>
+          <Text type="subtitle3">{t('walletConnect.request')}</Text>
         </View>
       </View>
       <View style={styles.rightContainer}>

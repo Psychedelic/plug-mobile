@@ -1,10 +1,10 @@
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
 import React from 'react';
-import { Linking, Text, View } from 'react-native';
+import { Linking, View } from 'react-native';
 
 import Button from '@/components/buttons/Button';
-import CustomText from '@/components/common/Text';
+import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
 import useDisableBack from '@/hooks/useDisableBack';
 import { RootStackParamList } from '@/interfaces/navigation';
@@ -43,9 +43,9 @@ function WCTimeoutError({ route }: Props) {
     <Container>
       <View style={styles.container}>
         <Text style={styles.icon}>⏳</Text>
-        <CustomText type="subtitle2" style={styles.title}>
+        <Text type="subtitle2" style={styles.title}>
           {t('walletConnect.timeOutTitle')}
-        </CustomText>
+        </Text>
         <Text style={[FontStyles.NormalGray, styles.subtitle]}>
           {t('common.the')}
           <Text onPress={gotoDapp} style={styles.validText}>
