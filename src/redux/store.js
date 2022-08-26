@@ -66,6 +66,9 @@ export const keyringStorage = {
     return AsyncStorage.getItem(KEYRING_STORAGE_KEY)
       .then(async value => {
         if (!value) {
+          // remove unnecesary persisted data
+          AsyncStorage.removeItem('persist:root');
+
           const oldState = {};
           await Promise.all(
             KEYRING_KEYS_IN_STORAGE.map(async k => {
