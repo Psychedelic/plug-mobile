@@ -112,7 +112,6 @@ const TransactionModule = (dispatch, getState) => {
         const handleApproveArgs = [{ ...args, approve: true }];
         const handleDeclineArgs = [{ ...args, approve: false }];
 
-        // Ale hay que agregar token a la navecion en params?
         Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
           type: 'transfer',
           requestId,

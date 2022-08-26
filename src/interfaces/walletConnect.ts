@@ -102,7 +102,6 @@ export enum WCFlowTypes {
   batchTransactions = 'batchTransactions',
 }
 
-// El get balance te devuelve un WCToken
 export interface WCToken {
   amount: number;
   canisterId: string;

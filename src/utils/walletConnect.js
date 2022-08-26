@@ -250,7 +250,6 @@ export const generateRequestInfo = (args, preDecodedArgs) => {
   const decodedArguments = recursiveParseBigint(
     PlugController.IDLDecode(blobFromBuffer(base64ToBuffer(args.arg)))
   );
-  // TODO: Check if it's possible to decode keys in arguments
   const shouldWarn = !doObjectValuesMatch(preDecodedArgs, decodedArguments);
   return {
     canisterId: args.canisterId,

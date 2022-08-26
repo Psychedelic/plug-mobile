@@ -13,7 +13,6 @@ interface Props extends WallectConnectFlowsData {
   canisterId: string;
 }
 
-// TODO: Improve login with token, also on RequestCall.
 function RequestTransfer({ canisterId, args }: Props) {
   const assetData = getAssetData(canisterId);
   const { icpPrice } = useSelector((state: State) => state.icp);

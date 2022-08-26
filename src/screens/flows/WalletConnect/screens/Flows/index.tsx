@@ -115,8 +115,6 @@ function WCFlows() {
     });
   };
 
-  // TODO: Check if useCallback is needed.
-
   const onCancel = useCallback(
     async (error?: any) => {
       try {
