@@ -1,8 +1,14 @@
 import { Principal } from '@dfinity/principal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Flatted from 'flatted';
 import { t } from 'i18next';
 
 import { TOKEN_IMAGES, TOKENS } from '@/constants/assets';
 import { ACTIVITY_STATUS } from '@/constants/business';
+import {
+  KEYRING_KEYS_IN_STORAGE,
+  KEYRING_STORAGE_KEY,
+} from '@/constants/keyring';
 import { formatAssetBySymbol, parseToFloatAmount } from '@/utils/currencies';
 import { recursiveParseBigint } from '@/utils/objects';
 
@@ -203,4 +209,19 @@ export const DEFAULT_WALLET_CONNECT_STATE = {
   walletConnectors: {},
   sessions: {},
   bridgeTimeout: { timeout: null, onBridgeContact: () => {} },
+};
+
+export const migrateData = async () => {
+  // remove unnecesary persisted data
+  AsyncStorage.removeItem('persist:root');
+
+  const oldState = {};
+  await Promise.all(
+    KEYRING_KEYS_IN_STORAGE.map(async k => {
+      const flattedValue = await AsyncStorage.getItem(k);
+      oldState[k] = flattedValue ? Flatted.parse(flattedValue) : undefined;
+    })
+  );
+  await AsyncStorage.setItem(KEYRING_STORAGE_KEY, JSON.stringify(oldState));
+  return oldState;
 };
