@@ -5,6 +5,7 @@ import { Image, Text, View } from 'react-native';
 import { FontStyles } from '@/constants/theme';
 import { FlowsRequest, WCFlowTypes } from '@/interfaces/walletConnect';
 
+// TODO: Change for the SVG asset in 0.2.0
 import unknownDappIcon from '../../assets/unknownIcon.png';
 import styles from './styles';
 

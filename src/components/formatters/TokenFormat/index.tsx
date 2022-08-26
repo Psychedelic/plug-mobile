@@ -18,7 +18,7 @@ function TokenFormat({
   token,
   style,
   decimalScale,
-  fixedDecimalScale = true,
+  fixedDecimalScale,
 }: Props) {
   return (
     <NumberFormat

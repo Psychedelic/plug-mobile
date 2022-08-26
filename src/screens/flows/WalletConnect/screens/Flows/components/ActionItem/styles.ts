@@ -7,6 +7,9 @@ export default StyleSheet.create({
     height: 40,
     width: 40,
   },
+  title: {
+    textTransform: 'capitalize',
+  },
   appIconContainer: {
     backgroundColor: Colors.Black.Pure,
     height: 50,

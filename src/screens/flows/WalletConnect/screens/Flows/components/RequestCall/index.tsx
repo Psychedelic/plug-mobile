@@ -14,8 +14,10 @@ import {
 } from '@/interfaces/walletConnect';
 import { getUsdAvailableAmount } from '@/screens/flows/Send/utils';
 import { addSpacesAndCapitalize } from '@/utils/strings';
+//TODO: Import getDabNfts from /services/DAB.ts after 0.2.0 merge
 import { getDabNfts } from '@/utils/walletConnect';
 
+// TODO: Pass this .png to .svg after 0.2.0 merge
 import warningIcon from '../../assets/warningIcon.png';
 import {
   getAssetAmount,
@@ -66,7 +68,7 @@ function RequestCall(props: Props) {
           // Is TOKEN-Transfer
           const amount = getAssetAmount(
             { decodedArguments, methodName },
-            assetData?.standard
+            assetData.standard
           );
           setToken({
             icon: assetData?.icon!,

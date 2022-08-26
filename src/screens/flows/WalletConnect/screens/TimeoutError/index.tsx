@@ -1,13 +1,10 @@
-import {
-  NavigationProp,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
 import React from 'react';
 import { Linking, Text, View } from 'react-native';
 
 import Button from '@/components/buttons/Button';
+import CustomText from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
 import useDisableBack from '@/hooks/useDisableBack';
 import { RootStackParamList } from '@/interfaces/navigation';
@@ -17,14 +14,17 @@ import Routes from '@/navigation/Routes';
 import styles from './styles';
 
 interface Props {
-  dappUrl: string;
-  dappName: string;
+  route: {
+    params: {
+      dappUrl: string;
+      dappName: string;
+    };
+  };
 }
 
-function WCTimeoutError() {
+function WCTimeoutError({ route }: Props) {
   useDisableBack();
-  const { params } = useRoute();
-  const { dappUrl, dappName } = params as Props;
+  const { dappUrl, dappName } = route?.params || {};
   const { reset } = useNavigation<NavigationProp<RootStackParamList>>();
 
   const gotoDapp = () => {
@@ -43,7 +43,9 @@ function WCTimeoutError() {
     <Container>
       <View style={styles.container}>
         <Text style={styles.icon}>⏳</Text>
-        <Text style={FontStyles.Title2}>{t('walletConnect.timeOutTitle')}</Text>
+        <CustomText type="subtitle2" style={styles.title}>
+          {t('walletConnect.timeOutTitle')}
+        </CustomText>
         <Text style={[FontStyles.NormalGray, styles.subtitle]}>
           {t('common.the')}
           <Text onPress={gotoDapp} style={styles.validText}>

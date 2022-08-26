@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, ScrollView, Text, View } from 'react-native';
 
 import CachedImage from '@/components/common/Image';
+import CustomText from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
 import { WallectConnectFlowsData } from '@/interfaces/walletConnect';
 import { addSpacesAndCapitalize } from '@/utils/strings';
@@ -24,9 +25,9 @@ function BatchTransactions({ request, metadata }: WallectConnectFlowsData) {
       <View key={`${methodName}${index}`} style={styles.item}>
         <View style={styles.itemDataContainer}>
           <View>
-            <Text style={FontStyles.Subtitle2}>{formattedMethodName}</Text>
+            <CustomText type="subtitle2">{formattedMethodName}</CustomText>
             <Text style={[FontStyles.Small, styles.itemSubtitle]}>
-              {`${formattedMethodName} Backend`}
+              {formattedMethodName}
             </Text>
           </View>
           <View style={styles.appIconContainer}>
