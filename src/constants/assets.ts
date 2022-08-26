@@ -9,8 +9,11 @@ export const getTokenPrices = (symbol: string, icpPrice: number) => {
     case TOKENS.XTC.symbol:
     case 'WTC':
       return USD_PER_TC;
-    default:
+    case TOKENS.ICP.symbol:
+    case TOKENS.WICP.symbol:
       return icpPrice;
+    default:
+      return 0;
   }
 };
 
