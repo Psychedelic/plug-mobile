@@ -14,10 +14,7 @@ import { blogUrl, discordUrl, docsUrl, twitterUrl } from '@/constants/urls';
 import { Separator } from '@/layout';
 import Routes from '@/navigation/Routes';
 import { reset as resetICPStore } from '@/redux/slices/icp';
-import {
-  reset as resetKeyringStore,
-  setUnlocked,
-} from '@/redux/slices/keyring';
+import { lock, reset as resetKeyringStore } from '@/redux/slices/keyring';
 import { reset as resetUserStore } from '@/redux/slices/user';
 import { clearState as resetWalletConnectStore } from '@/redux/slices/walletconnect';
 import Contacts from '@/screens/tabs/Profile/screens/Contacts';
@@ -75,7 +72,7 @@ const Settings = () => {
 
   const lockAccount = () => {
     modalRef.current?.close();
-    dispatch(setUnlocked(false));
+    dispatch(lock());
   };
 
   const renderSettingsItem = (item, index) => {
