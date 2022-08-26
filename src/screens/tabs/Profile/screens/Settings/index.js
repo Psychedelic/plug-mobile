@@ -15,6 +15,7 @@ import Contacts from '@/screens/tabs/Profile/screens/Contacts';
 import animationScales from '@/utils/animationScales';
 
 import { version } from '../../../../../../package.json';
+import ConnectedApps from '../ConnectedApps';
 import RevealSeedPhrase from '../RevealSeedPhrase';
 import BiometricUnlock from './components/BiometricUnlock';
 import InfoItem from './components/InfoItem';
@@ -28,6 +29,7 @@ const Settings = () => {
   const contactsRef = useRef(null);
   const biometricUnlockRef = useRef(null);
   const revealSeedPhraseRef = useRef(null);
+  const connectedAppsRefs = useRef(null);
 
   const dispatch = useDispatch();
   const { biometricsAvailable } = useSelector(state => state.user);
@@ -50,6 +52,10 @@ const Settings = () => {
 
   const openContacts = () => {
     contactsRef.current?.open();
+  };
+
+  const openConnectedApps = () => {
+    connectedAppsRefs.current?.open();
   };
 
   const lockAccount = () => {
@@ -93,6 +99,12 @@ const Settings = () => {
         description: t('settings.items.lock.desc'),
         onPress: lockAccount,
       },
+      {
+        icon: '📱️️️️',
+        name: t('settings.items.connectedApps.name'),
+        description: t('settings.items.connectedApps.desc'),
+        onPress: openConnectedApps,
+      },
     ],
     []
   );
@@ -128,6 +140,7 @@ const Settings = () => {
       <Contacts modalRef={contactsRef} />
       <RevealSeedPhrase modalRef={revealSeedPhraseRef} />
       <BiometricUnlock modalRef={biometricUnlockRef} />
+      <ConnectedApps modalRef={connectedAppsRefs} />
     </>
   );
 };

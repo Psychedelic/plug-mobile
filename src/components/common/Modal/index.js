@@ -8,6 +8,8 @@ import styles from './styles';
 
 export const modalOffset = withNotch ? undefined : isIos ? 10 : 35;
 
+// TODO: Convert to TSX
+/**  @param params { any } */
 function Modal({
   children,
   modalRef,

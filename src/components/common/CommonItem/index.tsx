@@ -24,6 +24,7 @@ interface Props {
   imageUri?: string;
   name?: string;
   id?: string;
+  subtitle?: string;
   longId?: boolean;
   icon?: string;
   style?: StyleProp<ViewStyle>;
@@ -41,6 +42,7 @@ function CommonItem({
   id,
   style,
   longId,
+  subtitle,
   onPress,
   onLongPress,
   actionIconName = 'threeDots',
@@ -71,7 +73,7 @@ function CommonItem({
           )}
           <View style={styles.leftContainer}>
             <Text style={FontStyles.Normal}>{name || id}</Text>
-            <Text style={FontStyles.NormalGray}>{formattedId}</Text>
+            <Text style={FontStyles.NormalGray}>{subtitle || formattedId}</Text>
           </View>
           {showActions && (
             <View style={styles.threeDots}>

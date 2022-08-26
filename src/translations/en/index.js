@@ -139,6 +139,10 @@ const translations = {
         desc: 'Turn Biometrics on or off.',
       },
       lock: { name: 'Lock Account', desc: 'Lock your account and sign out.' },
+      connectedApps: {
+        name: 'Connected Apps',
+        desc: 'View your connected apps.',
+      },
     },
     version: 'v{{version}}',
     infoItems: {
