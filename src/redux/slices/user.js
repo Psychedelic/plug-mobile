@@ -476,8 +476,8 @@ export const userSlice = createSlice({
     setTransactionsLoading: (state, action) => {
       state.transactionsLoading = action.payload;
     },
-    resetUserState: state => {
-      state = DEFAULT_STATE;
+    reset: () => {
+      return DEFAULT_STATE;
     },
   },
   extraReducers: {
@@ -540,7 +540,7 @@ export const {
   setCollections,
   removeNFT,
   setTransactionsLoading,
-  resetUserState,
+  reset,
 } = userSlice.actions;
 
 export default userSlice.reducer;

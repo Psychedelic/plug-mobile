@@ -78,12 +78,10 @@ const PersistedApp = () => {
   };
 
   useEffect(() => {
-    if (instance) {
-      RNBootSplash.hide({ fade: true });
-    } else {
-      dispatch(initKeyring());
-    }
-  }, [instance]);
+    dispatch(
+      initKeyring({ callback: () => RNBootSplash.hide({ fade: true }) })
+    );
+  }, []);
 
   return (
     <PersistGate loading={null} persistor={persistor}>

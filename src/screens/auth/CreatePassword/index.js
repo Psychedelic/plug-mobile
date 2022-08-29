@@ -113,7 +113,11 @@ const CreatePassword = ({ route, navigation }) => {
                 value={value}
                 onChangeText={onChange}
                 style={styles.passwordInput}
-                onSubmit={Keyboard.dismiss}
+                onSubmit={
+                  biometryAvailable
+                    ? Keyboard.dismiss
+                    : handleSubmit(handleCreate)
+                }
               />
             )}
           />

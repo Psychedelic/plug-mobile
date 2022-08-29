@@ -146,6 +146,7 @@ const translations = {
       blog: '📰  Read our Blog',
       twitter: '🐦  Follow us on Twitter',
       discord: '👾  Join our Discord',
+      delete: '🗑  Delete Wallet',
     },
   },
   accounts: {
@@ -245,6 +246,14 @@ const translations = {
     connectTo: 'Would you like to connect your wallet to ',
     cannisterPermission: 'wants pemission to use these canisters:',
     actionsPermission: 'wants pemission to perform the\nfollowing actions:',
+  },
+  deleteWallet: {
+    title: 'Delete Wallet',
+    question:
+      'Are you sure you want to remove all wallet related data from your device?',
+    description:
+      'You can always recover your accounts through your Secret recovery Phrase given that your accounts exists on the blockchain.',
+    action: 'Delete Wallet',
   },
 };
 

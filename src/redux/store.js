@@ -4,10 +4,7 @@ import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import { createTransform, persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 
-import {
-  KEYRING_KEYS_IN_STORAGE,
-  KEYRING_STORAGE_KEY,
-} from '@/constants/keyring';
+import { KEYRING_STORAGE_KEY } from '@/constants/keyring';
 import { WALLETCONNECT_STORAGE_KEY } from '@/constants/walletconnect';
 
 import Reactotron from '../config/reactotron';
@@ -15,18 +12,13 @@ import IcpReducer from './slices/icp';
 import KeyringReducer from './slices/keyring';
 import UserReducer from './slices/user';
 import WalletConnectReducer from './slices/walletconnect';
+import { migrateData } from './utils';
 
 // PERSIST
 export const transformCircular = createTransform(
   inboundState => Flatted.stringify(inboundState),
   outboundState => Flatted.parse(outboundState)
 );
-
-const persistConfig = {
-  key: 'root',
-  storage: AsyncStorage,
-  transforms: [transformCircular],
-};
 
 const icpPersistConfig = {
   key: 'icp',
@@ -57,9 +49,7 @@ if (__DEV__) {
   enhancers.push(Reactotron.createEnhancer(true));
 }
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-export const store = createStore(persistedReducer, compose(...enhancers));
+export const store = createStore(rootReducer, compose(...enhancers));
 
 export const persistor = persistStore(store);
 
@@ -74,19 +64,7 @@ export const keyringStorage = {
     return AsyncStorage.getItem(KEYRING_STORAGE_KEY)
       .then(async value => {
         if (!value) {
-          const oldState = {};
-          await Promise.all(
-            KEYRING_KEYS_IN_STORAGE.map(async k => {
-              const flattedValue = await AsyncStorage.getItem(k);
-              oldState[k] = flattedValue
-                ? Flatted.parse(flattedValue)
-                : undefined;
-            })
-          );
-          await AsyncStorage.setItem(
-            KEYRING_STORAGE_KEY,
-            JSON.stringify(oldState)
-          );
+          const oldState = await migrateData();
           return oldState;
         }
         return value ? JSON.parse(value) : value;

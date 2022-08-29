@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   ViewStyle,
 } from 'react-native';
+import { HapticFeedbackTypes, trigger } from 'react-native-haptic-feedback';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -12,13 +13,12 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import scales from '@/utils/animationScales';
-import haptics, { HapticFeedbackTypes } from '@/utils/haptics';
 
 interface Props {
   children?: React.ReactNode;
   onPress?: () => void;
   onLongPress?: () => void;
-  hapticType?: string;
+  hapticType?: HapticFeedbackTypes;
   scale?: number;
   disabled?: boolean;
   hitSlop?: Insets;
@@ -29,7 +29,7 @@ const Touchable = ({
   children,
   onPress = () => {},
   onLongPress = () => {},
-  hapticType = HapticFeedbackTypes.impactLight,
+  hapticType = 'impactLight',
   scale = scales.small,
   disabled = false,
   style,
@@ -50,7 +50,7 @@ const Touchable = ({
   });
 
   const handlePress = () => {
-    haptics[hapticType]();
+    trigger?.(hapticType);
     onPress();
   };
 
