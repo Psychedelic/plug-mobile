@@ -8,9 +8,10 @@ interface Props {
   value?: string | number | null;
   style?: StyleProp<TextStyle>;
   decimalScale?: number;
+  suffix?: string;
 }
 
-function UsdFormat({ value, style, decimalScale = 2 }: Props) {
+function UsdFormat({ value, style, decimalScale = 2, suffix }: Props) {
   return (
     <NumberFormat
       value={value}
@@ -19,6 +20,7 @@ function UsdFormat({ value, style, decimalScale = 2 }: Props) {
       fixedDecimalScale
       decimalScale={decimalScale}
       prefix="$"
+      suffix={suffix ? ` ${suffix}` : undefined}
       renderText={textValue => <Text style={style}>{textValue}</Text>}
     />
   );

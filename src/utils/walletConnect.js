@@ -18,7 +18,6 @@ import { setProtectedIds } from '@/modules/storageManager';
 import Routes from '@/navigation/Routes';
 import {
   getSession,
-  setPendingSessionRequest,
   setSession,
   walletConnectApproveSession,
   walletConnectRejectSession,
@@ -228,16 +227,38 @@ export const validateTransactions = transactions => {
   return message ? ERRORS.CLIENT_ERROR(message) : null;
 };
 
-export const generateRequestInfo = args => {
+const getLeafValues = (data, values = []) => {
+  if (!data) {
+    return [...values, data];
+  }
+  if (typeof data !== 'object') {
+    return [data];
+  }
+  return [
+    ...values,
+    ...Object.values(data).flatMap(v => getLeafValues(v, values)),
+  ];
+};
+
+const doObjectValuesMatch = (obj1 = {}, obj2 = {}) => {
+  const leafValues1 = getLeafValues(obj1) || [];
+  const leafValues2 = getLeafValues(obj2) || [];
+  return leafValues1.every(v => leafValues2.includes(v));
+};
+
+export const generateRequestInfo = (args, preDecodedArgs) => {
   const decodedArguments = recursiveParseBigint(
     PlugController.IDLDecode(blobFromBuffer(base64ToBuffer(args.arg)))
   );
-
+  const shouldWarn = !doObjectValuesMatch(preDecodedArgs, decodedArguments);
   return {
-    ...args,
+    canisterId: args.canisterId,
+    methodName: args.methodName,
+    sender: args.sender,
     arguments: args.arg,
-    decodedArguments,
+    decodedArguments: preDecodedArgs || decodedArguments,
     type: 'call',
+    shouldWarn,
   };
 };
 

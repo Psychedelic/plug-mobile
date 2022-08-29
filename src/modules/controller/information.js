@@ -109,7 +109,7 @@ const InformationModule = (dispatch, getState) => {
 
   const isUnlock = {
     methodName: 'isUnlock',
-    handler: () => { },
+    handler: () => {},
     executor: () => {
       try {
         const { isUnlocked } = getState().keyring;

@@ -19,6 +19,7 @@ import Welcome from '@/screens/auth/Welcome';
 import ConnectionError from '@/screens/error/ConnectionError';
 import WCFlows from '@/screens/flows/WalletConnect/screens/Flows';
 import WCInitialConnection from '@/screens/flows/WalletConnect/screens/InitialConnection';
+import WCTimeoutError from '@/screens/flows/WalletConnect/screens/TimeoutError';
 import { handleDeepLink } from '@/utils/deepLink';
 
 import Routes from './Routes';
@@ -144,6 +145,11 @@ const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
             <Stack.Screen
               name={Routes.WALLET_CONNECT_FLOWS}
               component={WCFlows}
+              options={disableGesturesOption}
+            />
+            <Stack.Screen
+              name={Routes.WALLET_CONNECT_ERROR}
+              component={WCTimeoutError}
               options={disableGesturesOption}
             />
           </Stack.Navigator>

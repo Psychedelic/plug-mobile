@@ -201,5 +201,5 @@ export const DEFAULT_WALLET_CONNECT_STATE = {
   pendingRedirect: {},
   pendingCallRequests: {},
   sessions: {},
-  bridgeTimeout: { timeout: null, onBridgeContact: () => { } },
+  bridgeTimeout: { timeout: null, onBridgeContact: () => {} },
 };

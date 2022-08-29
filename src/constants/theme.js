@@ -15,6 +15,7 @@ export const Metrics = {
 
 export const Colors = {
   ActionBlue: '#3574F4',
+  WarningYellow: '#F3AD41',
   Black: {
     Primary: '#15161C',
     Secondary: '#1E1F27',

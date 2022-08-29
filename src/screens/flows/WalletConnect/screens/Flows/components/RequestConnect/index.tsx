@@ -15,25 +15,29 @@ function RequestConnect({ args }: WallectConnectFlowsData) {
     (key: string) => whitelist[key]
   ) as WCWhiteListItem[];
 
-  const renderWhiteList = ({
-    item,
-    index,
-  }: {
-    item: WCWhiteListItem;
-    index: number;
-  }) => {
+  const renderWhiteList = ({ item }: { item: WCWhiteListItem }) => {
     const { canisterId, name, icon } = item;
+    const showcaseImage = {
+      ...(icon
+        ? {
+            imageUri: icon,
+          }
+        : {
+            image: 'unknown',
+          }),
+    };
+
     return (
       <CommonItem
+        longId
         name={name}
-        key={index}
-        imageUri={icon}
         id={canisterId}
         onPress={() =>
           Linking.openURL(`https://icscan.io/canister/${canisterId}`)
         }
         style={styles.cannisterItem}
         actionIconName="redirectArrow"
+        {...showcaseImage}
       />
     );
   };
@@ -42,6 +46,7 @@ function RequestConnect({ args }: WallectConnectFlowsData) {
     <FlatList<WCWhiteListItem>
       bounces={false}
       data={whiteListArray}
+      style={styles.container}
       renderItem={renderWhiteList}
       keyExtractor={item => item.canisterId}
       showsVerticalScrollIndicator={false}

@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 import CommonItem from '@/commonComponents/CommonItem';
 import Text from '@/components/common/Text';
 
+import styles from '../../styles';
+
 const ContactSection = ({ onPress, filterText }) => {
   const { principal } = useSelector(state => state.keyring?.currentWallet);
   const contacts = useSelector(state => state.user?.contacts);
@@ -26,8 +28,9 @@ const ContactSection = ({ onPress, filterText }) => {
           <CommonItem
             name={contact.name}
             id={contact.id}
-            image={contact.image}
+            icon={contact.image}
             key={contact.id}
+            style={styles.contactItem}
             onPress={() => onPress(contact)}
             showActions={false}
           />

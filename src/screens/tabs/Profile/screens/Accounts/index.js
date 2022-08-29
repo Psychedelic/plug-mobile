@@ -98,7 +98,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
       <CommonItem
         key={index}
         name={account.name}
-        image={account.icon}
+        icon={account.icon}
         id={account.principal}
         onPress={handleOnPress}
         style={styles.accountItem}

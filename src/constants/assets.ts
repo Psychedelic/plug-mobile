@@ -4,6 +4,19 @@ export const E8S_PER_ICP = 100000000;
 export const CYCLES_PER_TC = 1000000000000;
 export const USD_PER_TC = 1.42656;
 
+export const getTokenPrices = (symbol: string, icpPrice: number) => {
+  switch (symbol) {
+    case TOKENS.XTC.symbol:
+    case 'WTC':
+      return USD_PER_TC;
+    case TOKENS.ICP.symbol:
+    case TOKENS.WICP.symbol:
+      return icpPrice;
+    default:
+      return 0;
+  }
+};
+
 export const TOKEN_IMAGES = {
   XTC: 'xtc',
   ICP: 'dfinity',
@@ -19,6 +32,7 @@ export const TOKENS = {
     amount: 0,
     value: 0,
     icon: TOKEN_IMAGES.ICP,
+    standard: 'ROSETTA',
   },
   XTC: {
     symbol: 'XTC',
@@ -28,6 +42,7 @@ export const TOKENS = {
     amount: 0,
     value: 0,
     icon: TOKEN_IMAGES.XTC,
+    standard: 'DIP20',
   },
   WICP: {
     symbol: 'WICP',
@@ -37,5 +52,6 @@ export const TOKENS = {
     amount: 0,
     value: 0,
     icon: TOKEN_IMAGES.WICP,
+    standard: 'DIP20',
   },
 };

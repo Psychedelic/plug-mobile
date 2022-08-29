@@ -11,9 +11,15 @@ export default StyleSheet.create({
     alignContent: 'center',
     backgroundColor: Colors.Gray.Secondary,
   },
+  backgroundUnknown: {
+    alignItems: 'center',
+  },
   logo: {
     height: 30,
     resizeMode: 'contain',
+  },
+  unknownLogo: {
+    height: 40,
   },
   dappName: {
     paddingTop: 12,
@@ -21,11 +27,12 @@ export default StyleSheet.create({
     color: Colors.ActionBlue,
   },
   subtitle: {
-    paddingBottom: 10,
+    paddingBottom: 24,
     color: Colors.White.Pure,
     textAlign: 'center',
   },
-  topTitle: {
-    marginBottom: 6,
+  container: {
+    alignItems: 'center',
+    paddingTop: 30,
   },
 });

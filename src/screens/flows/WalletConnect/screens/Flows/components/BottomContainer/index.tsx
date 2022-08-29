@@ -6,22 +6,26 @@ import LinearGradient from 'react-native-linear-gradient';
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import { Colors } from '@/constants/theme';
+import { WCFlowTypes } from '@/interfaces/walletConnect';
 
 import styles from './styles';
 
 interface Props {
-  isBatchTransactions: boolean;
+  type: WCFlowTypes;
   onPressCancel: () => void;
   onPressSend: () => void;
   sendLoading: boolean;
 }
 
 function WCFlowBottomContainer({
-  isBatchTransactions,
   onPressCancel,
   onPressSend,
   sendLoading,
+  type,
 }: Props) {
+  const showConfirm =
+    type === WCFlowTypes.transfer || type === WCFlowTypes.batchTransactions;
+
   return (
     <View style={styles.bottomContainer}>
       <LinearGradient
@@ -37,9 +41,7 @@ function WCFlowBottomContainer({
         <RainbowButton
           loading={sendLoading}
           text={
-            isBatchTransactions
-              ? t('walletConnect.confirm')
-              : t('walletConnect.allow')
+            showConfirm ? t('walletConnect.confirm') : t('walletConnect.allow')
           }
           buttonStyle={styles.buttonStyle as ViewStyle}
           onPress={onPressSend}

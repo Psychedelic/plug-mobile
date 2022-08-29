@@ -52,6 +52,7 @@ const TransactionModule = (dispatch, getState) => {
           requestId,
           metadata,
           args,
+          canisterId: ICP_CANISTER_ID,
           handleApproveArgs,
           handleDeclineArgs,
         });
@@ -283,7 +284,7 @@ const TransactionModule = (dispatch, getState) => {
 
   const requestCall = {
     methodName: 'requestCall',
-    handler: async (requestId, metadata, args, batchTxId) => {
+    handler: async (requestId, metadata, args, batchTxId, decodedArgs) => {
       const keyring = getState().keyring?.instance;
       const senderPID = getState().keyring?.currentWallet.principal;
       const { canisterId } = args;
@@ -313,10 +314,13 @@ const TransactionModule = (dispatch, getState) => {
         (!batchTxId || batchTxId.lenght === 0) &&
         protectedIds.includes(canisterInfo.canisterId);
 
-      const requestInfo = generateRequestInfo({
-        ...args,
-        sender: senderPID,
-      });
+      const requestInfo = generateRequestInfo(
+        {
+          ...args,
+          sender: senderPID,
+        },
+        decodedArgs
+      );
 
       if (shouldShowModal) {
         const handleApproveArgs = [{ requestInfo, approve: true }];
@@ -325,8 +329,10 @@ const TransactionModule = (dispatch, getState) => {
         Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
           type: 'requestCall',
           requestId,
+          canisterInfo,
           metadata,
           args: requestInfo,
+          canisterId,
           handleApproveArgs,
           handleDeclineArgs,
         });
