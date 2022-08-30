@@ -171,7 +171,9 @@ export const login = createAsyncThunk(
     try {
       const { unlocked } = await privateUnlock(params, state);
       const { wallets, currentWalletId } = await instance?.getState();
+      dispatch(setUnlocked(unlocked));
       if (unlocked) {
+        dispatch(setPrelocked(false));
         dispatch(setCurrentWallet(wallets[currentWalletId]));
         dispatch(setWallets(wallets));
         dispatch(setAssetsLoading(true));
@@ -259,6 +261,7 @@ const DEFAULT_STATE = {
   instance: null,
   isInitialized: false,
   isUnlocked: false,
+  isPrelocked: false,
   currentWallet: null,
   wallets: [],
   password: '',
@@ -273,6 +276,9 @@ export const keyringSlice = createSlice({
     },
     setUnlocked: (state, action) => {
       state.isUnlocked = action.payload;
+    },
+    setPrelocked: (state, action) => {
+      state.isPrelocked = action.payload;
     },
     setWallets: (state, action) => {
       state.wallets = action.payload;
@@ -327,7 +333,12 @@ export const keyringSlice = createSlice({
   },
 });
 
-export const { setCurrentWallet, setUnlocked, setWallets, reset } =
-  keyringSlice.actions;
+export const {
+  setCurrentWallet,
+  setUnlocked,
+  setPrelocked,
+  setWallets,
+  reset,
+} = keyringSlice.actions;
 
 export default keyringSlice.reducer;

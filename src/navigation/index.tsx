@@ -10,7 +10,7 @@ import { Colors } from '@/constants/theme';
 import { RootStackParamList } from '@/interfaces/navigation';
 import { State } from '@/interfaces/redux';
 import SwipeNavigator from '@/navigation/navigators/SwipeNavigator';
-import { setUnlocked } from '@/redux/slices/keyring';
+import { setPrelocked, setUnlocked } from '@/redux/slices/keyring';
 import BackupSeedPhrase from '@/screens/auth/BackupSeedPhrase';
 import CreatePassword from '@/screens/auth/CreatePassword';
 import ImportSeedPhrase from '@/screens/auth/ImportSeedPhrase';
@@ -36,6 +36,7 @@ const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
 
   const handleLockState = () => {
     dispatch(setUnlocked(false));
+    dispatch(setPrelocked(false));
   };
 
   const handleDeepLinkHandler = useCallback(
@@ -46,9 +47,11 @@ const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
   );
 
   const handleAppStateChange = async (nextAppState: string) => {
-    const initialLink = await Linking.getInitialURL();
+    const initialLink =
+      nextAppState === 'active' && (await Linking.getInitialURL());
 
     if (nextAppState === 'background') {
+      dispatch(setPrelocked(true));
       backgroundTime.current = Date.now();
     }
 
@@ -57,7 +60,11 @@ const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
         const timeDiff = Date.now() - backgroundTime.current;
         if (timeDiff > 120000) {
           handleLockState();
+        } else {
+          dispatch(setPrelocked(false));
         }
+      } else {
+        dispatch(setPrelocked(false));
       }
       backgroundTime.current = null;
     }

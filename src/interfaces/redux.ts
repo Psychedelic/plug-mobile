@@ -114,6 +114,7 @@ export interface KeyringState {
   instance: any;
   isInitialized: boolean;
   isUnlocked: boolean;
+  isPrelocked: boolean;
   currentWallet: CurrentWallet;
   wallets: [];
 }

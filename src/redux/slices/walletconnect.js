@@ -63,10 +63,13 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
   async ({ uri }, { dispatch, getState }) => {
     try {
       const { clientMeta } = await getNativeOptions();
+      const isPrelocked = () => getState().keyring.isPrelocked;
+      const isUnlocked = () => getState().keyring.isUnlocked;
+      const isInitialized = () => getState().keyring.isInitialized;
       try {
         // Don't initiate a new session if we have already established one using this walletconnect URI
         let unlockTimeOut;
-        if (!getState().keyring.isUnlocked) {
+        if (!isUnlocked()) {
           unlockTimeOut = setTimeout(() => {
             throw new Error('Wallet Unlock Timeout');
           }, 20000);
@@ -77,10 +80,7 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
         const waitingFn = InteractionManager.runAfterInteractions;
 
         waitingFn(async () => {
-          while (
-            !getState().keyring.isUnlocked ||
-            !getState().keyring.isInitialized
-          ) {
+          while (isPrelocked() || !isUnlocked() || !isInitialized()) {
             await delay(300);
           }
           if (unlockTimeOut) {
@@ -140,6 +140,9 @@ const listenOnNewMessages = createAsyncThunk(
   'walletconnect/listenOnNewMessages',
   (walletConnector, { dispatch, getState }) => {
     const getHandlerAndExecutor = callRequestHandlerFactory(dispatch, getState);
+    const isPrelocked = () => getState().keyring.isPrelocked;
+    const isUnlocked = () => getState().keyring.isUnlocked;
+    const isInitialized = () => getState().keyring.isInitialized;
     walletConnector.on('call_request', async (error, payload) => {
       const {
         bridgeTimeout: { timeout },
@@ -187,7 +190,7 @@ const listenOnNewMessages = createAsyncThunk(
           }
 
           let unlockTimeOut;
-          if (!getState().keyring.isUnlocked) {
+          if (!isUnlocked()) {
             unlockTimeOut = setTimeout(() => {
               return dispatch(
                 walletConnectExecuteAndResponse({
@@ -198,17 +201,11 @@ const listenOnNewMessages = createAsyncThunk(
             }, 20000);
           }
 
-          if (
-            !getState().keyring.isUnlocked ||
-            payload.method in SIGNING_METHODS
-          ) {
+          if (!isUnlocked() || payload.method in SIGNING_METHODS) {
             const waitingFn = InteractionManager.runAfterInteractions;
 
             waitingFn(async () => {
-              while (
-                !getState().keyring.isUnlocked ||
-                !getState().keyring.isInitialized
-              ) {
+              while (isPrelocked() || !isUnlocked() || !isInitialized()) {
                 await delay(300);
               }
               if (unlockTimeOut) {
@@ -244,7 +241,6 @@ export const walletConnectExecuteAndResponse = createAsyncThunk(
   'walletconnect/executeAndResponse',
   /**  @param params { any } */
   async (params, { dispatch, getState }) => {
-    console.log('walletConnectExecuteAndResponse', params);
     const { requestId, args, opts, error, onSuccess } = params;
     try {
       const request = getState().walletconnect.pendingCallRequests[requestId];
