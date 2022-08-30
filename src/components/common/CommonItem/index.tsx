@@ -58,7 +58,7 @@ function CommonItem({
       <Touchable
         scale={animationScales.small}
         onPress={() => onPress?.()}
-        onLongPress={onLongPress}>
+        onLongPress={() => onLongPress?.()}>
         <View style={styles.root}>
           {imageUri ? (
             <ImageDisplayer
@@ -78,7 +78,8 @@ function CommonItem({
           {showActions && (
             <View style={styles.threeDots}>
               <Touchable
-                onPress={() => onLongPress?.()}
+                onPress={() => onPress?.()}
+                onLongPress={() => onLongPress?.()}
                 scale={animationScales.large}
                 hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}>
                 <Icon name={actionIconName} />

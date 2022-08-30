@@ -30,6 +30,7 @@ const DEFAULT_STATE = {
   collectionsError: false,
   usingBiometrics: false,
   biometricsAvailable: false,
+  connectedApps: [],
 };
 
 export const sign = createAsyncThunk(
@@ -358,7 +359,7 @@ export const editContact = createAsyncThunk(
 );
 export const getICNSData = createAsyncThunk(
   'keyring/getICNSData',
-  async ({ refresh }, { getState, dispatch }) => {
+  async ({ refresh }, { getState }) => {
     const { keyring } = getState();
     const { currentWallet } = keyring;
     const icnsData = currentWallet?.icnsData || { names: [] };
@@ -368,6 +369,50 @@ export const getICNSData = createAsyncThunk(
       keyring.getICNSData();
     }
     return icnsData;
+  }
+);
+
+export const addConnectedApp = createAsyncThunk(
+  'keyring/addConnectedApp',
+  /**  @param {any} [app] */
+  async (app, { getState, dispatch }) => {
+    const currentConnectedApps = getState().user.connectedApps;
+    const { name, canisterList, lastConection } = app;
+    let connectedApps = [app, ...currentConnectedApps];
+
+    const appAlreadyAdded = currentConnectedApps.find(
+      connectedApp => connectedApp.name === name
+    );
+
+    if (appAlreadyAdded) {
+      connectedApps = currentConnectedApps.map(connectedApp =>
+        connectedApp.name === name
+          ? {
+              lastConection,
+              canisterList: [...canisterList, ...connectedApp.canisterList],
+              ...connectedApp,
+            }
+          : connectedApp
+      );
+    }
+
+    dispatch(setConnectedApps(connectedApps));
+  }
+);
+
+export const removeConnectedApp = createAsyncThunk(
+  'keyring/removeConnectedApp',
+  /**  @param {any} [appName] */
+  async (appName, { getState, dispatch }) => {
+    const currentConnectedApps = getState().user.connectedApps;
+
+    dispatch(
+      setConnectedApps(
+        currentConnectedApps.filter(
+          connectedApp => connectedApp.name !== appName
+        )
+      )
+    );
   }
 );
 
@@ -383,6 +428,9 @@ export const userSlice = createSlice({
     },
     setContacts: (state, action) => {
       state.contacts = action.payload;
+    },
+    setConnectedApps: (state, action) => {
+      state.connectedApps = action.payload;
     },
     setBiometricsAvailable: (state, action) => {
       state.biometricsAvailable = action.payload;
@@ -481,6 +529,7 @@ export const {
   setContactsLoading,
   setCollections,
   removeNFT,
+  setConnectedApps,
   setTransactionsLoading,
   resetUserState,
 } = userSlice.actions;

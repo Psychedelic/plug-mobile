@@ -2,6 +2,8 @@ import WalletConnect from '@walletconnect/client';
 
 import { Contact } from '@/screens/tabs/Profile/screens/Contacts/utils';
 
+import { WCWhiteListItem } from './walletConnect';
+
 export interface CollectionToken {
   id: string;
   index: number | string;
@@ -118,6 +120,12 @@ export interface KeyringState {
   wallets: [];
 }
 
+export interface ConnectedApp {
+  name: string;
+  canisterList: WCWhiteListItem[];
+  imageUri: string;
+  lastConection: Date;
+}
 export interface UserState {
   assets: Asset[];
   assetsError: boolean;
@@ -132,6 +140,7 @@ export interface UserState {
   collectionsError: boolean;
   usingBiometrics: boolean;
   biometricsAvailable: boolean;
+  connectedApps: ConnectedApp[];
 }
 
 export interface WalletConnectCallRequest {

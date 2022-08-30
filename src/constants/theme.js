@@ -30,6 +30,7 @@ export const Colors = {
     Primary: '#33343A',
     Secondary: '#23242A',
     Tertiary: '#292929',
+    Divider: '#3A3B40',
     Pure: '#616571',
   },
   Rainbow: {

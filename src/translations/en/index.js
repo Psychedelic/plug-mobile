@@ -181,6 +181,12 @@ const translations = {
     nameTaken: 'Name is already taken!',
     contactAlreadySaved: 'Contact already saved as {{value}}',
   },
+  connectedApps: {
+    viewDetail: 'View Details',
+    deleteConnection: 'Delete Connection',
+    approvedCanisters: 'Approved Canisters',
+    emptyState: 'No apps connected yet',
+  },
   placeholders: {
     amount: `0${decimalSeparator}00`,
     contactDescription: 'contact description',
