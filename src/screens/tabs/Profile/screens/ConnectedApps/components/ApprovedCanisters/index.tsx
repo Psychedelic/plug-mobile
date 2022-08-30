@@ -17,7 +17,7 @@ import styles from './styles';
 interface Props {
   modalRef: RefObject<Modalize>;
   connectedAppsRef: RefObject<Modalize>;
-  app?: ConnectedApp;
+  app: ConnectedApp;
 }
 
 function ApprovedCanisters({ modalRef, app, connectedAppsRef }: Props) {

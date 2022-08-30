@@ -102,7 +102,7 @@ function ConnectedApps({ modalRef }: Props) {
         options={actionSheetData?.options}
       />
       <ApprovedCanisters
-        app={selectedApp}
+        app={selectedApp!}
         connectedAppsRef={modalRef}
         modalRef={approvedcanistersRef}
       />
