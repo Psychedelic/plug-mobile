@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
 import ActionSheet from '@/components/common/ActionSheet';
-import CommonItem from '@/components/common/CommonItem';
+import CommonItem, { getShowcaseImage } from '@/components/common/CommonItem';
 import Text from '@/components/common/Text';
 import DeleteIcon from '@/icons/svg/material/Delete.svg';
 import ViewIcon from '@/icons/svg/material/View.svg';
@@ -69,7 +69,7 @@ function ConnectedApps({ modalRef }: Props) {
     return (
       <CommonItem
         name={name}
-        imageUri={imageUri}
+        {...getShowcaseImage(imageUri)}
         style={styles.appItem}
         onPress={openApp(item)}
         key={`${name}-${index}`}

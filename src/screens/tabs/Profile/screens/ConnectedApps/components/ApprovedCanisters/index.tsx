@@ -5,7 +5,7 @@ import { Modalize } from 'react-native-modalize';
 
 import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
-import CommonItem from '@/components/common/CommonItem';
+import CommonItem, { getShowcaseImage } from '@/components/common/CommonItem';
 import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
 import { ConnectedApp } from '@/interfaces/redux';
@@ -32,9 +32,9 @@ function ApprovedCanisters({ modalRef, app, connectedAppsRef }: Props) {
     return (
       <CommonItem
         longId
-        imageUri={icon}
         id={canisterId}
         name={item.name}
+        {...getShowcaseImage(icon)}
         style={styles.canister}
         onPress={redirectToCanister}
         actionIconName="redirectArrow"

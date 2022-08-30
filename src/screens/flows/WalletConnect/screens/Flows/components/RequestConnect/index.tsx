@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList, Linking } from 'react-native';
 
-import CommonItem from '@/commonComponents/CommonItem';
+import CommonItem, { getShowcaseImage } from '@/commonComponents/CommonItem';
 import {
   WallectConnectFlowsData,
   WCWhiteListItem,
@@ -17,15 +17,6 @@ function RequestConnect({ args }: WallectConnectFlowsData) {
 
   const renderWhiteList = ({ item }: { item: WCWhiteListItem }) => {
     const { canisterId, name, icon } = item;
-    const showcaseImage = {
-      ...(icon
-        ? {
-            imageUri: icon,
-          }
-        : {
-            image: 'unknown',
-          }),
-    };
 
     return (
       <CommonItem
@@ -37,7 +28,7 @@ function RequestConnect({ args }: WallectConnectFlowsData) {
         }
         style={styles.cannisterItem}
         actionIconName="redirectArrow"
-        {...showcaseImage}
+        {...getShowcaseImage(icon)}
       />
     );
   };
