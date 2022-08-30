@@ -375,7 +375,7 @@ export const getICNSData = createAsyncThunk(
 export const addConnectedApp = createAsyncThunk(
   'keyring/addConnectedApp',
   /**  @param {any} [app] */
-  async (app, { getState, dispatch }) => {
+  async (app, { getState }) => {
     const currentConnectedApps = getState().user.connectedApps;
     const { name, canisterList, lastConection } = app;
     let connectedApps = [app, ...currentConnectedApps];
@@ -396,22 +396,18 @@ export const addConnectedApp = createAsyncThunk(
       );
     }
 
-    dispatch(setConnectedApps(connectedApps));
+    return connectedApps;
   }
 );
 
 export const removeConnectedApp = createAsyncThunk(
   'keyring/removeConnectedApp',
   /**  @param {any} [appName] */
-  async (appName, { getState, dispatch }) => {
+  async (appName, { getState }) => {
     const currentConnectedApps = getState().user.connectedApps;
 
-    dispatch(
-      setConnectedApps(
-        currentConnectedApps.filter(
-          connectedApp => connectedApp.name !== appName
-        )
-      )
+    return currentConnectedApps.filter(
+      connectedApp => connectedApp.name !== appName
     );
   }
 );
@@ -476,6 +472,12 @@ export const userSlice = createSlice({
   extraReducers: {
     [getContacts.fulfilled]: (state, action) => {
       state.contacts = action.payload;
+    },
+    [removeConnectedApp.fulfilled]: (state, action) => {
+      state.connectedApps = action.payload;
+    },
+    [addConnectedApp.fulfilled]: (state, action) => {
+      state.connectedApps = action.payload;
     },
     [sendToken.fulfilled]: (state, action) => {
       state.transaction = action.payload;

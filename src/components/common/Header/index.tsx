@@ -9,6 +9,7 @@ interface Props {
   right?: React.ReactNode;
 }
 
+// TODO: Resolve conflicts after merge with 0.2.0
 const Header = ({ left, center, right }: Props) => (
   <View style={styles.container}>
     {left && <View style={styles.left}>{left}</View>}
