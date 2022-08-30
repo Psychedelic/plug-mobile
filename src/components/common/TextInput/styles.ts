@@ -48,6 +48,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 1,
   },
+  disabledContainer: {
+    opacity: 0.4,
+  },
 });
 
 export default styles;

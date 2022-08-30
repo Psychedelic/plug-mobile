@@ -64,6 +64,7 @@ const TextInput = ({
   const innerContainerStyle = [
     styles.innerContainer,
     multiline && styles.multilineContainer,
+    disabled && styles.disabledContainer,
   ];
 
   const [isFocused, setIsFocused] = useState(false);
@@ -96,6 +97,7 @@ const TextInput = ({
       <View style={[innerContainerStyle, contentContainerStyle]}>
         {left}
         <Input
+          underlineColorAndroid="transparent"
           style={[styles.textInput, inputStyle]}
           placeholderTextColor={placeholderTextColor}
           onChangeText={onChangeText}
