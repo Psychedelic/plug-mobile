@@ -20,17 +20,15 @@ const longIdConfig = {
   replace: [],
 };
 
-export const getShowcaseImage = (uri: string) => {
-  return {
-    ...(uri
-      ? {
-          imageUri: uri,
-        }
-      : {
-          image: 'unknown',
-        }),
-  };
-};
+export const getShowcaseImage = (uri: string) => ({
+  ...(uri
+    ? {
+        imageUri: uri,
+      }
+    : {
+        image: 'unknown',
+      }),
+});
 
 interface Props {
   image?: string;
