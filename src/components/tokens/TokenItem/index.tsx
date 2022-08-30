@@ -44,7 +44,7 @@ function TokenItem({ color, style, onPress, token }: Props) {
             />
           ) : null}
         </View>
-        {value ? <UsdFormat value={value} style={styles.value} /> : null}
+        <UsdFormat value={value} style={styles.value} />
       </View>
     </Touchable>
   );

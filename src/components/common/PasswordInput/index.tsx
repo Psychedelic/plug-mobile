@@ -52,6 +52,7 @@ function PasswordInput({
       <TextInput
         value={value}
         autoFocus={autoFocus}
+        autoCapitalize="none"
         onChangeText={onChangeText}
         maxLength={maxLength}
         placeholder={placeholder || t('common.enterPassword')}
