@@ -226,7 +226,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
       const price =
         { ICP: icpPrice, XTC: USD_PER_TC, WTC: USD_PER_TC, WICP: icpPrice }[
           selectedToken?.symbol
-        ] || 1;
+        ] || null;
       setSelectedTokenPrice(price);
     }
   }, [selectedToken]);
@@ -262,9 +262,9 @@ function Send({ modalRef, nft, token, onSuccess }) {
       getAvailableAmount(
         selectedToken?.amount,
         selectedToken?.symbol,
-        icpPrice
+        selectedTokenPrice
       ),
-    [selectedToken]
+    [selectedToken, selectedTokenPrice]
   );
 
   const availableUsdAmount = useMemo(
@@ -272,6 +272,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
     [availableAmount, selectedTokenPrice]
   );
 
+  console.tron.log(availableAmount, availableUsdAmount);
   const handleBack = () => {
     setAddress(null);
     setSelectedContact(null);

@@ -4,25 +4,25 @@ import { USD_PER_TC } from '@/constants/assets';
 export const getAvailableAmount = (
   amount: number,
   symbol: string,
-  icpPrice: number
+  tokenPrice: number
 ) => {
-  const { currentFee } = getTransactionFee(symbol, icpPrice);
+  const { currentFee } = getTransactionFee(symbol, tokenPrice);
   return Math.max((amount || 0) - currentFee, 0);
 };
 
 export const getUsdAvailableAmount = (
   availableAmount: number,
   selectedTokenPrice: number
-) => availableAmount * (selectedTokenPrice || 1);
+) => (selectedTokenPrice ? availableAmount * selectedTokenPrice : null);
 
-export const getTransactionFee = (tokenSymbol: string, icpPrice: number) => {
+export const getTransactionFee = (tokenSymbol: string, tokenPrice: number) => {
   let currentFee;
   let currentUSDFee;
 
   switch (tokenSymbol) {
     case 'ICP':
       currentFee = DEFAULT_FEE;
-      currentUSDFee = DEFAULT_FEE * icpPrice;
+      currentUSDFee = DEFAULT_FEE * tokenPrice;
       break;
     case 'XTC':
       currentFee = XTC_FEE;
