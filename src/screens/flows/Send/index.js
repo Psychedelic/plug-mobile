@@ -272,7 +272,6 @@ function Send({ modalRef, nft, token, onSuccess }) {
     [availableAmount, selectedTokenPrice]
   );
 
-  console.tron.log(availableAmount, availableUsdAmount);
   const handleBack = () => {
     setAddress(null);
     setSelectedContact(null);
