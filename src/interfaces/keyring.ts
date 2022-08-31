@@ -1,3 +1,4 @@
+export type FungibleStandard = 'DIP20' | 'EXT';
 export type Standard = 'DIP20' | 'XTC' | 'WICP' | 'EXT' | 'ICP';
 
 export interface StandardToken {

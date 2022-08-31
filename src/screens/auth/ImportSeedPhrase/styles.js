@@ -22,8 +22,11 @@ export default StyleSheet.create({
     paddingHorizontal: 30,
   },
   input: {
-    backgroundColor: Colors.Gray.Secondary,
     marginTop: 30,
+    height: 100,
+  },
+  inputContainer: {
+    backgroundColor: Colors.Gray.Secondary,
   },
   button: {
     marginTop: 30,

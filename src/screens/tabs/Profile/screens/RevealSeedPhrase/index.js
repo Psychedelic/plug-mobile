@@ -64,8 +64,8 @@ function RevealSeedPhrase({ modalRef }) {
             <>
               <PasswordInput
                 error={error}
-                password={password}
-                onChange={setPassword}
+                value={password}
+                onChangeText={setPassword}
                 onSubmit={handleSubmit}
               />
               <RainbowButton

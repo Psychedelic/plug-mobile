@@ -27,7 +27,7 @@ export default StyleSheet.create({
     textAlign: 'center',
   },
   topContainer: {
-    backgroundColor: Colors.Black.Primary,
+    backgroundColor: Colors.Black.Secondary,
     borderRadius: ITEM_RADIUS,
     margin: 8,
   },
@@ -40,7 +40,6 @@ export default StyleSheet.create({
     borderColor: Colors.Gray.Primary,
   },
   itemText: {
-    fontSize: 18,
     textAlign: 'center',
     color: Colors.ActionBlue,
   },

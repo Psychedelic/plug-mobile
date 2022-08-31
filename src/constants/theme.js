@@ -30,7 +30,6 @@ export const Colors = {
     Primary: '#33343A',
     Secondary: '#23242A',
     Tertiary: '#292929',
-    Divider: '#3A3B40',
     Pure: '#616571',
   },
   Rainbow: {
@@ -43,6 +42,10 @@ export const Colors = {
   },
   Red: '#FF453A',
   Transparent: '#ffffff00',
+  Divider: {
+    1: '#3A3B40',
+    2: '#737377',
+  },
 };
 
 export const Rainbow = {
@@ -60,6 +63,18 @@ export const Rainbow = {
     'rgb(16, 217, 237)',
     'rgb(82, 255, 83)',
   ],
+};
+
+export const TransparentGradient = {
+  start: {
+    x: 0,
+    y: 0,
+  },
+  end: {
+    x: 1,
+    y: 1,
+  },
+  colors: ['transparent', 'transparent'],
 };
 
 export const DisabledRainbow = {
@@ -146,5 +161,5 @@ export const FontStyles = StyleSheet.create({
   Body2: fontMaker({ size: 17, weight: MEDIUM }),
   Button: fontMaker({ size: 20, weight: SEMIBOLD, color: Colors.White.Pure }),
   Caption: fontMaker({ size: 14, weight: MEDIUM }),
-  Overline: fontMaker({ size: 12, weight: REGULAR }),
+  Overline: fontMaker({ size: 10, weight: REGULAR }),
 });

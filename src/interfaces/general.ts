@@ -20,10 +20,3 @@ declare global {
     tron: any;
   }
 }
-
-export interface ReactObjectType {
-  bottom?: number | null;
-  left?: number | null;
-  right?: number | null;
-  top?: number | null;
-}

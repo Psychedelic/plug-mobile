@@ -30,7 +30,13 @@ function TokenFormat({
         decimalScale ? decimalScale : value && value > 0 ? VISIBLE_DECIMALS : 2
       }
       suffix={` ${token}`}
-      renderText={textValue => <Text style={style}>{textValue}</Text>}
+      renderText={textValue =>
+        textValue ? (
+          <Text type="body2" style={style}>
+            {textValue}
+          </Text>
+        ) : null
+      }
     />
   );
 }

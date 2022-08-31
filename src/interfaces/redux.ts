@@ -4,6 +4,15 @@ import { Contact } from '@/screens/tabs/Profile/screens/Contacts/utils';
 
 import { WCWhiteListItem } from './walletConnect';
 
+// Override the default state interface
+declare module 'react-redux' {
+  interface DefaultRootState {
+    icp: IcpState;
+    keyring: KeyringState;
+    user: UserState;
+  }
+}
+
 export interface CollectionToken {
   id: string;
   index: number | string;
@@ -93,6 +102,7 @@ export interface Asset {
   decimals: number;
   name: string;
   canisterId: string;
+  logo?: string;
 }
 
 export interface IcpState {

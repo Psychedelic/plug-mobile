@@ -1,6 +1,6 @@
 import i18next from 'i18next';
 import React, { RefObject } from 'react';
-import { View } from 'react-native';
+import { StyleProp, TextStyle, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { Portal } from 'react-native-portalize';
 import { SvgProps } from 'react-native-svg';
@@ -22,13 +22,25 @@ interface Option {
 
 interface Props {
   modalRef: RefObject<Modalize>;
-  onClose?: () => void;
-  title?: string;
-  subtitle?: string;
   options: Option[];
+  onClose?: () => void;
+  showIcons?: boolean;
+  subtitle?: string;
+  title?: string;
+  cancelTextStyle?: StyleProp<TextStyle>;
+  optionTextStyle?: StyleProp<TextStyle>;
 }
 
-function ActionSheet({ modalRef, onClose, title, subtitle, options }: Props) {
+function ActionSheet({
+  modalRef,
+  onClose,
+  title,
+  subtitle,
+  options,
+  showIcons = isAndroid,
+  optionTextStyle,
+  cancelTextStyle,
+}: Props) {
   const handleClose = () => {
     modalRef?.current?.close();
     onClose?.();
@@ -59,10 +71,14 @@ function ActionSheet({ modalRef, onClose, title, subtitle, options }: Props) {
                 key={option.id}
                 onPress={() => handleItemPress(option)}
                 style={[styles.item, index > 0 && styles.itemBorder]}>
-                {Icon && <Icon fill={ICON_COLOR} style={styles.icon} />}
+                {showIcons && Icon && (
+                  <Icon fill={ICON_COLOR} style={styles.icon} />
+                )}
                 <Text
+                  type="body2"
                   style={[
                     styles.itemText,
+                    optionTextStyle,
                     option.destructive && styles.destructiveText,
                   ]}>
                   {option.label}
@@ -73,8 +89,10 @@ function ActionSheet({ modalRef, onClose, title, subtitle, options }: Props) {
           <Touchable
             onPress={handleClose}
             style={[styles.item, styles.cancelContainer]}>
-            {isAndroid && <Close fill={ICON_COLOR} style={styles.icon} />}
-            <Text style={[styles.itemText, styles.cancelText]}>
+            {showIcons && <Close fill={ICON_COLOR} style={styles.icon} />}
+            <Text
+              type="body2"
+              style={[styles.itemText, styles.cancelText, cancelTextStyle]}>
               {i18next.t('common.cancel')}
             </Text>
           </Touchable>

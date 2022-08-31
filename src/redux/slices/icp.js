@@ -2,6 +2,10 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import getICPPriceService from '@/services/ICPPriceService';
 
+const INITIAL_STATE = {
+  icpPrice: null,
+};
+
 export const getICPPrice = createAsyncThunk('wallet/getICPPrice', async () => {
   try {
     const { data } = await getICPPriceService();
@@ -16,12 +20,13 @@ export const getICPPrice = createAsyncThunk('wallet/getICPPrice', async () => {
 
 export const walletSlice = createSlice({
   name: 'wallet',
-  initialState: {
-    icpPrice: null,
-  },
+  initialState: INITIAL_STATE,
   reducers: {
     setICPPrice: (state, action) => {
       state.icpPrice = action.payload;
+    },
+    reset: () => {
+      return INITIAL_STATE;
     },
   },
   extraReducers: {
@@ -31,6 +36,6 @@ export const walletSlice = createSlice({
   },
 });
 
-export const { setICPPrice } = walletSlice.actions;
+export const { setICPPrice, reset } = walletSlice.actions;
 
 export default walletSlice.reducer;

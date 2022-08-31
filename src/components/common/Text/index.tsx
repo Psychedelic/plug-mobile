@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Text as RNText, TextProps } from 'react-native';
 
-type Type =
+export type TextTypes =
   | 'headline1'
   | 'headline2'
   | 'subtitle1'
@@ -11,10 +11,11 @@ type Type =
   | 'body2'
   | 'button'
   | 'caption'
-  | 'overline';
+  | 'overline'
+  | 'normal';
 
 interface Props extends TextProps {
-  type?: Type;
+  type?: TextTypes;
 }
 
 import styles from './styles';

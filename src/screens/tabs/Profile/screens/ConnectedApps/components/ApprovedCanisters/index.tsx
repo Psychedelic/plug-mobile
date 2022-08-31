@@ -5,9 +5,10 @@ import { Modalize } from 'react-native-modalize';
 
 import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
+import { ActionButton } from '@/components/common';
 import CommonItem, { getShowcaseImage } from '@/components/common/CommonItem';
 import Text from '@/components/common/Text';
-import { FontStyles } from '@/constants/theme';
+import { icScanUrl } from '@/constants/urls';
 import { ConnectedApp } from '@/interfaces/redux';
 import { WCWhiteListItem } from '@/interfaces/walletConnect';
 import { formatLongDate } from '@/utils/dates';
@@ -27,7 +28,7 @@ function ApprovedCanisters({ modalRef, app, connectedAppsRef }: Props) {
     const { canisterId, icon } = item;
 
     const redirectToCanister = () =>
-      Linking.openURL(`https://icscan.io/canister/${canisterId}`);
+      Linking.openURL(`${icScanUrl}${canisterId}`);
 
     return (
       <CommonItem
@@ -57,26 +58,22 @@ function ApprovedCanisters({ modalRef, app, connectedAppsRef }: Props) {
       <Modal
         modalRef={modalRef}
         adjustToContentHeight
-        modalStyle={styles.modalStyle}>
-        <Header
-          right={
-            <Text
-              style={[FontStyles.Normal, styles.valid]}
-              onPress={closeModal}>
-              {t('common.close')}
-            </Text>
-          }
-          left={
-            <Text
-              style={[FontStyles.Normal, styles.valid]}
-              onPress={handleBack}>
-              {t('common.back')}
-            </Text>
-          }
-          center={
-            <Text type="subtitle2">{t('connectedApps.approvedCanisters')}</Text>
-          }
-        />
+        modalStyle={styles.modalStyle}
+        HeaderComponent={
+          <Header
+            right={
+              <ActionButton onPress={closeModal} label={t('common.close')} />
+            }
+            left={
+              <ActionButton onPress={handleBack} label={t('common.back')} />
+            }
+            center={
+              <Text type="subtitle2">
+                {t('connectedApps.approvedCanisters')}
+              </Text>
+            }
+          />
+        }>
         <CommonItem
           name={name}
           imageUri={imageUri}

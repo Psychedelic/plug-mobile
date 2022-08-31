@@ -9,7 +9,5 @@ export default StyleSheet.create({
   },
   text: {
     color: Colors.ActionBlue,
-    fontSize: 17,
-    marginLeft: 5,
   },
 });

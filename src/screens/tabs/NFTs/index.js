@@ -83,6 +83,7 @@ const NFTs = () => {
               <EmptyState
                 title={t('nftTab.emptyTitle')}
                 text={t('nftTab.emptySubtitle')}
+                style={styles.emptyState}
               />
             }
           />

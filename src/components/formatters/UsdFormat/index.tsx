@@ -21,7 +21,13 @@ function UsdFormat({ value, style, decimalScale = 2, suffix }: Props) {
       decimalScale={decimalScale}
       prefix="$"
       suffix={suffix ? ` ${suffix}` : undefined}
-      renderText={textValue => <Text style={style}>{textValue}</Text>}
+      renderText={(textValue: string) =>
+        textValue ? (
+          <Text type="body2" style={style}>
+            {textValue}
+          </Text>
+        ) : null
+      }
     />
   );
 }
