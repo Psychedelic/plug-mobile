@@ -36,7 +36,7 @@ export const formatAssetBySymbol = (
         value: icpValue,
         icon: TOKEN_IMAGES.WICP,
       },
-    }[symbol] || { amount, value: 0, icon: undefined } // What should we do if we don't know the value?
+    }[symbol] || { amount, value: undefined, icon: undefined } // What should we do if we don't know the value?
   );
 };
 
@@ -91,7 +91,7 @@ export const formatAssets = (
 ): Asset[] =>
   assets.map(currentAsset => {
     const { amount, token } = currentAsset;
-    const { name, canisterId, symbol, decimals } = token;
+    const { symbol, decimals } = token;
 
     const parsedAmount = parseToFloatAmount(
       amount,
@@ -99,10 +99,7 @@ export const formatAssets = (
     );
 
     const formattedAsset = {
-      name,
-      symbol,
-      canisterId,
-      decimals,
+      ...token,
       ...formatAssetBySymbol(parsedAmount, symbol, icpPrice),
     };
 

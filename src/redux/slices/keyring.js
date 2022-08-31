@@ -18,7 +18,15 @@ import {
   setTransactionsLoading,
 } from './user';
 
-export const initKeyring = createAsyncThunk('keyring/init', async () => {
+const DEFAULT_STATE = {
+  instance: null,
+  isInitialized: false,
+  isUnlocked: false,
+  currentWallet: null,
+  wallets: [],
+};
+
+export const initKeyring = createAsyncThunk('keyring/init', async params => {
   let keyring = new PlugController.PlugKeyRing(
     keyringStorage,
     RNCryptoJS,
@@ -31,6 +39,7 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
       await keyring.lock();
     }
   }
+  params?.callback?.();
   return keyring;
 });
 
@@ -76,7 +85,7 @@ export const importWallet = createAsyncThunk(
       });
       wallet = response?.wallet;
       unlocked = await instance?.unlock(params.password);
-      dispatch(setUnlocked(unlocked));
+
       // Get new data:
       getNewAccountData(dispatch, icpPrice, state);
       onSuccess?.();
@@ -84,7 +93,7 @@ export const importWallet = createAsyncThunk(
       console.log('Import Wallet Error:', e);
       onError?.();
     }
-    return { wallet };
+    return { wallet, unlocked };
   }
 );
 
@@ -131,31 +140,35 @@ export const getMnemonic = createAsyncThunk(
   }
 );
 
+export const lock = createAsyncThunk(
+  'keyring/lock',
+  async (_, { getState }) => {
+    await getState().keyring?.instance?.lock();
+    return false;
+  }
+);
+
 export const unlock = createAsyncThunk(
   'keyring/unlock',
   async (params, { getState }) => {
     const state = getState();
-    return await privateUnlock(params, state);
+    let unlocked = false;
+    const { password, onError, onSuccess } = params;
+    try {
+      const instance = state.keyring?.instance;
+      unlocked = await instance?.unlock(password);
+      if (unlocked) {
+        onSuccess?.();
+      } else {
+        onError?.();
+      }
+    } catch (e) {
+      onError?.();
+      console.log('Error in unlock:', e.message);
+    }
+    return unlocked;
   }
 );
-
-const privateUnlock = async (params, state) => {
-  let unlocked = false;
-  const { password, onError, onSuccess } = params;
-  try {
-    const instance = state.keyring?.instance;
-    unlocked = await instance?.unlock(password);
-    if (unlocked) {
-      onSuccess?.();
-    } else {
-      onError?.();
-    }
-  } catch (e) {
-    onError?.();
-    console.log('Private Unlock:', e.message);
-  }
-  return { unlocked };
-};
 
 export const login = createAsyncThunk(
   'keyring/login',
@@ -169,7 +182,7 @@ export const login = createAsyncThunk(
     };
 
     try {
-      const { unlocked } = await privateUnlock(params, state);
+      const unlocked = await instance?.unlock(params.password);
       const { wallets, currentWalletId } = await instance?.getState();
       if (unlocked) {
         dispatch(setCurrentWallet(wallets[currentWalletId]));
@@ -255,15 +268,6 @@ export const setCurrentPrincipal = createAsyncThunk(
   }
 );
 
-const DEFAULT_STATE = {
-  instance: null,
-  isInitialized: false,
-  isUnlocked: false,
-  currentWallet: null,
-  wallets: [],
-  password: '',
-};
-
 export const keyringSlice = createSlice({
   name: 'keyring',
   initialState: DEFAULT_STATE,
@@ -271,14 +275,19 @@ export const keyringSlice = createSlice({
     setCurrentWallet: (state, action) => {
       state.currentWallet = action.payload;
     },
-    setUnlocked: (state, action) => {
-      state.isUnlocked = action.payload;
-    },
     setWallets: (state, action) => {
       state.wallets = action.payload;
     },
-    reset: state => {
-      state = { ...DEFAULT_STATE, instance: state.instance };
+    clear: state => {
+      return { ...DEFAULT_STATE, instance: state.instance };
+    },
+    reset: () => {
+      let instance = new PlugController.PlugKeyRing(
+        keyringStorage,
+        RNCryptoJS,
+        fetch
+      );
+      return { ...DEFAULT_STATE, instance };
     },
   },
   extraReducers: {
@@ -303,9 +312,11 @@ export const keyringSlice = createSlice({
     [login.fulfilled]: (state, action) => {
       state.isUnlocked = action.payload;
     },
+    [lock.fulfilled]: state => {
+      state.isUnlocked = false;
+    },
     [unlock.fulfilled]: (state, action) => {
-      const { unlocked } = action.payload;
-      state.isUnlocked = unlocked;
+      state.isUnlocked = action.payload;
     },
     [createWallet.fulfilled]: (state, action) => {
       const { wallet, unlocked } = action.payload;
@@ -317,17 +328,18 @@ export const keyringSlice = createSlice({
       }
     },
     [importWallet.fulfilled]: (state, action) => {
-      const { wallet } = action.payload;
+      const { wallet, unlocked } = action.payload;
       if (Object.keys(wallet).length > 0) {
         state.wallets = [wallet];
         state.currentWallet = wallet;
         state.isInitialized = true;
+        state.isUnlocked = unlocked;
       }
     },
   },
 });
 
-export const { setCurrentWallet, setUnlocked, setWallets, reset } =
+export const { setCurrentWallet, setWallets, clear, reset } =
   keyringSlice.actions;
 
 export default keyringSlice.reducer;

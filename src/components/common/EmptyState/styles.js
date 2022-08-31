@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { FontStyles } from '@/constants/theme';
+import { Colors } from '@/constants/theme';
 
 export default StyleSheet.create({
   container: {
@@ -9,16 +9,19 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    ...FontStyles.Title,
-    marginTop: 15,
-    marginBottom: 11,
+    color: Colors.White.Primary,
+    marginTop: 11,
+    marginBottom: 8,
   },
   text: {
-    ...FontStyles.NormalGray,
+    color: Colors.White.Secondary,
     textAlign: 'center',
     paddingHorizontal: 40,
   },
+  link: {
+    color: Colors.ActionBlue,
+  },
   emoji: {
-    fontSize: 40,
+    fontSize: 38,
   },
 });

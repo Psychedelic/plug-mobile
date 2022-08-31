@@ -18,4 +18,7 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     paddingRight: commonPadding,
   },
+  scrollContent: {
+    paddingBottom: 70,
+  },
 });

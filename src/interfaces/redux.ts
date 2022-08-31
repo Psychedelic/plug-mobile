@@ -2,6 +2,15 @@ import WalletConnect from '@walletconnect/client';
 
 import { Contact } from '@/screens/tabs/Profile/screens/Contacts/utils';
 
+// Override the default state interface
+declare module 'react-redux' {
+  interface DefaultRootState {
+    icp: IcpState;
+    keyring: KeyringState;
+    user: UserState;
+  }
+}
+
 export interface CollectionToken {
   id: string;
   index: number | string;
@@ -91,6 +100,7 @@ export interface Asset {
   decimals: number;
   name: string;
   canisterId: string;
+  logo?: string;
 }
 
 export interface IcpState {
@@ -132,6 +142,42 @@ export interface UserState {
   collectionsError: boolean;
   usingBiometrics: boolean;
   biometricsAvailable: boolean;
+}
+
+export interface WalletConnectCallRequest {
+  clientId: string;
+  dappName: string;
+  dappScheme: string;
+  dappUrl: string;
+  imageUrl: string;
+  methodName: string;
+  args: any;
+  peerId: string;
+  requestId: number;
+  executor: any;
+}
+
+export interface WalletConnectSession {
+  pending: boolean;
+  walletConnector: WalletConnect;
+  meta: any;
+}
+
+export interface WalletConnectState {
+  pendingRedirect: {
+    [requestId: string]: {
+      pending: boolean;
+      schema?: string;
+    };
+  };
+  pendingCallRequests: { [requestId: number]: WalletConnectCallRequest };
+  sessions: {
+    [peerId: string]: WalletConnectSession;
+  };
+  bridgeTimeout: {
+    timeout: number;
+    onBridgeContact: any;
+  };
 }
 
 export interface WalletConnectCallRequest {

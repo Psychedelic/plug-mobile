@@ -8,9 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Colors } from '@/constants/theme';
 import { RootStackParamList } from '@/interfaces/navigation';
-import { State } from '@/interfaces/redux';
 import SwipeNavigator from '@/navigation/navigators/SwipeNavigator';
-import { setUnlocked } from '@/redux/slices/keyring';
+import { lock } from '@/redux/slices/keyring';
 import BackupSeedPhrase from '@/screens/auth/BackupSeedPhrase';
 import CreatePassword from '@/screens/auth/CreatePassword';
 import ImportSeedPhrase from '@/screens/auth/ImportSeedPhrase';
@@ -27,15 +26,13 @@ import Routes from './Routes';
 const Stack = createStackNavigator<RootStackParamList>();
 
 const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
-  const { isInitialized, isUnlocked } = useSelector(
-    (state: State) => state.keyring
-  );
+  const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
 
   const dispatch = useDispatch();
   const backgroundTime = useRef<any>(null);
 
   const handleLockState = () => {
-    dispatch(setUnlocked(false));
+    dispatch(lock());
   };
 
   const handleDeepLinkHandler = useCallback(

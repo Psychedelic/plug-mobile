@@ -116,11 +116,10 @@ const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
         </View>
         <TextInput
           autoFocus
-          variant="text"
-          maxLenght={22}
+          maxLength={22}
           value={accountName}
           placeholder={t('accounts.accountNamePlaceholder')}
-          customStyle={styles.input}
+          style={styles.input}
           onChangeText={setAccountName}
         />
         <RainbowButton

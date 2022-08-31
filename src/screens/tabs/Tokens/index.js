@@ -3,8 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { RefreshControl, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ErrorState from '@/commonComponents/ErrorState';
-import Text from '@/components/common/Text';
+import { ErrorState, Text } from '@/components/common';
 import TokenItem from '@/components/tokens/TokenItem';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
@@ -13,6 +12,7 @@ import { getBalance, setAssetsLoading } from '@/redux/slices/user';
 import Send from '@/screens/flows/Send';
 
 import WalletHeader from '../components/WalletHeader';
+import { AddToken } from './components/AddToken';
 import styles from './styles';
 
 function Tokens() {
@@ -26,7 +26,10 @@ function Tokens() {
 
   const [refreshing, setRefresing] = useState(assetsLoading);
   const usdSum = Number(
-    assets.reduce((total, token) => total + Number(token?.value), 0)
+    assets.reduce(
+      (total, token) => (token?.value ? total + Number(token?.value) : total),
+      0
+    )
   ).toFixed(2);
 
   useEffect(() => {
@@ -57,26 +60,30 @@ function Tokens() {
       </Row>
       <Separator />
       {!assetsError ? (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          overScrollMode="never"
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={onRefresh}
-              tintColor={Colors.White.Primary}
-            />
-          }>
-          {assets?.map(token => (
-            <TokenItem
-              {...token}
-              key={token.symbol}
-              color={Colors.Gray.Tertiary}
-              onPress={openSend(token)}
-              style={styles.tokenItem}
-            />
-          ))}
-        </ScrollView>
+        <>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            overScrollMode="never"
+            contentContainerStyle={styles.scrollContent}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                tintColor={Colors.White.Primary}
+              />
+            }>
+            {assets?.map(token => (
+              <TokenItem
+                token={token}
+                key={token.symbol}
+                color={Colors.Gray.Tertiary}
+                onPress={openSend(token)}
+                style={styles.tokenItem}
+              />
+            ))}
+          </ScrollView>
+          <AddToken />
+        </>
       ) : (
         <ErrorState
           onPress={handleRefresh}

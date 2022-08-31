@@ -6,6 +6,6 @@
 
 [Change!] Show the screenshots of the views you modified.
 
-## Notion Ticket
+## Github Issue
 
-[Change!] Link to the associated Notion ticket.
+[Change!] Link to the associated Github issue.
