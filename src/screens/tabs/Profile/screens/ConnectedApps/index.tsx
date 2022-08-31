@@ -4,11 +4,8 @@ import { Platform } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Header from '@/commonComponents/Header';
-import Modal from '@/commonComponents/Modal';
-import ActionSheet from '@/components/common/ActionSheet';
+import { ActionSheet, Header, Modal, Text } from '@/components/common';
 import CommonItem, { getShowcaseImage } from '@/components/common/CommonItem';
-import Text from '@/components/common/Text';
 import DeleteIcon from '@/icons/svg/material/Delete.svg';
 import ViewIcon from '@/icons/svg/material/View.svg';
 import { ConnectedApp, State } from '@/interfaces/redux';
@@ -83,14 +80,17 @@ function ConnectedApps({ modalRef }: Props) {
       <Modal
         modalRef={modalRef}
         adjustToContentHeight
-        modalStyle={styles.modalStyle}>
-        <Header
-          center={
-            <Text type="subtitle2">
-              {t('settings.items.connectedApps.name')}
-            </Text>
-          }
-        />
+        disableScrollIfPossible={false}
+        modalStyle={styles.modalStyle}
+        HeaderComponent={
+          <Header
+            center={
+              <Text type="subtitle2">
+                {t('settings.items.connectedApps.name')}
+              </Text>
+            }
+          />
+        }>
         {connectedApps.length > 0 ? (
           connectedApps.map(renderApp)
         ) : (

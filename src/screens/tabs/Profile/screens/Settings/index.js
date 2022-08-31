@@ -113,16 +113,16 @@ const Settings = () => {
         onPress: openBiometricUnlock,
       },
       {
-        icon: '🔒',
-        name: t('settings.items.lock.name'),
-        description: t('settings.items.lock.desc'),
-        onPress: lockAccount,
-      },
-      {
         icon: '📱️️️️',
         name: t('settings.items.connectedApps.name'),
         description: t('settings.items.connectedApps.desc'),
         onPress: openConnectedApps,
+      },
+      {
+        icon: '🔒',
+        name: t('settings.items.lock.name'),
+        description: t('settings.items.lock.desc'),
+        onPress: lockAccount,
       },
     ],
     []

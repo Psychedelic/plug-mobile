@@ -58,6 +58,7 @@ function ApprovedCanisters({ modalRef, app, connectedAppsRef }: Props) {
       <Modal
         modalRef={modalRef}
         adjustToContentHeight
+        disableScrollIfPossible={false}
         modalStyle={styles.modalStyle}
         HeaderComponent={
           <Header

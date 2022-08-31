@@ -22,6 +22,7 @@ interface Props {
   HeaderComponent?: React.ReactNode;
   FooterComponent?: React.ReactNode;
   FloatingComponent?: React.ReactNode;
+  disableScrollIfPossible?: boolean;
 }
 
 function Modal({
@@ -36,6 +37,7 @@ function Modal({
   HeaderComponent,
   FooterComponent,
   FloatingComponent,
+  disableScrollIfPossible,
   ...props
 }: Props) {
   const { bottom } = useSafeAreaInsets();
@@ -74,6 +76,7 @@ function Modal({
         HeaderComponent={HeaderComponent}
         FooterComponent={FooterComponent}
         FloatingComponent={FloatingComponent}
+        disableScrollIfPossible={disableScrollIfPossible}
         threshold={15}>
         {children}
       </Modalize>

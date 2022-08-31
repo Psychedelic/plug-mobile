@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native';
 
 import { Colors } from '@/constants/theme';
+import { fontMaker } from '@/utils/fonts';
 
 export default StyleSheet.create({
   emptyState: {
-    color: Colors.Gray.Pure,
-    fontSize: 17,
+    ...fontMaker({ size: 17, color: Colors.Gray.Pure }),
     alignSelf: 'center',
     paddingBottom: 20,
   },
