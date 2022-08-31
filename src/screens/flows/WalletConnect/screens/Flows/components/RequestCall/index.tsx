@@ -4,8 +4,8 @@ import { ActivityIndicator, Image, Linking, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { getTokenPrices } from '@/constants/assets';
-import { TRUST_AND_SECURITY_URL } from '@/constants/general';
 import { FontStyles } from '@/constants/theme';
+import { TRUST_AND_SECURITY_URL } from '@/constants/urls';
 import { Nullable } from '@/interfaces/general';
 import { State } from '@/interfaces/redux';
 import {

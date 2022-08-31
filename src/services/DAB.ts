@@ -8,7 +8,7 @@ import {
 } from '@psychedelic/dab-js';
 import { fetch } from 'react-native-fetch-api';
 
-import { IC_URL_HOST } from '@/constants/general';
+import { DFINITY_HOST, IC_URL_HOST } from '@/constants/urls';
 import { DABToken } from '@/interfaces/dab';
 import { recursiveParseBigint, recursiveParsePrincipal } from '@/utils/objects';
 
@@ -35,7 +35,7 @@ export const getTokenBalance = async (
 ) => {
   const agent = new HttpAgent({
     fetch,
-    host: 'https://mainnet.dfinity.network',
+    host: DFINITY_HOST,
   });
   const tokenActor = await getTokenActor({
     canisterId: token.canisterId.toString(),
