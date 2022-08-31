@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import React, { RefObject, useRef, useState } from 'react';
-import { Platform } from 'react-native';
+import { Platform, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -81,7 +81,6 @@ function ConnectedApps({ modalRef }: Props) {
         modalRef={modalRef}
         adjustToContentHeight
         disableScrollIfPossible={false}
-        modalStyle={styles.modalStyle}
         HeaderComponent={
           <Header
             center={
@@ -91,11 +90,15 @@ function ConnectedApps({ modalRef }: Props) {
             }
           />
         }>
-        {connectedApps.length > 0 ? (
-          connectedApps.map(renderApp)
-        ) : (
-          <Text style={styles.emptyState}>{t('connectedApps.emptyState')}</Text>
-        )}
+        <View style={styles.container}>
+          {connectedApps.length > 0 ? (
+            connectedApps.map(renderApp)
+          ) : (
+            <Text style={styles.emptyState}>
+              {t('connectedApps.emptyState')}
+            </Text>
+          )}
+        </View>
       </Modal>
       <ActionSheet
         modalRef={actionSheetRef}

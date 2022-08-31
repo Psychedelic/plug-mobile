@@ -13,7 +13,7 @@ export default StyleSheet.create({
   canister: {
     marginBottom: 24,
   },
-  modalStyle: {
+  container: {
     paddingHorizontal: 20,
   },
 });

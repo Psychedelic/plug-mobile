@@ -12,7 +12,7 @@ export default StyleSheet.create({
   appItem: {
     marginBottom: 24,
   },
-  modalStyle: {
+  container: {
     paddingHorizontal: 20,
   },
 });

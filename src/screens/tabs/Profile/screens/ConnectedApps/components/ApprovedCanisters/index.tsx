@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import React, { RefObject } from 'react';
-import { Linking } from 'react-native';
+import { Linking, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
 import Header from '@/commonComponents/Header';
@@ -59,7 +59,6 @@ function ApprovedCanisters({ modalRef, app, connectedAppsRef }: Props) {
         modalRef={modalRef}
         adjustToContentHeight
         disableScrollIfPossible={false}
-        modalStyle={styles.modalStyle}
         HeaderComponent={
           <Header
             right={
@@ -75,14 +74,16 @@ function ApprovedCanisters({ modalRef, app, connectedAppsRef }: Props) {
             }
           />
         }>
-        <CommonItem
-          name={name}
-          imageUri={imageUri}
-          showActions={false}
-          style={styles.itemShowcase}
-          subtitle={`${formatLongDate(lastConection)}`}
-        />
-        {canisterList?.map(renderCanister)}
+        <View style={styles.container}>
+          <CommonItem
+            name={name}
+            imageUri={imageUri}
+            showActions={false}
+            style={styles.itemShowcase}
+            subtitle={`${formatLongDate(lastConection)}`}
+          />
+          {canisterList?.map(renderCanister)}
+        </View>
       </Modal>
     </>
   );
