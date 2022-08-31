@@ -91,11 +91,17 @@ const TextInput = ({
 
   return (
     <LinearGradient
-      style={[styles.gradientContainer, !multiline && styles.singleLine, style]}
+      style={[
+        styles.gradientContainer,
+        !multiline && styles.singleLine,
+        disabled && styles.disabledContainer,
+        style,
+      ]}
       {...gradient}>
       <View style={[innerContainerStyle, contentContainerStyle]}>
         {left}
         <Input
+          underlineColorAndroid="transparent"
           style={[styles.textInput, inputStyle]}
           placeholderTextColor={placeholderTextColor}
           onChangeText={onChangeText}

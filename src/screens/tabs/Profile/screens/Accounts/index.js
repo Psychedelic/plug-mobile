@@ -16,7 +16,7 @@ import CopyIcon from '@/icons/svg/material/Copy.svg';
 import EditIcon from '@/icons/svg/material/Edit.svg';
 import { Row } from '@/layout';
 import { getICPPrice } from '@/redux/slices/icp';
-import { clear, setCurrentPrincipal } from '@/redux/slices/keyring';
+import { setCurrentPrincipal } from '@/redux/slices/keyring';
 import { getNFTs } from '@/redux/slices/user';
 import shortAddress from '@/utils/shortAddress';
 
@@ -50,7 +50,6 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
 
   const onChangeAccount = walletNumber => {
     setLoading(true);
-    dispatch(clear());
     dispatch(setCurrentPrincipal({ walletNumber, icpPrice }))
       .unwrap()
       .then(() => {

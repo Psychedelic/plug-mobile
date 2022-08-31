@@ -120,9 +120,13 @@ const ReviewSend = ({
         {token && (
           <Row style={styles.row}>
             <Column>
-              <Text style={styles.title}>${value?.display}</Text>
-              <Text type="subtitle3">
-                <Text>{`${amount?.display} ${token.symbol}`}</Text>
+              {value ? (
+                <Text style={styles.title}>${value?.display}</Text>
+              ) : null}
+              <Text
+                type="caption"
+                style={value ? styles.subtitle : styles.title}>
+                {`${amount?.display} ${token.symbol}`}
               </Text>
             </Column>
             <TokenIcon {...token} color={Colors.Gray.Tertiary} />
@@ -148,7 +152,7 @@ const ReviewSend = ({
             {selectedContact ? (
               <>
                 <Text style={styles.title}>{selectedContact?.name}</Text>
-                <Text type="subtitle3">
+                <Text style={styles.subtitle}>
                   {shortAddress(selectedContact?.id)}
                 </Text>
               </>

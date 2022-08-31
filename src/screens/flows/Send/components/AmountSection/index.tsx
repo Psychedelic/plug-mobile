@@ -1,21 +1,24 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { View } from 'react-native';
 
 import RainbowButton from '@/components/buttons/RainbowButton';
+import { Text } from '@/components/common';
 import AmountInput from '@/components/common/AmountInput';
+import Info from '@/components/icons/svg/Info.svg';
 import TokenSelector from '@/components/tokens/TokenSelector';
 import { VISIBLE_DECIMALS } from '@/constants/business';
 import { Asset } from '@/interfaces/redux';
 import { parseLocaleNumber, toFixedLocale } from '@/utils/number';
 
 import { Amount } from '../../interfaces';
-import styles from './styles';
+import styles, { iconColor } from './styles';
 
 interface Props {
   selectedToken: Asset;
   tokenAmount: Amount;
-  usdAmount: Amount;
-  tokenPrice: number;
+  usdAmount: Amount | null;
+  tokenPrice: number | null;
   availableAmount: number;
   availableUsdAmount: number;
   setUsdAmount: (value: Amount | null) => void;
@@ -48,7 +51,7 @@ const AmountSection = ({
     });
 
     setUsdAmount(
-      !isNaN(formattedAmount) && formattedAmount > 0
+      !isNaN(formattedAmount) && formattedAmount > 0 && tokenPrice
         ? {
             value: formattedAmount * tokenPrice,
             display: toFixedLocale(
@@ -68,7 +71,7 @@ const AmountSection = ({
     });
 
     setTokenAmount(
-      !isNaN(formattedAmount) && formattedAmount > 0
+      !isNaN(formattedAmount) && formattedAmount > 0 && tokenPrice
         ? {
             value: formattedAmount / tokenPrice,
             display: toFixedLocale(
@@ -87,7 +90,7 @@ const AmountSection = ({
     });
 
     setUsdAmount(
-      !isNaN(availableAmount) && availableAmount > 0
+      !isNaN(availableAmount) && availableAmount > 0 && tokenPrice
         ? {
             value: availableAmount * tokenPrice,
             display: toFixedLocale(
@@ -106,12 +109,12 @@ const AmountSection = ({
   };
 
   const getButtonText = () => {
-    if (!tokenAmount || !usdAmount) {
+    if (!tokenAmount) {
       return t('send.enterAmount');
     }
 
     if (
-      availableUsdAmount < usdAmount?.value ||
+      (usdAmount?.value && availableUsdAmount < usdAmount.value) ||
       availableAmount < tokenAmount?.value
     ) {
       return t('send.noFunds');
@@ -122,9 +125,8 @@ const AmountSection = ({
   const isButtonDisabled = () =>
     !tokenAmount ||
     tokenAmount.value <= 0 ||
-    !usdAmount ||
-    usdAmount.value <= 0 ||
-    usdAmount.value > availableUsdAmount ||
+    (usdAmount &&
+      (usdAmount.value <= 0 || usdAmount.value > availableUsdAmount)) ||
     tokenAmount.value > availableAmount;
 
   return (
@@ -146,7 +148,6 @@ const AmountSection = ({
         setSelected={setSelectedInput}
         symbol={selectedToken.symbol}
         containerStyle={styles.firstInputContainer}
-        inputStyle={styles.firstInput}
       />
       <AmountInput
         value={usdAmount?.display}
@@ -154,9 +155,18 @@ const AmountSection = ({
         selected={selectedInput === 'USD'}
         setSelected={setSelectedInput}
         symbol="USD"
-        containerStyle={styles.secondInputContainer}
+        disabled={!tokenPrice}
       />
+      {!tokenPrice ? (
+        <View style={styles.captionContainer}>
+          <Info fill={iconColor} />
+          <Text type="caption" style={styles.captionText}>
+            {t('send.noPriceAvailable', { token: selectedToken.name })}
+          </Text>
+        </View>
+      ) : null}
       <RainbowButton
+        buttonStyle={styles.button}
         text={getButtonText()}
         onPress={onReview}
         disabled={isButtonDisabled()}

@@ -76,6 +76,7 @@ const translations = {
     contact: 'Contact',
     enterPassword: 'Enter your password',
     contacts: 'Contacts',
+    noPriceAvailable: 'No price available for {{token}}',
   },
   transactionTypes: {
     swap: 'Swap',
