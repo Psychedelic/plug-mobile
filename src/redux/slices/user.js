@@ -5,6 +5,7 @@ import { ENABLE_NFTS } from '@/constants/nfts';
 import { getICPPrice } from '@/redux/slices/icp';
 import { formatAssets, parseToBigIntString } from '@/utils/currencies';
 import { recursiveParseBigint } from '@/utils/objects';
+import { uniqueConcat } from '@/utils/utilities';
 
 import {
   DEFAULT_ASSETS,
@@ -378,25 +379,27 @@ export const addConnectedApp = createAsyncThunk(
   async (app, { getState }) => {
     const currentConnectedApps = getState().user.connectedApps;
     const { name, canisterList, lastConection } = app;
-    let connectedApps = [app, ...currentConnectedApps];
 
     const appAlreadyAdded = currentConnectedApps.find(
       connectedApp => connectedApp.name === name
     );
 
     if (appAlreadyAdded) {
-      connectedApps = currentConnectedApps.map(connectedApp =>
+      return currentConnectedApps.map(connectedApp =>
         connectedApp.name === name
           ? {
               lastConection,
-              canisterList: [...canisterList, ...connectedApp.canisterList],
+              canisterList: uniqueConcat(
+                connectedApp.canisterList,
+                canisterList
+              ),
               ...connectedApp,
             }
           : connectedApp
       );
     }
 
-    return connectedApps;
+    return [app, ...currentConnectedApps];
   }
 );
 
