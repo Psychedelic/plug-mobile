@@ -64,15 +64,12 @@ function CommonItem({
 
   const formattedId = shortAddress(id, longId ? longIdConfig : undefined);
 
-  const handleOnPress = () => onPress?.();
-  const handleOnLongPress = () => onLongPress?.();
-
   return (
     <View style={style}>
       <Touchable
         scale={animationScales.small}
-        onPress={handleOnPress}
-        onLongPress={handleOnLongPress}>
+        onPress={onPress}
+        onLongPress={onLongPress}>
         <View style={styles.root}>
           {imageUri ? (
             <ImageDisplayer
@@ -92,8 +89,8 @@ function CommonItem({
           {showActions && (
             <View style={styles.threeDots}>
               <Touchable
-                onPress={handleOnPress}
-                onLongPress={handleOnLongPress}
+                onPress={onPress}
+                onLongPress={onLongPress}
                 scale={animationScales.large}
                 hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}>
                 <Icon name={actionIconName} />
