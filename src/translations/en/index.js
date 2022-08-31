@@ -141,7 +141,7 @@ const translations = {
       },
       lock: { name: 'Lock Account', desc: 'Lock your account and sign out.' },
     },
-    version: 'v{{version}}',
+    version: 'v{{version}}({{build}})',
     infoItems: {
       docs: '📕  Learn more about Plug',
       blog: '📰  Read our Blog',

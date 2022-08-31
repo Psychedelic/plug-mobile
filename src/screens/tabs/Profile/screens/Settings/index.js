@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Linking, View } from 'react-native';
+import { getBuildNumber, getVersion } from 'react-native-device-info';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Modal from '@/commonComponents/Modal';
@@ -22,7 +23,6 @@ import Contacts from '@/screens/tabs/Profile/screens/Contacts';
 import animationScales from '@/utils/animationScales';
 import { clearStorage } from '@/utils/localStorage';
 
-import { version } from '../../../../../../package.json';
 import DeleteWallet from '../DeleteWallet';
 import RevealSeedPhrase from '../RevealSeedPhrase';
 import BiometricUnlock from './components/BiometricUnlock';
@@ -169,7 +169,10 @@ const Settings = () => {
               <InfoItem {...item} key={item.name} />
             ))}
             <Text style={[FontStyles.SmallGray, styles.version]}>
-              {t('settings.version', { version })}
+              {t('settings.version', {
+                version: getVersion(),
+                build: getBuildNumber(),
+              })}
             </Text>
           </View>
         </View>
