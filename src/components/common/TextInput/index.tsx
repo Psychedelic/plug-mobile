@@ -64,7 +64,6 @@ const TextInput = ({
   const innerContainerStyle = [
     styles.innerContainer,
     multiline && styles.multilineContainer,
-    disabled && styles.disabledContainer,
   ];
 
   const [isFocused, setIsFocused] = useState(false);
@@ -92,7 +91,12 @@ const TextInput = ({
 
   return (
     <LinearGradient
-      style={[styles.gradientContainer, !multiline && styles.singleLine, style]}
+      style={[
+        styles.gradientContainer,
+        !multiline && styles.singleLine,
+        disabled && styles.disabledContainer,
+        style,
+      ]}
       {...gradient}>
       <View style={[innerContainerStyle, contentContainerStyle]}>
         {left}
