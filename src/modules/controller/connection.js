@@ -63,17 +63,12 @@ const ConnectionModule = (dispatch, getState) => {
 
       const app = await getApp(walletId.toString(), url);
       if (app?.status === CONNECTION_STATUS.accepted) {
-        if (!keyring?.isUnlocked) {
-          // TODO: Show requestDonnectionData screen
-          return;
-        } else {
-          dispatch(
-            walletConnectExecuteAndResponse({
-              requestId,
-              args: [app],
-            })
-          );
-        }
+        dispatch(
+          walletConnectExecuteAndResponse({
+            requestId,
+            args: [app],
+          })
+        );
       } else {
         dispatch(
           walletConnectExecuteAndResponse({

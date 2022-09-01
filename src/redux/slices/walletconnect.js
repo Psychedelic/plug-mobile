@@ -198,7 +198,7 @@ const listenOnNewMessages = createAsyncThunk(
             }, 20000);
           }
 
-          if (!isUnlocked() || needSign(payload.method, request.args)) {
+          if (needSign(payload.method, request.args)) {
             const waitingFn = InteractionManager.runAfterInteractions;
 
             waitingFn(async () => {
