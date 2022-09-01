@@ -4,27 +4,21 @@ import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import { createTransform, persistReducer, persistStore } from 'redux-persist';
 import thunk from 'redux-thunk';
 
+import { KEYRING_STORAGE_KEY } from '@/constants/keyring';
+import { WALLETCONNECT_STORAGE_KEY } from '@/constants/walletconnect';
+
 import Reactotron from '../config/reactotron';
 import IcpReducer from './slices/icp';
 import KeyringReducer from './slices/keyring';
 import UserReducer from './slices/user';
 import WalletConnectReducer from './slices/walletconnect';
-
-// CONSTANT
-
-export const WALLETCONNECTKEY = 'WALLETCONNECT';
+import { migrateData } from './utils';
 
 // PERSIST
 export const transformCircular = createTransform(
   inboundState => Flatted.stringify(inboundState),
   outboundState => Flatted.parse(outboundState)
 );
-
-const persistConfig = {
-  key: 'root',
-  storage: AsyncStorage,
-  transforms: [transformCircular],
-};
 
 const icpPersistConfig = {
   key: 'icp',
@@ -55,9 +49,7 @@ if (__DEV__) {
   enhancers.push(Reactotron.createEnhancer(true));
 }
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-export const store = createStore(persistedReducer, compose(...enhancers));
+export const store = createStore(rootReducer, compose(...enhancers));
 
 export const persistor = persistStore(store);
 
@@ -69,49 +61,48 @@ if (__DEV__ && Reactotron.setReduxStore) {
 
 export const keyringStorage = {
   get: async key => {
-    const state = {};
-    if (key) {
-      return AsyncStorage.getItem(key).then(value => JSON.parse(`${value}`));
-    } else {
-      const allKeys = await AsyncStorage.getAllKeys();
-      await Promise.all(
-        allKeys.map(async k => {
-          if (!k.includes('@REACTOTRON') && !k.includes('WALLETCONNECT')) {
-            const val = await AsyncStorage.getItem(k);
-            state[k] = JSON.parse(val)[0];
-          }
-        })
-      );
-      return state;
-    }
-  },
-  set: async values =>
-    Promise.all(
-      Object.entries(values).map(async ([key, val]) => {
-        await AsyncStorage.setItem(key, Flatted.stringify(val));
+    return AsyncStorage.getItem(KEYRING_STORAGE_KEY)
+      .then(async value => {
+        if (!value) {
+          const oldState = await migrateData();
+          return oldState;
+        }
+        return value ? JSON.parse(value) : value;
       })
-    ),
-  clear: AsyncStorage.clear,
+      .then(parsedValue => {
+        return parsedValue && key ? parsedValue[key] : parsedValue;
+      });
+  },
+  set: values => {
+    return AsyncStorage.getItem(KEYRING_STORAGE_KEY)
+      .then(savedValues => (savedValues ? JSON.parse(savedValues) : {}))
+      .then(parsedValues => {
+        return AsyncStorage.setItem(
+          KEYRING_STORAGE_KEY,
+          JSON.stringify({ ...parsedValues, ...values })
+        );
+      });
+  },
+  clear: () => AsyncStorage.removeItem(KEYRING_STORAGE_KEY),
 };
 
 export const walletConnectStorage = {
   get: async key => {
-    return AsyncStorage.getItem(WALLETCONNECTKEY)
-      .then(value => (value ? Flatted.parse(value) : value))
+    return AsyncStorage.getItem(WALLETCONNECT_STORAGE_KEY)
+      .then(value => (value ? JSON.parse(value) : value))
       .then(parsedValue => {
         return key && parsedValue ? parsedValue[key] : parsedValue;
       });
   },
   set: values => {
-    return AsyncStorage.getItem(WALLETCONNECTKEY)
-      .then(savedValues => (savedValues ? Flatted.parse(savedValues) : {}))
+    return AsyncStorage.getItem(WALLETCONNECT_STORAGE_KEY)
+      .then(savedValues => (savedValues ? JSON.parse(savedValues) : {}))
       .then(parsedValues => {
         return AsyncStorage.setItem(
-          WALLETCONNECTKEY,
-          Flatted.stringify({ ...parsedValues, ...values })
+          WALLETCONNECT_STORAGE_KEY,
+          JSON.stringify({ ...parsedValues, ...values })
         );
       });
   },
-  clear: () =>
-    AsyncStorage.setItem(WALLETCONNECTKEY, Flatted.stringify(undefined)),
+  clear: () => AsyncStorage.removeItem(WALLETCONNECT_STORAGE_KEY),
 };

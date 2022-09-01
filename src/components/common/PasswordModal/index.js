@@ -64,8 +64,8 @@ const PasswordModal = ({
       <Column style={styles.container}>
         <PasswordInput
           error={error}
-          password={password}
-          onChange={setPassword}
+          value={password}
+          onChangeText={setPassword}
         />
         <RainbowButton
           buttonStyle={styles.buttonStyle}

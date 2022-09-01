@@ -7,11 +7,13 @@ import Header from '@/commonComponents/Header';
 import Modal, { modalOffset } from '@/commonComponents/Modal';
 import PasswordModal from '@/commonComponents/PasswordModal';
 import TextInput from '@/commonComponents/TextInput';
+import ActionButton from '@/components/common/ActionButton';
 import Text from '@/components/common/Text';
+import Touchable from '@/components/common/Touchable';
+import Icon from '@/components/icons';
 import { ADDRESS_TYPES } from '@/constants/addresses';
 import { TOKENS, USD_PER_TC } from '@/constants/assets';
 import { isAndroid } from '@/constants/platform';
-import { FontStyles } from '@/constants/theme';
 import XTC_OPTIONS from '@/constants/xtc';
 import useKeychain from '@/hooks/useKeychain';
 import { getICPPrice } from '@/redux/slices/icp';
@@ -43,14 +45,8 @@ function Send({ modalRef, nft, token, onSuccess }) {
   const { isSensorAvailable, getPassword } = useKeychain();
   const { icpPrice } = useSelector(state => state.icp);
   const { currentWallet } = useSelector(state => state.keyring);
-  const {
-    assets,
-    contacts,
-    transaction,
-    collections,
-    usingBiometrics,
-    transactionsLoading,
-  } = useSelector(state => state.user);
+  const { assets, contacts, transaction, collections, usingBiometrics } =
+    useSelector(state => state.user);
 
   const reviewRef = useRef(null);
   const saveContactRef = useRef(null);
@@ -230,7 +226,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
       const price =
         { ICP: icpPrice, XTC: USD_PER_TC, WTC: USD_PER_TC, WICP: icpPrice }[
           selectedToken?.symbol
-        ] || 1;
+        ] || null;
       setSelectedTokenPrice(price);
     }
   }, [selectedToken]);
@@ -266,23 +262,15 @@ function Send({ modalRef, nft, token, onSuccess }) {
       getAvailableAmount(
         selectedToken?.amount,
         selectedToken?.symbol,
-        icpPrice
+        selectedTokenPrice
       ),
-    [selectedToken]
+    [selectedToken, selectedTokenPrice]
   );
 
   const availableUsdAmount = useMemo(
     () => getUsdAvailableAmount(availableAmount, selectedTokenPrice),
     [availableAmount, selectedTokenPrice]
   );
-
-  const getSaveContactRef = () => {
-    if (selectedContact || !isValidAddress) {
-      return null;
-    } else {
-      return saveContactRef;
-    }
-  };
 
   const handleBack = () => {
     setAddress(null);
@@ -325,25 +313,35 @@ function Send({ modalRef, nft, token, onSuccess }) {
         <Header
           left={
             isValidAddress && (
-              <Text
-                style={[FontStyles.Normal, styles.valid]}
-                onPress={handleBack}>
-                {t('common.back')}
-              </Text>
+              <ActionButton onPress={handleBack} label={t('common.back')} />
             )
           }
           center={<Text style={styles.centerText}>{t('send.title')}</Text>}
         />
         <TextInput
-          label={t('send.inputLabel')}
           placeholder={t('send.inputPlaceholder')}
-          variant="innerLabel"
           hideGradient
           value={selectedContact ? selectedContact.name : address}
           onChangeText={onChangeText}
-          textStyle={isValidAddress ? styles.valid : null}
+          inputStyle={[
+            styles.inputText,
+            isValidAddress && styles.inputTextValid,
+          ]}
           autoFocus
-          saveContactRef={getSaveContactRef()}
+          style={styles.input}
+          contentContainerStyle={styles.inputContent}
+          left={
+            <Text style={styles.inputLeftLabel}>{t('send.inputLabel')}</Text>
+          }
+          right={
+            !selectedContact && isValidAddress ? (
+              <Touchable
+                style={styles.addIcon}
+                onPress={saveContactRef?.current?.open}>
+                <Icon name="plus" />
+              </Touchable>
+            ) : null
+          }
         />
         {!isValidAddress && (
           <ContactSection filterText={address} onPress={onContactPress} />
@@ -391,7 +389,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
         }}
         onClose={partialReset}
         transaction={transaction}
-        loading={loading || transactionsLoading}
+        loading={loading}
       />
       <SaveContact id={address} modalRef={saveContactRef} />
       <PasswordModal

@@ -1,6 +1,7 @@
 import '@/config/logs';
 import '@/config/i18n';
 import '@/config/reactotron';
+import '@/config/extensions';
 
 import * as Sentry from '@sentry/react-native';
 import React, { useEffect, useRef } from 'react';
@@ -77,12 +78,10 @@ const PersistedApp = () => {
   };
 
   useEffect(() => {
-    if (instance) {
-      RNBootSplash.hide({ fade: true });
-    } else {
-      dispatch(initKeyring());
-    }
-  }, [instance]);
+    dispatch(
+      initKeyring({ callback: () => RNBootSplash.hide({ fade: true }) })
+    );
+  }, []);
 
   return (
     <PersistGate loading={null} persistor={persistor}>

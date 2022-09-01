@@ -5,6 +5,7 @@ import { ENABLE_NFTS } from '@/constants/nfts';
 import { getICPPrice } from '@/redux/slices/icp';
 import { formatAssets, parseToBigIntString } from '@/utils/currencies';
 import { recursiveParseBigint } from '@/utils/objects';
+import { uniqueConcat } from '@/utils/utilities';
 
 import {
   DEFAULT_ASSETS,
@@ -15,6 +16,7 @@ import {
   formatTransaction,
   TRANSACTION_STATUS,
 } from '../utils';
+import { setCurrentWallet, setWallets } from './keyring';
 
 const DEFAULT_STATE = {
   assets: DEFAULT_ASSETS,
@@ -30,6 +32,7 @@ const DEFAULT_STATE = {
   collectionsError: false,
   usingBiometrics: false,
   biometricsAvailable: false,
+  connectedApps: [],
 };
 
 export const sign = createAsyncThunk(
@@ -151,6 +154,7 @@ export const asyncGetBalance = async (params, state, dispatch) => {
     } else {
       instance?.getBalances(subaccount);
     }
+
     const icpPrice = await dispatch(getICPPrice()).unwrap();
     return formatAssets(assets, icpPrice);
   } catch (e) {
@@ -356,9 +360,10 @@ export const editContact = createAsyncThunk(
     }
   }
 );
+
 export const getICNSData = createAsyncThunk(
   'keyring/getICNSData',
-  async ({ refresh }, { getState, dispatch }) => {
+  async ({ refresh }, { getState }) => {
     const { keyring } = getState();
     const { currentWallet } = keyring;
     const icnsData = currentWallet?.icnsData || { names: [] };
@@ -368,6 +373,100 @@ export const getICNSData = createAsyncThunk(
       keyring.getICNSData();
     }
     return icnsData;
+  }
+);
+
+export const addCustomToken = createAsyncThunk(
+  'keyring/addCustomToken',
+  /**
+   * @param {{token: DABToken, onSuccess: () => void}} param
+   */
+  async ({ token, onSuccess }, { getState, dispatch }) => {
+    const { keyring, icp } = getState();
+    const currentWalletId = keyring?.instance?.currentWalletId;
+    const { canisterId, standard, logo } = token;
+    try {
+      const tokenList = await keyring?.instance?.registerToken({
+        canisterId,
+        standard,
+        subaccount: currentWalletId,
+        logo,
+      });
+      dispatch(setAssets(formatAssets(tokenList, icp.icpPrice)));
+
+      const { wallets } = await keyring?.instance?.getState();
+      dispatch(setWallets(wallets));
+      dispatch(setCurrentWallet(wallets[currentWalletId]));
+      onSuccess?.();
+    } catch (error) {
+      // TODO handle error
+      console.log(error);
+    }
+  }
+);
+
+export const getTokenInfo = createAsyncThunk(
+  'keyring/getTokenInfo',
+  /**
+   * @param {{token: DABToken, onSuccess: (token: DABToken) => void, onError: (err: string) => void}} param
+   */
+  async ({ token, onSuccess, onError }, { getState }) => {
+    const { keyring } = getState();
+    const currentWalletId = keyring?.instance?.currentWalletId;
+    try {
+      const tokenInfo = await keyring?.instance?.getTokenInfo({
+        subaccount: currentWalletId,
+        canisterId: token.canisterId,
+        standard: token.standard,
+      });
+      onSuccess?.({ ...tokenInfo, amount: tokenInfo.amount.toString() });
+    } catch (error) {
+      // TODO handle error
+      console.log('Error while fetching token info', error);
+      onError?.(error.message);
+    }
+  }
+);
+
+export const addConnectedApp = createAsyncThunk(
+  'keyring/addConnectedApp',
+  /**  @param {any} [app] */
+  async (app, { getState }) => {
+    const currentConnectedApps = getState().user.connectedApps;
+    const { name, canisterList, lastConection } = app;
+
+    const appAlreadyAdded = currentConnectedApps.find(
+      connectedApp => connectedApp.name === name
+    );
+
+    if (appAlreadyAdded) {
+      return currentConnectedApps.map(connectedApp =>
+        connectedApp.name === name
+          ? {
+              lastConection,
+              canisterList: uniqueConcat(
+                connectedApp.canisterList,
+                canisterList
+              ),
+              ...connectedApp,
+            }
+          : connectedApp
+      );
+    }
+
+    return [app, ...currentConnectedApps];
+  }
+);
+
+export const removeConnectedApp = createAsyncThunk(
+  'keyring/removeConnectedApp',
+  /**  @param {any} [appName] */
+  async (appName, { getState }) => {
+    const currentConnectedApps = getState().user.connectedApps;
+
+    return currentConnectedApps.filter(
+      connectedApp => connectedApp.name !== appName
+    );
   }
 );
 
@@ -421,13 +520,19 @@ export const userSlice = createSlice({
     setTransactionsLoading: (state, action) => {
       state.transactionsLoading = action.payload;
     },
-    resetUserState: state => {
-      state = DEFAULT_STATE;
+    reset: () => {
+      return DEFAULT_STATE;
     },
   },
   extraReducers: {
     [getContacts.fulfilled]: (state, action) => {
       state.contacts = action.payload;
+    },
+    [removeConnectedApp.fulfilled]: (state, action) => {
+      state.connectedApps = action.payload;
+    },
+    [addConnectedApp.fulfilled]: (state, action) => {
+      state.connectedApps = action.payload;
     },
     [sendToken.fulfilled]: (state, action) => {
       state.transaction = action.payload;
@@ -441,7 +546,10 @@ export const userSlice = createSlice({
       state.assetsLoading = false;
     },
     [getNFTs.fulfilled]: (state, action) => {
-      state.collections = action.payload;
+      // TODO: remove this when ICNS is fully implemented
+      const filteredNFTS =
+        action.payload?.filter(nft => nft.name !== 'ICNS') || [];
+      state.collections = filteredNFTS;
     },
     [getTransactions.fulfilled]: (state, action) => {
       if (!action.payload.error) {
@@ -482,7 +590,7 @@ export const {
   setCollections,
   removeNFT,
   setTransactionsLoading,
-  resetUserState,
+  reset,
 } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -29,6 +29,7 @@ const translations = {
     max: 'Max',
     questionMark: '?',
     the: 'The',
+    enterPassword: 'Enter Password',
   },
   welcome: {
     title: 'Welcome to Plug',
@@ -76,6 +77,7 @@ const translations = {
     contact: 'Contact',
     enterPassword: 'Enter your password',
     contacts: 'Contacts',
+    noPriceAvailable: 'No price available for {{token}}',
   },
   transactionTypes: {
     swap: 'Swap',
@@ -139,13 +141,18 @@ const translations = {
         desc: 'Turn Biometrics on or off.',
       },
       lock: { name: 'Lock Account', desc: 'Lock your account and sign out.' },
+      connectedApps: {
+        name: 'Connected Apps',
+        desc: 'View your connected apps.',
+      },
     },
-    version: 'v{{version}}',
+    version: 'v{{version}}({{build}})',
     infoItems: {
       docs: '📕  Learn more about Plug',
       blog: '📰  Read our Blog',
       twitter: '🐦  Follow us on Twitter',
       discord: '👾  Join our Discord',
+      delete: '🗑  Delete Wallet',
     },
   },
   accounts: {
@@ -176,6 +183,12 @@ const translations = {
     idPlaceholder: 'Principal ID',
     nameTaken: 'Name is already taken!',
     contactAlreadySaved: 'Contact already saved as {{value}}',
+  },
+  connectedApps: {
+    viewDetail: 'View Details',
+    deleteConnection: 'Delete Connection',
+    approvedCanisters: 'Approved Canisters',
+    emptyState: 'No apps connected yet',
   },
   placeholders: {
     amount: `0${decimalSeparator}00`,
@@ -211,6 +224,30 @@ const translations = {
       buttonImage: 'discord',
     },
   },
+  addToken: {
+    title: 'Add Token',
+    reviewTitle: 'Review Token',
+    customTokenTitle: 'Custom Token',
+    availableTokens: 'Available Tokens',
+    search: 'Search Tokens',
+    searchResults: 'Search Results',
+    noResults: 'No search results found.',
+    addCustomToken: 'Add custom token',
+    addButton: 'Add Token',
+    safetyAlert:
+      'Token Safety Alert: For your security, make sure to do proper research before interacting with any token.',
+    customTokenId: 'Token Canister ID',
+    customTokenStandard: "Token's Interface Standard",
+    customCaption: 'This allows tokens to be used by Plug',
+    dabCaption:
+      'Helping improve dicoverability, reputation, and trust in IC tokens.',
+    invalidInterfaceTokenError:
+      'Invalid token’s standard. Select a valid option for the current canister ID.',
+    invalidCanisterTokenError: 'Invalid Canister ID.',
+    nftTokenError: 'Custom non-fungible tokens are not supported yet.',
+    learnMore: 'Learn More',
+    poweredByDab: 'POWERED BY DAB',
+  },
   walletConnect: {
     changeWallet: 'Change Wallet',
     decline: 'Decline',
@@ -235,6 +272,14 @@ const translations = {
     unknown: 'Unknown',
     unknownArguments: 'Unknown arguments',
     learnMore: 'Learn More',
+  },
+  deleteWallet: {
+    title: 'Delete Wallet',
+    question:
+      'Are you sure you want to remove all wallet related data from your device?',
+    description:
+      'You can always recover your accounts through your Secret recovery Phrase given that your accounts exists on the blockchain.',
+    action: 'Delete Wallet',
   },
 };
 

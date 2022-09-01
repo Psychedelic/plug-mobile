@@ -4,8 +4,8 @@ import { ActivityIndicator, Image, Linking, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import { getTokenPrices } from '@/constants/assets';
-import { TRUST_AND_SECURITY_URL } from '@/constants/general';
 import { FontStyles } from '@/constants/theme';
+import { TRUST_AND_SECURITY_URL } from '@/constants/urls';
 import { Nullable } from '@/interfaces/general';
 import { State } from '@/interfaces/redux';
 import {
@@ -13,9 +13,8 @@ import {
   WCWhiteListItem,
 } from '@/interfaces/walletConnect';
 import { getUsdAvailableAmount } from '@/screens/flows/Send/utils';
+import { getDabNfts } from '@/services/DAB';
 import { addSpacesAndCapitalize } from '@/utils/strings';
-//TODO: Import getDabNfts from /services/DAB.ts after 0.2.0 merge
-import { getDabNfts } from '@/utils/walletConnect';
 
 // TODO: Pass this .png to .svg after 0.2.0 merge
 import warningIcon from '../../assets/warningIcon.png';
@@ -77,7 +76,7 @@ function RequestCall(props: Props) {
             usdValue: getUsdAvailableAmount(
               amount,
               getTokenPrices(assetData?.symbol!, icpPrice)
-            ),
+            )!,
           });
         }
       });

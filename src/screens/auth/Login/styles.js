@@ -17,9 +17,6 @@ export default StyleSheet.create({
     width: '100%',
     flex: 1,
   },
-  input: {
-    width: '100%',
-  },
   plugIcon: {
     height: pixelRatioScale(30),
     resizeMode: 'contain',

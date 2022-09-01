@@ -14,4 +14,5 @@ export default StyleSheet.create({
   button: FontStyles.Button,
   caption: FontStyles.Caption,
   overline: FontStyles.Overline,
+  normal: FontStyles.Normal,
 });

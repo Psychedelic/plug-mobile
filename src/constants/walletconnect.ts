@@ -1,3 +1,5 @@
+export const WALLETCONNECT_STORAGE_KEY = 'WALLETCONNECT';
+
 export const PLUG_DESCRIPTION = {
   description: 'Plug IC Wallet ',
   icons: [], // We should add urls to icons
