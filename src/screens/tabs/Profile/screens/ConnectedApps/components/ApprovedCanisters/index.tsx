@@ -3,11 +3,13 @@ import React, { RefObject } from 'react';
 import { Linking, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
-import Header from '@/commonComponents/Header';
-import Modal from '@/commonComponents/Modal';
-import { ActionButton } from '@/components/common';
-import CommonItem, { getShowcaseImage } from '@/components/common/CommonItem';
-import Text from '@/components/common/Text';
+import {
+  ActionButton,
+  CommonItem,
+  Header,
+  Modal,
+  Text,
+} from '@/components/common';
 import { icScanUrl } from '@/constants/urls';
 import { ConnectedApp } from '@/interfaces/redux';
 import { WCWhiteListItem } from '@/interfaces/walletConnect';
@@ -35,7 +37,8 @@ function ApprovedCanisters({ modalRef, app, connectedAppsRef }: Props) {
         longId
         id={canisterId}
         name={item.name}
-        {...getShowcaseImage(icon)}
+        imageUri={icon}
+        image="unknown"
         style={styles.canister}
         onPress={redirectToCanister}
         actionIconName="redirectArrow"

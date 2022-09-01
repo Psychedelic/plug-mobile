@@ -4,8 +4,13 @@ import { Platform, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ActionSheet, Header, Modal, Text } from '@/components/common';
-import CommonItem, { getShowcaseImage } from '@/components/common/CommonItem';
+import {
+  ActionSheet,
+  CommonItem,
+  Header,
+  Modal,
+  Text,
+} from '@/components/common';
 import DeleteIcon from '@/icons/svg/material/Delete.svg';
 import ViewIcon from '@/icons/svg/material/View.svg';
 import { ConnectedApp, State } from '@/interfaces/redux';
@@ -66,7 +71,8 @@ function ConnectedApps({ modalRef }: Props) {
     return (
       <CommonItem
         name={name}
-        {...getShowcaseImage(imageUri)}
+        imageUri={imageUri}
+        image="unknown"
         style={styles.appItem}
         onPress={openApp(item)}
         key={`${name}-${index}`}

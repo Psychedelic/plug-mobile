@@ -30,7 +30,7 @@ function RequestTransfer({ canisterId, args }: Props) {
     usdValue: getUsdAvailableAmount(
       amount,
       getTokenPrices(assetData?.symbol!, icpPrice)
-    ),
+    )!,
   };
 
   return <TransferItem token={token} />;

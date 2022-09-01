@@ -76,7 +76,7 @@ function RequestCall(props: Props) {
             usdValue: getUsdAvailableAmount(
               amount,
               getTokenPrices(assetData?.symbol!, icpPrice)
-            ),
+            )!,
           });
         }
       });

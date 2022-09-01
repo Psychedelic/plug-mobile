@@ -1,7 +1,8 @@
 import React from 'react';
 import { FlatList, Linking } from 'react-native';
 
-import CommonItem, { getShowcaseImage } from '@/commonComponents/CommonItem';
+import CommonItem from '@/commonComponents/CommonItem';
+import { icScanUrl } from '@/constants/urls';
 import {
   WallectConnectFlowsData,
   WCWhiteListItem,
@@ -17,18 +18,17 @@ function RequestConnect({ args }: WallectConnectFlowsData) {
 
   const renderWhiteList = ({ item }: { item: WCWhiteListItem }) => {
     const { canisterId, name, icon } = item;
-
+    console.log(icon);
     return (
       <CommonItem
         longId
         name={name}
         id={canisterId}
-        onPress={() =>
-          Linking.openURL(`https://icscan.io/canister/${canisterId}`)
-        }
+        onPress={() => Linking.openURL(`${icScanUrl}${canisterId}`)}
         style={styles.cannisterItem}
         actionIconName="redirectArrow"
-        {...getShowcaseImage(icon)}
+        imageUri={icon}
+        image="unknown"
       />
     );
   };
@@ -36,6 +36,7 @@ function RequestConnect({ args }: WallectConnectFlowsData) {
   return (
     <FlatList<WCWhiteListItem>
       bounces={false}
+      overScrollMode="never"
       data={whiteListArray}
       style={styles.container}
       renderItem={renderWhiteList}
