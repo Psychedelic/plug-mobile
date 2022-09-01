@@ -8,7 +8,7 @@ import { XTC_FEE } from '@/constants/addresses';
 import { CYCLES_PER_TC } from '@/constants/assets';
 import { ASSET_CANISTER_IDS } from '@/constants/canister';
 import { IC_URL_HOST } from '@/constants/general';
-import { ERRORS } from '@/constants/walletconnect';
+import { ERRORS, SIGNING_METHODS } from '@/constants/walletconnect';
 import {
   ConnectionModule,
   InformationModule,
@@ -285,4 +285,14 @@ export const validateBatchTx = (
   }
 
   return true;
+};
+
+export const needSign = (methodName, args) => {
+  if (methodName === 'requestCall' && args[2]) {
+    return false;
+  } else if (SIGNING_METHODS.includes(methodName)) {
+    return true;
+  }
+
+  return false;
 };

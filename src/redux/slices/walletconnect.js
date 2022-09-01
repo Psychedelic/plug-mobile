@@ -4,11 +4,7 @@ import { parseWalletConnectUri } from '@walletconnect/utils';
 import { InteractionManager, Linking } from 'react-native';
 import Minimizer from 'react-native-minimizer';
 
-import {
-  ERRORS,
-  PLUG_DESCRIPTION,
-  SIGNING_METHODS,
-} from '@/constants/walletconnect';
+import { ERRORS, PLUG_DESCRIPTION } from '@/constants/walletconnect';
 import Routes from '@/navigation/Routes';
 import { DEFAULT_WALLET_CONNECT_STATE as DEFAULT_STATE } from '@/redux/utils';
 import {
@@ -19,6 +15,7 @@ import Navigation from '@/utils/navigation';
 import { delay } from '@/utils/utilities';
 import {
   callRequestHandlerFactory,
+  needSign,
   sessionRequestHandler,
 } from '@/utils/walletConnect';
 
@@ -201,7 +198,7 @@ const listenOnNewMessages = createAsyncThunk(
             }, 20000);
           }
 
-          if (!isUnlocked() || payload.method in SIGNING_METHODS) {
+          if (!isUnlocked() || needSign(payload.method, request.args)) {
             const waitingFn = InteractionManager.runAfterInteractions;
 
             waitingFn(async () => {

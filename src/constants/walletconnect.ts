@@ -73,7 +73,7 @@ export const SIGNING_METHODS = [
   'requestTransfer',
   'requestTransferToken',
   'requestBurnXTC',
-  'batchTransaction',
+  'batchTransactions',
   'requestCall',
   'verifyWhitelist',
 ];

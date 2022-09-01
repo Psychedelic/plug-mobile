@@ -246,9 +246,16 @@ const ConnectionModule = (dispatch, getState) => {
         );
       }
     },
-    executor: (opts, areAllWhiteListed) => ({
-      result: areAllWhiteListed,
-    }),
+    executor: async (opts, areAllWhiteListed) => {
+      const keyring = getState().keyring?.instance;
+
+      if (allWhiteListed) {
+        const publicKey = await keyring?.getPublicKey();
+        return { result: publicKey };
+      }
+
+      return false;
+    },
   };
 
   const verifyWhitelist = {
