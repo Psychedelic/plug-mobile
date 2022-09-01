@@ -3,18 +3,18 @@ import { StyleSheet } from 'react-native';
 import { WINDOW_WIDTH } from '@/constants/platform';
 import { FontStyles } from '@/constants/theme';
 
-const itemSize = WINDOW_WIDTH / 2 - 40;
+export const ITEM_SIZE = WINDOW_WIDTH / 2 - 40;
 
 const commonContainerSize = {
-  width: itemSize,
-  height: itemSize,
+  width: ITEM_SIZE,
+  height: ITEM_SIZE,
 };
 
 export default StyleSheet.create({
   text: {
     ...FontStyles.SmallGray,
     marginTop: 10,
-    maxWidth: itemSize,
+    maxWidth: ITEM_SIZE,
   },
   item: {
     margin: 10,
