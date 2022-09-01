@@ -354,6 +354,7 @@ export const {
   setUnlocked,
   setPrelocked,
   setWallets,
+  clear,
   reset,
 } = keyringSlice.actions;
 
