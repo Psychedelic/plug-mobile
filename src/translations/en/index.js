@@ -141,6 +141,10 @@ const translations = {
         desc: 'Turn Biometrics on or off.',
       },
       lock: { name: 'Lock Account', desc: 'Lock your account and sign out.' },
+      connectedApps: {
+        name: 'Connected Apps',
+        desc: 'View your connected apps.',
+      },
     },
     version: 'v{{version}}({{build}})',
     infoItems: {
@@ -179,6 +183,12 @@ const translations = {
     idPlaceholder: 'Principal ID',
     nameTaken: 'Name is already taken!',
     contactAlreadySaved: 'Contact already saved as {{value}}',
+  },
+  connectedApps: {
+    viewDetail: 'View Details',
+    deleteConnection: 'Delete Connection',
+    approvedCanisters: 'Approved Canisters',
+    emptyState: 'No apps connected yet',
   },
   placeholders: {
     amount: `0${decimalSeparator}00`,

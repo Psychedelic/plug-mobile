@@ -2,6 +2,8 @@ import WalletConnect from '@walletconnect/client';
 
 import { Contact } from '@/screens/tabs/Profile/screens/Contacts/utils';
 
+import { WCWhiteListItem } from './walletConnect';
+
 // Override the default state interface
 declare module 'react-redux' {
   interface DefaultRootState {
@@ -128,6 +130,12 @@ export interface KeyringState {
   wallets: [];
 }
 
+export interface ConnectedApp {
+  name: string;
+  canisterList: WCWhiteListItem[];
+  imageUri: string;
+  lastConection: Date;
+}
 export interface UserState {
   assets: Asset[];
   assetsError: boolean;
@@ -142,42 +150,7 @@ export interface UserState {
   collectionsError: boolean;
   usingBiometrics: boolean;
   biometricsAvailable: boolean;
-}
-
-export interface WalletConnectCallRequest {
-  clientId: string;
-  dappName: string;
-  dappScheme: string;
-  dappUrl: string;
-  imageUrl: string;
-  methodName: string;
-  args: any;
-  peerId: string;
-  requestId: number;
-  executor: any;
-}
-
-export interface WalletConnectSession {
-  pending: boolean;
-  walletConnector: WalletConnect;
-  meta: any;
-}
-
-export interface WalletConnectState {
-  pendingRedirect: {
-    [requestId: string]: {
-      pending: boolean;
-      schema?: string;
-    };
-  };
-  pendingCallRequests: { [requestId: number]: WalletConnectCallRequest };
-  sessions: {
-    [peerId: string]: WalletConnectSession;
-  };
-  bridgeTimeout: {
-    timeout: number;
-    onBridgeContact: any;
-  };
+  connectedApps: ConnectedApp[];
 }
 
 export interface WalletConnectCallRequest {

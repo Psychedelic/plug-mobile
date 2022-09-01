@@ -5,6 +5,7 @@ import { ENABLE_NFTS } from '@/constants/nfts';
 import { getICPPrice } from '@/redux/slices/icp';
 import { formatAssets, parseToBigIntString } from '@/utils/currencies';
 import { recursiveParseBigint } from '@/utils/objects';
+import { uniqueConcat } from '@/utils/utilities';
 
 import {
   DEFAULT_ASSETS,
@@ -31,6 +32,7 @@ const DEFAULT_STATE = {
   collectionsError: false,
   usingBiometrics: false,
   biometricsAvailable: false,
+  connectedApps: [],
 };
 
 export const sign = createAsyncThunk(
@@ -361,7 +363,7 @@ export const editContact = createAsyncThunk(
 
 export const getICNSData = createAsyncThunk(
   'keyring/getICNSData',
-  async ({ refresh }, { getState, dispatch }) => {
+  async ({ refresh }, { getState }) => {
     const { keyring } = getState();
     const { currentWallet } = keyring;
     const icnsData = currentWallet?.icnsData || { names: [] };
@@ -426,6 +428,48 @@ export const getTokenInfo = createAsyncThunk(
   }
 );
 
+export const addConnectedApp = createAsyncThunk(
+  'keyring/addConnectedApp',
+  /**  @param {any} [app] */
+  async (app, { getState }) => {
+    const currentConnectedApps = getState().user.connectedApps;
+    const { name, canisterList, lastConection } = app;
+
+    const appAlreadyAdded = currentConnectedApps.find(
+      connectedApp => connectedApp.name === name
+    );
+
+    if (appAlreadyAdded) {
+      return currentConnectedApps.map(connectedApp =>
+        connectedApp.name === name
+          ? {
+              lastConection,
+              canisterList: uniqueConcat(
+                connectedApp.canisterList,
+                canisterList
+              ),
+              ...connectedApp,
+            }
+          : connectedApp
+      );
+    }
+
+    return [app, ...currentConnectedApps];
+  }
+);
+
+export const removeConnectedApp = createAsyncThunk(
+  'keyring/removeConnectedApp',
+  /**  @param {any} [appName] */
+  async (appName, { getState }) => {
+    const currentConnectedApps = getState().user.connectedApps;
+
+    return currentConnectedApps.filter(
+      connectedApp => connectedApp.name !== appName
+    );
+  }
+);
+
 export const userSlice = createSlice({
   name: 'user',
   initialState: DEFAULT_STATE,
@@ -483,6 +527,12 @@ export const userSlice = createSlice({
   extraReducers: {
     [getContacts.fulfilled]: (state, action) => {
       state.contacts = action.payload;
+    },
+    [removeConnectedApp.fulfilled]: (state, action) => {
+      state.connectedApps = action.payload;
+    },
+    [addConnectedApp.fulfilled]: (state, action) => {
+      state.connectedApps = action.payload;
     },
     [sendToken.fulfilled]: (state, action) => {
       state.transaction = action.payload;

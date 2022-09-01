@@ -19,11 +19,13 @@ const longIdConfig = {
   separator: '...',
   replace: [],
 };
+
 interface Props {
   image?: string;
   imageUri?: string;
   name?: string;
   id?: string;
+  subtitle?: string;
   longId?: boolean;
   icon?: string;
   style?: StyleProp<ViewStyle>;
@@ -41,6 +43,7 @@ function CommonItem({
   id,
   style,
   longId,
+  subtitle,
   onPress,
   onLongPress,
   actionIconName = 'threeDots',
@@ -55,7 +58,7 @@ function CommonItem({
     <View style={style}>
       <Touchable
         scale={animationScales.small}
-        onPress={() => onPress?.()}
+        onPress={onPress}
         onLongPress={onLongPress}>
         <View style={styles.root}>
           {imageUri ? (
@@ -71,12 +74,13 @@ function CommonItem({
           )}
           <View style={styles.leftContainer}>
             <Text style={FontStyles.Normal}>{name || id}</Text>
-            <Text style={FontStyles.NormalGray}>{formattedId}</Text>
+            <Text style={FontStyles.NormalGray}>{subtitle || formattedId}</Text>
           </View>
           {showActions && (
             <View style={styles.threeDots}>
               <Touchable
-                onPress={() => onLongPress?.()}
+                onPress={onPress}
+                onLongPress={onLongPress}
                 scale={animationScales.large}
                 hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}>
                 <Icon name={actionIconName} />

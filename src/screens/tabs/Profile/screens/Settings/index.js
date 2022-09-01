@@ -23,6 +23,7 @@ import Contacts from '@/screens/tabs/Profile/screens/Contacts';
 import animationScales from '@/utils/animationScales';
 import { clearStorage } from '@/utils/localStorage';
 
+import ConnectedApps from '../ConnectedApps';
 import DeleteWallet from '../DeleteWallet';
 import RevealSeedPhrase from '../RevealSeedPhrase';
 import BiometricUnlock from './components/BiometricUnlock';
@@ -38,6 +39,7 @@ const Settings = () => {
   const biometricUnlockRef = useRef(null);
   const revealSeedPhraseRef = useRef(null);
   const deleteWalletRef = useRef(null);
+  const connectedAppsRefs = useRef(null);
 
   const dispatch = useDispatch();
   const { biometricsAvailable } = useSelector(state => state.user);
@@ -69,6 +71,10 @@ const Settings = () => {
       index: 0,
       routes: [{ name: Routes.WELCOME_SCREEN }],
     });
+  };
+
+  const openConnectedApps = () => {
+    connectedAppsRefs.current?.open();
   };
 
   const lockAccount = () => {
@@ -105,6 +111,12 @@ const Settings = () => {
         name: t('settings.items.biometric.name'),
         description: t('settings.items.biometric.desc'),
         onPress: openBiometricUnlock,
+      },
+      {
+        icon: '📱️️️️',
+        name: t('settings.items.connectedApps.name'),
+        description: t('settings.items.connectedApps.desc'),
+        onPress: openConnectedApps,
       },
       {
         icon: '🔒',
@@ -181,6 +193,7 @@ const Settings = () => {
       <RevealSeedPhrase modalRef={revealSeedPhraseRef} />
       <BiometricUnlock modalRef={biometricUnlockRef} />
       <DeleteWallet modalRef={deleteWalletRef} onDelete={handleDeleteWallet} />
+      <ConnectedApps modalRef={connectedAppsRefs} />
     </>
   );
 };

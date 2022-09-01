@@ -2,6 +2,8 @@ import { StyleSheet } from 'react-native';
 
 import { Colors } from '@/constants/theme';
 
+export const unknownLogoColor = Colors.White.Primary;
+
 export default StyleSheet.create({
   backgroundLogo: {
     width: 52,
@@ -11,15 +13,14 @@ export default StyleSheet.create({
     alignContent: 'center',
     backgroundColor: Colors.Gray.Secondary,
   },
-  backgroundUnknown: {
-    alignItems: 'center',
-  },
   logo: {
     height: 30,
+    width: 30,
     resizeMode: 'contain',
+    alignSelf: 'center',
   },
   unknownLogo: {
-    height: 40,
+    alignSelf: 'center',
   },
   dappName: {
     paddingTop: 12,

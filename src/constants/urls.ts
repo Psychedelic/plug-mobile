@@ -9,6 +9,8 @@ export const discordUrl = 'https://discord.plugwallet.ooo';
 export const TRUST_AND_SECURITY_URL =
   'https://docs.plugwallet.ooo/resources/app-trust-and-security/';
 
+export const icScanUrl = 'https://icscan.io/canister/';
+
 // Hosts
 export const PLUG_PROXY_HOST = 'https://mainnet.plugwallet.ooo/';
 export const IC_URL_HOST = 'https://ic0.app/';

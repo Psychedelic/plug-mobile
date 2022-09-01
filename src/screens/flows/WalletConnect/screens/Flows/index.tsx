@@ -11,9 +11,14 @@ import { ERRORS } from '@/constants/walletconnect';
 import useDisableBack from '@/hooks/useDisableBack';
 import { RootStackParamList } from '@/interfaces/navigation';
 import { State } from '@/interfaces/redux';
-import { FlowsParams, WCFlowTypes } from '@/interfaces/walletConnect';
+import {
+  FlowsParams,
+  WCFlowTypes,
+  WCWhiteListItem,
+} from '@/interfaces/walletConnect';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
+import { addConnectedApp } from '@/redux/slices/user';
 import {
   updateBridgeTimeout,
   walletConnectExecuteAndResponse,
@@ -45,16 +50,16 @@ function WCFlows() {
   const [sendLoading, setSendLoading] = useState(false);
   const [wcTimeout, setWCTimeout] = useState(false);
   const {
-    type,
-    requestId,
-    canisterInfo,
-    metadata,
     args,
-    handleApproveArgs,
-    handleDeclineArgs,
+    type,
+    loading,
+    metadata,
+    requestId,
     canisterId,
     handleError,
-    loading,
+    canisterInfo,
+    handleApproveArgs,
+    handleDeclineArgs,
   } = (params || {}) as FlowsParams;
 
   const request = useSelector(
@@ -146,6 +151,21 @@ function WCFlows() {
 
   const onPressSend = useCallback(async () => {
     setSendLoading(true);
+    if (type === WCFlowTypes.requestConnect) {
+      const whiteListArray = Object.keys(args.whitelist).map(
+        (key: string) => args.whitelist[key]
+      ) as WCWhiteListItem[];
+
+      dispatch(
+        addConnectedApp({
+          name: metadata.name,
+          canisterList: whiteListArray,
+          imageUri: metadata?.icons[0],
+          lastConection: Date.now(),
+        })
+      );
+    }
+
     try {
       await onConfirm();
     } finally {
