@@ -188,6 +188,7 @@ const listenOnNewMessages = createAsyncThunk(
 
           let unlockTimeOut;
           if (!isUnlocked()) {
+            // TODO: Check with the team if we want to response with an error or just wait for the user to unlock
             unlockTimeOut = setTimeout(() => {
               return dispatch(
                 walletConnectExecuteAndResponse({
@@ -211,6 +212,9 @@ const listenOnNewMessages = createAsyncThunk(
               await handler(requestId, ...request.args);
             });
           } else {
+            if (unlockTimeOut) {
+              clearTimeout(unlockTimeOut);
+            }
             await handler(requestId, ...request.args);
           }
         }
