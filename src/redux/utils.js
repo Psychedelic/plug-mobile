@@ -14,18 +14,15 @@ import { recursiveParseBigint } from '@/utils/objects';
 
 import { clear } from './slices/keyring';
 import {
-  asyncGetBalance,
+  getBalance,
   getContacts,
   getNFTs,
   getTransactions,
-  setAssets,
-  setAssetsAndLoading,
-  setAssetsLoading,
+  setBalance,
   setCollections,
   setContacts,
   setContactsLoading,
   setTransactions,
-  setTransactionsLoading,
 } from './slices/user';
 
 export const DEFAULT_ASSETS = [
@@ -67,17 +64,14 @@ export const resetStores = dispatch => {
   dispatch(clear());
   dispatch(setCollections([]));
   dispatch(setTransactions([]));
-  dispatch(setAssets(DEFAULT_ASSETS));
+  dispatch(setBalance(DEFAULT_ASSETS));
 };
 
 export const getNewAccountData = async (dispatch, icpPrice, state) => {
-  dispatch(setAssetsLoading(true));
   dispatch(setContacts([]));
   dispatch(setContactsLoading(true));
   dispatch(getNFTs());
-  const assets = await asyncGetBalance(undefined, state, dispatch);
-  dispatch(setAssetsAndLoading({ assets }));
-  dispatch(setTransactionsLoading(true));
+  dispatch(getBalance());
   dispatch(getTransactions({ icpPrice }));
   dispatch(getContacts())
     .unwrap()
@@ -151,8 +145,8 @@ const getTransactionType = (type, isOwnTx) => {
   return type.toUpperCase();
 };
 
-export const formatTransaction = (icpPrice, state) => trx => {
-  const { principal, accountId } = state.keyring?.currentWallet;
+export const formatTransaction = (icpPrice, currentWallet) => trx => {
+  const { principal, accountId } = currentWallet;
 
   let parsedTransaction = recursiveParseBigint(parseTransaction(trx));
   const { details, hash, caller, timestamp } = parsedTransaction || {};

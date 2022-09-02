@@ -128,16 +128,17 @@ export interface KeyringState {
 
 export interface UserState {
   assets: Asset[];
-  assetsError: boolean;
+  assetsError: string | null;
   assetsLoading: boolean;
   contacts: Contact[];
   contactsLoading: boolean;
   transaction: Transaction;
   transactions: Transaction[];
-  collections: Collection[];
-  transactionsError: boolean;
+  transactionsError: string | null;
   transactionsLoading: boolean;
-  collectionsError: boolean;
+  collections: Collection[];
+  collectionsError: string | null;
+  collectionsLoading: boolean;
   usingBiometrics: boolean;
   biometricsAvailable: boolean;
 }

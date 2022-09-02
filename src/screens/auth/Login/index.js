@@ -15,7 +15,6 @@ import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 import { getICPPrice } from '@/redux/slices/icp';
 import { login } from '@/redux/slices/keyring';
-import { setAssetsLoading } from '@/redux/slices/user';
 
 import styles from './styles';
 
@@ -41,7 +40,6 @@ function Login({ route, navigation }) {
     if (usingBiometrics && !isManualLock) {
       unlockUsingBiometrics();
     }
-    dispatch(setAssetsLoading(false));
   }, [usingBiometrics, isManualLock]);
 
   const clearState = () => {
@@ -64,12 +62,6 @@ function Login({ route, navigation }) {
       login({
         password: submittedPassword,
         icpPrice,
-        onError: () => {
-          setLoading(false);
-          dispatch(setAssetsLoading(false));
-          setError(true);
-          setDisableInput(false);
-        },
       })
     )
       .unwrap()
@@ -79,6 +71,11 @@ function Login({ route, navigation }) {
           navigation.navigate(Routes.SWIPE_LAYOUT);
           clearState();
         }
+      })
+      .catch(() => {
+        setLoading(false);
+        setError(true);
+        setDisableInput(false);
       });
   };
 

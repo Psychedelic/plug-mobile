@@ -29,6 +29,14 @@ const userPersistConfig = {
   key: 'user',
   storage: AsyncStorage,
   transforms: [transformCircular],
+  whitelist: [
+    'assets',
+    'contacts',
+    'transactions',
+    'collections',
+    'usingBiometrics',
+    'biometricsAvailable',
+  ],
 };
 
 // REDUCER

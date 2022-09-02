@@ -19,13 +19,13 @@ import { setCurrentWallet, setWallets } from './keyring';
 
 const DEFAULT_STATE = {
   assets: DEFAULT_ASSETS,
-  assetsError: false,
+  assetsError: null,
   assetsLoading: false,
   contacts: [],
   contactsLoading: false,
   transaction: DEFAULT_TRANSACTION,
   transactions: [],
-  transactionsError: false,
+  transactionsError: null,
   transactionsLoading: false,
   collections: [],
   collectionsError: false,
@@ -64,8 +64,6 @@ export const sendToken = createAsyncThunk(
         opts,
       });
       if (transactionId || height) {
-        dispatch(setAssetsLoading(true));
-        dispatch(setTransactionsLoading(true));
         dispatch(getBalance());
         dispatch(getTransactions({ icpPrice }));
       }
@@ -107,60 +105,35 @@ export const burnXtc = createAsyncThunk(
   }
 );
 
-export const setAssetsAndTransactions = createAsyncThunk(
-  'keyring/setAssetsAndTransactions',
-  async (params, { dispatch }) => {
-    const { transactions, assets } = params;
-    dispatch(setAssetsAndLoading({ assets }));
-    dispatch(setTransactions(transactions || []));
-    dispatch(setTransactionsLoading(false));
-  }
-);
-
-export const setAssetsAndLoading = createAsyncThunk(
-  'keyring/setAssetsAndTransactions',
-  async (params, { dispatch }) => {
-    const { assets } = params;
-    dispatch(setAssets(assets?.length > 0 ? assets : DEFAULT_ASSETS));
-    dispatch(setAssetsLoading(false));
-  }
-);
-
 export const getBalance = createAsyncThunk(
   'keyring/getBalance',
-  async (params, { getState, dispatch }) => {
-    return asyncGetBalance(params, getState(), dispatch);
+  async (params, { getState, dispatch, rejectWithValue }) => {
+    try {
+      const { refresh = true, subaccount } = params || {};
+      const { instance } = getState().keyring;
+      const response = await instance?.getState();
+      const { wallets, currentWalletId } = response || {};
+      let assets = Object.values(wallets?.[currentWalletId]?.assets);
+
+      const shouldUpdate =
+        Object.values(assets)?.every(asset => !Number(asset.amount)) ||
+        Object.values(assets)?.some(asset => Number.isNaN(asset.amount)) ||
+        refresh;
+
+      if (shouldUpdate) {
+        assets = await instance?.getBalances(subaccount);
+      } else {
+        instance?.getBalances(subaccount);
+      }
+
+      const icpPrice = await dispatch(getICPPrice()).unwrap();
+      return formatAssets(assets, icpPrice);
+    } catch (e) {
+      console.log('getBalance error', e);
+      return rejectWithValue({ error: e.message });
+    }
   }
 );
-
-export const asyncGetBalance = async (params, state, dispatch) => {
-  try {
-    dispatch(setAssetsError(false));
-    const { refresh = true, subaccount } = params || {};
-    const { instance } = state.keyring;
-    const response = await instance?.getState();
-    const { wallets, currentWalletId } = response || {};
-    let assets = Object.values(wallets?.[currentWalletId]?.assets);
-
-    const shouldUpdate =
-      Object.values(assets)?.every(asset => !Number(asset.amount)) ||
-      Object.values(assets)?.some(asset => Number.isNaN(asset.amount)) ||
-      refresh;
-
-    if (shouldUpdate) {
-      assets = await instance?.getBalances(subaccount);
-    } else {
-      instance?.getBalances(subaccount);
-    }
-
-    const icpPrice = await dispatch(getICPPrice()).unwrap();
-    return formatAssets(assets, icpPrice);
-  } catch (e) {
-    console.log('asyncGetBalance error', e);
-    dispatch(setAssetsError(true));
-    return { error: e.message };
-  }
-};
 
 export const getNFTs = createAsyncThunk(
   'keyring/getNFTs',
@@ -189,39 +162,37 @@ export const privateGetNFTs = async (refresh, state, dispatch) => {
 
 export const getTransactions = createAsyncThunk(
   'keyring/getTransactions',
-  async (params, { getState, dispatch }) => {
-    return privateGetTransactions(params, getState(), dispatch);
+  async (params, { getState, rejectWithValue }) => {
+    try {
+      const state = getState();
+      const { icpPrice } = params;
+      const currentWalletId = state.keyring?.instance?.currentWalletId;
+      const currentWallet =
+        state.keyring?.instance?.state?.wallets[currentWalletId];
+      const response = await state.keyring.instance?.getTransactions();
+      let parsedTrx =
+        response?.transactions?.map(
+          formatTransaction(icpPrice, currentWallet)
+        ) || [];
+
+      if (!ENABLE_NFTS) {
+        parsedTrx = parsedTrx.filter(
+          item =>
+            !(
+              item?.symbol === 'NFT' ||
+              item?.details.canisterId === JELLY_CANISTER_ID
+            )
+        );
+      }
+
+      return parsedTrx;
+    } catch (e) {
+      return rejectWithValue({
+        error: e.message,
+      });
+    }
   }
 );
-
-export const privateGetTransactions = async (params, state, dispatch) => {
-  try {
-    dispatch(setTransactionsError(false));
-    const { icpPrice } = params;
-    const response = await state.keyring.instance?.getTransactions();
-    let parsedTrx =
-      response?.transactions?.map(formatTransaction(icpPrice, state)) || [];
-
-    dispatch(setTransactionsLoading(false));
-
-    if (!ENABLE_NFTS) {
-      parsedTrx = parsedTrx.filter(
-        item =>
-          !(
-            item?.symbol === 'NFT' ||
-            item?.details.canisterId === JELLY_CANISTER_ID
-          )
-      );
-    }
-
-    return parsedTrx;
-  } catch (e) {
-    dispatch(setTransactionsError(true));
-    return {
-      error: e.message,
-    };
-  }
-};
 
 export const transferNFT = createAsyncThunk(
   'keyring/transferNFT',
@@ -236,7 +207,6 @@ export const transferNFT = createAsyncThunk(
       });
       if (response) {
         await privateGetNFTs(true, state, dispatch);
-        dispatch(setTransactionsLoading(true));
         dispatch(getTransactions({ icpPrice }));
       }
 
@@ -390,7 +360,7 @@ export const addCustomToken = createAsyncThunk(
         subaccount: currentWalletId,
         logo,
       });
-      dispatch(setAssets(formatAssets(tokenList, icp.icpPrice)));
+      dispatch(setBalance(formatAssets(tokenList, icp.icpPrice)));
 
       const { wallets } = await keyring?.instance?.getState();
       dispatch(setWallets(wallets));
@@ -442,23 +412,14 @@ export const userSlice = createSlice({
     setBiometricsAvailable: (state, action) => {
       state.biometricsAvailable = action.payload;
     },
-    setAssetsLoading: (state, action) => {
-      state.assetsLoading = action.payload;
-    },
-    setAssets: (state, action) => {
+    setBalance: (state, action) => {
       state.assets = action.payload;
-    },
-    setAssetsError: (state, action) => {
-      state.assetsError = action.payload;
     },
     setTransaction: (state, action) => {
       state.transaction = action.payload;
     },
     setTransactions: (state, action) => {
       state.transactions = action.payload;
-    },
-    setTransactionsError: (state, action) => {
-      state.transactionsError = action.payload;
     },
     setCollections: (state, action) => {
       state.collections = action.payload;
@@ -472,9 +433,6 @@ export const userSlice = createSlice({
         tokens: col.tokens.filter(token => token.id !== action.payload?.id),
       }));
       state.collections = collections.filter(col => col.tokens.length);
-    },
-    setTransactionsLoading: (state, action) => {
-      state.transactionsLoading = action.payload;
     },
     reset: () => {
       return DEFAULT_STATE;
@@ -490,9 +448,17 @@ export const userSlice = createSlice({
     [burnXtc.fulfilled]: (state, action) => {
       state.transaction = action.payload;
     },
+    [getBalance.pending]: state => {
+      state.assetsError = null;
+      state.assetsLoading = true;
+    },
     [getBalance.fulfilled]: (state, action) => {
       const assets = action.payload;
       state.assets = assets?.length > 0 ? assets : DEFAULT_ASSETS;
+      state.assetsLoading = false;
+    },
+    [getBalance.rejected]: (state, action) => {
+      state.assetsError = action.payload.error;
       state.assetsLoading = false;
     },
     [getNFTs.fulfilled]: (state, action) => {
@@ -501,11 +467,17 @@ export const userSlice = createSlice({
         action.payload?.filter(nft => nft.name !== 'ICNS') || [];
       state.collections = filteredNFTS;
     },
+    [getTransactions.pending]: state => {
+      state.transactionsError = null;
+      state.transactionsLoading = true;
+    },
     [getTransactions.fulfilled]: (state, action) => {
-      if (!action.payload.error) {
-        state.transactions = action.payload;
-        state.transactionsLoading = false;
-      }
+      state.transactions = action.payload;
+      state.transactionsLoading = false;
+    },
+    [getTransactions.rejected]: (state, action) => {
+      state.transactionsError = action.payload.error;
+      state.transactionsLoading = false;
     },
     [transferNFT.fulfilled]: (state, action) => {
       const { nft, status, error } = action.payload;
@@ -526,20 +498,16 @@ export const userSlice = createSlice({
 });
 
 export const {
-  setTransactionsError,
   setCollectionsError,
-  setAssetsError,
   setUsingBiometrics,
   setBiometricsAvailable,
-  setAssetsLoading,
-  setAssets,
+  setBalance,
   setTransactions,
   setTransaction,
   setContacts,
   setContactsLoading,
   setCollections,
   removeNFT,
-  setTransactionsLoading,
   reset,
 } = userSlice.actions;
 
