@@ -57,7 +57,7 @@ export const walletConnectRemovePendingRedirect = createAsyncThunk(
 
 export const walletConnectOnSessionRequest = createAsyncThunk(
   'walletconnect/onSessionRequest',
-  async ({ uri }, { dispatch, getState }) => {
+  async ({ uri, requestId }, { dispatch, getState }) => {
     try {
       const { clientMeta } = await getNativeOptions();
       const isPrelocked = () => getState().keyring.isPrelocked;
@@ -105,11 +105,11 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
           walletConnector?.on('session_request', async (error, payload) => {
             const { peerId } = payload.params[0];
             const {
-              bridgeTimeout: { timeout },
+              bridgeTimeout: { [requestId]: timeoutObj },
             } = getState().walletconnect;
-            if (timeout) {
-              clearTimeout(timeout);
-              dispatch(updateBridgeTimeout(DEFAULT_STATE.bridgeTimeout));
+            if (timeoutObj?.pending) {
+              clearTimeout(timeoutObj.timeout);
+              dispatch(removeBridgeTimeout(requestId));
             }
             await dispatch(
               setSession({
@@ -141,18 +141,18 @@ const listenOnNewMessages = createAsyncThunk(
     const isUnlocked = () => getState().keyring.isUnlocked;
     const isInitialized = () => getState().keyring.isInitialized;
     walletConnector.on('call_request', async (error, payload) => {
-      const {
-        bridgeTimeout: { timeout },
-      } = getState().walletconnect;
-      if (timeout) {
-        clearTimeout(timeout);
-        dispatch(updateBridgeTimeout(DEFAULT_STATE.bridgeTimeout));
-      }
       if (error) {
         throw error;
       }
       const { clientId, peerId, peerMeta } = walletConnector;
       const requestId = payload.id;
+      const {
+        bridgeTimeout: { [requestId]: timeoutObj },
+      } = getState().walletconnect;
+      if (timeoutObj?.pending) {
+        clearTimeout(timeoutObj.timeout);
+        dispatch(removeBridgeTimeout(requestId));
+      }
       try {
         const { pendingCallRequests } = getState().walletconnect;
         if (!pendingCallRequests[requestId]) {
@@ -385,6 +385,28 @@ export const walletConnectRejectSession = createAsyncThunk(
     const { walletConnector } = sessions[peerId];
 
     walletConnector.rejectSesison();
+  }
+);
+
+export const addBridgeTimeout = createAsyncThunk(
+  'walletconnect/addBridgeTimeout',
+  /**  @param params { requestId: string, tiemout: number } */
+  ({ requestId, timeout }, { dispatch, getState }) => {
+    const { bridgeTimeouts } = getState().walletconnect;
+    const updatedTimeouts = {
+      ...bridgeTimeouts,
+      [requestId]: { timeout, pending: true },
+    };
+    dispatch(updateBridgeTimeout(updatedTimeouts));
+  }
+);
+
+export const removeBridgeTimeout = createAsyncThunk(
+  'walletconnect/removeBridgeTimeout',
+  ({ requestId }, { dispatch, getState }) => {
+    const { bridgeTimeouts } = getState().walletconnect;
+    const { [requestId]: timeout, ...updatedTimeouts } = bridgeTimeouts;
+    dispatch(updateBridgeTimeout(updatedTimeouts));
   }
 );
 

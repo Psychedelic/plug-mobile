@@ -18,6 +18,7 @@ function handleWalletConnect(uri, isUnlocked) {
   );
   if (isUnlocked) {
     Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
+      requestId,
       loading: true,
     });
   }
@@ -25,6 +26,7 @@ function handleWalletConnect(uri, isUnlocked) {
     dispatch(
       walletConnectOnSessionRequest({
         uri,
+        requestId,
       })
     );
   }

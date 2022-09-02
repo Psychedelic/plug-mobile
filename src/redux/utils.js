@@ -206,7 +206,7 @@ export const DEFAULT_WALLET_CONNECT_STATE = {
   pendingRedirect: {},
   pendingCallRequests: {},
   sessions: {},
-  bridgeTimeout: { timeout: null, onBridgeContact: () => {} },
+  bridgeTimeout: {},
 };
 
 export const migrateData = async () => {
