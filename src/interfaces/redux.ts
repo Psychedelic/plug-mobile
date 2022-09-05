@@ -1,5 +1,7 @@
 import { Contact } from '@/screens/tabs/Profile/screens/Contacts/utils';
 
+import { Nullable } from './general';
+
 // Override the default state interface
 declare module 'react-redux' {
   interface DefaultRootState {
@@ -128,17 +130,17 @@ export interface KeyringState {
 
 export interface UserState {
   assets: Asset[];
-  assetsError: string | null;
+  assetsError: Nullable<string>;
   assetsLoading: boolean;
   contacts: Contact[];
   contactsLoading: boolean;
-  contactsError: string | null;
+  contactsError: Nullable<string>;
   transaction: Transaction;
   transactions: Transaction[];
-  transactionsError: string | null;
+  transactionsError: Nullable<string>;
   transactionsLoading: boolean;
   collections: Collection[];
-  collectionsError: string | null;
+  collectionsError: Nullable<string>;
   collectionsLoading: boolean;
   usingBiometrics: boolean;
   biometricsAvailable: boolean;
