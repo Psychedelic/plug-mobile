@@ -1,7 +1,8 @@
 import { useScrollToTop } from '@react-navigation/native';
+import { FlashList } from '@shopify/flash-list';
 import React, { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, RefreshControl } from 'react-native';
+import { RefreshControl, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import EmptyState from '@/commonComponents/EmptyState';
@@ -12,7 +13,7 @@ import { Colors } from '@/constants/theme';
 import { useStateWithCallback } from '@/hooks/useStateWithCallback';
 import { Container, Separator } from '@/layout';
 import { getNFTs } from '@/redux/slices/user';
-import NftItem from '@/screens/tabs/components/NftItem';
+import NftItem, { ITEM_HEIGHT } from '@/screens/tabs/components/NftItem';
 import WalletHeader from '@/screens/tabs/components/WalletHeader';
 
 import NftDetail from './screens/NftDetail';
@@ -33,13 +34,7 @@ const NFTs = () => {
     [collections]
   );
 
-  const renderNFT = ({ item }) => (
-    <NftItem
-      key={`${item.canisterId}_${item.index}`}
-      item={item}
-      onOpen={onOpen}
-    />
-  );
+  const renderNFT = ({ item }) => <NftItem item={item} onOpen={onOpen} />;
 
   const onOpen = nft => () => {
     setSelectedNft(nft, () => detailRef.current?.open());
@@ -61,32 +56,35 @@ const NFTs = () => {
         <Text style={styles.title}>{t('common.collectibles')}</Text>
         <Separator />
         {!collectionsError ? (
-          <FlatList
-            bounces
-            data={nfts}
-            numColumns={2}
-            ref={NFTListRef}
-            renderItem={renderNFT}
-            style={styles.container}
-            keyExtractor={({ index, canister }) => `${index}${canister}`}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.nftsContainer}
-            overScrollMode="never"
-            refreshControl={
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={onRefresh}
-                tintColor={Colors.White.Primary}
-              />
-            }
-            ListEmptyComponent={
-              <EmptyState
-                title={t('nftTab.emptyTitle')}
-                text={t('nftTab.emptySubtitle')}
-                style={styles.emptyState}
-              />
-            }
-          />
+          <View style={styles.container}>
+            <FlashList
+              bounces
+              data={nfts}
+              numColumns={2}
+              horizontal={false}
+              ref={NFTListRef}
+              renderItem={renderNFT}
+              estimatedItemSize={ITEM_HEIGHT}
+              keyExtractor={({ index, canister }) => `${index}${canister}`}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={styles.nftsContainer}
+              overScrollMode="never"
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                  tintColor={Colors.White.Primary}
+                />
+              }
+              ListEmptyComponent={
+                <EmptyState
+                  title={t('nftTab.emptyTitle')}
+                  text={t('nftTab.emptySubtitle')}
+                  style={styles.emptyState}
+                />
+              }
+            />
+          </View>
         ) : (
           <ErrorState onPress={onRefresh} errorType={ERROR_TYPES.FETCH_ERROR} />
         )}

@@ -1,7 +1,8 @@
 import { useScrollToTop } from '@react-navigation/native';
+import { FlashList } from '@shopify/flash-list';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, RefreshControl, View } from 'react-native';
+import { RefreshControl, View } from 'react-native';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import EmptyState from '@/commonComponents/EmptyState';
@@ -50,9 +51,7 @@ const Profile = () => {
     setRefresing(transactionsLoading);
   }, [transactionsLoading]);
 
-  const renderTransaction = ({ item }) => (
-    <ActivityItem key={`${item.date}${item.hash}`} {...item} />
-  );
+  const renderTransaction = ({ item }) => <ActivityItem {...item} />;
   return (
     <>
       <Container>
@@ -82,18 +81,14 @@ const Profile = () => {
         <Separator />
         <Text style={styles.title}>{t('activity.title')}</Text>
         {!transactionsError ? (
-          <FlatList
+          <FlashList
             ref={transactionListRef}
             data={transactions}
             renderItem={renderTransaction}
-            keyExtractor={(_, index) => index}
+            keyExtractor={item => `${item.date}${item.hash}`}
             showsVerticalScrollIndicator={false}
             overScrollMode="never"
-            getItemLayout={(_, index) => ({
-              length: ITEM_HEIGHT,
-              offset: ITEM_HEIGHT * index,
-              index,
-            })}
+            estimatedItemSize={ITEM_HEIGHT}
             refreshControl={
               <RefreshControl
                 refreshing={refreshing}
