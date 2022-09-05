@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 import { JELLY_CANISTER_ID } from '@/constants/canister';
 import { ENABLE_NFTS } from '@/constants/nfts';
@@ -23,12 +23,14 @@ const DEFAULT_STATE = {
   assetsLoading: false,
   contacts: [],
   contactsLoading: false,
+  contactsError: null,
   transaction: DEFAULT_TRANSACTION,
   transactions: [],
   transactionsError: null,
   transactionsLoading: false,
   collections: [],
-  collectionsError: false,
+  collectionsError: null,
+  collectionsLoading: false,
   usingBiometrics: false,
   biometricsAvailable: false,
 };
@@ -137,28 +139,23 @@ export const getBalance = createAsyncThunk(
 
 export const getNFTs = createAsyncThunk(
   'keyring/getNFTs',
-  async (params, { getState, dispatch }) => {
+  async (params, { getState, rejectWithValue }) => {
     if (ENABLE_NFTS) {
-      return privateGetNFTs(params, getState(), dispatch);
+      try {
+        const { instance } = getState().keyring;
+        const response = await instance?.getState();
+        const { currentWalletId } = response || {};
+        let collections = [];
+        collections = await instance.getNFTs(currentWalletId, params?.refresh);
+        return (collections || [])?.map(collection =>
+          recursiveParseBigint(collection)
+        );
+      } catch (e) {
+        return rejectWithValue({ error: e.message });
+      }
     }
   }
 );
-
-export const privateGetNFTs = async (refresh, state, dispatch) => {
-  try {
-    dispatch(setCollectionsError(false));
-    const { instance } = state.keyring;
-    const response = await instance?.getState();
-    const { currentWalletId } = response || {};
-    let collections = [];
-    collections = await instance.getNFTs(currentWalletId, refresh);
-    return (collections || [])?.map(collection =>
-      recursiveParseBigint(collection)
-    );
-  } catch (e) {
-    dispatch(setCollectionsError(true));
-  }
-};
 
 export const getTransactions = createAsyncThunk(
   'keyring/getTransactions',
@@ -206,13 +203,11 @@ export const transferNFT = createAsyncThunk(
         token: nft,
       });
       if (response) {
-        await privateGetNFTs(true, state, dispatch);
         dispatch(getTransactions({ icpPrice }));
       }
 
       return {
-        response: recursiveParseBigint(response),
-        nft,
+        collections: recursiveParseBigint(response),
         status: TRANSACTION_STATUS.success,
       };
     } catch (e) {
@@ -227,7 +222,7 @@ export const transferNFT = createAsyncThunk(
 
 export const getContacts = createAsyncThunk(
   'keyring/getContacts',
-  async (walletNumber = 0, { getState }) => {
+  async (walletNumber = 0, { getState, rejectWithValue }) => {
     try {
       const state = getState();
       const res = await state.keyring.instance?.getContacts(walletNumber);
@@ -235,15 +230,18 @@ export const getContacts = createAsyncThunk(
       return res?.map(formatContact).filter(filterICNSContacts);
     } catch (e) {
       console.log('Error getting contacts:', e);
+      rejectWithValue({ error: e.message });
     }
   }
 );
 
 export const addContact = createAsyncThunk(
   'keyring/addContact',
-  async ({ contact, walletNumber = 0, onFinish }, { getState, dispatch }) => {
+  async (
+    { contact, walletNumber = 0, onFinish },
+    { getState, dispatch, rejectWithValue }
+  ) => {
     try {
-      dispatch(setContactsLoading(true));
       const state = getState();
       const res = await state.keyring.instance?.addContact({
         contact: formatContactForController(contact),
@@ -251,24 +249,23 @@ export const addContact = createAsyncThunk(
       });
       if (res) {
         dispatch(setContacts([...state.user.contacts, contact]));
-        dispatch(setContactsLoading(false));
         onFinish?.();
-        // We get the contacts again to update the contact list from dab
-        dispatch(getContacts());
       }
     } catch (e) {
-      // TODO: We should handle this error
-      dispatch(setContactsLoading(false));
+      // TODO: handle this error
       console.log('Error adding contacts:', e);
+      rejectWithValue({ error: e.message });
     }
   }
 );
 
 export const removeContact = createAsyncThunk(
   'keyring/removeContact',
-  async ({ contactName, walletNumber = 0 }, { getState, dispatch }) => {
+  async (
+    { contactName, walletNumber = 0 },
+    { getState, dispatch, rejectWithValue }
+  ) => {
     try {
-      dispatch(setContactsLoading(true));
       const state = getState();
       const res = await state.keyring.instance?.deleteContact({
         addressName: contactName,
@@ -278,23 +275,22 @@ export const removeContact = createAsyncThunk(
         dispatch(
           setContacts(state.user.contacts.filter(c => c.name !== contactName))
         );
-        dispatch(setContactsLoading(false));
-        // We get the contacts again to update the contact list from dab
-        dispatch(getContacts());
       }
     } catch (e) {
-      // TODO: We should handle this error
-      dispatch(setContactsLoading(false));
+      // TODO: handle this error
       console.log('Error removing contact:', e);
+      rejectWithValue({ error: e.message });
     }
   }
 );
 
 export const editContact = createAsyncThunk(
   'keyring/editContact',
-  async ({ contact, newContact, walletNumber = 0 }, { getState, dispatch }) => {
+  async (
+    { contact, newContact, walletNumber = 0 },
+    { getState, dispatch, rejectWithValue }
+  ) => {
     try {
-      dispatch(setContactsLoading(true));
       const state = getState();
       const removeContactRes = await state.keyring.instance?.deleteContact({
         addressName: contact.name,
@@ -313,18 +309,13 @@ export const editContact = createAsyncThunk(
             newContact,
           ])
         );
-        dispatch(setContactsLoading(false));
-        // We get the contacts again to update the contact list from dab
-        dispatch(getContacts());
       } else {
-        // TODO: We should handle this error
-        dispatch(setContactsLoading(false));
-        console.log('Error editing contact:');
+        // TODO: handle this error
+        rejectWithValue({ error: 'Error editing contact' });
       }
     } catch (e) {
-      // TODO: We should handle this error
-      dispatch(setContactsLoading(false));
-      console.log('Error editing contact:', e);
+      // TODO: handle this error
+      rejectWithValue({ error: e.message });
     }
   }
 );
@@ -403,9 +394,6 @@ export const userSlice = createSlice({
     setUsingBiometrics: (state, action) => {
       state.usingBiometrics = action.payload;
     },
-    setContactsLoading: (state, action) => {
-      state.contactsLoading = action.payload;
-    },
     setContacts: (state, action) => {
       state.contacts = action.payload;
     },
@@ -424,90 +412,117 @@ export const userSlice = createSlice({
     setCollections: (state, action) => {
       state.collections = action.payload;
     },
-    setCollectionsError: (state, action) => {
-      state.collectionsError = action.payload;
-    },
-    removeNFT: (state, action) => {
-      const collections = state.collections.map(col => ({
-        ...col,
-        tokens: col.tokens.filter(token => token.id !== action.payload?.id),
-      }));
-      state.collections = collections.filter(col => col.tokens.length);
-    },
     reset: () => {
       return DEFAULT_STATE;
     },
   },
-  extraReducers: {
-    [getContacts.fulfilled]: (state, action) => {
-      state.contacts = action.payload;
-    },
-    [sendToken.fulfilled]: (state, action) => {
-      state.transaction = action.payload;
-    },
-    [burnXtc.fulfilled]: (state, action) => {
-      state.transaction = action.payload;
-    },
-    [getBalance.pending]: state => {
-      state.assetsError = null;
-      state.assetsLoading = true;
-    },
-    [getBalance.fulfilled]: (state, action) => {
-      const assets = action.payload;
-      state.assets = assets?.length > 0 ? assets : DEFAULT_ASSETS;
-      state.assetsLoading = false;
-    },
-    [getBalance.rejected]: (state, action) => {
-      state.assetsError = action.payload.error;
-      state.assetsLoading = false;
-    },
-    [getNFTs.fulfilled]: (state, action) => {
-      // TODO: remove this when ICNS is fully implemented
-      const filteredNFTS =
-        action.payload?.filter(nft => nft.name !== 'ICNS') || [];
-      state.collections = filteredNFTS;
-    },
-    [getTransactions.pending]: state => {
-      state.transactionsError = null;
-      state.transactionsLoading = true;
-    },
-    [getTransactions.fulfilled]: (state, action) => {
-      state.transactions = action.payload;
-      state.transactionsLoading = false;
-    },
-    [getTransactions.rejected]: (state, action) => {
-      state.transactionsError = action.payload.error;
-      state.transactionsLoading = false;
-    },
-    [transferNFT.fulfilled]: (state, action) => {
-      const { nft, status, error } = action.payload;
-
-      if (!error) {
-        const collections = state.collections.map(col => ({
-          ...col,
-          tokens: col.tokens.filter(token => token.id !== nft.id),
-        }));
-        state.collections = collections.filter(col => col.tokens.length);
-        state.selectedNFT = {};
-      }
-      state.transaction = {
-        status,
-      };
-    },
+  extraReducers: builder => {
+    builder
+      .addCase(getContacts.fulfilled, (state, action) => {
+        state.contacts = action.payload;
+      })
+      .addCase(sendToken.fulfilled, (state, action) => {
+        state.transaction = action.payload;
+      })
+      .addCase(burnXtc.fulfilled, (state, action) => {
+        state.transaction = action.payload;
+      })
+      .addCase(getBalance.pending, state => {
+        state.assetsError = null;
+        state.assetsLoading = true;
+      })
+      .addCase(getBalance.fulfilled, (state, action) => {
+        const assets = action.payload;
+        state.assets = assets?.length > 0 ? assets : DEFAULT_ASSETS;
+        state.assetsLoading = false;
+      })
+      .addCase(getBalance.rejected, (state, action) => {
+        state.assetsError = action.payload.error;
+        state.assetsLoading = false;
+      })
+      .addCase(getNFTs.pending, state => {
+        state.collectionsError = null;
+        state.collectionsLoading = true;
+      })
+      .addCase(getNFTs.fulfilled, (state, action) => {
+        // TODO: remove this when ICNS is fully implemented
+        const filteredNFTS =
+          action.payload?.filter(nft => nft.name !== 'ICNS') || [];
+        state.collections = filteredNFTS;
+        state.collectionsLoading = false;
+      })
+      .addCase(getNFTs.rejected, (state, action) => {
+        state.collectionsError = action.payload.error;
+        state.collectionsLoading = false;
+      })
+      .addCase(getTransactions.pending, state => {
+        state.transactionsError = null;
+        state.transactionsLoading = true;
+      })
+      .addCase(getTransactions.fulfilled, (state, action) => {
+        state.transactions = action.payload;
+        state.transactionsLoading = false;
+      })
+      .addCase(getTransactions.rejected, (state, action) => {
+        state.transactionsError = action.payload.error;
+        state.transactionsLoading = false;
+      })
+      .addCase(transferNFT.fulfilled, (state, action) => {
+        const { collections, status, error } = action.payload;
+        if (!error) {
+          state.collections = collections;
+          state.selectedNFT = {};
+        }
+        state.transaction = {
+          status,
+        };
+      })
+      .addMatcher(
+        isAnyOf(
+          getContacts.pending,
+          addContact.pending,
+          removeContact.pending,
+          editContact.pending
+        ),
+        state => {
+          state.contactsError = null;
+          state.contactsLoading = true;
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          getContacts.fulfilled,
+          addContact.fulfilled,
+          removeContact.fulfilled,
+          editContact.fulfilled
+        ),
+        state => {
+          state.contactsLoading = false;
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          getContacts.rejected,
+          addContact.rejected,
+          removeContact.rejected,
+          editContact.rejected
+        ),
+        (state, action) => {
+          state.contactsLoading = false;
+          state.contactsError = action.payload.error;
+        }
+      );
   },
 });
 
 export const {
-  setCollectionsError,
   setUsingBiometrics,
   setBiometricsAvailable,
   setBalance,
   setTransactions,
   setTransaction,
   setContacts,
-  setContactsLoading,
   setCollections,
-  removeNFT,
   reset,
 } = userSlice.actions;
 

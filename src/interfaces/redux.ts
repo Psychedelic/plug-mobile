@@ -132,6 +132,7 @@ export interface UserState {
   assetsLoading: boolean;
   contacts: Contact[];
   contactsLoading: boolean;
+  contactsError: string | null;
   transaction: Transaction;
   transactions: Transaction[];
   transactionsError: string | null;

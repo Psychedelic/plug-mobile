@@ -6,13 +6,7 @@ import { fetch } from 'react-native-fetch-api';
 import { generateMnemonic } from '../../utils/crypto';
 import { keyringStorage } from '../store';
 import { getNewAccountData, resetStores } from '../utils';
-import {
-  getBalance,
-  getContacts,
-  getNFTs,
-  getTransactions,
-  setContactsLoading,
-} from './user';
+import { getBalance, getContacts, getNFTs, getTransactions } from './user';
 
 const DEFAULT_STATE = {
   instance: null,
@@ -182,10 +176,7 @@ export const login = createAsyncThunk(
         dispatch(getBalance());
         dispatch(getTransactions({ icpPrice }));
         dispatch(getNFTs());
-        dispatch(setContactsLoading(true));
-        dispatch(getContacts())
-          .unwrap()
-          .then(() => dispatch(setContactsLoading(false)));
+        dispatch(getContacts());
       } else {
         return rejectWithValue({ error: 'locked' });
       }
@@ -242,9 +233,9 @@ export const setCurrentPrincipal = createAsyncThunk(
       const { wallets } = response || {};
       const wallet = wallets[walletNumber];
       dispatch(setCurrentWallet(wallet || {}));
-
       dispatch(getContacts());
       dispatch(getBalance());
+      dispatch(getNFTs());
       dispatch(getTransactions({ icpPrice }));
     } catch (e) {
       console.log('setCurrentPrincipal', e.message);

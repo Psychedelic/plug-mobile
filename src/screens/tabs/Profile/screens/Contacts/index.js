@@ -75,6 +75,7 @@ function Contacts({ modalRef }) {
     actionSheetRef?.current?.open();
   };
 
+  //TODO: Use flatlist to show contacts, improve loading
   return (
     <>
       <Modal modalRef={modalRef} adjustToContentHeight>

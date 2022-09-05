@@ -21,7 +21,6 @@ import {
   setBalance,
   setCollections,
   setContacts,
-  setContactsLoading,
   setTransactions,
 } from './slices/user';
 
@@ -69,13 +68,10 @@ export const resetStores = dispatch => {
 
 export const getNewAccountData = async (dispatch, icpPrice, state) => {
   dispatch(setContacts([]));
-  dispatch(setContactsLoading(true));
   dispatch(getNFTs());
   dispatch(getBalance());
   dispatch(getTransactions({ icpPrice }));
-  dispatch(getContacts())
-    .unwrap()
-    .then(() => dispatch(setContactsLoading(false)));
+  dispatch(getContacts());
 };
 
 const parseTransactionObject = transactionObject => {
