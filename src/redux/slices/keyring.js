@@ -4,19 +4,9 @@ import RNCryptoJS from 'react-native-crypto-js';
 import { fetch } from 'react-native-fetch-api';
 
 import { generateMnemonic } from '../../utils/crypto';
-import { getPrivateAssetsAndTransactions } from '../../utils/keyringUtils';
 import { keyringStorage } from '../store';
 import { getNewAccountData, resetStores } from '../utils';
-import {
-  getBalance,
-  getContacts,
-  getNFTs,
-  getTransactions,
-  setAssetsAndTransactions,
-  setAssetsLoading,
-  setContactsLoading,
-  setTransactionsLoading,
-} from './user';
+import { getBalance, getContacts, getNFTs, getTransactions } from './user';
 
 const DEFAULT_STATE = {
   instance: null,
@@ -172,38 +162,28 @@ export const unlock = createAsyncThunk(
 
 export const login = createAsyncThunk(
   'keyring/login',
-  async (params, { getState, dispatch }) => {
+  async (params, { getState, dispatch, rejectWithValue }) => {
     const state = getState();
     const instance = state.keyring?.instance;
-    const { icpPrice, onError } = params;
-    const handleError = () => {
-      dispatch(setAssetsLoading(false));
-      onError?.();
-    };
+    const { icpPrice, password } = params;
 
     try {
-      const unlocked = await instance?.unlock(params.password);
+      const unlocked = await instance?.unlock(password);
       const { wallets, currentWalletId } = await instance?.getState();
       if (unlocked) {
         dispatch(setCurrentWallet(wallets[currentWalletId]));
         dispatch(setWallets(wallets));
-        dispatch(setAssetsLoading(true));
         dispatch(getBalance());
-        dispatch(setTransactionsLoading(true));
         dispatch(getTransactions({ icpPrice }));
         dispatch(getNFTs());
-        // Get contacts from dab
-        dispatch(setContactsLoading(true));
-        dispatch(getContacts())
-          .unwrap()
-          .then(() => dispatch(setContactsLoading(false)));
+        dispatch(getContacts());
       } else {
-        handleError();
+        return rejectWithValue({ error: 'locked' });
       }
       return unlocked;
     } catch (e) {
       console.log('Error at login: ', e);
-      handleError();
+      return rejectWithValue({ error: e.message });
     }
   }
 );
@@ -253,15 +233,10 @@ export const setCurrentPrincipal = createAsyncThunk(
       const { wallets } = response || {};
       const wallet = wallets[walletNumber];
       dispatch(setCurrentWallet(wallet || {}));
-
-      // We need to update the state to map the transacctions and assets as it should:
-      const [transactions, assets] = await getPrivateAssetsAndTransactions(
-        icpPrice,
-        getState(),
-        dispatch
-      );
       dispatch(getContacts());
-      dispatch(setAssetsAndTransactions({ assets, transactions }));
+      dispatch(getBalance());
+      dispatch(getNFTs());
+      dispatch(getTransactions({ icpPrice }));
     } catch (e) {
       console.log('setCurrentPrincipal', e.message);
     }
@@ -308,6 +283,9 @@ export const keyringSlice = createSlice({
           a.walletNumber === account.walletNumber ? account : a
         );
       }
+    },
+    [login.rejected]: state => {
+      state.isUnlocked = false;
     },
     [login.fulfilled]: (state, action) => {
       state.isUnlocked = action.payload;

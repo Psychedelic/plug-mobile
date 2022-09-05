@@ -1,6 +1,6 @@
 import { useScrollToTop } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshControl, View } from 'react-native';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
@@ -14,7 +14,7 @@ import Text from '@/components/common/Text';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
 import { Container, Separator } from '@/layout';
-import { getTransactions, setTransactionsLoading } from '@/redux/slices/user';
+import { getTransactions } from '@/redux/slices/user';
 import ActivityItem, {
   ITEM_HEIGHT,
 } from '@/screens/tabs/components/ActivityItem';
@@ -35,23 +35,13 @@ const Profile = () => {
     state => state.user,
     shallowEqual
   );
-  const [refreshing, setRefresing] = useState(transactionsLoading);
-
-  const openAccounts = () => {
-    modalRef?.current.open();
-  };
 
   const onRefresh = () => {
-    setRefresing(true);
-    dispatch(setTransactionsLoading(true));
     dispatch(getTransactions({ icpPrice }));
   };
 
-  useEffect(() => {
-    setRefresing(transactionsLoading);
-  }, [transactionsLoading]);
-
   const renderTransaction = ({ item }) => <ActivityItem {...item} />;
+
   return (
     <>
       <Container>
@@ -61,7 +51,7 @@ const Profile = () => {
             <UserIcon
               icon={currentWallet?.icon}
               size="large"
-              onPress={openAccounts}
+              onPress={modalRef.current?.open}
             />
             <Text
               type="subtitle1"
@@ -75,7 +65,7 @@ const Profile = () => {
             text={t('common.change')}
             buttonStyle={styles.buttonStyle}
             textStyle={styles.buttonTextStyle}
-            onPress={openAccounts}
+            onPress={modalRef.current?.open}
           />
         </View>
         <Separator />
@@ -91,7 +81,7 @@ const Profile = () => {
             estimatedItemSize={ITEM_HEIGHT}
             refreshControl={
               <RefreshControl
-                refreshing={refreshing}
+                refreshing={transactionsLoading}
                 onRefresh={onRefresh}
                 tintColor={Colors.White.Primary}
               />

@@ -1,6 +1,6 @@
 import { useScrollToTop } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshControl, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,9 +25,10 @@ const NFTs = () => {
   const NFTListRef = useRef(null);
   useScrollToTop(NFTListRef);
   const dispatch = useDispatch();
-  const [refreshing, setRefresing] = useState(false);
   const [selectedNft, setSelectedNft] = useStateWithCallback(null);
-  const { collections, collectionsError } = useSelector(state => state.user);
+  const { collections, collectionsError, collectionsLoading } = useSelector(
+    state => state.user
+  );
 
   const nfts = useMemo(
     () => collections?.flatMap(collection => collection?.tokens || []) || [],
@@ -41,12 +42,7 @@ const NFTs = () => {
   };
 
   const onRefresh = () => {
-    setRefresing(true);
-    dispatch(getNFTs())
-      .unwrap()
-      .then(() => {
-        setRefresing(false);
-      });
+    dispatch(getNFTs());
   };
 
   return (
@@ -71,7 +67,7 @@ const NFTs = () => {
               overScrollMode="never"
               refreshControl={
                 <RefreshControl
-                  refreshing={refreshing}
+                  refreshing={collectionsLoading}
                   onRefresh={onRefresh}
                   tintColor={Colors.White.Primary}
                 />

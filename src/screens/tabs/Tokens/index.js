@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshControl, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +8,7 @@ import TokenItem from '@/components/tokens/TokenItem';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
 import { Container, Row, Separator } from '@/layout';
-import { getBalance, setAssetsLoading } from '@/redux/slices/user';
+import { getBalance } from '@/redux/slices/user';
 import Send from '@/screens/flows/Send';
 
 import WalletHeader from '../components/WalletHeader';
@@ -24,7 +24,6 @@ function Tokens() {
     state => state.user
   );
 
-  const [refreshing, setRefresing] = useState(assetsLoading);
   const usdSum = Number(
     assets.reduce(
       (total, token) => (token?.value ? total + Number(token?.value) : total),
@@ -32,18 +31,8 @@ function Tokens() {
     )
   ).toFixed(2);
 
-  useEffect(() => {
-    setRefresing(assetsLoading);
-  }, [assetsLoading]);
-
-  const onRefresh = () => {
-    setRefresing(true);
-    dispatch(setAssetsLoading(true));
-    dispatch(getBalance());
-  };
-
   const handleRefresh = () => {
-    onRefresh();
+    dispatch(getBalance());
   };
 
   const openSend = token => () => {
@@ -67,8 +56,8 @@ function Tokens() {
             contentContainerStyle={styles.scrollContent}
             refreshControl={
               <RefreshControl
-                refreshing={refreshing}
-                onRefresh={onRefresh}
+                refreshing={assetsLoading}
+                onRefresh={handleRefresh}
                 tintColor={Colors.White.Primary}
               />
             }>
