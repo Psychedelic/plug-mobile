@@ -1,15 +1,20 @@
-import React, { useRef, useState } from 'react';
+import Clipboard from '@react-native-community/clipboard';
+import React, { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RefreshControl, ScrollView } from 'react-native';
+import { Alert, RefreshControl, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { ErrorState, Text } from '@/components/common';
+import { ActionSheet, ErrorState, Text } from '@/components/common';
 import TokenItem from '@/components/tokens/TokenItem';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
+import CopyIcon from '@/icons/svg/material/Copy.svg';
+import DeleteIcon from '@/icons/svg/material/Delete.svg';
+import SendIcon from '@/icons/svg/material/Send.svg';
 import { Container, Row, Separator } from '@/layout';
-import { getBalance } from '@/redux/slices/user';
+import { getBalance, removeCustomToken } from '@/redux/slices/user';
 import Send from '@/screens/flows/Send';
+import { isDefaultToken } from '@/utils/assets';
 
 import WalletHeader from '../components/WalletHeader';
 import { AddToken } from './components/AddToken';
@@ -20,9 +25,65 @@ function Tokens() {
   const dispatch = useDispatch();
   const [selectedToken, setSelectedToken] = useState(null);
   const sendRef = useRef(null);
+  const actionsRef = useRef(null);
+
   const { assets, assetsLoading, assetsError } = useSelector(
     state => state.user
   );
+
+  const handleDelete = () => {
+    Alert.alert(
+      t('tokensTab.deleteTitle'),
+      t('tokensTab.deleteMessage', { token: selectedToken.name }),
+      [
+        {
+          text: t('common.cancel'),
+          style: 'cancel',
+        },
+        {
+          text: t('tokensTab.tokenActions.delete'),
+          style: 'destructive',
+          onPress: () => {
+            dispatch(removeCustomToken(selectedToken?.canisterId));
+            setSelectedToken(null);
+          },
+        },
+      ],
+      {
+        cancelable: true,
+      }
+    );
+  };
+
+  const tokenActions = useMemo(() => {
+    const actions = [
+      {
+        id: 1,
+        label: t('tokensTab.tokenActions.send'),
+        onPress: sendRef.current?.open,
+        icon: SendIcon,
+      },
+      {
+        id: 2,
+        label: t('tokensTab.tokenActions.copy'),
+        onPress: () => {
+          Clipboard.setString(selectedToken.canisterId);
+          actionsRef.current?.close();
+        },
+        icon: CopyIcon,
+      },
+    ];
+    if (!isDefaultToken(selectedToken?.canisterId)) {
+      actions.push({
+        id: 3,
+        label: t('tokensTab.tokenActions.delete'),
+        destructive: true,
+        onPress: handleDelete,
+        icon: DeleteIcon,
+      });
+    }
+    return actions;
+  }, [selectedToken]);
 
   const usdSum = Number(
     assets.reduce(
@@ -35,9 +96,9 @@ function Tokens() {
     dispatch(getBalance());
   };
 
-  const openSend = token => () => {
+  const handleTokenPress = token => () => {
     setSelectedToken(token);
-    sendRef.current?.open();
+    actionsRef.current?.open();
   };
 
   return (
@@ -66,7 +127,7 @@ function Tokens() {
                 token={token}
                 key={token.symbol}
                 color={Colors.Gray.Tertiary}
-                onPress={openSend(token)}
+                onPress={handleTokenPress(token)}
                 style={styles.tokenItem}
               />
             ))}
@@ -80,6 +141,11 @@ function Tokens() {
         />
       )}
       <Send modalRef={sendRef} token={selectedToken} />
+      <ActionSheet
+        modalRef={actionsRef}
+        options={tokenActions}
+        optionTextStyle={styles.optionText}
+      />
     </Container>
   );
 }

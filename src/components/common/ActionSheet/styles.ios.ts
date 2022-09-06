@@ -52,5 +52,9 @@ export default StyleSheet.create({
     marginHorizontal: 8,
     marginBottom: 8,
   },
-  cancelText: fontMaker({ weight: SEMIBOLD }),
+  cancelText: fontMaker({
+    weight: SEMIBOLD,
+    size: 17,
+    color: Colors.ActionBlue,
+  }),
 });

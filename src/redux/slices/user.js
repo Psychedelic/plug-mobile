@@ -364,6 +364,22 @@ export const addCustomToken = createAsyncThunk(
   }
 );
 
+export const removeCustomToken = createAsyncThunk(
+  'keyring/removeCustomToken',
+  /**
+   * @param { canisterId: string } param
+   */
+  async (canisterId, { getState, rejectWithValue }) => {
+    const { keyring, icp } = getState();
+    try {
+      const tokenList = await keyring?.instance?.removeToken({ canisterId });
+      return formatAssets(tokenList, icp.icpPrice);
+    } catch (e) {
+      return rejectWithValue({ error: e.message });
+    }
+  }
+);
+
 export const getTokenInfo = createAsyncThunk(
   'keyring/getTokenInfo',
   /**
@@ -476,6 +492,9 @@ export const userSlice = createSlice({
         state.transaction = {
           status,
         };
+      })
+      .addCase(removeCustomToken.fulfilled, (state, action) => {
+        state.assets = action.payload;
       })
       .addMatcher(
         isAnyOf(

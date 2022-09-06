@@ -104,6 +104,16 @@ const translations = {
     title: 'Save Contact',
     namePlaceholder: 'Name',
   },
+  tokensTab: {
+    tokenActions: {
+      send: 'Send',
+      copy: 'Copy ID',
+      delete: 'Delete',
+    },
+    deleteTitle: 'Delete Token',
+    deleteAction: 'Delete Token',
+    deleteMessage: 'Would you like to delete {{token}} from your token list?',
+  },
   nftTab: {
     emptyTitle: "You don't own any Collectibles yet",
     emptySubtitle:
