@@ -1,5 +1,5 @@
 import { DEFAULT_FEE, XTC_FEE } from '@/constants/addresses';
-import { USD_PER_TC } from '@/constants/assets';
+import { TOKENS, USD_PER_TC } from '@/constants/assets';
 
 export const getAvailableAmount = (
   amount: number,
@@ -20,11 +20,11 @@ export const getTransactionFee = (tokenSymbol: string, tokenPrice: number) => {
   let currentUSDFee;
 
   switch (tokenSymbol) {
-    case 'ICP':
+    case TOKENS.ICP.symbol:
       currentFee = DEFAULT_FEE;
       currentUSDFee = DEFAULT_FEE * tokenPrice;
       break;
-    case 'XTC':
+    case TOKENS.XTC.symbol:
       currentFee = XTC_FEE;
       currentUSDFee = XTC_FEE * USD_PER_TC;
       break;

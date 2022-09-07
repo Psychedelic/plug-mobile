@@ -12,8 +12,9 @@ import UserIcon from '@/commonComponents/UserIcon';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
+import useICNS from '@/hooks/useICNS';
 import { addContact, editContact } from '@/redux/slices/user';
-import { validatePrincipalId } from '@/utils/ids';
+import { validateAccountId, validatePrincipalId } from '@/utils/ids';
 
 import EditEmoji from '../../../EditEmoji';
 import styles from './styles';
@@ -33,7 +34,12 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
   const title = isEditContact
     ? t('contacts.editContact')
     : t('contacts.addContact');
-  const validId = validatePrincipalId(id);
+
+  const { loading, isValid: isValidICNS } = useICNS(id, '');
+
+  const validId =
+    validatePrincipalId(id) || validateAccountId(id) || isValidICNS;
+
   const savedContact = contacts.find(c => c.id === id);
   const savedContactName = contacts.find(c => c.name === name);
   const nameError = savedContactName && contact?.name !== name;
@@ -58,7 +64,6 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
               },
             })
       );
-
       modalRef.current?.close();
       clearState();
     }
@@ -166,10 +171,11 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
         )}
         <RainbowButton
           text={title}
+          loading={loading}
           onPress={handleSubmit}
-          buttonStyle={styles.marginedContainer}
-          textStyle={styles.capitalized}
           disabled={isButtonDisabled()}
+          textStyle={styles.capitalized}
+          buttonStyle={styles.marginedContainer}
         />
       </View>
       <EditEmoji
