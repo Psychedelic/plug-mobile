@@ -100,6 +100,8 @@ export const formatAssets = (
 
     const formattedAsset = {
       ...token,
+      // Sometimes names come with a strange char that causes problems
+      name: token?.name?.replaceAll('\x00', ''),
       ...formatAssetBySymbol(parsedAmount, symbol, icpPrice),
     };
 

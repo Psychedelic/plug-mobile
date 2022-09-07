@@ -34,7 +34,7 @@ function Tokens() {
   const handleDelete = () => {
     Alert.alert(
       t('tokensTab.deleteTitle'),
-      t('tokensTab.deleteMessage', { token: selectedToken.name }),
+      t('tokensTab.deleteMessage', { token: selectedToken?.name }),
       [
         {
           text: t('common.cancel'),
