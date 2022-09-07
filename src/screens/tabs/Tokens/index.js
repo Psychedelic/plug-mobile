@@ -41,7 +41,7 @@ function Tokens() {
           style: 'cancel',
         },
         {
-          text: t('tokensTab.tokenActions.delete'),
+          text: t('tokensTab.deleteAction'),
           style: 'destructive',
           onPress: () => {
             dispatch(removeCustomToken(selectedToken?.canisterId));

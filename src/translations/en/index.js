@@ -111,7 +111,7 @@ const translations = {
       delete: 'Delete',
     },
     deleteTitle: 'Delete Token',
-    deleteAction: 'Delete Token',
+    deleteAction: 'Delete',
     deleteMessage: 'Would you like to delete {{token}} from your token list?',
   },
   nftTab: {
