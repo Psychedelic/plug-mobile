@@ -53,6 +53,7 @@ function Modal({
         overlayStyle={styles.overlay}
         handleStyle={styles.handle}
         scrollViewProps={{
+          bounces: false,
           keyboardShouldPersistTaps: 'always',
           keyboardDismissMode: 'none',
           showsVerticalScrollIndicator: false,
