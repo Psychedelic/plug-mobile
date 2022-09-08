@@ -78,7 +78,7 @@ function Contacts({ modalRef }) {
   //TODO: Use flatlist to show contacts, improve loading
   return (
     <>
-      <Modal modalRef={modalRef} adjustToContentHeight>
+      <Modal modalRef={modalRef} fullHeight>
         <Header center={<Text type="subtitle2">{t('contacts.title')}</Text>} />
         <Column style={styles.container}>
           {contactsLoading && (
@@ -108,6 +108,7 @@ function Contacts({ modalRef }) {
                       key={`${contact.id}_${contact.name}`}>
                       <CommonItem
                         name={contact.name}
+                        // TODO: Check if contact.id is ICNS and if it is, send the id as subtitle, in that way the ICNS will not be cut with shortAddress (Need merge with v1-wallet-connect branch)
                         id={contact.id}
                         image={contact.image}
                         onLongPress={() => onLongPress(contact)}

@@ -226,8 +226,7 @@ export const getContacts = createAsyncThunk(
     try {
       const state = getState();
       const res = await state.keyring.instance?.getContacts(walletNumber);
-      // TODO: When ICNS is integrated in PlugMobile delete the .filter(filterICNSContacts)
-      return res?.map(formatContact).filter(filterICNSContacts);
+      return res?.map(formatContact);
     } catch (e) {
       console.log('Error getting contacts:', e);
       rejectWithValue({ error: e.message });
@@ -322,7 +321,7 @@ export const editContact = createAsyncThunk(
 
 export const getICNSData = createAsyncThunk(
   'keyring/getICNSData',
-  async ({ refresh }, { getState, dispatch }) => {
+  async ({ refresh }, { getState }) => {
     const { keyring } = getState();
     const { currentWallet } = keyring;
     const icnsData = currentWallet?.icnsData || { names: [] };
@@ -461,11 +460,7 @@ export const userSlice = createSlice({
         state.collectionsLoading = true;
       })
       .addCase(getNFTs.fulfilled, (state, action) => {
-        // Matt
-        // TODO: remove this when ICNS is fully implemented
-        const filteredNFTS =
-          action.payload?.filter(nft => nft.name !== 'ICNS') || [];
-        state.collections = filteredNFTS;
+        state.collections = action.payload;
         state.collectionsLoading = false;
       })
       .addCase(getNFTs.rejected, (state, action) => {

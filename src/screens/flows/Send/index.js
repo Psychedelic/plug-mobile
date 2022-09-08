@@ -72,7 +72,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
   const [sendingXTCtoCanister, setSendingXTCtoCanister] = useState(false);
   const [biometricsError, setBiometricsError] = useState(false);
   const isValidAddress = addressInfo.isValid;
-  const to = addressInfo.resolvedAddress || address || selectedContact?.id; //chequear que esto este ok
+  const to = addressInfo.resolvedAddress || address || selectedContact?.id;
 
   const {
     loading: loadingICNS,
@@ -401,7 +401,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
         }}
         onClose={partialReset}
         transaction={transaction}
-        loading={loading || loadingICNS} // Check if this is ok
+        loading={loading || loadingICNS}
       />
       <SaveContact id={address} modalRef={saveContactRef} />
       <PasswordModal
