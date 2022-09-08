@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, StyleProp, View, ViewStyle } from 'react-native';
 
-import { ICNS_LOGO } from '@/services/ICNS';
-
-import Image from '../Image';
-import Text from '../Text';
+import ICNSDisplayer from './components/ICNSDisplayer';
 import ImageDisplayer from './components/ImageDisplayer';
 import VideoDisplayer from './components/VideoDisplayer';
 import styles from './styles';
@@ -38,65 +35,28 @@ const NftDisplayer = ({
         <VideoDisplayer
           url={url}
           loading={loading}
+          isSendView={isSend}
           style={styles.image}
           onLoad={hideSpinner}
           isDetailView={isDetailView}
-          isSendView={isSend}
         />
       ) : (
         <ImageDisplayer
-          style={style}
-          type={type}
           url={url}
+          type={type}
+          style={style}
           isSendView={isSend}
           isDetailView={isDetailView}
         />
       )}
       {ICNSName && (
-        <View
-          style={{
-            position: 'absolute',
-            paddingHorizontal: 20,
-            paddingTop: 20,
-            paddingBottom: 12,
-            height: '100%',
-            width: '100%',
-            justifyContent: 'space-between',
-          }}>
-          <Image
-            style={[
-              {
-                height: 20,
-                width: 60,
-              },
-              isDetailView && {
-                height: 40,
-                width: 120,
-              },
-            ]}
-            resizeMode="contain"
-            url={ICNS_LOGO}
-          />
-          <Text
-            type="headline1"
-            numberOfLines={1}
-            style={[
-              {
-                fontSize: 18,
-              },
-              isDetailView && {
-                fontSize: 30,
-              },
-            ]}>
-            {ICNSName}
-          </Text>
-        </View>
+        <ICNSDisplayer ICNSName={ICNSName} isDetailView={isDetailView} />
       )}
     </View>
   ) : (
     <ActivityIndicator
-      style={isSend ? styles.sendActivityIndicator : styles.activityIndicator}
       color="white"
+      style={isSend ? styles.sendActivityIndicator : styles.activityIndicator}
     />
   );
 };
