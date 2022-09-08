@@ -66,7 +66,7 @@ export const resetStores = dispatch => {
   dispatch(setBalance(DEFAULT_ASSETS));
 };
 
-export const getNewAccountData = async (dispatch, icpPrice, state) => {
+export const getNewAccountData = async (dispatch, icpPrice) => {
   dispatch(setContacts([]));
   dispatch(getNFTs());
   dispatch(getBalance());
