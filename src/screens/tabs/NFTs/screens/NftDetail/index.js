@@ -93,7 +93,7 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
         <View style={styles.content}>
           <View style={styles.nftDisplayerContainer}>
             <NftDisplayer
-              ICNSName={selectedNFT?.name}
+              ICNSName={isICNS ? selectedNFT?.name : undefined}
               url={selectedNFT?.url}
               type={selectedNFT?.type}
               style={styles.video}
