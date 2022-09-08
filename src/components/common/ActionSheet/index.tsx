@@ -10,7 +10,7 @@ import Close from '@/icons/svg/material/Close.svg';
 
 import Text from '../Text';
 import Touchable from '../Touchable';
-import styles, { ICON_COLOR } from './styles';
+import styles, { ICON_COLOR, ICON_COLOR_DESTRUCTIVE } from './styles';
 
 interface Option {
   id: number;
@@ -72,7 +72,12 @@ function ActionSheet({
                 onPress={() => handleItemPress(option)}
                 style={[styles.item, index > 0 && styles.itemBorder]}>
                 {showIcons && Icon && (
-                  <Icon fill={ICON_COLOR} style={styles.icon} />
+                  <Icon
+                    fill={
+                      option.destructive ? ICON_COLOR_DESTRUCTIVE : ICON_COLOR
+                    }
+                    style={styles.icon}
+                  />
                 )}
                 <Text
                   type="body2"

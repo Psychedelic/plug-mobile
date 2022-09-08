@@ -1,7 +1,8 @@
 import { useScrollToTop } from '@react-navigation/native';
-import React, { useEffect, useRef, useState } from 'react';
+import { FlashList } from '@shopify/flash-list';
+import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, RefreshControl, View } from 'react-native';
+import { RefreshControl, View } from 'react-native';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import EmptyState from '@/commonComponents/EmptyState';
@@ -13,7 +14,7 @@ import Text from '@/components/common/Text';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
 import { Container, Separator } from '@/layout';
-import { getTransactions, setTransactionsLoading } from '@/redux/slices/user';
+import { getTransactions } from '@/redux/slices/user';
 import ActivityItem, {
   ITEM_HEIGHT,
 } from '@/screens/tabs/components/ActivityItem';
@@ -34,25 +35,13 @@ const Profile = () => {
     state => state.user,
     shallowEqual
   );
-  const [refreshing, setRefresing] = useState(transactionsLoading);
-
-  const openAccounts = () => {
-    modalRef?.current.open();
-  };
 
   const onRefresh = () => {
-    setRefresing(true);
-    dispatch(setTransactionsLoading(true));
     dispatch(getTransactions({ icpPrice }));
   };
 
-  useEffect(() => {
-    setRefresing(transactionsLoading);
-  }, [transactionsLoading]);
+  const renderTransaction = ({ item }) => <ActivityItem {...item} />;
 
-  const renderTransaction = ({ item }) => (
-    <ActivityItem key={`${item.date}${item.hash}`} {...item} />
-  );
   return (
     <>
       <Container>
@@ -62,7 +51,7 @@ const Profile = () => {
             <UserIcon
               icon={currentWallet?.icon}
               size="large"
-              onPress={openAccounts}
+              onPress={modalRef.current?.open}
             />
             <Text
               type="subtitle1"
@@ -76,27 +65,23 @@ const Profile = () => {
             text={t('common.change')}
             buttonStyle={styles.buttonStyle}
             textStyle={styles.buttonTextStyle}
-            onPress={openAccounts}
+            onPress={modalRef.current?.open}
           />
         </View>
         <Separator />
         <Text style={styles.title}>{t('activity.title')}</Text>
         {!transactionsError ? (
-          <FlatList
+          <FlashList
             ref={transactionListRef}
             data={transactions}
             renderItem={renderTransaction}
-            keyExtractor={(_, index) => index}
+            keyExtractor={item => `${item.date}${item.hash}`}
             showsVerticalScrollIndicator={false}
             overScrollMode="never"
-            getItemLayout={(_, index) => ({
-              length: ITEM_HEIGHT,
-              offset: ITEM_HEIGHT * index,
-              index,
-            })}
+            estimatedItemSize={ITEM_HEIGHT}
             refreshControl={
               <RefreshControl
-                refreshing={refreshing}
+                refreshing={transactionsLoading}
                 onRefresh={onRefresh}
                 tintColor={Colors.White.Primary}
               />

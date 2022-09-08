@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 import { JELLY_CANISTER_ID } from '@/constants/canister';
 import { ENABLE_NFTS } from '@/constants/nfts';
@@ -19,16 +19,18 @@ import { setCurrentWallet, setWallets } from './keyring';
 
 const DEFAULT_STATE = {
   assets: DEFAULT_ASSETS,
-  assetsError: false,
+  assetsError: null,
   assetsLoading: false,
   contacts: [],
   contactsLoading: false,
+  contactsError: null,
   transaction: DEFAULT_TRANSACTION,
   transactions: [],
-  transactionsError: false,
+  transactionsError: null,
   transactionsLoading: false,
   collections: [],
-  collectionsError: false,
+  collectionsError: null,
+  collectionsLoading: false,
   usingBiometrics: false,
   biometricsAvailable: false,
 };
@@ -64,8 +66,6 @@ export const sendToken = createAsyncThunk(
         opts,
       });
       if (transactionId || height) {
-        dispatch(setAssetsLoading(true));
-        dispatch(setTransactionsLoading(true));
         dispatch(getBalance());
         dispatch(getTransactions({ icpPrice }));
       }
@@ -107,121 +107,89 @@ export const burnXtc = createAsyncThunk(
   }
 );
 
-export const setAssetsAndTransactions = createAsyncThunk(
-  'keyring/setAssetsAndTransactions',
-  async (params, { dispatch }) => {
-    const { transactions, assets } = params;
-    dispatch(setAssetsAndLoading({ assets }));
-    dispatch(setTransactions(transactions || []));
-    dispatch(setTransactionsLoading(false));
-  }
-);
-
-export const setAssetsAndLoading = createAsyncThunk(
-  'keyring/setAssetsAndTransactions',
-  async (params, { dispatch }) => {
-    const { assets } = params;
-    dispatch(setAssets(assets?.length > 0 ? assets : DEFAULT_ASSETS));
-    dispatch(setAssetsLoading(false));
-  }
-);
-
 export const getBalance = createAsyncThunk(
   'keyring/getBalance',
-  async (params, { getState, dispatch }) => {
-    return asyncGetBalance(params, getState(), dispatch);
+  async (params, { getState, dispatch, rejectWithValue }) => {
+    try {
+      const { refresh = true, subaccount } = params || {};
+      const { instance } = getState().keyring;
+      const response = await instance?.getState();
+      const { wallets, currentWalletId } = response || {};
+      let assets = Object.values(wallets?.[currentWalletId]?.assets);
+
+      const shouldUpdate =
+        Object.values(assets)?.every(asset => !Number(asset.amount)) ||
+        Object.values(assets)?.some(asset => Number.isNaN(asset.amount)) ||
+        refresh;
+
+      if (shouldUpdate) {
+        assets = await instance?.getBalances(subaccount);
+      } else {
+        instance?.getBalances(subaccount);
+      }
+
+      const icpPrice = await dispatch(getICPPrice()).unwrap();
+      return formatAssets(assets, icpPrice);
+    } catch (e) {
+      console.log('getBalance error', e);
+      return rejectWithValue({ error: e.message });
+    }
   }
 );
-
-export const asyncGetBalance = async (params, state, dispatch) => {
-  try {
-    dispatch(setAssetsError(false));
-    const { refresh = true, subaccount } = params || {};
-    const { instance } = state.keyring;
-    const response = await instance?.getState();
-    const { wallets, currentWalletId } = response || {};
-    let assets = Object.values(wallets?.[currentWalletId]?.assets);
-
-    const shouldUpdate =
-      Object.values(assets)?.every(asset => !Number(asset.amount)) ||
-      Object.values(assets)?.some(asset => Number.isNaN(asset.amount)) ||
-      refresh;
-
-    if (shouldUpdate) {
-      assets = await instance?.getBalances(subaccount);
-    } else {
-      instance?.getBalances(subaccount);
-    }
-
-    const icpPrice = await dispatch(getICPPrice()).unwrap();
-    return formatAssets(assets, icpPrice);
-  } catch (e) {
-    console.log('asyncGetBalance error', e);
-    dispatch(setAssetsError(true));
-    return { error: e.message };
-  }
-};
 
 export const getNFTs = createAsyncThunk(
   'keyring/getNFTs',
-  async (params, { getState, dispatch }) => {
+  async (params, { getState, rejectWithValue }) => {
     if (ENABLE_NFTS) {
-      return privateGetNFTs(params, getState(), dispatch);
+      try {
+        const { instance } = getState().keyring;
+        const response = await instance?.getState();
+        const { currentWalletId } = response || {};
+        let collections = [];
+        collections = await instance.getNFTs(currentWalletId, params?.refresh);
+        return (collections || [])?.map(collection =>
+          recursiveParseBigint(collection)
+        );
+      } catch (e) {
+        return rejectWithValue({ error: e.message });
+      }
     }
   }
 );
-
-export const privateGetNFTs = async (refresh, state, dispatch) => {
-  try {
-    dispatch(setCollectionsError(false));
-    const { instance } = state.keyring;
-    const response = await instance?.getState();
-    const { currentWalletId } = response || {};
-    let collections = [];
-    collections = await instance.getNFTs(currentWalletId, refresh);
-    return (collections || [])?.map(collection =>
-      recursiveParseBigint(collection)
-    );
-  } catch (e) {
-    dispatch(setCollectionsError(true));
-  }
-};
 
 export const getTransactions = createAsyncThunk(
   'keyring/getTransactions',
-  async (params, { getState, dispatch }) => {
-    return privateGetTransactions(params, getState(), dispatch);
+  async (params, { getState, rejectWithValue }) => {
+    try {
+      const state = getState();
+      const { icpPrice } = params;
+      const currentWalletId = state.keyring?.instance?.currentWalletId;
+      const currentWallet =
+        state.keyring?.instance?.state?.wallets[currentWalletId];
+      const response = await state.keyring.instance?.getTransactions();
+      let parsedTrx =
+        response?.transactions?.map(
+          formatTransaction(icpPrice, currentWallet)
+        ) || [];
+
+      if (!ENABLE_NFTS) {
+        parsedTrx = parsedTrx.filter(
+          item =>
+            !(
+              item?.symbol === 'NFT' ||
+              item?.details.canisterId === JELLY_CANISTER_ID
+            )
+        );
+      }
+
+      return parsedTrx;
+    } catch (e) {
+      return rejectWithValue({
+        error: e.message,
+      });
+    }
   }
 );
-
-export const privateGetTransactions = async (params, state, dispatch) => {
-  try {
-    dispatch(setTransactionsError(false));
-    const { icpPrice } = params;
-    const response = await state.keyring.instance?.getTransactions();
-    let parsedTrx =
-      response?.transactions?.map(formatTransaction(icpPrice, state)) || [];
-
-    dispatch(setTransactionsLoading(false));
-
-    if (!ENABLE_NFTS) {
-      parsedTrx = parsedTrx.filter(
-        item =>
-          !(
-            item?.symbol === 'NFT' ||
-            item?.details.canisterId === JELLY_CANISTER_ID
-          )
-      );
-    }
-
-    return parsedTrx;
-  } catch (e) {
-    dispatch(setTransactionsError(true));
-    return {
-      error: e.message,
-    };
-  }
-};
 
 export const transferNFT = createAsyncThunk(
   'keyring/transferNFT',
@@ -235,14 +203,11 @@ export const transferNFT = createAsyncThunk(
         token: nft,
       });
       if (response) {
-        await privateGetNFTs(true, state, dispatch);
-        dispatch(setTransactionsLoading(true));
         dispatch(getTransactions({ icpPrice }));
       }
 
       return {
-        response: recursiveParseBigint(response),
-        nft,
+        collections: recursiveParseBigint(response),
         status: TRANSACTION_STATUS.success,
       };
     } catch (e) {
@@ -257,74 +222,67 @@ export const transferNFT = createAsyncThunk(
 
 export const getContacts = createAsyncThunk(
   'keyring/getContacts',
-  async (walletNumber = 0, { getState }) => {
+  async (_, { getState, rejectWithValue }) => {
     try {
       const state = getState();
-      const res = await state.keyring.instance?.getContacts(walletNumber);
+      const res = await state.keyring.instance?.getContacts();
       // TODO: When ICNS is integrated in PlugMobile delete the .filter(filterICNSContacts)
       return res?.map(formatContact).filter(filterICNSContacts);
     } catch (e) {
       console.log('Error getting contacts:', e);
+      rejectWithValue({ error: e.message });
     }
   }
 );
 
 export const addContact = createAsyncThunk(
   'keyring/addContact',
-  async ({ contact, walletNumber = 0, onFinish }, { getState, dispatch }) => {
+  async ({ contact, onFinish }, { getState, dispatch, rejectWithValue }) => {
     try {
-      dispatch(setContactsLoading(true));
       const state = getState();
       const res = await state.keyring.instance?.addContact({
         contact: formatContactForController(contact),
-        subaccount: walletNumber,
       });
       if (res) {
         dispatch(setContacts([...state.user.contacts, contact]));
-        dispatch(setContactsLoading(false));
         onFinish?.();
-        // We get the contacts again to update the contact list from dab
-        dispatch(getContacts());
       }
     } catch (e) {
-      // TODO: We should handle this error
-      dispatch(setContactsLoading(false));
+      // TODO: handle this error
       console.log('Error adding contacts:', e);
+      rejectWithValue({ error: e.message });
     }
   }
 );
 
 export const removeContact = createAsyncThunk(
   'keyring/removeContact',
-  async ({ contactName, walletNumber = 0 }, { getState, dispatch }) => {
+  async ({ contactName }, { getState, dispatch, rejectWithValue }) => {
     try {
-      dispatch(setContactsLoading(true));
       const state = getState();
       const res = await state.keyring.instance?.deleteContact({
         addressName: contactName,
-        subaccount: walletNumber,
       });
       if (res) {
         dispatch(
           setContacts(state.user.contacts.filter(c => c.name !== contactName))
         );
-        dispatch(setContactsLoading(false));
-        // We get the contacts again to update the contact list from dab
-        dispatch(getContacts());
       }
     } catch (e) {
-      // TODO: We should handle this error
-      dispatch(setContactsLoading(false));
+      // TODO: handle this error
       console.log('Error removing contact:', e);
+      rejectWithValue({ error: e.message });
     }
   }
 );
 
 export const editContact = createAsyncThunk(
   'keyring/editContact',
-  async ({ contact, newContact, walletNumber = 0 }, { getState, dispatch }) => {
+  async (
+    { contact, newContact, walletNumber = 0 },
+    { getState, dispatch, rejectWithValue }
+  ) => {
     try {
-      dispatch(setContactsLoading(true));
       const state = getState();
       const removeContactRes = await state.keyring.instance?.deleteContact({
         addressName: contact.name,
@@ -343,18 +301,13 @@ export const editContact = createAsyncThunk(
             newContact,
           ])
         );
-        dispatch(setContactsLoading(false));
-        // We get the contacts again to update the contact list from dab
-        dispatch(getContacts());
       } else {
-        // TODO: We should handle this error
-        dispatch(setContactsLoading(false));
-        console.log('Error editing contact:');
+        // TODO: handle this error
+        rejectWithValue({ error: 'Error editing contact' });
       }
     } catch (e) {
-      // TODO: We should handle this error
-      dispatch(setContactsLoading(false));
-      console.log('Error editing contact:', e);
+      // TODO: handle this error
+      rejectWithValue({ error: e.message });
     }
   }
 );
@@ -390,7 +343,7 @@ export const addCustomToken = createAsyncThunk(
         subaccount: currentWalletId,
         logo,
       });
-      dispatch(setAssets(formatAssets(tokenList, icp.icpPrice)));
+      dispatch(setBalance(formatAssets(tokenList, icp.icpPrice)));
 
       const { wallets } = await keyring?.instance?.getState();
       dispatch(setWallets(wallets));
@@ -399,6 +352,22 @@ export const addCustomToken = createAsyncThunk(
     } catch (error) {
       // TODO handle error
       console.log(error);
+    }
+  }
+);
+
+export const removeCustomToken = createAsyncThunk(
+  'keyring/removeCustomToken',
+  /**
+   * @param { canisterId: string } param
+   */
+  async (canisterId, { getState, rejectWithValue }) => {
+    const { keyring, icp } = getState();
+    try {
+      const tokenList = await keyring?.instance?.removeToken({ canisterId });
+      return formatAssets(tokenList, icp.icpPrice);
+    } catch (e) {
+      return rejectWithValue({ error: e.message });
     }
   }
 );
@@ -433,23 +402,14 @@ export const userSlice = createSlice({
     setUsingBiometrics: (state, action) => {
       state.usingBiometrics = action.payload;
     },
-    setContactsLoading: (state, action) => {
-      state.contactsLoading = action.payload;
-    },
     setContacts: (state, action) => {
       state.contacts = action.payload;
     },
     setBiometricsAvailable: (state, action) => {
       state.biometricsAvailable = action.payload;
     },
-    setAssetsLoading: (state, action) => {
-      state.assetsLoading = action.payload;
-    },
-    setAssets: (state, action) => {
+    setBalance: (state, action) => {
       state.assets = action.payload;
-    },
-    setAssetsError: (state, action) => {
-      state.assetsError = action.payload;
     },
     setTransaction: (state, action) => {
       state.transaction = action.payload;
@@ -457,89 +417,123 @@ export const userSlice = createSlice({
     setTransactions: (state, action) => {
       state.transactions = action.payload;
     },
-    setTransactionsError: (state, action) => {
-      state.transactionsError = action.payload;
-    },
     setCollections: (state, action) => {
       state.collections = action.payload;
-    },
-    setCollectionsError: (state, action) => {
-      state.collectionsError = action.payload;
-    },
-    removeNFT: (state, action) => {
-      const collections = state.collections.map(col => ({
-        ...col,
-        tokens: col.tokens.filter(token => token.id !== action.payload?.id),
-      }));
-      state.collections = collections.filter(col => col.tokens.length);
-    },
-    setTransactionsLoading: (state, action) => {
-      state.transactionsLoading = action.payload;
     },
     reset: () => {
       return DEFAULT_STATE;
     },
   },
-  extraReducers: {
-    [getContacts.fulfilled]: (state, action) => {
-      state.contacts = action.payload;
-    },
-    [sendToken.fulfilled]: (state, action) => {
-      state.transaction = action.payload;
-    },
-    [burnXtc.fulfilled]: (state, action) => {
-      state.transaction = action.payload;
-    },
-    [getBalance.fulfilled]: (state, action) => {
-      const assets = action.payload;
-      state.assets = assets?.length > 0 ? assets : DEFAULT_ASSETS;
-      state.assetsLoading = false;
-    },
-    [getNFTs.fulfilled]: (state, action) => {
-      // TODO: remove this when ICNS is fully implemented
-      const filteredNFTS =
-        action.payload?.filter(nft => nft.name !== 'ICNS') || [];
-      state.collections = filteredNFTS;
-    },
-    [getTransactions.fulfilled]: (state, action) => {
-      if (!action.payload.error) {
+  extraReducers: builder => {
+    builder
+      .addCase(getContacts.fulfilled, (state, action) => {
+        state.contacts = action.payload;
+      })
+      .addCase(sendToken.fulfilled, (state, action) => {
+        state.transaction = action.payload;
+      })
+      .addCase(burnXtc.fulfilled, (state, action) => {
+        state.transaction = action.payload;
+      })
+      .addCase(getBalance.pending, state => {
+        state.assetsError = null;
+        state.assetsLoading = true;
+      })
+      .addCase(getBalance.fulfilled, (state, action) => {
+        const assets = action.payload;
+        state.assets = assets?.length > 0 ? assets : DEFAULT_ASSETS;
+        state.assetsLoading = false;
+      })
+      .addCase(getBalance.rejected, (state, action) => {
+        state.assetsError = action.payload.error;
+        state.assetsLoading = false;
+      })
+      .addCase(getNFTs.pending, state => {
+        state.collectionsError = null;
+        state.collectionsLoading = true;
+      })
+      .addCase(getNFTs.fulfilled, (state, action) => {
+        // TODO: remove this when ICNS is fully implemented
+        const filteredNFTS =
+          action.payload?.filter(nft => nft.name !== 'ICNS') || [];
+        state.collections = filteredNFTS;
+        state.collectionsLoading = false;
+      })
+      .addCase(getNFTs.rejected, (state, action) => {
+        state.collectionsError = action.payload.error;
+        state.collectionsLoading = false;
+      })
+      .addCase(getTransactions.pending, state => {
+        state.transactionsError = null;
+        state.transactionsLoading = true;
+      })
+      .addCase(getTransactions.fulfilled, (state, action) => {
         state.transactions = action.payload;
         state.transactionsLoading = false;
-      }
-    },
-    [transferNFT.fulfilled]: (state, action) => {
-      const { nft, status, error } = action.payload;
-
-      if (!error) {
-        const collections = state.collections.map(col => ({
-          ...col,
-          tokens: col.tokens.filter(token => token.id !== nft.id),
-        }));
-        state.collections = collections.filter(col => col.tokens.length);
-        state.selectedNFT = {};
-      }
-      state.transaction = {
-        status,
-      };
-    },
+      })
+      .addCase(getTransactions.rejected, (state, action) => {
+        state.transactionsError = action.payload.error;
+        state.transactionsLoading = false;
+      })
+      .addCase(transferNFT.fulfilled, (state, action) => {
+        const { collections, status, error } = action.payload;
+        if (!error) {
+          state.collections = collections;
+          state.selectedNFT = {};
+        }
+        state.transaction = {
+          status,
+        };
+      })
+      .addCase(removeCustomToken.fulfilled, (state, action) => {
+        state.assets = action.payload;
+      })
+      .addMatcher(
+        isAnyOf(
+          getContacts.pending,
+          addContact.pending,
+          removeContact.pending,
+          editContact.pending
+        ),
+        state => {
+          state.contactsError = null;
+          state.contactsLoading = true;
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          getContacts.fulfilled,
+          addContact.fulfilled,
+          removeContact.fulfilled,
+          editContact.fulfilled
+        ),
+        state => {
+          state.contactsLoading = false;
+        }
+      )
+      .addMatcher(
+        isAnyOf(
+          getContacts.rejected,
+          addContact.rejected,
+          removeContact.rejected,
+          editContact.rejected
+        ),
+        (state, action) => {
+          state.contactsLoading = false;
+          state.contactsError = action.payload.error;
+        }
+      );
   },
 });
 
 export const {
-  setTransactionsError,
-  setCollectionsError,
-  setAssetsError,
   setUsingBiometrics,
   setBiometricsAvailable,
-  setAssetsLoading,
-  setAssets,
+  setBalance,
   setTransactions,
   setTransaction,
   setContacts,
-  setContactsLoading,
   setCollections,
-  removeNFT,
-  setTransactionsLoading,
   reset,
 } = userSlice.actions;
 

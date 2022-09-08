@@ -6,7 +6,8 @@ import Text from '@/commonComponents/Text';
 import Touchable from '@/commonComponents/Touchable';
 import useGetType from '@/hooks/useGetType';
 
-import styles from './styles';
+import styles, { ITEM_SIZE } from './styles';
+export const ITEM_HEIGHT = ITEM_SIZE;
 
 function NftItem({ item, onOpen }) {
   const { url, canisterId, index, collection } = item;
