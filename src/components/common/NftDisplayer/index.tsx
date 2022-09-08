@@ -53,37 +53,36 @@ const NftDisplayer = ({
         />
       )}
       {ICNSName && (
-        <>
-          <View
-            style={{
-              top: 20,
-              left: 20,
-              zIndex: 4,
-              elevation: 4,
-              position: 'absolute',
-            }}>
-            <Image
-              style={[
-                {
-                  height: 20,
-                },
-                isDetailView && {
-                  height: 40,
-                },
-              ]}
-              resizeMode="contain"
-              url={ICNS_LOGO}
-            />
-          </View>
+        <View
+          style={{
+            position: 'absolute',
+            paddingHorizontal: 20,
+            paddingTop: 20,
+            paddingBottom: 12,
+            height: '100%',
+            width: '100%',
+            justifyContent: 'space-between',
+          }}>
+          <Image
+            style={[
+              {
+                height: 20,
+                width: 60,
+              },
+              isDetailView && {
+                height: 40,
+                width: 120,
+              },
+            ]}
+            resizeMode="contain"
+            url={ICNS_LOGO}
+          />
           <Text
             type="headline1"
             numberOfLines={1}
             style={[
               {
-                bottom: 20,
                 fontSize: 18,
-                paddingHorizontal: 20,
-                position: 'absolute',
               },
               isDetailView && {
                 fontSize: 30,
@@ -91,7 +90,7 @@ const NftDisplayer = ({
             ]}>
             {ICNSName}
           </Text>
-        </>
+        </View>
       )}
     </View>
   ) : (
