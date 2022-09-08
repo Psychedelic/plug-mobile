@@ -9,7 +9,6 @@ import { recursiveParseBigint } from '@/utils/objects';
 import {
   DEFAULT_ASSETS,
   DEFAULT_TRANSACTION,
-  filterICNSContacts,
   formatContact,
   formatContactForController,
   formatTransaction,

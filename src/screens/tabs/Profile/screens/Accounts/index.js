@@ -17,7 +17,6 @@ import EditIcon from '@/icons/svg/material/Edit.svg';
 import { Row } from '@/layout';
 import { getICPPrice } from '@/redux/slices/icp';
 import { setCurrentPrincipal } from '@/redux/slices/keyring';
-import { getNFTs } from '@/redux/slices/user';
 import shortAddress from '@/utils/shortAddress';
 
 import CreateEditAccount from '../CreateEditAccount';

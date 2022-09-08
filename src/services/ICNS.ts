@@ -18,7 +18,6 @@ const DEFAULT_AGENT = new HttpAgent({
 
 export const shortICNSName = (name: string) => shortAddress(name);
 
-export const ICNS_IMG = 'https://icns.id/Rectangle.jpg'; // TODO: Change this to proper img
 export const ICNS_LOGO = 'https://icns.id/ICNS-logo.png';
 
 const Resolver = Actor.createActor(resolverIDL, {

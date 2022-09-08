@@ -204,8 +204,6 @@ export const contactCreateValueObj = currentId => {
   return { Icns: currentId };
 };
 
-export const filterICNSContacts = contact => contact.id;
-
 export const DEFAULT_WALLET_CONNECT_STATE = {
   pendingRedirect: false,
   pendingSessionRequests: {},
