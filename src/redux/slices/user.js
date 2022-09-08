@@ -221,10 +221,10 @@ export const transferNFT = createAsyncThunk(
 
 export const getContacts = createAsyncThunk(
   'keyring/getContacts',
-  async (walletNumber = 0, { getState, rejectWithValue }) => {
+  async (_, { getState, rejectWithValue }) => {
     try {
       const state = getState();
-      const res = await state.keyring.instance?.getContacts(walletNumber);
+      const res = await state.keyring.instance?.getContacts();
       return res?.map(formatContact);
     } catch (e) {
       console.log('Error getting contacts:', e);
@@ -235,15 +235,11 @@ export const getContacts = createAsyncThunk(
 
 export const addContact = createAsyncThunk(
   'keyring/addContact',
-  async (
-    { contact, walletNumber = 0, onFinish },
-    { getState, dispatch, rejectWithValue }
-  ) => {
+  async ({ contact, onFinish }, { getState, dispatch, rejectWithValue }) => {
     try {
       const state = getState();
       const res = await state.keyring.instance?.addContact({
         contact: formatContactForController(contact),
-        subaccount: walletNumber,
       });
       if (res) {
         dispatch(setContacts([...state.user.contacts, contact]));
@@ -259,15 +255,11 @@ export const addContact = createAsyncThunk(
 
 export const removeContact = createAsyncThunk(
   'keyring/removeContact',
-  async (
-    { contactName, walletNumber = 0 },
-    { getState, dispatch, rejectWithValue }
-  ) => {
+  async ({ contactName }, { getState, dispatch, rejectWithValue }) => {
     try {
       const state = getState();
       const res = await state.keyring.instance?.deleteContact({
         addressName: contactName,
-        subaccount: walletNumber,
       });
       if (res) {
         dispatch(
