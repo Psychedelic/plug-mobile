@@ -22,6 +22,7 @@ export default function useICNS(address: string, symbol: string, delay = 300) {
         })
         .catch(err => {
           setResolvedAddress(null);
+          setLoading(false);
           console.warn(err);
         });
     }

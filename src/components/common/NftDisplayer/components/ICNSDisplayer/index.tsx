@@ -1,29 +1,30 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import Image from '@/commonComponents/Image';
-import Text from '@/commonComponents/Text';
+import { Image, Text } from '@/components/common';
 import { ICNS_LOGO } from '@/services/ICNS';
 
 import styles from './styles';
 
 interface Props {
   ICNSName: string;
-  isDetailView?: boolean;
+  size?: 'small' | 'big';
 }
 
-function ICNSDisplayer({ ICNSName, isDetailView }: Props) {
+function ICNSDisplayer({ ICNSName, size = 'small' }: Props) {
+  const isBigSize = size === 'big';
+
   return (
     <View style={styles.ICNSContainer}>
       <Image
         url={ICNS_LOGO}
         resizeMode="contain"
-        style={[styles.ICNSLogo, isDetailView && styles.ICNSLogoDetailView]}
+        style={isBigSize ? styles.ICNSLogoBig : styles.ICNSLogo}
       />
       <Text
         type="headline1"
         numberOfLines={1}
-        style={[styles.ICNSName, isDetailView && styles.ICNSNameDetailView]}>
+        style={isBigSize ? styles.ICNSNameBig : styles.ICNSName}>
         {ICNSName}
       </Text>
     </View>

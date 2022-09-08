@@ -14,14 +14,14 @@ export default StyleSheet.create({
     height: 20,
     width: 60,
   },
-  ICNSLogoDetailView: {
+  ICNSLogoBig: {
     height: 40,
     width: 120,
   },
   ICNSName: {
     fontSize: 18,
   },
-  ICNSNameDetailView: {
+  ICNSNameBig: {
     fontSize: 30,
   },
 });

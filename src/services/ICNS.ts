@@ -2,6 +2,7 @@ import { Actor, HttpAgent } from '@dfinity/agent';
 import { Principal } from '@dfinity/principal';
 import { fetch } from 'react-native-fetch-api';
 
+import { IC_URL_HOST } from '@/constants/general';
 import registryIDL from '@/utils/ic/ICNS/registry.did';
 import resolverIDL from '@/utils/ic/ICNS/resolver.did';
 import ReverseRegistrarIDL from '@/utils/ic/ICNS/reverse_registrar.did';
@@ -13,7 +14,7 @@ const ICNS_REVERSE_REGISTRAR_ID = 'etiyd-ciaaa-aaaan-qabbq-cai';
 
 const DEFAULT_AGENT = new HttpAgent({
   fetch: fetch,
-  host: 'https://ic0.app',
+  host: IC_URL_HOST,
 });
 
 export const shortICNSName = (name: string) => shortAddress(name);
