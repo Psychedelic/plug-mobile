@@ -233,7 +233,6 @@ export const setCurrentPrincipal = createAsyncThunk(
       const { wallets } = response || {};
       const wallet = wallets[walletNumber];
       dispatch(setCurrentWallet(wallet || {}));
-      dispatch(getContacts());
       dispatch(getBalance());
       dispatch(getNFTs());
       dispatch(getTransactions({ icpPrice }));
