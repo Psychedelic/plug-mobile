@@ -185,7 +185,7 @@ const translations = {
       delete: 'Delete Contact',
     },
     namePlaceholder: 'Name',
-    idPlaceholder: 'Principal ID',
+    idPlaceholder: 'Principal, Account ID or ICNS name',
     nameTaken: 'Name is already taken!',
     contactAlreadySaved: 'Contact already saved as {{value}}',
   },

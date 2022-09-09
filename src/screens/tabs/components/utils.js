@@ -4,6 +4,7 @@ import React from 'react';
 import Text from '@/components/common/Text';
 import { ACTIVITY_STATUS } from '@/constants/business';
 import { JELLY_CANISTER_ID } from '@/constants/canister';
+import { isICNSName } from '@/utils/ids';
 import shortAddress from '@/utils/shortAddress';
 import { capitalize } from '@/utils/strings.js';
 
@@ -62,21 +63,20 @@ export const getStatus = (status, styles) => {
   }
 };
 
-export const getSubtitle = (type, to, from) =>
-  ({
-    SEND: t('activity.subtitleTo', { value: shortAddress(to) }),
-    BURN: t('activity.subtitleTo', { value: shortAddress(to) }),
-    RECEIVE: t('activity.subtitleFrom', { value: shortAddress(from) }),
-  }[type]);
+export const getSubtitle = (type, to, from) => {
+  const toText = t('activity.subtitleTo', {
+    value: isICNSName(to) ? to : shortAddress(to),
+  });
+  const fromText = t('activity.subtitleFrom', {
+    value: isICNSName(from) ? from : shortAddress(from),
+  });
 
-export const getAddress = (type, to, from, canisterId) =>
-  ({
-    SEND: to,
-    BURN: to,
-    RECEIVE: from,
-  }[type] ||
-  canisterId ||
-  '');
+  return {
+    SEND: toText,
+    BURN: toText,
+    RECEIVE: fromText,
+  }[type];
+};
 
 export const getCanisterName = (canisterInfo, canisterId) => {
   // TODO: change this when jelly supports multi-collections

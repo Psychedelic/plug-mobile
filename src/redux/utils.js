@@ -1,4 +1,3 @@
-import { Principal } from '@dfinity/principal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Flatted from 'flatted';
 import { t } from 'i18next';
@@ -10,6 +9,7 @@ import {
   KEYRING_STORAGE_KEY,
 } from '@/constants/keyring';
 import { formatAssetBySymbol, parseToFloatAmount } from '@/utils/currencies';
+import { validateAccountId, validatePrincipalId } from '@/utils/ids';
 import { recursiveParseBigint } from '@/utils/objects';
 
 import { clear } from './slices/keyring';
@@ -158,8 +158,8 @@ export const formatTransaction = (icpPrice, currentWallet) => trx => {
     icon: asset.icon,
     type,
     hash,
-    to: details?.to?.principal,
-    from: details?.from?.principal || caller,
+    to: details?.to?.icns || details?.to?.principal,
+    from: details?.from?.icns || details?.from?.principal || caller,
     date: new Date(timestamp),
     status: ACTIVITY_STATUS[details?.status],
     image: details?.canisterInfo?.icon || TOKEN_IMAGES[symbol] || '',
@@ -175,22 +175,34 @@ export const formatTransaction = (icpPrice, currentWallet) => trx => {
   return transaction;
 };
 
-export const formatContact = contact => ({
-  image: contact.emoji[0],
-  name: contact.name,
-  id: contact.value?.PrincipalId?.toText(), //TODO Check this logic. What happens if principal doesnt come from the contact?
-});
+export const formatContact = contact => {
+  const [id] = Object.values(contact.value);
+
+  return {
+    image: contact.emoji[0],
+    name: contact.name,
+    id: contact.value?.PrincipalId?.toText() || `${id}`,
+  };
+};
 
 export const formatContactForController = contact => ({
   description: [t('placeholders.contactDescription')],
   emoji: [contact.image],
   name: contact.name,
-  value: {
-    PrincipalId: Principal.fromText(contact.id),
-  },
+  value: contactCreateValueObj(contact.id),
 });
 
-export const filterICNSContacts = contact => contact.id;
+export const contactCreateValueObj = currentId => {
+  if (validatePrincipalId(currentId)) {
+    return { PrincipalId: currentId };
+  }
+
+  if (validateAccountId(currentId)) {
+    return { AccountId: currentId };
+  }
+
+  return { Icns: currentId };
+};
 
 export const DEFAULT_WALLET_CONNECT_STATE = {
   pendingRedirect: false,

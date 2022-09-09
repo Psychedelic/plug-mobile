@@ -23,7 +23,9 @@ import Section from './components/Section';
 import styles from './styles';
 
 const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
+  const isICNS = selectedNFT?.collection.includes('ICNS');
   const nftName = `${selectedNFT?.collection} #${selectedNFT?.index}`;
+
   const actionSheetRef = useRef(null);
   const userCollection = useSelector(state => state.user.collections) || [];
   const [isDownloading, setIsDownloading] = useState(false);
@@ -80,13 +82,18 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
         <Header
           center={
             <Text type="subtitle2">
-              {selectedNFT?.index ? `#${selectedNFT?.index}` : ''}
+              {isICNS
+                ? selectedNFT?.name
+                : selectedNFT?.index
+                ? `#${selectedNFT?.index}`
+                : ''}
             </Text>
           }
         />
         <View style={styles.content}>
           <View style={styles.nftDisplayerContainer}>
             <NftDisplayer
+              ICNSName={isICNS ? selectedNFT?.name : undefined}
               url={selectedNFT?.url}
               type={selectedNFT?.type}
               style={styles.video}
@@ -116,7 +123,9 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
               value={selectedNFT?.collection}
               icon={selectedCollection?.icon}
             />
-            <Badge value={`#${selectedNFT?.index}`} />
+            <Badge
+              value={isICNS ? selectedNFT?.name : `#${selectedNFT?.index}`}
+            />
           </Section>
           {!!selectedCollection?.description && (
             <Section title={t('nftDetail.descriptionTitle')}>
