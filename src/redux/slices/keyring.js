@@ -117,10 +117,13 @@ export const validatePassword = createAsyncThunk(
 
 export const getMnemonic = createAsyncThunk(
   'keyring/getMnemonic',
-  async (params, { getState }) => {
+  /**
+   * @param {{password: string, onSuccess?: (mnemonic:string) => void, onError?: () => void}} param
+   */
+  async (param, { getState }) => {
     const state = getState();
     let mnemonic = '';
-    const { onError, onSuccess, password } = params;
+    const { onError, onSuccess, password } = param;
     try {
       const instance = state.keyring?.instance;
       mnemonic = await instance?.getMnemonic(password);
