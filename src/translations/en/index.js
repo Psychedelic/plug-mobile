@@ -165,7 +165,13 @@ const translations = {
     createAccount: 'Create account',
     moreOptions: {
       edit: 'Edit Account',
+      icns: 'Add ICNS Domain',
       copy: 'Copy Address',
+    },
+    icns: {
+      setICNS: 'Choose ICNS Name',
+      learnMore: 'Learn More',
+      info: 'By choosing an ICNS name, it will be set to your Principal ID for this account, and also set your reverse-resolution to the selected ICNS name. ',
     },
     setEmoji: 'Set Emoji',
     editEmoji: 'Edit emoji',

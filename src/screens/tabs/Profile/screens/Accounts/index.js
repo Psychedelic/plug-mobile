@@ -20,6 +20,7 @@ import { setCurrentPrincipal } from '@/redux/slices/keyring';
 import shortAddress from '@/utils/shortAddress';
 
 import CreateEditAccount from '../CreateEditAccount';
+import AddICNS from './AddICNS';
 import styles from './styles';
 
 const Accounts = ({ modalRef, onClose, ...props }) => {
@@ -32,6 +33,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
   const [selectedAccount, setSelectedAccount] = useState(null);
 
   const createEditAccountRef = useRef(null);
+  const addICNSRef = useRef(null);
 
   useEffect(() => {
     dispatch(getICPPrice());
@@ -57,6 +59,11 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
       });
   };
 
+  const onAddICNS = account => {
+    setSelectedAccount(account);
+    addICNSRef.current?.open();
+  };
+
   const onLongPress = account => {
     const newActionsData = {
       title: account.name,
@@ -70,6 +77,12 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
         },
         {
           id: 2,
+          label: t('accounts.moreOptions.icns'),
+          onPress: () => onAddICNS(account),
+          icon: Platform.select({ android: CopyIcon }),
+        },
+        {
+          id: 3,
           label: t('accounts.moreOptions.copy'),
           onPress: () => Clipboard.setString(account.principal),
           icon: Platform.select({ android: CopyIcon }),
@@ -143,6 +156,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
         subtitle={actionSheetData?.subtitle}
         options={actionSheetData?.options}
       />
+      <AddICNS modalRef={addICNSRef} account={selectedAccount} />
     </>
   );
 };

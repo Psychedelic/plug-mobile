@@ -29,6 +29,9 @@ const Profile = () => {
   const modalRef = useRef(null);
   const transactionListRef = useRef(null);
   useScrollToTop(transactionListRef);
+  const { reverseResolvedName } =
+    useSelector(state => state.user?.icnsData) || {};
+
   const { currentWallet } = useSelector(state => state.keyring);
   const { icpPrice } = useSelector(state => state.icp);
   const { transactions, transactionsLoading, transactionsError } = useSelector(
@@ -58,7 +61,7 @@ const Profile = () => {
               numberOfLines={1}
               ellipsizeMode="tail"
               style={styles.name}>
-              {currentWallet?.name}
+              {reverseResolvedName || currentWallet?.name}
             </Text>
           </View>
           <Button

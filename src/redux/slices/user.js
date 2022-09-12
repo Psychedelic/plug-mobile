@@ -32,6 +32,7 @@ const DEFAULT_STATE = {
   collectionsLoading: false,
   usingBiometrics: false,
   biometricsAvailable: false,
+  icnsData: null,
 };
 
 export const sign = createAsyncThunk(
@@ -312,16 +313,35 @@ export const editContact = createAsyncThunk(
 
 export const getICNSData = createAsyncThunk(
   'keyring/getICNSData',
-  async ({ refresh }, { getState }) => {
-    const { keyring } = getState();
-    const { currentWallet } = keyring;
-    const icnsData = currentWallet?.icnsData || { names: [] };
-    if (!icnsData?.names?.length || refresh) {
-      return keyring.getICNSData();
-    } else {
-      keyring.getICNSData();
+  async ({ refresh, wallet }, { getState, rejectWithValue }) => {
+    try {
+      const { keyring } = getState();
+      const selectedWallet = wallet || keyring?.currentWallet;
+      let icnsData = selectedWallet?.icnsData || { names: [] };
+
+      if (!icnsData?.names?.length || refresh) {
+        icnsData = await keyring.instance?.getICNSData();
+      } else {
+        keyring.instance?.getICNSData();
+      }
+
+      console.tron.log('ICNS DATA - getICNSData:', icnsData);
+      return icnsData;
+    } catch (e) {
+      rejectWithValue({ error: e.message });
     }
-    return icnsData;
+  }
+);
+
+export const setReverseResolvedName = createAsyncThunk(
+  'keyring/setReverseResolvedName',
+  async (name, { getState, rejectWithValue }) => {
+    try {
+      const res = await getState().keyring.instance?.setICNSResolvedName(name);
+      return res;
+    } catch (e) {
+      return rejectWithValue({ error: e.message });
+    }
   }
 );
 
@@ -426,6 +446,15 @@ export const userSlice = createSlice({
     builder
       .addCase(getContacts.fulfilled, (state, action) => {
         state.contacts = action.payload;
+      })
+      .addCase(getICNSData.fulfilled, (state, action) => {
+        state.icnsData = action.payload;
+      })
+      .addCase(setReverseResolvedName.fulfilled, (state, action) => {
+        state.icnsData = {
+          ...state.icnsData,
+          reverseResolvedName: action.payload,
+        };
       })
       .addCase(sendToken.fulfilled, (state, action) => {
         state.transaction = action.payload;

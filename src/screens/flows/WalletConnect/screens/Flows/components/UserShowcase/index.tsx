@@ -3,12 +3,12 @@ import { Text, View } from 'react-native';
 
 import UserIcon from '@/components/common/UserIcon';
 import { FontStyles } from '@/constants/theme';
-import { CurrentWallet } from '@/interfaces/redux';
+import { Wallet } from '@/interfaces/redux';
 
 import styles from './styles';
 
 interface Props {
-  currentWallet: CurrentWallet;
+  currentWallet: Wallet;
 }
 
 function UserShowcase({ currentWallet }: Props) {

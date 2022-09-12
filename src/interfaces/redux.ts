@@ -107,7 +107,7 @@ export interface IcpState {
   icpPrice: number;
 }
 
-export interface CurrentWallet {
+export interface Wallet {
   name: string;
   walletNumber: number;
   principal: string;
@@ -124,8 +124,8 @@ export interface KeyringState {
   instance: any;
   isInitialized: boolean;
   isUnlocked: boolean;
-  currentWallet: CurrentWallet;
-  wallets: [];
+  currentWallet: Wallet;
+  wallets: Wallet[];
 }
 
 export interface UserState {
@@ -144,4 +144,5 @@ export interface UserState {
   collectionsLoading: boolean;
   usingBiometrics: boolean;
   biometricsAvailable: boolean;
+  icnsData: any; // TODO: Add icnsData type
 }

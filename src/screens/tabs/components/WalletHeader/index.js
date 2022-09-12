@@ -27,6 +27,8 @@ const WalletHeader = () => {
   const { debounce } = useDebounce();
   const [navigated, setNavigated] = useState(false);
   const { currentWallet } = useSelector(state => state.keyring);
+  const { reverseResolvedName } =
+    useSelector(state => state.user?.icnsData) || {};
 
   const navigation = useNavigation();
 
@@ -90,7 +92,7 @@ const WalletHeader = () => {
             onPress={() => debounce(handleGoToProfile)}
           />
         }
-        center={<AccountInfo />}
+        center={<AccountInfo icnsName={reverseResolvedName} />}
         right={
           <Touchable onPress={openModal}>
             <Icon name="groupedActions" />

@@ -6,7 +6,13 @@ import { fetch } from 'react-native-fetch-api';
 import { generateMnemonic } from '../../utils/crypto';
 import { keyringStorage } from '../store';
 import { getNewAccountData, resetStores } from '../utils';
-import { getBalance, getContacts, getNFTs, getTransactions } from './user';
+import {
+  getBalance,
+  getContacts,
+  getICNSData,
+  getNFTs,
+  getTransactions,
+} from './user';
 
 const DEFAULT_STATE = {
   instance: null,
@@ -173,6 +179,7 @@ export const login = createAsyncThunk(
       if (unlocked) {
         dispatch(setCurrentWallet(wallets[currentWalletId]));
         dispatch(setWallets(wallets));
+        dispatch(getICNSData({ refresh: true }));
         dispatch(getBalance());
         dispatch(getTransactions({ icpPrice }));
         dispatch(getNFTs());

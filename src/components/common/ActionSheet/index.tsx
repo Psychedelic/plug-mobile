@@ -12,7 +12,7 @@ import Text from '../Text';
 import Touchable from '../Touchable';
 import styles, { ICON_COLOR, ICON_COLOR_DESTRUCTIVE } from './styles';
 
-interface Option {
+export interface Option {
   id: number;
   label: string;
   onPress: () => void;
