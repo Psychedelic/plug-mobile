@@ -71,29 +71,31 @@ const Profile = () => {
         <Separator />
         <Text style={styles.title}>{t('activity.title')}</Text>
         {!transactionsError ? (
-          <FlashList
-            ref={transactionListRef}
-            data={transactions}
-            renderItem={renderTransaction}
-            keyExtractor={item => `${item.date}${item.hash}`}
-            showsVerticalScrollIndicator={false}
-            overScrollMode="never"
-            estimatedItemSize={ITEM_HEIGHT}
-            refreshControl={
-              <RefreshControl
-                refreshing={transactionsLoading}
-                onRefresh={onRefresh}
-                tintColor={Colors.White.Primary}
-              />
-            }
-            ListEmptyComponent={
-              <EmptyState
-                style={styles.emptyState}
-                title={t('activity.emptyTitle')}
-                text={t('activity.emptySubtitle')}
-              />
-            }
-          />
+          <View style={styles.listContainer}>
+            <FlashList
+              ref={transactionListRef}
+              data={transactions}
+              renderItem={renderTransaction}
+              keyExtractor={item => `${item.date}${item.hash}`}
+              showsVerticalScrollIndicator={false}
+              overScrollMode="never"
+              estimatedItemSize={ITEM_HEIGHT}
+              refreshControl={
+                <RefreshControl
+                  refreshing={transactionsLoading}
+                  onRefresh={onRefresh}
+                  tintColor={Colors.White.Primary}
+                />
+              }
+              ListEmptyComponent={
+                <EmptyState
+                  style={styles.emptyState}
+                  title={t('activity.emptyTitle')}
+                  text={t('activity.emptySubtitle')}
+                />
+              }
+            />
+          </View>
         ) : (
           <ErrorState
             onPress={onRefresh}

@@ -301,7 +301,44 @@ function Send({ modalRef, nft, token, onSuccess }) {
       }
       scrollViewProps={{
         keyboardShouldPersistTaps: 'never',
-      }}>
+      }}
+      HeaderComponent={
+        <>
+          <Header
+            left={
+              isValidAddress && (
+                <ActionButton onPress={handleBack} label={t('common.back')} />
+              )
+            }
+            center={<Text style={styles.centerText}>{t('send.title')}</Text>}
+          />
+          <TextInput
+            placeholder={t('send.inputPlaceholder')}
+            hideGradient
+            value={selectedContact ? selectedContact.name : address}
+            onChangeText={onChangeText}
+            inputStyle={[
+              styles.inputText,
+              isValidAddress && styles.inputTextValid,
+            ]}
+            autoFocus
+            style={styles.input}
+            contentContainerStyle={styles.inputContent}
+            left={
+              <Text style={styles.inputLeftLabel}>{t('send.inputLabel')}</Text>
+            }
+            right={
+              !selectedContact && isValidAddress ? (
+                <Touchable
+                  style={styles.addIcon}
+                  onPress={saveContactRef?.current?.open}>
+                  <Icon name="plus" />
+                </Touchable>
+              ) : null
+            }
+          />
+        </>
+      }>
       <View
         style={[
           styles.contentContainer,
@@ -310,39 +347,6 @@ function Send({ modalRef, nft, token, onSuccess }) {
               paddingBottom: modalOffset,
             },
         ]}>
-        <Header
-          left={
-            isValidAddress && (
-              <ActionButton onPress={handleBack} label={t('common.back')} />
-            )
-          }
-          center={<Text style={styles.centerText}>{t('send.title')}</Text>}
-        />
-        <TextInput
-          placeholder={t('send.inputPlaceholder')}
-          hideGradient
-          value={selectedContact ? selectedContact.name : address}
-          onChangeText={onChangeText}
-          inputStyle={[
-            styles.inputText,
-            isValidAddress && styles.inputTextValid,
-          ]}
-          autoFocus
-          style={styles.input}
-          contentContainerStyle={styles.inputContent}
-          left={
-            <Text style={styles.inputLeftLabel}>{t('send.inputLabel')}</Text>
-          }
-          right={
-            !selectedContact && isValidAddress ? (
-              <Touchable
-                style={styles.addIcon}
-                onPress={saveContactRef?.current?.open}>
-                <Icon name="plus" />
-              </Touchable>
-            ) : null
-          }
-        />
         {!isValidAddress && (
           <ContactSection filterText={address} onPress={onContactPress} />
         )}
