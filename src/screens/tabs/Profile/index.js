@@ -30,7 +30,7 @@ const Profile = () => {
   const transactionListRef = useRef(null);
   useScrollToTop(transactionListRef);
   const { reverseResolvedName } =
-    useSelector(state => state.user?.icnsData) || {};
+    useSelector(state => state.keyring.currentWallet?.icnsData) || {};
 
   const { currentWallet } = useSelector(state => state.keyring);
   const { icpPrice } = useSelector(state => state.icp);

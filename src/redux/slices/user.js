@@ -32,11 +32,10 @@ const DEFAULT_STATE = {
   collectionsLoading: false,
   usingBiometrics: false,
   biometricsAvailable: false,
-  icnsData: null,
 };
 
 export const sign = createAsyncThunk(
-  'keyring/sign',
+  'user/sign',
   async (params, { getState }) => {
     const { msg } = params;
     const { keyring } = getState();
@@ -46,7 +45,7 @@ export const sign = createAsyncThunk(
 );
 
 export const sendToken = createAsyncThunk(
-  'keyring/sendToken',
+  'user/sendToken',
   async (params, { getState, dispatch }) => {
     try {
       const { to, amount, canisterId, opts, icpPrice } = params;
@@ -89,7 +88,7 @@ export const sendToken = createAsyncThunk(
 );
 
 export const burnXtc = createAsyncThunk(
-  'keyring/burnXtc',
+  'user/burnXtc',
   async (params, { getState }) => {
     try {
       const { keyring } = getState();
@@ -108,7 +107,7 @@ export const burnXtc = createAsyncThunk(
 );
 
 export const getBalance = createAsyncThunk(
-  'keyring/getBalance',
+  'user/getBalance',
   async (params, { getState, dispatch, rejectWithValue }) => {
     try {
       const { refresh = true, subaccount } = params || {};
@@ -138,7 +137,7 @@ export const getBalance = createAsyncThunk(
 );
 
 export const getNFTs = createAsyncThunk(
-  'keyring/getNFTs',
+  'user/getNFTs',
   async (params, { getState, rejectWithValue }) => {
     if (ENABLE_NFTS) {
       try {
@@ -158,7 +157,7 @@ export const getNFTs = createAsyncThunk(
 );
 
 export const getTransactions = createAsyncThunk(
-  'keyring/getTransactions',
+  'user/getTransactions',
   async (params, { getState, rejectWithValue }) => {
     try {
       const state = getState();
@@ -192,7 +191,7 @@ export const getTransactions = createAsyncThunk(
 );
 
 export const transferNFT = createAsyncThunk(
-  'keyring/transferNFT',
+  'user/transferNFT',
   async (params, { getState, dispatch }) => {
     try {
       const { to, nft, icpPrice } = params;
@@ -221,7 +220,7 @@ export const transferNFT = createAsyncThunk(
 );
 
 export const getContacts = createAsyncThunk(
-  'keyring/getContacts',
+  'user/getContacts',
   async (_, { getState, rejectWithValue }) => {
     try {
       const state = getState();
@@ -235,7 +234,7 @@ export const getContacts = createAsyncThunk(
 );
 
 export const addContact = createAsyncThunk(
-  'keyring/addContact',
+  'user/addContact',
   async ({ contact, onFinish }, { getState, dispatch, rejectWithValue }) => {
     try {
       const state = getState();
@@ -255,7 +254,7 @@ export const addContact = createAsyncThunk(
 );
 
 export const removeContact = createAsyncThunk(
-  'keyring/removeContact',
+  'user/removeContact',
   async ({ contactName }, { getState, dispatch, rejectWithValue }) => {
     try {
       const state = getState();
@@ -276,7 +275,7 @@ export const removeContact = createAsyncThunk(
 );
 
 export const editContact = createAsyncThunk(
-  'keyring/editContact',
+  'user/editContact',
   async (
     { contact, newContact, walletNumber = 0 },
     { getState, dispatch, rejectWithValue }
@@ -311,42 +310,8 @@ export const editContact = createAsyncThunk(
   }
 );
 
-export const getICNSData = createAsyncThunk(
-  'keyring/getICNSData',
-  async ({ refresh, wallet }, { getState, rejectWithValue }) => {
-    try {
-      const { keyring } = getState();
-      const selectedWallet = wallet || keyring?.currentWallet;
-      let icnsData = selectedWallet?.icnsData || { names: [] };
-
-      if (!icnsData?.names?.length || refresh) {
-        icnsData = await keyring.instance?.getICNSData();
-      } else {
-        keyring.instance?.getICNSData();
-      }
-
-      console.tron.log('ICNS DATA - getICNSData:', icnsData);
-      return icnsData;
-    } catch (e) {
-      rejectWithValue({ error: e.message });
-    }
-  }
-);
-
-export const setReverseResolvedName = createAsyncThunk(
-  'keyring/setReverseResolvedName',
-  async (name, { getState, rejectWithValue }) => {
-    try {
-      const res = await getState().keyring.instance?.setICNSResolvedName(name);
-      return res;
-    } catch (e) {
-      return rejectWithValue({ error: e.message });
-    }
-  }
-);
-
 export const addCustomToken = createAsyncThunk(
-  'keyring/addCustomToken',
+  'user/addCustomToken',
   /**
    * @param {{token: DABToken, onSuccess: () => void}} param
    */
@@ -375,7 +340,7 @@ export const addCustomToken = createAsyncThunk(
 );
 
 export const removeCustomToken = createAsyncThunk(
-  'keyring/removeCustomToken',
+  'user/removeCustomToken',
   /**
    * @param { canisterId: string } param
    */
@@ -391,7 +356,7 @@ export const removeCustomToken = createAsyncThunk(
 );
 
 export const getTokenInfo = createAsyncThunk(
-  'keyring/getTokenInfo',
+  'user/getTokenInfo',
   /**
    * @param {{token: DABToken, onSuccess: (token: DABToken) => void, onError: (err: string) => void}} param
    */
@@ -446,15 +411,6 @@ export const userSlice = createSlice({
     builder
       .addCase(getContacts.fulfilled, (state, action) => {
         state.contacts = action.payload;
-      })
-      .addCase(getICNSData.fulfilled, (state, action) => {
-        state.icnsData = action.payload;
-      })
-      .addCase(setReverseResolvedName.fulfilled, (state, action) => {
-        state.icnsData = {
-          ...state.icnsData,
-          reverseResolvedName: action.payload,
-        };
       })
       .addCase(sendToken.fulfilled, (state, action) => {
         state.transaction = action.payload;

@@ -6,13 +6,17 @@ import { ICNS_LOGO } from '@/services/ICNS';
 
 import styles from './styles';
 
+export enum ICNSDisplayerSizes {
+  Small = 'small',
+  Big = 'big',
+}
 interface Props {
   ICNSName: string;
-  size?: 'small' | 'big';
+  size?: ICNSDisplayerSizes;
 }
 
-function ICNSDisplayer({ ICNSName, size = 'small' }: Props) {
-  const isBigSize = size === 'big';
+function ICNSDisplayer({ ICNSName, size = ICNSDisplayerSizes.Small }: Props) {
+  const isBigSize = size === ICNSDisplayerSizes.Big;
 
   return (
     <View style={styles.ICNSContainer}>

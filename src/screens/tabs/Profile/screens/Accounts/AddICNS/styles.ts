@@ -35,18 +35,21 @@ export default StyleSheet.create({
   buttonStyle: {
     marginBottom: 30,
   },
-  learnMore: {
+  actionMessage: {
     ...commonTextStyle,
     color: Colors.ActionBlue,
     textDecorationLine: 'underline',
   },
-  icnsInfo: {
-    paddingBottom: 24,
+  message: {
+    paddingBottom: 34,
     ...commonTextStyle,
     textAlign: 'center',
-    borderBottomWidth: 1,
     color: Colors.White.Secondary,
+  },
+  icnsInfo: {
+    borderBottomWidth: 1,
     borderBottomColor: Colors.White.Secondary,
+    paddingBottom: 24,
   },
   icnsLogo: {
     width: 60,

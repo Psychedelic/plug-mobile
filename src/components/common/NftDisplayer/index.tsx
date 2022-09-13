@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, StyleProp, View, ViewStyle } from 'react-native';
 
-import ICNSDisplayer from './components/ICNSDisplayer';
+import ICNSDisplayer, { ICNSDisplayerSizes } from './components/ICNSDisplayer';
 import ImageDisplayer from './components/ImageDisplayer';
 import VideoDisplayer from './components/VideoDisplayer';
 import styles from './styles';
@@ -50,7 +50,12 @@ const NftDisplayer = ({
         />
       )}
       {ICNSName && (
-        <ICNSDisplayer ICNSName={ICNSName} isDetailView={isDetailView} />
+        <ICNSDisplayer
+          ICNSName={ICNSName}
+          size={
+            isDetailView ? ICNSDisplayerSizes.Big : ICNSDisplayerSizes.Small
+          }
+        />
       )}
     </View>
   ) : (

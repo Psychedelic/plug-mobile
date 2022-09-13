@@ -7,6 +7,7 @@ import { SvgProps } from 'react-native-svg';
 
 import { isAndroid } from '@/constants/platform';
 import Close from '@/icons/svg/material/Close.svg';
+import { Nullable } from '@/interfaces/general';
 
 import Text from '../Text';
 import Touchable from '../Touchable';
@@ -17,7 +18,7 @@ export interface Option {
   label: string;
   onPress: () => void;
   destructive?: boolean;
-  icon?: React.FC<SvgProps>;
+  icon?: Nullable<React.FC<SvgProps>>;
 }
 
 interface Props {
