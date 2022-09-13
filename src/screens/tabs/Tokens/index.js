@@ -119,6 +119,7 @@ function Tokens() {
             overScrollMode="never"
             contentContainerStyle={styles.scrollContent}
             ref={listRef}
+            refreshing={assetsLoading}
             refreshControl={
               <RefreshControl
                 refreshing={assetsLoading}

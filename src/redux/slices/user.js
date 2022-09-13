@@ -127,7 +127,6 @@ export const getBalance = createAsyncThunk(
       } else {
         instance?.getBalances(subaccount);
       }
-
       const icpPrice = await dispatch(getICPPrice()).unwrap();
       return formatAssets(assets, icpPrice);
     } catch (e) {

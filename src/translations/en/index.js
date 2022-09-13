@@ -25,7 +25,7 @@ const translations = {
     copied: 'Copied!',
     copyClipboard: 'Copy to clipboard',
     revealPhrase: 'Reveal Seed Phrase',
-    available: 'Available',
+    available: 'available',
     max: 'Max',
     questionMark: '?',
     enterPassword: 'Enter Password',

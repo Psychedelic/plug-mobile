@@ -13,7 +13,6 @@ import RainbowButton from '@/components/buttons/RainbowButton';
 import Text from '@/components/common/Text';
 import Icon from '@/components/icons';
 import TokenIcon from '@/components/tokens/TokenIcon';
-import { VISIBLE_DECIMALS } from '@/constants/business';
 import { Colors, FontStyles } from '@/constants/theme';
 import useGetType from '@/hooks/useGetType';
 import { Column } from '@/layout';
@@ -23,7 +22,6 @@ import { setTransaction } from '@/redux/slices/user';
 import { TRANSACTION_STATUS } from '@/redux/utils';
 import shortAddress from '@/utils/shortAddress';
 
-import { getTransactionFee } from '../../utils';
 import SaveContact from '../SaveContact';
 import styles from './styles';
 
@@ -52,14 +50,9 @@ const ReviewSend = ({
   const saveContactRef = useRef(null);
   const [nftType, setNftType] = useState(null);
   const [selectedContact, setSelectedContact] = useState(contact || null);
-  const { icpPrice } = useSelector(state => state.icp);
   const contacts = useSelector(state => state.user.contacts, shallowEqual);
   const isSuccess = transaction?.status === TRANSACTION_STATUS.success;
   const isError = transaction?.status === TRANSACTION_STATUS.error;
-  const { currentFee, currentUSDFee } = getTransactionFee(
-    token?.symbol,
-    icpPrice
-  );
 
   const handleSaveContact = () => {
     saveContactRef.current?.open();
@@ -120,14 +113,12 @@ const ReviewSend = ({
         {token && (
           <Row style={styles.row}>
             <Column>
-              {value ? (
-                <Text style={styles.title}>${value?.display}</Text>
-              ) : null}
-              <Text
-                type="caption"
-                style={value ? styles.subtitle : styles.title}>
+              <Text type="caption" style={styles.title}>
                 {`${amount?.display} ${token.symbol}`}
               </Text>
+              {value ? (
+                <Text style={styles.subtitle}>${value?.display}</Text>
+              ) : null}
             </Column>
             <TokenIcon {...token} color={Colors.Gray.Tertiary} />
           </Row>
@@ -173,9 +164,7 @@ const ReviewSend = ({
           <Row style={styles.row}>
             <Text type="subtitle3">
               {t('reviewSend.totalFee', {
-                value: `${currentFee} ${token?.symbol} ($${Number(
-                  currentUSDFee.toFixed(VISIBLE_DECIMALS)
-                )})`,
+                value: `${token.fee} ${token?.symbol}`,
               })}
             </Text>
           </Row>
