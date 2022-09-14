@@ -93,12 +93,9 @@ export const formatAssets = (
     const { amount, token } = currentAsset;
     const { symbol, decimals, fee } = token;
 
-    const parsedAmount = parseToFloatAmount(
-      amount,
-      parseInt(decimals.toString(), 10)
-    );
+    const parsedAmount = parseToFloatAmount(amount, decimals);
 
-    const parsedFee = fee / 10 ** parseInt(decimals.toString(), 10);
+    const parsedFee = fee ? parseInt(fee.toString(), 10) / 10 ** decimals : 0;
 
     const formattedAsset = {
       ...token,
