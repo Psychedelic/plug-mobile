@@ -21,6 +21,7 @@ import { Row } from '@/layout';
 import Routes from '@/navigation/Routes';
 import { setTransaction } from '@/redux/slices/user';
 import { TRANSACTION_STATUS } from '@/redux/utils';
+import { truncate } from '@/utils/number';
 import shortAddress from '@/utils/shortAddress';
 
 import { getFeePrice } from '../../utils';
@@ -170,9 +171,7 @@ const ReviewSend = ({
               {t('reviewSend.totalFee', {
                 value: `${token.fee} ${token?.symbol}`,
               })}
-              {feePrice
-                ? ` ($${Number(feePrice?.toFixed(VISIBLE_DECIMALS))})`
-                : null}
+              {feePrice ? ` ($${truncate(feePrice, VISIBLE_DECIMALS)})` : null}
             </Text>
           </Row>
         )}
