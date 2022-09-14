@@ -9,7 +9,7 @@ export interface StandardToken {
   decimals: number;
   color?: string;
   image?: string;
-  fee: number;
+  fee: bigint;
   totalSupply?: number;
 }
 
