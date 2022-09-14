@@ -358,7 +358,11 @@ function Send({ modalRef, nft, token, onSuccess }) {
           }
         />
         {!isValidAddress && (
-          <ContactSection filterText={address} onPress={onContactPress} />
+          <ContactSection
+            filterText={address}
+            onPress={onContactPress}
+            selectedTokenSymbol={selectedToken?.symbol}
+          />
         )}
         {isValidAddress && !selectedToken && (
           <TokenSection

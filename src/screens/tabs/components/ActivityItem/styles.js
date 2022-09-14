@@ -21,4 +21,7 @@ export default StyleSheet.create({
   canisterName: {
     maxWidth: '50%',
   },
+  title: {
+    maxWidth: '78%',
+  },
 });
