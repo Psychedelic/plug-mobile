@@ -27,7 +27,7 @@ import {
 } from '@/components/common';
 import Icon from '@/components/icons';
 import { Colors } from '@/constants/theme';
-import { ICNS_LEARN_MORE_URL, ICNS_LOGO, ICNS_URL } from '@/interfaces/icns';
+import { ICNS_LEARN_MORE_URL, ICNS_LOGO, ICNS_URL } from '@/constants/urls';
 import { getICNSData, setReverseResolvedName } from '@/redux/slices/keyring';
 
 import styles from './styles';

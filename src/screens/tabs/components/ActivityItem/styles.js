@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import { FontStyles } from '@/constants/theme';
+
 export const HEIGHT = 65;
 
 export default StyleSheet.create({
@@ -23,5 +25,6 @@ export default StyleSheet.create({
   },
   title: {
     maxWidth: '78%',
+    ...FontStyles.Normal,
   },
 });

@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { Image, Text } from '@/components/common';
-import { ICNS_LOGO } from '@/interfaces/icns';
+import { ICNS_LOGO } from '@/constants/urls';
 
 import styles from './styles';
 
