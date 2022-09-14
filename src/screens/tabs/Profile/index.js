@@ -80,6 +80,7 @@ const Profile = () => {
               showsVerticalScrollIndicator={false}
               overScrollMode="never"
               estimatedItemSize={ITEM_HEIGHT}
+              refreshing={transactionsLoading}
               refreshControl={
                 <RefreshControl
                   refreshing={transactionsLoading}

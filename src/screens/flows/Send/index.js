@@ -35,7 +35,6 @@ import ReviewSend from './components/ReviewSend';
 import SaveContact from './components/SaveContact';
 import TokenSection from './components/TokenSection';
 import styles from './styles';
-import { getAvailableAmount, getUsdAvailableAmount } from './utils';
 
 const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
 
@@ -258,17 +257,12 @@ function Send({ modalRef, nft, token, onSuccess }) {
   }, [address, selectedContact, selectedToken]);
 
   const availableAmount = useMemo(
-    () =>
-      getAvailableAmount(
-        selectedToken?.amount,
-        selectedToken?.symbol,
-        selectedTokenPrice
-      ),
-    [selectedToken, selectedTokenPrice]
+    () => selectedToken?.amount - selectedToken?.fee,
+    [selectedToken]
   );
 
   const availableUsdAmount = useMemo(
-    () => getUsdAvailableAmount(availableAmount, selectedTokenPrice),
+    () => (selectedTokenPrice ? availableAmount * selectedTokenPrice : null),
     [availableAmount, selectedTokenPrice]
   );
 

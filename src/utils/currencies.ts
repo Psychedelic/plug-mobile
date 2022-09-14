@@ -91,17 +91,20 @@ export const formatAssets = (
 ): Asset[] =>
   assets.map(currentAsset => {
     const { amount, token } = currentAsset;
-    const { symbol, decimals } = token;
+    const { symbol, decimals, fee } = token;
 
     const parsedAmount = parseToFloatAmount(
       amount,
       parseInt(decimals.toString(), 10)
     );
 
+    const parsedFee = fee / 10 ** parseInt(decimals.toString(), 10);
+
     const formattedAsset = {
       ...token,
       // Sometimes names come with a strange char that causes problems
       name: token?.name?.replaceAll('\x00', ''),
+      fee: parsedFee,
       ...formatAssetBySymbol(parsedAmount, symbol, icpPrice),
     };
 

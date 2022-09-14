@@ -6,7 +6,6 @@ export const CANISTER_REGEX = /(\w{5}-){4}\w{3}/;
 
 export const CANISTER_MAX_LENGTH = 27;
 export const ACCOUNT_ID_LENGTH = 64;
-export const DEFAULT_FEE = 0.0001;
 export const XTC_FEE = 0.002;
 
 export const ADDRESS_TYPES = {
