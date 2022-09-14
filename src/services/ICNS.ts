@@ -6,7 +6,6 @@ import { IC_URL_HOST } from '@/constants/general';
 import registryIDL from '@/utils/ic/ICNS/registry.did';
 import resolverIDL from '@/utils/ic/ICNS/resolver.did';
 import ReverseRegistrarIDL from '@/utils/ic/ICNS/reverse_registrar.did';
-import shortAddress from '@/utils/shortAddress';
 
 const ICNS_REGISTRY_ID = 'e5kvl-zyaaa-aaaan-qabaq-cai';
 const ICNS_RESOLVER_ID = 'euj6x-pqaaa-aaaan-qabba-cai';
@@ -16,10 +15,6 @@ const DEFAULT_AGENT = new HttpAgent({
   fetch: fetch,
   host: IC_URL_HOST,
 });
-
-export const shortICNSName = (name: string) => shortAddress(name);
-
-export const ICNS_LOGO = 'https://icns.id/ICNS-logo.png';
 
 const Resolver = Actor.createActor(resolverIDL, {
   canisterId: ICNS_RESOLVER_ID,

@@ -56,7 +56,6 @@ function Send({ modalRef, nft, token, onSuccess }) {
   const reviewRef = useRef(null);
   const saveContactRef = useRef(null);
   const passwordRef = useRef(null);
-
   const nfts =
     collections?.flatMap(collection => collection?.tokens || []) || [];
   const [address, setAddress] = useState(null);
@@ -358,7 +357,11 @@ function Send({ modalRef, nft, token, onSuccess }) {
           }
         />
         {!isValidAddress && (
-          <ContactSection filterText={address} onPress={onContactPress} />
+          <ContactSection
+            filterText={address}
+            onPress={onContactPress}
+            selectedTokenSymbol={selectedToken?.symbol}
+          />
         )}
         {isValidAddress && !selectedToken && (
           <TokenSection

@@ -4,7 +4,7 @@ import React from 'react';
 import Text from '@/components/common/Text';
 import { ACTIVITY_STATUS } from '@/constants/business';
 import { JELLY_CANISTER_ID } from '@/constants/canister';
-import { isICNSName } from '@/utils/ids';
+import { validateICNSName } from '@/utils/ids';
 import shortAddress from '@/utils/shortAddress';
 import { capitalize } from '@/utils/strings.js';
 
@@ -65,10 +65,10 @@ export const getStatus = (status, styles) => {
 
 export const getSubtitle = (type, to, from) => {
   const toText = t('activity.subtitleTo', {
-    value: isICNSName(to) ? to : shortAddress(to),
+    value: validateICNSName(to) ? to : shortAddress(to),
   });
   const fromText = t('activity.subtitleFrom', {
-    value: isICNSName(from) ? from : shortAddress(from),
+    value: validateICNSName(from) ? from : shortAddress(from),
   });
 
   return {

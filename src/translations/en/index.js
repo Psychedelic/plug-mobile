@@ -165,7 +165,18 @@ const translations = {
     createAccount: 'Create account',
     moreOptions: {
       edit: 'Edit Account',
+      icns: 'Add ICNS Domain',
       copy: 'Copy Address',
+    },
+    icns: {
+      setICNS: 'Choose ICNS Name',
+      none: 'None',
+      learnMore: 'Learn More',
+      emptyState:
+        'We weren’t able to find any ICNS names in your Plug account. ',
+      buyICNS: 'Buy an ICNS name',
+      proceed: ' to proceed.',
+      info: 'By choosing an ICNS name, it will be set to your Principal ID for this account, and also set your reverse-resolution to the selected ICNS name. ',
     },
     setEmoji: 'Set Emoji',
     editEmoji: 'Edit emoji',
@@ -187,6 +198,7 @@ const translations = {
     namePlaceholder: 'Name',
     idPlaceholder: 'Principal, Account ID or ICNS name',
     nameTaken: 'Name is already taken!',
+    unresolvedICNS: 'Unable to resolve ICNS name',
     contactAlreadySaved: 'Contact already saved as {{value}}',
   },
   placeholders: {

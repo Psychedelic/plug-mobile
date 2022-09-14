@@ -1,3 +1,4 @@
+import { Principal } from '@dfinity/principal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Flatted from 'flatted';
 import { t } from 'i18next';
@@ -194,7 +195,7 @@ export const formatContactForController = contact => ({
 
 export const contactCreateValueObj = currentId => {
   if (validatePrincipalId(currentId)) {
-    return { PrincipalId: currentId };
+    return { PrincipalId: Principal.fromText(currentId) };
   }
 
   if (validateAccountId(currentId)) {

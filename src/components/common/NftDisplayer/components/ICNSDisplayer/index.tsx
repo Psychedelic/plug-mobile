@@ -2,13 +2,13 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { Image, Text } from '@/components/common';
-import { ICNS_LOGO } from '@/services/ICNS';
+import { ICNS_LOGO } from '@/constants/urls';
 
 import styles from './styles';
 
 interface Props {
   ICNSName: string;
-  size?: 'small' | 'big';
+  size?: 'big' | 'small';
 }
 
 function ICNSDisplayer({ ICNSName, size = 'small' }: Props) {

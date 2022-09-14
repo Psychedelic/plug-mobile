@@ -14,6 +14,7 @@ const DEFAULT_STATE = {
   isUnlocked: false,
   currentWallet: null,
   wallets: [],
+  icnsDataLoading: false,
 };
 
 export const initKeyring = createAsyncThunk('keyring/init', async params => {
@@ -77,6 +78,7 @@ export const importWallet = createAsyncThunk(
       unlocked = await instance?.unlock(params.password);
 
       // Get new data:
+      await instance?.getICNSData();
       getNewAccountData(dispatch, icpPrice, state);
       onSuccess?.();
     } catch (e) {
@@ -141,28 +143,6 @@ export const lock = createAsyncThunk(
   }
 );
 
-export const unlock = createAsyncThunk(
-  'keyring/unlock',
-  async (params, { getState }) => {
-    const state = getState();
-    let unlocked = false;
-    const { password, onError, onSuccess } = params;
-    try {
-      const instance = state.keyring?.instance;
-      unlocked = await instance?.unlock(password);
-      if (unlocked) {
-        onSuccess?.();
-      } else {
-        onError?.();
-      }
-    } catch (e) {
-      onError?.();
-      console.log('Error in unlock:', e.message);
-    }
-    return unlocked;
-  }
-);
-
 export const login = createAsyncThunk(
   'keyring/login',
   async (params, { getState, dispatch, rejectWithValue }) => {
@@ -172,6 +152,7 @@ export const login = createAsyncThunk(
 
     try {
       const unlocked = await instance?.unlock(password);
+      await instance?.getICNSData();
       const { wallets, currentWalletId } = await instance?.getState();
       if (unlocked) {
         dispatch(setCurrentWallet(wallets[currentWalletId]));
@@ -232,6 +213,7 @@ export const setCurrentPrincipal = createAsyncThunk(
       const state = getState();
       const { instance } = state.keyring;
       await instance?.setCurrentPrincipal(walletNumber);
+      await instance?.getICNSData();
       const response = await instance?.getState();
       const { wallets } = response || {};
       const wallet = wallets[walletNumber];
@@ -241,6 +223,50 @@ export const setCurrentPrincipal = createAsyncThunk(
       dispatch(getTransactions({ icpPrice }));
     } catch (e) {
       console.log('setCurrentPrincipal', e.message);
+    }
+  }
+);
+
+export const getICNSData = createAsyncThunk(
+  'keyring/getICNSData',
+  async (_, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const { keyring } = getState();
+      const icnsData = await keyring.instance?.getICNSData();
+
+      // Set the updated currentWallet and wallets.
+      const response = await keyring.instance?.getState();
+      const { wallets } = response || {};
+      const wallet = wallets[keyring.currentWallet?.walletNumber];
+      dispatch(setWallets(wallets));
+      dispatch(setCurrentWallet(wallet || {}));
+
+      return icnsData;
+    } catch (e) {
+      rejectWithValue({ error: e.message });
+    }
+  }
+);
+
+export const setReverseResolvedName = createAsyncThunk(
+  'keyring/setReverseResolvedName',
+  /**
+   * @param {{ name: string, onFinish?: () => void }} param
+   */
+  async ({ name, onFinish }, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const { keyring } = getState();
+      await keyring.instance?.setReverseResolvedName({
+        name,
+      });
+
+      dispatch(getICNSData())
+        .unwrap()
+        .then(() => {
+          onFinish?.();
+        });
+    } catch (e) {
+      return rejectWithValue({ error: e.message });
     }
   }
 );
@@ -267,55 +293,62 @@ export const keyringSlice = createSlice({
       return { ...DEFAULT_STATE, instance };
     },
   },
-  extraReducers: {
-    [initKeyring.fulfilled]: (state, action) => {
-      state.instance = action.payload;
-      state.isInitialized = action.payload.isInitialized;
-      state.isUnlocked = action.payload.isUnlocked;
-    },
-    [createSubaccount.fulfilled]: (state, action) => {
-      if (action.payload) {
-        state.wallets = [...state.wallets, action.payload];
-      }
-    },
-    [editSubaccount.fulfilled]: (state, action) => {
-      const account = action.payload;
-      if (account) {
-        state.wallets = state.wallets.map(a =>
-          a.walletNumber === account.walletNumber ? account : a
-        );
-      }
-    },
-    [login.rejected]: state => {
-      state.isUnlocked = false;
-    },
-    [login.fulfilled]: (state, action) => {
-      state.isUnlocked = action.payload;
-    },
-    [lock.fulfilled]: state => {
-      state.isUnlocked = false;
-    },
-    [unlock.fulfilled]: (state, action) => {
-      state.isUnlocked = action.payload;
-    },
-    [createWallet.fulfilled]: (state, action) => {
-      const { wallet, unlocked } = action.payload;
-      if (Object.keys(wallet).length > 0) {
-        state.currentWallet = wallet;
-        state.wallets = [wallet];
-        state.isInitialized = true;
-        state.isUnlocked = unlocked;
-      }
-    },
-    [importWallet.fulfilled]: (state, action) => {
-      const { wallet, unlocked } = action.payload;
-      if (Object.keys(wallet).length > 0) {
-        state.wallets = [wallet];
-        state.currentWallet = wallet;
-        state.isInitialized = true;
-        state.isUnlocked = unlocked;
-      }
-    },
+  extraReducers: builder => {
+    builder
+      .addCase(getICNSData.pending, state => {
+        state.icnsDataLoading = true;
+      })
+      .addCase(getICNSData.fulfilled, state => {
+        state.icnsDataLoading = false;
+      })
+      .addCase(getICNSData.rejected, state => {
+        state.icnsDataLoading = false;
+      })
+      .addCase(initKeyring.fulfilled, (state, action) => {
+        state.instance = action.payload;
+        state.isInitialized = action.payload.isInitialized;
+        state.isUnlocked = action.payload.isUnlocked;
+      })
+      .addCase(createSubaccount.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.wallets = [...state.wallets, action.payload];
+        }
+      })
+      .addCase(editSubaccount.fulfilled, (state, action) => {
+        const account = action.payload;
+        if (account) {
+          state.wallets = state.wallets.map(a =>
+            a.walletNumber === account.walletNumber ? account : a
+          );
+        }
+      })
+      .addCase(login.rejected, state => {
+        state.isUnlocked = false;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.isUnlocked = action.payload;
+      })
+      .addCase(lock.fulfilled, state => {
+        state.isUnlocked = false;
+      })
+      .addCase(createWallet.fulfilled, (state, action) => {
+        const { wallet, unlocked } = action.payload;
+        if (Object.keys(wallet).length > 0) {
+          state.currentWallet = wallet;
+          state.wallets = [wallet];
+          state.isInitialized = true;
+          state.isUnlocked = unlocked;
+        }
+      })
+      .addCase(importWallet.fulfilled, (state, action) => {
+        const { wallet, unlocked } = action.payload;
+        if (Object.keys(wallet).length > 0) {
+          state.wallets = [wallet];
+          state.currentWallet = wallet;
+          state.isInitialized = true;
+          state.isUnlocked = unlocked;
+        }
+      });
   },
 });
 

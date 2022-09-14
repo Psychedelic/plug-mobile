@@ -25,7 +25,7 @@ function NftItem({ item, onOpen }) {
     <View key={`${canisterId}_${index}`} style={styles.item}>
       <Touchable onPress={handleOnPress} style={styles.touchable}>
         <NftDisplayer
-          ICNSName={name}
+          ICNSName={isICNS ? name : undefined}
           type={type}
           url={url}
           style={styles.nftDisplayer}

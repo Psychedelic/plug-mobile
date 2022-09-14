@@ -1,5 +1,6 @@
 import { CONNECTION_STATUS, ERRORS } from '@/constants/walletconnect';
-import { getBalance, getICNSData } from '@/redux/slices/user';
+import { getICNSData } from '@/redux/slices/keyring';
+import { getBalance } from '@/redux/slices/user';
 import { walletConnectExecuteAndResponse } from '@/redux/slices/walletconnect';
 
 import { getApp } from '../storageManager';
@@ -102,7 +103,7 @@ const InformationModule = (dispatch, getState) => {
       }
     },
     executor: async opts => {
-      const icnsData = await dispatch(getICNSData({ refresh: true }));
+      const icnsData = await dispatch(getICNSData());
       return { result: icnsData };
     },
   };

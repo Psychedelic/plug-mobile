@@ -50,7 +50,10 @@ const NftDisplayer = ({
         />
       )}
       {ICNSName && (
-        <ICNSDisplayer ICNSName={ICNSName} isDetailView={isDetailView} />
+        <ICNSDisplayer
+          ICNSName={ICNSName}
+          size={isDetailView ? 'big' : 'small'}
+        />
       )}
     </View>
   ) : (
