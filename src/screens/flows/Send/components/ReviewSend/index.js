@@ -13,6 +13,7 @@ import RainbowButton from '@/components/buttons/RainbowButton';
 import Text from '@/components/common/Text';
 import Icon from '@/components/icons';
 import TokenIcon from '@/components/tokens/TokenIcon';
+import { VISIBLE_DECIMALS } from '@/constants/business';
 import { Colors, FontStyles } from '@/constants/theme';
 import useGetType from '@/hooks/useGetType';
 import { Column } from '@/layout';
@@ -22,6 +23,7 @@ import { setTransaction } from '@/redux/slices/user';
 import { TRANSACTION_STATUS } from '@/redux/utils';
 import shortAddress from '@/utils/shortAddress';
 
+import { getFeePrice } from '../../utils';
 import SaveContact from '../SaveContact';
 import styles from './styles';
 
@@ -53,6 +55,8 @@ const ReviewSend = ({
   const contacts = useSelector(state => state.user.contacts, shallowEqual);
   const isSuccess = transaction?.status === TRANSACTION_STATUS.success;
   const isError = transaction?.status === TRANSACTION_STATUS.error;
+  const { icpPrice } = useSelector(state => state.icp);
+  const feePrice = getFeePrice(token?.symbol, icpPrice, token?.fee);
 
   const handleSaveContact = () => {
     saveContactRef.current?.open();
@@ -166,6 +170,9 @@ const ReviewSend = ({
               {t('reviewSend.totalFee', {
                 value: `${token.fee} ${token?.symbol}`,
               })}
+              {feePrice
+                ? ` ($${Number(feePrice?.toFixed(VISIBLE_DECIMALS))})`
+                : null}
             </Text>
           </Row>
         )}
