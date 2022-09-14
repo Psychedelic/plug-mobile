@@ -14,8 +14,9 @@ import styles from './styles';
 const AccountInfo = () => {
   const [visibility, setVisibility] = useState(false);
   const { currentWallet } = useSelector(state => state.keyring);
-  const { reverseResolvedName } =
-    useSelector(state => state.keyring.currentWallet?.icnsData) || {};
+  const reverseResolvedName = useSelector(
+    state => state.keyring.currentWallet?.icnsData?.reverseResolvedName
+  );
   const { principal, name } = currentWallet || {};
 
   useEffect(() => {
