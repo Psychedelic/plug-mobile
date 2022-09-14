@@ -50,8 +50,8 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
   const nameError = savedContactName && contact?.name !== name;
   const idError = savedContact && contact?.id !== id;
   const icnsError = useMemo(
-    () => validateICNSName(id) && !loading && !isValidICNS,
-    [loading, id, isValidICNS]
+    () => !loading && !isValidICNS,
+    [loading, isValidICNS]
   );
 
   useEffect(() => {

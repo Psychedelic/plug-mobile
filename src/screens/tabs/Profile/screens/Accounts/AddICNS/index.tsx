@@ -48,7 +48,7 @@ function AddICNS({ modalRef }: Props) {
   const [selectedName, setSelectedName] = useState<string>(
     reverseResolvedName || none.value
   );
-  const noNames = useMemo(() => !names.length, [names]);
+  const noNames = useMemo(() => !names?.length, [names]);
 
   const [reverseResolveLoading, setReverseResolveLoading] =
     useState<boolean>(false);
