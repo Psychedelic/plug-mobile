@@ -36,7 +36,7 @@ interface Props {
   modalRef: RefObject<Modalize>;
 }
 
-const none = { value: '', id: 'none' };
+const none = { value: '', id: 'None' };
 
 function AddICNS({ modalRef }: Props) {
   const dispatch = useDispatch();
@@ -46,9 +46,13 @@ function AddICNS({ modalRef }: Props) {
   ) || { names: [] };
   const { icnsDataLoading } = useSelector(state => state.keyring);
   const [selectedName, setSelectedName] = useState<string>(
-    reverseResolvedName || none.value
+    reverseResolvedName || none.id
   );
   const noNames = useMemo(() => !names?.length, [names]);
+
+  useEffect(() => {
+    dispatch(getICNSData());
+  }, []);
 
   const [reverseResolveLoading, setReverseResolveLoading] =
     useState<boolean>(false);
@@ -58,15 +62,11 @@ function AddICNS({ modalRef }: Props) {
     setReverseResolveLoading(true);
     dispatch(
       setReverseResolvedName({
-        name: selectedName,
+        name: selectedName === none.id ? none.value : selectedName,
         onFinish: modalRef.current?.close,
       })
     );
   }, [selectedName]);
-
-  useEffect(() => {
-    dispatch(getICNSData());
-  }, []);
 
   const actionSheetOptions = useMemo(
     () => [
@@ -79,7 +79,7 @@ function AddICNS({ modalRef }: Props) {
       {
         id: none.id,
         label: t('accounts.icns.none'),
-        onPress: () => setSelectedName(none.value),
+        onPress: () => setSelectedName(none.id),
         icon: null,
       },
     ],
@@ -87,15 +87,12 @@ function AddICNS({ modalRef }: Props) {
   );
 
   const handleOnPress = () => actionSheetRef?.current?.open();
+  const clearState = () => setReverseResolveLoading(false);
 
-  const clearState = () => {
-    setSelectedName(reverseResolvedName || none.value);
-    setReverseResolveLoading(false);
-  };
-
-  const handleActionMessage = useCallback(() => {
-    Linking.openURL(noNames ? ICNS_URL : ICNS_LEARN_MORE_URL);
-  }, [noNames]);
+  const handleActionMessage = useCallback(
+    () => Linking.openURL(noNames ? ICNS_URL : ICNS_LEARN_MORE_URL),
+    [noNames]
+  );
 
   return (
     <>
@@ -143,9 +140,7 @@ function AddICNS({ modalRef }: Props) {
                 <TouchableOpacity
                   onPress={handleOnPress}
                   style={styles.selector}>
-                  <Text type="subtitle1">
-                    {selectedName || reverseResolvedName}
-                  </Text>
+                  <Text type="subtitle1">{selectedName}</Text>
                   <Icon
                     name="chevronLeft"
                     color={Colors.Gray.Primary}
