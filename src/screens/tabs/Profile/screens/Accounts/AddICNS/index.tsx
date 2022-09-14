@@ -25,11 +25,10 @@ import {
   Modal,
   Text,
 } from '@/components/common';
-import { Option } from '@/components/common/ActionSheet';
 import Icon from '@/components/icons';
 import { Colors } from '@/constants/theme';
+import { ICNS_LEARN_MORE_URL, ICNS_LOGO, ICNS_URL } from '@/interfaces/icns';
 import { getICNSData, setReverseResolvedName } from '@/redux/slices/keyring';
-import { ICNS_LEARN_MORE_URL, ICNS_LOGO, ICNS_URL } from '@/services/ICNS';
 
 import styles from './styles';
 
@@ -37,18 +36,17 @@ interface Props {
   modalRef: RefObject<Modalize>;
 }
 
-const none = 'None';
+const none = { value: '', id: 'none' };
 
 function AddICNS({ modalRef }: Props) {
   const dispatch = useDispatch();
-  const [actionSheetOptions, setActionSheetOptions] = useState<Option[]>([]);
   const actionSheetRef = useRef<Modalize>(null);
   const { reverseResolvedName, names } = useSelector(
     state => state.keyring.currentWallet?.icnsData
   ) || { names: [] };
   const { icnsDataLoading } = useSelector(state => state.keyring);
   const [selectedName, setSelectedName] = useState<string>(
-    reverseResolvedName || none
+    reverseResolvedName || none.value
   );
   const noNames = useMemo(() => !names.length, [names]);
 
@@ -61,9 +59,7 @@ function AddICNS({ modalRef }: Props) {
     dispatch(
       setReverseResolvedName({
         name: selectedName,
-        onFinish: () => {
-          modalRef.current?.close();
-        },
+        onFinish: modalRef.current?.close,
       })
     );
   }, [selectedName]);
@@ -72,29 +68,28 @@ function AddICNS({ modalRef }: Props) {
     dispatch(getICNSData());
   }, []);
 
-  const handleOnPress = () => {
-    const noneOption = {
-      id: 0,
-      label: none,
-      onPress: () => setSelectedName(none),
-      icon: null,
-    };
-    const options = [
-      ...names.map((name: string, index: number) => ({
-        id: index + 1,
+  const actionSheetOptions = useMemo(
+    () => [
+      ...names.map((name: string) => ({
+        id: name,
         label: name,
         onPress: () => setSelectedName(name),
         icon: null,
       })),
-      noneOption,
-    ];
+      {
+        id: none.id,
+        label: t('accounts.icns.none'),
+        onPress: () => setSelectedName(none.value),
+        icon: null,
+      },
+    ],
+    [names]
+  );
 
-    setActionSheetOptions(options);
-    actionSheetRef?.current?.open();
-  };
+  const handleOnPress = () => actionSheetRef?.current?.open();
 
   const clearState = () => {
-    setSelectedName(reverseResolvedName || none);
+    setSelectedName(reverseResolvedName || none.value);
     setReverseResolveLoading(false);
   };
 
@@ -104,33 +99,42 @@ function AddICNS({ modalRef }: Props) {
 
   return (
     <>
-      <Modal adjustToContentHeight modalRef={modalRef} onClose={clearState}>
-        <Header
-          center={
-            <Image
-              url={ICNS_LOGO}
-              resizeMode="contain"
-              style={styles.icnsLogo}
-            />
-          }
-          right={
-            <ActionButton
-              label={t('common.close')}
-              onPress={() => {
-                modalRef.current?.close();
-                clearState();
-              }}
-            />
-          }
-        />
+      <Modal
+        HeaderComponent={
+          <Header
+            center={
+              <Image
+                url={ICNS_LOGO}
+                resizeMode="contain"
+                style={styles.icnsLogo}
+              />
+            }
+            right={
+              <ActionButton
+                label={t('common.close')}
+                onPress={() => {
+                  modalRef.current?.close();
+                  clearState();
+                }}
+              />
+            }
+          />
+        }
+        adjustToContentHeight
+        modalRef={modalRef}
+        onClose={clearState}>
         {dataLoading ? (
           <ActivityIndicator color="white" size="large" />
         ) : (
           <View style={styles.container}>
             <Text style={[styles.message, !noNames && styles.icnsInfo]}>
-              {t(`accounts.icns.${noNames ? 'emptyState' : 'info'}`)}
+              {noNames
+                ? t('accounts.icns.emptyState')
+                : t('accounts.icns.info')}
               <Text style={styles.actionMessage} onPress={handleActionMessage}>
-                {t(`accounts.icns.${noNames ? 'buyICNS' : 'learnMore'}`)}
+                {noNames
+                  ? t('accounts.icns.buyICNS')
+                  : t('accounts.icns.learnMore')}
               </Text>
               {noNames && t('accounts.icns.proceed')}
             </Text>

@@ -256,9 +256,8 @@ export const setReverseResolvedName = createAsyncThunk(
   async ({ name, onFinish }, { getState, rejectWithValue, dispatch }) => {
     try {
       const { keyring } = getState();
-      const selectedName = name === 'None' ? '' : name;
       await keyring.instance?.setReverseResolvedName({
-        name: selectedName,
+        name,
       });
 
       dispatch(getICNSData())

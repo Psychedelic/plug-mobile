@@ -56,7 +56,6 @@ function Send({ modalRef, nft, token, onSuccess }) {
   const reviewRef = useRef(null);
   const saveContactRef = useRef(null);
   const passwordRef = useRef(null);
-  // Matt arreglar los que son accountID
   const nfts =
     collections?.flatMap(collection => collection?.tokens || []) || [];
   const [address, setAddress] = useState(null);

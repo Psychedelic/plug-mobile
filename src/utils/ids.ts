@@ -6,7 +6,7 @@ import {
   ICNS_REGEX,
 } from '@/constants/addresses';
 
-export const isICNSName = (name: string) => ICNS_REGEX.test(name);
+export const validateICNSName = (name: string) => ICNS_REGEX.test(name);
 
 export const validatePrincipalId = (text: string) => {
   try {

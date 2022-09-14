@@ -14,7 +14,7 @@ import Touchable from '../Touchable';
 import styles, { ICON_COLOR, ICON_COLOR_DESTRUCTIVE } from './styles';
 
 export interface Option {
-  id: number;
+  id: number | string;
   label: string;
   onPress: () => void;
   destructive?: boolean;

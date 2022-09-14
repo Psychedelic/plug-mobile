@@ -29,8 +29,9 @@ const Profile = () => {
   const modalRef = useRef(null);
   const transactionListRef = useRef(null);
   useScrollToTop(transactionListRef);
-  const { reverseResolvedName } =
-    useSelector(state => state.keyring.currentWallet?.icnsData) || {};
+  const { reverseResolvedName } = useSelector(
+    state => state.keyring.currentWallet?.icnsData
+  );
 
   const { currentWallet } = useSelector(state => state.keyring);
   const { icpPrice } = useSelector(state => state.icp);

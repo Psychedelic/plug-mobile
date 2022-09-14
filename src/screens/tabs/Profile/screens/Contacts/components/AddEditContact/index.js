@@ -16,8 +16,8 @@ import { FontStyles } from '@/constants/theme';
 import useICNS from '@/hooks/useICNS';
 import { addContact, editContact } from '@/redux/slices/user';
 import {
-  isICNSName,
   validateAccountId,
+  validateICNSName,
   validatePrincipalId,
 } from '@/utils/ids';
 
@@ -44,13 +44,14 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
   const validId =
     validatePrincipalId(id) || validateAccountId(id) || isValidICNS;
 
+  const isButtonDisabled = error || !name || !id || !validId;
   const savedContact = contacts.find(c => c.id === id);
   const savedContactName = contacts.find(c => c.name === name);
   const nameError = savedContactName && contact?.name !== name;
   const idError = savedContact && contact?.id !== id;
   const icnsError = useMemo(
-    () => isICNSName(id) && !loading && !isValidICNS,
-    [loading]
+    () => validateICNSName(id) && !loading && !isValidICNS,
+    [loading, id, isValidICNS]
   );
 
   useEffect(() => {
@@ -96,8 +97,6 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
       clearState();
     }
   }, [contact]);
-
-  const isButtonDisabled = () => error || !name || !id || !validId;
 
   const handleClose = () => {
     onClose();
@@ -190,7 +189,7 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
           text={title}
           loading={loading}
           onPress={handleSubmit}
-          disabled={isButtonDisabled()}
+          disabled={isButtonDisabled}
           textStyle={styles.capitalized}
           buttonStyle={styles.marginedContainer}
         />

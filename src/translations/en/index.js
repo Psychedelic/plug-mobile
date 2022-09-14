@@ -170,6 +170,7 @@ const translations = {
     },
     icns: {
       setICNS: 'Choose ICNS Name',
+      none: 'None',
       learnMore: 'Learn More',
       emptyState:
         'We weren’t able to find any ICNS names in your Plug account. ',

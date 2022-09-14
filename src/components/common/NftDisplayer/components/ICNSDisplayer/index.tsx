@@ -2,21 +2,17 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { Image, Text } from '@/components/common';
-import { ICNS_LOGO } from '@/services/ICNS';
+import { ICNS_LOGO } from '@/interfaces/icns';
 
 import styles from './styles';
 
-export enum ICNSDisplayerSizes {
-  Small = 'small',
-  Big = 'big',
-}
 interface Props {
   ICNSName: string;
-  size?: ICNSDisplayerSizes;
+  size?: 'big' | 'small';
 }
 
-function ICNSDisplayer({ ICNSName, size = ICNSDisplayerSizes.Small }: Props) {
-  const isBigSize = size === ICNSDisplayerSizes.Big;
+function ICNSDisplayer({ ICNSName, size = 'small' }: Props) {
+  const isBigSize = size === 'big';
 
   return (
     <View style={styles.ICNSContainer}>

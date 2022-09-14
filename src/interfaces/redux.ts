@@ -1,5 +1,5 @@
+import { ICNSData } from '@/interfaces/icns';
 import { Contact } from '@/screens/tabs/Profile/screens/Contacts/utils';
-import { ICNSData } from '@/services/ICNS';
 
 import { Nullable } from './general';
 

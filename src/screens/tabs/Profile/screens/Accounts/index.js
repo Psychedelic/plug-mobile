@@ -108,10 +108,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
     const isSelectedAccount = currentWallet?.principal === account.principal;
     const selectedAccountProps = {
       nameStyle: styles.selectedAccount,
-      RightIcon: CheckedBlueCircle,
-      rightIconProps: {
-        viewBox: '-2 -2 16 16',
-      },
+      right: <CheckedBlueCircle viewBox="-2 -2 16 16" />,
     };
 
     const handleOnPress = () => {

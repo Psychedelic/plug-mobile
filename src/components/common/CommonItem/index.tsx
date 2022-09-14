@@ -1,6 +1,5 @@
 import React from 'react';
 import { Image, StyleProp, TextStyle, View, ViewStyle } from 'react-native';
-import { SvgProps } from 'react-native-svg';
 
 import Touchable from '@/commonComponents/Touchable';
 import UserIcon from '@/commonComponents/UserIcon';
@@ -17,8 +16,7 @@ interface Props {
   imageUri?: string;
   name?: string;
   id?: string;
-  RightIcon?: React.FC<SvgProps>;
-  rightIconProps?: SvgProps;
+  right?: React.ReactNode;
   style?: StyleProp<ViewStyle>;
   nameStyle?: StyleProp<TextStyle>;
   onPress?: () => void;
@@ -32,8 +30,7 @@ function CommonItem({
   imageUri,
   name,
   id,
-  RightIcon,
-  rightIconProps,
+  right,
   style,
   nameStyle,
   onPress,
@@ -54,9 +51,9 @@ function CommonItem({
             <UserIcon icon={image} />
           )}
           <View style={styles.leftContainer}>
-            <Text style={[FontStyles.Normal, nameStyle && nameStyle]}>
+            <Text style={[FontStyles.Normal, nameStyle]}>
               {name}
-              {RightIcon && <RightIcon {...rightIconProps} />}
+              {right}
             </Text>
             <Text style={FontStyles.NormalGray}>{shortAddress(id)}</Text>
           </View>

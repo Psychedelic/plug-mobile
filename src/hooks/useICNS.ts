@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { TOKENS } from '@/constants/assets';
 import { resolveName } from '@/services/ICNS';
-import { isICNSName } from '@/utils/ids';
+import { validateICNSName } from '@/utils/ids';
 
 import useDebounceValue from './useDebounceValue';
 
@@ -13,7 +13,7 @@ export default function useICNS(address: string, symbol: string, delay = 300) {
   const isICP = symbol === TOKENS.ICP.symbol;
 
   useEffect(() => {
-    if (debouncedAddress === address && isICNSName(address)) {
+    if (debouncedAddress === address && validateICNSName(address)) {
       setLoading(true);
       resolveName(debouncedAddress, isICP)
         .then(response => {
@@ -26,7 +26,7 @@ export default function useICNS(address: string, symbol: string, delay = 300) {
           console.warn(err);
         });
     }
-    if (!isICNSName(address)) {
+    if (!validateICNSName(address)) {
       setResolvedAddress(null);
     }
   }, [debouncedAddress, symbol, address]);
