@@ -10,8 +10,8 @@ import React, {
 import {
   ActivityIndicator,
   Linking,
+  SafeAreaView,
   TouchableOpacity,
-  View,
 } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { useDispatch, useSelector } from 'react-redux';
@@ -123,7 +123,7 @@ function AddICNS({ modalRef }: Props) {
         {dataLoading ? (
           <ActivityIndicator color="white" size="large" />
         ) : (
-          <View style={styles.container}>
+          <SafeAreaView style={styles.container}>
             <Text style={[styles.message, !noNames && styles.icnsInfo]}>
               {noNames
                 ? t('accounts.icns.emptyState')
@@ -155,7 +155,7 @@ function AddICNS({ modalRef }: Props) {
                 />
               </>
             )}
-          </View>
+          </SafeAreaView>
         )}
       </Modal>
       <ActionSheet modalRef={actionSheetRef} options={actionSheetOptions} />
