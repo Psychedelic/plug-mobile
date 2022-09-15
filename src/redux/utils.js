@@ -10,22 +10,19 @@ import {
   KEYRING_STORAGE_KEY,
 } from '@/constants/keyring';
 import { formatAssetBySymbol, parseToFloatAmount } from '@/utils/currencies';
+import { validateAccountId, validatePrincipalId } from '@/utils/ids';
 import { recursiveParseBigint } from '@/utils/objects';
 
 import { clear } from './slices/keyring';
 import {
-  asyncGetBalance,
+  getBalance,
   getContacts,
   getNFTs,
   getTransactions,
-  setAssets,
-  setAssetsAndLoading,
-  setAssetsLoading,
+  setBalance,
   setCollections,
   setContacts,
-  setContactsLoading,
   setTransactions,
-  setTransactionsLoading,
 } from './slices/user';
 
 export const DEFAULT_ASSETS = [
@@ -67,21 +64,15 @@ export const resetStores = dispatch => {
   dispatch(clear());
   dispatch(setCollections([]));
   dispatch(setTransactions([]));
-  dispatch(setAssets(DEFAULT_ASSETS));
+  dispatch(setBalance(DEFAULT_ASSETS));
 };
 
-export const getNewAccountData = async (dispatch, icpPrice, state) => {
-  dispatch(setAssetsLoading(true));
+export const getNewAccountData = async (dispatch, icpPrice) => {
   dispatch(setContacts([]));
-  dispatch(setContactsLoading(true));
   dispatch(getNFTs());
-  const assets = await asyncGetBalance(undefined, state, dispatch);
-  dispatch(setAssetsAndLoading({ assets }));
-  dispatch(setTransactionsLoading(true));
+  dispatch(getBalance());
   dispatch(getTransactions({ icpPrice }));
-  dispatch(getContacts())
-    .unwrap()
-    .then(() => dispatch(setContactsLoading(false)));
+  dispatch(getContacts());
 };
 
 const parseTransactionObject = transactionObject => {
@@ -151,8 +142,8 @@ const getTransactionType = (type, isOwnTx) => {
   return type.toUpperCase();
 };
 
-export const formatTransaction = (icpPrice, state) => trx => {
-  const { principal, accountId } = state.keyring?.currentWallet;
+export const formatTransaction = (icpPrice, currentWallet) => trx => {
+  const { principal, accountId } = currentWallet;
 
   let parsedTransaction = recursiveParseBigint(parseTransaction(trx));
   const { details, hash, caller, timestamp } = parsedTransaction || {};
@@ -168,8 +159,8 @@ export const formatTransaction = (icpPrice, state) => trx => {
     icon: asset.icon,
     type,
     hash,
-    to: details?.to?.principal,
-    from: details?.from?.principal || caller,
+    to: details?.to?.icns || details?.to?.principal,
+    from: details?.from?.icns || details?.from?.principal || caller,
     date: new Date(timestamp),
     status: ACTIVITY_STATUS[details?.status],
     image: details?.canisterInfo?.icon || TOKEN_IMAGES[symbol] || '',
@@ -185,22 +176,34 @@ export const formatTransaction = (icpPrice, state) => trx => {
   return transaction;
 };
 
-export const formatContact = contact => ({
-  image: contact.emoji[0],
-  name: contact.name,
-  id: contact.value?.PrincipalId?.toText(), //TODO Check this logic. What happens if principal doesnt come from the contact?
-});
+export const formatContact = contact => {
+  const [id] = Object.values(contact.value);
+
+  return {
+    image: contact.emoji[0],
+    name: contact.name,
+    id: contact.value?.PrincipalId?.toText() || `${id}`,
+  };
+};
 
 export const formatContactForController = contact => ({
   description: [t('placeholders.contactDescription')],
   emoji: [contact.image],
   name: contact.name,
-  value: {
-    PrincipalId: Principal.fromText(contact.id),
-  },
+  value: contactCreateValueObj(contact.id),
 });
 
-export const filterICNSContacts = contact => contact.id;
+export const contactCreateValueObj = currentId => {
+  if (validatePrincipalId(currentId)) {
+    return { PrincipalId: Principal.fromText(currentId) };
+  }
+
+  if (validateAccountId(currentId)) {
+    return { AccountId: currentId };
+  }
+
+  return { Icns: currentId };
+};
 
 export const DEFAULT_WALLET_CONNECT_STATE = {
   pendingRedirect: {},

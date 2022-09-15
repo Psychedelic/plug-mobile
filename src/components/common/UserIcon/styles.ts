@@ -13,8 +13,8 @@ export default StyleSheet.create({
     height: 63,
   },
   large: {
-    width: 48,
-    height: 48,
+    width: 50,
+    height: 50,
   },
   medium: {
     width: 40,
@@ -48,8 +48,8 @@ export default StyleSheet.create({
     height: 59,
   },
   backgroundlarge: {
-    width: 43,
-    height: 43,
+    width: 45,
+    height: 45,
   },
   backgroundmedium: {
     width: 36,

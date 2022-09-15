@@ -18,7 +18,6 @@ export default StyleSheet.create({
   },
   inputContent: {
     backgroundColor: Colors.Black.Pure,
-    paddingHorizontal: 0,
   },
   inputLeftLabel: {
     ...fontMaker({ size: 18, color: Colors.White.Pure, weight: SEMIBOLD }),
