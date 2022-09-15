@@ -393,6 +393,11 @@ export const addBridgeTimeout = createAsyncThunk(
   /**  @param params { requestId: string, tiemout: number } */
   ({ requestId, timeout }, { dispatch, getState }) => {
     const { bridgeTimeouts } = getState().walletconnect;
+
+    if (bridgeTimeouts[requestId] && bridgeTimeouts[requestId].pending) {
+      clearTimeout(bridgeTimeouts[requestId].timeout);
+    }
+
     const updatedTimeouts = {
       ...bridgeTimeouts,
       [requestId]: { timeout, pending: true },
