@@ -25,7 +25,6 @@ const DEFAULT_STATE = {
   isPrelocked: false,
   currentWallet: null,
   wallets: [],
-  password: '',
 };
 
 export const initKeyring = createAsyncThunk('keyring/init', async params => {
