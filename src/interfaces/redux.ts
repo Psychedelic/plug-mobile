@@ -102,6 +102,7 @@ export interface Asset {
   name: string;
   canisterId: string;
   logo?: string;
+  fee: number;
 }
 
 export interface IcpState {

@@ -41,9 +41,9 @@ const none = { value: '', id: 'None' };
 function AddICNS({ modalRef }: Props) {
   const dispatch = useDispatch();
   const actionSheetRef = useRef<Modalize>(null);
-  const { reverseResolvedName, names } = useSelector(
-    state => state.keyring.currentWallet?.icnsData
-  ) || { names: [] };
+  const icnsData = useSelector(state => state.keyring.currentWallet?.icnsData);
+  const reverseResolvedName = icnsData?.reverseResolvedName;
+  const names = icnsData?.names || [];
   const { icnsDataLoading } = useSelector(state => state.keyring);
   const [selectedName, setSelectedName] = useState<string>(
     reverseResolvedName || none.id
@@ -70,7 +70,7 @@ function AddICNS({ modalRef }: Props) {
 
   const actionSheetOptions = useMemo(
     () => [
-      ...names.map((name: string) => ({
+      ...names?.map((name: string) => ({
         id: name,
         label: name,
         onPress: () => setSelectedName(name),

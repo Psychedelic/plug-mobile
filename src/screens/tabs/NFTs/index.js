@@ -65,6 +65,7 @@ const NFTs = () => {
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.nftsContainer}
               overScrollMode="never"
+              refreshing={collectionsLoading}
               refreshControl={
                 <RefreshControl
                   refreshing={collectionsLoading}

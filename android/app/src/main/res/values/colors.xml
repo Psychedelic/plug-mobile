@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="bootsplash_background">#15161C</color>
+    <color name="alert_background">#ffffff</color>
+    <color name="alert_text">#0f2438</color>
 </resources>
