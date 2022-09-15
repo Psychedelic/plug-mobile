@@ -98,6 +98,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
           </Text>
           <TextInput
             multiline
+            autoCapitalize="none"
             value={seedPhrase}
             onChangeText={onChangeText}
             placeholder={t('importSeedPhrase.secretPhrase')}

@@ -23,6 +23,12 @@ export const TOKEN_IMAGES = {
   WICP: 'wicp',
 };
 
+export const DEFAULT_ASSETS = [
+  ICP_CANISTER_ID,
+  XTC_CANISTER_ID,
+  WICP_CANISTER_ID,
+];
+
 export const TOKENS = {
   ICP: {
     symbol: 'ICP',

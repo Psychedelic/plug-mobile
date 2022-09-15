@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { Modalize } from 'react-native-modalize';
+import { useDispatch } from 'react-redux';
 
 import Copy from '@/commonComponents/Copy';
 import Header from '@/commonComponents/Header';
@@ -15,16 +16,18 @@ import { getMnemonic } from '@/redux/slices/keyring';
 
 import styles from './styles';
 
-function RevealSeedPhrase({ modalRef }) {
+interface Props {
+  modalRef: React.RefObject<Modalize>;
+}
+
+function RevealSeedPhrase({ modalRef }: Props) {
   const { t } = useTranslation();
   const [loggedIn, setLoggedIn] = useState(false);
-  const [words, setWords] = useState([]);
-  const [password, setPassword] = useState(null);
+  const [words, setWords] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const dispatch = useDispatch();
-
-  const { instance } = useSelector(state => state.keyring);
 
   const clearState = () => {
     setPassword('');
@@ -43,7 +46,7 @@ function RevealSeedPhrase({ modalRef }) {
         },
         onSuccess: mnemonic => {
           clearState();
-          setWords(mnemonic?.split(' '));
+          setWords(mnemonic);
           setLoggedIn(true);
           setLoading(false);
         },
@@ -78,11 +81,8 @@ function RevealSeedPhrase({ modalRef }) {
             </>
           ) : (
             <>
-              <SeedPhrase mnemonic={words || []} />
-              <Copy
-                text={instance?.state?.mnemonic}
-                customStyle={styles.copyStyle}
-              />
+              <SeedPhrase mnemonic={words?.split(' ') || []} />
+              <Copy text={words} customStyle={styles.copyStyle} />
             </>
           )}
         </Column>

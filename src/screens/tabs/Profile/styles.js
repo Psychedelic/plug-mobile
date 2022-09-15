@@ -36,4 +36,8 @@ export default StyleSheet.create({
   buttonTextStyle: {
     fontSize: 16,
   },
+  listContainer: {
+    flex: 1,
+    minHeight: 200,
+  },
 });

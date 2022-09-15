@@ -41,7 +41,7 @@ const ActivityItem = ({
     <View style={styles.container}>
       <ActivityIcon image={image} type={type} />
       <View style={styles.leftContainer}>
-        <Text style={FontStyles.Normal}>
+        <Text numberOfLines={1} style={styles.title}>
           {getTitle(type, symbol, swapData, plug)}
         </Text>
         <Text style={FontStyles.SmallGray}>

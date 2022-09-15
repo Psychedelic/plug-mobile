@@ -10,6 +10,10 @@ export const TRUST_AND_SECURITY_URL =
   'https://docs.plugwallet.ooo/resources/app-trust-and-security/';
 
 export const icScanUrl = 'https://icscan.io/canister/';
+export const ICNS_URL = 'https://icns.id/';
+export const ICNS_LOGO = `${ICNS_URL}ICNS-logo.png`;
+export const ICNS_LEARN_MORE_URL =
+  'https://medium.com/plugwallet/internet-computer-ids-101-669b192a2ace';
 
 // Hosts
 export const PLUG_PROXY_HOST = 'https://mainnet.plugwallet.ooo/';

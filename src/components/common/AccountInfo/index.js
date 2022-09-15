@@ -14,6 +14,9 @@ import styles from './styles';
 const AccountInfo = () => {
   const [visibility, setVisibility] = useState(false);
   const { currentWallet } = useSelector(state => state.keyring);
+  const reverseResolvedName = useSelector(
+    state => state.keyring.currentWallet?.icnsData?.reverseResolvedName
+  );
   const { principal, name } = currentWallet || {};
 
   useEffect(() => {
@@ -29,7 +32,7 @@ const AccountInfo = () => {
     <>
       <Touchable onPress={copyToClipboard}>
         <View style={styles.container}>
-          <Text style={FontStyles.Normal}>{name}</Text>
+          <Text style={FontStyles.Normal}>{reverseResolvedName || name}</Text>
           <Text style={FontStyles.SmallGray}>{shortAddress(principal)}</Text>
         </View>
       </Touchable>

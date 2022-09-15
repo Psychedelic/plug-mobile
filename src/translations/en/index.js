@@ -25,7 +25,7 @@ const translations = {
     copied: 'Copied!',
     copyClipboard: 'Copy to clipboard',
     revealPhrase: 'Reveal Seed Phrase',
-    available: 'Available',
+    available: 'available',
     max: 'Max',
     questionMark: '?',
     the: 'The',
@@ -105,6 +105,16 @@ const translations = {
     title: 'Save Contact',
     namePlaceholder: 'Name',
   },
+  tokensTab: {
+    tokenActions: {
+      send: 'Send',
+      copy: 'Copy ID',
+      delete: 'Delete',
+    },
+    deleteTitle: 'Delete Token',
+    deleteAction: 'Delete',
+    deleteMessage: 'Would you like to delete {{token}} from your token list?',
+  },
   nftTab: {
     emptyTitle: "You don't own any Collectibles yet",
     emptySubtitle:
@@ -160,7 +170,18 @@ const translations = {
     createAccount: 'Create account',
     moreOptions: {
       edit: 'Edit Account',
+      icns: 'Add ICNS Domain',
       copy: 'Copy Address',
+    },
+    icns: {
+      setICNS: 'Choose ICNS Name',
+      none: 'None',
+      learnMore: 'Learn More',
+      emptyState:
+        'We weren’t able to find any ICNS names in your Plug account. ',
+      buyICNS: 'Buy an ICNS name',
+      proceed: ' to proceed.',
+      info: 'By choosing an ICNS name, it will be set to your Principal ID for this account, and also set your reverse-resolution to the selected ICNS name. ',
     },
     setEmoji: 'Set Emoji',
     editEmoji: 'Edit emoji',
@@ -180,8 +201,9 @@ const translations = {
       delete: 'Delete Contact',
     },
     namePlaceholder: 'Name',
-    idPlaceholder: 'Principal ID',
+    idPlaceholder: 'Principal, Account ID or ICNS name',
     nameTaken: 'Name is already taken!',
+    unresolvedICNS: 'Unable to resolve ICNS name',
     contactAlreadySaved: 'Contact already saved as {{value}}',
   },
   connectedApps: {
