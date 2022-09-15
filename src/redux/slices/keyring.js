@@ -5,8 +5,16 @@ import { fetch } from 'react-native-fetch-api';
 
 import { generateMnemonic } from '../../utils/crypto';
 import { keyringStorage } from '../store';
-import { getNewAccountData, resetStores } from '../utils';
-import { getBalance, getContacts, getNFTs, getTransactions } from './user';
+import { DEFAULT_ASSETS, getNewAccountData, resetStores } from '../utils';
+import {
+  getBalance,
+  getContacts,
+  getNFTs,
+  getTransactions,
+  setBalance,
+  setCollections,
+  setTransactions,
+} from './user';
 
 const DEFAULT_STATE = {
   instance: null,
@@ -214,6 +222,9 @@ export const setCurrentPrincipal = createAsyncThunk(
       const { instance } = state.keyring;
       await instance?.setCurrentPrincipal(walletNumber);
       await instance?.getICNSData();
+      dispatch(setCollections([]));
+      dispatch(setTransactions([]));
+      dispatch(setBalance(DEFAULT_ASSETS));
       const response = await instance?.getState();
       const { wallets } = response || {};
       const wallet = wallets[walletNumber];

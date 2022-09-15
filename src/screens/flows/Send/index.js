@@ -36,7 +36,6 @@ import ReviewSend from './components/ReviewSend';
 import SaveContact from './components/SaveContact';
 import TokenSection from './components/TokenSection';
 import styles from './styles';
-import { getAvailableAmount, getUsdAvailableAmount } from './utils';
 
 const INITIAL_ADDRESS_INFO = {
   isValid: null,
@@ -269,17 +268,12 @@ function Send({ modalRef, nft, token, onSuccess }) {
   }, [address, selectedContact, selectedToken, isValidICNS, resolvedAddress]);
 
   const availableAmount = useMemo(
-    () =>
-      getAvailableAmount(
-        selectedToken?.amount,
-        selectedToken?.symbol,
-        selectedTokenPrice
-      ),
-    [selectedToken, selectedTokenPrice]
+    () => selectedToken?.amount - selectedToken?.fee,
+    [selectedToken]
   );
 
   const availableUsdAmount = useMemo(
-    () => getUsdAvailableAmount(availableAmount, selectedTokenPrice),
+    () => (selectedTokenPrice ? availableAmount * selectedTokenPrice : null),
     [availableAmount, selectedTokenPrice]
   );
 
@@ -312,7 +306,46 @@ function Send({ modalRef, nft, token, onSuccess }) {
       }
       scrollViewProps={{
         keyboardShouldPersistTaps: 'never',
-      }}>
+      }}
+      HeaderComponent={
+        <>
+          <Header
+            left={
+              isValidAddress && (
+                <ActionButton onPress={handleBack} label={t('common.back')} />
+              )
+            }
+            center={<Text style={styles.centerText}>{t('send.title')}</Text>}
+          />
+          <TextInput
+            placeholder={t('send.inputPlaceholder')}
+            hideGradient
+            value={selectedContact ? selectedContact.name : address}
+            onChangeText={onChangeText}
+            inputStyle={[
+              styles.inputText,
+              isValidAddress && styles.inputTextValid,
+            ]}
+            autoFocus
+            style={styles.input}
+            contentContainerStyle={styles.inputContent}
+            left={
+              <Text style={styles.inputLeftLabel}>{t('send.inputLabel')}</Text>
+            }
+            right={
+              !selectedContact && isValidAddress ? (
+                <Touchable
+                  style={styles.addIcon}
+                  onPress={saveContactRef?.current?.open}>
+                  <Icon name="plus" />
+                </Touchable>
+              ) : loadingICNS ? (
+                <ActivityIndicator color="white" />
+              ) : null
+            }
+          />
+        </>
+      }>
       <View
         style={[
           styles.contentContainer,
@@ -321,41 +354,6 @@ function Send({ modalRef, nft, token, onSuccess }) {
               paddingBottom: modalOffset,
             },
         ]}>
-        <Header
-          left={
-            isValidAddress && (
-              <ActionButton onPress={handleBack} label={t('common.back')} />
-            )
-          }
-          center={<Text style={styles.centerText}>{t('send.title')}</Text>}
-        />
-        <TextInput
-          placeholder={t('send.inputPlaceholder')}
-          hideGradient
-          value={selectedContact ? selectedContact.name : address}
-          onChangeText={onChangeText}
-          inputStyle={[
-            styles.inputText,
-            isValidAddress && styles.inputTextValid,
-          ]}
-          autoFocus
-          style={styles.input}
-          contentContainerStyle={styles.inputContent}
-          left={
-            <Text style={styles.inputLeftLabel}>{t('send.inputLabel')}</Text>
-          }
-          right={
-            !selectedContact && isValidAddress ? (
-              <Touchable
-                style={styles.addIcon}
-                onPress={saveContactRef?.current?.open}>
-                <Icon name="plus" />
-              </Touchable>
-            ) : loadingICNS ? (
-              <ActivityIndicator color="white" />
-            ) : null
-          }
-        />
         {!isValidAddress && (
           <ContactSection
             filterText={address}

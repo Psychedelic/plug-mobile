@@ -9,6 +9,8 @@ export interface StandardToken {
   decimals: number;
   color?: string;
   image?: string;
+  fee: bigint;
+  totalSupply?: number;
 }
 
 export interface TokenBalance {

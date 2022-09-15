@@ -1,4 +1,5 @@
 import Clipboard from '@react-native-community/clipboard';
+import { useScrollToTop } from '@react-navigation/native';
 import React, { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, RefreshControl, ScrollView } from 'react-native';
@@ -26,6 +27,8 @@ function Tokens() {
   const [selectedToken, setSelectedToken] = useState(null);
   const sendRef = useRef(null);
   const actionsRef = useRef(null);
+  const listRef = useRef(null);
+  useScrollToTop(listRef);
 
   const { assets, assetsLoading, assetsError } = useSelector(
     state => state.user
@@ -115,6 +118,8 @@ function Tokens() {
             showsVerticalScrollIndicator={false}
             overScrollMode="never"
             contentContainerStyle={styles.scrollContent}
+            ref={listRef}
+            refreshing={assetsLoading}
             refreshControl={
               <RefreshControl
                 refreshing={assetsLoading}
