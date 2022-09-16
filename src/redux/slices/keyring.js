@@ -185,9 +185,7 @@ export const login = createAsyncThunk(
     try {
       const unlocked = await instance?.unlock(params.password);
       const { wallets, currentWalletId } = await instance?.getState();
-      dispatch(setUnlocked(unlocked));
       if (unlocked) {
-        dispatch(setPrelocked(false));
         dispatch(setCurrentWallet(wallets[currentWalletId]));
         dispatch(setWallets(wallets));
         dispatch(setAssetsLoading(true));
@@ -320,6 +318,7 @@ export const keyringSlice = createSlice({
     },
     [login.fulfilled]: (state, action) => {
       state.isUnlocked = action.payload;
+      state.isPrelocked = false;
     },
     [lock.fulfilled]: state => {
       state.isUnlocked = false;
