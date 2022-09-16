@@ -67,12 +67,13 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
       try {
         // Don't initiate a new session if we have already established one using this walletconnect URI
         let unlockTimeOut;
-        if (!isUnlocked()) {
+        if (!isUnlocked() || !isInitialized()) {
           unlockTimeOut = setTimeout(() => {
             throw new Error('Wallet Unlock Timeout');
           }, 20000);
 
-          Navigation.handleAction(Routes.LOGIN_SCREEN);
+          const route = isInitialized() ? Routes.LOGIN_SCREEN : Routes.WELCOME_SCREEN;
+          Navigation.handleAction(route);
         }
 
         const waitingFn = InteractionManager.runAfterInteractions;
