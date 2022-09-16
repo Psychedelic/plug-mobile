@@ -5,7 +5,8 @@ import { fetch } from 'react-native-fetch-api';
 import { XTC_FEE } from '@/constants/addresses';
 import { CYCLES_PER_TC } from '@/constants/assets';
 import { ASSET_CANISTER_IDS } from '@/constants/canister';
-import { ERRORS } from '@/constants/walletconnect';
+import { IC_URL_HOST } from '@/constants/general';
+import { ERRORS, SIGNING_METHODS } from '@/constants/walletconnect';
 import {
   ConnectionModule,
   InformationModule,
@@ -14,6 +15,7 @@ import {
 import { setProtectedIds } from '@/modules/storageManager';
 import Routes from '@/navigation/Routes';
 import {
+  addBridgeTimeout,
   getSession,
   setSession,
   walletConnectApproveSession,
@@ -33,10 +35,28 @@ import { recursiveParseBigint } from '@/utils/objects';
 import { base64ToBuffer } from './utilities';
 
 export const responseSessionRequest = async (meta, dispatch) => {
-  const { approved, chainId, accountAddress, peerId, dappScheme } = meta;
+  const {
+    approved,
+    chainId,
+    accountAddress,
+    peerId,
+    dappScheme,
+    requestId,
+    dappName,
+    dappUrl,
+  } = meta;
   const { walletConnector } = await dispatch(getSession({ peerId })).unwrap();
 
   if (approved) {
+    const timeout = setTimeout(() => {
+      Navigation.handleAction(Routes.WALLET_CONNECT_ERROR, {
+        dappName,
+        dappUrl,
+      });
+    }, 20000);
+
+    await dispatch(addBridgeTimeout({ requestId, timeout }));
+
     await dispatch(
       walletConnectApproveSession({
         peerId,
@@ -52,7 +72,7 @@ export const responseSessionRequest = async (meta, dispatch) => {
   await dispatch(setSession({ peerId, sessionInfo: { pending: false, meta } }));
 };
 
-export const sessionRequestHandler = async ({ error, payload }) => {
+export const sessionRequestHandler = async ({ error, payload, requestId }) => {
   if (error) {
     throw error;
   }
@@ -70,6 +90,7 @@ export const sessionRequestHandler = async ({ error, payload }) => {
     dappUrl,
     peerId,
     dappImageUrl,
+    requestId,
   };
 
   Navigation.handleAction(Routes.WALLET_CONNECT_INITIAL_CONNECTION, {
@@ -266,4 +287,14 @@ export const validateBatchTx = (
   }
 
   return true;
+};
+
+export const needSign = (methodName, args) => {
+  if (methodName === 'requestCall' && args[2]) {
+    return false;
+  } else if (SIGNING_METHODS.includes(methodName)) {
+    return true;
+  }
+
+  return false;
 };

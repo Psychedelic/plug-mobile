@@ -130,6 +130,7 @@ export interface KeyringState {
   currentWallet: Wallet;
   wallets: Wallet[];
   icnsDataLoading: boolean;
+  isPrelocked: boolean;
 }
 
 export interface ConnectedApp {
@@ -188,8 +189,11 @@ export interface WalletConnectState {
     [peerId: string]: WalletConnectSession;
   };
   bridgeTimeout: {
-    timeout: number;
-    onBridgeContact: any;
+    [requestId: string]: {
+      pending: boolean;
+      timeout: number;
+      onBridgeContact: any;
+    };
   };
 }
 

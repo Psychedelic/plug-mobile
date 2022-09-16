@@ -63,17 +63,12 @@ const ConnectionModule = (dispatch, getState) => {
 
       const app = await getApp(walletId.toString(), url);
       if (app?.status === CONNECTION_STATUS.accepted) {
-        if (!keyring?.isUnlocked) {
-          // TODO: Show requestDonnectionData screen
-          return;
-        } else {
-          dispatch(
-            walletConnectExecuteAndResponse({
-              requestId,
-              args: [app],
-            })
-          );
-        }
+        dispatch(
+          walletConnectExecuteAndResponse({
+            requestId,
+            args: [app],
+          })
+        );
       } else {
         dispatch(
           walletConnectExecuteAndResponse({
@@ -246,9 +241,16 @@ const ConnectionModule = (dispatch, getState) => {
         );
       }
     },
-    executor: (opts, areAllWhiteListed) => ({
-      result: areAllWhiteListed,
-    }),
+    executor: async (opts, areAllWhiteListed) => {
+      const keyring = getState().keyring?.instance;
+
+      if (allWhiteListed) {
+        const publicKey = await keyring?.getPublicKey();
+        return { result: publicKey };
+      }
+
+      return false;
+    },
   };
 
   const verifyWhitelist = {

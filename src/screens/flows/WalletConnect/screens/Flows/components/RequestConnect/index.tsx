@@ -18,7 +18,7 @@ function RequestConnect({ args }: WallectConnectFlowsData) {
 
   const renderWhiteList = ({ item }: { item: WCWhiteListItem }) => {
     const { canisterId, name, icon } = item;
-    console.log(icon);
+
     return (
       <CommonItem
         longId

@@ -20,6 +20,7 @@ const DEFAULT_STATE = {
   instance: null,
   isInitialized: false,
   isUnlocked: false,
+  isPrelocked: false,
   currentWallet: null,
   wallets: [],
   icnsDataLoading: false,
@@ -289,6 +290,12 @@ export const keyringSlice = createSlice({
     setCurrentWallet: (state, action) => {
       state.currentWallet = action.payload;
     },
+    setUnlocked: (state, action) => {
+      state.isUnlocked = action.payload;
+    },
+    setPrelocked: (state, action) => {
+      state.isPrelocked = action.payload;
+    },
     setWallets: (state, action) => {
       state.wallets = action.payload;
     },
@@ -338,6 +345,7 @@ export const keyringSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.isUnlocked = action.payload;
+        state.isPrelocked = false;
       })
       .addCase(lock.fulfilled, state => {
         state.isUnlocked = false;
@@ -363,7 +371,13 @@ export const keyringSlice = createSlice({
   },
 });
 
-export const { setCurrentWallet, setWallets, clear, reset } =
-  keyringSlice.actions;
+export const {
+  setCurrentWallet,
+  setUnlocked,
+  setPrelocked,
+  setWallets,
+  clear,
+  reset,
+} = keyringSlice.actions;
 
 export default keyringSlice.reducer;

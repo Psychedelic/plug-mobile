@@ -20,7 +20,7 @@ import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 import { addConnectedApp } from '@/redux/slices/user';
 import {
-  updateBridgeTimeout,
+  addBridgeTimeout,
   walletConnectExecuteAndResponse,
 } from '@/redux/slices/walletconnect';
 
@@ -80,14 +80,13 @@ function WCFlows() {
   }, [wcTimeout]);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setWCTimeout(true);
-    }, 20000);
-    dispatch(updateBridgeTimeout({ timeout }));
+    if (loading) {
+      const timeout = setTimeout(() => {
+        setWCTimeout(true);
+      }, 20000);
 
-    return () => {
-      clearTimeout(timeout);
-    };
+      dispatch(addBridgeTimeout({ requestId, timeout }));
+    }
   }, []);
 
   const handleAction = ({
