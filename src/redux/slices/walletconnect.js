@@ -12,7 +12,7 @@ import {
   saveWalletConnectSession,
 } from '@/services/WalletConnect';
 import { emmitEvent, Events } from '@/utils/events';
-import Navigation from '@/utils/navigation';
+import { navigate } from '@/utils/navigation';
 import { delay } from '@/utils/utilities';
 import {
   callRequestHandlerFactory,
@@ -66,14 +66,11 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
       const isInitialized = () => getState().keyring.isInitialized;
       try {
         // Don't initiate a new session if we have already established one using this walletconnect URI
-        let unlockTimeOut;
         if (!isUnlocked() || !isInitialized()) {
-          unlockTimeOut = setTimeout(() => {
-            throw new Error('Wallet Unlock Timeout');
-          }, 20000);
-
-          const route = isInitialized() ? Routes.LOGIN_SCREEN : Routes.WELCOME_SCREEN;
-          Navigation.handleAction(route);
+          const route = isInitialized()
+            ? Routes.LOGIN_SCREEN
+            : Routes.WELCOME_SCREEN;
+          navigate(route);
         }
 
         const waitingFn = InteractionManager.runAfterInteractions;
@@ -82,10 +79,6 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
           while (isPrelocked() || !isUnlocked() || !isInitialized()) {
             await delay(300);
           }
-          if (unlockTimeOut) {
-            clearTimeout(unlockTimeOut);
-          }
-
           const allSessions = await getAllValidWalletConnectSessions();
           const wcUri = parseWalletConnectUri(uri);
           const alreadyConnected = Object.values(allSessions).some(session => {

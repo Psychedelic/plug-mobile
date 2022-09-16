@@ -1,4 +1,5 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -6,7 +7,6 @@ import { ENABLE_NFTS } from '@/constants/nfts';
 import NFTs from '@/screens/tabs/NFTs';
 import ProfileScreen from '@/screens/tabs/Profile';
 import Tokens from '@/screens/tabs/Tokens';
-import { useNavigation } from '@/utils/navigation';
 
 import Routes from '../Routes';
 import BottomTabs from './BottomTabs';

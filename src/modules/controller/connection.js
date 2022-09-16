@@ -3,7 +3,7 @@ import { getApp, getApps, removeApp, setApps } from '@/modules/storageManager';
 import Routes from '@/navigation/Routes';
 import { walletConnectExecuteAndResponse } from '@/redux/slices/walletconnect';
 import { validatePrincipalId } from '@/utils/ids';
-import Navigation from '@/utils/navigation';
+import { navigate } from '@/utils/navigation';
 import { areAllElementsIn } from '@/utils/objects';
 import {
   fetchCanistersInfo,
@@ -199,7 +199,7 @@ const ConnectionModule = (dispatch, getState) => {
             handleDeclineArgs,
           };
 
-          Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, params);
+          navigate(Routes.WALLET_CONNECT_FLOWS, params);
         }
       } catch (e) {
         walletConnectExecuteAndResponse({
@@ -312,7 +312,7 @@ const ConnectionModule = (dispatch, getState) => {
             })
           );
         } else {
-          Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
+          navigate(Routes.WALLET_CONNECT_FLOWS, {
             type: 'requestConnect',
             requestId,
             metadata,
