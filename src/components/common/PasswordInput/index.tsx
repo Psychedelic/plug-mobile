@@ -13,7 +13,7 @@ import styles from './styles';
 
 interface Props extends TextInputProps {
   inputStyle?: StyleProp<TextStyle>;
-  error?: string;
+  error?: boolean;
   disabled?: boolean;
   inputProps?: TextInputProps;
   onSubmit?: () => void;

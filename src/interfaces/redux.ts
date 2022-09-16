@@ -1,7 +1,9 @@
 import WalletConnect from '@walletconnect/client';
 
+import { ICNSData } from '@/interfaces/icns';
 import { Contact } from '@/screens/tabs/Profile/screens/Contacts/utils';
 
+import { Nullable } from './general';
 import { WCWhiteListItem } from './walletConnect';
 
 // Override the default state interface
@@ -103,13 +105,13 @@ export interface Asset {
   name: string;
   canisterId: string;
   logo?: string;
+  fee: number;
 }
 
 export interface IcpState {
   icpPrice: number;
 }
-
-export interface CurrentWallet {
+export interface Wallet {
   name: string;
   walletNumber: number;
   principal: string;
@@ -118,17 +120,17 @@ export interface CurrentWallet {
   assets: any;
   icon: string;
   nftCollections: any[];
-  icnsData: any;
+  icnsData?: ICNSData;
 }
 
 export interface KeyringState {
-  //TODO: Add types here
   instance: any;
   isInitialized: boolean;
   isUnlocked: boolean;
+  currentWallet: Wallet;
+  wallets: Wallet[];
+  icnsDataLoading: boolean;
   isPrelocked: boolean;
-  currentWallet: CurrentWallet;
-  wallets: [];
 }
 
 export interface ConnectedApp {
@@ -139,16 +141,18 @@ export interface ConnectedApp {
 }
 export interface UserState {
   assets: Asset[];
-  assetsError: boolean;
+  assetsError: Nullable<string>;
   assetsLoading: boolean;
   contacts: Contact[];
   contactsLoading: boolean;
+  contactsError: Nullable<string>;
   transaction: Transaction;
   transactions: Transaction[];
-  collections: Collection[];
-  transactionsError: boolean;
+  transactionsError: Nullable<string>;
   transactionsLoading: boolean;
-  collectionsError: boolean;
+  collections: Collection[];
+  collectionsError: Nullable<string>;
+  collectionsLoading: boolean;
   usingBiometrics: boolean;
   biometricsAvailable: boolean;
   connectedApps: ConnectedApp[];

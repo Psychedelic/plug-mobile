@@ -4,13 +4,26 @@ import { useSelector } from 'react-redux';
 
 import CommonItem from '@/commonComponents/CommonItem';
 import Text from '@/components/common/Text';
+import { TOKENS } from '@/constants/assets';
+import { validateAccountId } from '@/utils/ids';
 
 import styles from '../../styles';
 
-const ContactSection = ({ onPress, filterText }) => {
-  const { principal } = useSelector(state => state.keyring?.currentWallet);
-  const contacts = useSelector(state => state.user?.contacts);
-  const usableContacts = contacts.filter(contact => contact.id !== principal);
+const ContactSection = ({ onPress, filterText, selectedTokenSymbol }) => {
+  const { principal, icnsData } = useSelector(
+    state => state.keyring?.currentWallet
+  );
+  const contacts = useSelector(state => state.user?.contacts).filter(
+    contact =>
+      contact.id !== principal && contact.id !== icnsData.reverseResolvedName
+  );
+  const showAccountIDs =
+    selectedTokenSymbol === TOKENS.ICP.symbol ||
+    selectedTokenSymbol === undefined;
+
+  const usableContacts = showAccountIDs
+    ? contacts
+    : contacts.filter(contact => !validateAccountId(contact.id));
 
   const filteredContacts = filterText
     ? usableContacts.filter(

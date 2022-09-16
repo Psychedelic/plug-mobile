@@ -1,5 +1,5 @@
 import emojis from 'emoji-datasource';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Keyboard, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,9 +11,11 @@ import TextInput from '@/commonComponents/TextInput';
 import UserIcon from '@/commonComponents/UserIcon';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import Text from '@/components/common/Text';
+import ErrorIcon from '@/components/icons/svg/ErrorIcon.svg';
 import { FontStyles } from '@/constants/theme';
+import useICNS from '@/hooks/useICNS';
 import { addContact, editContact } from '@/redux/slices/user';
-import { validatePrincipalId } from '@/utils/ids';
+import { validateAccountId, validatePrincipalId } from '@/utils/ids';
 
 import EditEmoji from '../../../EditEmoji';
 import styles from './styles';
@@ -33,35 +35,46 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
   const title = isEditContact
     ? t('contacts.editContact')
     : t('contacts.addContact');
-  const validId = validatePrincipalId(id);
+
+  const { loading, isValid: isValidICNS } = useICNS(id, '');
+  const validId =
+    validatePrincipalId(id) || validateAccountId(id) || isValidICNS;
+
+  const isButtonDisabled = error || !name || !id || !validId;
   const savedContact = contacts.find(c => c.id === id);
   const savedContactName = contacts.find(c => c.name === name);
   const nameError = savedContactName && contact?.name !== name;
   const idError = savedContact && contact?.id !== id;
+  const icnsError = useMemo(
+    () => !loading && !isValidICNS,
+    [loading, isValidICNS]
+  );
 
-  const handleSubmit = () => {
-    if (idError || nameError) {
+  useEffect(() => {
+    if (idError || nameError || icnsError) {
       setError(true);
     } else {
       setError(false);
-      const randomEmoji = charFromEmojiObject(
-        emojis[Math.floor(Math.random() * emojis.length)]
-      );
-      dispatch(
-        isEditContact
-          ? editContact({ contact, newContact: { id, name, image: emoji } })
-          : addContact({
-              contact: {
-                id,
-                name,
-                image: randomEmoji,
-              },
-            })
-      );
-
-      modalRef.current?.close();
-      clearState();
     }
+  }, [idError, nameError, icnsError]);
+
+  const handleSubmit = () => {
+    const randomEmoji = charFromEmojiObject(
+      emojis[Math.floor(Math.random() * emojis.length)]
+    );
+    dispatch(
+      isEditContact
+        ? editContact({ contact, newContact: { id, name, image: emoji } })
+        : addContact({
+            contact: {
+              id,
+              name,
+              image: randomEmoji,
+            },
+          })
+    );
+    modalRef.current?.close();
+    clearState();
   };
 
   const clearState = () => {
@@ -80,8 +93,6 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
       clearState();
     }
   }, [contact]);
-
-  const isButtonDisabled = () => !name || !id || !validId;
 
   const handleClose = () => {
     onClose();
@@ -151,25 +162,32 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
         />
         <TextInput
           value={id}
+          autoCapitalize="none"
           onChangeText={handleOnChangeId}
           placeholder={t('contacts.idPlaceholder')}
           style={styles.marginedContainer}
         />
         {error && (
-          <Text style={styles.savedContactText}>
-            {nameError
-              ? t('contacts.nameTaken')
-              : t('contacts.contactAlreadySaved', {
-                  value: savedContact?.name,
-                })}
-          </Text>
+          <View style={styles.errorContainer}>
+            <ErrorIcon style={styles.errorIcon} />
+            <Text style={styles.errorMessage}>
+              {nameError
+                ? t('contacts.nameTaken')
+                : icnsError
+                ? t('contacts.unresolvedICNS')
+                : t('contacts.contactAlreadySaved', {
+                    value: savedContact?.name,
+                  })}
+            </Text>
+          </View>
         )}
         <RainbowButton
           text={title}
+          loading={loading}
           onPress={handleSubmit}
-          buttonStyle={styles.marginedContainer}
+          disabled={isButtonDisabled}
           textStyle={styles.capitalized}
-          disabled={isButtonDisabled()}
+          buttonStyle={styles.marginedContainer}
         />
       </View>
       <EditEmoji
