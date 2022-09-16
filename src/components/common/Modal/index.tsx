@@ -41,10 +41,10 @@ function Modal({
   disableScrollIfPossible,
   ...props
 }: Props) {
-  const handleCloseModals = () => modalRef.current?.close();
-
   useEffect(() => {
-    const event = addEventListener(Events.CLOSE_ALL_MODALS, handleCloseModals);
+    const event = addEventListener(Events.CLOSE_ALL_MODALS, () =>
+      modalRef.current?.close()
+    );
     return () => {
       event.remove();
     };
