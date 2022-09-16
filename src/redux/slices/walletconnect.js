@@ -11,6 +11,7 @@ import {
   getAllValidWalletConnectSessions,
   saveWalletConnectSession,
 } from '@/services/WalletConnect';
+import { emmitEvent, Events } from '@/utils/events';
 import Navigation from '@/utils/navigation';
 import { delay } from '@/utils/utilities';
 import {
@@ -111,6 +112,7 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
               clearTimeout(timeoutObj.timeout);
               dispatch(removeBridgeTimeout(requestId));
             }
+            emmitEvent(Events.CLOSE_ALL_MODALS);
             await dispatch(
               setSession({
                 sessionInfo: {
@@ -154,6 +156,7 @@ const listenOnNewMessages = createAsyncThunk(
         dispatch(removeBridgeTimeout(requestId));
       }
       try {
+        emmitEvent(Events.CLOSE_ALL_MODALS);
         const { pendingCallRequests } = getState().walletconnect;
         if (!pendingCallRequests[requestId]) {
           const [handler, executor] = getHandlerAndExecutor(payload.method);

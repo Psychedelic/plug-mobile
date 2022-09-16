@@ -5,7 +5,6 @@ import { fetch } from 'react-native-fetch-api';
 import { XTC_FEE } from '@/constants/addresses';
 import { CYCLES_PER_TC } from '@/constants/assets';
 import { ASSET_CANISTER_IDS } from '@/constants/canister';
-import { IC_URL_HOST } from '@/constants/general';
 import { ERRORS, SIGNING_METHODS } from '@/constants/walletconnect';
 import {
   ConnectionModule,
@@ -92,7 +91,6 @@ export const sessionRequestHandler = async ({ error, payload, requestId }) => {
     dappImageUrl,
     requestId,
   };
-
   Navigation.handleAction(Routes.WALLET_CONNECT_INITIAL_CONNECTION, {
     meta,
   });
