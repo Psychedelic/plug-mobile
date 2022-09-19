@@ -11,16 +11,18 @@ import Touchable from '@/commonComponents/Touchable';
 import ActionSheet from '@/components/common/ActionSheet';
 import Text from '@/components/common/Text';
 import Icon from '@/components/icons';
+import AddGray from '@/components/icons/svg/AddGray.svg';
+import CheckedBlueCircle from '@/components/icons/svg/CheckedBlueCircle.svg';
 import { FontStyles } from '@/constants/theme';
 import CopyIcon from '@/icons/svg/material/Copy.svg';
 import EditIcon from '@/icons/svg/material/Edit.svg';
 import { Row } from '@/layout';
 import { getICPPrice } from '@/redux/slices/icp';
 import { setCurrentPrincipal } from '@/redux/slices/keyring';
-import { getNFTs } from '@/redux/slices/user';
 import shortAddress from '@/utils/shortAddress';
 
 import CreateEditAccount from '../CreateEditAccount';
+import AddICNS from './AddICNS';
 import styles from './styles';
 
 const Accounts = ({ modalRef, onClose, ...props }) => {
@@ -33,6 +35,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
   const [selectedAccount, setSelectedAccount] = useState(null);
 
   const createEditAccountRef = useRef(null);
+  const addICNSRef = useRef(null);
 
   useEffect(() => {
     dispatch(getICPPrice());
@@ -58,26 +61,42 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
       });
   };
 
+  const onAddICNS = account => {
+    setSelectedAccount(account);
+    addICNSRef.current?.open();
+  };
+
   const onLongPress = account => {
-    const newActionsData = {
+    const isSelectedAccount = currentWallet?.principal === account.principal;
+    const options = [
+      {
+        id: 1,
+        label: t('accounts.moreOptions.edit'),
+        onPress: () => onEditAccount(account),
+        icon: Platform.select({ android: EditIcon }),
+      },
+      {
+        id: 2,
+        label: t('accounts.moreOptions.copy'),
+        onPress: () => Clipboard.setString(account.principal),
+        icon: Platform.select({ android: CopyIcon }),
+      },
+    ];
+
+    if (isSelectedAccount) {
+      options.push({
+        id: 3,
+        label: t('accounts.moreOptions.icns'),
+        onPress: () => onAddICNS(account),
+        icon: Platform.select({ android: AddGray }),
+      });
+    }
+
+    setActionSheetData({
       title: account.name,
       subtitle: shortAddress(account.principal),
-      options: [
-        {
-          id: 1,
-          label: t('accounts.moreOptions.edit'),
-          onPress: () => onEditAccount(account),
-          icon: Platform.select({ android: EditIcon }),
-        },
-        {
-          id: 2,
-          label: t('accounts.moreOptions.copy'),
-          onPress: () => Clipboard.setString(account.principal),
-          icon: Platform.select({ android: CopyIcon }),
-        },
-      ],
-    };
-    setActionSheetData(newActionsData);
+      options,
+    });
     actionSheetRef?.current?.open();
   };
 
@@ -86,8 +105,14 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
   };
 
   const renderAccountItem = (account, index) => {
+    const isSelectedAccount = currentWallet?.principal === account.principal;
+    const selectedAccountProps = {
+      nameStyle: styles.selectedAccount,
+      right: <CheckedBlueCircle viewBox="-2 -2 16 16" />,
+    };
+
     const handleOnPress = () => {
-      if (currentWallet?.principal !== account.principal) {
+      if (!isSelectedAccount) {
         onChangeAccount(account?.walletNumber);
       }
     };
@@ -95,12 +120,13 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
     return (
       <CommonItem
         key={index}
-        name={account.name}
+        name={account?.icnsData.reverseResolvedName || account.name}
         image={account.icon}
         id={account.principal}
         onPress={handleOnPress}
         style={styles.accountItem}
         onLongPress={() => onLongPress(account)}
+        {...(isSelectedAccount && selectedAccountProps)}
       />
     );
   };
@@ -144,6 +170,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
         subtitle={actionSheetData?.subtitle}
         options={actionSheetData?.options}
       />
+      <AddICNS modalRef={addICNSRef} />
     </>
   );
 };

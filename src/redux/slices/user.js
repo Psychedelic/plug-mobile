@@ -9,7 +9,6 @@ import { recursiveParseBigint } from '@/utils/objects';
 import {
   DEFAULT_ASSETS,
   DEFAULT_TRANSACTION,
-  filterICNSContacts,
   formatContact,
   formatContactForController,
   formatTransaction,
@@ -36,7 +35,7 @@ const DEFAULT_STATE = {
 };
 
 export const sign = createAsyncThunk(
-  'keyring/sign',
+  'user/sign',
   async (params, { getState }) => {
     const { msg } = params;
     const { keyring } = getState();
@@ -46,7 +45,7 @@ export const sign = createAsyncThunk(
 );
 
 export const sendToken = createAsyncThunk(
-  'keyring/sendToken',
+  'user/sendToken',
   async (params, { getState, dispatch }) => {
     try {
       const { to, amount, canisterId, opts, icpPrice } = params;
@@ -89,7 +88,7 @@ export const sendToken = createAsyncThunk(
 );
 
 export const burnXtc = createAsyncThunk(
-  'keyring/burnXtc',
+  'user/burnXtc',
   async (params, { getState }) => {
     try {
       const { keyring } = getState();
@@ -108,7 +107,7 @@ export const burnXtc = createAsyncThunk(
 );
 
 export const getBalance = createAsyncThunk(
-  'keyring/getBalance',
+  'user/getBalance',
   async (params, { getState, dispatch, rejectWithValue }) => {
     try {
       const { refresh = true, subaccount } = params || {};
@@ -137,7 +136,7 @@ export const getBalance = createAsyncThunk(
 );
 
 export const getNFTs = createAsyncThunk(
-  'keyring/getNFTs',
+  'user/getNFTs',
   async (params, { getState, rejectWithValue }) => {
     if (ENABLE_NFTS) {
       try {
@@ -157,7 +156,7 @@ export const getNFTs = createAsyncThunk(
 );
 
 export const getTransactions = createAsyncThunk(
-  'keyring/getTransactions',
+  'user/getTransactions',
   async (params, { getState, rejectWithValue }) => {
     try {
       const state = getState();
@@ -191,7 +190,7 @@ export const getTransactions = createAsyncThunk(
 );
 
 export const transferNFT = createAsyncThunk(
-  'keyring/transferNFT',
+  'user/transferNFT',
   async (params, { getState, dispatch }) => {
     try {
       const { to, nft, icpPrice } = params;
@@ -220,13 +219,12 @@ export const transferNFT = createAsyncThunk(
 );
 
 export const getContacts = createAsyncThunk(
-  'keyring/getContacts',
+  'user/getContacts',
   async (_, { getState, rejectWithValue }) => {
     try {
       const state = getState();
       const res = await state.keyring.instance?.getContacts();
-      // TODO: When ICNS is integrated in PlugMobile delete the .filter(filterICNSContacts)
-      return res?.map(formatContact).filter(filterICNSContacts);
+      return res?.map(formatContact);
     } catch (e) {
       console.log('Error getting contacts:', e);
       rejectWithValue({ error: e.message });
@@ -235,7 +233,7 @@ export const getContacts = createAsyncThunk(
 );
 
 export const addContact = createAsyncThunk(
-  'keyring/addContact',
+  'user/addContact',
   async ({ contact, onFinish }, { getState, dispatch, rejectWithValue }) => {
     try {
       const state = getState();
@@ -255,7 +253,7 @@ export const addContact = createAsyncThunk(
 );
 
 export const removeContact = createAsyncThunk(
-  'keyring/removeContact',
+  'user/removeContact',
   async ({ contactName }, { getState, dispatch, rejectWithValue }) => {
     try {
       const state = getState();
@@ -276,7 +274,7 @@ export const removeContact = createAsyncThunk(
 );
 
 export const editContact = createAsyncThunk(
-  'keyring/editContact',
+  'user/editContact',
   async (
     { contact, newContact, walletNumber = 0 },
     { getState, dispatch, rejectWithValue }
@@ -311,23 +309,8 @@ export const editContact = createAsyncThunk(
   }
 );
 
-export const getICNSData = createAsyncThunk(
-  'keyring/getICNSData',
-  async ({ refresh }, { getState, dispatch }) => {
-    const { keyring } = getState();
-    const { currentWallet } = keyring;
-    const icnsData = currentWallet?.icnsData || { names: [] };
-    if (!icnsData?.names?.length || refresh) {
-      return keyring.getICNSData();
-    } else {
-      keyring.getICNSData();
-    }
-    return icnsData;
-  }
-);
-
 export const addCustomToken = createAsyncThunk(
-  'keyring/addCustomToken',
+  'user/addCustomToken',
   /**
    * @param {{token: DABToken, onSuccess: () => void}} param
    */
@@ -356,7 +339,7 @@ export const addCustomToken = createAsyncThunk(
 );
 
 export const removeCustomToken = createAsyncThunk(
-  'keyring/removeCustomToken',
+  'user/removeCustomToken',
   /**
    * @param { canisterId: string } param
    */
@@ -372,7 +355,7 @@ export const removeCustomToken = createAsyncThunk(
 );
 
 export const getTokenInfo = createAsyncThunk(
-  'keyring/getTokenInfo',
+  'user/getTokenInfo',
   /**
    * @param {{token: DABToken, onSuccess: (token: DABToken) => void, onError: (err: string) => void}} param
    */
@@ -452,10 +435,7 @@ export const userSlice = createSlice({
         state.collectionsLoading = true;
       })
       .addCase(getNFTs.fulfilled, (state, action) => {
-        // TODO: remove this when ICNS is fully implemented
-        const filteredNFTS =
-          action.payload?.filter(nft => nft.name !== 'ICNS') || [];
-        state.collections = filteredNFTS;
+        state.collections = action.payload;
         state.collectionsLoading = false;
       })
       .addCase(getNFTs.rejected, (state, action) => {

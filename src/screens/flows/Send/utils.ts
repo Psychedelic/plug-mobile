@@ -1,4 +1,4 @@
-import { USD_PER_TC } from '@/constants/assets';
+import { TOKENS, USD_PER_TC } from '@/constants/assets';
 
 // TODO: Remove this after Sonic integration
 export const getFeePrice = (
@@ -7,9 +7,9 @@ export const getFeePrice = (
   tokenFee: number
 ) => {
   switch (tokenSymbol) {
-    case 'ICP':
+    case TOKENS.ICP.symbol:
       return tokenFee * icpPrice;
-    case 'XTC':
+    case TOKENS.XTC.symbol:
       return tokenFee * USD_PER_TC;
     default:
       return null;

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Keyboard, View } from 'react-native';
+import { ActivityIndicator, Keyboard, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Header from '@/commonComponents/Header';
@@ -15,6 +15,7 @@ import { ADDRESS_TYPES } from '@/constants/addresses';
 import { TOKENS, USD_PER_TC } from '@/constants/assets';
 import { isAndroid } from '@/constants/platform';
 import XTC_OPTIONS from '@/constants/xtc';
+import useICNS from '@/hooks/useICNS';
 import useKeychain from '@/hooks/useKeychain';
 import { getICPPrice } from '@/redux/slices/icp';
 import {
@@ -36,7 +37,11 @@ import SaveContact from './components/SaveContact';
 import TokenSection from './components/TokenSection';
 import styles from './styles';
 
-const INITIAL_ADDRESS_INFO = { isValid: null, type: null };
+const INITIAL_ADDRESS_INFO = {
+  isValid: null,
+  type: null,
+  resolvedAddress: null,
+};
 
 function Send({ modalRef, nft, token, onSuccess }) {
   const { t } = useTranslation();
@@ -50,7 +55,6 @@ function Send({ modalRef, nft, token, onSuccess }) {
   const reviewRef = useRef(null);
   const saveContactRef = useRef(null);
   const passwordRef = useRef(null);
-
   const nfts =
     collections?.flatMap(collection => collection?.tokens || []) || [];
   const [address, setAddress] = useState(null);
@@ -66,7 +70,13 @@ function Send({ modalRef, nft, token, onSuccess }) {
   const [sendingXTCtoCanister, setSendingXTCtoCanister] = useState(false);
   const [biometricsError, setBiometricsError] = useState(false);
   const isValidAddress = addressInfo.isValid;
-  const to = address || selectedContact?.id;
+  const to = addressInfo.resolvedAddress || address || selectedContact?.id;
+
+  const {
+    loading: loadingICNS,
+    resolvedAddress,
+    isValid: isValidICNS,
+  } = useICNS(address || selectedContact?.id, selectedToken?.symbol);
 
   useEffect(() => {
     const savedContact = contacts?.find(c => c.id === address);
@@ -189,7 +199,6 @@ function Send({ modalRef, nft, token, onSuccess }) {
     let authorized = false;
     if (usingBiometrics) {
       if (biometricsError) {
-        // If biometrics has failed, we prompt to enter the password
         passwordRef.current?.open();
       } else {
         authorized = await validateWithBiometrics();
@@ -232,13 +241,15 @@ function Send({ modalRef, nft, token, onSuccess }) {
 
   useEffect(() => {
     if (address || selectedContact) {
-      const id = address || selectedContact.id;
+      const id = resolvedAddress || address || selectedContact.id;
       const isUserAddress = [
         currentWallet?.principal,
         currentWallet?.accountId,
       ].includes(id);
       let isValid =
-        !isUserAddress && (validatePrincipalId(id) || validateAccountId(id));
+        !isUserAddress &&
+        (validatePrincipalId(id) || validateAccountId(id) || isValidICNS);
+
       const type = validatePrincipalId(id)
         ? ADDRESS_TYPES.PRINCIPAL
         : ADDRESS_TYPES.ACCOUNT;
@@ -249,12 +260,12 @@ function Send({ modalRef, nft, token, onSuccess }) {
       ) {
         isValid = false;
       }
-      setAddressInfo({ isValid, type });
+      setAddressInfo({ isValid, type, resolvedAddress });
       setSendingXTCtoCanister(
         selectedToken?.symbol === TOKENS.XTC.symbol && validateCanisterId(id)
       );
     }
-  }, [address, selectedContact, selectedToken]);
+  }, [address, selectedContact, selectedToken, isValidICNS, resolvedAddress]);
 
   const availableAmount = useMemo(
     () => selectedToken?.amount - selectedToken?.fee,
@@ -328,6 +339,8 @@ function Send({ modalRef, nft, token, onSuccess }) {
                   onPress={saveContactRef?.current?.open}>
                   <Icon name="plus" />
                 </Touchable>
+              ) : loadingICNS ? (
+                <ActivityIndicator color="white" />
               ) : null
             }
           />
@@ -342,7 +355,11 @@ function Send({ modalRef, nft, token, onSuccess }) {
             },
         ]}>
         {!isValidAddress && (
-          <ContactSection filterText={address} onPress={onContactPress} />
+          <ContactSection
+            filterText={address}
+            onPress={onContactPress}
+            selectedTokenSymbol={selectedToken?.symbol}
+          />
         )}
         {isValidAddress && !selectedToken && (
           <TokenSection
@@ -381,13 +398,11 @@ function Send({ modalRef, nft, token, onSuccess }) {
         onError={onError}
         onSuccess={() => {
           modalRef.current?.close();
-          if (onSuccess) {
-            onSuccess();
-          }
+          onSuccess?.();
         }}
         onClose={partialReset}
         transaction={transaction}
-        loading={loading}
+        loading={loading || loadingICNS}
       />
       <SaveContact id={address} modalRef={saveContactRef} />
       <PasswordModal

@@ -1,3 +1,4 @@
+import { ICNSData } from '@/interfaces/icns';
 import { Contact } from '@/screens/tabs/Profile/screens/Contacts/utils';
 
 import { Nullable } from './general';
@@ -107,8 +108,7 @@ export interface Asset {
 export interface IcpState {
   icpPrice: number;
 }
-
-export interface CurrentWallet {
+export interface Wallet {
   name: string;
   walletNumber: number;
   principal: string;
@@ -117,16 +117,16 @@ export interface CurrentWallet {
   assets: any;
   icon: string;
   nftCollections: any[];
-  icnsData: any;
+  icnsData?: ICNSData;
 }
 
 export interface KeyringState {
-  //TODO: Add types here
   instance: any;
   isInitialized: boolean;
   isUnlocked: boolean;
-  currentWallet: CurrentWallet;
-  wallets: [];
+  currentWallet: Wallet;
+  wallets: Wallet[];
+  icnsDataLoading: boolean;
 }
 
 export interface UserState {
