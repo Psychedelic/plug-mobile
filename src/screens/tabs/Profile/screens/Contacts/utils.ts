@@ -11,11 +11,13 @@ interface ContactList {
   letter: string;
 }
 
-export const getGroupedContacts = (contacts: Contact[]) =>
-  contacts.reduce((list: ContactList[], contact: Contact) => {
+export const getGroupedContacts = (contacts: Contact[]) => {
+  return contacts.reduce((list: ContactList[], contact: Contact) => {
     const { name } = contact;
     const listItem = list.find(
-      item => item.letter && item.letter === getFirstLetterFrom(name)
+      item =>
+        item.letter &&
+        item.letter.toUpperCase() === getFirstLetterFrom(name).toUpperCase()
     );
     if (!listItem) {
       list.push({ letter: getFirstLetterFrom(name), contacts: [contact] });
@@ -25,3 +27,4 @@ export const getGroupedContacts = (contacts: Contact[]) =>
 
     return list;
   }, []);
+};

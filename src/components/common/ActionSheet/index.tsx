@@ -1,33 +1,47 @@
 import i18next from 'i18next';
 import React, { RefObject } from 'react';
-import { Text, View } from 'react-native';
+import { StyleProp, TextStyle, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { Portal } from 'react-native-portalize';
 import { SvgProps } from 'react-native-svg';
 
 import { isAndroid } from '@/constants/platform';
 import Close from '@/icons/svg/material/Close.svg';
+import { Nullable } from '@/interfaces/general';
 
+import Text from '../Text';
 import Touchable from '../Touchable';
-import styles, { ICON_COLOR } from './styles';
+import styles, { ICON_COLOR, ICON_COLOR_DESTRUCTIVE } from './styles';
 
-interface Option {
-  id: number;
+export interface Option {
+  id: number | string;
   label: string;
   onPress: () => void;
   destructive?: boolean;
-  icon?: React.FC<SvgProps>;
+  icon?: Nullable<React.FC<SvgProps>>;
 }
 
 interface Props {
   modalRef: RefObject<Modalize>;
-  onClose?: () => void;
-  title?: string;
-  subtitle?: string;
   options: Option[];
+  onClose?: () => void;
+  showIcons?: boolean;
+  subtitle?: string;
+  title?: string;
+  cancelTextStyle?: StyleProp<TextStyle>;
+  optionTextStyle?: StyleProp<TextStyle>;
 }
 
-function ActionSheet({ modalRef, onClose, title, subtitle, options }: Props) {
+function ActionSheet({
+  modalRef,
+  onClose,
+  title,
+  subtitle,
+  options,
+  showIcons = isAndroid,
+  optionTextStyle,
+  cancelTextStyle,
+}: Props) {
   const handleClose = () => {
     modalRef?.current?.close();
     onClose?.();
@@ -58,10 +72,19 @@ function ActionSheet({ modalRef, onClose, title, subtitle, options }: Props) {
                 key={option.id}
                 onPress={() => handleItemPress(option)}
                 style={[styles.item, index > 0 && styles.itemBorder]}>
-                {Icon && <Icon fill={ICON_COLOR} style={styles.icon} />}
+                {showIcons && Icon && (
+                  <Icon
+                    fill={
+                      option.destructive ? ICON_COLOR_DESTRUCTIVE : ICON_COLOR
+                    }
+                    style={styles.icon}
+                  />
+                )}
                 <Text
+                  type="body2"
                   style={[
                     styles.itemText,
+                    optionTextStyle,
                     option.destructive && styles.destructiveText,
                   ]}>
                   {option.label}
@@ -72,8 +95,10 @@ function ActionSheet({ modalRef, onClose, title, subtitle, options }: Props) {
           <Touchable
             onPress={handleClose}
             style={[styles.item, styles.cancelContainer]}>
-            {isAndroid && <Close fill={ICON_COLOR} style={styles.icon} />}
-            <Text style={[styles.itemText, styles.cancelText]}>
+            {showIcons && <Close fill={ICON_COLOR} style={styles.icon} />}
+            <Text
+              type="body2"
+              style={[styles.itemText, styles.cancelText, cancelTextStyle]}>
               {i18next.t('common.cancel')}
             </Text>
           </Touchable>

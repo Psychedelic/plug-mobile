@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text } from 'react-native';
 
 import Touchable from '@/commonComponents/Touchable';
+import Text from '@/components/common/Text';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
 import { Column, Row } from '@/layout';
@@ -20,7 +20,7 @@ const SettingItem = ({ icon, name, description, onPress, iconName }) => (
         <Text style={[FontStyles.Normal, styles.name]}>{name}</Text>
         <Text style={FontStyles.NormalGray}>{description}</Text>
       </Column>
-      <Icon name="chevronRight" style={styles.chevron} />
+      <Icon name="chevronRight" style={styles.chevron} height={18} />
     </Row>
   </Touchable>
 );

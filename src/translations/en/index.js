@@ -20,14 +20,15 @@ const translations = {
     pluggedInto: 'Plugged into {{name}}',
     send: 'Send',
     swap: 'Swap',
-    swapFor: 'Swap {{from}} for {{to}}',
     tokens: 'Tokens',
     biometricSignIn: 'Sign in with biometrics?',
     copied: 'Copied!',
     copyClipboard: 'Copy to clipboard',
     revealPhrase: 'Reveal Seed Phrase',
-    available: 'Available',
+    available: 'available',
     max: 'Max',
+    questionMark: '?',
+    enterPassword: 'Enter Password',
   },
   welcome: {
     title: 'Welcome to Plug',
@@ -75,6 +76,18 @@ const translations = {
     contact: 'Contact',
     enterPassword: 'Enter your password',
     contacts: 'Contacts',
+    noPriceAvailable: 'No price available for {{token}}',
+  },
+  transactionTypes: {
+    swap: 'Swap',
+    swapFor: 'Swap {{from}} for {{to}}',
+    buyNTF: 'Buy NFT',
+    listNFT: 'List NFT',
+    cancelListingNFT: 'Cancel NFT Listing',
+    makeOfferNFT: 'Make Offer',
+    acceptOfferNFT: 'Accept Offer',
+    cancelOfferNFT: 'Cancel Offer',
+    denyOfferNFT: 'Deny Offer',
   },
   reviewSend: {
     to: 'To',
@@ -90,6 +103,16 @@ const translations = {
   saveContact: {
     title: 'Save Contact',
     namePlaceholder: 'Name',
+  },
+  tokensTab: {
+    tokenActions: {
+      send: 'Send',
+      copy: 'Copy ID',
+      delete: 'Delete',
+    },
+    deleteTitle: 'Delete Token',
+    deleteAction: 'Delete',
+    deleteMessage: 'Would you like to delete {{token}} from your token list?',
   },
   nftTab: {
     emptyTitle: "You don't own any Collectibles yet",
@@ -128,12 +151,13 @@ const translations = {
       },
       lock: { name: 'Lock Account', desc: 'Lock your account and sign out.' },
     },
-    version: 'v{{version}}',
+    version: 'v{{version}}({{build}})',
     infoItems: {
       docs: '📕  Learn more about Plug',
       blog: '📰  Read our Blog',
       twitter: '🐦  Follow us on Twitter',
       discord: '👾  Join our Discord',
+      delete: '🗑  Delete Wallet',
     },
   },
   accounts: {
@@ -141,7 +165,18 @@ const translations = {
     createAccount: 'Create account',
     moreOptions: {
       edit: 'Edit Account',
+      icns: 'Add ICNS Domain',
       copy: 'Copy Address',
+    },
+    icns: {
+      setICNS: 'Choose ICNS Name',
+      none: 'None',
+      learnMore: 'Learn More',
+      emptyState:
+        'We weren’t able to find any ICNS names in your Plug account. ',
+      buyICNS: 'Buy an ICNS name',
+      proceed: ' to proceed.',
+      info: 'By choosing an ICNS name, it will be set to your Principal ID for this account, and also set your reverse-resolution to the selected ICNS name. ',
     },
     setEmoji: 'Set Emoji',
     editEmoji: 'Edit emoji',
@@ -161,8 +196,9 @@ const translations = {
       delete: 'Delete Contact',
     },
     namePlaceholder: 'Name',
-    idPlaceholder: 'Principal ID',
+    idPlaceholder: 'Principal, Account ID or ICNS name',
     nameTaken: 'Name is already taken!',
+    unresolvedICNS: 'Unable to resolve ICNS name',
     contactAlreadySaved: 'Contact already saved as {{value}}',
   },
   placeholders: {
@@ -198,6 +234,49 @@ const translations = {
       buttonTitle: '  Join Discord',
       buttonImage: 'discord',
     },
+  },
+  addToken: {
+    title: 'Add Token',
+    reviewTitle: 'Review Token',
+    customTokenTitle: 'Custom Token',
+    availableTokens: 'Available Tokens',
+    search: 'Search Tokens',
+    searchResults: 'Search Results',
+    noResults: 'No search results found.',
+    addCustomToken: 'Add custom token',
+    addButton: 'Add Token',
+    safetyAlert:
+      'Token Safety Alert: For your security, make sure to do proper research before interacting with any token.',
+    customTokenId: 'Token Canister ID',
+    customTokenStandard: "Token's Interface Standard",
+    customCaption: 'This allows tokens to be used by Plug',
+    dabCaption:
+      'Helping improve dicoverability, reputation, and trust in IC tokens.',
+    invalidInterfaceTokenError:
+      'Invalid token’s standard. Select a valid option for the current canister ID.',
+    invalidCanisterTokenError: 'Invalid Canister ID.',
+    nftTokenError: 'Custom non-fungible tokens are not supported yet.',
+    learnMore: 'Learn More',
+    poweredByDab: 'POWERED BY DAB',
+  },
+  walletConnect: {
+    changeWallet: 'Change Wallet',
+    decline: 'Decline',
+    allow: 'Allow',
+    confirm: 'Confirm',
+    connect: 'Connect',
+    connectTitle: 'Connect Wallet',
+    connectTo: 'Would you like to connect your wallet to ',
+    cannisterPermission: 'wants pemission to use these canisters:',
+    actionsPermission: 'wants pemission to perform the\nfollowing actions:',
+  },
+  deleteWallet: {
+    title: 'Delete Wallet',
+    question:
+      'Are you sure you want to remove all wallet related data from your device?',
+    description:
+      'You can always recover your accounts through your Secret recovery Phrase given that your accounts exists on the blockchain.',
+    action: 'Delete Wallet',
   },
 };
 

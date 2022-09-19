@@ -1,13 +1,7 @@
 import Clipboard from '@react-native-community/clipboard';
 import { t } from 'i18next';
 import React, { Fragment, useMemo, useRef, useState } from 'react';
-import {
-  ActivityIndicator,
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { ActivityIndicator, Platform, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CommonItem from '@/commonComponents/CommonItem';
@@ -15,6 +9,7 @@ import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
 import Touchable from '@/commonComponents/Touchable';
 import ActionSheet from '@/components/common/ActionSheet';
+import Text from '@/components/common/Text';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
 import CopyIcon from '@/icons/svg/material/Copy.svg';
@@ -80,14 +75,11 @@ function Contacts({ modalRef }) {
     actionSheetRef?.current?.open();
   };
 
+  //TODO: Use flatlist to show contacts, improve loading
   return (
     <>
-      <Modal modalRef={modalRef} adjustToContentHeight>
-        <Header
-          center={
-            <Text style={FontStyles.Subtitle2}>{t('contacts.title')}</Text>
-          }
-        />
+      <Modal modalRef={modalRef} fullHeight>
+        <Header center={<Text type="subtitle2">{t('contacts.title')}</Text>} />
         <Column style={styles.container}>
           {contactsLoading && (
             <View style={styles.loading}>
@@ -116,6 +108,7 @@ function Contacts({ modalRef }) {
                       key={`${contact.id}_${contact.name}`}>
                       <CommonItem
                         name={contact.name}
+                        // TODO: Check if contact.id is ICNS and if it is, send the id as subtitle, in that way the ICNS will not be cut with shortAddress (Need merge with v1-wallet-connect branch)
                         id={contact.id}
                         image={contact.image}
                         onLongPress={() => onLongPress(contact)}

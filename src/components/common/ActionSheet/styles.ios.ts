@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 
+import { SEMIBOLD } from '@/constants/fonts';
 import { Colors } from '@/constants/theme';
+import { fontMaker } from '@/utils/fonts';
 
 const ITEM_RADIUS = 14;
 export const ICON_COLOR = Colors.White.Secondary;
@@ -25,7 +27,7 @@ export default StyleSheet.create({
     textAlign: 'center',
   },
   topContainer: {
-    backgroundColor: Colors.Black.Primary,
+    backgroundColor: Colors.Black.Secondary,
     borderRadius: ITEM_RADIUS,
     margin: 8,
   },
@@ -38,7 +40,6 @@ export default StyleSheet.create({
     borderColor: Colors.Gray.Primary,
   },
   itemText: {
-    fontSize: 18,
     textAlign: 'center',
     color: Colors.ActionBlue,
   },
@@ -51,7 +52,9 @@ export default StyleSheet.create({
     marginHorizontal: 8,
     marginBottom: 8,
   },
-  cancelText: {
-    fontWeight: 'bold',
-  },
+  cancelText: fontMaker({
+    weight: SEMIBOLD,
+    size: 17,
+    color: Colors.ActionBlue,
+  }),
 });

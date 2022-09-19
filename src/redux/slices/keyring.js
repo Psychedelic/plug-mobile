@@ -1,24 +1,36 @@
-import PlugController from '@psychedelic/plug-mobile-controller';
+import PlugController from '@psychedelic/plug-controller';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import RNCryptoJS from 'react-native-crypto-js';
 import { fetch } from 'react-native-fetch-api';
 
 import { generateMnemonic } from '../../utils/crypto';
-import { getPrivateAssetsAndTransactions } from '../../utils/keyringUtils';
 import { keyringStorage } from '../store';
-import { getNewAccountData, resetStores } from '../utils';
+import { DEFAULT_ASSETS, getNewAccountData, resetStores } from '../utils';
 import {
-  getAssets,
+  getBalance,
   getContacts,
   getNFTs,
   getTransactions,
-  setAssetsAndTransactions,
-  setAssetsLoading,
-  setContactsLoading,
-  setTransactionsLoading,
+  setBalance,
+  setCollections,
+  setTransactions,
 } from './user';
 
-export const initKeyring = createAsyncThunk('keyring/init', async () => {
-  let keyring = new PlugController.PlugKeyRing(keyringStorage, fetch);
+const DEFAULT_STATE = {
+  instance: null,
+  isInitialized: false,
+  isUnlocked: false,
+  currentWallet: null,
+  wallets: [],
+  icnsDataLoading: false,
+};
+
+export const initKeyring = createAsyncThunk('keyring/init', async params => {
+  let keyring = new PlugController.PlugKeyRing(
+    keyringStorage,
+    RNCryptoJS,
+    fetch
+  );
   await keyring.init();
   if (keyring?.isUnlocked) {
     const state = await keyring.getState();
@@ -26,6 +38,7 @@ export const initKeyring = createAsyncThunk('keyring/init', async () => {
       await keyring.lock();
     }
   }
+  params?.callback?.();
   return keyring;
 });
 
@@ -71,15 +84,16 @@ export const importWallet = createAsyncThunk(
       });
       wallet = response?.wallet;
       unlocked = await instance?.unlock(params.password);
-      dispatch(setUnlocked(unlocked));
+
       // Get new data:
+      await instance?.getICNSData();
       getNewAccountData(dispatch, icpPrice, state);
       onSuccess?.();
     } catch (e) {
       console.log('Import Wallet Error:', e);
       onError?.();
     }
-    return { wallet };
+    return { wallet, unlocked };
   }
 );
 
@@ -91,7 +105,7 @@ export const validatePassword = createAsyncThunk(
     const { password, onError, onSuccess } = params;
     try {
       const instance = state.keyring?.instance;
-      isValid = await instance?.isValidPassword(password);
+      isValid = await instance?.checkPassword(password);
       if (isValid) {
         onSuccess?.();
       } else {
@@ -105,66 +119,63 @@ export const validatePassword = createAsyncThunk(
   }
 );
 
-export const unlock = createAsyncThunk(
-  'keyring/unlock',
-  async (params, { getState }) => {
+export const getMnemonic = createAsyncThunk(
+  'keyring/getMnemonic',
+  /**
+   * @param {{password: string, onSuccess?: (mnemonic:string) => void, onError?: () => void}} param
+   */
+  async (param, { getState }) => {
     const state = getState();
-    return await privateUnlock(params, state);
+    let mnemonic = '';
+    const { onError, onSuccess, password } = param;
+    try {
+      const instance = state.keyring?.instance;
+      mnemonic = await instance?.getMnemonic(password);
+      if (mnemonic) {
+        onSuccess?.(mnemonic);
+      } else {
+        onError?.();
+      }
+    } catch (e) {
+      onError?.();
+      console.log('Get Mnemonic:', e.message);
+    }
   }
 );
 
-const privateUnlock = async (params, state) => {
-  let unlocked = false;
-  const { password, onError, onSuccess } = params;
-  try {
-    const instance = state.keyring?.instance;
-    unlocked = await instance?.unlock(password);
-    if (unlocked) {
-      onSuccess?.();
-    } else {
-      onError?.();
-    }
-  } catch (e) {
-    onError?.();
-    console.log('Private Unlock:', e.message);
+export const lock = createAsyncThunk(
+  'keyring/lock',
+  async (_, { getState }) => {
+    await getState().keyring?.instance?.lock();
+    return false;
   }
-  return { unlocked };
-};
+);
 
 export const login = createAsyncThunk(
   'keyring/login',
-  async (params, { getState, dispatch }) => {
+  async (params, { getState, dispatch, rejectWithValue }) => {
     const state = getState();
     const instance = state.keyring?.instance;
-    const { icpPrice, onError } = params;
-    const handleError = () => {
-      dispatch(setAssetsLoading(false));
-      onError?.();
-    };
+    const { icpPrice, password } = params;
 
     try {
-      const { unlocked } = await privateUnlock(params, state);
+      const unlocked = await instance?.unlock(password);
+      await instance?.getICNSData();
       const { wallets, currentWalletId } = await instance?.getState();
       if (unlocked) {
         dispatch(setCurrentWallet(wallets[currentWalletId]));
         dispatch(setWallets(wallets));
-        dispatch(setAssetsLoading(true));
-        dispatch(getAssets({ refresh: true, icpPrice }));
-        dispatch(setTransactionsLoading(true));
+        dispatch(getBalance());
         dispatch(getTransactions({ icpPrice }));
         dispatch(getNFTs());
-        // Get contacts from dab
-        dispatch(setContactsLoading(true));
-        dispatch(getContacts())
-          .unwrap()
-          .then(() => dispatch(setContactsLoading(false)));
+        dispatch(getContacts());
       } else {
-        handleError();
+        return rejectWithValue({ error: 'locked' });
       }
       return unlocked;
     } catch (e) {
       console.log('Error at login: ', e);
-      handleError();
+      return rejectWithValue({ error: e.message });
     }
   }
 );
@@ -210,33 +221,66 @@ export const setCurrentPrincipal = createAsyncThunk(
       const state = getState();
       const { instance } = state.keyring;
       await instance?.setCurrentPrincipal(walletNumber);
+      await instance?.getICNSData();
+      dispatch(setCollections([]));
+      dispatch(setTransactions([]));
+      dispatch(setBalance(DEFAULT_ASSETS));
       const response = await instance?.getState();
       const { wallets } = response || {};
       const wallet = wallets[walletNumber];
       dispatch(setCurrentWallet(wallet || {}));
-
-      // We need to update the state to map the transacctions and assets as it should:
-      const [transactions, assets] = await getPrivateAssetsAndTransactions(
-        icpPrice,
-        getState(),
-        dispatch
-      );
-      dispatch(getContacts());
-      dispatch(setAssetsAndTransactions({ assets, transactions }));
+      dispatch(getBalance());
+      dispatch(getNFTs());
+      dispatch(getTransactions({ icpPrice }));
     } catch (e) {
       console.log('setCurrentPrincipal', e.message);
     }
   }
 );
 
-const DEFAULT_STATE = {
-  instance: null,
-  isInitialized: false,
-  isUnlocked: false,
-  currentWallet: null,
-  wallets: [],
-  password: '',
-};
+export const getICNSData = createAsyncThunk(
+  'keyring/getICNSData',
+  async (_, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const { keyring } = getState();
+      const icnsData = await keyring.instance?.getICNSData();
+
+      // Set the updated currentWallet and wallets.
+      const response = await keyring.instance?.getState();
+      const { wallets } = response || {};
+      const wallet = wallets[keyring.currentWallet?.walletNumber];
+      dispatch(setWallets(wallets));
+      dispatch(setCurrentWallet(wallet || {}));
+
+      return icnsData;
+    } catch (e) {
+      rejectWithValue({ error: e.message });
+    }
+  }
+);
+
+export const setReverseResolvedName = createAsyncThunk(
+  'keyring/setReverseResolvedName',
+  /**
+   * @param {{ name: string, onFinish?: () => void }} param
+   */
+  async ({ name, onFinish }, { getState, rejectWithValue, dispatch }) => {
+    try {
+      const { keyring } = getState();
+      await keyring.instance?.setReverseResolvedName({
+        name,
+      });
+
+      dispatch(getICNSData())
+        .unwrap()
+        .then(() => {
+          onFinish?.();
+        });
+    } catch (e) {
+      return rejectWithValue({ error: e.message });
+    }
+  }
+);
 
 export const keyringSlice = createSlice({
   name: 'keyring',
@@ -245,63 +289,81 @@ export const keyringSlice = createSlice({
     setCurrentWallet: (state, action) => {
       state.currentWallet = action.payload;
     },
-    setUnlocked: (state, action) => {
-      state.isUnlocked = action.payload;
-    },
     setWallets: (state, action) => {
       state.wallets = action.payload;
     },
-    reset: state => {
-      state = { ...DEFAULT_STATE, instance: state.instance };
+    clear: state => {
+      return { ...DEFAULT_STATE, instance: state.instance };
+    },
+    reset: () => {
+      let instance = new PlugController.PlugKeyRing(
+        keyringStorage,
+        RNCryptoJS,
+        fetch
+      );
+      return { ...DEFAULT_STATE, instance };
     },
   },
-  extraReducers: {
-    [initKeyring.fulfilled]: (state, action) => {
-      state.instance = action.payload;
-      state.isInitialized = action.payload.isInitialized;
-      state.isUnlocked = action.payload.isUnlocked;
-    },
-    [createSubaccount.fulfilled]: (state, action) => {
-      if (action.payload) {
-        state.wallets = [...state.wallets, action.payload];
-      }
-    },
-    [editSubaccount.fulfilled]: (state, action) => {
-      const account = action.payload;
-      if (account) {
-        state.wallets = state.wallets.map(a =>
-          a.walletNumber === account.walletNumber ? account : a
-        );
-      }
-    },
-    [login.fulfilled]: (state, action) => {
-      state.isUnlocked = action.payload;
-    },
-    [unlock.fulfilled]: (state, action) => {
-      const { unlocked } = action.payload;
-      state.isUnlocked = unlocked;
-    },
-    [createWallet.fulfilled]: (state, action) => {
-      const { wallet, unlocked } = action.payload;
-      if (Object.keys(wallet).length > 0) {
-        state.currentWallet = wallet;
-        state.wallets = [wallet];
-        state.isInitialized = true;
-        state.isUnlocked = unlocked;
-      }
-    },
-    [importWallet.fulfilled]: (state, action) => {
-      const { wallet } = action.payload;
-      if (Object.keys(wallet).length > 0) {
-        state.wallets = [wallet];
-        state.currentWallet = wallet;
-        state.isInitialized = true;
-      }
-    },
+  extraReducers: builder => {
+    builder
+      .addCase(getICNSData.pending, state => {
+        state.icnsDataLoading = true;
+      })
+      .addCase(getICNSData.fulfilled, state => {
+        state.icnsDataLoading = false;
+      })
+      .addCase(getICNSData.rejected, state => {
+        state.icnsDataLoading = false;
+      })
+      .addCase(initKeyring.fulfilled, (state, action) => {
+        state.instance = action.payload;
+        state.isInitialized = action.payload.isInitialized;
+        state.isUnlocked = action.payload.isUnlocked;
+      })
+      .addCase(createSubaccount.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.wallets = [...state.wallets, action.payload];
+        }
+      })
+      .addCase(editSubaccount.fulfilled, (state, action) => {
+        const account = action.payload;
+        if (account) {
+          state.wallets = state.wallets.map(a =>
+            a.walletNumber === account.walletNumber ? account : a
+          );
+        }
+      })
+      .addCase(login.rejected, state => {
+        state.isUnlocked = false;
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        state.isUnlocked = action.payload;
+      })
+      .addCase(lock.fulfilled, state => {
+        state.isUnlocked = false;
+      })
+      .addCase(createWallet.fulfilled, (state, action) => {
+        const { wallet, unlocked } = action.payload;
+        if (Object.keys(wallet).length > 0) {
+          state.currentWallet = wallet;
+          state.wallets = [wallet];
+          state.isInitialized = true;
+          state.isUnlocked = unlocked;
+        }
+      })
+      .addCase(importWallet.fulfilled, (state, action) => {
+        const { wallet, unlocked } = action.payload;
+        if (Object.keys(wallet).length > 0) {
+          state.wallets = [wallet];
+          state.currentWallet = wallet;
+          state.isInitialized = true;
+          state.isUnlocked = unlocked;
+        }
+      });
   },
 });
 
-export const { setCurrentWallet, setUnlocked, setWallets, reset } =
+export const { setCurrentWallet, setWallets, clear, reset } =
   keyringSlice.actions;
 
 export default keyringSlice.reducer;

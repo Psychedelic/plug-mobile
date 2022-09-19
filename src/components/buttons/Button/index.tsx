@@ -3,13 +3,13 @@ import {
   ActivityIndicator,
   StyleProp,
   StyleSheet,
-  Text,
   TextStyle,
   View,
   ViewStyle,
 } from 'react-native';
 
 import Touchable from '@/commonComponents/Touchable';
+import Text from '@/components/common/Text';
 import Icon from '@/icons';
 import animationScales from '@/utils/animationScales';
 
@@ -26,6 +26,7 @@ interface Props {
   disabled?: boolean;
   disableAnimation?: boolean;
   loading?: boolean;
+  iconProps?: { height?: number; width?: number };
 }
 
 const Button = ({
@@ -39,6 +40,7 @@ const Button = ({
   disabled = false,
   disableAnimation = false,
   loading = false,
+  iconProps,
   ...props
 }: Props) => {
   return (
@@ -46,16 +48,20 @@ const Button = ({
       scale={animationScales.medium}
       disabled={disabled || disableAnimation}
       onPress={onPress}
-      onLongPress={onLongPress}>
+      onLongPress={onLongPress || onPress}>
       <View style={[styles.button, buttonStyle]} {...props}>
         {loading ? (
           <ActivityIndicator style={StyleSheet.absoluteFill} color="white" />
         ) : (
           <>
-            <Text style={[styles.text, textStyle, disabled && styles.disabled]}>
+            <Text
+              type="button"
+              style={[textStyle, disabled && styles.disabled]}>
               {text}
             </Text>
-            {iconName && <Icon name={iconName} style={iconStyle} />}
+            {iconName && (
+              <Icon name={iconName} style={iconStyle} {...iconProps} />
+            )}
           </>
         )}
       </View>

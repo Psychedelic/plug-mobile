@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Keyboard, Text, View } from 'react-native';
+import { Keyboard, View } from 'react-native';
 
 import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
 import TextInput from '@/commonComponents/TextInput';
 import UserIcon from '@/commonComponents/UserIcon';
 import RainbowButton from '@/components/buttons/RainbowButton';
+import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
 import useAccounts from '@/hooks/useAccounts';
 
@@ -95,7 +96,7 @@ const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
             {t('common.back')}
           </Text>
         }
-        center={<Text style={FontStyles.Subtitle2}>{getName()}</Text>}
+        center={<Text type="subtitle2">{getName()}</Text>}
       />
       <View style={styles.content}>
         <View>
@@ -115,11 +116,10 @@ const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
         </View>
         <TextInput
           autoFocus
-          variant="text"
-          maxLenght={22}
+          maxLength={22}
           value={accountName}
           placeholder={t('accounts.accountNamePlaceholder')}
-          customStyle={styles.input}
+          style={styles.input}
           onChangeText={setAccountName}
         />
         <RainbowButton
