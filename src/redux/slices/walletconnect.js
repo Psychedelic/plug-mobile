@@ -89,7 +89,7 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
           walletConnector?.on('session_request', async (error, payload) => {
             const { peerId } = payload.params[0];
             const {
-              bridgeTimeout: { [requestId]: timeoutObj },
+              bridgeTimeouts: { [requestId]: timeoutObj },
             } = getState().walletconnect;
             if (timeoutObj?.pending) {
               clearTimeout(timeoutObj.timeout);
@@ -124,7 +124,7 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
               clearTimeout(unlockTimeout);
             }
 
-            sessionRequestHandler({ error, payload });
+            sessionRequestHandler({ error, payload, requestId });
           });
         });
       } catch (error) {
@@ -150,7 +150,7 @@ const listenOnNewMessages = createAsyncThunk(
       const { clientId, peerId, peerMeta } = walletConnector;
       const requestId = payload.id;
       const {
-        bridgeTimeout: { [requestId]: timeoutObj },
+        bridgeTimeouts: { [requestId]: timeoutObj },
       } = getState().walletconnect;
       if (timeoutObj?.pending) {
         clearTimeout(timeoutObj.timeout);
@@ -395,10 +395,10 @@ export const walletConnectRejectSession = createAsyncThunk(
 export const addBridgeTimeout = createAsyncThunk(
   'walletconnect/addBridgeTimeout',
   /**  @param params { requestId: string, tiemout: number } */
-  ({ requestId, timeout }, { dispatch, getState }) => {
+  async ({ requestId, timeout }, { dispatch, getState }) => {
     const { bridgeTimeouts } = getState().walletconnect;
 
-    if (bridgeTimeouts[requestId].pending) {
+    if (bridgeTimeouts[requestId]?.pending) {
       clearTimeout(bridgeTimeouts[requestId]?.timeout);
     }
 
@@ -406,7 +406,8 @@ export const addBridgeTimeout = createAsyncThunk(
       ...bridgeTimeouts,
       [requestId]: { timeout, pending: true },
     };
-    dispatch(updateBridgeTimeout(updatedTimeouts));
+
+    await dispatch(updateBridgeTimeout(updatedTimeouts));
   }
 );
 
@@ -450,7 +451,7 @@ export const walletconnectSlice = createSlice({
     updateBridgeTimeout: (state, action) => {
       return {
         ...state,
-        bridgeTimeout: action.payload,
+        bridgeTimeouts: action.payload,
       };
     },
   },
