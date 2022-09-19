@@ -109,8 +109,10 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
             let unlockTimeout;
 
             if (!isUnlocked() || !isInitialized()) {
-              unlockTimeout = setTimeout(() => {
-                walletConnectRejectSession({ peerId, walletConnector });
+              unlockTimeout = setTimeout(async () => {
+                await dispatch(
+                  walletConnectRejectSession({ peerId, walletConnector })
+                );
               }, 20000);
             }
 
@@ -386,7 +388,7 @@ export const walletConnectRejectSession = createAsyncThunk(
     const { sessions } = getState().walletconnect;
     const { walletConnector } = sessions[peerId];
 
-    walletConnector.rejectSesison();
+    walletConnector.rejectSession();
   }
 );
 
