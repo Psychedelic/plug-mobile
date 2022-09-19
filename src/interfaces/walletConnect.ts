@@ -132,3 +132,9 @@ export interface FlowsParams {
     { status: WCHandleActionStatus.refused; whitelist: WCWhiteList }
   ];
 }
+
+export interface TransactionData {
+  canisterId: string;
+  methodName: string;
+  args: string;
+}

@@ -79,3 +79,5 @@ export const SIGNING_METHODS = [
   'requestCall',
   'verifyWhitelist',
 ];
+
+export const SIGNER_SERVER_URL = 'https://4cb0-181-167-20-195.ngrok.io';
