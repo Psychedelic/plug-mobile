@@ -65,20 +65,9 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
       const isUnlocked = () => getState().keyring.isUnlocked;
       const isInitialized = () => getState().keyring.isInitialized;
       try {
-        // Don't initiate a new session if we have already established one using this walletconnect URI
-        if (!isUnlocked() || !isInitialized()) {
-          const route = isInitialized()
-            ? Routes.LOGIN_SCREEN
-            : Routes.WELCOME_SCREEN;
-          navigate(route);
-        }
-
         const waitingFn = InteractionManager.runAfterInteractions;
 
         waitingFn(async () => {
-          while (isPrelocked() || !isUnlocked() || !isInitialized()) {
-            await delay(300);
-          }
           const allSessions = await getAllValidWalletConnectSessions();
           const wcUri = parseWalletConnectUri(uri);
           const alreadyConnected = Object.values(allSessions).some(session => {
@@ -116,6 +105,22 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
                 peerId,
               })
             );
+
+            let unlockTimeout;
+
+            if (!isUnlocked() || !isInitialized()) {
+              unlockTimeout = setTimeout(() => {
+                walletConnectRejectSession({ peerId, walletConnector });
+              }, 20000);
+            }
+
+            while (isPrelocked() || !isUnlocked() || !isInitialized()) {
+              await delay(300);
+            }
+
+            if (unlockTimeout) {
+              clearTimeout(unlockTimeout);
+            }
 
             sessionRequestHandler({ error, payload });
           });
