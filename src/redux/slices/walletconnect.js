@@ -12,7 +12,7 @@ import {
   saveWalletConnectSession,
 } from '@/services/WalletConnect';
 import { emmitEvent, Events } from '@/utils/events';
-import Navigation from '@/utils/navigation';
+import { navigate } from '@/utils/navigation';
 import { delay } from '@/utils/utilities';
 import {
   callRequestHandlerFactory,
@@ -65,26 +65,9 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
       const isUnlocked = () => getState().keyring.isUnlocked;
       const isInitialized = () => getState().keyring.isInitialized;
       try {
-        // Don't initiate a new session if we have already established one using this walletconnect URI
-        let unlockTimeOut;
-        if (!isUnlocked()) {
-          unlockTimeOut = setTimeout(() => {
-            throw new Error('Wallet Unlock Timeout');
-          }, 20000);
-
-          Navigation.handleAction(Routes.LOGIN_SCREEN);
-        }
-
         const waitingFn = InteractionManager.runAfterInteractions;
 
         waitingFn(async () => {
-          while (isPrelocked() || !isUnlocked() || !isInitialized()) {
-            await delay(300);
-          }
-          if (unlockTimeOut) {
-            clearTimeout(unlockTimeOut);
-          }
-
           const allSessions = await getAllValidWalletConnectSessions();
           const wcUri = parseWalletConnectUri(uri);
           const alreadyConnected = Object.values(allSessions).some(session => {
@@ -106,7 +89,7 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
           walletConnector?.on('session_request', async (error, payload) => {
             const { peerId } = payload.params[0];
             const {
-              bridgeTimeout: { [requestId]: timeoutObj },
+              bridgeTimeouts: { [requestId]: timeoutObj },
             } = getState().walletconnect;
             if (timeoutObj?.pending) {
               clearTimeout(timeoutObj.timeout);
@@ -123,7 +106,25 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
               })
             );
 
-            sessionRequestHandler({ error, payload });
+            let unlockTimeout;
+
+            if (!isUnlocked() || !isInitialized()) {
+              unlockTimeout = setTimeout(async () => {
+                await dispatch(
+                  walletConnectRejectSession({ peerId, walletConnector })
+                );
+              }, 20000);
+            }
+
+            while (isPrelocked() || !isUnlocked() || !isInitialized()) {
+              await delay(300);
+            }
+
+            if (unlockTimeout) {
+              clearTimeout(unlockTimeout);
+            }
+
+            sessionRequestHandler({ error, payload, requestId });
           });
         });
       } catch (error) {
@@ -149,7 +150,7 @@ const listenOnNewMessages = createAsyncThunk(
       const { clientId, peerId, peerMeta } = walletConnector;
       const requestId = payload.id;
       const {
-        bridgeTimeout: { [requestId]: timeoutObj },
+        bridgeTimeouts: { [requestId]: timeoutObj },
       } = getState().walletconnect;
       if (timeoutObj?.pending) {
         clearTimeout(timeoutObj.timeout);
@@ -387,17 +388,17 @@ export const walletConnectRejectSession = createAsyncThunk(
     const { sessions } = getState().walletconnect;
     const { walletConnector } = sessions[peerId];
 
-    walletConnector.rejectSesison();
+    walletConnector.rejectSession();
   }
 );
 
 export const addBridgeTimeout = createAsyncThunk(
   'walletconnect/addBridgeTimeout',
   /**  @param params { requestId: string, tiemout: number } */
-  ({ requestId, timeout }, { dispatch, getState }) => {
+  async ({ requestId, timeout }, { dispatch, getState }) => {
     const { bridgeTimeouts } = getState().walletconnect;
 
-    if (bridgeTimeouts[requestId].pending) {
+    if (bridgeTimeouts[requestId]?.pending) {
       clearTimeout(bridgeTimeouts[requestId]?.timeout);
     }
 
@@ -405,7 +406,8 @@ export const addBridgeTimeout = createAsyncThunk(
       ...bridgeTimeouts,
       [requestId]: { timeout, pending: true },
     };
-    dispatch(updateBridgeTimeout(updatedTimeouts));
+
+    await dispatch(updateBridgeTimeout(updatedTimeouts));
   }
 );
 
@@ -449,7 +451,7 @@ export const walletconnectSlice = createSlice({
     updateBridgeTimeout: (state, action) => {
       return {
         ...state,
-        bridgeTimeout: action.payload,
+        bridgeTimeouts: action.payload,
       };
     },
   },

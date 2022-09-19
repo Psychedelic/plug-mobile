@@ -16,7 +16,7 @@ import Routes from '@/navigation/Routes';
 import { burnXtc, getBalance, sendToken } from '@/redux/slices/user';
 import { walletConnectExecuteAndResponse } from '@/redux/slices/walletconnect';
 import { getToken } from '@/utils/assets';
-import Navigation from '@/utils/navigation';
+import { navigate } from '@/utils/navigation';
 import { base64ToBuffer, bufferToBase64 } from '@/utils/utilities';
 import {
   generateRequestInfo,
@@ -47,7 +47,7 @@ const TransactionModule = (dispatch, getState) => {
         const handleApproveArgs = [{ ...args, approve: true }];
         const handleDeclineArgs = [{ ...args, approve: false }];
 
-        Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
+        navigate(Routes.WALLET_CONNECT_FLOWS, {
           type: 'transfer',
           requestId,
           metadata,
@@ -112,7 +112,7 @@ const TransactionModule = (dispatch, getState) => {
         const handleApproveArgs = [{ ...args, approve: true }];
         const handleDeclineArgs = [{ ...args, approve: false }];
 
-        Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
+        navigate(Routes.WALLET_CONNECT_FLOWS, {
           type: 'transfer',
           requestId,
           metadata,
@@ -179,7 +179,7 @@ const TransactionModule = (dispatch, getState) => {
         const handleApproveArgs = [{ ...args, approve: true }];
         const handleDeclineArgs = [{ ...args, approve: false }];
 
-        Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
+        navigate(Routes.WALLET_CONNECT_FLOWS, {
           type: 'burnXTC',
           requestId,
           metadata,
@@ -244,7 +244,7 @@ const TransactionModule = (dispatch, getState) => {
         const handleApproveArgs = [{ transactions, approve: true }];
         const handleDeclineArgs = [{ transactions, approve: false }];
 
-        Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
+        navigate(Routes.WALLET_CONNECT_FLOWS, {
           type: 'batchTransactions',
           requestId,
           metadata,
@@ -326,7 +326,7 @@ const TransactionModule = (dispatch, getState) => {
         const handleApproveArgs = [{ requestInfo, approve: true }];
         const handleDeclineArgs = [{ requestInfo, approve: false }];
 
-        Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
+        navigate(Routes.WALLET_CONNECT_FLOWS, {
           type: 'requestCall',
           requestId,
           canisterInfo,

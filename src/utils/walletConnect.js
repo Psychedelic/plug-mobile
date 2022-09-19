@@ -23,7 +23,7 @@ import {
 import { getDabNfts, getDabTokens } from '@/services/DAB';
 import { validateAccountId, validatePrincipalId } from '@/utils/ids';
 import { validateCanisterId } from '@/utils/ids';
-import Navigation from '@/utils/navigation';
+import { navigate } from '@/utils/navigation';
 import {
   isValidBigInt,
   validateAmount,
@@ -48,7 +48,7 @@ export const responseSessionRequest = async (meta, dispatch) => {
 
   if (approved) {
     const timeout = setTimeout(() => {
-      Navigation.handleAction(Routes.WALLET_CONNECT_ERROR, {
+      navigate(Routes.WALLET_CONNECT_ERROR, {
         dappName,
         dappUrl,
       });
@@ -91,7 +91,8 @@ export const sessionRequestHandler = async ({ error, payload, requestId }) => {
     dappImageUrl,
     requestId,
   };
-  Navigation.handleAction(Routes.WALLET_CONNECT_INITIAL_CONNECTION, {
+
+  navigate(Routes.WALLET_CONNECT_INITIAL_CONNECTION, {
     meta,
   });
 };

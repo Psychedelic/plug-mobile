@@ -188,7 +188,7 @@ export interface WalletConnectState {
   sessions: {
     [peerId: string]: WalletConnectSession;
   };
-  bridgeTimeout: {
+  bridgeTimeouts: {
     [requestId: string]: {
       pending: boolean;
       timeout: number;

@@ -1,4 +1,4 @@
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { t } from 'i18next';
 import React, { useCallback, useRef, useState } from 'react';
 import { Image, Linking, Text, View } from 'react-native';
@@ -12,7 +12,6 @@ import useDisableBack from '@/hooks/useDisableBack';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 import Accounts from '@/screens/tabs/Profile/screens/Accounts';
-import { useNavigation } from '@/utils/navigation';
 import { responseSessionRequest } from '@/utils/walletConnect';
 
 import UserShowcase from '../Flows/components/UserShowcase';

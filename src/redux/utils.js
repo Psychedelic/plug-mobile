@@ -209,7 +209,7 @@ export const DEFAULT_WALLET_CONNECT_STATE = {
   pendingRedirect: {},
   pendingCallRequests: {},
   sessions: {},
-  bridgeTimeout: {},
+  bridgeTimeouts: {},
 };
 
 export const migrateData = async () => {
