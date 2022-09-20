@@ -121,7 +121,6 @@ export interface Wallet {
 }
 
 export interface KeyringState {
-  instance: any;
   isInitialized: boolean;
   isUnlocked: boolean;
   currentWallet: Wallet;

@@ -92,6 +92,7 @@ export const keyringStorage = {
       });
   },
   clear: () => AsyncStorage.removeItem(KEYRING_STORAGE_KEY),
+  isSupported: true, //TODO: check this
 };
 
 export const walletConnectStorage = {
