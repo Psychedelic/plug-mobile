@@ -1,12 +1,7 @@
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const rootSize = 41;
 const activitySize = 19;
-
-const zIndexStyle = Platform.select({
-  ios: { zIndex: 1 },
-  android: { elevation: 1 },
-});
 
 export default StyleSheet.create({
   root: {
@@ -22,7 +17,8 @@ export default StyleSheet.create({
     borderRadius: 26,
     height: activitySize,
     width: activitySize,
-    ...zIndexStyle,
+    zIndex: 1,
+    elevation: 1,
   },
   activityImage: {
     borderRadius: 22,
