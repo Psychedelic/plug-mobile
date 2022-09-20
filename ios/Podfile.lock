@@ -314,12 +314,6 @@ PODS:
     - ReactCommon/turbomodule/core
   - react-native-sensitive-info (6.0.0-alpha.9):
     - React-Core
-  - react-native-tcp-socket (5.6.2):
-    - CocoaAsyncSocket
-    - React-Core
-  - react-native-udp (4.1.5):
-    - CocoaAsyncSocket
-    - React-Core
   - react-native-video (5.2.0):
     - React-Core
     - react-native-video/Video (= 5.2.0)
@@ -414,8 +408,6 @@ PODS:
     - React-Core
   - RNLocalize (2.2.2):
     - React-Core
-  - RNOS (1.2.6):
-    - React
   - RNReactNativeHapticFeedback (1.13.1):
     - React-Core
   - RNReanimated (2.8.0):
@@ -521,8 +513,6 @@ DEPENDENCIES:
   - react-native-randombytes (from `../node_modules/react-native-randombytes`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-sensitive-info (from `../node_modules/react-native-sensitive-info`)
-  - react-native-tcp-socket (from `../node_modules/react-native-tcp-socket`)
-  - react-native-udp (from `../node_modules/react-native-udp`)
   - react-native-video (from `../node_modules/react-native-video`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -547,7 +537,6 @@ DEPENDENCIES:
   - "RNFlashList (from `../node_modules/@shopify/flash-list`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNLocalize (from `../node_modules/react-native-localize`)
-  - RNOS (from `../node_modules/react-native-os`)
   - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
@@ -636,10 +625,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-sensitive-info:
     :path: "../node_modules/react-native-sensitive-info"
-  react-native-tcp-socket:
-    :path: "../node_modules/react-native-tcp-socket"
-  react-native-udp:
-    :path: "../node_modules/react-native-udp"
   react-native-video:
     :path: "../node_modules/react-native-video"
   react-native-webview:
@@ -688,8 +673,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
-  RNOS:
-    :path: "../node_modules/react-native-os"
   RNReactNativeHapticFeedback:
     :path: "../node_modules/react-native-haptic-feedback"
   RNReanimated:
@@ -757,8 +740,6 @@ SPEC CHECKSUMS:
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-safe-area-context: ebf8c413eb8b5f7c392a036a315eb7b46b96845f
   react-native-sensitive-info: d44e909d065f9c0e15734245e5dd6a24b82e3dcd
-  react-native-tcp-socket: c1b7297619616b4c9caae6889bcb0aba78086989
-  react-native-udp: 8864b1211857e9d8224ae5cbaf8580970fb99de1
   react-native-video: a4c2635d0802f983594b7057e1bce8f442f0ad28
   react-native-webview: 6e600df419b3fb92ee209d0bb7a71c1934e41938
   React-perflogger: 73732888d37d4f5065198727b167846743232882
@@ -783,7 +764,6 @@ SPEC CHECKSUMS:
   RNFlashList: 5318fc0772902ffa55170b35caa95ad5a69da3ef
   RNGestureHandler: 61628a2c859172551aa2100d3e73d1e57878392f
   RNLocalize: 95a43f85e41a966be7bc9cff2437128911c52da0
-  RNOS: 6f2f9a70895bbbfbdad7196abd952e7b01d45027
   RNReactNativeHapticFeedback: 4085973f5a38b40d3c6793a3ee5724773eae045e
   RNReanimated: 58b57be69a237fb02ec8099d25171057638cf41a
   RNScreens: 40a2cb40a02a609938137a1e0acfbf8fc9eebf19
