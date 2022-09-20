@@ -10,8 +10,10 @@ import {
   initializeProtectedIds,
 } from '@/utils/walletConnect';
 
+import KeyRing from '../keyring';
+
 const handlerAllowAgent = getState => async (opts, url, response) => {
-  const keyring = getState()?.keyring?.instance;
+  const keyring = KeyRing.getInstance();
   if (!response.noNewEvents) {
     const apps = await getApps(keyring?.currentWalletId.toString());
     const status =
@@ -58,7 +60,7 @@ const ConnectionModule = (dispatch, getState) => {
     methodName: 'getConnectionData',
     handler: async (request, url) => {
       initializeProtectedIds();
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
       const walletId = keyring?.currentWalletId;
 
       const app = await getApp(walletId.toString(), url);
@@ -87,7 +89,7 @@ const ConnectionModule = (dispatch, getState) => {
       if (app === null) {
         return { result: null };
       }
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
       const walletId = keyring?.currentWalletId;
       const publicKey = keyring?.getPublicKey(walletId);
 
@@ -112,7 +114,7 @@ const ConnectionModule = (dispatch, getState) => {
       );
     },
     executor: async (opts, url) => {
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
 
       const removed = await removeApp(
         keyring?.currentWalletId?.toString(),
@@ -130,7 +132,7 @@ const ConnectionModule = (dispatch, getState) => {
     handler: async (request, metadata, whitelist, timeout, host) => {
       try {
         await initializeProtectedIds();
-        const keyring = getState().keyring?.instance;
+        const keyring = KeyRing.getInstance();
         const isValidWhitelist = Array.isArray(whitelist) && whitelist.length;
         if (!whitelist.every(canisterId => validatePrincipalId(canisterId))) {
           dispatch(
@@ -219,7 +221,7 @@ const ConnectionModule = (dispatch, getState) => {
   const allWhiteListed = {
     methodName: 'allWhiteListed',
     handler: async (request, metadata, whitelist) => {
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
 
       const app = await getApp(
         keyring?.currentWalletId.toString(),
@@ -254,7 +256,7 @@ const ConnectionModule = (dispatch, getState) => {
   const verifyWhitelist = {
     methodName: 'verifyWhitelist',
     handler: async (request, metadata, whitelist) => {
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
 
       if (!whitelist.every(canisterId => validatePrincipalId(canisterId))) {
         dispatch(
