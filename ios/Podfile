@@ -10,7 +10,7 @@ target 'Plug' do
   # Flags change depending on the env values.
   flags = get_default_flags()
   
-  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.20.0'
+  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.25.1'
 
   use_react_native!(
     :path => config[:reactNativePath],
