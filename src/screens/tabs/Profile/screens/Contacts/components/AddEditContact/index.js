@@ -15,8 +15,11 @@ import ErrorIcon from '@/components/icons/svg/ErrorIcon.svg';
 import { FontStyles } from '@/constants/theme';
 import useICNS from '@/hooks/useICNS';
 import { addContact, editContact } from '@/redux/slices/user';
-import { validateICNSName } from '@/utils/ids';
-import { validateAccountId, validatePrincipalId } from '@/utils/ids';
+import {
+  validateAccountId,
+  validateICNSName,
+  validatePrincipalId,
+} from '@/utils/ids';
 
 import EditEmoji from '../../../EditEmoji';
 import styles from './styles';
