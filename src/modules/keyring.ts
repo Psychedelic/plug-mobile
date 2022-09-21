@@ -1,10 +1,11 @@
 import PlugController from '@psychedelic/plug-controller';
+import PlugKeyRing from '@psychedelic/plug-controller/dist/PlugKeyRing';
 import RNCryptoJS from 'react-native-crypto-js';
 import { fetch } from 'react-native-fetch-api';
 
 import { keyringStorage } from '@/redux/store';
 
-class KeyRing {
+class KeyRing extends PlugKeyRing {
   private static instance: KeyRing;
 
   /**
@@ -12,6 +13,7 @@ class KeyRing {
    * construction calls with the `new` operator.
    */
   private constructor() {
+    super();
     return new PlugController.PlugKeyRing(keyringStorage, RNCryptoJS, fetch);
   }
 
