@@ -26,7 +26,7 @@ const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
   const onPress = () => {
     account
       ? onEdit({
-          walletNumber: account.walletNumber,
+          walletId: account.walletId,
           name: accountName,
           icon: emoji,
         })

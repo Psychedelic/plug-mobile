@@ -115,6 +115,9 @@ export const getBalance = createAsyncThunk(
       const response = await instance?.getState();
       const { wallets, currentWalletId } = response || {};
       let assets = Object.values(wallets?.[currentWalletId]?.assets);
+      const selectedSubaccount = {
+        subaccount: subaccount || currentWalletId,
+      };
 
       const shouldUpdate =
         Object.values(assets)?.every(asset => !Number(asset.amount)) ||
@@ -122,9 +125,9 @@ export const getBalance = createAsyncThunk(
         refresh;
 
       if (shouldUpdate) {
-        assets = await instance?.getBalances(subaccount);
+        assets = await instance?.getBalances(selectedSubaccount);
       } else {
-        instance?.getBalances(subaccount);
+        instance?.getBalances(selectedSubaccount);
       }
       const icpPrice = await dispatch(getICPPrice()).unwrap();
       return formatAssets(assets, icpPrice);
@@ -276,19 +279,19 @@ export const removeContact = createAsyncThunk(
 export const editContact = createAsyncThunk(
   'user/editContact',
   async (
-    { contact, newContact, walletNumber = 0 },
+    { contact, newContact, walletId },
     { getState, dispatch, rejectWithValue }
   ) => {
     try {
       const state = getState();
       const removeContactRes = await state.keyring.instance?.deleteContact({
         addressName: contact.name,
-        subaccount: walletNumber,
+        subaccount: walletId,
       });
 
       const addContactRes = await state.keyring.instance?.addContact({
         contact: formatContactForController(newContact),
-        subaccount: walletNumber,
+        subaccount: walletId,
       });
 
       if (removeContactRes && addContactRes) {
