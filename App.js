@@ -15,13 +15,12 @@ import {
   getVersion,
 } from 'react-native-device-info';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import Reactotron from 'reactotron-react-native';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import ErrorBoundary from '@/commonComponents/ErrorBoundary';
 import { isIos } from '@/constants/platform';
-import KeyRing from '@/modules/keyring';
 import Routes from '@/navigation';
 import { initKeyring } from '@/redux/slices/keyring';
 import { persistor, store } from '@/redux/store';
@@ -48,7 +47,7 @@ Sentry.init({
 });
 
 const PersistedApp = () => {
-  const keyring = KeyRing.getInstance();
+  const isInitialized = useSelector(state => state.keyring.isInitialized);
   const appState = useRef(AppState.currentState);
   const dispatch = useDispatch();
 
@@ -89,7 +88,7 @@ const PersistedApp = () => {
       <ErrorBoundary>
         <SafeAreaProvider>
           <StatusBar barStyle="light-content" backgroundColor="black" />
-          {!!keyring && (
+          {!!isInitialized && (
             <Routes
               routingInstrumentation={routingInstrumentation}
               ref={TopLevelNavigationRef}
