@@ -15,7 +15,11 @@ import ErrorIcon from '@/components/icons/svg/ErrorIcon.svg';
 import { FontStyles } from '@/constants/theme';
 import useICNS from '@/hooks/useICNS';
 import { addContact, editContact } from '@/redux/slices/user';
-import { validateAccountId, validatePrincipalId } from '@/utils/ids';
+import {
+  validateAccountId,
+  validateICNSName,
+  validatePrincipalId,
+} from '@/utils/ids';
 
 import EditEmoji from '../../../EditEmoji';
 import styles from './styles';
@@ -25,20 +29,18 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
   const { contacts } = useSelector(state => state.user);
   const editEmojiRef = useRef(null);
   const dispatch = useDispatch();
-
   const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [emoji, setEmoji] = useState('');
   const [error, setError] = useState(false);
-
   const isEditContact = !!contact;
   const title = isEditContact
     ? t('contacts.editContact')
     : t('contacts.addContact');
 
-  const { loading, isValid: isValidICNS } = useICNS(id, '');
-  const validId =
-    validatePrincipalId(id) || validateAccountId(id) || isValidICNS;
+  const { loading, isValid: isValidICNS, resolvedAddress } = useICNS(id, '');
+  const isValidAddress = validatePrincipalId(id) || validateAccountId(id);
+  const validId = isValidAddress || isValidICNS;
 
   const isButtonDisabled = error || !name || !id || !validId;
   const savedContact = contacts.find(c => c.id === id);
@@ -46,8 +48,9 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
   const nameError = savedContactName && contact?.name !== name;
   const idError = savedContact && contact?.id !== id;
   const icnsError = useMemo(
-    () => !loading && !isValidICNS,
-    [loading, isValidICNS]
+    () =>
+      validateICNSName(id) && (isValidAddress || resolvedAddress === undefined),
+    [resolvedAddress, isValidAddress]
   );
 
   useEffect(() => {
@@ -57,7 +60,6 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
       setError(false);
     }
   }, [idError, nameError, icnsError]);
-
   const handleSubmit = () => {
     const randomEmoji = charFromEmojiObject(
       emojis[Math.floor(Math.random() * emojis.length)]
@@ -76,7 +78,6 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
     modalRef.current?.close();
     clearState();
   };
-
   const clearState = () => {
     setName('');
     setId('');
