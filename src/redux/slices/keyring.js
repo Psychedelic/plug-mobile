@@ -257,11 +257,11 @@ export const getICNSData = createAsyncThunk(
 
       // Set the updated currentWallet and wallets.
       const response = await keyring.instance?.getState();
-      const { wallets, currentWalletId } = response || {};
+      const { wallets, currentWalletId } = response;
 
       const wallet = wallets[currentWalletId];
       dispatch(setWallets(wallets));
-      dispatch(setCurrentWallet(wallet || {}));
+      dispatch(setCurrentWallet(wallet));
 
       return icnsData;
     } catch (e) {
