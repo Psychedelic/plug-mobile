@@ -95,7 +95,7 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
-// apply from: "../../node_modules/@sentry/react-native/sentry.gradle"
+apply from: "../../node_modules/@sentry/react-native/sentry.gradle"
 apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
 
 /**
@@ -303,7 +303,7 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
     //react-native-bootsplash
-    implementation "androidx.core:core-splashscreen:1.0.0-beta01"
+    implementation "androidx.core:core-splashscreen:1.0.0"
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

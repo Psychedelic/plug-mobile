@@ -23,7 +23,8 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(null);
+    RNBootSplash.init(this); // <- initialize the splash screen
+    super.onCreate(savedInstanceState);
   }
 
   /**
@@ -39,13 +40,6 @@ public class MainActivity extends ReactActivity {
   public static class MainActivityDelegate extends ReactActivityDelegate {
     public MainActivityDelegate(ReactActivity activity, String mainComponentName) {
       super(activity, mainComponentName);
-    }
-
-    // Needed for react-native-bootsplash
-    @Override
-    protected void loadApp (String appKey){
-      RNBootSplash.init(getPlainActivity());
-      super.loadApp(appKey);
     }
 
     @Override
