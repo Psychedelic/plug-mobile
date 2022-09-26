@@ -22,6 +22,7 @@ interface Props {
   HeaderComponent?: React.ReactNode;
   FooterComponent?: React.ReactNode;
   FloatingComponent?: React.ReactNode;
+  disableScrollIfPossible?: boolean;
 }
 
 function Modal({
@@ -36,6 +37,7 @@ function Modal({
   HeaderComponent,
   FooterComponent,
   FloatingComponent,
+  disableScrollIfPossible,
   ...props
 }: Props) {
   const { bottom } = useSafeAreaInsets();
@@ -71,6 +73,7 @@ function Modal({
         onOverlayPress={onClose}
         onClose={onClose}
         onClosed={onClosed}
+        disableScrollIfPossible={disableScrollIfPossible}
         adjustToContentHeight={adjustToContentHeight}
         HeaderComponent={HeaderComponent}
         FooterComponent={FooterComponent}

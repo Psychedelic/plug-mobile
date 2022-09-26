@@ -5,3 +5,4 @@ declare module '*.svg' {
   export default content;
 }
 declare module 'react-native-fetch-api';
+declare module 'react-native-crypto-js';

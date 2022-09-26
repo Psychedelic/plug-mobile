@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 import { JELLY_CANISTER_ID } from '@/constants/canister';
 import { ENABLE_NFTS } from '@/constants/nfts';
+import KeyRing from '@/modules/keyring';
 import { getICPPrice } from '@/redux/slices/icp';
 import { formatAssets, parseToBigIntString } from '@/utils/currencies';
 import { recursiveParseBigint } from '@/utils/objects';
@@ -34,15 +35,12 @@ const DEFAULT_STATE = {
   biometricsAvailable: false,
 };
 
-export const sign = createAsyncThunk(
-  'user/sign',
-  async (params, { getState }) => {
-    const { msg } = params;
-    const { keyring } = getState();
-    const result = await keyring.instance.sign(msg);
-    return { response: result };
-  }
-);
+export const sign = createAsyncThunk('user/sign', async params => {
+  const { msg } = params;
+  const instance = KeyRing.getInstance();
+  const result = await instance.sign(msg);
+  return { response: result };
+});
 
 export const sendToken = createAsyncThunk(
   'user/sendToken',
@@ -50,15 +48,16 @@ export const sendToken = createAsyncThunk(
     try {
       const { to, amount, canisterId, opts, icpPrice } = params;
       const { keyring } = getState();
+      const instance = KeyRing.getInstance();
       const { assets } = keyring.currentWallet;
       const standard = assets[canisterId].token.standard;
-      const { token } = await keyring?.instance?.getTokenInfo({
+      const { token } = await instance?.getTokenInfo({
         canisterId,
         standard,
       });
       const { decimals } = token;
       const parsedAmount = parseToBigIntString(amount, parseInt(decimals, 10));
-      const { height, transactionId } = await keyring.instance?.send({
+      const { height, transactionId } = await instance?.send({
         to,
         amount: parsedAmount,
         canisterId,
@@ -91,8 +90,8 @@ export const burnXtc = createAsyncThunk(
   'user/burnXtc',
   async (params, { getState }) => {
     try {
-      const { keyring } = getState();
-      const response = await keyring.instance?.burnXTC(params);
+      const instance = KeyRing.getInstance();
+      const response = await instance?.burnXTC(params);
       return {
         response: recursiveParseBigint(response),
         status: TRANSACTION_STATUS.success,
@@ -108,10 +107,10 @@ export const burnXtc = createAsyncThunk(
 
 export const getBalance = createAsyncThunk(
   'user/getBalance',
-  async (params, { getState, dispatch, rejectWithValue }) => {
+  async (params, { dispatch, rejectWithValue }) => {
     try {
       const { refresh = true, subaccount } = params || {};
-      const { instance } = getState().keyring;
+      const instance = KeyRing.getInstance();
       const response = await instance?.getState();
       const { wallets, currentWalletId } = response || {};
       let assets = Object.values(wallets?.[currentWalletId]?.assets);
@@ -140,10 +139,10 @@ export const getBalance = createAsyncThunk(
 
 export const getNFTs = createAsyncThunk(
   'user/getNFTs',
-  async (params, { getState, rejectWithValue }) => {
+  async (params, { rejectWithValue }) => {
     if (ENABLE_NFTS) {
       try {
-        const { instance } = getState().keyring;
+        const instance = KeyRing.getInstance();
         const response = await instance?.getState();
         const { currentWalletId } = response || {};
         let collections = [];
@@ -160,14 +159,13 @@ export const getNFTs = createAsyncThunk(
 
 export const getTransactions = createAsyncThunk(
   'user/getTransactions',
-  async (params, { getState, rejectWithValue }) => {
+  async (params, { rejectWithValue }) => {
     try {
-      const state = getState();
       const { icpPrice } = params;
-      const currentWalletId = state.keyring?.instance?.currentWalletId;
-      const currentWallet =
-        state.keyring?.instance?.state?.wallets[currentWalletId];
-      const response = await state.keyring.instance?.getTransactions();
+      const instance = KeyRing.getInstance();
+      const currentWalletId = instance?.currentWalletId;
+      const currentWallet = instance?.state?.wallets[currentWalletId];
+      const response = await instance?.getTransactions();
       let parsedTrx =
         response?.transactions?.map(
           formatTransaction(icpPrice, currentWallet)
@@ -194,12 +192,12 @@ export const getTransactions = createAsyncThunk(
 
 export const transferNFT = createAsyncThunk(
   'user/transferNFT',
-  async (params, { getState, dispatch }) => {
+  async (params, { dispatch }) => {
     try {
       const { to, nft, icpPrice } = params;
 
-      const state = getState();
-      const response = await state.keyring.instance?.transferNFT({
+      const instance = KeyRing.getInstance();
+      const response = await instance?.transferNFT({
         to,
         token: nft,
       });
@@ -223,10 +221,10 @@ export const transferNFT = createAsyncThunk(
 
 export const getContacts = createAsyncThunk(
   'user/getContacts',
-  async (_, { getState, rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const state = getState();
-      const res = await state.keyring.instance?.getContacts();
+      const instance = KeyRing.getInstance();
+      const res = await instance?.getContacts();
       return res?.map(formatContact);
     } catch (e) {
       console.log('Error getting contacts:', e);
@@ -240,7 +238,8 @@ export const addContact = createAsyncThunk(
   async ({ contact, onFinish }, { getState, dispatch, rejectWithValue }) => {
     try {
       const state = getState();
-      const res = await state.keyring.instance?.addContact({
+      const instance = KeyRing.getInstance();
+      const res = await instance?.addContact({
         contact: formatContactForController(contact),
       });
       if (res) {
@@ -260,7 +259,8 @@ export const removeContact = createAsyncThunk(
   async ({ contactName }, { getState, dispatch, rejectWithValue }) => {
     try {
       const state = getState();
-      const res = await state.keyring.instance?.deleteContact({
+      const instance = KeyRing.getInstance();
+      const res = await instance?.deleteContact({
         addressName: contactName,
       });
       if (res) {
@@ -284,12 +284,13 @@ export const editContact = createAsyncThunk(
   ) => {
     try {
       const state = getState();
-      const removeContactRes = await state.keyring.instance?.deleteContact({
+      const instance = KeyRing.getInstance();
+      const removeContactRes = await instance?.deleteContact({
         addressName: contact.name,
         subaccount: walletId,
       });
 
-      const addContactRes = await state.keyring.instance?.addContact({
+      const addContactRes = await instance?.addContact({
         contact: formatContactForController(newContact),
         subaccount: walletId,
       });
@@ -318,11 +319,12 @@ export const addCustomToken = createAsyncThunk(
    * @param {{token: DABToken, onSuccess: () => void}} param
    */
   async ({ token, onSuccess }, { getState, dispatch }) => {
-    const { keyring, icp } = getState();
-    const currentWalletId = keyring?.instance?.currentWalletId;
+    const { icp } = getState();
+    const instance = KeyRing.getInstance();
+    const currentWalletId = instance?.currentWalletId;
     const { canisterId, standard, logo } = token;
     try {
-      const tokenList = await keyring?.instance?.registerToken({
+      const tokenList = await instance?.registerToken({
         canisterId,
         standard,
         subaccount: currentWalletId,
@@ -330,7 +332,7 @@ export const addCustomToken = createAsyncThunk(
       });
       dispatch(setBalance(formatAssets(tokenList, icp.icpPrice)));
 
-      const { wallets } = await keyring?.instance?.getState();
+      const { wallets } = await instance?.getState();
       dispatch(setWallets(wallets));
       dispatch(setCurrentWallet(wallets[currentWalletId]));
       onSuccess?.();
@@ -347,9 +349,10 @@ export const removeCustomToken = createAsyncThunk(
    * @param { canisterId: string } param
    */
   async (canisterId, { getState, rejectWithValue }) => {
-    const { keyring, icp } = getState();
+    const { icp } = getState();
+    const instance = KeyRing.getInstance();
     try {
-      const tokenList = await keyring?.instance?.removeToken({ canisterId });
+      const tokenList = await instance?.removeToken({ canisterId });
       return formatAssets(tokenList, icp.icpPrice);
     } catch (e) {
       return rejectWithValue({ error: e.message });
@@ -363,10 +366,10 @@ export const getTokenInfo = createAsyncThunk(
    * @param {{token: DABToken, onSuccess: (token: DABToken) => void, onError: (err: string) => void}} param
    */
   async ({ token, onSuccess, onError }, { getState }) => {
-    const { keyring } = getState();
-    const currentWalletId = keyring?.instance?.currentWalletId;
+    const instance = KeyRing.getInstance();
+    const currentWalletId = instance?.currentWalletId;
     try {
-      const tokenInfo = await keyring?.instance?.getTokenInfo({
+      const tokenInfo = await instance?.getTokenInfo({
         subaccount: currentWalletId,
         canisterId: token.canisterId,
         standard: token.standard,

@@ -29,12 +29,10 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
   const { contacts } = useSelector(state => state.user);
   const editEmojiRef = useRef(null);
   const dispatch = useDispatch();
-
   const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [emoji, setEmoji] = useState('');
   const [error, setError] = useState(false);
-
   const isEditContact = !!contact;
   const title = isEditContact
     ? t('contacts.editContact')
@@ -62,7 +60,6 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
       setError(false);
     }
   }, [idError, nameError, icnsError]);
-
   const handleSubmit = () => {
     const randomEmoji = charFromEmojiObject(
       emojis[Math.floor(Math.random() * emojis.length)]
@@ -81,7 +78,6 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
     modalRef.current?.close();
     clearState();
   };
-
   const clearState = () => {
     setName('');
     setId('');

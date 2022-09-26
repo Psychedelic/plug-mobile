@@ -1,10 +1,8 @@
-import PlugController from '@psychedelic/plug-controller';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import RNCryptoJS from 'react-native-crypto-js';
-import { fetch } from 'react-native-fetch-api';
+
+import KeyRing from '@/modules/keyring';
 
 import { generateMnemonic } from '../../utils/crypto';
-import { keyringStorage } from '../store';
 import {
   DEFAULT_ASSETS,
   formatWallets,
@@ -22,7 +20,6 @@ import {
 } from './user';
 
 const DEFAULT_STATE = {
-  instance: null,
   isInitialized: false,
   isUnlocked: false,
   currentWallet: null,
@@ -31,11 +28,7 @@ const DEFAULT_STATE = {
 };
 
 export const initKeyring = createAsyncThunk('keyring/init', async params => {
-  let keyring = new PlugController.PlugKeyRing(
-    keyringStorage,
-    RNCryptoJS,
-    fetch
-  );
+  let keyring = KeyRing.getInstance();
   await keyring.init();
   if (keyring?.isUnlocked) {
     const state = await keyring.getState();
@@ -44,7 +37,10 @@ export const initKeyring = createAsyncThunk('keyring/init', async params => {
     }
   }
   params?.callback?.();
-  return keyring;
+  return {
+    isUnlocked: keyring.isUnlocked,
+    isInitialized: keyring.isInitialized,
+  };
 });
 
 export const createWallet = createAsyncThunk(
@@ -55,7 +51,7 @@ export const createWallet = createAsyncThunk(
     try {
       // Create Wallet and unlock
       const state = getState();
-      const instance = getState().keyring?.instance;
+      const instance = KeyRing.getInstance();
       const mnemonic = await generateMnemonic();
       const response = await instance?.importMnemonic({ password, mnemonic });
       const { wallet } = response || {};
@@ -81,7 +77,7 @@ export const importWallet = createAsyncThunk(
     try {
       // Import Wallet and unlock
       const state = getState();
-      const instance = state.keyring?.instance;
+      const instance = KeyRing.getInstance();
       const response = await instance?.importMnemonic({
         icpPrice,
         password,
@@ -104,12 +100,11 @@ export const importWallet = createAsyncThunk(
 
 export const validatePassword = createAsyncThunk(
   'keyring/validatePassword',
-  async (params, { getState }) => {
-    const state = getState();
+  async params => {
     let isValid = false;
     const { password, onError, onSuccess } = params;
     try {
-      const instance = state.keyring?.instance;
+      const instance = KeyRing.getInstance();
       isValid = await instance?.checkPassword(password);
       if (isValid) {
         onSuccess?.();
@@ -129,12 +124,11 @@ export const getMnemonic = createAsyncThunk(
   /**
    * @param {{password: string, onSuccess?: (mnemonic:string) => void, onError?: () => void}} param
    */
-  async (param, { getState }) => {
-    const state = getState();
+  async param => {
     let mnemonic = '';
     const { onError, onSuccess, password } = param;
     try {
-      const instance = state.keyring?.instance;
+      const instance = KeyRing.getInstance();
       mnemonic = await instance?.getMnemonic(password);
       if (mnemonic) {
         onSuccess?.(mnemonic);
@@ -148,19 +142,16 @@ export const getMnemonic = createAsyncThunk(
   }
 );
 
-export const lock = createAsyncThunk(
-  'keyring/lock',
-  async (_, { getState }) => {
-    await getState().keyring?.instance?.lock();
-    return false;
-  }
-);
+export const lock = createAsyncThunk('keyring/lock', async () => {
+  const instance = KeyRing.getInstance();
+  await instance?.lock();
+  return false;
+});
 
 export const login = createAsyncThunk(
   'keyring/login',
-  async (params, { getState, dispatch, rejectWithValue }) => {
-    const state = getState();
-    const instance = state.keyring?.instance;
+  async (params, { dispatch, rejectWithValue }) => {
+    const instance = KeyRing.getInstance();
     const { icpPrice, password } = params;
 
     try {
@@ -187,9 +178,9 @@ export const login = createAsyncThunk(
 
 export const createSubaccount = createAsyncThunk(
   'keyring/createSubaccount',
-  async (params, { getState }) => {
+  async params => {
     try {
-      const { instance } = getState().keyring;
+      const instance = KeyRing.getInstance();
       await instance?.getState();
       const response = await instance?.createPrincipal(params);
       return response;
@@ -204,7 +195,8 @@ export const editSubaccount = createAsyncThunk(
   async (params, { getState }) => {
     try {
       const { walletId, name, icon } = params;
-      const { instance, currentWallet, wallets } = getState().keyring;
+      const instance = KeyRing.getInstance();
+      const { currentWallet, wallets } = getState().keyring;
       await instance?.editPrincipal(walletId, {
         name,
         emoji: icon,
@@ -226,10 +218,9 @@ export const editSubaccount = createAsyncThunk(
 
 export const setCurrentPrincipal = createAsyncThunk(
   'keyring/setCurrentPrincipal',
-  async ({ walletId, icpPrice }, { getState, dispatch }) => {
+  async ({ walletId, icpPrice }, { dispatch }) => {
     try {
-      const state = getState();
-      const { instance } = state.keyring;
+      const instance = KeyRing.getInstance();
       await instance?.setCurrentPrincipal(walletId);
       await instance?.getICNSData();
       dispatch(setCollections([]));
@@ -250,13 +241,13 @@ export const setCurrentPrincipal = createAsyncThunk(
 
 export const getICNSData = createAsyncThunk(
   'keyring/getICNSData',
-  async (_, { getState, rejectWithValue, dispatch }) => {
+  async (_, { rejectWithValue, dispatch }) => {
     try {
-      const { keyring } = getState();
-      const icnsData = await keyring.instance?.getICNSData();
+      const instance = KeyRing.getInstance();
+      const icnsData = await instance?.getICNSData();
 
       // Set the updated currentWallet and wallets.
-      const response = await keyring.instance?.getState();
+      const response = await instance?.getState();
       const { wallets, currentWalletId } = response;
 
       const wallet = wallets[currentWalletId];
@@ -277,8 +268,8 @@ export const setReverseResolvedName = createAsyncThunk(
    */
   async ({ name, onFinish }, { getState, rejectWithValue, dispatch }) => {
     try {
-      const { keyring } = getState();
-      await keyring.instance?.setReverseResolvedName({
+      const instance = KeyRing.getInstance();
+      await instance?.setReverseResolvedName({
         name,
       });
 
@@ -303,16 +294,12 @@ export const keyringSlice = createSlice({
     setWallets: (state, action) => {
       state.wallets = formatWallets(action.payload);
     },
-    clear: state => {
-      return { ...DEFAULT_STATE, instance: state.instance };
+    clear: () => {
+      return { ...DEFAULT_STATE };
     },
     reset: () => {
-      let instance = new PlugController.PlugKeyRing(
-        keyringStorage,
-        RNCryptoJS,
-        fetch
-      );
-      return { ...DEFAULT_STATE, instance };
+      KeyRing.reset();
+      return { ...DEFAULT_STATE };
     },
   },
   extraReducers: builder => {
@@ -327,7 +314,6 @@ export const keyringSlice = createSlice({
         state.icnsDataLoading = false;
       })
       .addCase(initKeyring.fulfilled, (state, action) => {
-        state.instance = action.payload;
         state.isInitialized = action.payload.isInitialized;
         state.isUnlocked = action.payload.isUnlocked;
       })
