@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import { FontStyles } from '@/constants/theme';
+
 export const HEIGHT = 65;
 
 export default StyleSheet.create({
@@ -20,5 +22,9 @@ export default StyleSheet.create({
   },
   canisterName: {
     maxWidth: '50%',
+  },
+  title: {
+    maxWidth: '78%',
+    ...FontStyles.Normal,
   },
 });

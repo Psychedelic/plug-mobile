@@ -16,12 +16,15 @@ const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }) => {
     onNftPress(nft);
   };
 
+  // Filter ICNS since it's not tradable
+  const filteredNFTS = nfts.filter(nft => nft.collection !== 'ICNS');
+
   return (
     <>
       <Text type="subtitle3">{t('common.tokens')}</Text>
       {tokens.map(token => (
         <TokenItem
-          {...token}
+          token={token}
           key={token.symbol}
           onPress={() => onTokenPress(token)}
           color={Colors.Gray.Tertiary}
@@ -34,7 +37,7 @@ const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }) => {
             {t('common.collectibles')}
           </Text>
           <View style={styles.nftsContainer}>
-            {nfts.map(item => (
+            {filteredNFTS.map(item => (
               <NftItem
                 key={`${item.canisterId}_${item.index}`}
                 item={item}

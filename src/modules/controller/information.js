@@ -1,14 +1,16 @@
 import { CONNECTION_STATUS, ERRORS } from '@/constants/walletconnect';
-import { getBalance, getICNSData } from '@/redux/slices/user';
+import { getICNSData } from '@/redux/slices/keyring';
+import { getBalance } from '@/redux/slices/user';
 import { walletConnectExecuteAndResponse } from '@/redux/slices/walletconnect';
 
+import KeyRing from '../keyring';
 import { getApp } from '../storageManager';
 
 const InformationModule = (dispatch, getState) => {
   const requestBalance = {
     methodName: 'requestBalance',
     handler: async (request, metadata, subaccount) => {
-      const keyring = getState().keyring.instance;
+      const keyring = KeyRing.getInstance();
       const app = await getApp(
         keyring.currentWalletId.toString(),
         metadata.url
@@ -49,7 +51,7 @@ const InformationModule = (dispatch, getState) => {
     },
     executor: async opts => {
       try {
-        const keyring = getState().keyring.instance;
+        const keyring = KeyRing.getInstance();
         const publicKey = await keyring.getPublicKey(
           keyring.currentWalletId.toString()
         );
@@ -62,7 +64,7 @@ const InformationModule = (dispatch, getState) => {
   const getPrincipal = {
     methodName: 'getPrincipal',
     handler: async (request, pageUrl) => {
-      const keyring = getState().keyring.instance;
+      const keyring = KeyRing.getInstance();
       const app = await getApp(keyring.currentWalletId.toString(), pageUrl);
       if (app.status === CONNECTION_STATUS.accepted) {
         dispatch(walletConnectExecuteAndResponse({ ...request, args: [] }));
@@ -76,7 +78,7 @@ const InformationModule = (dispatch, getState) => {
       }
     },
     executor: opts => {
-      const keyring = getState().keyring.instance;
+      const keyring = KeyRing.getInstance();
       const currentWalletId = keyring?.currentWalletId;
       const principal = getState().keyring.wallets[currentWalletId].principal;
       return { result: principal };
@@ -85,7 +87,7 @@ const InformationModule = (dispatch, getState) => {
   const getICNSInfo = {
     methodName: 'getICNSInfo',
     handler: async (request, metadata) => {
-      const keyring = getState().keyring.instance;
+      const keyring = KeyRing.getInstance();
       const app = await getApp(
         keyring.currentWalletId.toString(),
         metadata.url
@@ -102,7 +104,7 @@ const InformationModule = (dispatch, getState) => {
       }
     },
     executor: async opts => {
-      const icnsData = await dispatch(getICNSData({ refresh: true }));
+      const icnsData = await dispatch(getICNSData());
       return { result: icnsData };
     },
   };

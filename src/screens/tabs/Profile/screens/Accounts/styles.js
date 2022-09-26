@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import { Colors } from '@/constants/theme';
+
 export default StyleSheet.create({
   content: {
     paddingHorizontal: 20,
@@ -23,5 +25,8 @@ export default StyleSheet.create({
   },
   plusIcon: {
     marginRight: 8,
+  },
+  selectedAccount: {
+    color: Colors.ActionBlue,
   },
 });

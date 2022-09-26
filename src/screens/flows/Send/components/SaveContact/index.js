@@ -61,11 +61,10 @@ function SaveContact({ modalRef, onClose, id }) {
         <TextInput
           autoFocus
           value={name}
-          variant="text"
-          maxLenght={22}
+          maxLength={22}
           placeholder={t('saveContact.namePlaceholder')}
           onChangeText={setName}
-          customStyle={styles.input}
+          style={styles.input}
         />
         <RainbowButton
           text={title}

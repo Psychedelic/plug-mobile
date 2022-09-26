@@ -1,3 +1,4 @@
+export type FungibleStandard = 'DIP20' | 'EXT';
 export type Standard = 'DIP20' | 'XTC' | 'WICP' | 'EXT' | 'ICP';
 
 export interface StandardToken {
@@ -7,7 +8,8 @@ export interface StandardToken {
   standard: Standard;
   decimals: number;
   color?: string;
-  image?: string;
+  logo?: string;
+  fee?: bigint | number;
 }
 
 export interface TokenBalance {

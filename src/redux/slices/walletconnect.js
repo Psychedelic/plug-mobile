@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import WalletConnect from '@walletconnect/client';
 import { parseWalletConnectUri } from '@walletconnect/utils';
 import { InteractionManager, Linking } from 'react-native';
-import Minimizer from 'react-native-minimizer';
 
+// import Minimizer from 'react-native-minimizer';
 import {
   ERRORS,
   PLUG_DESCRIPTION,
@@ -43,7 +43,7 @@ export const walletConnectRemovePendingRedirect = createAsyncThunk(
       Linking.openURL(`${scheme}://`);
     } else {
       setTimeout(() => {
-        Minimizer.goBack();
+        // Minimizer.goBack();
       }, 300);
     }
   }

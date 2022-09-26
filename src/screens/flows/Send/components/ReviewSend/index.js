@@ -21,9 +21,10 @@ import { Row } from '@/layout';
 import Routes from '@/navigation/Routes';
 import { setTransaction } from '@/redux/slices/user';
 import { TRANSACTION_STATUS } from '@/redux/utils';
+import { truncate } from '@/utils/number';
 import shortAddress from '@/utils/shortAddress';
 
-import { getTransactionFee } from '../../utils';
+import { getFeePrice } from '../../utils';
 import SaveContact from '../SaveContact';
 import styles from './styles';
 
@@ -52,14 +53,11 @@ const ReviewSend = ({
   const saveContactRef = useRef(null);
   const [nftType, setNftType] = useState(null);
   const [selectedContact, setSelectedContact] = useState(contact || null);
-  const { icpPrice } = useSelector(state => state.icp);
   const contacts = useSelector(state => state.user.contacts, shallowEqual);
   const isSuccess = transaction?.status === TRANSACTION_STATUS.success;
   const isError = transaction?.status === TRANSACTION_STATUS.error;
-  const { currentFee, currentUSDFee } = getTransactionFee(
-    token?.symbol,
-    icpPrice
-  );
+  const { icpPrice } = useSelector(state => state.icp);
+  const feePrice = getFeePrice(token?.symbol, icpPrice, token?.fee);
 
   const handleSaveContact = () => {
     saveContactRef.current?.open();
@@ -120,10 +118,12 @@ const ReviewSend = ({
         {token && (
           <Row style={styles.row}>
             <Column>
-              <Text style={styles.title}>${value?.display}</Text>
-              <Text type="subtitle3">
-                <Text>{`${amount?.display} ${token.symbol}`}</Text>
+              <Text type="caption" style={styles.title}>
+                {`${amount?.display} ${token.symbol}`}
               </Text>
+              {value ? (
+                <Text style={styles.subtitle}>${value?.display}</Text>
+              ) : null}
             </Column>
             <TokenIcon {...token} color={Colors.Gray.Tertiary} />
           </Row>
@@ -148,7 +148,7 @@ const ReviewSend = ({
             {selectedContact ? (
               <>
                 <Text style={styles.title}>{selectedContact?.name}</Text>
-                <Text type="subtitle3">
+                <Text style={styles.subtitle}>
                   {shortAddress(selectedContact?.id)}
                 </Text>
               </>
@@ -169,10 +169,9 @@ const ReviewSend = ({
           <Row style={styles.row}>
             <Text type="subtitle3">
               {t('reviewSend.totalFee', {
-                value: `${currentFee} ${token?.symbol} ($${Number(
-                  currentUSDFee.toFixed(VISIBLE_DECIMALS)
-                )})`,
+                value: `${token.fee} ${token?.symbol}`,
               })}
+              {feePrice ? ` ($${truncate(feePrice, VISIBLE_DECIMALS)})` : null}
             </Text>
           </Row>
         )}

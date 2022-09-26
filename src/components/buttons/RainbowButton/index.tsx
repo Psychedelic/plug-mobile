@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, TextProps, ViewProps } from 'react-native';
+import { StyleProp, TextStyle, ViewStyle } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import Button from '@/buttons/Button';
@@ -11,8 +11,8 @@ import { styles } from './styles';
 interface Props {
   text: string;
   onPress: () => void;
-  buttonStyle?: StyleProp<ViewProps>;
-  textStyle?: StyleProp<TextProps>;
+  buttonStyle?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
   disabled?: boolean;
   onLongPress?: () => void;
   loading?: boolean;

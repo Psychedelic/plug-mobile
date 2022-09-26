@@ -36,7 +36,7 @@ export const formatAssetBySymbol = (
         value: icpValue,
         icon: TOKEN_IMAGES.WICP,
       },
-    }[symbol] || { amount, value: 0, icon: undefined } // What should we do if we don't know the value?
+    }[symbol] || { amount, value: undefined, icon: undefined } // What should we do if we don't know the value?
   );
 };
 
@@ -91,18 +91,17 @@ export const formatAssets = (
 ): Asset[] =>
   assets.map(currentAsset => {
     const { amount, token } = currentAsset;
-    const { name, canisterId, symbol, decimals } = token;
+    const { symbol, decimals, fee } = token;
 
-    const parsedAmount = parseToFloatAmount(
-      amount,
-      parseInt(decimals.toString(), 10)
-    );
+    const parsedAmount = parseToFloatAmount(amount, decimals);
+
+    const parsedFee = fee ? parseInt(fee.toString(), 10) / 10 ** decimals : 0;
 
     const formattedAsset = {
-      name,
-      symbol,
-      canisterId,
-      decimals,
+      ...token,
+      // Sometimes names come with a strange char that causes problems
+      name: token?.name?.replaceAll('\x00', ''),
+      fee: parsedFee,
       ...formatAssetBySymbol(parsedAmount, symbol, icpPrice),
     };
 

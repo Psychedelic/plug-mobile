@@ -1,16 +1,25 @@
 import { StyleSheet } from 'react-native';
 
-const commonMargin = 25;
+import { Colors } from '@/constants/theme';
+
+const commonMargin = 20;
+export const iconColor = Colors.White.Secondary;
 
 export default StyleSheet.create({
   firstInputContainer: {
     marginBottom: commonMargin,
     marginTop: commonMargin,
   },
-  firstInput: {
-    width: '70%',
+  captionContainer: {
+    flexDirection: 'row',
+    marginTop: 8,
   },
-  secondInputContainer: {
-    marginBottom: commonMargin,
+  captionText: {
+    marginLeft: 4,
+    color: Colors.White.Secondary,
+    flex: 1,
+  },
+  button: {
+    marginTop: commonMargin,
   },
 });

@@ -1,4 +1,16 @@
+import { ICNSData } from '@/interfaces/icns';
 import { Contact } from '@/screens/tabs/Profile/screens/Contacts/utils';
+
+import { Nullable } from './general';
+
+// Override the default state interface
+declare module 'react-redux' {
+  interface DefaultRootState {
+    icp: IcpState;
+    keyring: KeyringState;
+    user: UserState;
+  }
+}
 
 export interface CollectionToken {
   id: string;
@@ -89,13 +101,14 @@ export interface Asset {
   decimals: number;
   name: string;
   canisterId: string;
+  logo?: string;
+  fee: number;
 }
 
 export interface IcpState {
   icpPrice: number;
 }
-
-export interface CurrentWallet {
+export interface Wallet {
   name: string;
   walletNumber: number;
   principal: string;
@@ -104,36 +117,31 @@ export interface CurrentWallet {
   assets: any;
   icon: string;
   nftCollections: any[];
-  icnsData: any;
+  icnsData?: ICNSData;
 }
 
 export interface KeyringState {
-  //TODO: Add types here
-  instance: any;
   isInitialized: boolean;
   isUnlocked: boolean;
-  currentWallet: CurrentWallet;
-  wallets: [];
+  currentWallet: Wallet;
+  wallets: Wallet[];
+  icnsDataLoading: boolean;
 }
 
 export interface UserState {
   assets: Asset[];
-  assetsError: boolean;
+  assetsError: Nullable<string>;
   assetsLoading: boolean;
   contacts: Contact[];
   contactsLoading: boolean;
+  contactsError: Nullable<string>;
   transaction: Transaction;
   transactions: Transaction[];
-  collections: Collection[];
-  transactionsError: boolean;
+  transactionsError: Nullable<string>;
   transactionsLoading: boolean;
-  collectionsError: boolean;
+  collections: Collection[];
+  collectionsError: Nullable<string>;
+  collectionsLoading: boolean;
   usingBiometrics: boolean;
   biometricsAvailable: boolean;
-}
-
-export interface State {
-  icp: IcpState;
-  keyring: KeyringState;
-  user: UserState;
 }
