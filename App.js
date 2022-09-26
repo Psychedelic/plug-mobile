@@ -1,9 +1,10 @@
 import '@/config/logs';
 import '@/config/i18n';
 import '@/config/reactotron';
+import '@/config/extensions';
 
 import * as Sentry from '@sentry/react-native';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AppState, Platform, StatusBar } from 'react-native';
 import RNBootSplash from 'react-native-bootsplash';
 import codePush from 'react-native-code-push';
@@ -14,7 +15,7 @@ import {
   getVersion,
 } from 'react-native-device-info';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import Reactotron from 'reactotron-react-native';
 import { PersistGate } from 'redux-persist/integration/react';
 
@@ -23,6 +24,7 @@ import { isIos } from '@/constants/platform';
 import Routes from '@/navigation';
 import { initKeyring } from '@/redux/slices/keyring';
 import { persistor, store } from '@/redux/store';
+import { TopLevelNavigationRef } from '@/utils/navigation';
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
 const baseDist = getBuildNumber();
@@ -32,7 +34,7 @@ Sentry.init({
   dsn: Config.SENTRY_DSN,
   tracesSampleRate: 1.0,
   dist: baseDist,
-  debug: __DEV__,
+  debug: false,
   release: baseRelease,
   environment: __DEV__ ? 'local' : 'productive',
   normalizeDepth: 10,
@@ -45,8 +47,8 @@ Sentry.init({
 });
 
 const PersistedApp = () => {
-  const { instance } = useSelector(state => state.keyring);
   const appState = useRef(AppState.currentState);
+  const [showRoutes, setShowRoutes] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -76,20 +78,26 @@ const PersistedApp = () => {
   };
 
   useEffect(() => {
-    if (instance) {
-      RNBootSplash.hide({ fade: true });
-    } else {
-      dispatch(initKeyring());
-    }
-  }, [instance]);
+    dispatch(
+      initKeyring({
+        callback: () => {
+          RNBootSplash.hide({ fade: true });
+          setShowRoutes(true);
+        },
+      })
+    );
+  }, []);
 
   return (
     <PersistGate loading={null} persistor={persistor}>
       <ErrorBoundary>
         <SafeAreaProvider>
           <StatusBar barStyle="light-content" backgroundColor="black" />
-          {!!instance && (
-            <Routes routingInstrumentation={routingInstrumentation} />
+          {showRoutes && (
+            <Routes
+              routingInstrumentation={routingInstrumentation}
+              ref={TopLevelNavigationRef}
+            />
           )}
         </SafeAreaProvider>
       </ErrorBoundary>

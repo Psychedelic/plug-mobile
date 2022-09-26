@@ -1,12 +1,13 @@
 import Clipboard from '@react-native-community/clipboard';
 import { t } from 'i18next';
 import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import CopiedToast from '@/commonComponents/CopiedToast';
 import Touchable from '@/commonComponents/Touchable';
 import Icon from '@/icons';
 
+import Text from '../Text';
 import styles from './styles';
 
 const Copy = ({ text, customStyle }) => {

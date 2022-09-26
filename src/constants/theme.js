@@ -1,6 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from '@/constants/platform';
+import { fontMaker } from '@/utils/fonts';
+
+import { MEDIUM, REGULAR, SEMIBOLD } from './fonts';
 
 export const Metrics = {
   ScreenWidth: WINDOW_HEIGHT,
@@ -14,6 +17,7 @@ export const Colors = {
   ActionBlue: '#3574F4',
   Black: {
     Primary: '#15161C',
+    Secondary: '#1E1F27',
     Pure: '#000000',
   },
   White: {
@@ -36,6 +40,11 @@ export const Colors = {
     Teal: '#05DCC8',
   },
   Red: '#FF453A',
+  Transparent: '#ffffff00',
+  Divider: {
+    1: '#3A3B40',
+    2: '#737377',
+  },
 };
 
 export const Rainbow = {
@@ -53,6 +62,18 @@ export const Rainbow = {
     'rgb(16, 217, 237)',
     'rgb(82, 255, 83)',
   ],
+};
+
+export const TransparentGradient = {
+  start: {
+    x: 0,
+    y: 0,
+  },
+  end: {
+    x: 1,
+    y: 1,
+  },
+  colors: ['transparent', 'transparent'],
 };
 
 export const DisabledRainbow = {
@@ -83,70 +104,61 @@ export const Shadow = StyleSheet.create({
   elevation: 5,
 });
 
+// TODO: Remove styles that doesnt match with the style guide in figma, and remove colors
 export const FontStyles = StyleSheet.create({
-  Title: {
-    fontSize: 22,
-    fontWeight: '600',
+  Base: fontMaker({ size: 14, weight: REGULAR }),
+  Title: fontMaker({ size: 22, weight: SEMIBOLD, color: Colors.White.Primary }),
+  Title2: fontMaker({
+    size: 24,
+    weight: SEMIBOLD,
     color: Colors.White.Primary,
-  },
-  Title2: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.White.Primary,
-  },
-  Subtitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: Colors.White.Primary,
-  },
-  Subtitle2: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: Colors.White.Primary,
-  },
-  Subtitle3: {
-    fontSize: 16,
-    fontWeight: '600',
+  }),
+  Normal: fontMaker({ size: 16, weight: MEDIUM, color: Colors.White.Primary }),
+  NormalGray: fontMaker({
+    size: 16,
+    weight: REGULAR,
     color: Colors.White.Secondary,
-  },
-  Normal: {
-    fontSize: 16,
-    fontWeight: '500',
+  }),
+  Small: fontMaker({
+    size: 14,
+    weight: MEDIUM,
     color: Colors.White.Primary,
-  },
-  NormalGray: {
-    fontSize: 16,
-    fontWeight: '400',
+  }),
+  SmallGray: fontMaker({
+    size: 14,
+    weight: REGULAR,
     color: Colors.White.Secondary,
-  },
-  Small: {
-    fontSize: 14,
-    fontWeight: '500',
+  }),
+  Smaller: fontMaker({
+    size: 12,
+    weight: REGULAR,
     color: Colors.White.Primary,
-  },
-  SmallGray: {
-    fontSize: 14,
-    fontWeight: '400',
+  }),
+  SmallerGray: fontMaker({
+    size: 12,
+    weight: MEDIUM,
     color: Colors.White.Secondary,
-  },
-  Smaller: {
-    fontSize: 12,
-    fontWeight: '400',
+  }),
+  Headline1: fontMaker({ size: 28, weight: SEMIBOLD }),
+  Headline2: fontMaker({ size: 24, weight: REGULAR }),
+  Subtitle1: fontMaker({
+    size: 20,
+    weight: SEMIBOLD,
     color: Colors.White.Primary,
-  },
-  SmallerGray: {
-    fontSize: 12,
-    fontWeight: '500',
+  }),
+  Subtitle2: fontMaker({
+    size: 18,
+    weight: SEMIBOLD,
+    color: Colors.White.Primary,
+  }),
+  Subtitle3: fontMaker({
+    size: 16,
+    weight: SEMIBOLD,
     color: Colors.White.Secondary,
-  },
-  Button: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: Colors.White.Pure,
-  },
-  LinkButton: {
-    fontSize: 16,
-    fontWeight: '400',
-    color: Colors.ActionBlue,
-  },
+  }),
+  Body1: fontMaker({ size: 17, weight: REGULAR }),
+  Body2: fontMaker({ size: 17, weight: MEDIUM }),
+  Button: fontMaker({ size: 20, weight: SEMIBOLD, color: Colors.White.Pure }),
+  Caption: fontMaker({ size: 14, weight: MEDIUM }),
+  Overline: fontMaker({ size: 10, weight: REGULAR }),
 });

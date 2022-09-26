@@ -24,7 +24,6 @@ export default StyleSheet.create({
     flex: 1,
   },
   name: {
-    ...FontStyles.Subtitle,
     marginLeft: 12,
     maxWidth: '75%',
   },
@@ -36,5 +35,9 @@ export default StyleSheet.create({
   },
   buttonTextStyle: {
     fontSize: 16,
+  },
+  listContainer: {
+    flex: 1,
+    minHeight: 200,
   },
 });

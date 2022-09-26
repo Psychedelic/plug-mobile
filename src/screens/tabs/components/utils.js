@@ -1,24 +1,40 @@
 import { t } from 'i18next';
 import React from 'react';
-import { Text } from 'react-native';
 
+import Text from '@/components/common/Text';
 import { ACTIVITY_STATUS } from '@/constants/business';
+import { JELLY_CANISTER_ID } from '@/constants/canister';
+import { validateICNSName } from '@/utils/ids';
 import shortAddress from '@/utils/shortAddress';
+import { capitalize } from '@/utils/strings.js';
 
 export const parseImageName = name => name.replace('.png', '').toLowerCase();
-const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
 
 export const getTitle = (type, symbol, swapData, plug) => {
   switch (type) {
     case 'SWAP':
       return swapData?.currency.name
-        ? t('common.swapFor', {
+        ? t('transactionTypes.swapFor', {
             from: symbol,
             to: swapData?.currency.name,
           })
-        : t('common.swap');
+        : t('transactionTypes.swap');
     case 'PLUG':
       return t('common.pluggedInto', { name: plug.name });
+    case 'DIRECTBUY':
+      return t('transactionTypes.buyNTF');
+    case 'MAKELISTING':
+      return t('transactionTypes.listNFT');
+    case 'CANCELLISTING':
+      return t('transactionTypes.cancelListingNFT');
+    case 'MAKEOFFER':
+      return t('transactionTypes.makeOfferNFT');
+    case 'ACCEPTOFFER':
+      return t('transactionTypes.acceptOfferNFT');
+    case 'CANCELOFFER':
+      return t('transactionTypes.cancelOfferNFT');
+    case 'DENYOFFER':
+      return t('transactionTypes.denyOfferNFT');
     default:
       if (type.includes('Liquidity')) {
         return type;
@@ -47,18 +63,25 @@ export const getStatus = (status, styles) => {
   }
 };
 
-export const getSubtitle = (type, to, from) =>
-  ({
-    SEND: t('activity.subtitleTo', { value: shortAddress(to) }),
-    BURN: t('activity.subtitleTo', { value: shortAddress(to) }),
-    RECEIVE: t('activity.subtitleFrom', { value: shortAddress(from) }),
-  }[type]);
+export const getSubtitle = (type, to, from) => {
+  const toText = t('activity.subtitleTo', {
+    value: validateICNSName(to) ? to : shortAddress(to),
+  });
+  const fromText = t('activity.subtitleFrom', {
+    value: validateICNSName(from) ? from : shortAddress(from),
+  });
 
-export const getAddress = (type, to, from, canisterId) =>
-  ({
-    SEND: to,
-    BURN: to,
-    RECEIVE: from,
-  }[type] ||
-  canisterId ||
-  '');
+  return {
+    SEND: toText,
+    BURN: toText,
+    RECEIVE: fromText,
+  }[type];
+};
+
+export const getCanisterName = (canisterInfo, canisterId) => {
+  // TODO: change this when jelly supports multi-collections
+  if (canisterId === JELLY_CANISTER_ID) {
+    return 'Crowns';
+  }
+  return canisterInfo?.name || canisterId;
+};

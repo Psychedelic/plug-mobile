@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleProp, Text, View, ViewStyle } from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 
 import Touchable from '@/commonComponents/Touchable';
+import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
 import TokenFormat from '@/formatters/TokenFormat';
 import UsdFormat from '@/formatters/UsdFormat';
@@ -10,38 +11,38 @@ import animationScales from '@/utils/animationScales';
 
 import styles from './styles';
 
+interface Token {
+  name?: string;
+  amount?: number;
+  value?: number;
+  icon?: string;
+  symbol?: string;
+  logo?: string;
+  thumbnail?: string;
+}
+
 interface Props {
-  icon: string;
-  name: string;
-  amount: string | number;
-  value: string | number;
-  symbol: string;
   color?: string;
   style?: StyleProp<ViewStyle>;
   onPress?: () => void;
+  token: Token;
 }
 
-function TokenItem({
-  icon,
-  name,
-  amount,
-  value,
-  symbol,
-  color,
-  style,
-  onPress,
-}: Props) {
+function TokenItem({ color, style, onPress, token }: Props) {
+  const { amount, symbol, icon, logo, name, value, thumbnail } = token;
   return (
-    <Touchable scale={animationScales.small} onPress={() => onPress?.()}>
+    <Touchable scale={animationScales.small} onPress={onPress}>
       <View style={[styles.root, style]}>
-        <TokenIcon icon={icon} symbol={symbol} color={color} />
+        <TokenIcon icon={icon} logo={thumbnail || logo} color={color} />
         <View style={styles.leftContainer}>
-          <Text style={FontStyles.Normal}>{name}</Text>
-          <TokenFormat
-            value={amount}
-            token={symbol}
-            style={FontStyles.NormalGray}
-          />
+          {name ? <Text style={FontStyles.Normal}>{name}</Text> : null}
+          {symbol ? (
+            <TokenFormat
+              value={amount}
+              token={symbol}
+              style={FontStyles.NormalGray}
+            />
+          ) : null}
         </View>
         <UsdFormat value={value} style={styles.value} />
       </View>

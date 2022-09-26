@@ -15,11 +15,11 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1E40A9331B28463D9C45BAE7 /* Oswald-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E801C124432C4832A0B2D9D5 /* Oswald-Regular.ttf */; };
 		1F25339D284E554700B76386 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F25339C284E554700B76386 /* BootSplash.storyboard */; };
-		9CAA3BBF96A74945884C0EB1 /* Oswald-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2305DDE041124F8DB2F00951 /* Oswald-Medium.ttf */; };
+		4A9B15F7D234426F8C7D7B1F /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DF536EB694C04663B1EEE6CA /* Inter-Medium.ttf */; };
+		4B4A5A472D70414090A24950 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3809386EBD20482F923CAB29 /* Inter-SemiBold.ttf */; };
+		56A497EFEE344CDFB2865F73 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4ABFD47BAF2E44B9AE285C85 /* Inter-Regular.ttf */; };
 		A1C3D441ED1064791A2B7D4D /* libPods-Plug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE8378D6CEF5F723EC96CF5A /* libPods-Plug.a */; };
-		CD3B248E5C08463F8C9319A0 /* Oswald-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AF9BCEC54AC74FA1B3E30252 /* Oswald-Bold.ttf */; };
 		E00C5047015A63A63D32E91C /* libPods-Plug-PlugTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FADF2B18F6FD670780D27D82 /* libPods-Plug-PlugTests.a */; };
 /* End PBXBuildFile section */
 
@@ -52,13 +52,14 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Plug/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Plug/main.m; sourceTree = "<group>"; };
 		1F25339C284E554700B76386 /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = Plug/BootSplash.storyboard; sourceTree = "<group>"; };
-		2305DDE041124F8DB2F00951 /* Oswald-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-Medium.ttf"; path = "../assets/fonts/Oswald-Medium.ttf"; sourceTree = "<group>"; };
+		1FF442DA28999BC30086AFD3 /* Plug.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = Plug.entitlements; path = Plug/Plug.entitlements; sourceTree = "<group>"; };
 		33E5DE36FA63D06ED1690823 /* Pods-Plug-PlugTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Plug-PlugTests.release.xcconfig"; path = "Target Support Files/Pods-Plug-PlugTests/Pods-Plug-PlugTests.release.xcconfig"; sourceTree = "<group>"; };
+		3809386EBD20482F923CAB29 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-SemiBold.ttf"; path = "../assets/fonts/Inter-SemiBold.ttf"; sourceTree = "<group>"; };
+		4ABFD47BAF2E44B9AE285C85 /* Inter-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Regular.ttf"; path = "../assets/fonts/Inter-Regular.ttf"; sourceTree = "<group>"; };
 		9479768527D7D70800272BB1 /* react-native-config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "react-native-config.xcconfig"; sourceTree = "<group>"; };
 		A7C2D3DD0C62D17530F1CBAA /* Pods-Plug.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Plug.debug.xcconfig"; path = "Target Support Files/Pods-Plug/Pods-Plug.debug.xcconfig"; sourceTree = "<group>"; };
-		AF9BCEC54AC74FA1B3E30252 /* Oswald-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-Bold.ttf"; path = "../assets/fonts/Oswald-Bold.ttf"; sourceTree = "<group>"; };
 		DE8378D6CEF5F723EC96CF5A /* libPods-Plug.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Plug.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E801C124432C4832A0B2D9D5 /* Oswald-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oswald-Regular.ttf"; path = "../assets/fonts/Oswald-Regular.ttf"; sourceTree = "<group>"; };
+		DF536EB694C04663B1EEE6CA /* Inter-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-Medium.ttf"; path = "../assets/fonts/Inter-Medium.ttf"; sourceTree = "<group>"; };
 		E9A396CAA52242F65B3AFF3F /* Pods-Plug-PlugTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Plug-PlugTests.debug.xcconfig"; path = "Target Support Files/Pods-Plug-PlugTests/Pods-Plug-PlugTests.debug.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FADF2B18F6FD670780D27D82 /* libPods-Plug-PlugTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Plug-PlugTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,9 +107,9 @@
 		1001C41F0FEA4B21A6F1CC16 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				AF9BCEC54AC74FA1B3E30252 /* Oswald-Bold.ttf */,
-				2305DDE041124F8DB2F00951 /* Oswald-Medium.ttf */,
-				E801C124432C4832A0B2D9D5 /* Oswald-Regular.ttf */,
+				DF536EB694C04663B1EEE6CA /* Inter-Medium.ttf */,
+				4ABFD47BAF2E44B9AE285C85 /* Inter-Regular.ttf */,
+				3809386EBD20482F923CAB29 /* Inter-SemiBold.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -116,6 +117,7 @@
 		13B07FAE1A68108700A75B9A /* Plug */ = {
 			isa = PBXGroup;
 			children = (
+				1FF442DA28999BC30086AFD3 /* Plug.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				1F25339C284E554700B76386 /* BootSplash.storyboard */,
@@ -284,9 +286,9 @@
 			files = (
 				1F25339D284E554700B76386 /* BootSplash.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				CD3B248E5C08463F8C9319A0 /* Oswald-Bold.ttf in Resources */,
-				9CAA3BBF96A74945884C0EB1 /* Oswald-Medium.ttf in Resources */,
-				1E40A9331B28463D9C45BAE7 /* Oswald-Regular.ttf in Resources */,
+				4A9B15F7D234426F8C7D7B1F /* Inter-Medium.ttf in Resources */,
+				56A497EFEE344CDFB2865F73 /* Inter-Regular.ttf in Resources */,
+				4B4A5A472D70414090A24950 /* Inter-SemiBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,7 +297,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -570,7 +572,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/rust/.cargo/mobile_app/target/universal/release",
 				);
-				MARKETING_VERSION = 0.1.3;
+				MARKETING_VERSION = 0.2.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -612,7 +614,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/rust/.cargo/mobile_app/target/universal/release",
 				);
-				MARKETING_VERSION = 0.1.3;
+				MARKETING_VERSION = 0.2.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -659,6 +661,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEFINES_MODULE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
@@ -721,6 +724,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				DEFINES_MODULE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";

@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { FontStyles } from '@/constants/theme';
+import { Colors, FontStyles } from '@/constants/theme';
 
 const commonPadding = 20;
 
@@ -17,5 +17,11 @@ export default StyleSheet.create({
   rowStyle: {
     justifyContent: 'space-between',
     paddingRight: commonPadding,
+  },
+  scrollContent: {
+    paddingBottom: 70,
+  },
+  optionText: {
+    color: Colors.White.Primary,
   },
 });

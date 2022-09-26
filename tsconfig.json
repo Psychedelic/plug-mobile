@@ -5,7 +5,10 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "jsx": "react-native",
-    "lib": ["es2017"],
+    "lib": [
+      "es2017",
+      "ES2021.String"
+    ],
     "moduleResolution": "node",
     "noEmit": true,
     "strict": true,
@@ -17,6 +20,8 @@
       "@/config/*": ["./src/config/*"],
       "@/constants/*": ["./src/constants/*"],
       "@/hooks/*": ["./src/hooks/*"],
+      "@/interfaces/*": ["./src/interfaces/*"],
+      "@/modules/*": ["./src/modules/*"],
       "@/navigation/*": ["./src/navigation/*"],
       "@/redux/*": ["./src/redux/*"],
       "@/screens/*": ["./src/screens/*"],

@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, ScrollView, Text, View } from 'react-native';
+import { Image, ScrollView, View } from 'react-native';
 
 import PlugLogo from '@/assets/icons/plug-logo-full.png';
-import Back from '@/commonComponents/Back';
 import Copy from '@/commonComponents/Copy';
 import Header from '@/commonComponents/Header';
 import SeedPhrase from '@/commonComponents/SeedPhrase';
 import RainbowButton from '@/components/buttons/RainbowButton';
+import ActionButton from '@/components/common/ActionButton';
+import Text from '@/components/common/Text';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 
@@ -25,7 +26,7 @@ const BackupSeedPhrase = ({ route, navigation }) => {
   return (
     <Container>
       <Header
-        left={<Back onPress={goBack} />}
+        left={<ActionButton onPress={goBack} label={t('common.back')} />}
         center={
           <View style={{ width: 70, height: 33 }}>
             <Image

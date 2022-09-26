@@ -4,6 +4,7 @@ import { Colors } from '@/constants/theme';
 
 const ITEM_RADIUS = 14;
 export const ICON_COLOR = Colors.White.Secondary;
+export const ICON_COLOR_DESTRUCTIVE = Colors.Red;
 
 export default StyleSheet.create({
   modal: {
@@ -37,7 +38,6 @@ export default StyleSheet.create({
   },
   itemBorder: {},
   itemText: {
-    fontSize: 16,
     color: Colors.White.Primary,
   },
   destructiveText: {

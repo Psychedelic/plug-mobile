@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 
+import { MEDIUM, SEMIBOLD } from '@/constants/fonts';
 import { Colors } from '@/constants/theme';
+import { fontMaker } from '@/utils/fonts';
 
 export default StyleSheet.create({
   content: {
@@ -33,5 +35,11 @@ export default StyleSheet.create({
   valid: {
     marginTop: 4,
     color: Colors.ActionBlue,
+  },
+  title: {
+    ...fontMaker({ size: 24, weight: SEMIBOLD, color: Colors.White.Primary }),
+  },
+  subtitle: {
+    ...fontMaker({ size: 16, weight: MEDIUM, color: Colors.White.Secondary }),
   },
 });

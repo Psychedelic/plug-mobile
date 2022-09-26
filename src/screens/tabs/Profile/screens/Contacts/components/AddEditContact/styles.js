@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors, FontStyles } from '@/constants/theme';
+import { Colors } from '@/constants/theme';
 
 export default StyleSheet.create({
   container: {
@@ -10,9 +10,18 @@ export default StyleSheet.create({
   marginedContainer: {
     marginTop: 20,
   },
-  savedContactText: {
+  errorMessage: {
     marginTop: 5,
-    color: 'red',
+    marginLeft: 5,
+    color: Colors.Red,
+  },
+  errorIcon: {
+    alignSelf: 'center',
+    marginTop: 5,
+  },
+  errorContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   emojiContainer: {
     alignSelf: 'center',
@@ -22,7 +31,6 @@ export default StyleSheet.create({
     color: Colors.ActionBlue,
   },
   title: {
-    ...FontStyles.Subtitle2,
     textTransform: 'capitalize',
   },
   capitalized: {

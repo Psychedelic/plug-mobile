@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, Keyboard, Text, View } from 'react-native';
+import { Image, Keyboard, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Plug from '@/assets/icons/il_white_plug.png';
@@ -8,13 +8,13 @@ import PasswordInput from '@/commonComponents/PasswordInput';
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import KeyboardScrollView from '@/components/common/KeyboardScrollView';
+import Text from '@/components/common/Text';
 import { isValidPassword } from '@/constants/general';
 import useKeychain from '@/hooks/useKeychain';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 import { getICPPrice } from '@/redux/slices/icp';
 import { login } from '@/redux/slices/keyring';
-import { setAssetsLoading } from '@/redux/slices/user';
 
 import styles from './styles';
 
@@ -40,7 +40,6 @@ function Login({ route, navigation }) {
     if (usingBiometrics && !isManualLock) {
       unlockUsingBiometrics();
     }
-    dispatch(setAssetsLoading(false));
   }, [usingBiometrics, isManualLock]);
 
   const clearState = () => {
@@ -63,12 +62,6 @@ function Login({ route, navigation }) {
       login({
         password: submittedPassword,
         icpPrice,
-        onError: () => {
-          setLoading(false);
-          dispatch(setAssetsLoading(false));
-          setError(true);
-          setDisableInput(false);
-        },
       })
     )
       .unwrap()
@@ -78,6 +71,11 @@ function Login({ route, navigation }) {
           navigation.navigate(Routes.SWIPE_LAYOUT);
           clearState();
         }
+      })
+      .catch(() => {
+        setLoading(false);
+        setError(true);
+        setDisableInput(false);
       });
   };
 
@@ -101,9 +99,8 @@ function Login({ route, navigation }) {
           autoFocus={!isManualLock}
           error={error}
           disabled={disableInput}
-          password={password}
-          onChange={setPassword}
-          inputStyle={styles.input}
+          value={password}
+          onChangeText={setPassword}
           onSubmit={() => handleSubmit(password)}
         />
         <RainbowButton
