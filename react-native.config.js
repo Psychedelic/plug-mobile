@@ -4,12 +4,4 @@ module.exports = {
     android: {},
   },
   assets: ['./assets/fonts'],
-  dependency: {
-    platforms: {
-      ios: {},
-      android: {
-        packageInstance: 'new RNSentryPackage()',
-      },
-    },
-  },
 };
