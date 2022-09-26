@@ -28,6 +28,7 @@ export function AddToken() {
       </Touchable>
       <Modal
         modalRef={modalRef}
+        disableScrollIfPossible={false}
         adjustToContentHeight={currentStep?.adjustModalContent}
         fullHeight={currentStep?.fullHeight}
         HeaderComponent={currentStep.header}

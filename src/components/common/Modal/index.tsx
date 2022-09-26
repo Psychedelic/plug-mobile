@@ -83,6 +83,7 @@ function Modal({
         onOverlayPress={onClose}
         onClose={onClose}
         onClosed={onClosed}
+        disableScrollIfPossible={disableScrollIfPossible}
         adjustToContentHeight={adjustToContentHeight}
         HeaderComponent={HeaderComponent}
         FooterComponent={FooterComponent}

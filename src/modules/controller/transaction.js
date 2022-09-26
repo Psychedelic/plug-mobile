@@ -26,11 +26,13 @@ import {
   validateTransferArgs,
 } from '@/utils/walletConnect';
 
+import KeyRing from '../keyring';
+
 const TransactionModule = (dispatch, getState) => {
   const requestTransfer = {
     methodName: 'requestTransfer',
     handler: async (requestId, metadata, args) => {
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
 
       const app = await getApp(
         keyring.currentWalletId.toString(),
@@ -95,7 +97,7 @@ const TransactionModule = (dispatch, getState) => {
   const requestTransferToken = {
     methodName: 'requestTransferToken',
     handler: async (requestId, metadata, args) => {
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
 
       const app = await getApp(
         keyring.currentWalletId.toString(),
@@ -163,7 +165,7 @@ const TransactionModule = (dispatch, getState) => {
   const requestBurnXTC = {
     methodName: 'requestBurnXTC',
     handler: async (requestId, metadata, args) => {
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
       const app = await getApp(
         keyring.currentWalletId.toString(),
         metadata.url
@@ -227,7 +229,7 @@ const TransactionModule = (dispatch, getState) => {
   const batchTransactions = {
     methodName: 'batchTransactions',
     handler: async (requestId, metadata, transactions) => {
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
 
       const app = await getApp(
         keyring.currentWalletId.toString(),
@@ -285,7 +287,7 @@ const TransactionModule = (dispatch, getState) => {
   const requestCall = {
     methodName: 'requestCall',
     handler: async (requestId, metadata, args, batchTxId, decodedArgs) => {
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
       const senderPID = getState().keyring?.currentWallet.principal;
       const { canisterId } = args;
       const app = await getApp(
@@ -365,7 +367,7 @@ const TransactionModule = (dispatch, getState) => {
         return { error: ERRORS.TRANSACTION_REJECTED };
       }
 
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
       const agent = await keyring.getAgent();
 
       const arg = blobFromBuffer(base64ToBuffer(requestInfo.arguments));
@@ -407,7 +409,7 @@ const TransactionModule = (dispatch, getState) => {
   const requestReadState = {
     methodName: 'requestReadState',
     handler: async (requestId, metadata, { canisterId, paths }) => {
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
       try {
         const app = await getApp(
           keyring.currentWalletId.toString(),
@@ -438,7 +440,7 @@ const TransactionModule = (dispatch, getState) => {
       }
     },
     executor: async (opts, canisterId, paths) => {
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
       const agent = await keyring.getAgent();
       try {
         const response = await agent.readState(canisterId, {
@@ -460,7 +462,7 @@ const TransactionModule = (dispatch, getState) => {
     methodName: 'requestQuery',
     handler: async (requestId, metadata, { canisterId, methodName, arg }) => {
       try {
-        const keyring = getState().keyring?.instance;
+        const keyring = KeyRing.getInstance();
         const app = await getApp(
           keyring.currentWalletId.toString(),
           metadata.url
@@ -491,7 +493,7 @@ const TransactionModule = (dispatch, getState) => {
       }
     },
     executor: async (opts, canisterId, methodName, arg) => {
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
       const agent = await keyring.getAgent();
       try {
         const response = await agent.query(canisterId, {

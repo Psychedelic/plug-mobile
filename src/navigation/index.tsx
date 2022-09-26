@@ -1,13 +1,14 @@
 import { NavigationContainer, Theme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import React, { forwardRef, memo, useCallback, useEffect, useRef } from 'react';
+import React, { forwardRef, memo, useEffect, useRef } from 'react';
 import { AppState, Linking, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Host } from 'react-native-portalize';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { Colors } from '@/constants/theme';
 import { RootStackParamList } from '@/interfaces/navigation';
+import KeyRing from '@/modules/keyring';
 import SwipeNavigator from '@/navigation/navigators/SwipeNavigator';
 import { setPrelocked, setUnlocked } from '@/redux/slices/keyring';
 import BackupSeedPhrase from '@/screens/auth/BackupSeedPhrase';
@@ -26,7 +27,7 @@ import Routes from './Routes';
 const Stack = createStackNavigator<RootStackParamList>();
 
 const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
-  const { isInitialized, isUnlocked } = useSelector(state => state.keyring);
+  const keyring = KeyRing.getInstance();
 
   const dispatch = useDispatch();
   const backgroundTime = useRef<any>(null);
@@ -36,12 +37,9 @@ const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
     dispatch(setPrelocked(false));
   };
 
-  const handleDeepLinkHandler = useCallback(
-    link => {
-      handleDeepLink(link, isUnlocked);
-    },
-    [isUnlocked]
-  );
+  const handleDeepLinkHandler = (link: string) => {
+    handleDeepLink(link, keyring.isUnlocked);
+  };
 
   const handleAppStateChange = async (nextAppState: string) => {
     const initialLink =
@@ -87,8 +85,8 @@ const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
     };
   }, []);
 
-  const initialRoute = isInitialized
-    ? isUnlocked
+  const initialRoute = keyring.isInitialized
+    ? keyring.isUnlocked
       ? Routes.SWIPE_LAYOUT
       : Routes.LOGIN_SCREEN
     : Routes.WELCOME_SCREEN;
