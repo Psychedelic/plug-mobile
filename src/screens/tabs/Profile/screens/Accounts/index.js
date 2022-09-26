@@ -51,9 +51,9 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
     createEditAccountRef.current?.open();
   };
 
-  const onChangeAccount = walletNumber => {
+  const onChangeAccount = walletId => {
     setLoading(true);
-    dispatch(setCurrentPrincipal({ walletNumber, icpPrice }))
+    dispatch(setCurrentPrincipal({ walletId, icpPrice }))
       .unwrap()
       .then(() => {
         setLoading(false);
@@ -113,7 +113,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
 
     const handleOnPress = () => {
       if (!isSelectedAccount) {
-        onChangeAccount(account?.walletNumber);
+        onChangeAccount(account?.walletId);
       }
     };
 

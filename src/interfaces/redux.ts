@@ -110,7 +110,8 @@ export interface IcpState {
 }
 export interface Wallet {
   name: string;
-  walletNumber: number;
+  walletId: string;
+  orderNumber: number;
   principal: string;
   accountId: string;
   connectedApps: any[];
