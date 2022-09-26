@@ -4,7 +4,7 @@ PODS:
   - BVLinearGradient (2.6.2):
     - React-Core
   - CocoaAsyncSocket (7.6.5)
-  - CodePush (7.0.4):
+  - CodePush (7.0.5):
     - Base64 (~> 1.1)
     - JWT (~> 3.0.0-beta.12)
     - React-Core
@@ -455,9 +455,9 @@ PODS:
   - RNScreens (3.17.0):
     - React-Core
     - React-RCTImage
-  - RNSentry (4.1.2):
+  - RNSentry (4.5.0):
     - React-Core
-    - Sentry (= 7.20.0)
+    - Sentry (= 7.25.1)
   - RNSVG (13.2.0):
     - React-Core
   - SDWebImage (5.11.1):
@@ -466,9 +466,9 @@ PODS:
   - SDWebImageWebPCoder (0.8.4):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
-  - Sentry (7.20.0):
-    - Sentry/Core (= 7.20.0)
-  - Sentry/Core (7.20.0)
+  - Sentry (7.25.1):
+    - Sentry/Core (= 7.25.1)
+  - Sentry/Core (7.25.1)
   - SocketRocket (0.6.0)
   - SSZipArchive (2.2.3)
   - Yoga (1.14.0)
@@ -558,7 +558,7 @@ DEPENDENCIES:
   - RNScreens (from `../node_modules/react-native-screens`)
   - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - RNSVG (from `../node_modules/react-native-svg`)
-  - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `7.20.0`)
+  - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `7.25.1`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -705,21 +705,21 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-svg"
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
-    :tag: 7.20.0
+    :tag: 7.25.1
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
   Sentry:
     :git: https://github.com/getsentry/sentry-cocoa.git
-    :tag: 7.20.0
+    :tag: 7.25.1
 
 SPEC CHECKSUMS:
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
-  CodePush: b51b7ac64c07d4eacfc8cc5750a1dd28adbf2528
+  CodePush: ef496b6fd053012e985e3d4a0ab9f9dbf2739eac
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
   FBLazyVector: 0045cf98ca4a48af3bf7108d85b1c243740fa289
   FBReactNativeSpec: 82e74141263f8c962e288f5cd6b5d149cdc8afe1
@@ -788,17 +788,17 @@ SPEC CHECKSUMS:
   RNReactNativeHapticFeedback: 1e3efeca9628ff9876ee7cdd9edec1b336913f8c
   RNReanimated: 7faa787e8d4493fbc95fab2ad331fa7625828cfa
   RNScreens: 0df01424e9e0ed7827200d6ed1087ddd06c493f9
-  RNSentry: b7b82fd671772dda9ae063af0b4873251aa04bdb
+  RNSentry: a034d0e81e3d3c04b770dd2df953fe634d372d22
   RNSVG: 07037623c36f12e41312730622d5f6b3656227ca
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815
-  Sentry: 9e8ec837fa37e7b397f19f75542800461b138d0e
+  Sentry: dd29c18c32b0af9269949f079cf631d581ca76ca
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: c2b1f2494060865ac1f27e49639e72371b1205fa
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
   ZIPFoundation: b1f0de4eed33e74a676f76e12559ab6b75990197
 
-PODFILE CHECKSUM: a2d0a12c76716ab68095373e3501a5f9238bc8de
+PODFILE CHECKSUM: 7d73b3c6f14813e8b63d5c32d6f737b83836479b
 
 COCOAPODS: 1.11.3
