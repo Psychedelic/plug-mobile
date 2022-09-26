@@ -1,7 +1,8 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
 import React, { useCallback, useRef, useState } from 'react';
 import { Image, Linking, Text, View } from 'react-native';
+import { Modalize } from 'react-native-modalize';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '@/components/buttons/Button';
@@ -9,6 +10,8 @@ import RainbowButton from '@/components/buttons/RainbowButton';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
 import useDisableBack from '@/hooks/useDisableBack';
+import { RootStackParamList } from '@/interfaces/navigation';
+import { WalletConnectCallRequest } from '@/interfaces/redux';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 import Accounts from '@/screens/tabs/Profile/screens/Accounts';
@@ -17,18 +20,22 @@ import { responseSessionRequest } from '@/utils/walletConnect';
 import UserShowcase from '../Flows/components/UserShowcase';
 import styles from './styles';
 
-function WCInitialConnection() {
+interface Props {
+  route: {
+    params: WalletConnectCallRequest;
+  };
+}
+
+function WCInitialConnection({ route }: Props) {
   useDisableBack();
-  const { params } = useRoute();
-  const modalRef = useRef(null);
+  const modalRef = useRef<Modalize>(null);
   const dispatch = useDispatch();
-  const { reset } = useNavigation();
+  const { reset } = useNavigation<NavigationProp<RootStackParamList>>();
   const { currentWallet } = useSelector(state => state.keyring);
 
   const [connectLoading, setConnectLoading] = useState(false);
 
-  const { meta } = params;
-  const { dappName, dappUrl, dappScheme, peerId, dappImageUrl } = meta || {};
+  const { dappName, dappUrl, dappScheme, peerId, imageUrl } = route?.params;
 
   const handleSuccess = useCallback(
     (success = false) => {
@@ -38,7 +45,7 @@ function WCInitialConnection() {
             {
               approved: success,
               accountAddress: currentWallet.principal,
-              ...meta,
+              ...route?.params,
             },
             dispatch
           ),
@@ -69,17 +76,14 @@ function WCInitialConnection() {
     });
   };
 
-  const handleChangeWallet = () => {
-    modalRef?.current.open();
-  };
+  const handleChangeWallet = () => modalRef?.current?.open();
 
   return (
     <Container>
       <View style={styles.container}>
-        {/* Change to DappInfo */}
         <View style={styles.imageContainer}>
-          {dappImageUrl ? (
-            <Image source={{ uri: dappImageUrl }} style={styles.dappIcon} />
+          {imageUrl ? (
+            <Image source={{ uri: imageUrl }} style={styles.dappIcon} />
           ) : (
             <Icon name="connectIcon" style={styles.defaultIcon} />
           )}

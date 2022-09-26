@@ -25,6 +25,9 @@ import CreateEditAccount from '../CreateEditAccount';
 import AddICNS from './AddICNS';
 import styles from './styles';
 
+/**
+ * @param {{modalRef: RefObject<Modalize>, onClose?: () => void}} param
+ */
 const Accounts = ({ modalRef, onClose, ...props }) => {
   const { wallets, currentWallet } = useSelector(state => state.keyring);
   const { icpPrice } = useSelector(state => state.icp);

@@ -5,14 +5,12 @@ import { InteractionManager, Linking } from 'react-native';
 import Minimizer from 'react-native-minimizer';
 
 import { ERRORS, PLUG_DESCRIPTION } from '@/constants/walletconnect';
-import Routes from '@/navigation/Routes';
 import { DEFAULT_WALLET_CONNECT_STATE as DEFAULT_STATE } from '@/redux/utils';
 import {
   getAllValidWalletConnectSessions,
   saveWalletConnectSession,
 } from '@/services/WalletConnect';
 import { emmitEvent, Events } from '@/utils/events';
-import { navigate } from '@/utils/navigation';
 import { delay } from '@/utils/utilities';
 import {
   callRequestHandlerFactory,

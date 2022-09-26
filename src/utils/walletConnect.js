@@ -80,20 +80,16 @@ export const sessionRequestHandler = async ({ error, payload, requestId }) => {
   const dappName = peerMeta?.name;
   const dappUrl = peerMeta?.url;
   const dappScheme = peerMeta?.scheme;
-  const dappImageUrl = peerMeta?.icons?.[0];
+  const imageUrl = peerMeta?.icons?.[0];
 
-  const meta = {
+  navigate(Routes.WALLET_CONNECT_INITIAL_CONNECTION, {
     chainId,
     dappName,
     dappScheme,
     dappUrl,
     peerId,
-    dappImageUrl,
+    imageUrl,
     requestId,
-  };
-
-  navigate(Routes.WALLET_CONNECT_INITIAL_CONNECTION, {
-    meta,
   });
 };
 
