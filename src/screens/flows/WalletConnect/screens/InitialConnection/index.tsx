@@ -14,6 +14,10 @@ import { RootStackParamList } from '@/interfaces/navigation';
 import { WalletConnectCallRequest } from '@/interfaces/redux';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
+import {
+  walletConnectRejectSession,
+  walletConnectRemovePendingRedirect,
+} from '@/redux/slices/walletconnect';
 import Accounts from '@/screens/tabs/Profile/screens/Accounts';
 import { responseSessionRequest } from '@/utils/walletConnect';
 
@@ -35,7 +39,8 @@ function WCInitialConnection({ route }: Props) {
 
   const [connectLoading, setConnectLoading] = useState(false);
 
-  const { dappName, dappUrl, dappScheme, peerId, imageUrl } = route?.params;
+  const { dappName, dappUrl, dappScheme, peerId, imageUrl, requestId } =
+    route?.params;
 
   const handleSuccess = useCallback(
     (success = false) => {
@@ -61,8 +66,10 @@ function WCInitialConnection({ route }: Props) {
   };
 
   const onCancel = () => {
-    setConnectLoading(false);
     closeScreen();
+    setConnectLoading(false);
+    dispatch(walletConnectRejectSession({ peerId }));
+    dispatch(walletConnectRemovePendingRedirect({ requestId }));
   };
 
   const gotoDapp = () => {

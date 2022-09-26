@@ -387,10 +387,11 @@ export const addConnectedApp = createAsyncThunk(
   /**  @param {any} [app] */
   async (app, { getState }) => {
     const currentConnectedApps = getState().user.connectedApps;
-    const { name, canisterList, lastConection } = app;
+    const { name, canisterList, lastConection, account } = app;
 
     const appAlreadyAdded = currentConnectedApps.find(
-      connectedApp => connectedApp.name === name
+      connectedApp =>
+        connectedApp.name === name && connectedApp.account === account
     );
 
     if (appAlreadyAdded) {
@@ -414,12 +415,14 @@ export const addConnectedApp = createAsyncThunk(
 
 export const removeConnectedApp = createAsyncThunk(
   'user/removeConnectedApp',
-  /**  @param {any} [appName] */
-  async (appName, { getState }) => {
+  /**  @param {any} [app] */
+  async (app, { getState }) => {
+    const { name, account } = app;
     const currentConnectedApps = getState().user.connectedApps;
 
     return currentConnectedApps.filter(
-      connectedApp => connectedApp.name !== appName
+      connectedApp =>
+        connectedApp.name !== name && connectedApp.account === account
     );
   }
 );

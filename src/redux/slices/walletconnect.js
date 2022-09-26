@@ -36,6 +36,9 @@ export const walletConnectSetPendingRedirect = createAsyncThunk(
 
 export const walletConnectRemovePendingRedirect = createAsyncThunk(
   'walletconnect/removePendingRedirect',
+  /**
+   * @param { requestId: number } param
+   */
   ({ requestId }, { dispatch, getState }) => {
     const { pendingRedirect } = getState().walletconnect;
     const { [requestId]: redirect, ...updatedPendingRedirect } =
@@ -382,6 +385,9 @@ export const walletConnectApproveSession = createAsyncThunk(
 
 export const walletConnectRejectSession = createAsyncThunk(
   'walletconnect/rejectSession',
+  /**
+   * @param { peerId: string } param
+   */
   ({ peerId }, { getState }) => {
     const { sessions } = getState().walletconnect;
     const { walletConnector } = sessions[peerId];
