@@ -111,7 +111,7 @@ def enableSeparateBuildPerCPUArchitecture = false
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
  */
-def enableProguardInReleaseBuilds = true
+def enableProguardInReleaseBuilds = false
 
 /**
  * The preferred build flavor of JavaScriptCore.
@@ -205,20 +205,30 @@ android {
             // If you wish to add a custom TurboModule or component locally,
             // you should uncomment this line.
             // preBuild.dependsOn("generateCodegenArtifactsFromSchema")
-            preDebugBuild.dependsOn(packageReactNdkDebugLibs)
-            preReleaseBuild.dependsOn(packageReactNdkReleaseLibs)
+            android.applicationVariants.all { def variant ->
+                def variantName = variant.name.capitalize()
+                def preVariantBuildTask = tasks.findByName("pre${variantName}Build")
 
-            // Due to a bug inside AGP, we have to explicitly set a dependency
-            // between configureNdkBuild* tasks and the preBuild tasks.
-            // This can be removed once this is solved: https://issuetracker.google.com/issues/207403732
-            configureNdkBuildRelease.dependsOn(preReleaseBuild)
-            configureNdkBuildDebug.dependsOn(preDebugBuild)
-            reactNativeArchitectures().each { architecture ->
-                tasks.findByName("configureNdkBuildDebug[${architecture}]")?.configure {
-                    dependsOn("preDebugBuild")
+                // Due to a bug inside AGP, we have to explicitly set a dependency
+                // between configureNdkBuild* tasks and the preBuild tasks.
+                // This can be removed once this is solved: https://issuetracker.google.com/issues/207403732
+                if (variantName.endsWith("Debug")) {
+                    preVariantBuildTask.dependsOn(packageReactNdkDebugLibs)
+                    configureNdkBuildDebug.dependsOn(preVariantBuildTask)
+                    reactNativeArchitectures().each { architecture ->
+                        tasks.findByName("configureNdkBuildDebug[${architecture}]")?.configure {
+                            dependsOn(preVariantBuildTask.name)
+                        }
+                    }
                 }
-                tasks.findByName("configureNdkBuildRelease[${architecture}]")?.configure {
-                    dependsOn("preReleaseBuild")
+                if (variantName.endsWith("Release")) {
+                    preVariantBuildTask.dependsOn(packageReactNdkReleaseLibs)
+                    configureNdkBuildRelease.dependsOn(preVariantBuildTask)
+                    reactNativeArchitectures().each { architecture ->
+                        tasks.findByName("configureNdkBuildRelease[${architecture}]")?.configure {
+                            dependsOn(preVariantBuildTask.name)
+                        }
+                    }
                 }
             }
         }

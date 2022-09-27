@@ -69,7 +69,7 @@
     "react": "18.0.0",
     "react-hook-form": "^7.36.1",
     "react-i18next": "^11.16.9",
-    "react-native": "0.69.5",
+    "react-native": "0.69.6",
     "react-native-bip39": "^2.3.0",
     "react-native-bootsplash": "^4.3.2",
     "react-native-code-push": "^7.0.5",
