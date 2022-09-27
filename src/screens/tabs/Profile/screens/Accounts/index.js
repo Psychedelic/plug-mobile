@@ -25,6 +25,9 @@ import CreateEditAccount from '../CreateEditAccount';
 import AddICNS from './AddICNS';
 import styles from './styles';
 
+/**
+ * @param {{modalRef: any, onClose?: () => void}} param
+ */
 const Accounts = ({ modalRef, onClose, ...props }) => {
   const { wallets, currentWallet } = useSelector(state => state.keyring);
   const { icpPrice } = useSelector(state => state.icp);
@@ -121,7 +124,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
       <CommonItem
         key={index}
         name={account?.icnsData.reverseResolvedName || account.name}
-        image={account.icon}
+        icon={account.icon}
         id={account.principal}
         onPress={handleOnPress}
         style={styles.accountItem}

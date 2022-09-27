@@ -4,7 +4,7 @@ import '@/config/reactotron';
 import '@/config/extensions';
 
 import * as Sentry from '@sentry/react-native';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AppState, Platform, StatusBar } from 'react-native';
 import RNBootSplash from 'react-native-bootsplash';
 import codePush from 'react-native-code-push';
@@ -15,7 +15,7 @@ import {
   getVersion,
 } from 'react-native-device-info';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import Reactotron from 'reactotron-react-native';
 import { PersistGate } from 'redux-persist/integration/react';
 
@@ -24,7 +24,7 @@ import { isIos } from '@/constants/platform';
 import Routes from '@/navigation';
 import { initKeyring } from '@/redux/slices/keyring';
 import { persistor, store } from '@/redux/store';
-import { TopLevelNavigationRef } from '@/utils/navigation';
+import { navigationRef } from '@/utils/navigation';
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
 const baseDist = getBuildNumber();
@@ -47,8 +47,8 @@ Sentry.init({
 });
 
 const PersistedApp = () => {
-  const { instance } = useSelector(state => state.keyring);
   const appState = useRef(AppState.currentState);
+  const [showRoutes, setShowRoutes] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -79,7 +79,12 @@ const PersistedApp = () => {
 
   useEffect(() => {
     dispatch(
-      initKeyring({ callback: () => RNBootSplash.hide({ fade: true }) })
+      initKeyring({
+        callback: () => {
+          RNBootSplash.hide({ fade: true });
+          setShowRoutes(true);
+        },
+      })
     );
   }, []);
 
@@ -88,10 +93,10 @@ const PersistedApp = () => {
       <ErrorBoundary>
         <SafeAreaProvider>
           <StatusBar barStyle="light-content" backgroundColor="black" />
-          {!!instance && (
+          {showRoutes && (
             <Routes
               routingInstrumentation={routingInstrumentation}
-              ref={TopLevelNavigationRef}
+              ref={navigationRef}
             />
           )}
         </SafeAreaProvider>

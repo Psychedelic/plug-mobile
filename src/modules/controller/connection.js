@@ -3,15 +3,17 @@ import { getApp, getApps, removeApp, setApps } from '@/modules/storageManager';
 import Routes from '@/navigation/Routes';
 import { walletConnectExecuteAndResponse } from '@/redux/slices/walletconnect';
 import { validatePrincipalId } from '@/utils/ids';
-import Navigation from '@/utils/navigation';
+import { navigate } from '@/utils/navigation';
 import { areAllElementsIn } from '@/utils/objects';
 import {
   fetchCanistersInfo,
   initializeProtectedIds,
 } from '@/utils/walletConnect';
 
+import KeyRing from '../keyring';
+
 const handlerAllowAgent = getState => async (opts, url, response) => {
-  const keyring = getState()?.keyring?.instance;
+  const keyring = KeyRing.getInstance();
   if (!response.noNewEvents) {
     const apps = await getApps(keyring?.currentWalletId.toString());
     const status =
@@ -58,7 +60,7 @@ const ConnectionModule = (dispatch, getState) => {
     methodName: 'getConnectionData',
     handler: async (requestId, url) => {
       initializeProtectedIds();
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
       const walletId = keyring?.currentWalletId;
 
       const app = await getApp(walletId.toString(), url);
@@ -82,7 +84,7 @@ const ConnectionModule = (dispatch, getState) => {
       if (app === null) {
         return { result: null };
       }
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
       const walletId = keyring?.currentWalletId;
       const publicKey = keyring?.getPublicKey(walletId);
 
@@ -107,7 +109,7 @@ const ConnectionModule = (dispatch, getState) => {
       );
     },
     executor: async (opts, url) => {
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
 
       const removed = await removeApp(
         keyring?.currentWalletId?.toString(),
@@ -125,7 +127,7 @@ const ConnectionModule = (dispatch, getState) => {
     handler: async (requestId, metadata, whitelist, timeout, host) => {
       try {
         await initializeProtectedIds();
-        const keyring = getState().keyring?.instance;
+        const keyring = KeyRing.getInstance();
         const isValidWhitelist = Array.isArray(whitelist) && whitelist.length;
         if (!whitelist.every(canisterId => validatePrincipalId(canisterId))) {
           dispatch(
@@ -199,7 +201,7 @@ const ConnectionModule = (dispatch, getState) => {
             handleDeclineArgs,
           };
 
-          Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, params);
+          navigate(Routes.WALLET_CONNECT_FLOWS, params);
         }
       } catch (e) {
         walletConnectExecuteAndResponse({
@@ -214,7 +216,7 @@ const ConnectionModule = (dispatch, getState) => {
   const allWhiteListed = {
     methodName: 'allWhiteListed',
     handler: async (requestId, metadata, whitelist) => {
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
 
       const app = await getApp(
         keyring?.currentWalletId.toString(),
@@ -244,19 +246,19 @@ const ConnectionModule = (dispatch, getState) => {
     executor: async (opts, areAllWhiteListed) => {
       const keyring = getState().keyring?.instance;
 
-      if (allWhiteListed) {
+      if (areAllWhiteListed) {
         const publicKey = await keyring?.getPublicKey();
-        return { result: publicKey };
+        return { result: { allWhiteListed: areAllWhiteListed, publicKey } };
       }
 
-      return false;
+      return { result: { allWhiteListed: areAllWhiteListed } };
     },
   };
 
   const verifyWhitelist = {
     methodName: 'verifyWhitelist',
     handler: async (requestId, metadata, whitelist) => {
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
 
       if (!whitelist.every(canisterId => validatePrincipalId(canisterId))) {
         dispatch(
@@ -312,7 +314,7 @@ const ConnectionModule = (dispatch, getState) => {
             })
           );
         } else {
-          Navigation.handleAction(Routes.WALLET_CONNECT_FLOWS, {
+          navigate(Routes.WALLET_CONNECT_FLOWS, {
             type: 'requestConnect',
             requestId,
             metadata,

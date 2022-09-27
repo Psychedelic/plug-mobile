@@ -5,7 +5,6 @@ import { fetch } from 'react-native-fetch-api';
 import { XTC_FEE } from '@/constants/addresses';
 import { CYCLES_PER_TC } from '@/constants/assets';
 import { ASSET_CANISTER_IDS } from '@/constants/canister';
-import { IC_URL_HOST } from '@/constants/general';
 import { ERRORS, SIGNING_METHODS } from '@/constants/walletconnect';
 import {
   ConnectionModule,
@@ -24,7 +23,7 @@ import {
 import { getDabNfts, getDabTokens } from '@/services/DAB';
 import { validateAccountId, validatePrincipalId } from '@/utils/ids';
 import { validateCanisterId } from '@/utils/ids';
-import Navigation from '@/utils/navigation';
+import { navigate } from '@/utils/navigation';
 import {
   isValidBigInt,
   validateAmount,
@@ -49,7 +48,7 @@ export const responseSessionRequest = async (meta, dispatch) => {
 
   if (approved) {
     const timeout = setTimeout(() => {
-      Navigation.handleAction(Routes.WALLET_CONNECT_ERROR, {
+      navigate(Routes.WALLET_CONNECT_ERROR, {
         dappName,
         dappUrl,
       });
@@ -81,20 +80,16 @@ export const sessionRequestHandler = async ({ error, payload, requestId }) => {
   const dappName = peerMeta?.name;
   const dappUrl = peerMeta?.url;
   const dappScheme = peerMeta?.scheme;
-  const dappImageUrl = peerMeta?.icons?.[0];
+  const imageUrl = peerMeta?.icons?.[0];
 
-  const meta = {
+  navigate(Routes.WALLET_CONNECT_INITIAL_CONNECTION, {
     chainId,
     dappName,
     dappScheme,
     dappUrl,
     peerId,
-    dappImageUrl,
+    imageUrl,
     requestId,
-  };
-
-  Navigation.handleAction(Routes.WALLET_CONNECT_INITIAL_CONNECTION, {
-    meta,
   });
 };
 

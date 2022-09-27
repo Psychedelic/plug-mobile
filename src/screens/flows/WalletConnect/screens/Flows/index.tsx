@@ -65,6 +65,9 @@ function WCFlows() {
   const request = useSelector(
     (state: State) => state.walletconnect.pendingCallRequests[requestId]
   );
+  const principalId = useSelector(
+    (state: State) => state.keyring?.currentWallet?.principal
+  );
   const DisplayComponent = useMemo(() => COMPONENTS[type], [type]);
   const isTransfer =
     type === WCFlowTypes.transfer ||
@@ -161,6 +164,7 @@ function WCFlows() {
           canisterList: whiteListArray,
           imageUri: metadata?.icons[0],
           lastConection: Date.now(),
+          account: principalId,
         })
       );
     }

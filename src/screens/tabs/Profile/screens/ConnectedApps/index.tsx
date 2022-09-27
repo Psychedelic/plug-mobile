@@ -26,7 +26,13 @@ interface Props {
 
 function ConnectedApps({ modalRef }: Props) {
   const dispatch = useDispatch();
-  const connectedApps = useSelector((state: State) => state.user.connectedApps);
+  const principalId = useSelector(
+    (state: State) => state.keyring.currentWallet.principal
+  );
+  const connectedApps = useSelector(
+    (state: State) => state.user.connectedApps
+  )?.filter(app => app.account === principalId);
+
   const [selectedApp, setSelectedApp] = useState<ConnectedApp>();
   const [actionSheetData, setActionSheetData] = useState<any>();
   const actionSheetRef = useRef<Modalize>(null);
@@ -37,8 +43,8 @@ function ConnectedApps({ modalRef }: Props) {
     approvedcanistersRef.current?.open();
   };
 
-  const removeConnection = (app: ConnectedApp) => {
-    dispatch(removeConnectedApp(app.name));
+  const removeConnection = ({ name, account }: ConnectedApp) => {
+    dispatch(removeConnectedApp({ name, account }));
   };
 
   const showActionData = (connectedApp: ConnectedApp) => {

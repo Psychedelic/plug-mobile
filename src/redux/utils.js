@@ -76,9 +76,15 @@ export const getNewAccountData = async (dispatch, icpPrice) => {
 };
 
 const parseTransactionObject = transactionObject => {
-  const { amount, currency, token, sonicData } = transactionObject;
+  const { amount, currency, token, sonicData, canisterInfo } =
+    transactionObject;
 
-  const { decimals } = { ...currency, ...token, ...(sonicData?.token ?? {}) };
+  const { decimals } = {
+    ...currency,
+    ...token,
+    ...(sonicData?.token ?? {}),
+    ...(canisterInfo?.tokenRegistryInfo?.details ?? {}),
+  };
   // TODO: Decimals are currently not in DAB. Remove once they are added.
   const parsedAmount = parseToFloatAmount(
     amount,
@@ -209,7 +215,7 @@ export const DEFAULT_WALLET_CONNECT_STATE = {
   pendingRedirect: {},
   pendingCallRequests: {},
   sessions: {},
-  bridgeTimeout: {},
+  bridgeTimeouts: {},
 };
 
 export const migrateData = async () => {

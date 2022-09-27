@@ -124,7 +124,6 @@ export interface Wallet {
 }
 
 export interface KeyringState {
-  instance: any;
   isInitialized: boolean;
   isUnlocked: boolean;
   currentWallet: Wallet;
@@ -138,6 +137,7 @@ export interface ConnectedApp {
   canisterList: WCWhiteListItem[];
   imageUri: string;
   lastConection: Date;
+  account: string;
 }
 export interface UserState {
   assets: Asset[];
@@ -188,7 +188,7 @@ export interface WalletConnectState {
   sessions: {
     [peerId: string]: WalletConnectSession;
   };
-  bridgeTimeout: {
+  bridgeTimeouts: {
     [requestId: string]: {
       pending: boolean;
       timeout: number;
