@@ -246,12 +246,12 @@ const ConnectionModule = (dispatch, getState) => {
     executor: async (opts, areAllWhiteListed) => {
       const keyring = getState().keyring?.instance;
 
-      if (allWhiteListed) {
+      if (areAllWhiteListed) {
         const publicKey = await keyring?.getPublicKey();
-        return { result: publicKey };
+        return { result: { allWhiteListed: areAllWhiteListed, publicKey } };
       }
 
-      return false;
+      return { result: { allWhiteListed: areAllWhiteListed } };
     },
   };
 
