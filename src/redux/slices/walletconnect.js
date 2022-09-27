@@ -8,6 +8,7 @@ import { ERRORS, PLUG_DESCRIPTION } from '@/constants/walletconnect';
 import { DEFAULT_WALLET_CONNECT_STATE as DEFAULT_STATE } from '@/redux/utils';
 import {
   getAllValidWalletConnectSessions,
+  removeWalletConnectSessions,
   saveWalletConnectSession,
 } from '@/services/WalletConnect';
 import { emmitEvent, Events } from '@/utils/events';
@@ -112,7 +113,11 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
             if (!isUnlocked() || !isInitialized()) {
               unlockTimeout = setTimeout(async () => {
                 await dispatch(
-                  walletConnectRejectSession({ peerId, walletConnector })
+                  walletConnectRejectSession({
+                    peerId,
+                    walletConnector,
+                    error: ERRORS.TIMEOUT,
+                  })
                 );
               }, 20000);
             }
@@ -144,11 +149,13 @@ const listenOnNewMessages = createAsyncThunk(
     const isPrelocked = () => getState().keyring.isPrelocked;
     const isUnlocked = () => getState().keyring.isUnlocked;
     const isInitialized = () => getState().keyring.isInitialized;
+    const { peerId } = walletConnector;
+
     walletConnector.on('call_request', async (error, payload) => {
       if (error) {
         throw error;
       }
-      const { clientId, peerId, peerMeta } = walletConnector;
+      const { clientId, peerMeta } = walletConnector;
       const requestId = payload.id;
       const {
         bridgeTimeouts: { [requestId]: timeoutObj },
@@ -234,10 +241,16 @@ const listenOnNewMessages = createAsyncThunk(
         );
       }
     });
-    walletConnector.on('disconnect', error => {
-      if (error) {
-        throw error;
-      }
+
+    walletConnector.on('disconnect', (error, payloads) => {
+      const [args] = payloads.params;
+      const [_handler, executor] = getHandlerAndExecutor('disconnect');
+
+      executor(args);
+
+      dispatch(clearSession({ peerId }));
+
+      removeWalletConnectSessions(walletConnector.peerId);
     });
     return walletConnector;
   }
@@ -359,8 +372,16 @@ export const getSession = createAsyncThunk(
 export const clearSession = createAsyncThunk(
   'walletconnect/clearSession',
   ({ peerId }, { dispatch, getState }) => {
-    const { sessions } = getState().walletconnect;
-    const updatedSessions = { ...sessions, [peerId]: {} };
+    const { [peerId]: removedSession, ...sessions } =
+      getState().walletconnect.sessions;
+    const updatedSessions = { ...sessions };
+
+    const { walletConnector } = removedSession;
+
+    walletConnector.off('session_request');
+    walletConnector.off('call_request');
+    walletConnector.off('disconnect');
+
     dispatch(updateSessions(updatedSessions));
   }
 );
@@ -388,11 +409,13 @@ export const walletConnectRejectSession = createAsyncThunk(
   /**
    * @param { peerId: string } param
    */
-  ({ peerId }, { getState }) => {
+  ({ peerId, error }, { getState, dispatch }) => {
     const { sessions } = getState().walletconnect;
     const { walletConnector } = sessions[peerId];
 
-    walletConnector.rejectSession();
+    walletConnector.rejectSession(error || ERRORS.SESSION_REJECTED);
+
+    dispatch(clearSession({ peerId }));
   }
 );
 
