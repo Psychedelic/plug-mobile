@@ -36,6 +36,7 @@ const userPersistConfig = {
     'collections',
     'usingBiometrics',
     'biometricsAvailable',
+    'connectedApps',
   ],
 };
 

@@ -1,7 +1,7 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
 import { t } from 'i18next';
 import React, { useCallback, useRef, useState } from 'react';
 import { Image, Linking, Text, View } from 'react-native';
+import { Modalize } from 'react-native-modalize';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '@/components/buttons/Button';
@@ -9,26 +9,32 @@ import RainbowButton from '@/components/buttons/RainbowButton';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
 import useDisableBack from '@/hooks/useDisableBack';
+import { TNavigation } from '@/interfaces/navigation';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
+import {
+  walletConnectRejectSession,
+  walletConnectRemovePendingRedirect,
+} from '@/redux/slices/walletconnect';
 import Accounts from '@/screens/tabs/Profile/screens/Accounts';
 import { responseSessionRequest } from '@/utils/walletConnect';
 
 import UserShowcase from '../Flows/components/UserShowcase';
 import styles from './styles';
 
-function WCInitialConnection() {
+function WCInitialConnection({
+  route,
+  navigation,
+}: TNavigation<Routes.WALLET_CONNECT_INITIAL_CONNECTION>) {
   useDisableBack();
-  const { params } = useRoute();
-  const modalRef = useRef(null);
+  const modalRef = useRef<Modalize>(null);
   const dispatch = useDispatch();
-  const { reset } = useNavigation();
   const { currentWallet } = useSelector(state => state.keyring);
 
   const [connectLoading, setConnectLoading] = useState(false);
 
-  const { meta } = params;
-  const { dappName, dappUrl, dappScheme, peerId, dappImageUrl } = meta || {};
+  const { dappName, dappUrl, dappScheme, peerId, imageUrl, requestId } =
+    route?.params;
 
   const handleSuccess = useCallback(
     (success = false) => {
@@ -38,7 +44,7 @@ function WCInitialConnection() {
             {
               approved: success,
               accountAddress: currentWallet.principal,
-              ...meta,
+              ...route?.params,
             },
             dispatch
           ),
@@ -54,8 +60,10 @@ function WCInitialConnection() {
   };
 
   const onCancel = () => {
-    setConnectLoading(false);
     closeScreen();
+    setConnectLoading(false);
+    dispatch(walletConnectRejectSession({ peerId }));
+    dispatch(walletConnectRemovePendingRedirect({ requestId }));
   };
 
   const gotoDapp = () => {
@@ -63,23 +71,20 @@ function WCInitialConnection() {
   };
 
   const closeScreen = () => {
-    reset({
+    navigation.reset({
       index: 1,
       routes: [{ name: Routes.SWIPE_LAYOUT }],
     });
   };
 
-  const handleChangeWallet = () => {
-    modalRef?.current.open();
-  };
+  const handleChangeWallet = () => modalRef?.current?.open();
 
   return (
     <Container>
       <View style={styles.container}>
-        {/* Change to DappInfo */}
         <View style={styles.imageContainer}>
-          {dappImageUrl ? (
-            <Image source={{ uri: dappImageUrl }} style={styles.dappIcon} />
+          {imageUrl ? (
+            <Image source={{ uri: imageUrl }} style={styles.dappIcon} />
           ) : (
             <Icon name="connectIcon" style={styles.defaultIcon} />
           )}

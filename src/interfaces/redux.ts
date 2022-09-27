@@ -137,6 +137,7 @@ export interface ConnectedApp {
   canisterList: WCWhiteListItem[];
   imageUri: string;
   lastConection: Date;
+  account: string;
 }
 export interface UserState {
   assets: Asset[];
