@@ -1,4 +1,3 @@
-import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
 import React, { useCallback, useRef, useState } from 'react';
 import { Image, Linking, Text, View } from 'react-native';
@@ -10,8 +9,7 @@ import RainbowButton from '@/components/buttons/RainbowButton';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
 import useDisableBack from '@/hooks/useDisableBack';
-import { RootStackParamList } from '@/interfaces/navigation';
-import { WalletConnectCallRequest } from '@/interfaces/redux';
+import { TNavigation } from '@/interfaces/navigation';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 import {
@@ -24,17 +22,13 @@ import { responseSessionRequest } from '@/utils/walletConnect';
 import UserShowcase from '../Flows/components/UserShowcase';
 import styles from './styles';
 
-interface Props {
-  route: {
-    params: WalletConnectCallRequest;
-  };
-}
-
-function WCInitialConnection({ route }: Props) {
+function WCInitialConnection({
+  route,
+  navigation,
+}: TNavigation<Routes.WALLET_CONNECT_INITIAL_CONNECTION>) {
   useDisableBack();
   const modalRef = useRef<Modalize>(null);
   const dispatch = useDispatch();
-  const { reset } = useNavigation<NavigationProp<RootStackParamList>>();
   const { currentWallet } = useSelector(state => state.keyring);
 
   const [connectLoading, setConnectLoading] = useState(false);
@@ -77,7 +71,7 @@ function WCInitialConnection({ route }: Props) {
   };
 
   const closeScreen = () => {
-    reset({
+    navigation.reset({
       index: 1,
       routes: [{ name: Routes.SWIPE_LAYOUT }],
     });
