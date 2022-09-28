@@ -3,7 +3,12 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import KeyRing from '@/modules/keyring';
 
 import { generateMnemonic } from '../../utils/crypto';
-import { DEFAULT_ASSETS, getNewAccountData, resetStores } from '../utils';
+import {
+  DEFAULT_ASSETS,
+  formatWallets,
+  getNewAccountData,
+  resetStores,
+} from '../utils';
 import {
   getBalance,
   getContacts,
@@ -188,19 +193,24 @@ export const createSubaccount = createAsyncThunk(
 
 export const editSubaccount = createAsyncThunk(
   'keyring/editSubaccount',
-  async (params, { getState, dispatch }) => {
+  async (params, { getState }) => {
     try {
-      const { walletNumber, name, icon } = params;
+      const { walletId, name, icon } = params;
       const instance = KeyRing.getInstance();
       const { currentWallet, wallets } = getState().keyring;
-      const edited = await instance?.editPrincipal(walletNumber, {
+      await instance?.editPrincipal(walletId, {
         name,
         emoji: icon,
       });
-      if (edited && currentWallet?.walletNumber === walletNumber) {
-        dispatch(setCurrentWallet({ ...wallets[walletNumber], name, icon }));
-      }
-      return edited;
+
+      return {
+        wallet: {
+          ...wallets?.find(wallet => wallet.walletId === walletId),
+          name,
+          icon,
+        },
+        isCurrentWallet: currentWallet?.walletId === walletId,
+      };
     } catch (e) {
       console.log('editSubaccount', e);
     }
@@ -209,17 +219,17 @@ export const editSubaccount = createAsyncThunk(
 
 export const setCurrentPrincipal = createAsyncThunk(
   'keyring/setCurrentPrincipal',
-  async ({ walletNumber, icpPrice }, { dispatch }) => {
+  async ({ walletId, icpPrice }, { dispatch }) => {
     try {
       const instance = KeyRing.getInstance();
-      await instance?.setCurrentPrincipal(walletNumber);
+      await instance?.setCurrentPrincipal(walletId);
       await instance?.getICNSData();
       dispatch(setCollections([]));
       dispatch(setTransactions([]));
       dispatch(setBalance(DEFAULT_ASSETS));
       const response = await instance?.getState();
       const { wallets } = response || {};
-      const wallet = wallets[walletNumber];
+      const wallet = wallets[walletId];
       dispatch(setCurrentWallet(wallet || {}));
       dispatch(getBalance());
       dispatch(getNFTs());
@@ -232,18 +242,18 @@ export const setCurrentPrincipal = createAsyncThunk(
 
 export const getICNSData = createAsyncThunk(
   'keyring/getICNSData',
-  async (_, { getState, rejectWithValue, dispatch }) => {
+  async (_, { rejectWithValue, dispatch }) => {
     try {
-      const { keyring } = getState();
       const instance = KeyRing.getInstance();
       const icnsData = await instance?.getICNSData();
 
       // Set the updated currentWallet and wallets.
       const response = await instance?.getState();
-      const { wallets } = response || {};
-      const wallet = wallets[keyring.currentWallet?.walletNumber];
+      const { wallets, currentWalletId } = response;
+
+      const wallet = wallets[currentWalletId];
       dispatch(setWallets(wallets));
-      dispatch(setCurrentWallet(wallet || {}));
+      dispatch(setCurrentWallet(wallet));
 
       return icnsData;
     } catch (e) {
@@ -289,7 +299,7 @@ export const keyringSlice = createSlice({
       state.isPrelocked = action.payload;
     },
     setWallets: (state, action) => {
-      state.wallets = action.payload;
+      state.wallets = formatWallets(action.payload);
     },
     clear: () => {
       return { ...DEFAULT_STATE };
@@ -320,12 +330,13 @@ export const keyringSlice = createSlice({
         }
       })
       .addCase(editSubaccount.fulfilled, (state, action) => {
-        const account = action.payload;
-        if (account) {
-          state.wallets = state.wallets.map(a =>
-            a.walletNumber === account.walletNumber ? account : a
-          );
+        const { isCurrentWallet, wallet } = action.payload;
+        if (isCurrentWallet) {
+          state.currentWallet = wallet;
         }
+        state.wallets = state.wallets.map(w =>
+          w.walletId === wallet.walletId ? wallet : w
+        );
       })
       .addCase(login.rejected, state => {
         state.isUnlocked = false;

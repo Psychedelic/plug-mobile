@@ -232,3 +232,6 @@ export const migrateData = async () => {
   await AsyncStorage.setItem(KEYRING_STORAGE_KEY, JSON.stringify(oldState));
   return oldState;
 };
+
+export const formatWallets = wallets =>
+  Object.keys(wallets).map(key => wallets[key]);

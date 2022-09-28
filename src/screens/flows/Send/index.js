@@ -167,7 +167,10 @@ function Send({ modalRef, nft, token, onSuccess }) {
           canisterId: selectedToken?.canisterId,
           icpPrice,
           opts: {
-            fee: selectedToken.fee * Math.pow(10, selectedToken.decimals), // TODO: Change this to selectedToken.fee only when dab is ready
+            fee:
+              selectedToken?.fee && selectedToken?.decimals
+                ? selectedToken.fee * Math.pow(10, selectedToken.decimals)
+                : 0, // TODO: Change this to selectedToken.fee only when dab is ready
           },
         })
       )
