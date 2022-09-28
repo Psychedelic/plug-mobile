@@ -114,11 +114,10 @@ export interface Wallet {
   orderNumber: number;
   principal: string;
   accountId: string;
-  connectedApps: any[];
-  assets: any;
-  icon: string;
-  nftCollections: any[];
   icnsData?: ICNSData;
+  type: string;
+  keyPair: string;
+  icon?: string;
 }
 
 export interface KeyringState {

@@ -4,7 +4,11 @@ import { JELLY_CANISTER_ID } from '@/constants/canister';
 import { ENABLE_NFTS } from '@/constants/nfts';
 import KeyRing from '@/modules/keyring';
 import { getICPPrice } from '@/redux/slices/icp';
-import { formatAssets, parseToBigIntString } from '@/utils/currencies';
+import {
+  formatAsset,
+  formatAssets,
+  parseToBigIntString,
+} from '@/utils/currencies';
 import { recursiveParseBigint } from '@/utils/objects';
 
 import {
@@ -15,7 +19,6 @@ import {
   formatTransaction,
   TRANSACTION_STATUS,
 } from '../utils';
-import { setCurrentWallet, setWallets } from './keyring';
 
 const DEFAULT_STATE = {
   assets: DEFAULT_ASSETS,
@@ -109,25 +112,17 @@ export const getBalance = createAsyncThunk(
   'user/getBalance',
   async (params, { dispatch, rejectWithValue }) => {
     try {
-      const { refresh = true, subaccount } = params || {};
+      const { subaccount } = params || {};
       const instance = KeyRing.getInstance();
       const response = await instance?.getState();
-      const { wallets, currentWalletId } = response || {};
-      let assets = Object.values(wallets?.[currentWalletId]?.assets);
+      const { currentWalletId } = response || {};
+
       const selectedSubaccount = {
         subaccount: subaccount || currentWalletId,
       };
 
-      const shouldUpdate =
-        Object.values(assets)?.every(asset => !Number(asset.amount)) ||
-        Object.values(assets)?.some(asset => Number.isNaN(asset.amount)) ||
-        refresh;
+      const assets = await instance?.getBalances(selectedSubaccount);
 
-      if (shouldUpdate) {
-        assets = await instance?.getBalances(selectedSubaccount);
-      } else {
-        instance?.getBalances(selectedSubaccount);
-      }
       const icpPrice = await dispatch(getICPPrice()).unwrap();
       return formatAssets(assets, icpPrice);
     } catch (e) {
@@ -206,7 +201,7 @@ export const transferNFT = createAsyncThunk(
       }
 
       return {
-        collections: recursiveParseBigint(response),
+        nft,
         status: TRANSACTION_STATUS.success,
       };
     } catch (e) {
@@ -319,23 +314,24 @@ export const addCustomToken = createAsyncThunk(
    * @param {{token: DABToken, onSuccess: () => void}} param
    */
   async ({ token, onSuccess }, { getState, dispatch }) => {
-    const { icp } = getState();
+    const { icp, user } = getState();
     const instance = KeyRing.getInstance();
     const currentWalletId = instance?.currentWalletId;
     const { canisterId, standard, logo } = token;
     try {
-      const tokenList = await instance?.registerToken({
+      const registeredToken = await instance?.registerToken({
         canisterId,
         standard,
         subaccount: currentWalletId,
         logo,
       });
-      dispatch(setBalance(formatAssets(tokenList, icp.icpPrice)));
+      const assets = [
+        ...user.assets,
+        formatAsset(registeredToken, icp.icpPrice),
+      ];
 
-      const { wallets } = await instance?.getState();
-      dispatch(setWallets(wallets));
-      dispatch(setCurrentWallet(wallets[currentWalletId]));
       onSuccess?.();
+      return assets;
     } catch (error) {
       // TODO handle error
       console.log(error);
@@ -349,11 +345,14 @@ export const removeCustomToken = createAsyncThunk(
    * @param { canisterId: string } param
    */
   async (canisterId, { getState, rejectWithValue }) => {
-    const { icp } = getState();
+    const { user } = getState();
     const instance = KeyRing.getInstance();
     try {
-      const tokenList = await instance?.removeToken({ canisterId });
-      return formatAssets(tokenList, icp.icpPrice);
+      await instance?.removeToken({ canisterId });
+      const newAssets = user.assets.filter(
+        token => token.canisterId !== canisterId
+      );
+      return newAssets;
     } catch (e) {
       return rejectWithValue({ error: e.message });
     }
@@ -461,8 +460,19 @@ export const userSlice = createSlice({
         state.transactionsLoading = false;
       })
       .addCase(transferNFT.fulfilled, (state, action) => {
-        const { collections, status, error } = action.payload;
+        const { nft, status, error } = action.payload;
         if (!error) {
+          const collections = state.collections
+            .map(col =>
+              col.canisterId === nft.canister
+                ? {
+                    ...col,
+                    tokens: col.tokens.filter(tok => tok.index !== nft.index),
+                  }
+                : col
+            )
+            .filter(col => col.tokens.length);
+
           state.collections = collections;
           state.selectedNFT = {};
         }
@@ -470,9 +480,12 @@ export const userSlice = createSlice({
           status,
         };
       })
-      .addCase(removeCustomToken.fulfilled, (state, action) => {
-        state.assets = action.payload;
-      })
+      .addMatcher(
+        isAnyOf(addCustomToken.fulfilled, removeCustomToken.fulfilled),
+        (state, action) => {
+          state.assets = action.payload;
+        }
+      )
       .addMatcher(
         isAnyOf(
           getContacts.pending,
