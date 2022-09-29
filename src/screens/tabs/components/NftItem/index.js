@@ -11,7 +11,7 @@ export const ITEM_HEIGHT = ITEM_SIZE;
 
 function NftItem({ item, onOpen }) {
   const { url, canisterId, index, collection, name } = item;
-  const isICNS = collection.includes('ICNS');
+  const isICNS = collection?.includes('ICNS');
   const title = isICNS ? collection : `${collection} #${index}`;
   const [type, setType] = useState(null);
 

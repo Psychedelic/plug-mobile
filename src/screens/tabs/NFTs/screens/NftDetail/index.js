@@ -23,7 +23,7 @@ import Section from './components/Section';
 import styles from './styles';
 
 const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
-  const isICNS = selectedNFT?.collection.includes('ICNS');
+  const isICNS = selectedNFT?.collection?.includes('ICNS');
   const nftName = `${selectedNFT?.collection} #${selectedNFT?.index}`;
 
   const actionSheetRef = useRef(null);
