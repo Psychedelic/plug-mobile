@@ -19,7 +19,16 @@ import WalletHeader from '@/screens/tabs/components/WalletHeader';
 import NftDetail from './screens/NftDetail';
 import styles from './styles';
 
-const NFTs = () => {
+const formatCollections = collections =>
+  collections.flatMap(collection =>
+    collection?.tokens.map(token => ({
+      description: collection.description,
+      name: collection.name,
+      ...token,
+    }))
+  );
+
+function NFTs() {
   const { t } = useTranslation();
   const detailRef = useRef(null);
   const NFTListRef = useRef(null);
@@ -31,7 +40,7 @@ const NFTs = () => {
   );
 
   const nfts = useMemo(
-    () => collections?.flatMap(collection => collection?.tokens || []) || [],
+    () => formatCollections(collections) || [],
     [collections]
   );
 
@@ -93,6 +102,6 @@ const NFTs = () => {
       />
     </>
   );
-};
+}
 
 export default NFTs;

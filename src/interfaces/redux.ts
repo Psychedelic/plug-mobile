@@ -13,14 +13,10 @@ declare module 'react-redux' {
 }
 
 export interface CollectionToken {
-  id: string;
   index: number | string;
   canister: string;
   url: string;
   standard: string;
-  collection: string;
-  owner?: string;
-  metadata?: any;
 }
 
 export interface Collection {
