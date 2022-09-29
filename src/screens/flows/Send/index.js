@@ -148,11 +148,14 @@ function Send({ modalRef, nft, token, onSuccess }) {
   };
 
   const handleSendNFT = () => {
-    dispatch(transferNFT({ to, nft: selectedNft, icpPrice }))
-      .unwrap()
-      .then(() => {
-        setLoading(false);
-      });
+    dispatch(
+      transferNFT({
+        to,
+        nft: selectedNft,
+        icpPrice,
+        onEnd: () => setLoading(false),
+      })
+    );
   };
 
   const handleSendToken = () => {

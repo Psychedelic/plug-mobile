@@ -256,7 +256,7 @@ export const getICNSData = createAsyncThunk(
 
       return icnsData;
     } catch (e) {
-      rejectWithValue({ error: e.message });
+      return rejectWithValue({ error: e.message });
     }
   }
 );

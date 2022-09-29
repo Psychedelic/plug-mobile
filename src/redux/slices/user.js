@@ -47,19 +47,16 @@ export const sign = createAsyncThunk('user/sign', async params => {
 
 export const sendToken = createAsyncThunk(
   'user/sendToken',
-  async (params, { getState, dispatch }) => {
+  async (params, { rejectWithValue, getState, dispatch }) => {
     try {
       const { to, amount, canisterId, opts, icpPrice } = params;
-      const { keyring } = getState();
+      const { user } = getState();
       const instance = KeyRing.getInstance();
-      const { assets } = keyring.currentWallet;
-      const standard = assets[canisterId].token.standard;
-      const { token } = await instance?.getTokenInfo({
-        canisterId,
-        standard,
-      });
-      const { decimals } = token;
-      const parsedAmount = parseToBigIntString(amount, parseInt(decimals, 10));
+      const token = user.assets.find(asset => asset.canisterId === canisterId);
+      const parsedAmount = parseToBigIntString(
+        amount,
+        parseInt(token.decimals, 10)
+      );
       const { height, transactionId } = await instance?.send({
         to,
         amount: parsedAmount,
@@ -81,10 +78,10 @@ export const sendToken = createAsyncThunk(
       };
     } catch (e) {
       console.log('e', e);
-      return {
+      return rejectWithValue({
         error: e.message,
         status: TRANSACTION_STATUS.error,
-      };
+      });
     }
   }
 );
@@ -187,10 +184,9 @@ export const getTransactions = createAsyncThunk(
 
 export const transferNFT = createAsyncThunk(
   'user/transferNFT',
-  async (params, { dispatch }) => {
+  async (params, { rejectWithValue, dispatch }) => {
     try {
-      const { to, nft, icpPrice } = params;
-
+      const { to, nft, icpPrice, onEnd } = params;
       const instance = KeyRing.getInstance();
       const response = await instance?.transferNFT({
         to,
@@ -199,17 +195,18 @@ export const transferNFT = createAsyncThunk(
       if (response) {
         dispatch(getTransactions({ icpPrice }));
       }
-
+      onEnd?.();
       return {
         nft,
         status: TRANSACTION_STATUS.success,
       };
     } catch (e) {
       console.trace(e.stack);
-      return {
+      params?.onEnd?.();
+      return rejectWithValue({
         error: e.message,
         status: TRANSACTION_STATUS.error,
-      };
+      });
     }
   }
 );
@@ -223,7 +220,7 @@ export const getContacts = createAsyncThunk(
       return res?.map(formatContact);
     } catch (e) {
       console.log('Error getting contacts:', e);
-      rejectWithValue({ error: e.message });
+      return rejectWithValue({ error: e.message });
     }
   }
 );
@@ -244,7 +241,7 @@ export const addContact = createAsyncThunk(
     } catch (e) {
       // TODO: handle this error
       console.log('Error adding contacts:', e);
-      rejectWithValue({ error: e.message });
+      return rejectWithValue({ error: e.message });
     }
   }
 );
@@ -266,7 +263,7 @@ export const removeContact = createAsyncThunk(
     } catch (e) {
       // TODO: handle this error
       console.log('Error removing contact:', e);
-      rejectWithValue({ error: e.message });
+      return rejectWithValue({ error: e.message });
     }
   }
 );
@@ -299,11 +296,11 @@ export const editContact = createAsyncThunk(
         );
       } else {
         // TODO: handle this error
-        rejectWithValue({ error: 'Error editing contact' });
+        return rejectWithValue({ error: 'Error editing contact' });
       }
     } catch (e) {
       // TODO: handle this error
-      rejectWithValue({ error: e.message });
+      return rejectWithValue({ error: e.message });
     }
   }
 );
@@ -416,9 +413,6 @@ export const userSlice = createSlice({
       .addCase(getContacts.fulfilled, (state, action) => {
         state.contacts = action.payload;
       })
-      .addCase(sendToken.fulfilled, (state, action) => {
-        state.transaction = action.payload;
-      })
       .addCase(burnXtc.fulfilled, (state, action) => {
         state.transaction = action.payload;
       })
@@ -460,26 +454,31 @@ export const userSlice = createSlice({
         state.transactionsLoading = false;
       })
       .addCase(transferNFT.fulfilled, (state, action) => {
-        const { nft, status, error } = action.payload;
-        if (!error) {
-          const collections = state.collections
-            .map(col =>
-              col.canisterId === nft.canister
-                ? {
-                    ...col,
-                    tokens: col.tokens.filter(tok => tok.index !== nft.index),
-                  }
-                : col
-            )
-            .filter(col => col.tokens.length);
+        const { nft, status } = action.payload;
+        const collections = state.collections
+          .map(col =>
+            col.canisterId === nft.canister
+              ? {
+                  ...col,
+                  tokens: col.tokens.filter(tok => tok.index !== nft.index),
+                }
+              : col
+          )
+          .filter(col => col.tokens.length);
 
-          state.collections = collections;
-          state.selectedNFT = {};
-        }
-        state.transaction = {
-          status,
-        };
+        state.collections = collections;
+        state.selectedNFT = {};
+        state.transaction = { status };
       })
+      .addCase(transferNFT.rejected, (state, action) => {
+        state.transaction = action.payload;
+      })
+      .addMatcher(
+        isAnyOf(sendToken.fulfilled, sendToken.rejected),
+        (state, action) => {
+          state.transaction = action.payload;
+        }
+      )
       .addMatcher(
         isAnyOf(addCustomToken.fulfilled, removeCustomToken.fulfilled),
         (state, action) => {
