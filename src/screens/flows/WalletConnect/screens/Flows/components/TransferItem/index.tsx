@@ -21,8 +21,6 @@ interface Props {
 }
 
 function TransferItem({ unknown, token }: Props) {
-  console.log('TOKEN ICON', token.icon);
-
   return (
     <View style={styles.itemContainer}>
       <View style={styles.leftContainer}>

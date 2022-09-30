@@ -65,12 +65,10 @@ function RequestCall(props: Props) {
           canisterId,
           standard: dabToken?.standard,
         });
-        console.log('TokenInfo', tokenInfo);
         const amount = getAssetAmount(
           { decodedArguments, methodName },
           tokenInfo.token.standard
         );
-        console.log('amount', amount);
         setToken({
           icon: tokenInfo.token.logo!,
           amount: amount,
