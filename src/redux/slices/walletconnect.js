@@ -11,13 +11,14 @@ import {
   removeWalletConnectSessions,
   saveWalletConnectSession,
 } from '@/services/WalletConnect';
-import { emmitEvent, Events } from '@/utils/events';
 import { delay } from '@/utils/utilities';
 import {
   callRequestHandlerFactory,
   needSign,
   sessionRequestHandler,
 } from '@/utils/walletConnect';
+
+import { closeAllModals } from './alert';
 
 const getNativeOptions = async () => ({
   clientMeta: PLUG_DESCRIPTION,
@@ -97,7 +98,7 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
               clearTimeout(timeoutObj.timeout);
               dispatch(removeBridgeTimeout(requestId));
             }
-            emmitEvent(Events.CLOSE_ALL_MODALS);
+            dispatch(closeAllModals());
             await dispatch(
               setSession({
                 sessionInfo: {
@@ -165,7 +166,7 @@ const listenOnNewMessages = createAsyncThunk(
         dispatch(removeBridgeTimeout(requestId));
       }
       try {
-        emmitEvent(Events.CLOSE_ALL_MODALS);
+        dispatch(closeAllModals());
         const { pendingCallRequests } = getState().walletconnect;
         if (!pendingCallRequests[requestId]) {
           const [handler, executor] = getHandlerAndExecutor(payload.method);
@@ -242,9 +243,9 @@ const listenOnNewMessages = createAsyncThunk(
       }
     });
 
-    walletConnector.on('disconnect', (error, payloads) => {
+    walletConnector.on('disconnect', (_, payloads) => {
       const [args] = payloads.params;
-      const [_handler, executor] = getHandlerAndExecutor('disconnect');
+      const executor = getHandlerAndExecutor('disconnect')[1];
 
       executor(args);
 
