@@ -4,15 +4,16 @@ import { View } from 'react-native';
 import NftDisplayer from '@/commonComponents/NftDisplayer';
 import Text from '@/commonComponents/Text';
 import Touchable from '@/commonComponents/Touchable';
+import { ICNS_CANISTER_ID } from '@/constants/canister';
 import useGetType from '@/hooks/useGetType';
 
 import styles, { ITEM_SIZE } from './styles';
 export const ITEM_HEIGHT = ITEM_SIZE;
 
 function NftItem({ item, onOpen }) {
-  const { url, canisterId, index, collection, name } = item;
-  const isICNS = collection.includes('ICNS');
-  const title = isICNS ? collection : `${collection} #${index}`;
+  const { url, canister, index, name, collectionName } = item;
+  const isICNS = canister === ICNS_CANISTER_ID;
+  const title = isICNS ? collectionName : `${collectionName} #${index}`;
   const [type, setType] = useState(null);
 
   useGetType(url, setType);
@@ -22,7 +23,7 @@ function NftItem({ item, onOpen }) {
   };
 
   return (
-    <View key={`${canisterId}_${index}`} style={styles.item}>
+    <View key={`${canister}_${index}`} style={styles.item}>
       <Touchable onPress={handleOnPress} style={styles.touchable}>
         <NftDisplayer
           ICNSName={isICNS ? name : undefined}

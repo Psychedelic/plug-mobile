@@ -15,11 +15,11 @@ import { Container, Separator } from '@/layout';
 import { getNFTs } from '@/redux/slices/user';
 import NftItem, { ITEM_HEIGHT } from '@/screens/tabs/components/NftItem';
 import WalletHeader from '@/screens/tabs/components/WalletHeader';
+import { formatCollections } from '@/utils/assets';
 
 import NftDetail from './screens/NftDetail';
 import styles from './styles';
-
-const NFTs = () => {
+function NFTs() {
   const { t } = useTranslation();
   const detailRef = useRef(null);
   const NFTListRef = useRef(null);
@@ -31,7 +31,7 @@ const NFTs = () => {
   );
 
   const nfts = useMemo(
-    () => collections?.flatMap(collection => collection?.tokens || []) || [],
+    () => formatCollections(collections) || [],
     [collections]
   );
 
@@ -93,6 +93,6 @@ const NFTs = () => {
       />
     </>
   );
-};
+}
 
 export default NFTs;

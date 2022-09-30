@@ -58,7 +58,6 @@ const ReviewSend = ({
   const isError = transaction?.status === TRANSACTION_STATUS.error;
   const { icpPrice } = useSelector(state => state.icp);
   const feePrice = getFeePrice(token?.symbol, icpPrice, token?.fee);
-
   const handleSaveContact = () => {
     saveContactRef.current?.open();
   };
@@ -132,7 +131,7 @@ const ReviewSend = ({
           <Row style={styles.row}>
             <Column>
               <Text style={styles.title}>{`#${nft.index}`}</Text>
-              <Text type="subtitle3">{nft.name || `${nft.collection}`}</Text>
+              <Text type="subtitle3">{nft.collectionName}</Text>
             </Column>
             <NftDisplayer url={nft.url} type={nftType} isSend />
           </Row>
@@ -163,7 +162,7 @@ const ReviewSend = ({
               </>
             )}
           </Column>
-          <UserIcon size="medium" />
+          <UserIcon icon={selectedContact?.image} size="medium" />
         </Row>
         {token && (
           <Row style={styles.row}>
