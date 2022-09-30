@@ -11,7 +11,7 @@ import {
   removeWalletConnectSessions,
   saveWalletConnectSession,
 } from '@/services/WalletConnect';
-import { emmitEvent, Events } from '@/utils/events';
+// import { emmitEvent, Events } from '@/utils/events';
 import { delay } from '@/utils/utilities';
 import {
   callRequestHandlerFactory,
@@ -62,6 +62,7 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
   'walletconnect/onSessionRequest',
   async ({ uri, requestId }, { dispatch, getState }) => {
     try {
+      console.log('URI', uri);
       const { clientMeta } = await getNativeOptions();
       const isPrelocked = () => getState().keyring.isPrelocked;
       const isUnlocked = () => getState().keyring.isUnlocked;
@@ -97,7 +98,9 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
               clearTimeout(timeoutObj.timeout);
               dispatch(removeBridgeTimeout(requestId));
             }
-            emmitEvent(Events.CLOSE_ALL_MODALS);
+
+            console.log('session_request', error, payload);
+            // emmitEvent(Events.CLOSE_ALL_MODALS);
             await dispatch(
               setSession({
                 sessionInfo: {
@@ -165,7 +168,7 @@ const listenOnNewMessages = createAsyncThunk(
         dispatch(removeBridgeTimeout(requestId));
       }
       try {
-        emmitEvent(Events.CLOSE_ALL_MODALS);
+        // emmitEvent(Events.CLOSE_ALL_MODALS);
         const { pendingCallRequests } = getState().walletconnect;
         if (!pendingCallRequests[requestId]) {
           const [handler, executor] = getHandlerAndExecutor(payload.method);
@@ -435,33 +438,6 @@ export const addBridgeTimeout = createAsyncThunk(
     };
 
     await dispatch(updateBridgeTimeout(updatedTimeouts));
-  }
-);
-
-export const removeBridgeTimeout = createAsyncThunk(
-  'walletconnect/removeBridgeTimeout',
-  ({ requestId }, { dispatch, getState }) => {
-    const { bridgeTimeouts } = getState().walletconnect;
-    const { [requestId]: timeout, ...updatedTimeouts } = bridgeTimeouts;
-    dispatch(updateBridgeTimeout(updatedTimeouts));
-  }
-);
-
-export const addBridgeTimeout = createAsyncThunk(
-  'walletconnect/addBridgeTimeout',
-  /**  @param params { requestId: string, tiemout: number } */
-  ({ requestId, timeout }, { dispatch, getState }) => {
-    const { bridgeTimeouts } = getState().walletconnect;
-
-    if (bridgeTimeouts[requestId].pending) {
-      clearTimeout(bridgeTimeouts[requestId]?.timeout);
-    }
-
-    const updatedTimeouts = {
-      ...bridgeTimeouts,
-      [requestId]: { timeout, pending: true },
-    };
-    dispatch(updateBridgeTimeout(updatedTimeouts));
   }
 );
 

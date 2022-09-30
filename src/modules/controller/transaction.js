@@ -266,13 +266,13 @@ const TransactionModule = (dispatch, getState) => {
       }
     },
     executor: async (opts, { approve, transactions, metadata }) => {
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
 
       if (!approve) {
         return { error: ERRORS.TRANSACTION_REJECTED };
       }
 
-      if (isIos || true) {
+      if (isIos) {
         const agent = await keyring.getAgent();
         const host = agent._host;
         const { batchTxId, derPublicKey } = await addBatchTransaction(
@@ -292,6 +292,7 @@ const TransactionModule = (dispatch, getState) => {
 
         const delegationChain = await keyring.delegateIdentity({
           to: bufferPublicKey,
+          targets: transactions.map(tx => tx.canisterId),
         });
 
         console.log('chainDelegation', delegationChain);

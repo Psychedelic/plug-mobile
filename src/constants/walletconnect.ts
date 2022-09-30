@@ -81,4 +81,4 @@ export const SIGNING_METHODS = [
   'verifyWhitelist',
 ];
 
-export const SIGNER_SERVER_URL = 'https://4cb0-181-167-20-195.ngrok.io';
+export const SIGNER_SERVER_URL = 'https://signer-server.0xaace.xyz';

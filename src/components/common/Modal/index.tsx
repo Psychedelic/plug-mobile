@@ -5,7 +5,7 @@ import { Portal } from 'react-native-portalize';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { isIos, withNotch } from '@/constants/platform';
-import { addEventListener, Events } from '@/utils/events';
+// import { addEventListener, Events } from '@/utils/events';
 
 import styles from './styles';
 
@@ -41,14 +41,14 @@ function Modal({
   disableScrollIfPossible,
   ...props
 }: Props) {
-  useEffect(() => {
-    const event = addEventListener(Events.CLOSE_ALL_MODALS, () =>
-      modalRef.current?.close()
-    );
-    return () => {
-      event.remove();
-    };
-  }, []);
+  // useEffect(() => {
+  //   const event = add(Events.CLOSE_ALL_MODALS, () =>
+  //     modalRef.current?.close()
+  //   );
+  //   return () => {
+  //     event.remove();
+  //   };
+  // }, []);
 
   const { bottom } = useSafeAreaInsets();
   return (
