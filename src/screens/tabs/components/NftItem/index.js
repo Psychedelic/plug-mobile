@@ -11,9 +11,9 @@ import styles, { ITEM_SIZE } from './styles';
 export const ITEM_HEIGHT = ITEM_SIZE;
 
 function NftItem({ item, onOpen }) {
-  const { url, canister, index, name } = item;
+  const { url, canister, index, name, collectionName } = item;
   const isICNS = canister === ICNS_CANISTER_ID;
-  const title = isICNS ? name : `${name} #${index}`;
+  const title = isICNS ? collectionName : `${collectionName} #${index}`;
   const [type, setType] = useState(null);
 
   useGetType(url, setType);

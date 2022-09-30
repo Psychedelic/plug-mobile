@@ -15,19 +15,10 @@ import { Container, Separator } from '@/layout';
 import { getNFTs } from '@/redux/slices/user';
 import NftItem, { ITEM_HEIGHT } from '@/screens/tabs/components/NftItem';
 import WalletHeader from '@/screens/tabs/components/WalletHeader';
+import { formatCollections } from '@/utils/assets';
 
 import NftDetail from './screens/NftDetail';
 import styles from './styles';
-
-const formatCollections = collections =>
-  collections.flatMap(collection =>
-    collection?.tokens.map(token => ({
-      description: collection.description,
-      name: collection.name,
-      ...token,
-    }))
-  );
-
 function NFTs() {
   const { t } = useTranslation();
   const detailRef = useRef(null);
