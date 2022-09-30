@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { getTokenPrices } from '@/constants/assets';
-import { State } from '@/interfaces/redux';
 import { WallectConnectFlowsData } from '@/interfaces/walletConnect';
 import { getUsdAvailableAmount } from '@/screens/flows/Send/utils';
 
@@ -15,7 +14,7 @@ interface Props extends WallectConnectFlowsData {
 
 function RequestTransfer({ canisterId, args }: Props) {
   const assetData = getAssetData(canisterId);
-  const { icpPrice } = useSelector((state: State) => state.icp);
+  const { icpPrice } = useSelector(state => state.icp);
 
   const amount = args.amount
     ? args.amount / ICP_DIVISOR

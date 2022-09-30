@@ -7,7 +7,6 @@ import { getTokenPrices } from '@/constants/assets';
 import { FontStyles } from '@/constants/theme';
 import { TRUST_AND_SECURITY_URL } from '@/constants/urls';
 import { Nullable } from '@/interfaces/general';
-import { State } from '@/interfaces/redux';
 import {
   WallectConnectFlowsData,
   WCWhiteListItem,
@@ -41,7 +40,7 @@ interface Props extends WallectConnectFlowsData {
 function RequestCall(props: Props) {
   const canisterInfo = props.canisterInfo;
   const { shouldWarn, canisterId, methodName, decodedArguments } = props.args;
-  const { icpPrice } = useSelector((state: State) => state.icp);
+  const { icpPrice } = useSelector(state => state.icp);
   const formattedMethodName = addSpacesAndCapitalize(methodName);
   const [token, setToken] = useState<Nullable<TransferToken>>(null);
   const [nftId, setNFTId] = useState<Nullable<string>>(null);

@@ -8,6 +8,7 @@ import { KEYRING_STORAGE_KEY } from '@/constants/keyring';
 import { WALLETCONNECT_STORAGE_KEY } from '@/constants/walletconnect';
 
 import Reactotron from '../config/reactotron';
+import AlertReducer from './slices/alert';
 import IcpReducer from './slices/icp';
 import KeyringReducer from './slices/keyring';
 import UserReducer from './slices/user';
@@ -47,6 +48,7 @@ const rootReducer = combineReducers({
   icp: persistReducer(icpPersistConfig, IcpReducer),
   user: persistReducer(userPersistConfig, UserReducer),
   walletconnect: WalletConnectReducer,
+  alert: AlertReducer,
 });
 
 const middlewares = [thunk];

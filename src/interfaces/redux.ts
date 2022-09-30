@@ -12,6 +12,8 @@ declare module 'react-redux' {
     icp: IcpState;
     keyring: KeyringState;
     user: UserState;
+    alert: AlertState;
+    walletconnect: WalletConnectState;
   }
 }
 
@@ -197,9 +199,6 @@ export interface WalletConnectState {
   };
 }
 
-export interface State {
-  icp: IcpState;
-  keyring: KeyringState;
-  user: UserState;
-  walletconnect: WalletConnectState;
+export interface AlertState {
+  closeAllModals: boolean;
 }
