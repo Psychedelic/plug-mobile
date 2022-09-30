@@ -13,6 +13,7 @@ declare module 'react-redux' {
     keyring: KeyringState;
     user: UserState;
     alert: AlertState;
+    walletconnect: WalletConnectState;
   }
 }
 
