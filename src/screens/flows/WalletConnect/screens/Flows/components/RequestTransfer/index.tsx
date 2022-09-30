@@ -1,9 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { getTokenPrices } from '@/constants/assets';
 import { WallectConnectFlowsData } from '@/interfaces/walletConnect';
-import { getUsdAvailableAmount } from '@/screens/flows/Send/utils';
+import { formatAssetBySymbol } from '@/utils/currencies';
 
 import { getAssetData, ICP_DIVISOR } from '../../utils';
 import TransferItem from '../TransferItem';
@@ -26,10 +25,9 @@ function RequestTransfer({ canisterId, args }: Props) {
     icon: assetData?.icon!,
     amount: amount,
     symbol: assetData?.symbol!,
-    usdValue: getUsdAvailableAmount(
-      amount,
-      getTokenPrices(assetData?.symbol!, icpPrice)
-    )!,
+    usdValue:
+      formatAssetBySymbol(amount.toString(), assetData?.symbol!, icpPrice)
+        .value || null,
   };
 
   return <TransferItem token={token} />;

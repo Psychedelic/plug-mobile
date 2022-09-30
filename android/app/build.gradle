@@ -144,7 +144,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 17
-        versionName "0.2.1-alpha"
+        versionName "0.2.1-alpha.2"
         resValue "string", "build_config_package", "co.psychedelic.plug"
     }
     splits {

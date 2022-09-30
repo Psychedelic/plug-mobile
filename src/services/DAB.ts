@@ -24,6 +24,13 @@ export const getDabTokens = async (): Promise<DABToken[]> => {
   }));
 };
 
+export const getDabToken = async (
+  canisterId: string
+): Promise<DABToken | undefined> => {
+  const tokens = await getDabTokens();
+  return tokens.find(token => token.canisterId.toString() === canisterId);
+};
+
 export const getDabNfts = async () => {
   const agent = new HttpAgent({ fetch, host: IC_URL_HOST });
   return getAllNFTS({ agent });
