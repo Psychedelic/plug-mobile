@@ -12,6 +12,7 @@ declare module 'react-redux' {
     icp: IcpState;
     keyring: KeyringState;
     user: UserState;
+    alert: AlertState;
   }
 }
 
