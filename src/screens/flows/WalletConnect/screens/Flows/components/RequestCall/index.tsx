@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Image, Linking, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import { getTokenPrices } from '@/constants/assets';
 import { FontStyles } from '@/constants/theme';
 import { TRUST_AND_SECURITY_URL } from '@/constants/urls';
 import { Nullable } from '@/interfaces/general';
@@ -11,18 +10,14 @@ import {
   WallectConnectFlowsData,
   WCWhiteListItem,
 } from '@/interfaces/walletConnect';
-import { getUsdAvailableAmount } from '@/screens/flows/Send/utils';
-import { getDabNfts } from '@/services/DAB';
+import KeyRing from '@/modules/keyring';
+import { getDabNfts, getDabToken } from '@/services/DAB';
+import { formatAssetBySymbol } from '@/utils/currencies';
 import { addSpacesAndCapitalize } from '@/utils/strings';
 
 // TODO: Pass this .png to .svg after 0.2.0 merge
 import warningIcon from '../../assets/warningIcon.png';
-import {
-  getAssetAmount,
-  getAssetData,
-  getNFTId,
-  TRANSFER_METHOD_NAMES,
-} from '../../utils';
+import { getAssetAmount, getNFTId, TRANSFER_METHOD_NAMES } from '../../utils';
 import ActionItem from '../ActionItem';
 import TransferItem from '../TransferItem';
 import styles from './styles';
@@ -31,7 +26,7 @@ export interface TransferToken {
   icon: string;
   amount: number | string;
   symbol: string;
-  usdValue: number | string;
+  usdValue: number | string | null;
 }
 interface Props extends WallectConnectFlowsData {
   canisterInfo: WCWhiteListItem;
@@ -44,9 +39,9 @@ function RequestCall(props: Props) {
   const formattedMethodName = addSpacesAndCapitalize(methodName);
   const [token, setToken] = useState<Nullable<TransferToken>>(null);
   const [nftId, setNFTId] = useState<Nullable<string>>(null);
+  const [unknown, setUnknown] = useState(false);
   const isTransfer = TRANSFER_METHOD_NAMES.includes(methodName);
-  const isLoadingTransfer = isTransfer && !token && !nftId;
-  const assetData = getAssetData(canisterId);
+  const isLoadingTransfer = isTransfer && !token && !nftId && !unknown;
 
   const goToLearnMore = () => Linking.openURL(TRUST_AND_SECURITY_URL);
 
@@ -57,29 +52,39 @@ function RequestCall(props: Props) {
   };
 
   useEffect(() => {
-    if (isTransfer) {
-      getNFTCanisters().then(ids => {
-        if (!assetData && ids.includes(canisterId)) {
-          // Is NFT-Transfer
-          setNFTId(getNFTId({ methodName, decodedArguments }));
-        } else if (assetData) {
-          // Is TOKEN-Transfer
-          const amount = getAssetAmount(
-            { decodedArguments, methodName },
-            assetData.standard
-          );
-          setToken({
-            icon: assetData?.icon!,
-            amount: amount,
-            symbol: assetData?.symbol!,
-            usdValue: getUsdAvailableAmount(
-              amount,
-              getTokenPrices(assetData?.symbol!, icpPrice)
-            )!,
-          });
+    const getInfo = async () => {
+      const nftIds = await getNFTCanisters();
+      if (nftIds?.includes(canisterId)) {
+        setNFTId(getNFTId({ methodName, decodedArguments }));
+      } else {
+        const dabToken = await getDabToken(canisterId);
+        if (!dabToken) {
+          setUnknown(true);
         }
-      });
-    }
+        const tokenInfo = await KeyRing.getInstance().getTokenInfo({
+          canisterId,
+          standard: dabToken?.standard,
+        });
+        console.log('TokenInfo', tokenInfo);
+        const amount = getAssetAmount(
+          { decodedArguments, methodName },
+          tokenInfo.token.standard
+        );
+        console.log('amount', amount);
+        setToken({
+          icon: tokenInfo.token.logo!,
+          amount: amount,
+          symbol: tokenInfo.token.symbol!,
+          usdValue:
+            formatAssetBySymbol(
+              amount.toString(),
+              tokenInfo.token.symbol,
+              icpPrice
+            ).value || null,
+        });
+      }
+    };
+    getInfo();
   }, []);
 
   return (
@@ -89,7 +94,7 @@ function RequestCall(props: Props) {
           <ActivityIndicator size="large" color="white" />
         ) : token ? (
           <>
-            <TransferItem unknown={shouldWarn} token={token} />
+            <TransferItem unknown={shouldWarn || unknown} token={token} />
             {shouldWarn && (
               <View style={styles.warningContainer}>
                 <View style={styles.unknownContainer}>

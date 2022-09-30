@@ -21,6 +21,12 @@ export default StyleSheet.create({
     resizeMode: 'contain',
     marginRight: 5,
   },
+  logo: {
+    height: 20,
+    width: 20,
+    marginRight: 5,
+    borderRadius: 100,
+  },
   assetAmountContainer: {
     flexDirection: 'row',
     alignItems: 'center',
