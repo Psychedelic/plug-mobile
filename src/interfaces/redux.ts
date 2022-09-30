@@ -18,14 +18,10 @@ declare module 'react-redux' {
 }
 
 export interface CollectionToken {
-  id: string;
   index: number | string;
   canister: string;
   url: string;
   standard: string;
-  collection: string;
-  owner?: string;
-  metadata?: any;
 }
 
 export interface Collection {
@@ -115,7 +111,8 @@ export interface IcpState {
 }
 export interface Wallet {
   name: string;
-  walletNumber: number;
+  walletId: string;
+  orderNumber: number;
   principal: string;
   accountId: string;
   connectedApps: any[];

@@ -1,7 +1,6 @@
 import { t } from 'i18next';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Linking, Platform, View } from 'react-native';
-import { useSelector } from 'react-redux';
 
 import Badge from '@/commonComponents/Badge';
 import Header from '@/commonComponents/Header';
@@ -11,10 +10,12 @@ import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import ActionSheet from '@/components/common/ActionSheet';
 import Text from '@/components/common/Text';
+import { ICNS_CANISTER_ID } from '@/constants/canister';
 import { FontStyles } from '@/constants/theme';
 import DownloadIcon from '@/icons/svg/material/Download.svg';
 import ViewIcon from '@/icons/svg/material/View.svg';
 import Send from '@/screens/flows/Send';
+import { getNFTDetails } from '@/services/DAB';
 import { downloadFile } from '@/utils/filesystem';
 import { getAbsoluteType } from '@/utils/fileTypes';
 import { deleteWhiteSpaces } from '@/utils/strings';
@@ -22,16 +23,33 @@ import { deleteWhiteSpaces } from '@/utils/strings';
 import Section from './components/Section';
 import styles from './styles';
 
-const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
-  const isICNS = selectedNFT?.collection.includes('ICNS');
-  const nftName = `${selectedNFT?.collection} #${selectedNFT?.index}`;
+function NftDetail({ modalRef, handleClose, selectedNFT, ...props }) {
+  const {
+    url,
+    canister,
+    index,
+    standard,
+    name,
+    icon,
+    collectionDescription,
+    type,
+    collectionName,
+  } = selectedNFT || {};
+  const isICNS = canister === ICNS_CANISTER_ID;
+  const nftName = `${collectionName} #${index}`;
 
   const actionSheetRef = useRef(null);
-  const userCollection = useSelector(state => state.user.collections) || [];
   const [isDownloading, setIsDownloading] = useState(false);
-  const selectedCollection = userCollection.find(
-    collection => collection.name === selectedNFT?.collection
-  );
+  const [nftDetails, setNFTDetails] = useState(null);
+
+  useEffect(() => {
+    if (selectedNFT && !isICNS) {
+      getNFTDetails({ index, canister, standard }).then(details =>
+        setNFTDetails(details)
+      );
+    }
+    return () => setNFTDetails(null);
+  }, [selectedNFT]);
 
   const sendRef = useRef(null);
 
@@ -82,20 +100,16 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
         <Header
           center={
             <Text type="subtitle2">
-              {isICNS
-                ? selectedNFT?.name
-                : selectedNFT?.index
-                ? `#${selectedNFT?.index}`
-                : ''}
+              {isICNS ? name : index ? `#${index}` : ''}
             </Text>
           }
         />
         <View style={styles.content}>
           <View style={styles.nftDisplayerContainer}>
             <NftDisplayer
-              ICNSName={isICNS ? selectedNFT?.name : undefined}
-              url={selectedNFT?.url}
-              type={selectedNFT?.type}
+              ICNSName={isICNS ? name : undefined}
+              url={url}
+              type={type}
               style={styles.video}
               isDetailView
             />
@@ -119,24 +133,17 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
           <Section
             title={t('nftDetail.collectionTitle')}
             style={styles.collectionSection}>
-            <Badge
-              value={selectedNFT?.collection}
-              icon={selectedCollection?.icon}
-            />
-            <Badge
-              value={isICNS ? selectedNFT?.name : `#${selectedNFT?.index}`}
-            />
+            <Badge value={collectionName} icon={icon} />
+            <Badge value={isICNS ? name : `#${index}`} />
           </Section>
-          {!!selectedCollection?.description && (
+          {!!collectionDescription && (
             <Section title={t('nftDetail.descriptionTitle')}>
-              <Text style={FontStyles.NormalGray}>
-                {selectedCollection?.description}
-              </Text>
+              <Text style={FontStyles.NormalGray}>{collectionDescription}</Text>
             </Section>
           )}
-          {!!selectedNFT?.metadata?.properties?.length && (
+          {!!nftDetails?.metadata?.properties?.length && (
             <Section title={t('nftDetail.attributesTitle')}>
-              {selectedNFT?.metadata?.properties?.map(prop => (
+              {nftDetails.metadata.properties.map(prop => (
                 <Badge key={prop.name} name={prop.name} value={prop.value} />
               ))}
             </Section>
@@ -155,6 +162,6 @@ const NftDetail = ({ modalRef, handleClose, selectedNFT, ...props }) => {
       />
     </>
   );
-};
+}
 
 export default NftDetail;
