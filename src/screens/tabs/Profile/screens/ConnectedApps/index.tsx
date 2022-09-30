@@ -13,7 +13,7 @@ import {
 } from '@/components/common';
 import DeleteIcon from '@/icons/svg/material/Delete.svg';
 import ViewIcon from '@/icons/svg/material/View.svg';
-import { ConnectedApp, State } from '@/interfaces/redux';
+import { ConnectedApp } from '@/interfaces/redux';
 import { removeConnectedApp } from '@/redux/slices/user';
 import { formatLongDate } from '@/utils/dates';
 
@@ -27,11 +27,11 @@ interface Props {
 function ConnectedApps({ modalRef }: Props) {
   const dispatch = useDispatch();
   const principalId = useSelector(
-    (state: State) => state.keyring.currentWallet.principal
+    state => state.keyring.currentWallet.principal
   );
-  const connectedApps = useSelector(
-    (state: State) => state.user.connectedApps
-  )?.filter(app => app.account === principalId);
+  const connectedApps = useSelector(state => state.user.connectedApps)?.filter(
+    app => app.account === principalId
+  );
 
   const [selectedApp, setSelectedApp] = useState<ConnectedApp>();
   const [actionSheetData, setActionSheetData] = useState<any>();

@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ERRORS } from '@/constants/walletconnect';
 import useDisableBack from '@/hooks/useDisableBack';
 import { RootStackParamList } from '@/interfaces/navigation';
-import { State } from '@/interfaces/redux';
 import {
   FlowsParams,
   WCFlowTypes,
@@ -63,10 +62,10 @@ function WCFlows() {
   } = (params || {}) as FlowsParams;
 
   const request = useSelector(
-    (state: State) => state.walletconnect.pendingCallRequests[requestId]
+    state => state.walletconnect.pendingCallRequests[requestId]
   );
   const principalId = useSelector(
-    (state: State) => state.keyring?.currentWallet?.principal
+    state => state.keyring?.currentWallet?.principal
   );
   const DisplayComponent = useMemo(() => COMPONENTS[type], [type]);
   const isTransfer =

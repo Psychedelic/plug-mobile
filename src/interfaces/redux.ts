@@ -202,11 +202,3 @@ export interface WalletConnectState {
 export interface AlertState {
   closeAllModals: boolean;
 }
-
-export interface State {
-  icp: IcpState;
-  keyring: KeyringState;
-  user: UserState;
-  walletconnect: WalletConnectState;
-  alert: AlertState;
-}
