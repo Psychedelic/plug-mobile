@@ -1,6 +1,7 @@
 // import { name as appName } from './app.json';
 import 'text-encoding-polyfill';
 import './shim';
+import 'react-native-url-polyfill/auto';
 
 import { AppRegistry, Text, TextInput } from 'react-native';
 
