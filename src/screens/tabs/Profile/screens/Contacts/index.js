@@ -110,7 +110,7 @@ function Contacts({ modalRef }) {
                         name={contact.name}
                         // TODO: Check if contact.id is ICNS and if it is, send the id as subtitle, in that way the ICNS will not be cut with shortAddress (Need merge with v1-wallet-connect branch)
                         id={contact.id}
-                        image={contact.image}
+                        icon={contact.image}
                         onLongPress={() => onLongPress(contact)}
                       />
                     </View>

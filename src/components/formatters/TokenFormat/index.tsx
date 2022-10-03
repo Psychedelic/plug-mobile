@@ -10,16 +10,25 @@ interface Props {
   token: string;
   style?: StyleProp<TextStyle>;
   decimalScale?: number;
+  fixedDecimalScale?: boolean;
 }
 
-function TokenFormat({ value, token, style, decimalScale }: Props) {
+function TokenFormat({
+  value,
+  token,
+  style,
+  decimalScale,
+  fixedDecimalScale,
+}: Props) {
   return (
     <NumberFormat
       value={value}
       displayType="text"
       thousandSeparator=","
-      fixedDecimalScale
-      decimalScale={decimalScale || (value && value > 0) ? VISIBLE_DECIMALS : 2}
+      fixedDecimalScale={fixedDecimalScale}
+      decimalScale={
+        decimalScale ? decimalScale : value && value > 0 ? VISIBLE_DECIMALS : 2
+      }
       suffix={` ${token}`}
       renderText={textValue =>
         textValue ? (

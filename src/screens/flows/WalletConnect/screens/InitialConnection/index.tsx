@@ -1,7 +1,7 @@
-import { useRoute } from '@react-navigation/native';
 import { t } from 'i18next';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Image, Linking, Text, View } from 'react-native';
+import { Modalize } from 'react-native-modalize';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '@/components/buttons/Button';
@@ -9,62 +9,49 @@ import RainbowButton from '@/components/buttons/RainbowButton';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
 import useDisableBack from '@/hooks/useDisableBack';
+import { TNavigation } from '@/interfaces/navigation';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
-import { getSession } from '@/redux/slices/walletconnect';
+import {
+  walletConnectRejectSession,
+  walletConnectRemovePendingRedirect,
+} from '@/redux/slices/walletconnect';
 import Accounts from '@/screens/tabs/Profile/screens/Accounts';
-import { useNavigation } from '@/utils/navigation';
+import { responseSessionRequest } from '@/utils/walletConnect';
 
 import UserShowcase from '../Flows/components/UserShowcase';
 import styles from './styles';
 
-function WCInitialConnection() {
+function WCInitialConnection({
+  route,
+  navigation,
+}: TNavigation<Routes.WALLET_CONNECT_INITIAL_CONNECTION>) {
   useDisableBack();
-  const { params } = useRoute();
-  const modalRef = useRef(null);
+  const modalRef = useRef<Modalize>(null);
   const dispatch = useDispatch();
-  const { reset } = useNavigation();
   const { currentWallet } = useSelector(state => state.keyring);
 
-  const [handleResponse, setHandleResponse] = useState(null);
   const [connectLoading, setConnectLoading] = useState(false);
 
-  const { meta, uri } = params;
-  const { dappName, dappUrl, dappScheme, peerId, dappImageUrl } = meta || {};
-
-  useEffect(() => {
-    try {
-      const getRouteParams = async () => {
-        const {
-          routeParams: { callback },
-        } = await dispatch(getSession({ uri })).unwrap();
-        setHandleResponse(() => callback);
-      };
-      getRouteParams();
-    } catch (e) {
-      console.log('GET ROUTE PARAMS', e);
-    }
-  }, []);
+  const { dappName, dappUrl, dappScheme, peerId, imageUrl, requestId } =
+    route?.params;
 
   const handleSuccess = useCallback(
     (success = false) => {
-      if (handleResponse) {
-        setTimeout(
-          () =>
-            handleResponse({
+      setTimeout(
+        () =>
+          responseSessionRequest(
+            {
               approved: success,
-              chainId: 1,
               accountAddress: currentWallet.principal,
-              peerId,
-              dappScheme,
-              dappName,
-              dappUrl,
-            }),
-          300
-        );
-      }
+              ...route?.params,
+            },
+            dispatch
+          ),
+        300
+      );
     },
-    [handleResponse, peerId, dappScheme, dappName, currentWallet, dappUrl]
+    [peerId, dappScheme, dappName, currentWallet, dappUrl]
   );
 
   const onPress = () => {
@@ -73,8 +60,10 @@ function WCInitialConnection() {
   };
 
   const onCancel = () => {
-    setConnectLoading(false);
     closeScreen();
+    setConnectLoading(false);
+    dispatch(walletConnectRejectSession({ peerId }));
+    dispatch(walletConnectRemovePendingRedirect({ requestId }));
   };
 
   const gotoDapp = () => {
@@ -82,23 +71,20 @@ function WCInitialConnection() {
   };
 
   const closeScreen = () => {
-    reset({
+    navigation.reset({
       index: 1,
       routes: [{ name: Routes.SWIPE_LAYOUT }],
     });
   };
 
-  const handleChangeWallet = () => {
-    modalRef?.current.open();
-  };
+  const handleChangeWallet = () => modalRef?.current?.open();
 
   return (
     <Container>
       <View style={styles.container}>
-        {/* Change to DappInfo */}
         <View style={styles.imageContainer}>
-          {dappImageUrl ? (
-            <Image source={{ uri: dappImageUrl }} style={styles.dappIcon} />
+          {imageUrl ? (
+            <Image source={{ uri: imageUrl }} style={styles.dappIcon} />
           ) : (
             <Icon name="connectIcon" style={styles.defaultIcon} />
           )}

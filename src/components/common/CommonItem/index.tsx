@@ -1,21 +1,33 @@
-import React from 'react';
-import { Image, StyleProp, TextStyle, View, ViewStyle } from 'react-native';
+import React, { useState } from 'react';
+import { StyleProp, TextStyle, View, ViewStyle } from 'react-native';
 
 import Touchable from '@/commonComponents/Touchable';
 import UserIcon from '@/commonComponents/UserIcon';
-import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
+import useGetType from '@/hooks/useGetType';
+import Icon from '@/icons';
 import animationScales from '@/utils/animationScales';
 import shortAddress from '@/utils/shortAddress';
 
+import ImageDisplayer from '../NftDisplayer/components/ImageDisplayer';
 import Text from '../Text';
 import styles from './styles';
+
+const longIdConfig = {
+  leftSize: 10,
+  rightSize: 5,
+  separator: '...',
+  replace: [],
+};
 
 interface Props {
   image?: string;
   imageUri?: string;
   name?: string;
   id?: string;
+  subtitle?: string;
+  longId?: boolean;
+  icon?: string;
   right?: React.ReactNode;
   style?: StyleProp<ViewStyle>;
   nameStyle?: StyleProp<TextStyle>;
@@ -29,38 +41,53 @@ function CommonItem({
   image,
   imageUri,
   name,
+  icon,
   id,
   right,
   style,
+  longId,
+  subtitle,
   nameStyle,
   onPress,
   onLongPress,
   actionIconName = 'threeDots',
   showActions = true,
 }: Props) {
+  const [imageType, setImageType] = useState('');
+  useGetType(imageUri, setImageType);
+
+  const formattedId = shortAddress(id, longId ? longIdConfig : undefined);
+
   return (
     <View style={style}>
       <Touchable
         scale={animationScales.small}
-        onPress={() => onPress?.()}
+        onPress={onPress}
         onLongPress={onLongPress}>
         <View style={styles.root}>
           {imageUri ? (
-            <Image source={{ uri: imageUri }} style={styles.image} />
+            <ImageDisplayer
+              url={imageUri}
+              type={imageType}
+              style={styles.image}
+            />
+          ) : image ? (
+            <Icon name={image} />
           ) : (
-            <UserIcon icon={image} />
+            <UserIcon icon={icon} />
           )}
           <View style={styles.leftContainer}>
             <Text style={[FontStyles.Normal, nameStyle]}>
-              {name}
+              {name || id}
               {right}
             </Text>
-            <Text style={FontStyles.NormalGray}>{shortAddress(id)}</Text>
+            <Text style={FontStyles.NormalGray}>{subtitle || formattedId}</Text>
           </View>
           {showActions && (
             <View style={styles.threeDots}>
               <Touchable
-                onPress={() => onLongPress?.()}
+                onPress={onPress}
+                onLongPress={onLongPress}
                 scale={animationScales.large}
                 hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}>
                 <Icon name={actionIconName} />

@@ -10,7 +10,7 @@ import { Colors } from '@/constants/theme';
 import { RootStackParamList } from '@/interfaces/navigation';
 import KeyRing from '@/modules/keyring';
 import SwipeNavigator from '@/navigation/navigators/SwipeNavigator';
-import { lock } from '@/redux/slices/keyring';
+import { setPrelocked, setUnlocked } from '@/redux/slices/keyring';
 import BackupSeedPhrase from '@/screens/auth/BackupSeedPhrase';
 import CreatePassword from '@/screens/auth/CreatePassword';
 import ImportSeedPhrase from '@/screens/auth/ImportSeedPhrase';
@@ -19,6 +19,7 @@ import Welcome from '@/screens/auth/Welcome';
 import ConnectionError from '@/screens/error/ConnectionError';
 import WCFlows from '@/screens/flows/WalletConnect/screens/Flows';
 import WCInitialConnection from '@/screens/flows/WalletConnect/screens/InitialConnection';
+import WCTimeoutError from '@/screens/flows/WalletConnect/screens/TimeoutError';
 import { handleDeepLink } from '@/utils/deepLink';
 
 import Routes from './Routes';
@@ -32,7 +33,8 @@ const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
   const backgroundTime = useRef<any>(null);
 
   const handleLockState = () => {
-    dispatch(lock());
+    dispatch(setUnlocked(false));
+    dispatch(setPrelocked(false));
   };
 
   const handleDeepLinkHandler = (link: string) => {
@@ -40,9 +42,11 @@ const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
   };
 
   const handleAppStateChange = async (nextAppState: string) => {
-    const initialLink = await Linking.getInitialURL();
+    const initialLink =
+      nextAppState === 'active' && (await Linking.getInitialURL());
 
     if (nextAppState === 'background') {
+      dispatch(setPrelocked(true));
       backgroundTime.current = Date.now();
     }
 
@@ -51,7 +55,11 @@ const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
         const timeDiff = Date.now() - backgroundTime.current;
         if (timeDiff > 120000) {
           handleLockState();
+        } else {
+          dispatch(setPrelocked(false));
         }
+      } else {
+        dispatch(setPrelocked(false));
       }
       backgroundTime.current = null;
     }
@@ -140,6 +148,11 @@ const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
             <Stack.Screen
               name={Routes.WALLET_CONNECT_FLOWS}
               component={WCFlows}
+              options={disableGesturesOption}
+            />
+            <Stack.Screen
+              name={Routes.WALLET_CONNECT_ERROR}
+              component={WCTimeoutError}
               options={disableGesturesOption}
             />
           </Stack.Navigator>
