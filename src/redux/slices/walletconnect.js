@@ -63,7 +63,6 @@ export const walletConnectOnSessionRequest = createAsyncThunk(
   'walletconnect/onSessionRequest',
   async ({ uri, requestId }, { dispatch, getState }) => {
     try {
-      console.log('URI', uri);
       const { clientMeta } = await getNativeOptions();
       const isPrelocked = () => getState().keyring.isPrelocked;
       const isUnlocked = () => getState().keyring.isUnlocked;

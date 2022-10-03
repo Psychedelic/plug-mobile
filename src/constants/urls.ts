@@ -19,3 +19,5 @@ export const ICNS_LEARN_MORE_URL =
 export const PLUG_PROXY_HOST = 'https://mainnet.plugwallet.ooo/';
 export const IC_URL_HOST = 'https://ic0.app/';
 export const DFINITY_HOST = 'https://mainnet.dfinity.network';
+
+export const SIGNER_SERVER_URL = 'https://signer-server.0xaace.xyz'; //TODO: change to production url

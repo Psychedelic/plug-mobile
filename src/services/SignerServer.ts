@@ -1,4 +1,4 @@
-import { SIGNER_SERVER_URL } from '@/constants/walletconnect';
+import { SIGNER_SERVER_URL } from '@/constants/urls';
 import { TransactionData } from '@/interfaces/walletConnect';
 
 export const addBatchTransaction = async (
@@ -15,7 +15,6 @@ export const addBatchTransaction = async (
       'Access-Control-Allow-Origin': '*',
     },
   });
-  console.log('response', response);
   return response.json();
 };
 

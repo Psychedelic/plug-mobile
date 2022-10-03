@@ -49,7 +49,6 @@ function handleWalletConnect(uri, bridge, requestId, isUnlocked) {
 }
 
 export const handleDeepLink = (url, isUnlocked) => {
-  console.log('handleDeepLink', url);
   if (!url) {
     return;
   }
