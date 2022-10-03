@@ -1,7 +1,10 @@
+import WalletConnect from '@walletconnect/client';
+
 import { ICNSData } from '@/interfaces/icns';
 import { Contact } from '@/screens/tabs/Profile/screens/Contacts/utils';
 
 import { Nullable } from './general';
+import { WCWhiteListItem } from './walletConnect';
 
 // Override the default state interface
 declare module 'react-redux' {
@@ -9,18 +12,16 @@ declare module 'react-redux' {
     icp: IcpState;
     keyring: KeyringState;
     user: UserState;
+    alert: AlertState;
+    walletconnect: WalletConnectState;
   }
 }
 
 export interface CollectionToken {
-  id: string;
   index: number | string;
   canister: string;
   url: string;
   standard: string;
-  collection: string;
-  owner?: string;
-  metadata?: any;
 }
 
 export interface Collection {
@@ -126,8 +127,16 @@ export interface KeyringState {
   currentWallet: Wallet;
   wallets: Wallet[];
   icnsDataLoading: boolean;
+  isPrelocked: boolean;
 }
 
+export interface ConnectedApp {
+  name: string;
+  canisterList: WCWhiteListItem[];
+  imageUri: string;
+  lastConection: Date;
+  account: string;
+}
 export interface UserState {
   assets: Asset[];
   assetsError: Nullable<string>;
@@ -144,4 +153,48 @@ export interface UserState {
   collectionsLoading: boolean;
   usingBiometrics: boolean;
   biometricsAvailable: boolean;
+  connectedApps: ConnectedApp[];
+}
+
+export interface WalletConnectCallRequest {
+  clientId: string;
+  dappName: string;
+  dappScheme: string;
+  dappUrl: string;
+  imageUrl: string;
+  methodName: string;
+  args: any;
+  peerId: string;
+  requestId: number;
+  executor: any;
+}
+
+export interface WalletConnectSession {
+  pending: boolean;
+  walletConnector: WalletConnect;
+  meta: any;
+}
+
+export interface WalletConnectState {
+  pendingRedirect: {
+    [requestId: string]: {
+      pending: boolean;
+      schema?: string;
+    };
+  };
+  pendingCallRequests: { [requestId: number]: WalletConnectCallRequest };
+  sessions: {
+    [peerId: string]: WalletConnectSession;
+  };
+  bridgeTimeouts: {
+    [requestId: string]: {
+      pending: boolean;
+      timeout: number;
+      onBridgeContact: any;
+    };
+  };
+}
+
+export interface AlertState {
+  closeAllModals: boolean;
 }

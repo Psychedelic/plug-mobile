@@ -10,6 +10,7 @@ import {
   parseToBigIntString,
 } from '@/utils/currencies';
 import { recursiveParseBigint } from '@/utils/objects';
+import { uniqueConcat } from '@/utils/utilities';
 
 import {
   DEFAULT_ASSETS,
@@ -36,6 +37,7 @@ const DEFAULT_STATE = {
   collectionsLoading: false,
   usingBiometrics: false,
   biometricsAvailable: false,
+  connectedApps: [],
 };
 
 export const sign = createAsyncThunk('user/sign', async params => {
@@ -270,21 +272,16 @@ export const removeContact = createAsyncThunk(
 
 export const editContact = createAsyncThunk(
   'user/editContact',
-  async (
-    { contact, newContact, walletId },
-    { getState, dispatch, rejectWithValue }
-  ) => {
+  async ({ contact, newContact }, { getState, dispatch, rejectWithValue }) => {
     try {
       const state = getState();
       const instance = KeyRing.getInstance();
       const removeContactRes = await instance?.deleteContact({
         addressName: contact.name,
-        subaccount: walletId,
       });
 
       const addContactRes = await instance?.addContact({
         contact: formatContactForController(newContact),
-        subaccount: walletId,
       });
 
       if (removeContactRes && addContactRes) {
@@ -376,6 +373,51 @@ export const getTokenInfo = createAsyncThunk(
       console.log('Error while fetching token info', error);
       onError?.(error.message);
     }
+  }
+);
+
+export const addConnectedApp = createAsyncThunk(
+  'user/addConnectedApp',
+  /**  @param {any} [app] */
+  async (app, { getState }) => {
+    const currentConnectedApps = getState().user.connectedApps;
+    const { name, canisterList, lastConection, account } = app;
+
+    const appAlreadyAdded = currentConnectedApps.find(
+      connectedApp =>
+        connectedApp.name === name && connectedApp.account === account
+    );
+
+    if (appAlreadyAdded) {
+      return currentConnectedApps.map(connectedApp =>
+        connectedApp.name === name
+          ? {
+              lastConection,
+              canisterList: uniqueConcat(
+                connectedApp.canisterList,
+                canisterList
+              ),
+              ...connectedApp,
+            }
+          : connectedApp
+      );
+    }
+
+    return [app, ...currentConnectedApps];
+  }
+);
+
+export const removeConnectedApp = createAsyncThunk(
+  'user/removeConnectedApp',
+  /**  @param {any} [app] */
+  async (app, { getState }) => {
+    const { name, account } = app;
+    const currentConnectedApps = getState().user.connectedApps;
+
+    return currentConnectedApps.filter(
+      connectedApp =>
+        connectedApp.name !== name && connectedApp.account === account
+    );
   }
 );
 
@@ -518,6 +560,12 @@ export const userSlice = createSlice({
         (state, action) => {
           state.contactsLoading = false;
           state.contactsError = action.payload.error;
+        }
+      )
+      .addMatcher(
+        isAnyOf(removeConnectedApp.fulfilled, addConnectedApp.fulfilled),
+        (state, action) => {
+          state.connectedApps = action.payload;
         }
       );
   },

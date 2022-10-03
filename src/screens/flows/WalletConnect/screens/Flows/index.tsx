@@ -3,18 +3,23 @@ import {
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ERRORS } from '@/constants/walletconnect';
 import useDisableBack from '@/hooks/useDisableBack';
 import { RootStackParamList } from '@/interfaces/navigation';
-import { FlowsParams, WCFlowTypes } from '@/interfaces/walletConnect';
+import {
+  FlowsParams,
+  WCFlowTypes,
+  WCWhiteListItem,
+} from '@/interfaces/walletConnect';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
+import { addConnectedApp } from '@/redux/slices/user';
 import {
-  updateBridgeTimeout,
+  addBridgeTimeout,
   walletConnectExecuteAndResponse,
 } from '@/redux/slices/walletconnect';
 
@@ -24,7 +29,9 @@ import DappInfo from './components/DappInfo';
 import RequestCall from './components/RequestCall';
 import RequestConnect from './components/RequestConnect';
 import RequestTransfer from './components/RequestTransfer';
+import RequestTransferHeader from './components/RequestTransferHeader';
 import styles from './styles';
+import { TRANSFER_METHOD_NAMES } from './utils';
 
 const COMPONENTS = {
   [WCFlowTypes.transfer]: RequestTransfer,
@@ -34,44 +41,54 @@ const COMPONENTS = {
 };
 
 function WCFlows() {
-  const dispatch = useDispatch();
+  useDisableBack();
   const { params } = useRoute();
-  const { reset } = useNavigation<NavigationProp<RootStackParamList>>();
+  const dispatch = useDispatch();
+  const { reset, navigate } =
+    useNavigation<NavigationProp<RootStackParamList>>();
   const [sendLoading, setSendLoading] = useState(false);
   const [wcTimeout, setWCTimeout] = useState(false);
   const {
-    type,
-    request,
-    metadata,
     args,
+    type,
+    loading,
+    metadata,
+    requestId,
+    canisterId,
+    handleError,
+    canisterInfo,
     handleApproveArgs,
     handleDeclineArgs,
-    handleError,
-    loading,
   } = (params || {}) as FlowsParams;
 
-  const DisplayComponent = COMPONENTS[type];
-  const isBatchTransactions = type === WCFlowTypes.batchTransactions;
-
-  useDisableBack();
+  const request = useSelector(
+    state => state.walletconnect.pendingCallRequests[requestId]
+  );
+  const principalId = useSelector(
+    state => state.keyring?.currentWallet?.principal
+  );
+  const DisplayComponent = useMemo(() => COMPONENTS[type], [type]);
+  const isTransfer =
+    type === WCFlowTypes.transfer ||
+    TRANSFER_METHOD_NAMES.includes(args?.methodName);
 
   useEffect(() => {
     if (wcTimeout) {
-      // TODO: Handle Error.
-      // Matt Ale
-      // closeScreen();
+      navigate(Routes.WALLET_CONNECT_ERROR, {
+        dappName: request?.dappName,
+        dappUrl: request?.dappUrl,
+      });
     }
   }, [wcTimeout]);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setWCTimeout(true);
-    }, 20000);
-    dispatch(updateBridgeTimeout({ timeout }));
+    if (loading) {
+      const timeout = setTimeout(() => {
+        setWCTimeout(true);
+      }, 20000);
 
-    return () => {
-      clearTimeout(timeout);
-    };
+      dispatch(addBridgeTimeout({ requestId, timeout }));
+    }
   }, []);
 
   const handleAction = ({
@@ -88,7 +105,7 @@ function WCFlows() {
     };
     dispatch(
       walletConnectExecuteAndResponse({
-        ...request,
+        requestId,
         ...handleActionParams,
         onSuccess: () => {
           closeScreen();
@@ -135,6 +152,22 @@ function WCFlows() {
 
   const onPressSend = useCallback(async () => {
     setSendLoading(true);
+    if (type === WCFlowTypes.requestConnect) {
+      const whiteListArray = Object.keys(args.whitelist).map(
+        (key: string) => args.whitelist[key]
+      ) as WCWhiteListItem[];
+
+      dispatch(
+        addConnectedApp({
+          name: metadata.name,
+          canisterList: whiteListArray,
+          imageUri: metadata?.icons[0],
+          lastConection: Date.now(),
+          account: principalId,
+        })
+      );
+    }
+
     try {
       await onConfirm();
     } finally {
@@ -144,24 +177,28 @@ function WCFlows() {
 
   return (
     <Container>
-      {loading ? (
+      {loading || !request ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="white" />
         </View>
       ) : (
         <View style={styles.container}>
-          <DappInfo type={type} request={request} />
-          <DisplayComponent
-            type={type}
-            args={args}
-            request={request}
-            metadata={metadata}
-          />
+          {isTransfer && <RequestTransferHeader canisterId={canisterId} />}
+          <View style={styles.showcaseContainer}>
+            <DappInfo type={type} request={request} />
+            <DisplayComponent
+              args={args}
+              request={request}
+              metadata={metadata}
+              canisterId={canisterId}
+              canisterInfo={canisterInfo}
+            />
+          </View>
           <BottomContainer
+            type={type}
             sendLoading={sendLoading}
             onPressSend={onPressSend}
             onPressCancel={onPressCancel}
-            isBatchTransactions={isBatchTransactions}
           />
         </View>
       )}

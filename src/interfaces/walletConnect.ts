@@ -68,6 +68,11 @@ export interface FlowsArgs {
   methodName: string;
   domainUrl: string;
   whitelist: WCWhiteList;
+  shouldWarn?: boolean;
+  canisterId: string;
+  decodedArguments: any[];
+  amount?: number;
+  strAmount?: string;
 }
 
 enum WCHandleActionStatus {
@@ -97,12 +102,25 @@ export enum WCFlowTypes {
   batchTransactions = 'batchTransactions',
 }
 
+export interface WCToken {
+  amount: number;
+  canisterId: string;
+  decimals: number;
+  icon: string; // this is the iconName actually, not an url
+  symbol: string;
+  name: string; // this is the name of the symbol
+  value: number;
+}
+
 export interface FlowsParams {
   handleError: () => void;
   loading: boolean;
+  token: WCToken;
   type: WCFlowTypes;
+  canisterInfo: WCWhiteListItem;
+  canisterId: string;
   openAutomatically: boolean;
-  request: FlowsRequest;
+  requestId: number;
   metadata: FlowsMetadata;
   args: FlowsArgs;
   handleApproveArgs: [
@@ -113,4 +131,10 @@ export interface FlowsParams {
     string,
     { status: WCHandleActionStatus.refused; whitelist: WCWhiteList }
   ];
+}
+
+export interface TransactionData {
+  canisterId: string;
+  methodName: string;
+  args: string;
 }

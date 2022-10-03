@@ -16,7 +16,7 @@ function UserShowcase({ currentWallet }: Props) {
     <View style={styles.userContainer}>
       <UserIcon icon={currentWallet?.icon} size="small" />
       <Text style={[FontStyles.Normal, styles.user]}>
-        {currentWallet?.name}
+        {currentWallet?.icnsData?.reverseResolvedName || currentWallet?.name}
       </Text>
     </View>
   );

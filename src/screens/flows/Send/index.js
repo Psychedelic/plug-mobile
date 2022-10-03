@@ -24,6 +24,7 @@ import {
   setTransaction,
   transferNFT,
 } from '@/redux/slices/user';
+import { formatCollections } from '@/utils/assets';
 import {
   validateAccountId,
   validateCanisterId,
@@ -55,8 +56,11 @@ function Send({ modalRef, nft, token, onSuccess }) {
   const reviewRef = useRef(null);
   const saveContactRef = useRef(null);
   const passwordRef = useRef(null);
-  const nfts =
-    collections?.flatMap(collection => collection?.tokens || []) || [];
+
+  const nfts = useMemo(
+    () => (collections ? formatCollections(collections) : []),
+    [collections]
+  );
   const [address, setAddress] = useState(null);
   const [loading, setLoading] = useState(false);
   const [usdAmount, setUsdAmount] = useState(null);

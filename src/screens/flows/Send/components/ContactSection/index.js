@@ -41,11 +41,11 @@ const ContactSection = ({ onPress, filterText, selectedTokenSymbol }) => {
           <CommonItem
             name={contact.name}
             id={contact.id}
-            image={contact.image}
+            icon={contact.image}
             key={contact.id}
+            style={styles.contactItem}
             onPress={() => onPress(contact)}
             showActions={false}
-            style={styles.contactItem}
           />
         ))}
       </>
