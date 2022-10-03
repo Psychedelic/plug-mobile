@@ -31,7 +31,7 @@ function NFTs() {
   );
 
   const nfts = useMemo(
-    () => formatCollections(collections) || [],
+    () => (collections ? formatCollections(collections) : []),
     [collections]
   );
 
