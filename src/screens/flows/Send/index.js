@@ -58,7 +58,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
   const passwordRef = useRef(null);
 
   const nfts = useMemo(
-    () => formatCollections(collections) || [],
+    () => (collections ? formatCollections(collections) : []),
     [collections]
   );
   const [address, setAddress] = useState(null);
