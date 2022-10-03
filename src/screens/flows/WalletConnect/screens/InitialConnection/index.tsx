@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import React, { useCallback, useRef, useState } from 'react';
-import { Image, Linking, Text, View } from 'react-native';
+import { Image, Linking, SafeAreaView, Text, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -107,7 +107,7 @@ function WCInitialConnection({
             {t('walletConnect.changeWallet')}
           </Text>
         </View>
-        <View style={styles.buttonsContainer}>
+        <SafeAreaView style={styles.buttonsContainer}>
           <Button
             onPress={onCancel}
             text={t('common.cancel')}
@@ -119,7 +119,7 @@ function WCInitialConnection({
             text={t('walletConnect.connect')}
             buttonStyle={styles.buttonStyle}
           />
-        </View>
+        </SafeAreaView>
       </View>
       <Accounts modalRef={modalRef} />
     </Container>

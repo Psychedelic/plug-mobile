@@ -20,6 +20,7 @@ export const Colors = {
     Primary: '#15161C',
     Secondary: '#1E1F27',
     Pure: '#000000',
+    PrimaryTransparent: '#15161C00',
   },
   White: {
     Pure: '#FFFFFF',
@@ -41,7 +42,6 @@ export const Colors = {
     Teal: '#05DCC8',
   },
   Red: '#FF453A',
-  Transparent: '#ffffff00',
   Divider: {
     1: '#3A3B40',
     2: '#737377',
