@@ -1,17 +1,16 @@
 import { t } from 'i18next';
 import React from 'react';
-import { Image, View } from 'react-native';
+import { View } from 'react-native';
 
 import { Image as FastImage } from '@/components/common';
 import Text from '@/components/common/Text';
 import TokenFormat from '@/components/formatters/TokenFormat';
 import UsdFormat from '@/components/formatters/UsdFormat';
 import Icon from '@/components/icons';
-import { FontStyles } from '@/constants/theme';
+import QuestionMarkIcon from '@/components/icons/svg/QuestionMarkIcon.svg';
+import TransferRequestIcon from '@/components/icons/svg/TransferRequestIcon.svg';
+import { Colors, FontStyles } from '@/constants/theme';
 
-// TODO: Pass .png to .svg after 0.2.0 merge
-import questionMark from '../../assets/questionMark.png';
-import transferRequest from '../../assets/transferRequest.png';
 import { TransferToken } from '../RequestCall';
 import styles from './styles';
 
@@ -24,7 +23,7 @@ function TransferItem({ unknown, token }: Props) {
   return (
     <View style={styles.itemContainer}>
       <View style={styles.leftContainer}>
-        <Image source={transferRequest} style={styles.icon} />
+        <TransferRequestIcon fill={Colors.Black.Pure} style={styles.icon} />
         <View>
           <Text style={FontStyles.Normal}>
             {t('walletConnect.transaction')}
@@ -36,10 +35,10 @@ function TransferItem({ unknown, token }: Props) {
         {token && !unknown ? (
           <>
             <View style={styles.assetAmountContainer}>
-              {token.icon ? (
-                <FastImage url={token.icon} style={styles.logo} />
+              {token.imageUrl ? (
+                <FastImage url={token.imageUrl} style={styles.logo} />
               ) : (
-                <Icon name="unknown" style={styles.symbol} />
+                <Icon name={token?.icon || 'unknown'} style={styles.symbol} />
               )}
               <TokenFormat
                 decimalScale={4}
@@ -58,7 +57,10 @@ function TransferItem({ unknown, token }: Props) {
           </>
         ) : (
           <View style={styles.unknownContainer}>
-            <Image source={questionMark} style={styles.questionMark} />
+            <QuestionMarkIcon
+              fill={Colors.Black.Pure}
+              style={styles.questionMark}
+            />
             <Text style={FontStyles.Normal}>{t('walletConnect.unknown')}</Text>
           </View>
         )}

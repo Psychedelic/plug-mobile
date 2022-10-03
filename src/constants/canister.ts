@@ -10,3 +10,5 @@ export const ASSET_CANISTER_IDS = [
   ICP_CANISTER_ID,
   WICP_CANISTER_ID,
 ];
+
+export const isICP = (canisterId: string) => canisterId === ICP_CANISTER_ID;

@@ -280,21 +280,16 @@ export const removeContact = createAsyncThunk(
 
 export const editContact = createAsyncThunk(
   'user/editContact',
-  async (
-    { contact, newContact, walletId },
-    { getState, dispatch, rejectWithValue }
-  ) => {
+  async ({ contact, newContact }, { getState, dispatch, rejectWithValue }) => {
     try {
       const state = getState();
       const instance = KeyRing.getInstance();
       const removeContactRes = await instance?.deleteContact({
         addressName: contact.name,
-        subaccount: walletId,
       });
 
       const addContactRes = await instance?.addContact({
         contact: formatContactForController(newContact),
-        subaccount: walletId,
       });
 
       if (removeContactRes && addContactRes) {

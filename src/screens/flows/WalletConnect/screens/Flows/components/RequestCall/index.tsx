@@ -1,8 +1,11 @@
 import { t } from 'i18next';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Image, Linking, Text, View } from 'react-native';
+import { ActivityIndicator, Linking, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
+import WarningIcon from '@/components/icons/svg/WarningIcon.svg';
+import { TOKENS } from '@/constants/assets';
+import { isICP } from '@/constants/canister';
 import { FontStyles } from '@/constants/theme';
 import { TRUST_AND_SECURITY_URL } from '@/constants/urls';
 import { Nullable } from '@/interfaces/general';
@@ -15,15 +18,14 @@ import { getDabNfts, getDabToken } from '@/services/DAB';
 import { formatAssetBySymbol } from '@/utils/currencies';
 import { addSpacesAndCapitalize } from '@/utils/strings';
 
-// TODO: Pass this .png to .svg after 0.2.0 merge
-import warningIcon from '../../assets/warningIcon.png';
 import { getAssetAmount, getNFTId, TRANSFER_METHOD_NAMES } from '../../utils';
 import ActionItem from '../ActionItem';
 import TransferItem from '../TransferItem';
 import styles from './styles';
 
 export interface TransferToken {
-  icon: string;
+  icon?: string;
+  imageUrl?: string;
   amount: number | string;
   symbol: string;
   usdValue: number | string | null;
@@ -57,20 +59,30 @@ function RequestCall(props: Props) {
       if (nftIds?.includes(canisterId)) {
         setNFTId(getNFTId({ methodName, decodedArguments }));
       } else {
-        const dabToken = await getDabToken(canisterId);
-        if (!dabToken) {
+        const tokenData = isICP(canisterId)
+          ? TOKENS.ICP
+          : await getDabToken(canisterId);
+        if (!tokenData) {
           setUnknown(true);
         }
         const tokenInfo = await KeyRing.getInstance().getTokenInfo({
           canisterId,
-          standard: dabToken?.standard,
+          standard: tokenData?.standard,
         });
         const amount = getAssetAmount(
           { decodedArguments, methodName },
           tokenInfo.token.standard
         );
+        const media = isICP(canisterId)
+          ? {
+              icon: TOKENS.ICP.icon,
+            }
+          : {
+              imageUrl: tokenInfo.token.logo,
+            };
+
         setToken({
-          icon: tokenInfo.token.logo!,
+          ...media,
           amount: amount,
           symbol: tokenInfo.token.symbol!,
           usdValue:
@@ -96,7 +108,7 @@ function RequestCall(props: Props) {
             {shouldWarn && (
               <View style={styles.warningContainer}>
                 <View style={styles.unknownContainer}>
-                  <Image source={warningIcon} style={styles.warningIcon} />
+                  <WarningIcon style={styles.warningIcon} />
                   <Text style={[FontStyles.Normal, styles.unknownTitle]}>
                     {t('walletConnect.unknownArguments')}
                   </Text>
