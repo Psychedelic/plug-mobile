@@ -52,6 +52,7 @@ export const ERRORS = {
       'The transaction that was just attempted failed because of timeout. Please contact the project’s developers.',
   },
   CLIENT_ERROR: (message: string) => ({ code: 400, message }),
+  SESSION_REJECTED: { code: 401, message: 'The session was rejected.' },
 };
 
 export const BIOMETRICS_ANIMATION_DELAY = 569;
@@ -75,7 +76,7 @@ export const SIGNING_METHODS = [
   'requestTransfer',
   'requestTransferToken',
   'requestBurnXTC',
-  'batchTransaction',
+  'batchTransactions',
   'requestCall',
   'verifyWhitelist',
 ];

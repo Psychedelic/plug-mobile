@@ -6,6 +6,7 @@ import KeyRing from '@/modules/keyring';
 import { getICPPrice } from '@/redux/slices/icp';
 import { formatAssets, parseToBigIntString } from '@/utils/currencies';
 import { recursiveParseBigint } from '@/utils/objects';
+import { uniqueConcat } from '@/utils/utilities';
 
 import {
   DEFAULT_ASSETS,
@@ -33,6 +34,7 @@ const DEFAULT_STATE = {
   collectionsLoading: false,
   usingBiometrics: false,
   biometricsAvailable: false,
+  connectedApps: [],
 };
 
 export const sign = createAsyncThunk('user/sign', async params => {
@@ -383,6 +385,51 @@ export const getTokenInfo = createAsyncThunk(
   }
 );
 
+export const addConnectedApp = createAsyncThunk(
+  'user/addConnectedApp',
+  /**  @param {any} [app] */
+  async (app, { getState }) => {
+    const currentConnectedApps = getState().user.connectedApps;
+    const { name, canisterList, lastConection, account } = app;
+
+    const appAlreadyAdded = currentConnectedApps.find(
+      connectedApp =>
+        connectedApp.name === name && connectedApp.account === account
+    );
+
+    if (appAlreadyAdded) {
+      return currentConnectedApps.map(connectedApp =>
+        connectedApp.name === name
+          ? {
+              lastConection,
+              canisterList: uniqueConcat(
+                connectedApp.canisterList,
+                canisterList
+              ),
+              ...connectedApp,
+            }
+          : connectedApp
+      );
+    }
+
+    return [app, ...currentConnectedApps];
+  }
+);
+
+export const removeConnectedApp = createAsyncThunk(
+  'user/removeConnectedApp',
+  /**  @param {any} [app] */
+  async (app, { getState }) => {
+    const { name, account } = app;
+    const currentConnectedApps = getState().user.connectedApps;
+
+    return currentConnectedApps.filter(
+      connectedApp =>
+        connectedApp.name !== name && connectedApp.account === account
+    );
+  }
+);
+
 export const userSlice = createSlice({
   name: 'user',
   initialState: DEFAULT_STATE,
@@ -506,6 +553,12 @@ export const userSlice = createSlice({
         (state, action) => {
           state.contactsLoading = false;
           state.contactsError = action.payload.error;
+        }
+      )
+      .addMatcher(
+        isAnyOf(removeConnectedApp.fulfilled, addConnectedApp.fulfilled),
+        (state, action) => {
+          state.connectedApps = action.payload;
         }
       );
   },

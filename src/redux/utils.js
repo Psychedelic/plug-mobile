@@ -212,12 +212,10 @@ export const contactCreateValueObj = currentId => {
 };
 
 export const DEFAULT_WALLET_CONNECT_STATE = {
-  pendingRedirect: false,
-  pendingSessionRequests: {},
+  pendingRedirect: {},
   pendingCallRequests: {},
-  walletConnectors: {},
   sessions: {},
-  bridgeTimeout: { timeout: null, onBridgeContact: () => {} },
+  bridgeTimeouts: {},
 };
 
 export const migrateData = async () => {

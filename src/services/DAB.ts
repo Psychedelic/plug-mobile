@@ -10,8 +10,7 @@ import {
 } from '@psychedelic/dab-js';
 import { fetch } from 'react-native-fetch-api';
 
-import { IC_URL_HOST } from '@/constants/general';
-import { DFINITY_MAINNET_URL } from '@/constants/urls';
+import { DFINITY_HOST, IC_URL_HOST } from '@/constants/urls';
 import { DABToken } from '@/interfaces/dab';
 import { CollectionToken } from '@/interfaces/redux';
 import { recursiveParseBigint, recursiveParsePrincipal } from '@/utils/objects';
@@ -26,6 +25,13 @@ export const getDabTokens = async (): Promise<DABToken[]> => {
     ...token,
     canisterId: token?.principal_id,
   }));
+};
+
+export const getDabToken = async (
+  canisterId: string
+): Promise<DABToken | undefined> => {
+  const tokens = await getDabTokens();
+  return tokens.find(token => token.canisterId.toString() === canisterId);
 };
 
 export const getDabNfts = async () => {
@@ -50,7 +56,7 @@ export const getTokenBalance = async (
 ) => {
   const agent = new HttpAgent({
     fetch,
-    host: DFINITY_MAINNET_URL,
+    host: DFINITY_HOST,
   });
   const tokenActor = await getTokenActor({
     canisterId: token.canisterId.toString(),

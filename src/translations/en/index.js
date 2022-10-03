@@ -28,6 +28,7 @@ const translations = {
     available: 'available',
     max: 'Max',
     questionMark: '?',
+    the: 'The',
     enterPassword: 'Enter Password',
   },
   welcome: {
@@ -150,6 +151,10 @@ const translations = {
         desc: 'Turn Biometrics on or off.',
       },
       lock: { name: 'Lock Account', desc: 'Lock your account and sign out.' },
+      connectedApps: {
+        name: 'Connected Apps',
+        desc: 'View your connected apps.',
+      },
     },
     version: 'v{{version}}({{build}})',
     infoItems: {
@@ -200,6 +205,12 @@ const translations = {
     nameTaken: 'Name is already taken!',
     unresolvedICNS: 'Unable to resolve ICNS name',
     contactAlreadySaved: 'Contact already saved as {{value}}',
+  },
+  connectedApps: {
+    viewDetail: 'View Details',
+    deleteConnection: 'Delete Connection',
+    approvedCanisters: 'Approved Canisters',
+    emptyState: 'No apps connected yet',
   },
   placeholders: {
     amount: `0${decimalSeparator}00`,
@@ -268,7 +279,21 @@ const translations = {
     connectTitle: 'Connect Wallet',
     connectTo: 'Would you like to connect your wallet to ',
     cannisterPermission: 'wants pemission to use these canisters:',
-    actionsPermission: 'wants pemission to perform the\nfollowing actions:',
+    actionsPermission: {
+      one: 'wants pemission to perform the\nfollowing action:',
+      several: 'wants pemission to perform the\nfollowing actions:',
+    },
+    transaction: 'Transaction',
+    request: 'Request',
+    balance: 'Balance',
+    wallet: 'Wallet',
+    startAgain: 'Start Again',
+    timeOutTitle: 'The connection has timed out',
+    timeOutSubtitle: 'took to long to respond',
+    unsafeDappName: 'Unknown DApp',
+    unknown: 'Unknown',
+    unknownArguments: 'Unknown arguments',
+    learnMore: 'Learn More',
   },
   deleteWallet: {
     title: 'Delete Wallet',
