@@ -285,9 +285,6 @@ const TransactionModule = (dispatch, getState) => {
           host
         );
 
-        console.log('batchTxId', batchTxId);
-        console.log('publicKey', derPublicKey);
-
         const bufferPublicKey = base64ToBuffer(derPublicKey);
 
         const delegationChain = await keyring.delegateIdentity({
@@ -295,11 +292,7 @@ const TransactionModule = (dispatch, getState) => {
           targets: transactions.map(tx => tx.canisterId),
         });
 
-        console.log('chainDelegation', delegationChain);
-
-        const response = await addDelegation(batchTxId, delegationChain);
-
-        console.log('response', response);
+        await addDelegation(batchTxId, delegationChain);
 
         return { result: { status: true, txId: batchTxId } };
       }
