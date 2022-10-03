@@ -6,7 +6,7 @@ const INITIAL_STATE = {
   icpPrice: null,
 };
 
-export const getICPPrice = createAsyncThunk('wallet/getICPPrice', async () => {
+export const getICPPrice = createAsyncThunk('icp/getICPPrice', async () => {
   try {
     const { data } = await getICPPriceService();
     const icpPrice = data?.['internet-computer']?.usd ?? 1;
@@ -18,8 +18,8 @@ export const getICPPrice = createAsyncThunk('wallet/getICPPrice', async () => {
   }
 });
 
-export const walletSlice = createSlice({
-  name: 'wallet',
+export const icpSlice = createSlice({
+  name: 'icp',
   initialState: INITIAL_STATE,
   reducers: {
     setICPPrice: (state, action) => {
@@ -36,6 +36,6 @@ export const walletSlice = createSlice({
   },
 });
 
-export const { setICPPrice, reset } = walletSlice.actions;
+export const { setICPPrice, reset } = icpSlice.actions;
 
-export default walletSlice.reducer;
+export default icpSlice.reducer;

@@ -2,6 +2,7 @@ import { t } from 'i18next';
 import React from 'react';
 import { Image, View } from 'react-native';
 
+import { Image as FastImage } from '@/components/common';
 import Text from '@/components/common/Text';
 import TokenFormat from '@/components/formatters/TokenFormat';
 import UsdFormat from '@/components/formatters/UsdFormat';
@@ -35,7 +36,11 @@ function TransferItem({ unknown, token }: Props) {
         {token && !unknown ? (
           <>
             <View style={styles.assetAmountContainer}>
-              <Icon name={token.icon || 'unknown'} style={styles.symbol} />
+              {token.icon ? (
+                <FastImage url={token.icon} style={styles.logo} />
+              ) : (
+                <Icon name="unknown" style={styles.symbol} />
+              )}
               <TokenFormat
                 decimalScale={4}
                 value={token.amount}
@@ -43,11 +48,13 @@ function TransferItem({ unknown, token }: Props) {
                 style={FontStyles.Normal}
               />
             </View>
-            <UsdFormat
-              suffix="USD"
-              value={token.usdValue}
-              style={FontStyles.Subtitle3}
-            />
+            {token.usdValue ? (
+              <UsdFormat
+                suffix="USD"
+                value={token.usdValue}
+                style={FontStyles.Subtitle3}
+              />
+            ) : null}
           </>
         ) : (
           <View style={styles.unknownContainer}>

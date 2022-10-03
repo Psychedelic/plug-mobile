@@ -1,5 +1,6 @@
 import { TOKENS } from '@/constants/assets';
 import { ICP_CANISTER_ID } from '@/constants/canister';
+import { Collection, CollectionToken } from '@/interfaces/redux';
 import { validateCanisterId } from '@/utils/ids';
 
 // TokenIdentifier is SYMBOL or  CanisterID
@@ -21,3 +22,12 @@ export const getToken = (
 
 export const isDefaultToken = (canisterId: string) =>
   !!Object.values(TOKENS).find(token => token.canisterId === canisterId);
+
+export const formatCollections = (collections: Collection[]) =>
+  collections.flatMap(collection =>
+    collection?.tokens.map((token: CollectionToken) => ({
+      collectionDescription: collection.description,
+      collectionName: collection.name,
+      ...token,
+    }))
+  );

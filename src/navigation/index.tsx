@@ -105,7 +105,8 @@ const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
       theme={navTheme}
       onReady={routingInstrumentation.registerNavigationContainer(
         navigationRef
-      )}>
+      )}
+    >
       <GestureHandlerRootView style={styles.container}>
         <Host>
           <Stack.Navigator

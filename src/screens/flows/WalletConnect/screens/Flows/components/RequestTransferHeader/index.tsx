@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 
 import TokenFormat from '@/components/formatters/TokenFormat';
 import { FontStyles } from '@/constants/theme';
-import { State } from '@/interfaces/redux';
 
 import UserShowcase from '../UserShowcase';
 import styles from './styles';
@@ -15,8 +14,8 @@ interface Props {
 }
 
 function RequestTransferHeader(props: Props) {
-  const { currentWallet } = useSelector((state: State) => state.keyring);
-  const { assets } = useSelector((state: State) => state.user);
+  const { currentWallet } = useSelector(state => state.keyring);
+  const { assets } = useSelector(state => state.user);
   const token = assets.find(
     ({ canisterId }) => canisterId === props.canisterId
   );
