@@ -81,4 +81,4 @@ export const SIGNING_METHODS = [
   'verifyWhitelist',
 ];
 
-export const SIGNER_SERVER_URL = 'https://signer-server.0xaace.xyz';
+export const SIGNER_SERVER_URL = 'https://signer-server.0xaace.xyz'; //TODO: change to production url
