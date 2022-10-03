@@ -5,6 +5,7 @@ import { randomBytes } from 'crypto';
 import { XTC_FEE } from '@/constants/addresses';
 import { CYCLES_PER_TC, E8S_PER_ICP } from '@/constants/assets';
 import { ICP_CANISTER_ID } from '@/constants/canister';
+import { isIos } from '@/constants/platform';
 import { CONNECTION_STATUS, ERRORS } from '@/constants/walletconnect';
 import {
   getApp,
@@ -15,6 +16,7 @@ import {
 import Routes from '@/navigation/Routes';
 import { burnXtc, getBalance, sendToken } from '@/redux/slices/user';
 import { walletConnectExecuteAndResponse } from '@/redux/slices/walletconnect';
+import { addBatchTransaction, addDelegation } from '@/services/SignerServer';
 import { getToken } from '@/utils/assets';
 import { navigate } from '@/utils/navigation';
 import { base64ToBuffer, bufferToBase64 } from '@/utils/utilities';
@@ -243,7 +245,7 @@ const TransactionModule = (dispatch, getState) => {
           );
         }
 
-        const handleApproveArgs = [{ transactions, approve: true }];
+        const handleApproveArgs = [{ metadata, transactions, approve: true }];
         const handleDeclineArgs = [{ transactions, approve: false }];
 
         navigate(Routes.WALLET_CONNECT_FLOWS, {
@@ -263,9 +265,36 @@ const TransactionModule = (dispatch, getState) => {
         );
       }
     },
-    executor: async (opts, { approve, transactions }) => {
+    executor: async (opts, { approve, transactions, metadata }) => {
+      const keyring = KeyRing.getInstance();
+
       if (!approve) {
         return { error: ERRORS.TRANSACTION_REJECTED };
+      }
+
+      if (isIos) {
+        const agent = await keyring.getAgent();
+        const host = agent._host;
+        const { batchTxId, derPublicKey } = await addBatchTransaction(
+          transactions.map(tx => ({
+            canisterId: tx.canisterId,
+            methodName: tx.methodName,
+            args: tx.arguments,
+          })),
+          metadata,
+          host
+        );
+
+        const bufferPublicKey = base64ToBuffer(derPublicKey);
+
+        const delegationChain = await keyring.delegateIdentity({
+          to: bufferPublicKey,
+          targets: transactions.map(tx => tx.canisterId),
+        });
+
+        await addDelegation(batchTxId, delegationChain);
+
+        return { result: { status: true, txId: batchTxId } };
       }
 
       const savedBatchTransactions = await getBatchTransactions();

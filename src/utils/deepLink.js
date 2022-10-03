@@ -9,10 +9,26 @@ import {
 import { store } from '@/redux/store';
 import { navigate } from '@/utils/navigation';
 
-function handleWalletConnect(uri, isUnlocked) {
-  const { dispatch } = store;
+const parseUniversalLink = url => {
+  const urlObj = new URL(url);
+  const { uri, requestId } = qs.parse(urlObj.query.substring(1));
+
+  const uriObj = new URL(uri);
+  const { bridge } = qs.parse(uriObj.query.substring(1));
+
+  return { bridge, uri, requestId };
+};
+
+const parseDeepLink = uri => {
   const { query } = new URL(uri);
   const { bridge, requestId } = qs.parse(query.substring(1));
+
+  return { bridge, uri, requestId };
+};
+
+function handleWalletConnect(uri, bridge, requestId, isUnlocked) {
+  console.log('handleWalletConnect', uri, bridge, requestId, isUnlocked);
+  const { dispatch } = store;
   dispatch(
     walletConnectSetPendingRedirect({ requestId, redirect: { pending: true } })
   );
@@ -43,12 +59,15 @@ export const handleDeepLink = (url, isUnlocked) => {
     switch (action) {
       // We could add more actions here
       case 'wc': {
-        const { uri } = qs.parse(urlObj.query.substring(1));
-        handleWalletConnect(uri, isUnlocked);
+        const { bridge, uri, requestId } = parseUniversalLink(url);
+
+        handleWalletConnect(uri, bridge, requestId, isUnlocked);
         break;
       }
     }
   } else if (urlObj.protocol === 'wc:') {
-    handleWalletConnect(url, isUnlocked);
+    const { bridge, uri, requestId } = parseDeepLink(url);
+
+    handleWalletConnect(uri, bridge, requestId, isUnlocked);
   }
 };
