@@ -96,7 +96,7 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
   }, [contact]);
 
   const handleClose = () => {
-    onClose();
+    onClose?.();
     setError(false);
     if (!contact) {
       clearState();
