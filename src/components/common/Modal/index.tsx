@@ -42,6 +42,7 @@ function Modal({
   ...props
 }: Props) {
   const closeAllModals = useSelector(state => state.alert.closeAllModals);
+  const handleOnClose = () => onClose?.();
 
   useEffect(() => {
     if (closeAllModals) {
@@ -79,8 +80,8 @@ function Modal({
         closeOnOverlayTap
         keyboardAvoidingBehavior={isIos ? 'padding' : undefined}
         modalTopOffset={modalOffset}
-        onOverlayPress={onClose}
-        onClose={onClose}
+        onOverlayPress={handleOnClose}
+        onClose={handleOnClose}
         onClosed={onClosed}
         adjustToContentHeight={adjustToContentHeight}
         HeaderComponent={HeaderComponent}

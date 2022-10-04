@@ -26,7 +26,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingTop: 30,
+    marginTop: 30,
   },
   subtitle: {
     textAlign: 'center',

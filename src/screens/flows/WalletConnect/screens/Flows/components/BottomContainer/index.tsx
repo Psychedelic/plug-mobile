@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import React from 'react';
-import { View, ViewStyle } from 'react-native';
+import { SafeAreaView, View, ViewStyle } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import Button from '@/components/buttons/Button';
@@ -29,10 +29,10 @@ function WCFlowBottomContainer({
   return (
     <View style={styles.bottomContainer}>
       <LinearGradient
-        colors={[Colors.Transparent, Colors.Black.Primary]}
+        colors={[Colors.Black.PrimaryTransparent, Colors.Black.Primary]}
         style={styles.gradient}
       />
-      <View style={styles.buttonContainer}>
+      <SafeAreaView style={styles.buttonContainer}>
         <Button
           text={t('walletConnect.decline')}
           buttonStyle={styles.buttonStyle}
@@ -46,7 +46,7 @@ function WCFlowBottomContainer({
           buttonStyle={styles.buttonStyle as ViewStyle}
           onPress={onPressSend}
         />
-      </View>
+      </SafeAreaView>
     </View>
   );
 }
