@@ -1777,10 +1777,10 @@
     cross-fetch "^3.1.4"
     crypto-js "^4.1.1"
 
-"@psychedelic/plug-controller@0.23.0":
-  version "0.23.0"
-  resolved "https://npm.pkg.github.com/download/@Psychedelic/plug-controller/0.23.0/2c22d15300a8485643b31bb0eb1b62e2fd39d093#2c22d15300a8485643b31bb0eb1b62e2fd39d093"
-  integrity sha512-UUIOEayAQhZoxjXQbvKvkHJSeXiosVhr2nxGyG748P4gdAgLsR4qYdGaM487O9mZlpSNNctZJDocUhAIMZRklQ==
+"@psychedelic/plug-controller@0.23.1":
+  version "0.23.1"
+  resolved "https://npm.pkg.github.com/download/@Psychedelic/plug-controller/0.23.1/ddecc28719db8a8c33c2d342a27945664822dd27#ddecc28719db8a8c33c2d342a27945664822dd27"
+  integrity sha512-oqXnkP74Wf9DXylYhmt5QQNn/qWSl1D9mSJtbqHo2ME5yM5f/CEN6JuCWiv1hmvi7dCpzn2oR4WrkV+s3um0EA==
   dependencies:
     "@dfinity/agent" "0.9.3"
     "@dfinity/candid" "0.9.3"
