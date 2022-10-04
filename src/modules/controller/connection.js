@@ -244,7 +244,7 @@ const ConnectionModule = (dispatch, getState) => {
       }
     },
     executor: async (opts, areAllWhiteListed) => {
-      const keyring = getState().keyring?.instance;
+      const keyring = KeyRing.getInstance();
 
       if (areAllWhiteListed) {
         const publicKey = await keyring?.getPublicKey();

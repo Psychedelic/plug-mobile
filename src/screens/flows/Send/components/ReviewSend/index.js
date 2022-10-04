@@ -69,7 +69,7 @@ const ReviewSend = ({
   }, [contacts, to]);
 
   const handleClose = () => {
-    onClose();
+    onClose?.();
     dispatch(setTransaction(null));
 
     if (isSuccess) {
