@@ -13,6 +13,7 @@ export interface FontMakerOptions {
   color?: string;
   weight?: string;
   family?: string;
+  style?: 'normal' | 'italic';
 }
 
 declare global {
