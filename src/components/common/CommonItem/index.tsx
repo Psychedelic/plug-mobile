@@ -37,6 +37,7 @@ interface Props {
   showActions?: boolean;
 }
 
+// TODO: Refactor this component, make it generic.
 function CommonItem({
   image,
   imageUri,

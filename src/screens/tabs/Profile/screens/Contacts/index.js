@@ -17,6 +17,7 @@ import DeleteIcon from '@/icons/svg/material/Delete.svg';
 import EditIcon from '@/icons/svg/material/Edit.svg';
 import { Column, Row } from '@/layout';
 import { removeContact } from '@/redux/slices/user';
+import { validateICNSName } from '@/utils/ids';
 
 import AddEditContact from './components/AddEditContact';
 import styles from './styles';
@@ -48,7 +49,7 @@ function Contacts({ modalRef }) {
     addEditContactRef.current?.open();
   };
 
-  const onLongPress = contact => {
+  const onPress = contact => {
     const newActionsData = {
       options: [
         {
@@ -102,19 +103,22 @@ function Contacts({ modalRef }) {
                 <Text style={styles.letter}>{item.letter}</Text>
                 {item.contacts
                   .sort((a, b) => a.name.localeCompare(b.name))
-                  .map(contact => (
-                    <View
-                      style={styles.contactItem}
-                      key={`${contact.id}_${contact.name}`}>
-                      <CommonItem
-                        name={contact.name}
-                        // TODO: Check if contact.id is ICNS and if it is, send the id as subtitle, in that way the ICNS will not be cut with shortAddress (Need merge with v1-wallet-connect branch)
-                        id={contact.id}
-                        icon={contact.image}
-                        onLongPress={() => onLongPress(contact)}
-                      />
-                    </View>
-                  ))}
+                  .map(contact => {
+                    const isICNS = validateICNSName(contact.id);
+                    return (
+                      <View
+                        style={styles.contactItem}
+                        key={`${contact.id}_${contact.name}`}>
+                        <CommonItem
+                          name={contact.name}
+                          id={isICNS ? undefined : contact.id}
+                          subtitle={isICNS ? contact.id : undefined}
+                          icon={contact.image}
+                          onPress={() => onPress(contact)}
+                        />
+                      </View>
+                    );
+                  })}
               </Fragment>
             ))}
         </Column>
