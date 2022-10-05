@@ -33,6 +33,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
   const { icpPrice } = useSelector(state => state.icp);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const hasICNS = !!currentWallet?.icnsData.reverseResolvedName;
   const actionSheetRef = useRef(null);
   const [actionSheetData, setActionSheetData] = useState(undefined);
   const [selectedAccount, setSelectedAccount] = useState(null);
@@ -89,7 +90,9 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
     if (isSelectedAccount) {
       options.push({
         id: 3,
-        label: t('accounts.moreOptions.icns'),
+        label: hasICNS
+          ? t('accounts.moreOptions.setIcns')
+          : t('accounts.moreOptions.addIcns'),
         onPress: () => onAddICNS(account),
         icon: Platform.select({ android: AddGray }),
       });
