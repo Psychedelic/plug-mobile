@@ -91,7 +91,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
       options.push({
         id: 3,
         label: hasICNS
-          ? t('accounts.moreOptions.setIcns')
+          ? t('accounts.moreOptions.changeIcns')
           : t('accounts.moreOptions.addIcns'),
         onPress: () => onAddICNS(account),
         icon: Platform.select({ android: AddGray }),
