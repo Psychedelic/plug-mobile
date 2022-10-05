@@ -27,7 +27,7 @@ interface Props {
 function ConnectedApps({ modalRef }: Props) {
   const dispatch = useDispatch();
   const principalId = useSelector(
-    state => state.keyring.currentWallet.principal
+    state => state?.keyring?.currentWallet?.principal
   );
   const connectedApps = useSelector(state => state.user.connectedApps)?.filter(
     app => app.account === principalId
