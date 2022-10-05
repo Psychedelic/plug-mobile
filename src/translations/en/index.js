@@ -170,7 +170,8 @@ const translations = {
     createAccount: 'Create account',
     moreOptions: {
       edit: 'Edit Account',
-      icns: 'Add ICNS Domain',
+      addIcns: 'Add ICNS Domain',
+      changeIcns: 'Change ICNS Domain',
       copy: 'Copy Address',
     },
     icns: {
