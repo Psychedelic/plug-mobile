@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { Colors } from '@/constants/theme';
+import { fontMaker } from '@/utils/fonts';
 
 export default StyleSheet.create({
   container: {
@@ -24,5 +25,14 @@ export default StyleSheet.create({
   },
   loader: {
     justifyContent: 'center',
+  },
+  errorTextContainer: {
+    marginLeft: 8,
+  },
+  errorTitle: {
+    ...fontMaker({ color: Colors.White.Primary }),
+  },
+  errorSubtitle: {
+    ...fontMaker({ color: Colors.Gray.Pure, style: 'italic' }),
   },
 });

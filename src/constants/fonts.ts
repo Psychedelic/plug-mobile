@@ -17,6 +17,3 @@ export const weights: StringObject = {
   [SEMIBOLD]: SEMIBOLD_WEIGHT,
   [MEDIUM]: MEDIUM_WEIGHT,
 };
-
-// STYLES
-export const NORMAL_STYLE = 'normal';

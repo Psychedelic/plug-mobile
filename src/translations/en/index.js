@@ -255,6 +255,8 @@ const translations = {
     searchResults: 'Search Results',
     noResults: 'No search results found.',
     addCustomToken: 'Add custom token',
+    balanceError: 'Failed to fetch balance',
+    addError: 'Failed to add custom token',
     addButton: 'Add Token',
     safetyAlert:
       'Token Safety Alert: For your security, make sure to do proper research before interacting with any token.',

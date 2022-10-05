@@ -85,25 +85,26 @@ export const parseToBigIntString = (
   return `${main}${completeDecimals}`;
 };
 
+export const formatAsset = (asset: TokenBalance, icpPrice: number) => {
+  const { amount, token } = asset;
+  const { symbol, decimals, fee } = token;
+
+  const parsedAmount = parseToFloatAmount(amount, decimals);
+
+  const parsedFee = fee ? parseInt(fee.toString(), 10) / 10 ** decimals : 0;
+
+  const formattedAsset = {
+    ...token,
+    // Sometimes names come with a strange char that causes problems
+    name: token?.name?.replaceAll('\x00', ''),
+    fee: parsedFee,
+    ...formatAssetBySymbol(parsedAmount, symbol, icpPrice),
+  };
+
+  return recursiveParseBigint(formattedAsset);
+};
+
 export const formatAssets = (
   assets: TokenBalance[] = [],
   icpPrice: number
-): Asset[] =>
-  assets.map(currentAsset => {
-    const { amount, token } = currentAsset;
-    const { symbol, decimals, fee } = token;
-
-    const parsedAmount = parseToFloatAmount(amount, decimals);
-
-    const parsedFee = fee ? parseInt(fee.toString(), 10) / 10 ** decimals : 0;
-
-    const formattedAsset = {
-      ...token,
-      // Sometimes names come with a strange char that causes problems
-      name: token?.name?.replaceAll('\x00', ''),
-      fee: parsedFee,
-      ...formatAssetBySymbol(parsedAmount, symbol, icpPrice),
-    };
-
-    return recursiveParseBigint(formattedAsset);
-  });
+): Asset[] => assets.map(asset => formatAsset(asset, icpPrice));

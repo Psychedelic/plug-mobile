@@ -54,17 +54,21 @@ export const getTokenBalance = async (
   token: DABToken,
   user: Principal | string
 ) => {
-  const agent = new HttpAgent({
-    fetch,
-    host: DFINITY_HOST,
-  });
-  const tokenActor = await getTokenActor({
-    canisterId: token.canisterId.toString(),
-    agent,
-    standard: token.standard,
-  });
-  const amount = await tokenActor.getBalance(
-    user instanceof Principal ? user : Principal.fromText(user)
-  );
-  return amount;
+  try {
+    const agent = new HttpAgent({
+      fetch,
+      host: DFINITY_HOST,
+    });
+    const tokenActor = await getTokenActor({
+      canisterId: token.canisterId.toString(),
+      agent,
+      standard: token.standard,
+    });
+    const amount = await tokenActor.getBalance(
+      user instanceof Principal ? user : Principal.fromText(user)
+    );
+    return amount;
+  } catch (error) {
+    return { error };
+  }
 };

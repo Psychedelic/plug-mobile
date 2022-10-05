@@ -560,7 +560,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/rust/.cargo/mobile_app/target/universal/release",
 				);
-				MARKETING_VERSION = 0.2.1;
+				MARKETING_VERSION = 0.3.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -603,7 +603,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/rust/.cargo/mobile_app/target/universal/release",
 				);
-				MARKETING_VERSION = 0.2.1;
+				MARKETING_VERSION = 0.3.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
