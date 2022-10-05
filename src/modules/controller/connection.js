@@ -46,9 +46,14 @@ const handlerAllowAgent = getState => async (opts, url, response) => {
   if (response?.status === CONNECTION_STATUS.accepted) {
     try {
       const publicKey = await keyring?.getPublicKey();
-      return { result: publicKey };
+      return {
+        result: {
+          publicKey,
+          whitelist: Object.keys(response.whitelist),
+        },
+      };
     } catch (e) {
-      return { error: ERRORS.SERVER_ERROR(e) };
+      return { error: ERRORS.SERVER_ERROR(e.message) };
     }
   } else {
     return { error: ERRORS.AGENT_REJECTED };
@@ -206,7 +211,7 @@ const ConnectionModule = (dispatch, getState) => {
       } catch (e) {
         walletConnectExecuteAndResponse({
           requestId,
-          error: ERRORS.SERVER_ERROR(e),
+          error: ERRORS.SERVER_ERROR(e.message),
         });
       }
     },
