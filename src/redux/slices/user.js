@@ -301,12 +301,21 @@ export const addCustomToken = createAsyncThunk(
     const currentWalletId = instance?.currentWalletId;
     const { canisterId, standard, logo } = token;
     try {
+      const isAlreadyAdded = !!user.assets.find(
+        asset => asset.canisterId === canisterId
+      );
+      if (isAlreadyAdded) {
+        onSuccess?.();
+        return user.assets;
+      }
+
       const registeredToken = await instance?.registerToken({
         canisterId,
         standard,
         subaccount: currentWalletId,
         logo,
       });
+
       const assets = [
         ...user.assets,
         formatAsset(registeredToken, icp.icpPrice),
