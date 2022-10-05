@@ -140,7 +140,7 @@ function WCFlows() {
     try {
       await handleAction({ approve: true });
     } catch (e: any) {
-      await handleAction({ error: ERRORS.SERVER_ERROR(e) });
+      await handleAction({ error: ERRORS.SERVER_ERROR(e.message) });
     }
   }, [closeScreen, dispatch, handleAction]);
 

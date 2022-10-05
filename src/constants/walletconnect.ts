@@ -21,7 +21,10 @@ export const ERRORS = {
     message:
       'The transaction the app/page attempted failed because the destination Canister ID is invalid. Please contact this project’s developers so they can fix it.',
   },
-  SERVER_ERROR: (message: string) => ({ code: 500, message }),
+  SERVER_ERROR: (message: string) => ({
+    code: 500,
+    message: message || 'Server error',
+  }),
   AGENT_REJECTED: { code: 401, message: 'The agent creation was rejected.' },
   TRANSACTION_REJECTED: {
     code: 401,
