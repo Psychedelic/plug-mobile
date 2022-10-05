@@ -30,6 +30,7 @@ export default StyleSheet.create({
   assetAmountContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    flex: 1,
   },
   leftContainer: {
     flexDirection: 'row',
