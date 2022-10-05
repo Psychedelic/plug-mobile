@@ -27,7 +27,6 @@ const parseDeepLink = uri => {
 };
 
 function handleWalletConnect(uri, bridge, requestId, isUnlocked) {
-  console.log('handleWalletConnect', uri, bridge, requestId, isUnlocked);
   const { dispatch } = store;
   dispatch(
     walletConnectSetPendingRedirect({ requestId, redirect: { pending: true } })

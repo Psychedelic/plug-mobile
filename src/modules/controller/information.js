@@ -57,7 +57,7 @@ const InformationModule = (dispatch, getState) => {
         );
         return { result: publicKey };
       } catch (e) {
-        return { error: ERRORS.SERVER_ERROR(e) };
+        return { error: ERRORS.SERVER_ERROR(e.message) };
       }
     },
   };
@@ -111,13 +111,13 @@ const InformationModule = (dispatch, getState) => {
 
   const isUnlock = {
     methodName: 'isUnlock',
-    handler: () => {},
+    handler: () => { },
     executor: () => {
       try {
         const { isUnlocked } = getState().keyring;
         return { result: isUnlocked };
       } catch (e) {
-        return { error: ERRORS.SERVER_ERROR(e) };
+        return { error: ERRORS.SERVER_ERROR(e.message) };
       }
     },
   };

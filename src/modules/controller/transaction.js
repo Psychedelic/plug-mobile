@@ -430,7 +430,7 @@ const TransactionModule = (dispatch, getState) => {
           },
         };
       } catch (e) {
-        return { error: ERRORS.SERVER_ERROR(e) };
+        return { error: ERRORS.SERVER_ERROR(e.message) };
       }
     },
   };
@@ -463,7 +463,7 @@ const TransactionModule = (dispatch, getState) => {
         dispatch(
           walletConnectExecuteAndResponse({
             requestId,
-            error: ERRORS.SERVER_ERROR(e),
+            error: ERRORS.SERVER_ERROR(e.message),
           })
         );
       }
@@ -482,7 +482,7 @@ const TransactionModule = (dispatch, getState) => {
           },
         };
       } catch (e) {
-        return { error: ERRORS.SERVER_ERROR(e) };
+        return { error: ERRORS.SERVER_ERROR(e.message) };
       }
     },
   };
@@ -516,7 +516,7 @@ const TransactionModule = (dispatch, getState) => {
         dispatch(
           walletConnectExecuteAndResponse({
             requestId,
-            error: ERRORS.SERVER_ERROR(e),
+            error: ERRORS.SERVER_ERROR(e.message),
           })
         );
       }
@@ -539,7 +539,7 @@ const TransactionModule = (dispatch, getState) => {
           result: response,
         };
       } catch (e) {
-        return { error: ERRORS.SERVER_ERROR(e) };
+        return { error: ERRORS.SERVER_ERROR(e.message) };
       }
     },
   };

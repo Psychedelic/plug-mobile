@@ -237,7 +237,7 @@ const listenOnNewMessages = createAsyncThunk(
           walletConnectExecuteAndResponse({
             requestId,
             peerId,
-            error: ERRORS.SERVER_ERROR(e),
+            error: ERRORS.SERVER_ERROR(e.message),
           })
         );
       }
@@ -271,7 +271,7 @@ export const walletConnectExecuteAndResponse = createAsyncThunk(
         try {
           if (error || !executor) {
             await walletConnector.rejectRequest({
-              error: JSON.stringify(error || ERRORS.NOT_APPROVED),
+              error: error || ERRORS.NOT_APPROVED,
               id: requestId,
             });
           } else {
@@ -284,7 +284,7 @@ export const walletConnectExecuteAndResponse = createAsyncThunk(
               onSuccess?.();
             } else {
               await walletConnector.rejectRequest({
-                error: JSON.stringify(resultError),
+                error: resultError,
                 id: requestId,
               });
             }
