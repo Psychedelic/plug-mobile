@@ -50,6 +50,7 @@ const TextInput = ({
   onFocus,
   blurOnSubmit,
   error,
+  autoCapitalize = 'none',
   ...props
 }: Props) => {
   const customBackgroundColor = useMemo(
@@ -105,6 +106,7 @@ const TextInput = ({
           style={[styles.textInput, inputStyle]}
           placeholderTextColor={placeholderTextColor}
           onChangeText={onChangeText}
+          autoCapitalize={autoCapitalize}
           autoCorrect={false}
           secureTextEntry={secureTextEntry}
           placeholder={placeholder}

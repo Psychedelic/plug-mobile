@@ -81,6 +81,7 @@ function ConnectedApps({ modalRef }: Props) {
         image="unknown"
         style={styles.appItem}
         onPress={openApp(item)}
+        onActionPress={openApp(item)}
         key={`${name}-${index}`}
         subtitle={`${formatLongDate(lastConection)}`}
       />

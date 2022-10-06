@@ -41,6 +41,7 @@ function ApprovedCanisters({ modalRef, app, connectedAppsRef }: Props) {
         image="unknown"
         style={styles.canister}
         onPress={redirectToCanister}
+        onActionPress={redirectToCanister}
         actionIconName="redirectArrow"
         key={`${canisterId}: ${index}`}
       />
