@@ -2,7 +2,7 @@ import { t } from 'i18next';
 import React, { useCallback, useRef, useState } from 'react';
 import { Image, Linking, Text, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '@/components/buttons/Button';
@@ -31,6 +31,7 @@ function WCInitialConnection({
   const modalRef = useRef<Modalize>(null);
   const dispatch = useDispatch();
   const { currentWallet } = useSelector(state => state.keyring);
+  const { bottom } = useSafeAreaInsets();
 
   const [connectLoading, setConnectLoading] = useState(false);
 
@@ -99,7 +100,7 @@ function WCInitialConnection({
           {t('common.questionMark')}
         </Text>
       </View>
-      <View style={styles.bottomContainer}>
+      <View style={[styles.bottomContainer, !!bottom && styles.extraMargin]}>
         <View style={styles.changeWalletContainer}>
           <UserShowcase currentWallet={currentWallet} />
           <Text
@@ -108,7 +109,7 @@ function WCInitialConnection({
             {t('walletConnect.changeWallet')}
           </Text>
         </View>
-        <SafeAreaView style={styles.buttonsContainer}>
+        <View style={styles.buttonsContainer}>
           <Button
             onPress={onCancel}
             text={t('common.cancel')}
@@ -120,7 +121,7 @@ function WCInitialConnection({
             text={t('walletConnect.connect')}
             buttonStyle={styles.buttonStyle}
           />
-        </SafeAreaView>
+        </View>
       </View>
       <Accounts modalRef={modalRef} />
     </Container>

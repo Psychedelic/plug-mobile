@@ -7,9 +7,13 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { ActivityIndicator, Linking, TouchableOpacity } from 'react-native';
+import {
+  ActivityIndicator,
+  Linking,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 
 import RainbowButton from '@/components/buttons/RainbowButton';
@@ -117,9 +121,13 @@ function AddICNS({ modalRef }: Props) {
         modalRef={modalRef}
         onClose={clearState}>
         {dataLoading ? (
-          <ActivityIndicator color="white" size="large" />
+          <ActivityIndicator
+            color="white"
+            size="small"
+            style={styles.activityIndicator}
+          />
         ) : (
-          <SafeAreaView style={styles.container}>
+          <View style={styles.container}>
             <Text style={[styles.message, !noNames && styles.icnsInfo]}>
               {noNames
                 ? t('accounts.icns.emptyState')
@@ -151,7 +159,7 @@ function AddICNS({ modalRef }: Props) {
                 />
               </>
             )}
-          </SafeAreaView>
+          </View>
         )}
       </Modal>
       <ActionSheet modalRef={actionSheetRef} options={actionSheetOptions} />
