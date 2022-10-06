@@ -1,7 +1,8 @@
 import { t } from 'i18next';
 import React from 'react';
-import { SafeAreaView, View, ViewStyle } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';

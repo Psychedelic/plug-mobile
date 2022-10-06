@@ -7,13 +7,9 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {
-  ActivityIndicator,
-  Linking,
-  SafeAreaView,
-  TouchableOpacity,
-} from 'react-native';
+import { ActivityIndicator, Linking, TouchableOpacity } from 'react-native';
 import { Modalize } from 'react-native-modalize';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 
 import RainbowButton from '@/components/buttons/RainbowButton';

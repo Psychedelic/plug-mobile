@@ -1,7 +1,8 @@
 import { t } from 'i18next';
 import React, { useCallback, useRef, useState } from 'react';
-import { Image, Linking, SafeAreaView, Text, View } from 'react-native';
+import { Image, Linking, Text, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '@/components/buttons/Button';
