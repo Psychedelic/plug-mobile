@@ -33,6 +33,7 @@ interface Props {
   nameStyle?: StyleProp<TextStyle>;
   onPress?: () => void;
   onLongPress?: () => void;
+  onActionPress?: () => void;
   actionIconName?: string;
   showActions?: boolean;
 }
@@ -51,6 +52,7 @@ function CommonItem({
   nameStyle,
   onPress,
   onLongPress,
+  onActionPress,
   actionIconName = 'threeDots',
   showActions = true,
 }: Props) {
@@ -87,8 +89,7 @@ function CommonItem({
           {showActions && (
             <View style={styles.threeDots}>
               <Touchable
-                onPress={onPress}
-                onLongPress={onLongPress}
+                onPress={onActionPress}
                 scale={animationScales.large}
                 hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}>
                 <Icon name={actionIconName} />

@@ -1,7 +1,8 @@
 import { t } from 'i18next';
 import React from 'react';
-import { SafeAreaView, View, ViewStyle } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
@@ -23,16 +24,17 @@ function WCFlowBottomContainer({
   sendLoading,
   type,
 }: Props) {
+  const { bottom } = useSafeAreaInsets();
   const showConfirm =
     type === WCFlowTypes.transfer || type === WCFlowTypes.batchTransactions;
 
   return (
-    <View style={styles.bottomContainer}>
+    <View style={[styles.bottomContainer, !!bottom && styles.extraMargin]}>
       <LinearGradient
         colors={[Colors.Black.PrimaryTransparent, Colors.Black.Primary]}
         style={styles.gradient}
       />
-      <SafeAreaView style={styles.buttonContainer}>
+      <View style={styles.buttonContainer}>
         <Button
           text={t('walletConnect.decline')}
           buttonStyle={styles.buttonStyle}
@@ -46,7 +48,7 @@ function WCFlowBottomContainer({
           buttonStyle={styles.buttonStyle as ViewStyle}
           onPress={onPressSend}
         />
-      </SafeAreaView>
+      </View>
     </View>
   );
 }

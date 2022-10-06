@@ -115,6 +115,7 @@ function Contacts({ modalRef }) {
                           subtitle={isICNS ? contact.id : undefined}
                           icon={contact.image}
                           onPress={() => onPress(contact)}
+                          onActionPress={() => onPress(contact)}
                         />
                       </View>
                     );

@@ -157,13 +157,13 @@ const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
         <TextInput
           autoFocus
           value={name}
+          autoCapitalize="words"
           maxLength={22}
           placeholder={t('contacts.namePlaceholder')}
           onChangeText={handleOnChangeName}
         />
         <TextInput
           value={id}
-          autoCapitalize="none"
           onChangeText={handleOnChangeId}
           placeholder={t('contacts.idPlaceholder')}
           style={styles.marginedContainer}

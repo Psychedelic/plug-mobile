@@ -19,12 +19,17 @@ function RequestConnect({ args }: WallectConnectFlowsData) {
   const renderWhiteList = ({ item }: { item: WCWhiteListItem }) => {
     const { canisterId, name, icon } = item;
 
+    const handlePress = () => {
+      Linking.openURL(`${icScanUrl}${canisterId}`);
+    };
+
     return (
       <CommonItem
         longId
         name={name}
         id={canisterId}
-        onPress={() => Linking.openURL(`${icScanUrl}${canisterId}`)}
+        onPress={handlePress}
+        onActionPress={handlePress}
         style={styles.cannisterItem}
         actionIconName="redirectArrow"
         imageUri={icon}

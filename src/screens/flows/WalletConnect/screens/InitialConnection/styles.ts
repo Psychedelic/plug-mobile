@@ -59,4 +59,7 @@ export default StyleSheet.create({
   bottomContainer: {
     padding: 20,
   },
+  extraMargin: {
+    marginBottom: 20,
+  },
 });

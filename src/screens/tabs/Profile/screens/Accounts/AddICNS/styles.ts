@@ -55,4 +55,8 @@ export default StyleSheet.create({
     width: 60,
     height: 20,
   },
+  activityIndicator: {
+    marginBottom: 20,
+    paddingVertical: 30,
+  },
 });

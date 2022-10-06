@@ -132,6 +132,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
         onPress={handleOnPress}
         style={styles.accountItem}
         onLongPress={() => onLongPress(account)}
+        onActionPress={() => onLongPress(account)}
         {...(isSelectedAccount && selectedAccountProps)}
       />
     );
