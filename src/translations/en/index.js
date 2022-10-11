@@ -167,7 +167,7 @@ const translations = {
   },
   accounts: {
     title: 'Accounts',
-    createAccount: 'Create account',
+    createImportAccount: 'Create/Import account',
     moreOptions: {
       edit: 'Edit Account',
       addIcns: 'Add ICNS Domain',
