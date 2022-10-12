@@ -73,6 +73,10 @@ rust/.cargo/config.toml
 android/*.hprof
 android/app/src/main/jniLibs
 
+# Sentry
+android/sentry.properties
+ios/sentry.properties
+
 # react-native-config codegen
 ios/envfile
 
