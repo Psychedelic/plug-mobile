@@ -7,6 +7,7 @@ import {
   View,
 } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
+import { FileSystem } from 'react-native-file-access';
 import { Modalize } from 'react-native-modalize';
 
 import { GradientText, Header, Modal, Text } from '@/components/common';
@@ -52,8 +53,8 @@ function CreateImportAccount({ accountsModal, modalRef }: Props) {
       const res = await DocumentPicker.pickSingle({
         type: ['application/x-pem-file', '.pem'],
       });
-      console.tron.log('PEM', res);
-      setPemFile(res.uri, openCreateAccountModal);
+      const stringifyPEM = await FileSystem.readFile(res.uri);
+      setPemFile(stringifyPEM, openCreateAccountModal);
     } catch (e) {
       console.log('Error opening .pem');
     }
