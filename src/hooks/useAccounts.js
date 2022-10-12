@@ -1,13 +1,19 @@
 import { useDispatch, useSelector } from 'react-redux';
 
-import { createSubaccount, editSubaccount } from '@/redux/slices/keyring';
+import {
+  createSubaccount,
+  editSubaccount,
+  importAccountFromPem,
+} from '@/redux/slices/keyring';
 
 const useAccounts = () => {
   const dispatch = useDispatch();
   const { wallets } = useSelector(state => state.keyring);
 
   const onCreate = account => {
-    dispatch(createSubaccount(account));
+    dispatch(
+      account?.pem ? importAccountFromPem(account) : createSubaccount(account)
+    );
   };
 
   const onEdit = account => {

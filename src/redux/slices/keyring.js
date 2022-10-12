@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 import KeyRing from '@/modules/keyring';
 
@@ -177,6 +177,22 @@ export const login = createAsyncThunk(
   }
 );
 
+export const importAccountFromPem = createAsyncThunk(
+  'keyring/importAccountFromPem',
+  /**
+   * @param {{ name: string, icon: string, pem: string }} params
+   */
+  async params => {
+    try {
+      const instance = KeyRing.getInstance();
+      const response = await instance?.importAccountFromPem(params);
+      return response;
+    } catch (e) {
+      console.log('importAccountFromPem', e);
+    }
+  }
+);
+
 export const createSubaccount = createAsyncThunk(
   'keyring/createSubaccount',
   async params => {
@@ -324,11 +340,6 @@ export const keyringSlice = createSlice({
         state.isInitialized = action.payload.isInitialized;
         state.isUnlocked = action.payload.isUnlocked;
       })
-      .addCase(createSubaccount.fulfilled, (state, action) => {
-        if (action.payload) {
-          state.wallets = [...state.wallets, action.payload];
-        }
-      })
       .addCase(editSubaccount.fulfilled, (state, action) => {
         const { isCurrentWallet, wallet } = action.payload;
         if (isCurrentWallet) {
@@ -365,7 +376,15 @@ export const keyringSlice = createSlice({
           state.isInitialized = true;
           state.isUnlocked = unlocked;
         }
-      });
+      })
+      .addMatcher(
+        isAnyOf(createSubaccount.fulfilled, importAccountFromPem.fulfilled),
+        (state, action) => {
+          if (action.payload) {
+            state.wallets = [...state.wallets, action.payload];
+          }
+        }
+      );
   },
 });
 

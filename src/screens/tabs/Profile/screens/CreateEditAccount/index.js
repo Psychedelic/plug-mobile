@@ -14,7 +14,10 @@ import useAccounts from '@/hooks/useAccounts';
 import EditEmoji from '../EditEmoji';
 import styles from './styles';
 
-const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
+/**
+ * @param {{ modalRef: any, accountsModalRef?: any, account?: any, pem?: string } param
+ */
+const CreateEditAccount = ({ modalRef, account, accountsModalRef, pem }) => {
   const { t } = useTranslation();
   const editEmojiRef = useRef(null);
   const [accountName, setAccountName] = useState('');
@@ -33,6 +36,7 @@ const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
       : onCreate({
           name: accountName,
           icon: emoji,
+          pem,
         });
 
     resetState();
