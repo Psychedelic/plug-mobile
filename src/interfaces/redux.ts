@@ -1,20 +1,15 @@
+import PlugWallet from '@psychedelic/plug-controller/dist/PlugWallet';
 import WalletConnect from '@walletconnect/client';
-
-import { ICNSData } from '@/interfaces/icns';
-import { Contact } from '@/screens/tabs/Profile/screens/Contacts/utils';
 
 import { Nullable } from './general';
 import { WCWhiteListItem } from './walletConnect';
 
-// Override the default state interface
-declare module 'react-redux' {
-  interface DefaultRootState {
-    icp: IcpState;
-    keyring: KeyringState;
-    user: UserState;
-    alert: AlertState;
-    walletconnect: WalletConnectState;
-  }
+export interface State {
+  icp: IcpState;
+  keyring: KeyringState;
+  user: UserState;
+  alert: AlertState;
+  walletconnect: WalletConnectState;
 }
 
 export interface CollectionToken {
@@ -22,6 +17,7 @@ export interface CollectionToken {
   canister: string;
   url: string;
   standard: string;
+  metadata: any;
 }
 
 export interface Collection {
@@ -78,16 +74,16 @@ export interface TransactionDetails {
 
 export interface Transaction {
   amount: string | number;
-  value: string | number;
-  icon: string;
   type: string; //TODO: Add types here SEND/RECEIVE. Check ACTIVITY_TYPES
   symbol: string;
   hash: string;
   to: string;
   from: string;
-  date: string;
-  status?: number | string;
+  date: Date;
   image: string;
+  value?: string | number;
+  status?: number | string;
+  icon?: string;
   canisterId?: string;
   plug?: any;
   canisterInfo?: CanisterInfo;
@@ -109,47 +105,44 @@ export interface Asset {
 export interface IcpState {
   icpPrice: number;
 }
-export interface Wallet {
-  name: string;
-  walletId: string;
-  orderNumber: number;
-  principal: string;
-  accountId: string;
-  icnsData?: ICNSData;
-  type: string;
-  keyPair: string;
-  icon?: string;
-}
 
 export interface KeyringState {
   isInitialized: boolean;
   isUnlocked: boolean;
-  currentWallet: Wallet;
-  wallets: Wallet[];
+  currentWallet: Nullable<PlugWallet>;
+  wallets: PlugWallet[];
   icnsDataLoading: boolean;
   isPrelocked: boolean;
+}
+
+export interface Contact {
+  image: string;
+  name: string;
+  id: string;
 }
 
 export interface ConnectedApp {
   name: string;
   canisterList: WCWhiteListItem[];
-  imageUri: string;
-  lastConection: Date;
+  lastConnection: Date;
   account: string;
+  imageUri?: string;
 }
 export interface UserState {
   assets: Asset[];
-  assetsError: Nullable<string>;
+  assetsError?: string;
   assetsLoading: boolean;
   contacts: Contact[];
   contactsLoading: boolean;
-  contactsError: Nullable<string>;
-  transaction: Transaction;
+  contactsError?: string;
+  transaction: {
+    status: string | null;
+  };
   transactions: Transaction[];
-  transactionsError: Nullable<string>;
+  transactionsError?: string;
   transactionsLoading: boolean;
   collections: Collection[];
-  collectionsError: Nullable<string>;
+  collectionsError?: string;
   collectionsLoading: boolean;
   usingBiometrics: boolean;
   biometricsAvailable: boolean;

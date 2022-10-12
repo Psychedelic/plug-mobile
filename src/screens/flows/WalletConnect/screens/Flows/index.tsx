@@ -23,6 +23,7 @@ import {
   walletConnectExecuteAndResponse,
 } from '@/redux/slices/walletconnect';
 
+// import { RootState } from '@/redux/store';
 import BatchTransactions from './components/BatchTransactions';
 import BottomContainer from './components/BottomContainer';
 import DappInfo from './components/DappInfo';
@@ -162,7 +163,7 @@ function WCFlows() {
           name: metadata.name,
           canisterList: whiteListArray,
           imageUri: metadata?.icons[0],
-          lastConection: Date.now(),
+          lastConnection: Date.now(),
           account: principalId,
         })
       );

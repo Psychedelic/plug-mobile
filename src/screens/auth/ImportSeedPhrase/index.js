@@ -44,30 +44,26 @@ const ImportSeedPhrase = ({ navigation, route }) => {
   }, [importingWallet, setImportingWallet]);
 
   const importWalletFromSeedPhrase = async () => {
-    try {
-      dispatch(clear());
-      dispatch(
-        importWallet({
-          icpPrice,
-          mnemonic: seedPhrase,
-          password,
-          onError: () => {
-            setError(true);
-            setImportingWallet(false);
-          },
-          onSuccess: async () => {
-            if (shouldSaveBiometrics) {
-              await saveBiometrics(password);
-            }
-            setImportingWallet(false);
-            setError(false);
-            navigation.navigate(Routes.SWIPE_LAYOUT);
-          },
-        })
-      );
-    } catch (e) {
-      console.log(e);
-    }
+    dispatch(clear());
+    dispatch(
+      importWallet({
+        icpPrice,
+        mnemonic: seedPhrase,
+        password,
+        onError: () => {
+          setError(true);
+          setImportingWallet(false);
+        },
+        onSuccess: async () => {
+          if (shouldSaveBiometrics) {
+            await saveBiometrics(password);
+          }
+          setImportingWallet(false);
+          setError(false);
+          navigation.navigate(Routes.SWIPE_LAYOUT);
+        },
+      })
+    );
   };
 
   const isMnemonicValid =

@@ -51,7 +51,7 @@ export const getNFTDetails = async ({
 };
 
 export const getTokenBalance = async (
-  token: DABToken,
+  token: { canisterId: Principal | string; standard: string },
   user: Principal | string
 ) => {
   try {

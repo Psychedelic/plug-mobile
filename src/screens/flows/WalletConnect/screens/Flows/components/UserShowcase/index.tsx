@@ -1,14 +1,14 @@
+import PlugWallet from '@psychedelic/plug-controller/dist/PlugWallet';
 import React from 'react';
 import { Text, View } from 'react-native';
 
 import UserIcon from '@/components/common/UserIcon';
 import { FontStyles } from '@/constants/theme';
-import { Wallet } from '@/interfaces/redux';
 
 import styles from './styles';
 
 interface Props {
-  currentWallet: Wallet;
+  currentWallet: PlugWallet;
 }
 
 function UserShowcase({ currentWallet }: Props) {

@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+import { IcpState } from '@/interfaces/redux';
 import getICPPriceService from '@/services/ICPPriceService';
 
-const INITIAL_STATE = {
-  icpPrice: null,
+const INITIAL_STATE: IcpState = {
+  icpPrice: 1,
 };
 
 export const getICPPrice = createAsyncThunk('icp/getICPPrice', async () => {
@@ -29,10 +30,10 @@ export const icpSlice = createSlice({
       return INITIAL_STATE;
     },
   },
-  extraReducers: {
-    [getICPPrice.fulfilled]: (state, action) => {
+  extraReducers: builder => {
+    builder.addCase(getICPPrice.fulfilled, (state, action) => {
       state.icpPrice = action.payload;
-    },
+    });
   },
 });
 
