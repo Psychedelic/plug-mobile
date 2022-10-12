@@ -5,10 +5,10 @@ import { Colors } from '@/constants/theme';
 export default StyleSheet.create({
   listContentContainer: {
     paddingVertical: 10,
-    flexGrow: 1,
   },
   list: {
     width: '100%',
+    flex: 1,
   },
   appIcon: {
     height: 28,
