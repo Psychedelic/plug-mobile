@@ -53,7 +53,7 @@ export const handleDeepLink = (url, isUnlocked) => {
   }
   // Check if we need to wait till the wallet is ready to handle any deeplink
   const urlObj = new URL(url);
-  if (urlObj.protocol === 'https:') {
+  if (urlObj.protocol === 'plug:') {
     const action = urlObj.pathname.split('/')[1];
     switch (action) {
       // We could add more actions here
