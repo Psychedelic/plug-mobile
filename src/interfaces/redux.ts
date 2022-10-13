@@ -1,7 +1,7 @@
-import PlugWallet from '@psychedelic/plug-controller/dist/PlugWallet';
 import WalletConnect from '@walletconnect/client';
 
 import { Nullable } from './general';
+import { ICNSData } from './icns';
 import { WCWhiteListItem } from './walletConnect';
 
 export interface State {
@@ -106,11 +106,23 @@ export interface IcpState {
   icpPrice: number;
 }
 
+export interface Wallet {
+  name: string;
+  walletId: string;
+  orderNumber: number;
+  principal: string;
+  accountId: string;
+  icnsData?: ICNSData;
+  type: string;
+  keyPair?: string;
+  icon?: string;
+}
+
 export interface KeyringState {
   isInitialized: boolean;
   isUnlocked: boolean;
-  currentWallet: Nullable<PlugWallet>;
-  wallets: PlugWallet[];
+  currentWallet: Nullable<Wallet>;
+  wallets: Wallet[];
   icnsDataLoading: boolean;
   isPrelocked: boolean;
 }

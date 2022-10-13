@@ -1,8 +1,7 @@
 import { CreatePrincipalOptions } from '@psychedelic/plug-controller/dist/PlugKeyRing/interfaces';
-import PlugWallet from '@psychedelic/plug-controller/dist/PlugWallet';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { KeyringState, State } from '@/interfaces/redux';
+import { KeyringState, State, Wallet } from '@/interfaces/redux';
 import KeyRing from '@/modules/keyring';
 
 import { generateMnemonic } from '../../utils/crypto';
@@ -237,7 +236,7 @@ export const editSubaccount = createAsyncThunk(
           ...wallets?.find(wallet => wallet.walletId === walletId),
           name,
           icon,
-        },
+        } as Wallet,
         isCurrentWallet: currentWallet?.walletId === walletId,
       };
     } catch (e: any) {
@@ -365,11 +364,11 @@ export const keyringSlice = createSlice({
       .addCase(editSubaccount.fulfilled, (state, action) => {
         const { isCurrentWallet, wallet } = action.payload;
         if (isCurrentWallet) {
-          state.currentWallet = wallet as PlugWallet;
+          state.currentWallet = wallet;
         }
         state.wallets = state.wallets.map(w =>
           w.walletId === wallet.walletId ? wallet : w
-        ) as PlugWallet[];
+        );
       })
       .addCase(login.rejected, state => {
         state.isUnlocked = false;
