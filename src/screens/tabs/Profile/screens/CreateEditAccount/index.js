@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Keyboard, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
@@ -9,37 +10,56 @@ import UserIcon from '@/commonComponents/UserIcon';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
-import useAccounts from '@/hooks/useAccounts';
+import {
+  createSubaccount,
+  editSubaccount,
+  importAccountFromPem,
+} from '@/redux/slices/keyring';
 
 import EditEmoji from '../EditEmoji';
 import styles from './styles';
 
 /**
- * @param {{ modalRef: any, accountsModalRef?: any, account?: any, pem?: string } param
+ * @param {{ modalRef: any, accountsModalRef?: any, account?: any, pem?: string, createImportModalRef?: any } param
  */
-const CreateEditAccount = ({ modalRef, account, accountsModalRef, pem }) => {
+const CreateEditAccount = ({
+  modalRef,
+  account,
+  accountsModalRef,
+  pem,
+  createImportModalRef,
+}) => {
   const { t } = useTranslation();
   const editEmojiRef = useRef(null);
   const [accountName, setAccountName] = useState('');
   const [editTouched, setEditTouched] = useState(false);
   const [emoji, setEmoji] = useState('');
+  const dispatch = useDispatch();
 
-  const { onCreate, onEdit } = useAccounts();
+  const nameAndIcon = {
+    name: accountName,
+    icon: emoji,
+  };
 
   const onPress = () => {
-    account
-      ? onEdit({
-          walletId: account.walletId,
-          name: accountName,
-          icon: emoji,
-        })
-      : onCreate({
-          name: accountName,
-          icon: emoji,
-          pem,
-        });
+    dispatch(
+      account
+        ? editSubaccount({
+            walletId: account.walletId,
+            ...nameAndIcon,
+          })
+        : pem
+        ? importAccountFromPem({
+            ...nameAndIcon,
+            pem,
+          })
+        : createSubaccount(nameAndIcon)
+    );
 
     resetState();
+    if (createImportModalRef) {
+      createImportModalRef.current?.close();
+    }
     modalRef.current?.close();
   };
 

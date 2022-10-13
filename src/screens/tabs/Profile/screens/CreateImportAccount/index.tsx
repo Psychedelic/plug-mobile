@@ -110,10 +110,10 @@ function CreateImportAccount({ accountsModal, modalRef }: Props) {
       />
       <View style={styles.container}>{BUTTONS.map(renderButton)}</View>
       <CreateAccount
-        modalRef={createAccountRef}
-        accountsModalRef={accountsModal}
-        account={null}
         pem={pemFile}
+        modalRef={createAccountRef}
+        createImportModalRef={modalRef}
+        accountsModalRef={accountsModal}
       />
       <ImportKey
         modalRef={importKeyRef}

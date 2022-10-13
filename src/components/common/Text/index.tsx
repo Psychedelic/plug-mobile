@@ -12,7 +12,8 @@ export type TextTypes =
   | 'button'
   | 'caption'
   | 'overline'
-  | 'normal';
+  | 'normal'
+  | 'error';
 
 export interface TextProps extends RNTextProps {
   type?: TextTypes;

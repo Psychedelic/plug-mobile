@@ -14,6 +14,9 @@ export default StyleSheet.create({
   },
   inputStyle: {
     width: '100%',
-    marginBottom: 24,
+    marginBottom: 8,
+  },
+  button: {
+    marginTop: 16,
   },
 });

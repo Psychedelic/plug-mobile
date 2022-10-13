@@ -182,13 +182,38 @@ export const importAccountFromPem = createAsyncThunk(
   /**
    * @param {{ name: string, icon: string, pem: string }} params
    */
-  async params => {
+  async ({ pem, icon, name }, { rejectWithValue }) => {
     try {
       const instance = KeyRing.getInstance();
-      const response = await instance?.importAccountFromPem(params);
+      const response = await instance?.importAccountFromPem({
+        pem,
+        icon,
+        name,
+      });
       return response;
     } catch (e) {
-      console.log('importAccountFromPem', e);
+      return rejectWithValue({ error: e.message });
+    }
+  }
+);
+
+export const validatePem = createAsyncThunk(
+  'keyring/validatePem',
+  /**
+   * @param {{ pem: string, onSuccess: () => void, onFailure: () => void, onFinish: () => void  }} params
+   */
+  async ({ pem, onSuccess, onFailure, onFinish }, { rejectWithValue }) => {
+    try {
+      const instance = KeyRing.getInstance();
+      const response = await instance?.validatePem({ pem });
+      if (response) {
+        onSuccess();
+      } else {
+        onFailure();
+      }
+      onFinish();
+    } catch (e) {
+      return rejectWithValue({ error: e.message });
     }
   }
 );
@@ -283,7 +308,7 @@ export const setReverseResolvedName = createAsyncThunk(
   /**
    * @param {{ name: string, onFinish?: () => void }} param
    */
-  async ({ name, onFinish }, { getState, rejectWithValue, dispatch }) => {
+  async ({ name, onFinish }, { rejectWithValue, dispatch }) => {
     try {
       const instance = KeyRing.getInstance();
       await instance?.setReverseResolvedName({
