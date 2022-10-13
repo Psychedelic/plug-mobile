@@ -14,6 +14,7 @@ import {
   Transaction,
   UserState,
 } from '@/interfaces/redux';
+import { WCWhiteListItem } from '@/interfaces/walletConnect';
 import KeyRing from '@/modules/keyring';
 import { getICPPrice } from '@/redux/slices/icp';
 import {
@@ -425,7 +426,7 @@ export const addConnectedApp = createAsyncThunk(
   async (
     app: {
       name: string;
-      canisterList: any;
+      canisterList: WCWhiteListItem[];
       lastConnection: Date;
       account: string;
       imageUri: string;
