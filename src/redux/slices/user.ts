@@ -411,7 +411,6 @@ export const getTokenInfo = createAsyncThunk(
         canisterId: token.canisterId,
         standard: token.standard,
       });
-      console.tron.log('TOKEN INFO', tokenInfo);
       onSuccess?.({ ...tokenInfo, amount: tokenInfo.amount.toString() });
     } catch (e: any) {
       console.log('Error while fetching token info', e);
@@ -429,6 +428,7 @@ export const addConnectedApp = createAsyncThunk(
       canisterList: any;
       lastConnection: Date;
       account: string;
+      imageUri: string;
     },
     { getState }
   ) => {

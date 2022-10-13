@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Keyboard, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 
 import Header from '@/commonComponents/Header';
 import Modal, { modalOffset } from '@/commonComponents/Modal';
@@ -17,6 +16,7 @@ import { isAndroid } from '@/constants/platform';
 import XTC_OPTIONS from '@/constants/xtc';
 import useICNS from '@/hooks/useICNS';
 import useKeychain from '@/hooks/useKeychain';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getICPPrice } from '@/redux/slices/icp';
 import {
   burnXtc,
@@ -46,12 +46,12 @@ const INITIAL_ADDRESS_INFO = {
 
 function Send({ modalRef, nft, token, onSuccess }) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { isSensorAvailable, getPassword } = useKeychain();
-  const { icpPrice } = useSelector(state => state.icp);
-  const { currentWallet } = useSelector(state => state.keyring);
+  const { icpPrice } = useAppSelector(state => state.icp);
+  const { currentWallet } = useAppSelector(state => state.keyring);
   const { assets, contacts, transaction, collections, usingBiometrics } =
-    useSelector(state => state.user);
+    useAppSelector(state => state.user);
 
   const reviewRef = useRef(null);
   const saveContactRef = useRef(null);

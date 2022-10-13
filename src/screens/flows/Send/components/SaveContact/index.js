@@ -2,7 +2,6 @@ import emojis from 'emoji-datasource';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { charFromEmojiObject } from '@/commonComponents/EmojiSelector/utils';
 import Header from '@/commonComponents/Header';
@@ -11,14 +10,15 @@ import TextInput from '@/commonComponents/TextInput';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { addContact } from '@/redux/slices/user';
 
 import styles from './styles';
 
 function SaveContact({ modalRef, onClose, id }) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const { contactsLoading } = useSelector(state => state.user);
+  const dispatch = useAppDispatch();
+  const { contactsLoading } = useAppSelector(state => state.user);
   const [name, setName] = useState('');
   const title = t('saveContact.title');
 

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Switch, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 
 import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
@@ -13,15 +12,16 @@ import { FontStyles } from '@/constants/theme';
 import { Colors } from '@/constants/theme';
 import useKeychain from '@/hooks/useKeychain';
 import { Column } from '@/layout';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { validatePassword } from '@/redux/slices/keyring';
 
 import styles from './styles';
 
 function BiometricUnlock({ modalRef }) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { saveBiometrics, resetBiometrics } = useKeychain();
-  const hasBiometrics = useSelector(state => state.user.usingBiometrics);
+  const hasBiometrics = useAppSelector(state => state.user.usingBiometrics);
   const [useBiometrics, setUseBiometrics] = useState(hasBiometrics);
 
   const [password, setPassword] = useState(null);

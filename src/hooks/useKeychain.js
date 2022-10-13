@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import RNSInfo from 'react-native-sensitive-info';
-import { useDispatch } from 'react-redux';
 
+import { useAppDispatch } from '@/redux/hooks';
 import {
   setBiometricsAvailable,
   setUsingBiometrics,
@@ -25,7 +25,7 @@ const KEYCHAIN_OPTIONS = {
 };
 
 const useKeychain = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     getSensor();

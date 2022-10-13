@@ -2,7 +2,6 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
-import { useSelector } from 'react-redux';
 
 import Plug from '@/assets/icons/il_white_plug.png';
 import Button from '@/components/buttons/Button';
@@ -11,13 +10,14 @@ import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
+import { useAppSelector } from '@/redux/hooks';
 
 import styles from './styles';
 
 function Welcome() {
   const navigation = useNavigation();
   const { t } = useTranslation();
-  const { isInitialized } = useSelector(state => state.keyring);
+  const { isInitialized } = useAppSelector(state => state.keyring);
 
   const onPress = flow => () =>
     navigation.navigate(Routes.CREATE_PASSWORD, {

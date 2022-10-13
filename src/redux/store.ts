@@ -3,6 +3,7 @@ import {
   AnyAction,
   combineReducers,
   configureStore,
+  Reducer,
   StoreEnhancer,
 } from '@reduxjs/toolkit';
 import Flatted from 'flatted';
@@ -10,7 +11,7 @@ import { createTransform, persistReducer, persistStore } from 'redux-persist';
 
 import { KEYRING_STORAGE_KEY } from '@/constants/keyring';
 import { WALLETCONNECT_STORAGE_KEY } from '@/constants/walletconnect';
-import { IcpState, UserState } from '@/interfaces/redux';
+import { IcpState, UserState, WalletConnectState } from '@/interfaces/redux';
 
 import Reactotron from '../config/reactotron';
 import AlertReducer from './slices/alert';
@@ -57,7 +58,7 @@ const rootReducer = combineReducers({
   keyring: KeyringReducer,
   icp: persistReducer<IcpState, AnyAction>(icpPersistConfig, IcpReducer),
   user: persistReducer<UserState, AnyAction>(userPersistConfig, UserReducer),
-  walletconnect: WalletConnectReducer,
+  walletconnect: WalletConnectReducer as Reducer<WalletConnectState, AnyAction>,
   alert: AlertReducer,
 });
 

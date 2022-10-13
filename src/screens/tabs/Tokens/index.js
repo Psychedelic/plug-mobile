@@ -3,7 +3,6 @@ import { useScrollToTop } from '@react-navigation/native';
 import React, { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, RefreshControl, ScrollView } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { ActionSheet, ErrorState, Text } from '@/components/common';
 import TokenItem from '@/components/tokens/TokenItem';
@@ -13,6 +12,7 @@ import CopyIcon from '@/icons/svg/material/Copy.svg';
 import DeleteIcon from '@/icons/svg/material/Delete.svg';
 import SendIcon from '@/icons/svg/material/Send.svg';
 import { Container, Row, Separator } from '@/layout';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getBalance, removeCustomToken } from '@/redux/slices/user';
 import Send from '@/screens/flows/Send';
 import { isDefaultToken } from '@/utils/assets';
@@ -23,14 +23,14 @@ import styles from './styles';
 
 function Tokens() {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [selectedToken, setSelectedToken] = useState(null);
   const sendRef = useRef(null);
   const actionsRef = useRef(null);
   const listRef = useRef(null);
   useScrollToTop(listRef);
 
-  const { assets, assetsLoading, assetsError } = useSelector(
+  const { assets, assetsLoading, assetsError } = useAppSelector(
     state => state.user
   );
 
