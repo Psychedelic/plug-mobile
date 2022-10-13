@@ -24,7 +24,7 @@ interface Props {
 }
 
 function ApprovedCanisters({ modalRef, app, connectedAppsRef }: Props) {
-  const { name, canisterList, imageUri, lastConection } = app || {};
+  const { name, canisterList, imageUri, lastConnection } = app || {};
 
   const renderCanister = (item: WCWhiteListItem, index: number) => {
     const { canisterId, icon } = item;
@@ -84,7 +84,7 @@ function ApprovedCanisters({ modalRef, app, connectedAppsRef }: Props) {
             imageUri={imageUri}
             showActions={false}
             style={styles.itemShowcase}
-            subtitle={`${formatLongDate(lastConection)}`}
+            subtitle={`${formatLongDate(lastConnection)}`}
           />
           {canisterList?.map(renderCanister)}
         </View>

@@ -1,10 +1,10 @@
 import { t } from 'i18next';
 import React from 'react';
 import { Text, View } from 'react-native';
-import { useSelector } from 'react-redux';
 
 import TokenFormat from '@/components/formatters/TokenFormat';
 import { FontStyles } from '@/constants/theme';
+import { useAppSelector } from '@/redux/hooks';
 
 import UserShowcase from '../UserShowcase';
 import styles from './styles';
@@ -14,8 +14,8 @@ interface Props {
 }
 
 function RequestTransferHeader(props: Props) {
-  const { currentWallet } = useSelector(state => state.keyring);
-  const { assets } = useSelector(state => state.user);
+  const { currentWallet } = useAppSelector(state => state.keyring);
+  const { assets } = useAppSelector(state => state.user);
   const token = assets.find(
     ({ canisterId }) => canisterId === props.canisterId
   );
@@ -26,7 +26,7 @@ function RequestTransferHeader(props: Props) {
         <Text style={[FontStyles.NormalGray, styles.topTitle]}>
           {t('walletConnect.wallet')}
         </Text>
-        <UserShowcase currentWallet={currentWallet} />
+        <UserShowcase currentWallet={currentWallet!} />
       </View>
       <View style={styles.rightContainer}>
         <Text style={FontStyles.NormalGray}>{t('walletConnect.balance')}</Text>

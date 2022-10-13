@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 
 import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
 import PasswordInput from '@/commonComponents/PasswordInput';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import { Column } from '@/layout';
+import { useAppDispatch } from '@/redux/hooks';
 import { validatePassword } from '@/redux/slices/keyring';
 
 import Text from '../Text';
@@ -23,7 +23,7 @@ const PasswordModal = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const validatedSubmit = async () => {
     setLoading(true);
     dispatch(

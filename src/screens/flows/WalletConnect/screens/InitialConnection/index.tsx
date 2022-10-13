@@ -3,7 +3,6 @@ import React, { useCallback, useRef, useState } from 'react';
 import { Image, Linking, Text, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useDispatch, useSelector } from 'react-redux';
 
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
@@ -13,6 +12,7 @@ import useDisableBack from '@/hooks/useDisableBack';
 import { TNavigation } from '@/interfaces/navigation';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import {
   walletConnectRejectSession,
   walletConnectRemovePendingRedirect,
@@ -29,8 +29,8 @@ function WCInitialConnection({
 }: TNavigation<Routes.WALLET_CONNECT_INITIAL_CONNECTION>) {
   useDisableBack();
   const modalRef = useRef<Modalize>(null);
-  const dispatch = useDispatch();
-  const { currentWallet } = useSelector(state => state.keyring);
+  const dispatch = useAppDispatch();
+  const { currentWallet } = useAppSelector(state => state.keyring);
   const { bottom } = useSafeAreaInsets();
 
   const [connectLoading, setConnectLoading] = useState(false);
@@ -45,7 +45,7 @@ function WCInitialConnection({
           responseSessionRequest(
             {
               approved: success,
-              accountAddress: currentWallet.principal,
+              accountAddress: currentWallet?.principal,
               ...route?.params,
             },
             dispatch
@@ -102,7 +102,7 @@ function WCInitialConnection({
       </View>
       <View style={[styles.bottomContainer, !!bottom && styles.extraMargin]}>
         <View style={styles.changeWalletContainer}>
-          <UserShowcase currentWallet={currentWallet} />
+          <UserShowcase currentWallet={currentWallet!} />
           <Text
             onPress={handleChangeWallet}
             style={[FontStyles.NormalGray, styles.onlyValid]}>

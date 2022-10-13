@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 
 import PlugLogo from '@/assets/icons/plug-logo-full.png';
 import Header from '@/commonComponents/Header';
@@ -14,6 +13,7 @@ import { TestIds } from '@/constants/testIds';
 import useKeychain from '@/hooks/useKeychain';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getICPPrice } from '@/redux/slices/icp';
 import { clear, importWallet } from '@/redux/slices/keyring';
 
@@ -21,10 +21,10 @@ import styles from './styles';
 
 const ImportSeedPhrase = ({ navigation, route }) => {
   const { goBack } = navigation;
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { saveBiometrics } = useKeychain();
-  const { icpPrice } = useSelector(state => state.icp);
+  const { icpPrice } = useAppSelector(state => state.icp);
   const { password, shouldSaveBiometrics } = route?.params || {};
 
   const [error, setError] = useState(false);
@@ -44,30 +44,26 @@ const ImportSeedPhrase = ({ navigation, route }) => {
   }, [importingWallet, setImportingWallet]);
 
   const importWalletFromSeedPhrase = async () => {
-    try {
-      dispatch(clear());
-      dispatch(
-        importWallet({
-          icpPrice,
-          mnemonic: seedPhrase,
-          password,
-          onError: () => {
-            setError(true);
-            setImportingWallet(false);
-          },
-          onSuccess: async () => {
-            if (shouldSaveBiometrics) {
-              await saveBiometrics(password);
-            }
-            setImportingWallet(false);
-            setError(false);
-            navigation.navigate(Routes.SWIPE_LAYOUT);
-          },
-        })
-      );
-    } catch (e) {
-      console.log(e);
-    }
+    dispatch(clear());
+    dispatch(
+      importWallet({
+        icpPrice,
+        mnemonic: seedPhrase,
+        password,
+        onError: () => {
+          setError(true);
+          setImportingWallet(false);
+        },
+        onSuccess: async () => {
+          if (shouldSaveBiometrics) {
+            await saveBiometrics(password);
+          }
+          setImportingWallet(false);
+          setError(false);
+          navigation.navigate(Routes.SWIPE_LAYOUT);
+        },
+      })
+    );
   };
 
   const isMnemonicValid =

@@ -1,10 +1,5 @@
+import { Contact } from '@/interfaces/redux';
 import { getFirstLetterFrom } from '@/utils/strings';
-
-export interface Contact {
-  image: string;
-  name: string;
-  id: string;
-}
 
 interface ContactList {
   contacts: Contact[];

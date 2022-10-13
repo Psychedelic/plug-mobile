@@ -1,12 +1,12 @@
 import Clipboard from '@react-native-community/clipboard';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 
 import CopiedToast from '@/commonComponents/CopiedToast';
 import GradientText from '@/commonComponents/GradientText';
 import InfoWithActions from '@/commonComponents/InfoWithActions';
 import Text from '@/commonComponents/Text';
 import { Column } from '@/layout';
+import { useAppSelector } from '@/redux/hooks';
 import shortAddress from '@/utils/shortAddress';
 
 import { getIdInfo } from '../../constants';
@@ -14,7 +14,7 @@ import styles from './styles';
 
 function IDDetails({ idType }) {
   const [visibility, setVisibility] = useState(false);
-  const { currentWallet } = useSelector(state => state.keyring);
+  const { currentWallet } = useAppSelector(state => state.keyring);
   const { principal, accountId } = currentWallet || {};
   const { description, id, colors } = getIdInfo(principal, accountId, idType);
 

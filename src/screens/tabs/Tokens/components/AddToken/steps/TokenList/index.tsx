@@ -8,12 +8,13 @@ import DABLogo from '@/components/icons/svg/DAB.svg';
 import TokenItem from '@/components/tokens/TokenItem';
 import { dabFormUrl } from '@/constants/urls';
 import { DABToken } from '@/interfaces/dab';
+import { StandardToken } from '@/interfaces/keyring';
 
 import CustomToken from '../CustomToken';
 import styles from './styles';
 
 interface Props {
-  onSelectedToken: (token: DABToken) => void;
+  onSelectedToken: (token: DABToken | StandardToken) => void;
   tokens: DABToken[];
   loading: boolean;
 }

@@ -3,7 +3,6 @@ import React, { useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Linking, View } from 'react-native';
 import { getBuildNumber, getVersion } from 'react-native-device-info';
-import { useDispatch, useSelector } from 'react-redux';
 
 import Modal from '@/commonComponents/Modal';
 import Touchable from '@/commonComponents/Touchable';
@@ -15,6 +14,7 @@ import { FontStyles } from '@/constants/theme';
 import { blogUrl, discordUrl, docsUrl, twitterUrl } from '@/constants/urls';
 import { Separator } from '@/layout';
 import Routes from '@/navigation/Routes';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { reset as resetICPStore } from '@/redux/slices/icp';
 import { lock, reset as resetKeyringStore } from '@/redux/slices/keyring';
 import { reset as resetUserStore } from '@/redux/slices/user';
@@ -41,8 +41,8 @@ const Settings = () => {
   const deleteWalletRef = useRef(null);
   const connectedAppsRefs = useRef(null);
 
-  const dispatch = useDispatch();
-  const { biometricsAvailable } = useSelector(state => state.user);
+  const dispatch = useAppDispatch();
+  const { biometricsAvailable } = useAppSelector(state => state.user);
 
   const openRevealSeedPhrase = () => {
     revealSeedPhraseRef.current?.open();

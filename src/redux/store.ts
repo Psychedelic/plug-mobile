@@ -1,11 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  AnyAction,
+  combineReducers,
+  configureStore,
+  Reducer,
+  StoreEnhancer,
+} from '@reduxjs/toolkit';
 import Flatted from 'flatted';
-import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import { createTransform, persistReducer, persistStore } from 'redux-persist';
-import thunk from 'redux-thunk';
 
 import { KEYRING_STORAGE_KEY } from '@/constants/keyring';
 import { WALLETCONNECT_STORAGE_KEY } from '@/constants/walletconnect';
+import { IcpState, UserState, WalletConnectState } from '@/interfaces/redux';
 
 import Reactotron from '../config/reactotron';
 import AlertReducer from './slices/alert';
@@ -42,25 +48,29 @@ const userPersistConfig = {
 };
 
 // REDUCER
+const enhancers: StoreEnhancer[] = [];
 
-const rootReducer = combineReducers({
-  keyring: KeyringReducer,
-  icp: persistReducer(icpPersistConfig, IcpReducer),
-  user: persistReducer(userPersistConfig, UserReducer),
-  walletconnect: WalletConnectReducer,
-  alert: AlertReducer,
-});
-
-const middlewares = [thunk];
-const enhancers = [];
-
-enhancers.push(applyMiddleware(...middlewares));
-
-if (__DEV__) {
+if (__DEV__ && Reactotron?.createEnhancer) {
   enhancers.push(Reactotron.createEnhancer(true));
 }
 
-export const store = createStore(rootReducer, compose(...enhancers));
+const rootReducer = combineReducers({
+  keyring: KeyringReducer,
+  icp: persistReducer<IcpState, AnyAction>(icpPersistConfig, IcpReducer),
+  user: persistReducer<UserState, AnyAction>(userPersistConfig, UserReducer),
+  walletconnect: WalletConnectReducer as Reducer<WalletConnectState, AnyAction>,
+  alert: AlertReducer,
+});
+
+export const store = configureStore({
+  reducer: rootReducer,
+  enhancers: enhancers,
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      immutableCheck: false,
+      serializableCheck: false,
+    }),
+});
 
 export const persistor = persistStore(store);
 
@@ -68,10 +78,13 @@ if (__DEV__ && Reactotron.setReduxStore) {
   Reactotron.setReduxStore(store);
 }
 
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
+
 // KEYRING STORAGE
 
 export const keyringStorage = {
-  get: async key => {
+  get: async (key: string) => {
     return AsyncStorage.getItem(KEYRING_STORAGE_KEY)
       .then(async value => {
         if (!value) {
@@ -84,7 +97,7 @@ export const keyringStorage = {
         return parsedValue && key ? parsedValue[key] : parsedValue;
       });
   },
-  set: values => {
+  set: (values: any) => {
     return AsyncStorage.getItem(KEYRING_STORAGE_KEY)
       .then(savedValues => (savedValues ? JSON.parse(savedValues) : {}))
       .then(parsedValues => {
@@ -99,14 +112,14 @@ export const keyringStorage = {
 };
 
 export const walletConnectStorage = {
-  get: async key => {
+  get: async (key: string) => {
     return AsyncStorage.getItem(WALLETCONNECT_STORAGE_KEY)
       .then(value => (value ? JSON.parse(value) : value))
       .then(parsedValue => {
         return key && parsedValue ? parsedValue[key] : parsedValue;
       });
   },
-  set: values => {
+  set: (values: any) => {
     return AsyncStorage.getItem(WALLETCONNECT_STORAGE_KEY)
       .then(savedValues => (savedValues ? JSON.parse(savedValues) : {}))
       .then(parsedValues => {

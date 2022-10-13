@@ -1,5 +1,7 @@
+import { CreatePrincipalOptions } from '@psychedelic/plug-controller/dist/PlugKeyRing/interfaces';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+import { KeyringState, State, Wallet } from '@/interfaces/redux';
 import KeyRing from '@/modules/keyring';
 
 import { generateMnemonic } from '../../utils/crypto';
@@ -19,7 +21,7 @@ import {
   setTransactions,
 } from './user';
 
-const DEFAULT_STATE = {
+const DEFAULT_STATE: KeyringState = {
   isInitialized: false,
   isUnlocked: false,
   isPrelocked: false,
@@ -28,30 +30,35 @@ const DEFAULT_STATE = {
   icnsDataLoading: false,
 };
 
-export const initKeyring = createAsyncThunk('keyring/init', async params => {
-  let keyring = KeyRing.getInstance();
-  await keyring.init();
-  if (keyring?.isUnlocked) {
-    const state = await keyring.getState();
-    if (!state.wallets.length) {
-      await keyring.lock();
+export const initKeyring = createAsyncThunk(
+  'keyring/init',
+  async (params: { callback?: () => void }) => {
+    let keyring = KeyRing.getInstance();
+    await keyring.init();
+    if (keyring?.isUnlocked) {
+      const state = await keyring.getState();
+      if (!state.wallets.length) {
+        await keyring.lock();
+      }
     }
+    params?.callback?.();
+    return {
+      isUnlocked: keyring.isUnlocked,
+      isInitialized: keyring.isInitialized,
+    };
   }
-  params?.callback?.();
-  return {
-    isUnlocked: keyring.isUnlocked,
-    isInitialized: keyring.isInitialized,
-  };
-});
+);
 
 export const createWallet = createAsyncThunk(
   'keyring/createWallet',
-  async ({ password, icpPrice }, { getState, dispatch }) => {
+  async (
+    { password, icpPrice }: { password: string; icpPrice: number },
+    { dispatch, rejectWithValue }
+  ) => {
     // Reset previous state:
     resetStores(dispatch);
     try {
       // Create Wallet and unlock
-      const state = getState();
       const instance = KeyRing.getInstance();
       const mnemonic = await generateMnemonic();
       const response = await instance?.importMnemonic({ password, mnemonic });
@@ -59,49 +66,61 @@ export const createWallet = createAsyncThunk(
       const unlocked = await instance?.unlock(password);
 
       // Get new data:
-      getNewAccountData(dispatch, icpPrice, state);
+      getNewAccountData(dispatch, icpPrice);
       return { wallet, mnemonic, unlocked };
-    } catch (e) {
+    } catch (e: any) {
       console.log('Error at createWallet: ', e);
+      return rejectWithValue(e.message);
     }
   }
 );
 
 export const importWallet = createAsyncThunk(
   'keyring/importWallet',
-  async (params, { getState, dispatch }) => {
+  async (
+    params: {
+      icpPrice: number;
+      password: string;
+      mnemonic: string;
+      onError?: () => void;
+      onSuccess?: () => void;
+    },
+    { dispatch, rejectWithValue }
+  ) => {
     const { icpPrice, password, mnemonic, onError, onSuccess } = params;
-    let wallet = {};
     let unlocked = false;
     // Reset previous state:
     resetStores(dispatch);
     try {
       // Import Wallet and unlock
-      const state = getState();
       const instance = KeyRing.getInstance();
       const response = await instance?.importMnemonic({
-        icpPrice,
         password,
         mnemonic,
       });
-      wallet = response?.wallet;
+      const wallet = response?.wallet;
       unlocked = await instance?.unlock(params.password);
 
       // Get new data:
-      await instance?.getICNSData();
-      getNewAccountData(dispatch, icpPrice, state);
+      await instance?.getICNSData({});
+      getNewAccountData(dispatch, icpPrice);
       onSuccess?.();
-    } catch (e) {
-      console.log('Import Wallet Error:', e);
+      return { wallet, unlocked };
+    } catch (e: any) {
+      console.log('Import Wallet Error:', e.message);
       onError?.();
+      return rejectWithValue(e.message);
     }
-    return { wallet, unlocked };
   }
 );
 
 export const validatePassword = createAsyncThunk(
   'keyring/validatePassword',
-  async params => {
+  async (params: {
+    password: string;
+    onError?: () => void;
+    onSuccess?: () => void;
+  }) => {
     let isValid = false;
     const { password, onError, onSuccess } = params;
     try {
@@ -112,7 +131,7 @@ export const validatePassword = createAsyncThunk(
       } else {
         onError?.();
       }
-    } catch (e) {
+    } catch (e: any) {
       onError?.();
       console.log('Validate Password:', e.message);
     }
@@ -122,10 +141,11 @@ export const validatePassword = createAsyncThunk(
 
 export const getMnemonic = createAsyncThunk(
   'keyring/getMnemonic',
-  /**
-   * @param {{password: string, onSuccess?: (mnemonic:string) => void, onError?: () => void}} param
-   */
-  async param => {
+  async (param: {
+    password: string;
+    onSuccess?: (mnemonic: string) => void;
+    onError?: () => void;
+  }) => {
     let mnemonic = '';
     const { onError, onSuccess, password } = param;
     try {
@@ -136,7 +156,7 @@ export const getMnemonic = createAsyncThunk(
       } else {
         onError?.();
       }
-    } catch (e) {
+    } catch (e: any) {
       onError?.();
       console.log('Get Mnemonic:', e.message);
     }
@@ -151,53 +171,61 @@ export const lock = createAsyncThunk('keyring/lock', async () => {
 
 export const login = createAsyncThunk(
   'keyring/login',
-  async (params, { dispatch, rejectWithValue }) => {
+  async (
+    params: { icpPrice: number; password: string },
+    { dispatch, rejectWithValue }
+  ) => {
     const instance = KeyRing.getInstance();
     const { icpPrice, password } = params;
 
     try {
       const unlocked = await instance?.unlock(password);
-      await instance?.getICNSData();
+      await instance?.getICNSData({});
       const { wallets, currentWalletId } = await instance?.getState();
       if (unlocked) {
-        dispatch(setCurrentWallet(wallets[currentWalletId]));
+        dispatch(setCurrentWallet(wallets[currentWalletId!]));
         dispatch(setWallets(wallets));
         dispatch(getBalance());
         dispatch(getTransactions({ icpPrice }));
         dispatch(getNFTs());
         dispatch(getContacts());
       } else {
-        return rejectWithValue({ error: 'locked' });
+        return rejectWithValue('locked');
       }
       return unlocked;
-    } catch (e) {
+    } catch (e: any) {
       console.log('Error at login: ', e);
-      return rejectWithValue({ error: e.message });
+      return rejectWithValue(e.message);
     }
   }
 );
 
 export const createSubaccount = createAsyncThunk(
   'keyring/createSubaccount',
-  async params => {
+  async (params: CreatePrincipalOptions, { rejectWithValue }) => {
     try {
       const instance = KeyRing.getInstance();
       await instance?.getState();
       const response = await instance?.createPrincipal(params);
       return response;
-    } catch (e) {
+    } catch (e: any) {
       console.log('createSubaccount', e);
+      return rejectWithValue(e.message);
     }
   }
 );
 
 export const editSubaccount = createAsyncThunk(
   'keyring/editSubaccount',
-  async (params, { getState }) => {
+  async (
+    params: { walletId: string; name: string; icon: string },
+    { getState, rejectWithValue }
+  ) => {
     try {
       const { walletId, name, icon } = params;
       const instance = KeyRing.getInstance();
-      const { currentWallet, wallets } = getState().keyring;
+      const state = getState() as State;
+      const { currentWallet, wallets } = state.keyring;
       await instance?.editPrincipal(walletId, {
         name,
         emoji: icon,
@@ -208,22 +236,26 @@ export const editSubaccount = createAsyncThunk(
           ...wallets?.find(wallet => wallet.walletId === walletId),
           name,
           icon,
-        },
+        } as Wallet,
         isCurrentWallet: currentWallet?.walletId === walletId,
       };
-    } catch (e) {
+    } catch (e: any) {
       console.log('editSubaccount', e);
+      return rejectWithValue(e.message);
     }
   }
 );
 
 export const setCurrentPrincipal = createAsyncThunk(
   'keyring/setCurrentPrincipal',
-  async ({ walletId, icpPrice }, { dispatch }) => {
+  async (
+    { walletId, icpPrice }: { walletId: string; icpPrice: number },
+    { dispatch }
+  ) => {
     try {
       const instance = KeyRing.getInstance();
       await instance?.setCurrentPrincipal(walletId);
-      await instance?.getICNSData();
+      await instance?.getICNSData({});
       dispatch(setCollections([]));
       dispatch(setTransactions([]));
       dispatch(setBalance(DEFAULT_ASSETS));
@@ -234,7 +266,7 @@ export const setCurrentPrincipal = createAsyncThunk(
       dispatch(getBalance());
       dispatch(getNFTs());
       dispatch(getTransactions({ icpPrice }));
-    } catch (e) {
+    } catch (e: any) {
       console.log('setCurrentPrincipal', e.message);
     }
   }
@@ -245,29 +277,29 @@ export const getICNSData = createAsyncThunk(
   async (_, { rejectWithValue, dispatch }) => {
     try {
       const instance = KeyRing.getInstance();
-      const icnsData = await instance?.getICNSData();
+      const icnsData = await instance?.getICNSData({});
 
       // Set the updated currentWallet and wallets.
       const response = await instance?.getState();
       const { wallets, currentWalletId } = response;
 
-      const wallet = wallets[currentWalletId];
+      const wallet = wallets[currentWalletId!];
       dispatch(setWallets(wallets));
       dispatch(setCurrentWallet(wallet));
 
       return icnsData;
-    } catch (e) {
-      return rejectWithValue({ error: e.message });
+    } catch (e: any) {
+      return rejectWithValue(e.message);
     }
   }
 );
 
 export const setReverseResolvedName = createAsyncThunk(
   'keyring/setReverseResolvedName',
-  /**
-   * @param {{ name: string, onFinish?: () => void }} param
-   */
-  async ({ name, onFinish }, { getState, rejectWithValue, dispatch }) => {
+  async (
+    { name, onFinish }: { name: string; onFinish?: () => void },
+    { rejectWithValue, dispatch }
+  ) => {
     try {
       const instance = KeyRing.getInstance();
       await instance?.setReverseResolvedName({
@@ -279,8 +311,8 @@ export const setReverseResolvedName = createAsyncThunk(
         .then(() => {
           onFinish?.();
         });
-    } catch (e) {
-      return rejectWithValue({ error: e.message });
+    } catch (e: any) {
+      return rejectWithValue(e.message);
     }
   }
 );

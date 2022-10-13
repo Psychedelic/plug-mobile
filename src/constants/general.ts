@@ -1,6 +1,6 @@
 export const MIN_PASSWORD_LENGTH = 8;
 
-export const isValidPassword = password => {
+export const isValidPassword = (password?: string) => {
   if (!password) {
     return false;
   }

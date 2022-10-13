@@ -1,19 +1,19 @@
 import { t } from 'i18next';
 import React from 'react';
-import { useSelector } from 'react-redux';
 
 import CommonItem from '@/commonComponents/CommonItem';
 import Text from '@/components/common/Text';
 import { TOKENS } from '@/constants/assets';
+import { useAppSelector } from '@/redux/hooks';
 import { validateAccountId } from '@/utils/ids';
 
 import styles from '../../styles';
 
 const ContactSection = ({ onPress, filterText, selectedTokenSymbol }) => {
-  const { principal, icnsData } = useSelector(
+  const { principal, icnsData } = useAppSelector(
     state => state.keyring?.currentWallet
   );
-  const contacts = useSelector(state => state.user?.contacts).filter(
+  const contacts = useAppSelector(state => state.user?.contacts).filter(
     contact =>
       contact.id !== principal && contact.id !== icnsData.reverseResolvedName
   );

@@ -2,7 +2,6 @@ import { t } from 'i18next';
 import React, { RefObject, useRef, useState } from 'react';
 import { Platform, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import { useDispatch, useSelector } from 'react-redux';
 
 import {
   ActionSheet,
@@ -14,6 +13,7 @@ import {
 import DeleteIcon from '@/icons/svg/material/Delete.svg';
 import ViewIcon from '@/icons/svg/material/View.svg';
 import { ConnectedApp } from '@/interfaces/redux';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { removeConnectedApp } from '@/redux/slices/user';
 import { formatLongDate } from '@/utils/dates';
 
@@ -25,13 +25,13 @@ interface Props {
 }
 
 function ConnectedApps({ modalRef }: Props) {
-  const dispatch = useDispatch();
-  const principalId = useSelector(
+  const dispatch = useAppDispatch();
+  const principalId = useAppSelector(
     state => state?.keyring?.currentWallet?.principal
   );
-  const connectedApps = useSelector(state => state.user.connectedApps)?.filter(
-    app => app.account === principalId
-  );
+  const connectedApps = useAppSelector(
+    state => state.user.connectedApps
+  )?.filter(app => app.account === principalId);
 
   const [selectedApp, setSelectedApp] = useState<ConnectedApp>();
   const [actionSheetData, setActionSheetData] = useState<any>();
@@ -69,7 +69,7 @@ function ConnectedApps({ modalRef }: Props) {
   };
 
   const renderApp = (item: ConnectedApp, index: number) => {
-    const { name, lastConection, imageUri } = item;
+    const { name, lastConnection, imageUri } = item;
     const openApp = (app: ConnectedApp) => () => {
       showActionData(app);
     };
@@ -83,7 +83,7 @@ function ConnectedApps({ modalRef }: Props) {
         onPress={openApp(item)}
         onActionPress={openApp(item)}
         key={`${name}-${index}`}
-        subtitle={`${formatLongDate(lastConection)}`}
+        subtitle={`${formatLongDate(lastConnection)}`}
       />
     );
   };

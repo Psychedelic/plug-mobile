@@ -2,7 +2,6 @@ import emojis from 'emoji-datasource';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Keyboard, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { charFromEmojiObject } from '@/commonComponents/EmojiSelector/utils';
 import Header from '@/commonComponents/Header';
@@ -14,6 +13,7 @@ import Text from '@/components/common/Text';
 import ErrorIcon from '@/components/icons/svg/ErrorIcon.svg';
 import { FontStyles } from '@/constants/theme';
 import useICNS from '@/hooks/useICNS';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { addContact, editContact } from '@/redux/slices/user';
 import {
   validateAccountId,
@@ -26,9 +26,9 @@ import styles from './styles';
 
 const AddEditContact = ({ modalRef, contact, onClose, contactsRef }) => {
   const { t } = useTranslation();
-  const { contacts } = useSelector(state => state.user);
+  const { contacts } = useAppSelector(state => state.user);
   const editEmojiRef = useRef(null);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [emoji, setEmoji] = useState('');

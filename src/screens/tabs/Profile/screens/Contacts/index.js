@@ -2,7 +2,6 @@ import Clipboard from '@react-native-community/clipboard';
 import { t } from 'i18next';
 import React, { Fragment, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Platform, StyleSheet, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 
 import CommonItem from '@/commonComponents/CommonItem';
 import Header from '@/commonComponents/Header';
@@ -16,6 +15,7 @@ import CopyIcon from '@/icons/svg/material/Copy.svg';
 import DeleteIcon from '@/icons/svg/material/Delete.svg';
 import EditIcon from '@/icons/svg/material/Edit.svg';
 import { Column, Row } from '@/layout';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { removeContact } from '@/redux/slices/user';
 import { validateICNSName } from '@/utils/ids';
 
@@ -27,8 +27,8 @@ function Contacts({ modalRef }) {
   const addEditContactRef = useRef(null);
   const actionSheetRef = useRef(null);
   const [actionSheetData, setActionSheetData] = useState(undefined);
-  const { contacts, contactsLoading } = useSelector(state => state.user);
-  const dispatch = useDispatch();
+  const { contacts, contactsLoading } = useAppSelector(state => state.user);
+  const dispatch = useAppDispatch();
 
   const groupedContacts = useMemo(
     () => getGroupedContacts(contacts),
