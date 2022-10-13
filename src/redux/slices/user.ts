@@ -244,12 +244,12 @@ export const getContacts = createAsyncThunk<
 export const addContact = createAsyncThunk<
   Contact[],
   { contact: Contact; onFinish?: () => void },
-  { rejectValue: string }
+  { rejectValue: string; state: State }
 >(
   'user/addContact',
   async ({ contact, onFinish }, { getState, rejectWithValue }) => {
     try {
-      const state = getState() as State;
+      const state = getState();
       const instance = KeyRing.getInstance();
       const res = await instance?.addContact({
         contact: formatContactForController(contact) as Address,
@@ -270,12 +270,12 @@ export const addContact = createAsyncThunk<
 export const removeContact = createAsyncThunk<
   Contact[],
   { contactName: string },
-  { rejectValue: string }
+  { rejectValue: string; state: State }
 >(
   'user/removeContact',
   async ({ contactName }, { getState, rejectWithValue }) => {
     try {
-      const state = getState() as State;
+      const state = getState();
       const instance = KeyRing.getInstance();
       const res = await instance?.deleteContact({
         addressName: contactName,
@@ -295,12 +295,12 @@ export const removeContact = createAsyncThunk<
 export const editContact = createAsyncThunk<
   Contact[],
   { contact: Contact; newContact: Contact },
-  { rejectValue: string }
+  { rejectValue: string; state: State }
 >(
   'user/editContact',
   async ({ contact, newContact }, { getState, rejectWithValue }) => {
     try {
-      const state = getState() as State;
+      const state = getState();
       const instance = KeyRing.getInstance();
       const removeContactRes = await instance?.deleteContact({
         addressName: contact.name,
@@ -334,11 +334,11 @@ export const addCustomToken = createAsyncThunk<
     onSuccess: () => void;
     onError: (e: string) => void;
   },
-  { rejectValue: string }
+  { rejectValue: string; state: State }
 >(
   'user/addCustomToken',
   async ({ token, onSuccess, onError }, { getState, rejectWithValue }) => {
-    const { icp, user } = getState() as State;
+    const { icp, user } = getState();
     const instance = KeyRing.getInstance();
     const currentWalletId = instance?.currentWalletId;
     const { canisterId, standard, logo } = token;

@@ -184,7 +184,7 @@ export interface WalletConnectState {
   pendingRedirect: {
     [requestId: string]: {
       pending: boolean;
-      schema?: string;
+      scheme?: string;
     };
   };
   pendingCallRequests: { [requestId: number]: WalletConnectCallRequest };
