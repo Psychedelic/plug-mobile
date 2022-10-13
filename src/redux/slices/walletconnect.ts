@@ -110,7 +110,7 @@ export const walletConnectOnSessionRequest = createAsyncThunk<
             } = getState().walletconnect;
             if (timeoutObj?.pending) {
               clearTimeout(timeoutObj.timeout);
-              dispatch(removeBridgeTimeout(requestId)); // deberia ser ({ requestId })
+              dispatch(removeBridgeTimeout({ requestId }));
             }
             dispatch(closeAllModals());
             await dispatch(
@@ -130,7 +130,6 @@ export const walletConnectOnSessionRequest = createAsyncThunk<
                 await dispatch(
                   walletConnectRejectSession({
                     peerId,
-                    walletConnector, // no se usa
                     error: ERRORS.TIMEOUT,
                   })
                 );
@@ -181,7 +180,7 @@ const listenOnNewMessages = createAsyncThunk<
       } = getState().walletconnect;
       if (timeoutObj?.pending) {
         clearTimeout(timeoutObj.timeout);
-        dispatch(removeBridgeTimeout(requestId)); // deberia ser ({ requestId })
+        dispatch(removeBridgeTimeout({ requestId }));
       }
       try {
         dispatch(closeAllModals());
@@ -203,7 +202,6 @@ const listenOnNewMessages = createAsyncThunk<
           if (!handler || !executor) {
             return dispatch(
               walletConnectExecuteAndResponse({
-                peerId, //no se usa
                 requestId,
                 error: ERRORS.NOT_METHOD,
               })
@@ -254,7 +252,6 @@ const listenOnNewMessages = createAsyncThunk<
         dispatch(
           walletConnectExecuteAndResponse({
             requestId,
-            peerId, //no se usa
             error: ERRORS.SERVER_ERROR(e.message),
           })
         );
@@ -298,20 +295,20 @@ export const walletConnectExecuteAndResponse = createAsyncThunk<
       if (walletConnector) {
         try {
           if (error || !executor) {
-            await walletConnector.rejectRequest({
+            walletConnector.rejectRequest({
               error: error || ERRORS.NOT_APPROVED,
               id: requestId,
             });
           } else {
             const { result, error: resultError } = await executor(
               opts,
-              ...args
+              ...args!
             );
             if (result !== undefined) {
-              await walletConnector.approveRequest({ id: requestId, result });
+              walletConnector.approveRequest({ id: requestId, result });
               onSuccess?.();
             } else {
-              await walletConnector.rejectRequest({
+              walletConnector.rejectRequest({
                 error: resultError,
                 id: requestId,
               });
@@ -355,7 +352,7 @@ export const addCallRequestToApprove = createAsyncThunk<
     const imageUrl = peerMeta?.url;
     const dappName = peerMeta?.name || 'Unknown Dapp';
     const dappUrl = peerMeta?.url || 'Unknown Url';
-    const dappScheme = peerMeta?.scheme || null;
+    const dappScheme = null;
     const request = {
       clientId,
       dappName,
