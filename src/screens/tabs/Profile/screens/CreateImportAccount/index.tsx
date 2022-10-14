@@ -49,20 +49,12 @@ function CreateImportAccount({ accountsModalRef, modalRef }: Props) {
   const openFile = async () => {
     try {
       const type = isIos
-        ? DocumentPicker.types.allFiles
+        ? ['public.x509-certificate']
         : ['.pem', 'application/x-pem-file'];
       const res = await DocumentPicker.pickSingle({ type });
 
-      if (
-        !isIos ||
-        res.type?.includes('application/x-x509-ca-cert') ||
-        res.type?.includes('application/x-x509-user-cert')
-      ) {
-        const stringifyPEM = await FileSystem.readFile(res.uri);
-        setPemFile(stringifyPEM, openCreateAccountModal);
-      } else {
-        // TODO: Add toast to handle this error. Selected file is not compatible with .pem
-      }
+      const stringifyPEM = await FileSystem.readFile(res.uri);
+      setPemFile(stringifyPEM, openCreateAccountModal);
     } catch (e) {
       // TODO: Add toast to handle this error.
       console.log('Error opening .pem');
