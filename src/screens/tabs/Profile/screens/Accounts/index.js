@@ -2,7 +2,6 @@ import Clipboard from '@react-native-community/clipboard';
 import { t } from 'i18next';
 import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Platform, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 
 import CommonItem from '@/commonComponents/CommonItem';
 import Header from '@/commonComponents/Header';
@@ -17,6 +16,7 @@ import { FontStyles } from '@/constants/theme';
 import CopyIcon from '@/icons/svg/material/Copy.svg';
 import EditIcon from '@/icons/svg/material/Edit.svg';
 import { Row } from '@/layout';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getICPPrice } from '@/redux/slices/icp';
 import { setCurrentPrincipal } from '@/redux/slices/keyring';
 import shortAddress from '@/utils/shortAddress';
@@ -30,9 +30,9 @@ import styles from './styles';
  * @param {{modalRef: any, onClose?: () => void}} param
  */
 const Accounts = ({ modalRef, onClose, ...props }) => {
-  const { wallets, currentWallet } = useSelector(state => state.keyring);
-  const { icpPrice } = useSelector(state => state.icp);
-  const dispatch = useDispatch();
+  const { wallets, currentWallet } = useAppSelector(state => state.keyring);
+  const { icpPrice } = useAppSelector(state => state.icp);
+  const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
   const hasICNS = !!currentWallet?.icnsData.reverseResolvedName;
   const actionSheetRef = useRef(null);

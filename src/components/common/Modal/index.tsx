@@ -3,9 +3,9 @@ import { StyleProp, ViewStyle } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { Portal } from 'react-native-portalize';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useSelector } from 'react-redux';
 
 import { isIos, withNotch } from '@/constants/platform';
+import { useAppSelector } from '@/redux/hooks';
 
 import styles from './styles';
 
@@ -41,7 +41,7 @@ function Modal({
   disableScrollIfPossible,
   ...props
 }: Props) {
-  const closeAllModals = useSelector(state => state.alert.closeAllModals);
+  const closeAllModals = useAppSelector(state => state.alert.closeAllModals);
   const handleOnClose = () => onClose?.();
 
   useEffect(() => {

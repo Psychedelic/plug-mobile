@@ -29,6 +29,6 @@ export const REF_RATIO = USE_WIDTH
   ? WINDOW_WIDTH / REFERENCE_WIDTH
   : WINDOW_HEIGHT / REFERENCE_HEIGHT;
 
-export const refRatioScale = value => value * REF_RATIO;
+export const refRatioScale = (value: number) => value * REF_RATIO;
 
-export const pixelRatioScale = value => value * PixelRatio.get();
+export const pixelRatioScale = (value: number) => value * PixelRatio.get();

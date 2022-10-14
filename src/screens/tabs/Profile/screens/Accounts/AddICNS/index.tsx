@@ -14,7 +14,6 @@ import {
   View,
 } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import { useDispatch, useSelector } from 'react-redux';
 
 import RainbowButton from '@/components/buttons/RainbowButton';
 import {
@@ -28,6 +27,7 @@ import {
 import Icon from '@/components/icons';
 import { Colors } from '@/constants/theme';
 import { ICNS_LEARN_MORE_URL, ICNS_LOGO, ICNS_URL } from '@/constants/urls';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getICNSData, setReverseResolvedName } from '@/redux/slices/keyring';
 
 import styles from './styles';
@@ -39,12 +39,14 @@ interface Props {
 const none = { value: '', id: 'None' };
 
 function AddICNS({ modalRef }: Props) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const actionSheetRef = useRef<Modalize>(null);
-  const icnsData = useSelector(state => state.keyring.currentWallet?.icnsData);
+  const icnsData = useAppSelector(
+    state => state.keyring.currentWallet?.icnsData
+  );
   const reverseResolvedName = icnsData?.reverseResolvedName;
   const names = icnsData?.names || [];
-  const { icnsDataLoading } = useSelector(state => state.keyring);
+  const { icnsDataLoading } = useAppSelector(state => state.keyring);
   const [selectedName, setSelectedName] = useState<string>(
     reverseResolvedName || none.id
   );

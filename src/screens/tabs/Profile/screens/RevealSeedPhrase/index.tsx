@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modalize } from 'react-native-modalize';
-import { useDispatch } from 'react-redux';
 
 import Copy from '@/commonComponents/Copy';
 import Header from '@/commonComponents/Header';
@@ -12,6 +11,7 @@ import RainbowButton from '@/components/buttons/RainbowButton';
 import Text from '@/components/common/Text';
 import { isValidPassword } from '@/constants/general';
 import { Column } from '@/layout';
+import { useAppDispatch } from '@/redux/hooks';
 import { getMnemonic } from '@/redux/slices/keyring';
 
 import styles from './styles';
@@ -27,7 +27,7 @@ function RevealSeedPhrase({ modalRef }: Props) {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const clearState = () => {
     setPassword('');

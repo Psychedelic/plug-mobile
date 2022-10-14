@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Image, Keyboard, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 
 import Plug from '@/assets/icons/il_white_plug.png';
 import PasswordInput from '@/commonComponents/PasswordInput';
@@ -13,18 +12,19 @@ import { isValidPassword } from '@/constants/general';
 import useKeychain from '@/hooks/useKeychain';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getICPPrice } from '@/redux/slices/icp';
 import { login } from '@/redux/slices/keyring';
 
 import styles from './styles';
 
 function Login({ route, navigation }) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const isManualLock = route?.params?.manualLock || false;
   const { getPassword } = useKeychain();
-  const { icpPrice } = useSelector(state => state.icp);
-  const { usingBiometrics, biometricsAvailable } = useSelector(
+  const { icpPrice } = useAppSelector(state => state.icp);
+  const { usingBiometrics, biometricsAvailable } = useAppSelector(
     state => state.user
   );
   const [error, setError] = useState(false);

@@ -1,4 +1,4 @@
 export interface ICNSData {
-  names: string[];
-  reverseResolvedName: string;
+  names?: string[];
+  reverseResolvedName?: string;
 }

@@ -1,11 +1,11 @@
 import Clipboard from '@react-native-community/clipboard';
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { useSelector } from 'react-redux';
 
 import CopiedToast from '@/commonComponents/CopiedToast';
 import Touchable from '@/commonComponents/Touchable';
 import { FontStyles } from '@/constants/theme';
+import { useAppSelector } from '@/redux/hooks';
 import shortAddress from '@/utils/shortAddress';
 
 import Text from '../Text';
@@ -13,8 +13,8 @@ import styles from './styles';
 
 const AccountInfo = () => {
   const [visibility, setVisibility] = useState(false);
-  const { currentWallet } = useSelector(state => state.keyring);
-  const reverseResolvedName = useSelector(
+  const { currentWallet } = useAppSelector(state => state.keyring);
+  const reverseResolvedName = useAppSelector(
     state => state.keyring.currentWallet?.icnsData?.reverseResolvedName
   );
   const { principal, name } = currentWallet || {};

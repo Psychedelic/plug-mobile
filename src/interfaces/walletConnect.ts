@@ -17,18 +17,16 @@ interface WalletConnector {
   // TODO: Add types
 }
 
+export interface ClientMeta {
+  description: string;
+  url: string;
+  icons: string[];
+  name: string;
+}
+
 interface WallectConnectSessionRouteParams {
   callback: () => void;
   receivedTimestamp: number;
-}
-
-export interface WalletConnectSession {
-  walletConnector: WalletConnector;
-  meta: WalletConnectMetadata;
-  navigate: boolean;
-  timedOut: false;
-  timeout: null;
-  routeParams: WallectConnectSessionRouteParams;
 }
 
 export interface WallectConnectFlowsData {

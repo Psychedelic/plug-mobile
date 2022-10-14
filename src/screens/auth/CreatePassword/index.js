@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Image, Keyboard, Switch, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 
 import PlugLogo from '@/assets/icons/plug-logo-full.png';
 import Header from '@/commonComponents/Header';
@@ -16,6 +15,7 @@ import { Colors } from '@/constants/theme';
 import useKeychain from '@/hooks/useKeychain';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { createWallet } from '@/redux/slices/keyring';
 
 import {
@@ -38,9 +38,9 @@ const CreatePassword = ({ route, navigation }) => {
     mode: 'onChange',
     criteriaMode: 'all',
   });
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const { icpPrice } = useSelector(state => state.icp);
+  const { icpPrice } = useAppSelector(state => state.icp);
   const flow = route.params?.flow;
   const { goBack } = navigation;
   const [loading, setLoading] = useState(false);

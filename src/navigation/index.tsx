@@ -4,12 +4,12 @@ import React, { forwardRef, memo, useEffect, useRef } from 'react';
 import { AppState, Linking, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Host } from 'react-native-portalize';
-import { useDispatch } from 'react-redux';
 
 import { Colors } from '@/constants/theme';
 import { RootStackParamList } from '@/interfaces/navigation';
 import KeyRing from '@/modules/keyring';
 import SwipeNavigator from '@/navigation/navigators/SwipeNavigator';
+import { useAppDispatch } from '@/redux/hooks';
 import { setPrelocked, setUnlocked } from '@/redux/slices/keyring';
 import BackupSeedPhrase from '@/screens/auth/BackupSeedPhrase';
 import CreatePassword from '@/screens/auth/CreatePassword';
@@ -29,7 +29,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
   const keyring = KeyRing.getInstance();
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const backgroundTime = useRef<any>(null);
 
   const handleLockState = () => {

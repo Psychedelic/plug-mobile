@@ -2,7 +2,6 @@ import { t } from 'i18next';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Keyboard, Linking, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import { useDispatch } from 'react-redux';
 
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
@@ -17,8 +16,8 @@ import {
 import ErrorIcon from '@/components/icons/svg/Error.svg';
 import Info from '@/components/icons/svg/Info.svg';
 import { customTokensUrl } from '@/constants/urls';
-import { DABToken } from '@/interfaces/dab';
-import { FungibleStandard } from '@/interfaces/keyring';
+import { FungibleStandard, StandardToken } from '@/interfaces/keyring';
+import { useAppDispatch } from '@/redux/hooks';
 import { getTokenInfo } from '@/redux/slices/user';
 import { validateCanisterId } from '@/utils/ids';
 
@@ -27,12 +26,12 @@ import { Error, getError } from './utils';
 
 interface Props {
   modalRef: React.RefObject<Modalize>;
-  onSelectedToken: (token: DABToken) => void;
+  onSelectedToken: (token: StandardToken) => void;
 }
 
 function CustomToken({ modalRef, onSelectedToken }: Props) {
   const [canisterId, setCanisterId] = useState('');
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [standard, setStandard] = useState<FungibleStandard>('DIP20');
   const [loading, setLoading] = useState(false);
   const [canisterIdError, setCanisterIdError] = useState(false);

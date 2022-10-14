@@ -1,11 +1,11 @@
-import { BalanceResponse, DABToken } from '@/interfaces/dab';
+import { BalanceResponse } from '@/interfaces/dab';
 import { formatAssetBySymbol, parseToFloatAmount } from '@/utils/currencies';
 
 export const parseToken = (
-  token: DABToken,
+  tokenSymbol: string,
   amount: BalanceResponse,
   icpPrice: number
 ) => {
   const parsedAmount = parseToFloatAmount(amount.value, amount.decimals);
-  return formatAssetBySymbol(parsedAmount, token.symbol, icpPrice);
+  return formatAssetBySymbol(parsedAmount, tokenSymbol, icpPrice);
 };

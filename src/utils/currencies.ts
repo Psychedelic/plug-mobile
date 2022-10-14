@@ -85,7 +85,7 @@ export const parseToBigIntString = (
   return `${main}${completeDecimals}`;
 };
 
-export const formatAsset = (asset: TokenBalance, icpPrice: number) => {
+export const formatAsset = (asset: TokenBalance, icpPrice: number): Asset => {
   const { amount, token } = asset;
   const { symbol, decimals, fee } = token;
 

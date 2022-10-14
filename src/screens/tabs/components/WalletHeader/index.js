@@ -2,7 +2,6 @@ import { useNavigation } from '@react-navigation/core';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { useSelector } from 'react-redux';
 
 import AccountInfo from '@/commonComponents/AccountInfo';
 import Header from '@/commonComponents/Header';
@@ -13,6 +12,7 @@ import Icon from '@/components/icons';
 import { Colors } from '@/constants/theme';
 import { useDebounce } from '@/hooks/useDebounce';
 import Routes from '@/navigation/Routes';
+import { useAppSelector } from '@/redux/hooks';
 import Deposit from '@/screens/flows/Deposit';
 import Send from '@/screens/flows/Send';
 
@@ -26,7 +26,7 @@ const WalletHeader = () => {
   const depositRef = useRef(null);
   const { debounce } = useDebounce();
   const [navigated, setNavigated] = useState(false);
-  const { currentWallet } = useSelector(state => state.keyring);
+  const { currentWallet } = useAppSelector(state => state.keyring);
 
   const navigation = useNavigation();
 
