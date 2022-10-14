@@ -1,7 +1,5 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors, FontStyles } from '@/constants/theme';
-
 export default StyleSheet.create({
   container: {
     flex: 1,
@@ -9,10 +7,6 @@ export default StyleSheet.create({
     paddingBottom: 30,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-  },
-  headerAction: {
-    ...FontStyles.Normal,
-    color: Colors.ActionBlue,
   },
   button: {
     alignItems: 'center',

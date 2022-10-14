@@ -1,11 +1,17 @@
 import { t } from 'i18next';
 import React, { RefObject, useRef } from 'react';
-import { Image, TouchableOpacity, View } from 'react-native';
+import { Image, Platform, TouchableOpacity, View } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import { FileSystem } from 'react-native-file-access';
 import { Modalize } from 'react-native-modalize';
 
-import { GradientText, Header, Modal, Text } from '@/components/common';
+import {
+  ActionButton,
+  GradientText,
+  Header,
+  Modal,
+  Text,
+} from '@/components/common';
 import { isIos } from '@/constants/platform';
 import { useStateWithCallback } from '@/hooks/useStateWithCallback';
 
@@ -16,16 +22,16 @@ import { Button, getCreateImportButtons } from './utils';
 
 interface Props {
   modalRef: RefObject<Modalize>;
-  accountsModal: RefObject<Modalize>;
+  accountsModalRef: RefObject<Modalize>;
 }
 
-function CreateImportAccount({ accountsModal, modalRef }: Props) {
+function CreateImportAccount({ accountsModalRef, modalRef }: Props) {
   const [pemFile, setPemFile] = useStateWithCallback<string>('');
   const createAccountRef = useRef<Modalize>(null);
   const importKeyRef = useRef<Modalize>(null);
 
   const closeModal = () => {
-    accountsModal?.current?.close();
+    accountsModalRef?.current?.close();
   };
 
   const handleBack = () => {
@@ -46,6 +52,7 @@ function CreateImportAccount({ accountsModal, modalRef }: Props) {
         ? DocumentPicker.types.allFiles
         : ['.pem', 'application/x-pem-file'];
       const res = await DocumentPicker.pickSingle({ type });
+
       if (
         !isIos ||
         res.type?.includes('application/x-x509-ca-cert') ||
@@ -80,16 +87,8 @@ function CreateImportAccount({ accountsModal, modalRef }: Props) {
   return (
     <Modal adjustToContentHeight modalRef={modalRef}>
       <Header
-        right={
-          <Text style={styles.headerAction} onPress={closeModal}>
-            {t('common.close')}
-          </Text>
-        }
-        left={
-          <Text style={styles.headerAction} onPress={handleBack}>
-            {t('common.back')}
-          </Text>
-        }
+        right={<ActionButton onPress={closeModal} label={t('common.close')} />}
+        left={<ActionButton onPress={handleBack} label={t('common.back')} />}
         center={
           <Text type="subtitle2">{t('accounts.createImportAccount')}</Text>
         }
@@ -99,12 +98,12 @@ function CreateImportAccount({ accountsModal, modalRef }: Props) {
         pem={pemFile}
         modalRef={createAccountRef}
         createImportModalRef={modalRef}
-        accountsModalRef={accountsModal}
+        accountsModalRef={accountsModalRef}
       />
       <ImportKey
         modalRef={importKeyRef}
         createImportRef={modalRef}
-        accountsModalRef={accountsModal}
+        accountsModalRef={accountsModalRef}
       />
     </Modal>
   );

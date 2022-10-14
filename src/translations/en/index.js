@@ -187,7 +187,6 @@ const translations = {
     editEmoji: 'Edit emoji',
     editButton: '👈 Edit',
     accountNamePlaceholder: 'Account name',
-    save: 'Save Account',
     edit: 'Edit Account',
     create: 'Create Account',
   },

@@ -172,7 +172,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
           />
           <CreateImportAccount
             modalRef={createImportAccountRef}
-            accountsModal={modalRef}
+            accountsModalRef={modalRef}
           />
         </View>
       </Modal>

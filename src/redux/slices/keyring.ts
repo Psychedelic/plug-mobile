@@ -216,7 +216,7 @@ export const importAccountFromPem = createAsyncThunk(
       return response;
     } catch (e: any) {
       // TODO: Add toast to handle error.
-      return rejectWithValue({ error: e.message });
+      return rejectWithValue(e.message);
     }
   }
 );

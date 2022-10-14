@@ -2,10 +2,16 @@ import { t } from 'i18next';
 import React, { RefObject, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
-import { useDispatch } from 'react-redux';
 
 import RainbowButton from '@/components/buttons/RainbowButton';
-import { Header, Modal, Text, TextInput } from '@/components/common';
+import {
+  ActionButton,
+  Header,
+  Modal,
+  Text,
+  TextInput,
+} from '@/components/common';
+import { useAppDispatch } from '@/redux/hooks';
 import { validatePem } from '@/redux/slices/keyring';
 
 import CreateEditAccount from '../CreateEditAccount';
@@ -22,7 +28,7 @@ function ImportKey({ createImportRef, modalRef, accountsModalRef }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [key, setKey] = useState('');
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const disabled = key === '' || loading || error;
 
   const handleOnChangeKey = (value: string) => {
@@ -56,16 +62,8 @@ function ImportKey({ createImportRef, modalRef, accountsModalRef }: Props) {
   return (
     <Modal adjustToContentHeight modalRef={modalRef}>
       <Header
-        right={
-          <Text style={styles.headerAction} onPress={closeModal}>
-            {t('common.close')}
-          </Text>
-        }
-        left={
-          <Text style={styles.headerAction} onPress={handleBack}>
-            {t('common.back')}
-          </Text>
-        }
+        right={<ActionButton onPress={closeModal} label={t('common.close')} />}
+        left={<ActionButton onPress={handleBack} label={t('common.back')} />}
         center={<Text type="subtitle2">{t('common.importWallet')}</Text>}
       />
       <View style={styles.container}>
@@ -78,7 +76,9 @@ function ImportKey({ createImportRef, modalRef, accountsModalRef }: Props) {
           onChangeText={handleOnChangeKey}
         />
         {error && (
-          <Text type="error">{t('createImportAccount.invalidKey')}</Text>
+          <Text type="caption" style={styles.error}>
+            {t('createImportAccount.invalidKey')}
+          </Text>
         )}
         <RainbowButton
           disabled={disabled}

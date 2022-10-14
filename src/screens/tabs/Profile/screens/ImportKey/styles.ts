@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors, FontStyles } from '@/constants/theme';
+import { Colors } from '@/constants/theme';
 
 export default StyleSheet.create({
   container: {
@@ -8,15 +8,14 @@ export default StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 32,
   },
-  headerAction: {
-    ...FontStyles.Normal,
-    color: Colors.ActionBlue,
-  },
   inputStyle: {
     width: '100%',
     marginBottom: 8,
   },
   button: {
     marginTop: 16,
+  },
+  error: {
+    color: Colors.Red,
   },
 });
