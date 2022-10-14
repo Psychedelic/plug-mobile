@@ -92,7 +92,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
       />
       <KeyboardScrollView keyboardShouldPersistTaps="always">
         <View style={styles.container}>
-          <Text style={styles.title}>{t('importSeedPhrase.title')}</Text>
+          <Text style={styles.title}>{t('common.importWallet')}</Text>
           <Text style={styles.subtitle}>
             {t('importSeedPhrase.enterPhrase')}
           </Text>

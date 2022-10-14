@@ -1,11 +1,6 @@
 import { t } from 'i18next';
 import React, { RefObject, useRef } from 'react';
-import {
-  Image,
-  ImageSourcePropType,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import { FileSystem } from 'react-native-file-access';
 import { Modalize } from 'react-native-modalize';
@@ -15,18 +10,8 @@ import { useStateWithCallback } from '@/hooks/useStateWithCallback';
 
 import CreateAccount from '../CreateEditAccount';
 import ImportKey from '../ImportKey';
-import createAccountIcon from './assets/createIcon.png';
-import pemFileIcon from './assets/pemFileIcon.png';
-import privateKeyIcon from './assets/privateKeyIcon.png';
 import styles from './styles';
-
-interface Button {
-  id: string;
-  title: string;
-  onPress: () => void;
-  icon: ImageSourcePropType;
-  colors: string[];
-}
+import { Button, getCreateImportButtons } from './utils';
 
 interface Props {
   modalRef: RefObject<Modalize>;
@@ -34,9 +19,9 @@ interface Props {
 }
 
 function CreateImportAccount({ accountsModal, modalRef }: Props) {
+  const [pemFile, setPemFile] = useStateWithCallback<string>('');
   const createAccountRef = useRef<Modalize>(null);
   const importKeyRef = useRef<Modalize>(null);
-  const [pemFile, setPemFile] = useStateWithCallback<string>('');
 
   const closeModal = () => {
     accountsModal?.current?.close();
@@ -46,9 +31,15 @@ function CreateImportAccount({ accountsModal, modalRef }: Props) {
     modalRef?.current?.close();
   };
 
-  const openCreateAccountModal = () => createAccountRef?.current?.open();
+  const openCreateAccountModal = () => {
+    createAccountRef?.current?.open();
+  };
 
-  const handleOpenFile = async () => {
+  const openImportKeyModal = () => {
+    importKeyRef?.current?.open();
+  };
+
+  const openFile = async () => {
     try {
       const res = await DocumentPicker.pickSingle({
         type: ['application/x-pem-file', '.pem'],
@@ -56,33 +47,10 @@ function CreateImportAccount({ accountsModal, modalRef }: Props) {
       const stringifyPEM = await FileSystem.readFile(res.uri);
       setPemFile(stringifyPEM, openCreateAccountModal);
     } catch (e) {
+      // TODO: Add toast to handle this error.
       console.log('Error opening .pem');
     }
   };
-
-  const BUTTONS = [
-    {
-      id: 'create',
-      title: 'Create',
-      onPress: openCreateAccountModal,
-      icon: createAccountIcon,
-      colors: ['#00E8FF', '#44DC45'],
-    },
-    {
-      id: 'import-key',
-      title: 'Private Key',
-      onPress: () => importKeyRef?.current?.open(),
-      icon: privateKeyIcon,
-      colors: ['#FB5DC3', '#FDB943'],
-    },
-    {
-      id: 'import-pem',
-      title: 'PEM file',
-      onPress: handleOpenFile,
-      icon: pemFileIcon,
-      colors: ['#36C3E9', '#CF6ED3'],
-    },
-  ];
 
   const renderButton = ({ id, title, onPress, icon, colors }: Button) => (
     <TouchableOpacity key={id} onPress={onPress} style={styles.button}>
@@ -92,6 +60,12 @@ function CreateImportAccount({ accountsModal, modalRef }: Props) {
       </GradientText>
     </TouchableOpacity>
   );
+
+  const buttons = getCreateImportButtons({
+    openCreateAccountModal,
+    openFile,
+    openImportKeyModal,
+  });
 
   return (
     <Modal adjustToContentHeight modalRef={modalRef}>
@@ -106,9 +80,11 @@ function CreateImportAccount({ accountsModal, modalRef }: Props) {
             {t('common.back')}
           </Text>
         }
-        center={<Text type="subtitle2">{'Create/Import Account'}</Text>}
+        center={
+          <Text type="subtitle2">{t('accounts.createImportAccount')}</Text>
+        }
       />
-      <View style={styles.container}>{BUTTONS.map(renderButton)}</View>
+      <View style={styles.container}>{buttons.map(renderButton)}</View>
       <CreateAccount
         pem={pemFile}
         modalRef={createAccountRef}

@@ -30,13 +30,13 @@ const translations = {
     questionMark: '?',
     the: 'The',
     enterPassword: 'Enter Password',
+    importWallet: 'Import Wallet',
   },
   welcome: {
     title: 'Welcome to Plug',
     initTitle: 'Choose an option',
     create: 'Create Wallet',
     createNew: 'Create New Wallet',
-    import: 'Import Wallet',
     importNew: 'Import New Wallet',
   },
   login: {
@@ -46,7 +46,6 @@ const translations = {
     moreOptions: 'More options',
   },
   importSeedPhrase: {
-    title: 'Import Wallet',
     enterPhrase: 'Please enter your 12 word Secret Recovery Phrase.',
     secretPhrase: 'Secret Recovery Phrase',
     notFound: 'Recovery phrase not found',
@@ -167,7 +166,7 @@ const translations = {
   },
   accounts: {
     title: 'Accounts',
-    createImportAccount: 'Create/Import account',
+    createImportAccount: 'Create/Import Account',
     moreOptions: {
       edit: 'Edit Account',
       addIcns: 'Add ICNS Domain',
@@ -305,6 +304,12 @@ const translations = {
     description:
       'You can always recover your accounts through your Secret recovery Phrase given that your accounts exists on the blockchain.',
     action: 'Delete Wallet',
+  },
+  createImportAccount: {
+    importKey: 'Private Key',
+    importPem: 'PEM File',
+    create: 'Create',
+    invalidKey: 'Invalid key. Please, try again.',
   },
 };
 

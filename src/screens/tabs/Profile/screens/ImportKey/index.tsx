@@ -66,21 +66,23 @@ function ImportKey({ createImportRef, modalRef, accountsModalRef }: Props) {
             {t('common.back')}
           </Text>
         }
-        center={<Text type="subtitle2">{'Import Wallet'}</Text>}
+        center={<Text type="subtitle2">{t('common.importWallet')}</Text>}
       />
       <View style={styles.container}>
         <TextInput
           autoFocus
           value={key}
           autoCapitalize="none"
-          placeholder={'Private Key'}
+          placeholder={t('createImportAccount.importKey')}
           style={styles.inputStyle}
           onChangeText={handleOnChangeKey}
         />
-        {error && <Text type="error">{'Invalid key. Please, try again.'}</Text>}
+        {error && (
+          <Text type="error">{t('createImportAccount.invalidKey')}</Text>
+        )}
         <RainbowButton
           disabled={disabled}
-          text="Continue"
+          text={t('common.continue')}
           onPress={handleContinue}
           buttonStyle={styles.button}
         />
