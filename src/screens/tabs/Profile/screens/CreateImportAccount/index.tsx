@@ -6,6 +6,7 @@ import { FileSystem } from 'react-native-file-access';
 import { Modalize } from 'react-native-modalize';
 
 import { GradientText, Header, Modal, Text } from '@/components/common';
+import { isIos } from '@/constants/platform';
 import { useStateWithCallback } from '@/hooks/useStateWithCallback';
 
 import CreateAccount from '../CreateEditAccount';
@@ -41,11 +42,20 @@ function CreateImportAccount({ accountsModal, modalRef }: Props) {
 
   const openFile = async () => {
     try {
-      const res = await DocumentPicker.pickSingle({
-        type: ['application/x-pem-file', '.pem'],
-      });
-      const stringifyPEM = await FileSystem.readFile(res.uri);
-      setPemFile(stringifyPEM, openCreateAccountModal);
+      const type = isIos
+        ? DocumentPicker.types.allFiles
+        : ['.pem', 'application/x-pem-file'];
+      const res = await DocumentPicker.pickSingle({ type });
+      if (
+        !isIos ||
+        res.type?.includes('application/x-x509-ca-cert') ||
+        res.type?.includes('application/x-x509-user-cert')
+      ) {
+        const stringifyPEM = await FileSystem.readFile(res.uri);
+        setPemFile(stringifyPEM, openCreateAccountModal);
+      } else {
+        // TODO: Add toast to handle this error. Selected file is not compatible with .pem
+      }
     } catch (e) {
       // TODO: Add toast to handle this error.
       console.log('Error opening .pem');
