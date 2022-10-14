@@ -312,6 +312,8 @@ PODS:
     - react-native-config/App (= 1.4.6)
   - react-native-config/App (1.4.6):
     - React-Core
+  - react-native-document-picker (8.1.1):
+    - React-Core
   - react-native-file-access (2.5.0):
     - React-Core
     - ZIPFoundation (= 0.9.11)
@@ -526,6 +528,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - react-native-config (from `../node_modules/react-native-config`)
+  - react-native-document-picker (from `../node_modules/react-native-document-picker`)
   - react-native-file-access (from `../node_modules/react-native-file-access`)
   - react-native-minimizer (from `../node_modules/react-native-minimizer`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
@@ -638,6 +641,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/blur"
   react-native-config:
     :path: "../node_modules/react-native-config"
+  react-native-document-picker:
+    :path: "../node_modules/react-native-document-picker"
   react-native-file-access:
     :path: "../node_modules/react-native-file-access"
   react-native-minimizer:
@@ -761,6 +766,7 @@ SPEC CHECKSUMS:
   React-logger: ebb4d31bbbe4f1a8a1a9b658d7429210b8f68160
   react-native-blur: 3e9c8e8e9f7d17fa1b94e1a0ae9fd816675f5382
   react-native-config: 7cd105e71d903104e8919261480858940a6b9c0e
+  react-native-document-picker: f68191637788994baed5f57d12994aa32cf8bf88
   react-native-file-access: 204693d308701ba232dcf91facef05498fcde9a2
   react-native-minimizer: b94809a769ac3825b46fd081d4f0ae2560791536
   react-native-pager-view: 7f00d63688f7df9fad86dfb0154814419cc5eb8d

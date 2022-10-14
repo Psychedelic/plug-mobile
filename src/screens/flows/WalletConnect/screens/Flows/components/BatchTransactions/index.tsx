@@ -47,7 +47,6 @@ function BatchTransactions({ request, metadata }: WallectConnectFlowsData) {
     <ScrollView
       bounces={false}
       style={styles.list}
-      overScrollMode="never"
       contentContainerStyle={styles.listContentContainer}>
       {transactions.map(renderTransaction)}
     </ScrollView>

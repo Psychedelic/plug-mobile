@@ -31,7 +31,7 @@ function Welcome() {
   const title = isInitialized ? t('welcome.initTitle') : t('welcome.title');
   const importTitle = isInitialized
     ? t('welcome.importNew')
-    : t('welcome.import');
+    : t('common.importWallet');
   const createTitle = isInitialized
     ? t('welcome.createNew')
     : t('welcome.create');
