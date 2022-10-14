@@ -1,6 +1,6 @@
 import { t } from 'i18next';
 import React, { RefObject, useRef } from 'react';
-import { Image, Platform, TouchableOpacity, View } from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import { FileSystem } from 'react-native-file-access';
 import { Modalize } from 'react-native-modalize';
