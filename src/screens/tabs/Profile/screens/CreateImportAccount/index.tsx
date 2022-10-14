@@ -49,7 +49,7 @@ function CreateImportAccount({ accountsModalRef, modalRef }: Props) {
   const openFile = async () => {
     try {
       const type = isIos
-        ? ['public.x509-certificate']
+        ? 'public.x509-certificate'
         : ['.pem', 'application/x-pem-file'];
       const res = await DocumentPicker.pickSingle({ type });
 
