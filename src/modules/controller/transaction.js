@@ -22,6 +22,10 @@ import { navigate } from '@/utils/navigation';
 import { base64ToBuffer, bufferToBase64 } from '@/utils/utilities';
 import {
   generateRequestInfo,
+  getWhitelistWithInfo,
+  resolveBatchTransactionAndroid,
+  resolveBatchTransactionIos,
+  updateWhitelist,
   validateBatchTx,
   validateBurnArgs,
   validateTransactions,
@@ -272,44 +276,25 @@ const TransactionModule = (dispatch, getState) => {
         return { error: ERRORS.TRANSACTION_REJECTED };
       }
 
-      if (isIos) {
-        const agent = await keyring.getAgent();
-        const host = agent._host;
-        const { batchTxId, derPublicKey } = await addBatchTransaction(
-          transactions.map(tx => ({
-            canisterId: tx.canisterId,
-            methodName: tx.methodName,
-            args: tx.arguments,
-          })),
-          metadata,
-          host
-        );
+      const whitelist = transactions.map(({ canisterId }) => canisterId);
 
-        const bufferPublicKey = base64ToBuffer(derPublicKey);
+      const resolveBatchTransaction = isIos
+        ? resolveBatchTransactionIos
+        : resolveBatchTransactionAndroid;
 
-        const delegationChain = await keyring.delegateIdentity({
-          to: bufferPublicKey,
-          targets: transactions.map(tx => tx.canisterId),
-        });
+      const [whitelistWithInfo, batchTransactionId] = await Promise.all([
+        getWhitelistWithInfo(whitelist),
+        resolveBatchTransaction({ keyring, metadata, transactions }),
+      ]);
 
-        await addDelegation(batchTxId, delegationChain);
+      await updateWhitelist(
+        whitelistWithInfo,
+        keyring.currentWalletId.toString(),
+        CONNECTION_STATUS.accepted,
+        metadata.url
+      );
 
-        return { result: { status: true, txId: batchTxId } };
-      }
-
-      const savedBatchTransactions = await getBatchTransactions();
-      const newBatchTransactionId = randomBytes(16).toString('hex');
-      const updatedBatchTransactions = {
-        ...savedBatchTransactions,
-        [newBatchTransactionId]: transactions.map(tx => ({
-          canisterId: tx.canisterId,
-          methodName: tx.methodName,
-          args: tx.arguments,
-        })),
-      };
-      await setBatchTransactions(updatedBatchTransactions);
-
-      return { result: { status: true, txId: newBatchTransactionId } };
+      return { result: { status: true, txId: batchTransactionId, whitelist } };
     },
   };
 
