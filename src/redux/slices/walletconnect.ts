@@ -457,7 +457,7 @@ export const walletConnectApproveSession = createAsyncThunk<
 
 export const walletConnectRejectSession = createAsyncThunk<
   void,
-  { peerId: string; error: any },
+  { peerId: string; error?: any },
   { state: State }
 >(
   'walletconnect/rejectSession',

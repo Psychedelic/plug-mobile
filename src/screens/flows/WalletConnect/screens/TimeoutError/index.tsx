@@ -6,7 +6,7 @@ import Button from '@/components/buttons/Button';
 import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
 import useDisableBack from '@/hooks/useDisableBack';
-import { TNavigation } from '@/interfaces/navigation';
+import { ScreenProps } from '@/interfaces/navigation';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 
@@ -15,7 +15,7 @@ import styles from './styles';
 function WCTimeoutError({
   route,
   navigation,
-}: TNavigation<Routes.WALLET_CONNECT_ERROR>) {
+}: ScreenProps<Routes.WALLET_CONNECT_ERROR>) {
   useDisableBack();
   const { dappUrl, dappName } = route?.params || {};
 

@@ -2,6 +2,7 @@ import { getNumberFormatSettings } from 'react-native-localize';
 
 import { ACTIVITY_STATUS } from '@/constants/business';
 import { ERROR_TYPES, MIN_PASSWORD_LENGTH } from '@/constants/general';
+import Routes from '@/navigation/Routes';
 
 const { decimalSeparator } = getNumberFormatSettings();
 
@@ -30,6 +31,12 @@ const translations = {
     questionMark: '?',
     the: 'The',
     enterPassword: 'Enter Password',
+  },
+  routes: {
+    [Routes.NFTS]: 'Collectibles',
+    [Routes.TOKENS]: 'Tokens',
+    [Routes.PROFILE_SCREEN]: 'Profile',
+    [Routes.SETTINGS]: 'Settings',
   },
   welcome: {
     title: 'Welcome to Plug',
