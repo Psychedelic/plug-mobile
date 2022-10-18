@@ -1,17 +1,28 @@
 import { blobFromBuffer } from '@dfinity/candid';
 import PlugController from '@psychedelic/plug-controller';
+import { randomBytes } from 'crypto';
 import { fetch } from 'react-native-fetch-api';
 
 import { XTC_FEE } from '@/constants/addresses';
 import { CYCLES_PER_TC } from '@/constants/assets';
 import { ASSET_CANISTER_IDS } from '@/constants/canister';
-import { ERRORS, SIGNING_METHODS } from '@/constants/walletconnect';
+import {
+  CONNECTION_STATUS,
+  ERRORS,
+  SIGNING_METHODS,
+} from '@/constants/walletconnect';
 import {
   ConnectionModule,
   InformationModule,
   TransactionModule,
 } from '@/modules';
-import { setProtectedIds } from '@/modules/storageManager';
+import {
+  getApps,
+  getBatchTransactions,
+  setApps,
+  setBatchTransactions,
+  setProtectedIds,
+} from '@/modules/storageManager';
 import Routes from '@/navigation/Routes';
 import {
   addBridgeTimeout,
@@ -21,6 +32,7 @@ import {
   walletConnectRejectSession,
 } from '@/redux/slices/walletconnect';
 import { getDabNfts, getDabTokens } from '@/services/DAB';
+import { addBatchTransaction, addDelegation } from '@/services/SignerServer';
 import { validateAccountId, validatePrincipalId } from '@/utils/ids';
 import { validateCanisterId } from '@/utils/ids';
 import { navigate } from '@/utils/navigation';
@@ -292,4 +304,90 @@ export const needSign = (methodName, args) => {
   }
 
   return false;
+};
+
+export const getWhitelistWithInfo = async whitelist => {
+  const canisterInfo = await fetchCanistersInfo(whitelist);
+
+  return canisterInfo.concat(whitelist.map(wh => ({ canisterId: wh }))).reduce(
+    (acum, info) => ({
+      ...acum,
+      [info.canisterId]: { ...info, ...acum[info.canisterId] },
+    }),
+    {}
+  );
+};
+
+export const updateWhitelist = async (
+  whitelist,
+  currentWalletId,
+  status,
+  url
+) => {
+  const apps = await getApps(currentWalletId);
+  const date = new Date().toISOString();
+
+  const newApps = {
+    ...apps,
+    [url]: {
+      ...apps[url],
+      status: status || CONNECTION_STATUS.rejected,
+      date,
+      whitelist: { ...apps[url]?.whitelist, ...whitelist },
+      events: [
+        ...(apps[url]?.events || []),
+        {
+          status: status || CONNECTION_STATUS.rejected,
+          date,
+        },
+      ],
+    },
+  };
+
+  await setApps(currentWalletId, newApps);
+};
+
+export const resolveBatchTransactionIos = async ({
+  keyring,
+  transactions,
+  metadata,
+}) => {
+  const agent = await keyring.getAgent();
+  const host = agent._host;
+  const { batchTxId, derPublicKey } = await addBatchTransaction(
+    transactions.map(tx => ({
+      canisterId: tx.canisterId,
+      methodName: tx.methodName,
+      args: tx.arguments,
+    })),
+    metadata,
+    host
+  );
+
+  const bufferPublicKey = base64ToBuffer(derPublicKey);
+
+  const delegationChain = await keyring.delegateIdentity({
+    to: bufferPublicKey,
+    targets: transactions.map(tx => tx.canisterId),
+  });
+
+  await addDelegation(batchTxId, delegationChain);
+
+  return batchTxId;
+};
+
+export const resolveBatchTransactionAndroid = async ({ transactions }) => {
+  const savedBatchTransactions = await getBatchTransactions();
+  const newBatchTransactionId = randomBytes(16).toString('hex');
+  const updatedBatchTransactions = {
+    ...savedBatchTransactions,
+    [newBatchTransactionId]: transactions.map(tx => ({
+      canisterId: tx.canisterId,
+      methodName: tx.methodName,
+      args: tx.arguments,
+    })),
+  };
+  await setBatchTransactions(updatedBatchTransactions);
+
+  return newBatchTransactionId;
 };
