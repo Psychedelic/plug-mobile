@@ -2,6 +2,7 @@ import emojis from 'emoji-datasource';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Keyboard, View } from 'react-native';
+import { Modalize } from 'react-native-modalize';
 
 import { charFromEmojiObject } from '@/commonComponents/EmojiSelector/utils';
 import Header from '@/commonComponents/Header';
@@ -13,6 +14,7 @@ import Text from '@/components/common/Text';
 import ErrorIcon from '@/components/icons/svg/ErrorIcon.svg';
 import { FontStyles } from '@/constants/theme';
 import useICNS from '@/hooks/useICNS';
+import { Contact } from '@/interfaces/redux';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { addContact, editContact } from '@/redux/slices/user';
 import EditEmoji from '@/screens/tabs/Profile/modals/EditEmoji';
@@ -24,10 +26,15 @@ import {
 
 import styles from './styles';
 
-const AddEditContact = ({ modalRef, contact }) => {
+interface Props {
+  modalRef: React.RefObject<Modalize>;
+  contact?: Contact;
+}
+
+const AddEditContact = ({ modalRef, contact }: Props) => {
   const { t } = useTranslation();
   const { contacts } = useAppSelector(state => state.user);
-  const editEmojiRef = useRef(null);
+  const editEmojiRef = useRef<Modalize>(null);
   const dispatch = useAppDispatch();
   const [id, setId] = useState('');
   const [name, setName] = useState('');
@@ -60,21 +67,26 @@ const AddEditContact = ({ modalRef, contact }) => {
       setError(false);
     }
   }, [idError, nameError, icnsError]);
+
   const handleSubmit = () => {
     const randomEmoji = charFromEmojiObject(
       emojis[Math.floor(Math.random() * emojis.length)]
     );
-    dispatch(
-      isEditContact
-        ? editContact({ contact, newContact: { id, name, image: emoji } })
-        : addContact({
-            contact: {
-              id,
-              name,
-              image: randomEmoji,
-            },
-          })
-    );
+    if (isEditContact) {
+      dispatch(
+        editContact({ contact, newContact: { id, name, image: emoji } })
+      );
+    } else {
+      dispatch(
+        addContact({
+          contact: {
+            id,
+            name,
+            image: randomEmoji,
+          },
+        })
+      );
+    }
     modalRef.current?.close();
     clearState();
   };
@@ -96,7 +108,6 @@ const AddEditContact = ({ modalRef, contact }) => {
   }, [contact]);
 
   const handleClose = () => {
-    // onClose?.();
     setError(false);
     if (!contact) {
       clearState();
@@ -105,20 +116,20 @@ const AddEditContact = ({ modalRef, contact }) => {
 
   const onEditEmoji = () => {
     Keyboard.dismiss();
-    editEmojiRef?.current.open();
+    editEmojiRef.current?.open();
   };
 
   const handleBack = () => {
     setError(false);
-    modalRef?.current.close();
+    modalRef?.current?.close();
   };
 
-  const handleOnChangeName = text => {
+  const handleOnChangeName = (text: string) => {
     setError(false);
     setName(text);
   };
 
-  const handleOnChangeId = text => {
+  const handleOnChangeId = (text: string) => {
     setError(false);
     setId(text);
   };

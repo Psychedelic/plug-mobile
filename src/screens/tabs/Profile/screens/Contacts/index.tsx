@@ -84,7 +84,7 @@ function Contacts() {
 
   return (
     <>
-      <Touchable onPress={onAddContact}>
+      <Touchable onPress={onAddContact} style={styles.addButton}>
         <Row align="center" style={styles.addRow}>
           <Icon name="plus" style={styles.plusIcon} />
           <Text style={FontStyles.Normal}>{t('contacts.addContact')}</Text>

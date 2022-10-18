@@ -12,6 +12,9 @@ export default StyleSheet.create({
     marginBottom: 20,
     textTransform: 'uppercase',
   },
+  addButton: {
+    marginTop: 8,
+  },
   addRow: {
     paddingHorizontal: 20,
     marginBottom: 30,
