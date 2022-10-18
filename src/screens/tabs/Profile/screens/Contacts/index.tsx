@@ -6,7 +6,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Modalize } from 'react-native-modalize';
 
 import CommonItem from '@/commonComponents/CommonItem';
-import Header from '@/commonComponents/Header';
 import Touchable from '@/commonComponents/Touchable';
 import ActionSheet, { Option } from '@/components/common/ActionSheet';
 import Text from '@/components/common/Text';
@@ -85,7 +84,6 @@ function Contacts() {
 
   return (
     <>
-      <Header center={<Text type="subtitle2">{t('contacts.title')}</Text>} />
       <Touchable onPress={onAddContact}>
         <Row align="center" style={styles.addRow}>
           <Icon name="plus" style={styles.plusIcon} />

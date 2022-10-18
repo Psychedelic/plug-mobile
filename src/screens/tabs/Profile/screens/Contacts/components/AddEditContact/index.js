@@ -15,7 +15,7 @@ import { FontStyles } from '@/constants/theme';
 import useICNS from '@/hooks/useICNS';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { addContact, editContact } from '@/redux/slices/user';
-import EditEmoji from '@/screens/tabs/Profile/screens/EditEmoji';
+import EditEmoji from '@/screens/tabs/Profile/modals/EditEmoji';
 import {
   validateAccountId,
   validateICNSName,
@@ -108,12 +108,6 @@ const AddEditContact = ({ modalRef, contact }) => {
     editEmojiRef?.current.open();
   };
 
-  const closeModal = () => {
-    setError(false);
-    modalRef?.current.close();
-    // contactsRef?.current.close();
-  };
-
   const handleBack = () => {
     setError(false);
     modalRef?.current.close();
@@ -132,11 +126,6 @@ const AddEditContact = ({ modalRef, contact }) => {
   return (
     <Modal modalRef={modalRef} adjustToContentHeight onClose={handleClose}>
       <Header
-        right={
-          <Text style={[FontStyles.Normal, styles.valid]} onPress={closeModal}>
-            {t('common.close')}
-          </Text>
-        }
         left={
           <Text style={[FontStyles.Normal, styles.valid]} onPress={handleBack}>
             {t('common.back')}

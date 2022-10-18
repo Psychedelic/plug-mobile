@@ -24,7 +24,7 @@ import ActivityItem, {
 } from '@/screens/tabs/components/ActivityItem';
 import animationScales from '@/utils/animationScales';
 
-import Accounts from './screens/Accounts';
+import Accounts from './modals/Accounts';
 import styles from './styles';
 
 const Profile = () => {

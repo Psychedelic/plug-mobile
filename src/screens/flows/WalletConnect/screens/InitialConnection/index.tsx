@@ -17,7 +17,7 @@ import {
   walletConnectRejectSession,
   walletConnectRemovePendingRedirect,
 } from '@/redux/slices/walletconnect';
-import Accounts from '@/screens/tabs/Profile/screens/Accounts';
+import Accounts from '@/screens/tabs/Profile/modals/Accounts';
 import { responseSessionRequest } from '@/utils/walletConnect';
 
 import UserShowcase from '../Flows/components/UserShowcase';

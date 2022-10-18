@@ -1,9 +1,8 @@
-import { t } from 'i18next';
 import React from 'react';
 import { Linking } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
-import { ActionButton, CommonItem, Header, Text } from '@/components/common';
+import { CommonItem } from '@/components/common';
 import { icScanUrl } from '@/constants/urls';
 import { ScreenProps } from '@/interfaces/navigation';
 import { WCWhiteListItem } from '@/interfaces/walletConnect';
@@ -12,10 +11,7 @@ import { formatLongDate } from '@/utils/dates';
 
 import styles from './styles';
 
-function ApprovedCanisters({
-  navigation,
-  route,
-}: ScreenProps<Routes.APPROVED_CANISTERS>) {
+function ApprovedCanisters({ route }: ScreenProps<Routes.APPROVED_CANISTERS>) {
   const { name, canisterList, imageUri, lastConnection } =
     route.params.app || {};
 
@@ -42,26 +38,16 @@ function ApprovedCanisters({
   };
 
   return (
-    <>
-      <Header
-        left={
-          <ActionButton onPress={navigation.goBack} label={t('common.back')} />
-        }
-        center={
-          <Text type="subtitle2">{t('connectedApps.approvedCanisters')}</Text>
-        }
+    <ScrollView style={styles.container}>
+      <CommonItem
+        name={name}
+        imageUri={imageUri}
+        showActions={false}
+        style={styles.itemShowcase}
+        subtitle={`${formatLongDate(lastConnection)}`}
       />
-      <ScrollView style={styles.container}>
-        <CommonItem
-          name={name}
-          imageUri={imageUri}
-          showActions={false}
-          style={styles.itemShowcase}
-          subtitle={`${formatLongDate(lastConnection)}`}
-        />
-        {canisterList?.map(renderCanister)}
-      </ScrollView>
-    </>
+      {canisterList?.map(renderCanister)}
+    </ScrollView>
   );
 }
 

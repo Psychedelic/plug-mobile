@@ -4,8 +4,6 @@ import { Linking, ScrollView, View } from 'react-native';
 import { getBuildNumber, getVersion } from 'react-native-device-info';
 import { Modalize } from 'react-native-modalize';
 
-import { ActionButton } from '@/components/common';
-import Header from '@/components/common/Header';
 import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
 import { blogUrl, discordUrl, docsUrl, twitterUrl } from '@/constants/urls';
@@ -17,8 +15,8 @@ import { reset as resetICPStore } from '@/redux/slices/icp';
 import { lock, reset as resetKeyringStore } from '@/redux/slices/keyring';
 import { reset as resetUserStore } from '@/redux/slices/user';
 import { clearState as resetWalletConnectStore } from '@/redux/slices/walletconnect';
-import ConnectedApps from '@/screens/tabs/Profile/screens/ConnectedApps';
-import RevealSeedPhrase from '@/screens/tabs/Profile/screens/RevealSeedPhrase';
+import ConnectedApps from '@/screens/tabs/Profile/modals/ConnectedApps';
+import RevealSeedPhrase from '@/screens/tabs/Profile/modals/RevealSeedPhrase';
 import { clearStorage } from '@/utils/localStorage';
 
 import BiometricUnlock from './components/BiometricUnlock';
@@ -137,12 +135,6 @@ function Settings({ navigation }: ScreenProps<Routes.SETTINGS>) {
 
   return (
     <>
-      <Header
-        center={<Text type="subtitle2">{t('settings.title')}</Text>}
-        right={
-          <ActionButton label={t('common.close')} onPress={navigation.goBack} />
-        }
-      />
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
