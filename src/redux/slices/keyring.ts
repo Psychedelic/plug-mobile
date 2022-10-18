@@ -1,5 +1,5 @@
 import { CreatePrincipalOptions } from '@psychedelic/plug-controller/dist/PlugKeyRing/interfaces';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 import { KeyringState, State, Wallet } from '@/interfaces/redux';
 import KeyRing from '@/modules/keyring';
@@ -200,6 +200,58 @@ export const login = createAsyncThunk(
   }
 );
 
+export const importAccountFromPem = createAsyncThunk(
+  'keyring/importAccountFromPem',
+  async (
+    { pem, icon, name }: { name: string; icon: string; pem: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const instance = KeyRing.getInstance();
+      const response = await instance?.importAccountFromPem({
+        pem,
+        icon,
+        name,
+      });
+      return response;
+    } catch (e: any) {
+      // TODO: Add toast to handle error.
+      return rejectWithValue(e.message);
+    }
+  }
+);
+
+export const validatePem = createAsyncThunk(
+  'keyring/validatePem',
+  async (
+    {
+      pem,
+      onSuccess,
+      onFailure,
+      onFinish,
+    }: {
+      pem: string;
+      onSuccess: () => void;
+      onFailure: () => void;
+      onFinish: () => void;
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      const instance = KeyRing.getInstance();
+      const response = await instance?.validatePem({ pem });
+      if (response) {
+        onSuccess();
+      } else {
+        onFailure();
+      }
+      onFinish();
+    } catch (e: any) {
+      return rejectWithValue({ error: e.message });
+    }
+  }
+);
+
 export const createSubaccount = createAsyncThunk(
   'keyring/createSubaccount',
   async (params: CreatePrincipalOptions, { rejectWithValue }) => {
@@ -356,11 +408,6 @@ export const keyringSlice = createSlice({
         state.isInitialized = action.payload.isInitialized;
         state.isUnlocked = action.payload.isUnlocked;
       })
-      .addCase(createSubaccount.fulfilled, (state, action) => {
-        if (action.payload) {
-          state.wallets = [...state.wallets, action.payload];
-        }
-      })
       .addCase(editSubaccount.fulfilled, (state, action) => {
         const { isCurrentWallet, wallet } = action.payload;
         if (isCurrentWallet) {
@@ -397,7 +444,15 @@ export const keyringSlice = createSlice({
           state.isInitialized = true;
           state.isUnlocked = unlocked;
         }
-      });
+      })
+      .addMatcher(
+        isAnyOf(createSubaccount.fulfilled, importAccountFromPem.fulfilled),
+        (state, action) => {
+          if (action.payload) {
+            state.wallets = [...state.wallets, action.payload];
+          }
+        }
+      );
   },
 });
 

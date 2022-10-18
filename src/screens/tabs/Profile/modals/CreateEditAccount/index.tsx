@@ -1,41 +1,76 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { RefObject, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Keyboard, View } from 'react-native';
+import { Modalize } from 'react-native-modalize';
 
 import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
 import TextInput from '@/commonComponents/TextInput';
 import UserIcon from '@/commonComponents/UserIcon';
 import RainbowButton from '@/components/buttons/RainbowButton';
+import { ActionButton } from '@/components/common';
 import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
-import useAccounts from '@/hooks/useAccounts';
+import { Wallet } from '@/interfaces/redux';
+import { useAppDispatch } from '@/redux/hooks';
+import {
+  createSubaccount,
+  editSubaccount,
+  importAccountFromPem,
+} from '@/redux/slices/keyring';
 
 import EditEmoji from '../EditEmoji';
 import styles from './styles';
 
-const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
+interface Props {
+  modalRef: RefObject<Modalize>;
+  accountsModalRef?: RefObject<Modalize>;
+  account?: Wallet;
+  pem?: string;
+  createImportModalRef?: RefObject<Modalize>;
+}
+
+const CreateEditAccount = ({
+  modalRef,
+  account,
+  accountsModalRef,
+  pem,
+  createImportModalRef,
+}: Props) => {
   const { t } = useTranslation();
-  const editEmojiRef = useRef(null);
+  const editEmojiRef = useRef<Modalize>(null);
   const [accountName, setAccountName] = useState('');
   const [editTouched, setEditTouched] = useState(false);
   const [emoji, setEmoji] = useState('');
+  const dispatch = useAppDispatch();
 
-  const { onCreate, onEdit } = useAccounts();
+  const title = account ? t('accounts.edit') : t('accounts.create');
+  const nameAndIcon = {
+    name: accountName,
+    icon: emoji,
+  };
 
   const onPress = () => {
     account
-      ? onEdit({
-          walletId: account.walletId,
-          name: accountName,
-          icon: emoji,
-        })
-      : onCreate({
-          name: accountName,
-          icon: emoji,
-        });
+      ? dispatch(
+          editSubaccount({
+            walletId: account.walletId,
+            ...nameAndIcon,
+          })
+        )
+      : pem
+      ? dispatch(
+          importAccountFromPem({
+            ...nameAndIcon,
+            pem,
+          })
+        )
+      : dispatch(createSubaccount(nameAndIcon));
 
     resetState();
+    if (createImportModalRef) {
+      createImportModalRef.current?.close();
+    }
     modalRef.current?.close();
   };
 
@@ -46,35 +81,25 @@ const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
 
   const onEditEmoji = () => {
     Keyboard.dismiss();
-    editEmojiRef?.current.open();
+    editEmojiRef?.current?.open();
     setEditTouched(true);
   };
-
-  const getName = useCallback(
-    isSave =>
-      isSave
-        ? t('accounts.save')
-        : account
-        ? t('accounts.edit')
-        : t('accounts.create'),
-    [account]
-  );
 
   useEffect(() => {
     if (account) {
       setAccountName(account.name);
-      setEmoji(account.icon);
+      setEmoji(account.icon!);
     } else {
       resetState();
     }
   }, [account]);
 
   const closeModal = () => {
-    accountsModalRef?.current.close();
+    accountsModalRef?.current?.close();
   };
 
   const handleBack = () => {
-    modalRef?.current.close();
+    modalRef?.current?.close();
   };
 
   const handleClose = () => {
@@ -86,17 +111,9 @@ const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
   return (
     <Modal adjustToContentHeight modalRef={modalRef} onClose={handleClose}>
       <Header
-        right={
-          <Text style={[FontStyles.Normal, styles.valid]} onPress={closeModal}>
-            {t('common.close')}
-          </Text>
-        }
-        left={
-          <Text style={[FontStyles.Normal, styles.valid]} onPress={handleBack}>
-            {t('common.back')}
-          </Text>
-        }
-        center={<Text type="subtitle2">{getName()}</Text>}
+        right={<ActionButton onPress={closeModal} label={t('common.close')} />}
+        left={<ActionButton onPress={handleBack} label={t('common.back')} />}
+        center={<Text type="subtitle2">{title}</Text>}
       />
       <View style={styles.content}>
         <View>
@@ -122,11 +139,7 @@ const CreateEditAccount = ({ modalRef, account, accountsModalRef }) => {
           style={styles.input}
           onChangeText={setAccountName}
         />
-        <RainbowButton
-          text={getName(account)}
-          onPress={onPress}
-          disabled={!accountName}
-        />
+        <RainbowButton text={title} onPress={onPress} disabled={!accountName} />
         <EditEmoji modalRef={editEmojiRef} onSave={setEmoji} emoji={emoji} />
       </View>
     </Modal>

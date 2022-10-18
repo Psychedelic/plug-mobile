@@ -7,40 +7,25 @@ import { navigate } from '@/utils/navigation';
 import { areAllElementsIn } from '@/utils/objects';
 import {
   fetchCanistersInfo,
+  getWhitelistWithInfo,
   initializeProtectedIds,
+  updateWhitelist,
 } from '@/utils/walletConnect';
 
 import KeyRing from '../keyring';
 
 const handlerAllowAgent = getState => async (opts, url, response) => {
   const keyring = KeyRing.getInstance();
+  const currentWalletId = keyring?.currentWalletId.toString();
   if (!response.noNewEvents) {
-    const apps = await getApps(keyring?.currentWalletId.toString());
     const status =
       response.status === CONNECTION_STATUS.rejectedAgent
         ? CONNECTION_STATUS.accepted
         : response.status;
     const whitelist =
       response.status === CONNECTION_STATUS.accepted ? response.whitelist : [];
-    const date = new Date().toISOString();
-    const newApps = {
-      ...apps,
-      [url]: {
-        ...apps[url],
-        status: status || CONNECTION_STATUS.rejected,
-        date,
-        whitelist: { ...apps[url]?.whitelist, ...whitelist },
-        events: [
-          ...(apps[url]?.events || []),
-          {
-            status: status || CONNECTION_STATUS.rejected,
-            date,
-          },
-        ],
-      },
-    };
 
-    await setApps(keyring?.currentWalletId.toString(), newApps);
+    updateWhitelist(whitelist, currentWalletId, status, url);
   }
 
   if (response?.status === CONNECTION_STATUS.accepted) {
@@ -275,17 +260,7 @@ const ConnectionModule = (dispatch, getState) => {
         return;
       }
 
-      const canisterInfo = await fetchCanistersInfo(whitelist);
-
-      const whitelistWithInfo = canisterInfo
-        .concat(whitelist.map(wh => ({ canisterId: wh })))
-        .reduce(
-          (acum, info) => ({
-            ...acum,
-            [info.canisterId]: { ...info, ...acum[info.canisterId] },
-          }),
-          {}
-        );
+      const whitelistWithInfo = getWhitelistWithInfo(whitelist);
 
       const app = await getApp(
         keyring?.currentWalletId.toString(),

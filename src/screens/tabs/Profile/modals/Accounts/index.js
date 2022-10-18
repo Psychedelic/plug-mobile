@@ -22,6 +22,7 @@ import { setCurrentPrincipal } from '@/redux/slices/keyring';
 import shortAddress from '@/utils/shortAddress';
 
 import CreateEditAccount from '../CreateEditAccount';
+import CreateImportAccount from '../CreateImportAccount';
 import AddICNS from './AddICNS';
 import styles from './styles';
 
@@ -39,15 +40,16 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
   const [selectedAccount, setSelectedAccount] = useState(null);
 
   const createEditAccountRef = useRef(null);
+  const createImportAccountRef = useRef(null);
   const addICNSRef = useRef(null);
 
   useEffect(() => {
     dispatch(getICPPrice());
   }, []);
 
-  const onCreateAccount = () => {
+  const onCreateImportAccount = () => {
     setSelectedAccount(null);
-    createEditAccountRef.current?.open();
+    createImportAccountRef.current?.open();
   };
 
   const onEditAccount = account => {
@@ -155,11 +157,11 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
             </View>
           )}
           {wallets?.map(renderAccountItem)}
-          <Touchable onPress={onCreateAccount}>
+          <Touchable onPress={onCreateImportAccount}>
             <Row align="center" style={styles.row}>
               <Icon name="plus" style={styles.plusIcon} />
               <Text style={FontStyles.Normal}>
-                {t('accounts.createAccount')}
+                {t('accounts.createImportAccount')}
               </Text>
             </Row>
           </Touchable>
@@ -167,6 +169,10 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
             modalRef={createEditAccountRef}
             accountsModalRef={modalRef}
             account={selectedAccount}
+          />
+          <CreateImportAccount
+            modalRef={createImportAccountRef}
+            accountsModalRef={modalRef}
           />
         </View>
       </Modal>

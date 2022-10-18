@@ -29,7 +29,4 @@ export default StyleSheet.create({
   toolTipText: {
     color: Colors.Black.Pure,
   },
-  valid: {
-    color: Colors.ActionBlue,
-  },
 });
