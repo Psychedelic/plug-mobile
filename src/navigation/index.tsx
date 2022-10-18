@@ -9,7 +9,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Host } from 'react-native-portalize';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { isAndroid } from '@/constants/platform';
 import { Colors } from '@/constants/theme';
 import { RootStackParamList } from '@/interfaces/navigation';
 import KeyRing from '@/modules/keyring';
@@ -166,8 +165,8 @@ const Navigator = ({ routingInstrumentation }: any, navigationRef: any) => {
             <Stack.Group
               screenOptions={{
                 headerShown: false,
-                presentation: 'transparentModal',
-                ...(isAndroid && TransitionPresets.ModalPresentationIOS),
+                presentation: 'modal',
+                ...TransitionPresets.ModalPresentationIOS,
                 cardStyle: {
                   marginTop: top || 10,
                   borderTopRightRadius: 40,

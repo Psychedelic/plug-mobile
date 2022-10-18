@@ -37,6 +37,8 @@ const translations = {
     [Routes.TOKENS]: 'Tokens',
     [Routes.PROFILE_SCREEN]: 'Profile',
     [Routes.SETTINGS]: 'Settings',
+    [Routes.CONTACTS]: 'Contacts',
+    [Routes.APPROVED_CANISTERS]: 'Approved Canisters',
   },
   welcome: {
     title: 'Welcome to Plug',

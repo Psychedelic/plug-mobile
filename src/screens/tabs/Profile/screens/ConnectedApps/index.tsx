@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
 import React, { RefObject, useRef, useState } from 'react';
 import { Platform, View } from 'react-native';
@@ -13,11 +14,11 @@ import {
 import DeleteIcon from '@/icons/svg/material/Delete.svg';
 import ViewIcon from '@/icons/svg/material/View.svg';
 import { ConnectedApp } from '@/interfaces/redux';
+import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { removeConnectedApp } from '@/redux/slices/user';
 import { formatLongDate } from '@/utils/dates';
 
-import ApprovedCanisters from './components/ApprovedCanisters';
 import styles from './styles';
 
 interface Props {
@@ -26,6 +27,7 @@ interface Props {
 
 function ConnectedApps({ modalRef }: Props) {
   const dispatch = useAppDispatch();
+  const navigation = useNavigation();
   const principalId = useAppSelector(
     state => state?.keyring?.currentWallet?.principal
   );
@@ -33,14 +35,12 @@ function ConnectedApps({ modalRef }: Props) {
     state => state.user.connectedApps
   )?.filter(app => app.account === principalId);
 
-  const [selectedApp, setSelectedApp] = useState<ConnectedApp>();
   const [actionSheetData, setActionSheetData] = useState<any>();
   const actionSheetRef = useRef<Modalize>(null);
-  const approvedcanistersRef = useRef<Modalize>(null);
 
   const openDetailView = (app: ConnectedApp) => {
-    setSelectedApp(app);
-    approvedcanistersRef.current?.open();
+    modalRef.current?.close();
+    navigation.navigate(Routes.APPROVED_CANISTERS, { app });
   };
 
   const removeConnection = ({ name, account }: ConnectedApp) => {
@@ -116,11 +116,6 @@ function ConnectedApps({ modalRef }: Props) {
       <ActionSheet
         modalRef={actionSheetRef}
         options={actionSheetData?.options}
-      />
-      <ApprovedCanisters
-        app={selectedApp!}
-        connectedAppsRef={modalRef}
-        modalRef={approvedcanistersRef}
       />
     </>
   );

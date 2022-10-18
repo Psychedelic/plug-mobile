@@ -18,7 +18,7 @@ import EditIcon from '@/icons/svg/material/Edit.svg';
 import { Contact } from '@/interfaces/redux';
 import { Row } from '@/layout';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { removeContact } from '@/redux/slices/user';
+import { getContacts, removeContact } from '@/redux/slices/user';
 import { validateICNSName } from '@/utils/ids';
 
 import AddEditContact from './components/AddEditContact';
@@ -48,13 +48,11 @@ function Contacts() {
 
   const onAddContact = () => {
     setSelectedContact(undefined);
-    // modalRef.current?.close();
     addEditContactRef.current?.open();
   };
 
   const onEditContact = (contact: Contact) => {
     setSelectedContact(contact);
-    // modalRef.current?.close();
     addEditContactRef.current?.open();
   };
 
@@ -99,6 +97,7 @@ function Contacts() {
         refreshControl={
           <RefreshControl
             refreshing={contactsLoading}
+            onRefresh={() => dispatch(getContacts())}
             tintColor={Colors.White.Primary}
           />
         }>
@@ -118,6 +117,7 @@ function Contacts() {
                     icon={contact.image}
                     onPress={() => onPress(contact)}
                     onActionPress={() => onPress(contact)}
+                    disabled={contactsLoading}
                   />
                 </View>
               );
@@ -129,12 +129,7 @@ function Contacts() {
         modalRef={actionSheetRef}
         options={actionSheetData?.options}
       />
-      <AddEditContact
-        modalRef={addEditContactRef}
-        contact={selectedContact}
-        // contactsRef={modalRef}
-        // onClose={modalRef.current?.open}
-      />
+      <AddEditContact modalRef={addEditContactRef} contact={selectedContact} />
     </>
   );
 }

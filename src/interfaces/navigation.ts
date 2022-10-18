@@ -2,7 +2,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 
 import Routes from '@/navigation/Routes';
 
-import { WalletConnectCallRequest } from './redux';
+import { ConnectedApp, WalletConnectCallRequest } from './redux';
 
 export type RootStackParamList = {
   [Routes.NFTS]: undefined;
@@ -21,6 +21,7 @@ export type RootStackParamList = {
   [Routes.SETTINGS_STACK]: undefined;
   [Routes.SETTINGS]: undefined;
   [Routes.CONTACTS]: undefined;
+  [Routes.APPROVED_CANISTERS]: { app: ConnectedApp };
 };
 
 export type ScreenProps<T extends keyof RootStackParamList> = StackScreenProps<

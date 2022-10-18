@@ -17,8 +17,11 @@ import { reset as resetICPStore } from '@/redux/slices/icp';
 import { lock, reset as resetKeyringStore } from '@/redux/slices/keyring';
 import { reset as resetUserStore } from '@/redux/slices/user';
 import { clearState as resetWalletConnectStore } from '@/redux/slices/walletconnect';
+import ConnectedApps from '@/screens/tabs/Profile/screens/ConnectedApps';
+import RevealSeedPhrase from '@/screens/tabs/Profile/screens/RevealSeedPhrase';
 import { clearStorage } from '@/utils/localStorage';
 
+import BiometricUnlock from './components/BiometricUnlock';
 import DeleteWallet from './components/DeleteWallet';
 import InfoItem from './components/InfoItem';
 import SettingItem from './components/SettingItem';
@@ -35,13 +38,12 @@ interface Option {
 function Settings({ navigation }: ScreenProps<Routes.SETTINGS>) {
   const { t } = useTranslation();
   const deleteWalletRef = useRef<Modalize>(null);
+  const biometricUnlockRef = useRef<Modalize>(null);
+  const revealSeedPhraseRef = useRef<Modalize>(null);
+  const connectedAppsRef = useRef<Modalize>(null);
 
   const dispatch = useAppDispatch();
   const { biometricsAvailable } = useAppSelector(state => state.user);
-
-  const openDeleteWallet = () => {
-    deleteWalletRef.current?.open();
-  };
 
   const handleDeleteWallet = () => {
     clearStorage();
@@ -57,7 +59,6 @@ function Settings({ navigation }: ScreenProps<Routes.SETTINGS>) {
   };
 
   const lockAccount = () => {
-    // modalRef.current?.close();
     dispatch(lock());
   };
 
@@ -83,19 +84,19 @@ function Settings({ navigation }: ScreenProps<Routes.SETTINGS>) {
         icon: '🗝',
         name: t('settings.items.phrase.name'),
         description: t('settings.items.phrase.desc'),
-        onPress: () => null,
+        onPress: () => revealSeedPhraseRef.current?.open(),
       },
       {
         iconName: 'faceIdIcon',
         name: t('settings.items.biometric.name'),
         description: t('settings.items.biometric.desc'),
-        onPress: () => null,
+        onPress: () => biometricUnlockRef.current?.open(),
       },
       {
         icon: '📱️️️️',
         name: t('settings.items.connectedApps.name'),
         description: t('settings.items.connectedApps.desc'),
-        onPress: () => null,
+        onPress: () => connectedAppsRef.current?.open(),
       },
       {
         icon: '🔒',
@@ -127,7 +128,7 @@ function Settings({ navigation }: ScreenProps<Routes.SETTINGS>) {
       },
       {
         name: t('settings.infoItems.delete'),
-        onPress: openDeleteWallet,
+        onPress: () => deleteWalletRef.current?.open(),
         destructive: true,
       },
     ],
@@ -146,6 +147,7 @@ function Settings({ navigation }: ScreenProps<Routes.SETTINGS>) {
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
         bounces={false}
+        showsVerticalScrollIndicator={false}
         overScrollMode="never">
         <View>{settingsItems.map(renderSettingsItem)}</View>
         <View style={styles.infoContainer}>
@@ -161,6 +163,9 @@ function Settings({ navigation }: ScreenProps<Routes.SETTINGS>) {
         </View>
       </ScrollView>
       <DeleteWallet modalRef={deleteWalletRef} onDelete={handleDeleteWallet} />
+      <BiometricUnlock modalRef={biometricUnlockRef} />
+      <RevealSeedPhrase modalRef={revealSeedPhraseRef} />
+      <ConnectedApps modalRef={connectedAppsRef} />
     </>
   );
 }
