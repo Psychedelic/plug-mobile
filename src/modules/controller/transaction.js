@@ -1,6 +1,5 @@
 import { blobFromBuffer, blobToUint8Array } from '@dfinity/candid';
 import { Principal } from '@dfinity/principal';
-import { randomBytes } from 'crypto';
 
 import { XTC_FEE } from '@/constants/addresses';
 import { CYCLES_PER_TC, E8S_PER_ICP } from '@/constants/assets';
@@ -16,7 +15,6 @@ import {
 import Routes from '@/navigation/Routes';
 import { burnXtc, getBalance, sendToken } from '@/redux/slices/user';
 import { walletConnectExecuteAndResponse } from '@/redux/slices/walletconnect';
-import { addBatchTransaction, addDelegation } from '@/services/SignerServer';
 import { getToken } from '@/utils/assets';
 import { navigate } from '@/utils/navigation';
 import { base64ToBuffer, bufferToBase64 } from '@/utils/utilities';
