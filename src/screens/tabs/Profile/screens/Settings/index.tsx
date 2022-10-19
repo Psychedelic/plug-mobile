@@ -1,5 +1,5 @@
+import { t } from 'i18next';
 import React, { useMemo, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Linking, ScrollView, View } from 'react-native';
 import { getBuildNumber, getVersion } from 'react-native-device-info';
 import { Modalize } from 'react-native-modalize';
@@ -35,15 +35,14 @@ interface Option {
 }
 
 function Settings({ navigation }: ScreenProps<Routes.SETTINGS>) {
-  const { t } = useTranslation();
-  const deleteWalletRef = useRef<Modalize>(null);
-  const biometricUnlockRef = useRef<Modalize>(null);
-  const revealSeedPhraseRef = useRef<Modalize>(null);
-  const connectedAppsRef = useRef<Modalize>(null);
-  const exportPemRef = useRef<Modalize>(null);
-
-  const dispatch = useAppDispatch();
   const { biometricsAvailable } = useAppSelector(state => state.user);
+  const dispatch = useAppDispatch();
+
+  const revealSeedPhraseRef = useRef<Modalize>(null);
+  const biometricUnlockRef = useRef<Modalize>(null);
+  const connectedAppsRef = useRef<Modalize>(null);
+  const deleteWalletRef = useRef<Modalize>(null);
+  const exportPemRef = useRef<Modalize>(null);
 
   const handleDeleteWallet = () => {
     clearStorage();
@@ -162,11 +161,11 @@ function Settings({ navigation }: ScreenProps<Routes.SETTINGS>) {
           </Text>
         </View>
       </ScrollView>
-      <DeleteWallet modalRef={deleteWalletRef} onDelete={handleDeleteWallet} />
+      <ExportPem modalRef={exportPemRef} />
+      <ConnectedApps modalRef={connectedAppsRef} />
       <BiometricUnlock modalRef={biometricUnlockRef} />
       <RevealSeedPhrase modalRef={revealSeedPhraseRef} />
-      <ConnectedApps modalRef={connectedAppsRef} />
-      <ExportPem modalRef={exportPemRef} />
+      <DeleteWallet modalRef={deleteWalletRef} onDelete={handleDeleteWallet} />
     </>
   );
 }
