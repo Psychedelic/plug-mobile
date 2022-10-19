@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native';
 
 import CircleCheckbox from '@/components/icons/svg/CircleCheckbox.svg';
 import SelectedCircleCheckbox from '@/components/icons/svg/SelectedCircleCheckbox.svg';
@@ -38,15 +38,15 @@ function CustomCheckbox({
     : SquareCheckbox;
 
   return (
-    <View style={[styles.container, style]}>
-      <TouchableOpacity
-        testID={testID}
-        onPress={onPress}
-        hitSlop={COMMON_HITSLOP}>
-        <Checkbox width={24} height={24} />
-      </TouchableOpacity>
+    <TouchableOpacity
+      testID={testID}
+      activeOpacity={0.5}
+      onPress={onPress}
+      style={[styles.container, style]}
+      hitSlop={COMMON_HITSLOP}>
+      <Checkbox width={24} height={24} />
       {label && <Text {...labelProps}>{label}</Text>}
-    </View>
+    </TouchableOpacity>
   );
 }
 

@@ -1,6 +1,7 @@
 import { t } from 'i18next';
 import React, { RefObject, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
+import { Dirs, FileSystem } from 'react-native-file-access';
 import { Modalize } from 'react-native-modalize';
 
 import RainbowButton from '@/components/buttons/RainbowButton';
@@ -14,7 +15,7 @@ import {
 } from '@/components/common';
 import { Wallet } from '@/interfaces/redux';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { validatePassword } from '@/redux/slices/keyring';
+import { getPemFile, validatePassword } from '@/redux/slices/keyring';
 
 import AccountShowcase from './components/AccountShowcase';
 import styles from './styles';
@@ -25,7 +26,6 @@ interface Props {
 
 function ExportPem({ modalRef }: Props) {
   const { wallets, currentWallet } = useAppSelector(state => state.keyring);
-  const currentAccountId = currentWallet?.accountId!;
   const dispatch = useAppDispatch();
 
   const [error, setError] = useState(false);
@@ -33,8 +33,7 @@ function ExportPem({ modalRef }: Props) {
   const [loading, setLoading] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [safeCheck, setSafeCheck] = useState(false);
-  const [selectedAccountId, setSelectedAccountId] =
-    useState<string>(currentAccountId);
+  const [selectedWallet, setSelectedWallet] = useState<Wallet>(currentWallet!);
   const disableButton = error || !safeCheck;
 
   const handleOnChange = (text: string) => {
@@ -60,18 +59,38 @@ function ExportPem({ modalRef }: Props) {
   };
 
   const handleExportPem = () => {
-    // TODO: Add export pem logic
+    dispatch(
+      getPemFile({
+        walletId: selectedWallet.walletId,
+        onFailure: () => {
+          // TODO: Add toast to tell the user that has been an error.
+        },
+        onFinish: () => {
+          modalRef.current?.close();
+        },
+        onSuccess: async (content: string) => {
+          const fileName = `${
+            selectedWallet.icnsData?.reverseResolvedName || selectedWallet.name
+          }.pem`;
+          const path = `${Dirs.CacheDir}/${fileName}`;
+
+          await FileSystem.writeFile(path, content);
+          await FileSystem.cpExternal(path, fileName, 'downloads');
+          // TODO: Add toast to tell the user that the file has been downloaded in Downloads Directory
+        },
+      })
+    );
   };
 
   const renderAccount = (account: Wallet) => {
-    const { name, accountId, icon, principal } = account;
+    const { name, walletId, icon, principal } = account;
     return (
       <AccountShowcase
         icon={icon}
-        key={accountId}
+        key={walletId}
         subtitle={principal}
-        selected={selectedAccountId === accountId}
-        onPress={() => setSelectedAccountId(accountId)}
+        selected={selectedWallet.walletId === walletId}
+        onPress={() => setSelectedWallet(account)}
         title={account?.icnsData?.reverseResolvedName || name}
       />
     );
@@ -83,7 +102,7 @@ function ExportPem({ modalRef }: Props) {
     setLoading(false);
     setLoggedIn(false);
     setSafeCheck(false);
-    setSelectedAccountId(currentAccountId);
+    setSelectedWallet(currentWallet!);
   };
 
   const handleClose = () => {
