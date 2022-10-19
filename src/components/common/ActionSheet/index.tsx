@@ -23,7 +23,7 @@ export interface Option {
 
 interface Props {
   modalRef: RefObject<Modalize>;
-  options: Option[];
+  options?: Option[];
   onClose?: () => void;
   showIcons?: boolean;
   subtitle?: string;

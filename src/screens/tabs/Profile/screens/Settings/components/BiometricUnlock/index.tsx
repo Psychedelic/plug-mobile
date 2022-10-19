@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Switch, View } from 'react-native';
+import { Modalize } from 'react-native-modalize';
 
 import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
@@ -17,14 +18,18 @@ import { validatePassword } from '@/redux/slices/keyring';
 
 import styles from './styles';
 
-function BiometricUnlock({ modalRef }) {
+interface Props {
+  modalRef: React.RefObject<Modalize>;
+}
+
+function BiometricUnlock({ modalRef }: Props) {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { saveBiometrics, resetBiometrics } = useKeychain();
   const hasBiometrics = useAppSelector(state => state.user.usingBiometrics);
   const [useBiometrics, setUseBiometrics] = useState(hasBiometrics);
 
-  const [password, setPassword] = useState(null);
+  const [password, setPassword] = useState<string>();
   const [loggedIn, setLoggedIn] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -41,7 +46,7 @@ function BiometricUnlock({ modalRef }) {
   };
 
   const handleOnClose = () => {
-    setPassword(null);
+    setPassword(undefined);
     setError(false);
     setLoggedIn(false);
     setLoading(false);
@@ -49,19 +54,21 @@ function BiometricUnlock({ modalRef }) {
 
   const handleSubmit = async () => {
     setLoading(true);
-    dispatch(
-      validatePassword({
-        password,
-        onError: () => {
-          setError(true);
-          setLoading(false);
-        },
-        onSuccess: () => {
-          setLoggedIn(true);
-          setLoading(false);
-        },
-      })
-    );
+    if (password) {
+      dispatch(
+        validatePassword({
+          password,
+          onError: () => {
+            setError(true);
+            setLoading(false);
+          },
+          onSuccess: () => {
+            setLoggedIn(true);
+            setLoading(false);
+          },
+        })
+      );
+    }
   };
 
   const closeModal = () => {

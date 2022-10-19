@@ -78,6 +78,7 @@ interface Props {
   name: string;
   color?: string;
   style?: StyleProp<ViewStyle>;
+  height?: number;
 }
 
 const Icon = ({ name, color, ...props }: Props) => {
