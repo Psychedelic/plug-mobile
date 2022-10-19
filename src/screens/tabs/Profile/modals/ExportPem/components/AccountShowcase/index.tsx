@@ -3,8 +3,6 @@ import { StyleProp, View, ViewStyle } from 'react-native';
 
 import { CustomCheckbox, Text, Touchable, UserIcon } from '@/components/common';
 import { FontStyles } from '@/constants/theme';
-import animationScales from '@/utils/animationScales';
-import shortAddress from '@/utils/shortAddress';
 
 import styles from './styles';
 
@@ -29,15 +27,12 @@ function AccountShowcase({
 }: Props) {
   return (
     <View style={style}>
-      <Touchable
-        scale={animationScales.small}
-        onPress={onPress}
-        onLongPress={onLongPress}>
+      <Touchable onPress={onPress} onLongPress={onLongPress}>
         <View style={[styles.root, selected && styles.selectedRoot]}>
           <UserIcon icon={icon} />
           <View style={styles.leftContainer}>
             <Text style={FontStyles.Normal}>{title}</Text>
-            <Text style={FontStyles.NormalGray}>{shortAddress(subtitle)}</Text>
+            <Text style={FontStyles.NormalGray}>{subtitle}</Text>
           </View>
           <View style={styles.rightContainer}>
             <CustomCheckbox circle selected={selected} onPress={onPress} />

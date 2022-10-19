@@ -278,7 +278,8 @@ export const getPemFile = createAsyncThunk(
       }
       onFinish?.();
     } catch (e: any) {
-      return rejectWithValue({ error: e.message });
+      onFinish?.();
+      return rejectWithValue(e.message);
     }
   }
 );

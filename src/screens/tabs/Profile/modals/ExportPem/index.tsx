@@ -16,6 +16,7 @@ import {
 import { Wallet } from '@/interfaces/redux';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getPemFile, validatePassword } from '@/redux/slices/keyring';
+import shortAddress from '@/utils/shortAddress';
 
 import AccountShowcase from './components/AccountShowcase';
 import styles from './styles';
@@ -88,7 +89,7 @@ function ExportPem({ modalRef }: Props) {
       <AccountShowcase
         icon={icon}
         key={walletId}
-        subtitle={principal}
+        subtitle={shortAddress(principal)}
         selected={selectedWallet.walletId === walletId}
         onPress={() => setSelectedWallet(account)}
         title={account?.icnsData?.reverseResolvedName || name}
