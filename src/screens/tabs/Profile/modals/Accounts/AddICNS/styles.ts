@@ -30,7 +30,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.Black.Primary,
   },
   arrowIcon: {
-    transform: [{ rotate: '-90deg' }],
+    transform: [{ rotate: '90deg' }],
   },
   buttonStyle: {
     marginBottom: 30,

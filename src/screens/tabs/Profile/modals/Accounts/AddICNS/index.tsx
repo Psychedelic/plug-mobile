@@ -148,8 +148,8 @@ function AddICNS({ modalRef }: Props) {
                   style={styles.selector}>
                   <Text type="subtitle1">{selectedName}</Text>
                   <Icon
-                    name="chevronLeft"
-                    color={Colors.Gray.Primary}
+                    name="chevron"
+                    color={Colors.White.Primary}
                     style={styles.arrowIcon}
                   />
                 </TouchableOpacity>

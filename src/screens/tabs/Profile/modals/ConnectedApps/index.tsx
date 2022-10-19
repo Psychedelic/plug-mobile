@@ -11,8 +11,8 @@ import {
   Modal,
   Text,
 } from '@/components/common';
-import DeleteIcon from '@/icons/svg/material/Delete.svg';
-import ViewIcon from '@/icons/svg/material/View.svg';
+import DeleteIcon from '@/icons/material/Delete.svg';
+import ViewIcon from '@/icons/material/View.svg';
 import { ConnectedApp } from '@/interfaces/redux';
 import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';

@@ -11,8 +11,8 @@ import TextInput from '@/commonComponents/TextInput';
 import UserIcon from '@/commonComponents/UserIcon';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import Text from '@/components/common/Text';
-import ErrorIcon from '@/components/icons/svg/ErrorIcon.svg';
-import { FontStyles } from '@/constants/theme';
+import Icon from '@/components/icons';
+import { Colors, FontStyles } from '@/constants/theme';
 import useICNS from '@/hooks/useICNS';
 import { Contact } from '@/interfaces/redux';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -170,7 +170,7 @@ const AddEditContact = ({ modalRef, contact }: Props) => {
         />
         {error && (
           <View style={styles.errorContainer}>
-            <ErrorIcon style={styles.errorIcon} />
+            <Icon name="error" color={Colors.Red} style={styles.errorIcon} />
             <Text style={styles.errorMessage}>
               {nameError
                 ? t('contacts.nameTaken')
