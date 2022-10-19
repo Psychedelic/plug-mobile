@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 
-import { Text, Touchable, UserIcon } from '@/components/common';
-import CustomCheckbox from '@/components/common/CustomCheckbox';
+import { CustomCheckbox, Text, Touchable, UserIcon } from '@/components/common';
 import { FontStyles } from '@/constants/theme';
 import animationScales from '@/utils/animationScales';
 import shortAddress from '@/utils/shortAddress';

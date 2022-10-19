@@ -6,12 +6,12 @@ import { Modalize } from 'react-native-modalize';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import {
   ActionButton,
+  CustomCheckbox,
   Header,
   Modal,
   PasswordInput,
   Text,
 } from '@/components/common';
-import CustomCheckbox from '@/components/common/CustomCheckbox';
 import { Wallet } from '@/interfaces/redux';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { validatePassword } from '@/redux/slices/keyring';
