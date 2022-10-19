@@ -1,4 +1,10 @@
 export const MIN_PASSWORD_LENGTH = 8;
+export const COMMON_HITSLOP = {
+  top: 10,
+  left: 10,
+  bottom: 10,
+  right: 10,
+};
 
 export const isValidPassword = (password?: string) => {
   if (!password) {

@@ -154,6 +154,10 @@ const translations = {
         name: 'Connected Apps',
         desc: 'View your connected apps.',
       },
+      exportPem: {
+        name: 'Export DFX Identity',
+        desc: 'Get a PEM file to use in DFX.',
+      },
     },
     version: 'v{{version}}({{build}})',
     infoItems: {
@@ -309,6 +313,12 @@ const translations = {
     importPem: 'PEM File',
     create: 'Create',
     invalidKey: 'Invalid key. Please, try again.',
+  },
+  exportPem: {
+    safeCheck: 'I’ll be safe with my DFX Identity.',
+    downloadPem: 'Download PEM file',
+    selectAccount:
+      "Select the account you would like to export it's DFX Identity.",
   },
 };
 

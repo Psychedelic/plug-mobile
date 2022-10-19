@@ -25,6 +25,7 @@ import { clearStorage } from '@/utils/localStorage';
 
 import ConnectedApps from '../ConnectedApps';
 import DeleteWallet from '../DeleteWallet';
+import ExportPem from '../ExportPem';
 import RevealSeedPhrase from '../RevealSeedPhrase';
 import BiometricUnlock from './components/BiometricUnlock';
 import InfoItem from './components/InfoItem';
@@ -40,6 +41,7 @@ const Settings = () => {
   const revealSeedPhraseRef = useRef(null);
   const deleteWalletRef = useRef(null);
   const connectedAppsRefs = useRef(null);
+  const exportPemRef = useRef(null);
 
   const dispatch = useAppDispatch();
   const { biometricsAvailable } = useAppSelector(state => state.user);
@@ -75,6 +77,10 @@ const Settings = () => {
 
   const openConnectedApps = () => {
     connectedAppsRefs.current?.open();
+  };
+
+  const openExportPem = () => {
+    exportPemRef.current?.open();
   };
 
   const lockAccount = () => {
@@ -123,6 +129,12 @@ const Settings = () => {
         name: t('settings.items.lock.name'),
         description: t('settings.items.lock.desc'),
         onPress: lockAccount,
+      },
+      {
+        icon: '⬇️',
+        name: t('settings.items.exportPem.name'),
+        description: t('settings.items.exportPem.desc'),
+        onPress: openExportPem,
       },
     ],
     []
@@ -194,6 +206,7 @@ const Settings = () => {
       <BiometricUnlock modalRef={biometricUnlockRef} />
       <DeleteWallet modalRef={deleteWalletRef} onDelete={handleDeleteWallet} />
       <ConnectedApps modalRef={connectedAppsRefs} />
+      <ExportPem modalRef={exportPemRef} />
     </>
   );
 };
