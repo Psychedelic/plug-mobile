@@ -1,4 +1,4 @@
-import { useScrollToTop } from '@react-navigation/native';
+import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,22 +10,26 @@ import ErrorState from '@/commonComponents/ErrorState';
 import Header from '@/commonComponents/Header';
 import UserIcon from '@/commonComponents/UserIcon';
 import Button from '@/components/buttons/Button';
+import { Touchable } from '@/components/common';
 import Text from '@/components/common/Text';
+import GearIcon from '@/components/icons/svg/GearIcon';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
 import { Container, Separator } from '@/layout';
+import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getTransactions } from '@/redux/slices/user';
 import ActivityItem, {
   ITEM_HEIGHT,
 } from '@/screens/tabs/components/ActivityItem';
+import animationScales from '@/utils/animationScales';
 
-import Accounts from './screens/Accounts';
-import Settings from './screens/Settings';
+import Accounts from './modals/Accounts';
 import styles from './styles';
 
 const Profile = () => {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const dispatch = useAppDispatch();
   const modalRef = useRef(null);
   const transactionListRef = useRef(null);
@@ -48,7 +52,15 @@ const Profile = () => {
   return (
     <>
       <Container>
-        <Header left={<Settings />} />
+        <Header
+          left={
+            <Touchable
+              scale={animationScales.medium}
+              onPress={() => navigation.navigate(Routes.SETTINGS_STACK)}>
+              <GearIcon />
+            </Touchable>
+          }
+        />
         <View style={styles.container}>
           <View style={styles.leftContainer}>
             <UserIcon

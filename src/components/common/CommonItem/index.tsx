@@ -36,6 +36,7 @@ interface Props {
   onActionPress?: () => void;
   actionIconName?: string;
   showActions?: boolean;
+  disabled?: boolean;
 }
 
 // TODO: Refactor this component, make it generic.
@@ -54,6 +55,7 @@ function CommonItem({
   onLongPress,
   onActionPress,
   actionIconName = 'threeDots',
+  disabled,
   showActions = true,
 }: Props) {
   const [imageType, setImageType] = useState('');
@@ -66,7 +68,8 @@ function CommonItem({
       <Touchable
         scale={animationScales.small}
         onPress={onPress}
-        onLongPress={onLongPress}>
+        onLongPress={onLongPress}
+        disabled={disabled}>
         <View style={styles.root}>
           {imageUri ? (
             <ImageDisplayer

@@ -1,9 +1,8 @@
-import { RouteProp } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackScreenProps } from '@react-navigation/stack';
 
 import Routes from '@/navigation/Routes';
 
-import { WalletConnectCallRequest } from './redux';
+import { ConnectedApp, WalletConnectCallRequest } from './redux';
 
 export type RootStackParamList = {
   [Routes.NFTS]: undefined;
@@ -19,14 +18,19 @@ export type RootStackParamList = {
   [Routes.WALLET_CONNECT_INITIAL_CONNECTION]: WalletConnectCallRequest;
   [Routes.WALLET_CONNECT_FLOWS]: undefined;
   [Routes.WALLET_CONNECT_ERROR]: { dappName: string; dappUrl: string };
+  [Routes.SETTINGS_STACK]: undefined;
+  [Routes.SETTINGS]: undefined;
+  [Routes.CONTACTS]: undefined;
+  [Routes.APPROVED_CANISTERS]: { app: ConnectedApp };
 };
 
-export type TNavigation<R extends keyof RootStackParamList> = {
-  route: TRoute<R>;
-  navigation: StackNavigationProp<RootStackParamList, R>;
-};
-
-export type TRoute<R extends keyof RootStackParamList> = RouteProp<
+export type ScreenProps<T extends keyof RootStackParamList> = StackScreenProps<
   RootStackParamList,
-  R
+  T
 >;
+
+declare global {
+  namespace ReactNavigation {
+    interface RootParamList extends RootStackParamList {}
+  }
+}

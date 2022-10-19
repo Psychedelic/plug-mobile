@@ -8,7 +8,15 @@ import { Column, Row } from '@/layout';
 
 import styles from './styles';
 
-const SettingItem = ({ icon, name, description, onPress, iconName }) => (
+interface Props {
+  name: string;
+  description: string;
+  onPress: () => void;
+  icon?: string;
+  iconName?: string;
+}
+
+const SettingItem = ({ icon, name, description, onPress, iconName }: Props) => (
   <Touchable onPress={onPress}>
     <Row style={styles.container}>
       {iconName ? (

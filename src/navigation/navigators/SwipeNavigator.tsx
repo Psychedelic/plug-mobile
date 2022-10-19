@@ -13,9 +13,8 @@ import BottomTabs from './BottomTabs';
 
 const Swipe = createMaterialTopTabNavigator();
 
-const SwipeNavigator = ({ route }) => {
+const SwipeNavigator = () => {
   const { isInitialized, isUnlocked } = useAppSelector(state => state.keyring);
-  const isLogin = route.name === Routes.LOGIN_SCREEN;
   const navigation = useNavigation();
 
   const goToLogin = () => {
@@ -26,10 +25,10 @@ const SwipeNavigator = ({ route }) => {
   };
 
   useEffect(() => {
-    if (!isUnlocked && isInitialized && !isLogin) {
+    if (!isUnlocked && isInitialized) {
       goToLogin();
     }
-  }, [isUnlocked, isInitialized, isLogin]);
+  }, [isUnlocked, isInitialized]);
 
   return (
     <Swipe.Navigator
