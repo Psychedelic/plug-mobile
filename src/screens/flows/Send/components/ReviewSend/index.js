@@ -92,11 +92,11 @@ const ReviewSend = ({
       ({
         [TRANSACTION_STATUS.success]: {
           title: t('reviewSend.transactionSuccess'),
-          ReviewIcon: <Icon name="confirm" style={styles.icon} />,
+          ReviewIcon: <Icon name="transactionSuccess" style={styles.icon} />,
         },
         [TRANSACTION_STATUS.error]: {
           title: t('reviewSend.transactionError'),
-          ReviewIcon: <Icon name="error" style={styles.icon} />,
+          ReviewIcon: <Icon name="transactionError" style={styles.icon} />,
         },
         pending: {
           title: t('reviewSend.transactionPending'),
@@ -125,7 +125,7 @@ const ReviewSend = ({
                 <Text style={styles.subtitle}>${value?.display}</Text>
               ) : null}
             </Column>
-            <TokenIcon {...token} color={Colors.Gray.Tertiary} />
+            <TokenIcon {...token} />
           </Row>
         )}
         {nft && (

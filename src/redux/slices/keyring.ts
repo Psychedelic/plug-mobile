@@ -252,15 +252,31 @@ export const validatePem = createAsyncThunk(
   }
 );
 
-export const removeAccount = createAsyncThunk(
-  'keyring/removeAccount',
-  async ({ walletId }: { walletId: string }, { rejectWithValue }) => {
+export const getPemFile = createAsyncThunk(
+  'keyring/getPemFile',
+  async (
+    {
+      walletId,
+      onSuccess,
+      onFailure,
+    }: {
+      walletId: string;
+      onSuccess: (content: string) => void;
+      onFailure: () => void;
+    },
+    { rejectWithValue }
+  ) => {
     try {
       const instance = KeyRing.getInstance();
-      await instance?.deleteImportedAccount(walletId);
-      return { walletId };
+      const response = await instance?.getPemFile(walletId);
+      if (response) {
+        await onSuccess(response);
+      } else {
+        onFailure();
+      }
     } catch (e: any) {
-      return rejectWithValue({ error: e.message });
+      onFailure();
+      return rejectWithValue(e.message);
     }
   }
 );
@@ -276,6 +292,19 @@ export const createSubaccount = createAsyncThunk(
     } catch (e: any) {
       console.log('createSubaccount', e);
       return rejectWithValue(e.message);
+    }
+  }
+);
+
+export const removeAccount = createAsyncThunk(
+  'keyring/removeAccount',
+  async ({ walletId }: { walletId: string }, { rejectWithValue }) => {
+    try {
+      const instance = KeyRing.getInstance();
+      await instance?.deleteImportedAccount(walletId);
+      return { walletId };
+    } catch (e: any) {
+      return rejectWithValue({ error: e.message });
     }
   }
 );

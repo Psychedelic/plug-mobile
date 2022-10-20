@@ -15,5 +15,4 @@ export default StyleSheet.create({
   caption: FontStyles.Caption,
   overline: FontStyles.Overline,
   normal: FontStyles.Normal,
-  error: FontStyles.Error,
 });

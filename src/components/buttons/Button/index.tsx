@@ -26,7 +26,7 @@ interface Props {
   disabled?: boolean;
   disableAnimation?: boolean;
   loading?: boolean;
-  iconProps?: { height?: number; width?: number };
+  iconProps?: { height?: number; width?: number; color?: string };
 }
 
 const Button = ({

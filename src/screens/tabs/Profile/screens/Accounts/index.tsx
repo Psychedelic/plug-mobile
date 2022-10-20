@@ -15,10 +15,15 @@ import AddGray from '@/components/icons/svg/AddGray.svg';
 import CheckedBlueCircle from '@/components/icons/svg/CheckedBlueCircle.svg';
 import TrashCan from '@/components/icons/svg/material/TrashCan.svg';
 import { FontStyles } from '@/constants/theme';
+<<<<<<< HEAD:src/screens/tabs/Profile/screens/Accounts/index.tsx
 import CopyIcon from '@/icons/svg/material/Copy.svg';
 import EditIcon from '@/icons/svg/material/Edit.svg';
 import { Nullable } from '@/interfaces/general';
 import { Wallet } from '@/interfaces/redux';
+=======
+import CopyIcon from '@/icons/material/Copy.svg';
+import EditIcon from '@/icons/material/Edit.svg';
+>>>>>>> fc057ddd2bc19bb941fb13c7229b54bc7955a02c:src/screens/tabs/Profile/modals/Accounts/index.js
 import { Row } from '@/layout';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getICPPrice } from '@/redux/slices/icp';

@@ -5,6 +5,7 @@ import { StyleProp, TextInputProps, TextStyle, View } from 'react-native';
 import TextInput from '@/commonComponents/TextInput';
 import Touchable from '@/commonComponents/Touchable';
 import { TestIds } from '@/constants/testIds';
+import { Colors } from '@/constants/theme';
 import Icon from '@/icons/index';
 import animationScales from '@/utils/animationScales';
 
@@ -69,7 +70,8 @@ function PasswordInput({
             scale={animationScales.medium}
             onPress={toggleShowPassowrd}>
             <Icon
-              name={showPassword ? 'passwordEyeClosedIcon' : 'passwordEyeIcon'}
+              name={showPassword ? 'eyeSlash' : 'eye'}
+              color={Colors.White.Primary}
             />
           </Touchable>
         }

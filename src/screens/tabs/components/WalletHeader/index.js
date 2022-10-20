@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/core';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 
 import AccountInfo from '@/commonComponents/AccountInfo';
 import Header from '@/commonComponents/Header';
@@ -17,6 +17,10 @@ import Deposit from '@/screens/flows/Deposit';
 import Send from '@/screens/flows/Send';
 
 import ActionButton from '../ActionButton';
+import DepositIcon from './assets/Deposit.png';
+import GroupedActionsIcon from './assets/GroupedActions.png';
+import SendIcon from './assets/Send.png';
+import SwapIcon from './assets/Swap.png';
 import styles from './styles';
 
 const WalletHeader = () => {
@@ -47,19 +51,19 @@ const WalletHeader = () => {
   const BUTTONS = useMemo(
     () => [
       {
-        image: <Icon name="deposit" />,
+        image: <Image source={DepositIcon} />,
         colors: [Colors.Rainbow.Red, Colors.Rainbow.Yellow],
         text: t('common.deposit'),
         onPress: openDeposit,
       },
       {
-        image: <Icon name="send" />,
+        image: <Image source={SendIcon} />,
         colors: [Colors.Rainbow.Blue, Colors.Rainbow.Purple],
         text: t('common.send'),
         onPress: openSend,
       },
       {
-        image: <Icon name="swap" />,
+        image: <Image source={SwapIcon} />,
         colors: [Colors.Rainbow.Green, Colors.Rainbow.Teal],
         text: t('common.swap'),
         disabled: true,
@@ -93,7 +97,7 @@ const WalletHeader = () => {
         center={<AccountInfo />}
         right={
           <Touchable onPress={openModal}>
-            <Icon name="groupedActions" />
+            <Image source={GroupedActionsIcon} />
           </Touchable>
         }
       />

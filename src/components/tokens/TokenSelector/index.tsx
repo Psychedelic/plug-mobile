@@ -4,7 +4,7 @@ import { StyleProp, View, ViewStyle } from 'react-native';
 
 import Touchable from '@/commonComponents/Touchable';
 import Text from '@/components/common/Text';
-import { Colors, FontStyles } from '@/constants/theme';
+import { FontStyles } from '@/constants/theme';
 import TokenFormat from '@/formatters/TokenFormat';
 import UsdFormat from '@/formatters/UsdFormat';
 import Icon from '@/icons';
@@ -35,14 +35,9 @@ const TokenSelector = ({
 }: Props) => (
   <Touchable onPress={onPress}>
     <View style={[styles.root, style]}>
-      <TokenIcon
-        icon={token.icon}
-        logo={token.logo}
-        color={Colors.Gray.Tertiary}
-      />
+      <TokenIcon icon={token.icon} logo={token.logo} />
       <View style={styles.leftContainer}>
         <Text style={FontStyles.Normal}>{token.name}</Text>
-
         <Row>
           {selectedInput === 'USD' ? (
             <UsdFormat

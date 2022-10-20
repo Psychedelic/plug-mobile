@@ -2,6 +2,7 @@ import { getNumberFormatSettings } from 'react-native-localize';
 
 import { ACTIVITY_STATUS } from '@/constants/business';
 import { ERROR_TYPES, MIN_PASSWORD_LENGTH } from '@/constants/general';
+import Routes from '@/navigation/Routes';
 
 const { decimalSeparator } = getNumberFormatSettings();
 
@@ -31,6 +32,14 @@ const translations = {
     the: 'The',
     enterPassword: 'Enter Password',
     importWallet: 'Import Wallet',
+  },
+  routes: {
+    [Routes.NFTS]: 'Collectibles',
+    [Routes.TOKENS]: 'Tokens',
+    [Routes.PROFILE_SCREEN]: 'Profile',
+    [Routes.SETTINGS]: 'Settings',
+    [Routes.CONTACTS]: 'Contacts',
+    [Routes.APPROVED_CANISTERS]: 'Approved Canisters',
   },
   welcome: {
     title: 'Welcome to Plug',
@@ -154,6 +163,10 @@ const translations = {
         name: 'Connected Apps',
         desc: 'View your connected apps.',
       },
+      exportPem: {
+        name: 'Export DFX Identity',
+        desc: 'Get a PEM file to use in DFX.',
+      },
     },
     version: 'v{{version}}({{build}})',
     infoItems: {
@@ -244,8 +257,7 @@ const translations = {
       title: 'Oops, we had an issue!',
       description:
         'Close and reopen the app to try again. If the issue persists, contact our team on Discord.',
-      buttonTitle: '  Join Discord',
-      buttonImage: 'discord',
+      buttonTitle: '👾 Join Discord',
     },
   },
   addToken: {
@@ -312,6 +324,12 @@ const translations = {
     importPem: 'PEM File',
     create: 'Create',
     invalidKey: 'Invalid key. Please, try again.',
+  },
+  exportPem: {
+    safeCheck: 'I’ll be safe with my DFX Identity.',
+    downloadPem: 'Download PEM file',
+    selectAccount:
+      "Select the account you would like to export it's DFX Identity.",
   },
 };
 

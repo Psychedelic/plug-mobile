@@ -1,14 +1,9 @@
-import {
-  NavigationProp,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
 import { ERRORS } from '@/constants/walletconnect';
 import useDisableBack from '@/hooks/useDisableBack';
-import { RootStackParamList } from '@/interfaces/navigation';
 import {
   FlowsParams,
   WCFlowTypes,
@@ -44,8 +39,7 @@ function WCFlows() {
   useDisableBack();
   const { params } = useRoute();
   const dispatch = useAppDispatch();
-  const { reset, navigate } =
-    useNavigation<NavigationProp<RootStackParamList>>();
+  const { reset, navigate } = useNavigation();
   const [sendLoading, setSendLoading] = useState(false);
   const [wcTimeout, setWCTimeout] = useState(false);
   const {
