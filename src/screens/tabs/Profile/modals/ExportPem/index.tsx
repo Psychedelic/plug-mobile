@@ -1,8 +1,9 @@
 import { t } from 'i18next';
 import React, { RefObject, useState } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, Share, View } from 'react-native';
 import { Dirs, FileSystem } from 'react-native-file-access';
 import { Modalize } from 'react-native-modalize';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import RainbowButton from '@/components/buttons/RainbowButton';
 import {
@@ -13,6 +14,7 @@ import {
   PasswordInput,
   Text,
 } from '@/components/common';
+import { isIos } from '@/constants/platform';
 import { Wallet } from '@/interfaces/redux';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getPemFile, validatePassword } from '@/redux/slices/keyring';
@@ -28,6 +30,7 @@ interface Props {
 function ExportPem({ modalRef }: Props) {
   const { wallets, currentWallet } = useAppSelector(state => state.keyring);
   const dispatch = useAppDispatch();
+  const { bottom } = useSafeAreaInsets();
 
   const [error, setError] = useState(false);
   const [password, setPassword] = useState('');
@@ -65,8 +68,6 @@ function ExportPem({ modalRef }: Props) {
         walletId: selectedWallet.walletId,
         onFailure: () => {
           // TODO: Add toast to tell the user that has been an error.
-        },
-        onFinish: () => {
           modalRef.current?.close();
         },
         onSuccess: async (content: string) => {
@@ -74,9 +75,17 @@ function ExportPem({ modalRef }: Props) {
             selectedWallet.icnsData?.reverseResolvedName || selectedWallet.name
           }.pem`;
           const path = `${Dirs.CacheDir}/${fileName}`;
-
           await FileSystem.writeFile(path, content);
-          await FileSystem.cpExternal(path, fileName, 'downloads');
+
+          if (isIos) {
+            Share.share({
+              url: path,
+              title: fileName,
+            });
+          } else {
+            await FileSystem.cpExternal(path, fileName, 'downloads');
+          }
+          modalRef.current?.close();
           // TODO: Add toast to tell the user that the file has been downloaded in Downloads Directory
         },
       })
@@ -126,7 +135,7 @@ function ExportPem({ modalRef }: Props) {
           }
         />
       }>
-      <View style={styles.container}>
+      <View style={[styles.container, !!bottom && styles.extraMargin]}>
         {loading ? (
           <ActivityIndicator color="white" size="small" />
         ) : loggedIn ? (

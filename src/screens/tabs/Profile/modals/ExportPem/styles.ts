@@ -26,4 +26,7 @@ export default StyleSheet.create({
     marginTop: 12,
     marginBottom: 48,
   },
+  extraMargin: {
+    marginBottom: 20,
+  },
 });

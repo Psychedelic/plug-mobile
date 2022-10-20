@@ -259,12 +259,10 @@ export const getPemFile = createAsyncThunk(
       walletId,
       onSuccess,
       onFailure,
-      onFinish,
     }: {
       walletId: string;
       onSuccess: (content: string) => void;
-      onFailure?: () => void;
-      onFinish?: () => void;
+      onFailure: () => void;
     },
     { rejectWithValue }
   ) => {
@@ -274,11 +272,10 @@ export const getPemFile = createAsyncThunk(
       if (response) {
         await onSuccess(response);
       } else {
-        onFailure?.();
+        onFailure();
       }
-      onFinish?.();
     } catch (e: any) {
-      onFinish?.();
+      onFailure();
       return rejectWithValue(e.message);
     }
   }
