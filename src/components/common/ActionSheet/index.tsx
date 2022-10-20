@@ -6,7 +6,7 @@ import { Portal } from 'react-native-portalize';
 import { SvgProps } from 'react-native-svg';
 
 import { isAndroid } from '@/constants/platform';
-import Close from '@/icons/svg/Close.svg';
+import Close from '@/icons/material/Close.svg';
 import { Nullable } from '@/interfaces/general';
 
 import Text from '../Text';
