@@ -68,15 +68,15 @@ function Accounts({ modalRef }: Props) {
   const onRemoveAccount = (account: Wallet) => {
     const accountName = account?.icnsData?.reverseResolvedName || account.name;
     Alert.alert(
-      'Remove Account',
-      `Are you sure you want to remove ${accountName} from your account list? \nYou can always add the wallet back by importing it again.`,
+      t('accounts.moreOptions.removeAccount'),
+      t('accounts.removeAccountMessage', { accountName }),
       [
         {
           text: t('common.cancel'),
           style: 'cancel',
         },
         {
-          text: t('tokensTab.deleteAction'),
+          text: t('accounts.moreOptions.removeAccount'),
           style: 'destructive',
           onPress: () => {
             dispatch(removeAccount(account));
