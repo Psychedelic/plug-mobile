@@ -29,6 +29,8 @@ build/
 .gradle
 local.properties
 *.iml
+*.hprof
+.cxx/
 
 # node.js
 #
@@ -70,7 +72,6 @@ rust/.cargo/config.toml
 /*.env
 
 # Android
-android/*.hprof
 android/app/src/main/jniLibs
 
 # Sentry
