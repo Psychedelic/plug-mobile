@@ -172,6 +172,7 @@ const translations = {
       addIcns: 'Add ICNS Domain',
       changeIcns: 'Change ICNS Domain',
       copy: 'Copy Address',
+      removeAccount: 'Remove Account',
     },
     icns: {
       setICNS: 'Choose ICNS Name',

@@ -252,6 +252,20 @@ export const validatePem = createAsyncThunk(
   }
 );
 
+export const removeAccount = createAsyncThunk(
+  'keyring/removeAccount',
+  async ({ walletId }: { walletId: string }, { rejectWithValue }) => {
+    try {
+      const instance = KeyRing.getInstance();
+      await instance?.deleteImportedAccount(walletId);
+      const state = await instance?.getState();
+      return state.wallets;
+    } catch (e: any) {
+      return rejectWithValue({ error: e.message });
+    }
+  }
+);
+
 export const createSubaccount = createAsyncThunk(
   'keyring/createSubaccount',
   async (params: CreatePrincipalOptions, { rejectWithValue }) => {
@@ -426,6 +440,9 @@ export const keyringSlice = createSlice({
       })
       .addCase(lock.fulfilled, state => {
         state.isUnlocked = false;
+      })
+      .addCase(removeAccount.fulfilled, (state, action) => {
+        state.wallets = formatWallets(action.payload);
       })
       .addCase(createWallet.fulfilled, (state, action) => {
         const { wallet, unlocked } = action.payload;

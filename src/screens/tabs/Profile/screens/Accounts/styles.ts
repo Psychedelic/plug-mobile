@@ -9,12 +9,12 @@ export default StyleSheet.create({
     zIndex: 0,
   },
   loading: {
-    ...StyleSheet.absoluteFill,
+    ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(0,0,0,0.5)',
     zIndex: 1,
   },
   activityIndicator: {
-    ...StyleSheet.absoluteFill,
+    ...StyleSheet.absoluteFillObject,
   },
   row: {
     marginBottom: 30,
