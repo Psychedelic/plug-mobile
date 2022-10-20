@@ -9,6 +9,7 @@ import RainbowButton from '@/components/buttons/RainbowButton';
 import KeyboardScrollView from '@/components/common/KeyboardScrollView';
 import Text from '@/components/common/Text';
 import { isValidPassword } from '@/constants/general';
+import { Colors } from '@/constants/theme';
 import useKeychain from '@/hooks/useKeychain';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
@@ -110,12 +111,13 @@ function Login({ route, navigation }) {
           disabled={!isValidPassword(password)}
           buttonStyle={styles.buttonMargin}
         />
-        {biometricsAvailable && usingBiometrics && (
+        {!biometricsAvailable && !usingBiometrics && (
           <Button
             iconName="faceIdIcon"
             text={t('login.signInBiometric')}
             onPress={unlockUsingBiometrics}
             iconStyle={styles.biometricsIcon}
+            iconProps={{ height: 24, width: 24 }}
             buttonStyle={[styles.buttonMargin, styles.biometricsButton]}
           />
         )}
@@ -126,6 +128,8 @@ function Login({ route, navigation }) {
           onPress={handleGoToWelcome}
           iconStyle={styles.moreOptionsIcon}
           buttonStyle={[styles.buttonMargin, styles.moreOptionsButton]}
+          textStyle={styles.moreOptionsText}
+          iconProps={{ color: Colors.Gray.Pure }}
         />
       </KeyboardScrollView>
     </Container>

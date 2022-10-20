@@ -250,8 +250,7 @@ const translations = {
       title: 'Oops, we had an issue!',
       description:
         'Close and reopen the app to try again. If the issue persists, contact our team on Discord.',
-      buttonTitle: '  Join Discord',
-      buttonImage: 'discord',
+      buttonTitle: '👾 Join Discord',
     },
   },
   addToken: {

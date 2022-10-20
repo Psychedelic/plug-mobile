@@ -8,9 +8,9 @@ import { ActionSheet, ErrorState, Text } from '@/components/common';
 import TokenItem from '@/components/tokens/TokenItem';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
-import CopyIcon from '@/icons/svg/material/Copy.svg';
-import DeleteIcon from '@/icons/svg/material/Delete.svg';
-import SendIcon from '@/icons/svg/material/Send.svg';
+import CopyIcon from '@/icons/material/Copy.svg';
+import DeleteIcon from '@/icons/material/Delete.svg';
+import SendIcon from '@/icons/material/Send.svg';
 import { Container, Row, Separator } from '@/layout';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getBalance, removeCustomToken } from '@/redux/slices/user';
@@ -131,7 +131,6 @@ function Tokens() {
               <TokenItem
                 token={token}
                 key={token.symbol}
-                color={Colors.Gray.Tertiary}
                 onPress={handleTokenPress(token)}
                 style={styles.tokenItem}
               />

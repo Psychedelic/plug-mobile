@@ -12,7 +12,7 @@ import UserIcon from '@/commonComponents/UserIcon';
 import Button from '@/components/buttons/Button';
 import { Touchable } from '@/components/common';
 import Text from '@/components/common/Text';
-import GearIcon from '@/components/icons/svg/GearIcon';
+import Icon from '@/components/icons';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
 import { Container, Separator } from '@/layout';
@@ -57,7 +57,7 @@ const Profile = () => {
             <Touchable
               scale={animationScales.medium}
               onPress={() => navigation.navigate(Routes.SETTINGS_STACK)}>
-              <GearIcon />
+              <Icon name="gear" color={Colors.White.Primary} />
             </Touchable>
           }
         />

@@ -3,7 +3,7 @@ import React from 'react';
 import Touchable from '@/commonComponents/Touchable';
 import Text from '@/components/common/Text';
 import Icon from '@/components/icons';
-import { FontStyles } from '@/constants/theme';
+import { Colors, FontStyles } from '@/constants/theme';
 import { Column, Row } from '@/layout';
 
 import styles from './styles';
@@ -28,7 +28,12 @@ const SettingItem = ({ icon, name, description, onPress, iconName }: Props) => (
         <Text style={[FontStyles.Normal, styles.name]}>{name}</Text>
         <Text style={FontStyles.NormalGray}>{description}</Text>
       </Column>
-      <Icon name="chevronRight" style={styles.chevron} height={18} />
+      <Icon
+        name="chevron"
+        style={styles.chevron}
+        height={18}
+        color={Colors.White.Pure}
+      />
     </Row>
   </Touchable>
 );

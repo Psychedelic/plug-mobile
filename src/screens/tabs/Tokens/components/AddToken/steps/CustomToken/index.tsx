@@ -13,8 +13,8 @@ import {
   Text,
   TextInput,
 } from '@/components/common';
-import ErrorIcon from '@/components/icons/svg/Error.svg';
-import Info from '@/components/icons/svg/Info.svg';
+import Icon from '@/components/icons';
+import { Colors } from '@/constants/theme';
 import { customTokensUrl } from '@/constants/urls';
 import { FungibleStandard, StandardToken } from '@/interfaces/keyring';
 import { useAppDispatch } from '@/redux/hooks';
@@ -46,7 +46,7 @@ function CustomToken({ modalRef, onSelectedToken }: Props) {
   function renderError(message: string, showMore: boolean = false) {
     return (
       <View style={styles.errorContainer}>
-        <ErrorIcon fill="red" />
+        <Icon name="error" color={Colors.Red} />
         <Text type="caption" style={styles.errorText}>
           {`${message} `}
           {showMore && (
@@ -165,14 +165,14 @@ function CustomToken({ modalRef, onSelectedToken }: Props) {
             standard ? styles.standardText : styles.standardTextPlaceholder
           }
           iconStyle={styles.standardIcon}
-          iconName="chevronRight"
-          iconProps={{ height: 18 }}
+          iconName="chevron"
+          iconProps={{ height: 18, color: Colors.White.Primary }}
         />
         {showStandardError ? (
           renderError(tokenError.message, tokenError.showMore)
         ) : (
           <View style={styles.captionContainer}>
-            <Info fill={iconColor} />
+            <Icon name="info" color={iconColor} />
             <Text type="caption" style={styles.standardCaption}>
               {t('addToken.customCaption')}
             </Text>

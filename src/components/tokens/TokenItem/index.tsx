@@ -22,18 +22,17 @@ interface Token {
 }
 
 interface Props {
-  color?: string;
   style?: StyleProp<ViewStyle>;
   onPress?: () => void;
   token: Token;
 }
 
-function TokenItem({ color, style, onPress, token }: Props) {
+function TokenItem({ style, onPress, token }: Props) {
   const { amount, symbol, icon, logo, name, value, thumbnail } = token;
   return (
     <Touchable scale={animationScales.small} onPress={onPress}>
       <View style={[styles.root, style]}>
-        <TokenIcon icon={icon} logo={thumbnail || logo} color={color} />
+        <TokenIcon icon={icon} logo={thumbnail || logo} />
         <View style={styles.leftContainer}>
           {name ? <Text style={FontStyles.Normal}>{name}</Text> : null}
           {symbol ? (
