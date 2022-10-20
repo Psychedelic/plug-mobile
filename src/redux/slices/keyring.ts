@@ -258,8 +258,7 @@ export const removeAccount = createAsyncThunk(
     try {
       const instance = KeyRing.getInstance();
       await instance?.deleteImportedAccount(walletId);
-      const state = await instance?.getState();
-      return state.wallets;
+      return { walletId };
     } catch (e: any) {
       return rejectWithValue({ error: e.message });
     }
@@ -442,7 +441,18 @@ export const keyringSlice = createSlice({
         state.isUnlocked = false;
       })
       .addCase(removeAccount.fulfilled, (state, action) => {
-        state.wallets = formatWallets(action.payload);
+        const { walletId } = action.payload;
+        const currentWasRemoved = state.currentWallet?.walletId === walletId;
+
+        if (currentWasRemoved) {
+          // Set main wallet as current.
+          state.currentWallet = state.wallets.find(
+            wallet => wallet.orderNumber === 0
+          )!;
+        }
+        state.wallets = state.wallets.filter(
+          wallet => wallet.walletId !== walletId
+        );
       })
       .addCase(createWallet.fulfilled, (state, action) => {
         const { wallet, unlocked } = action.payload;

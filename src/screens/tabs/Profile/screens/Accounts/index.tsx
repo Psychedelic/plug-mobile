@@ -1,7 +1,7 @@
 import Clipboard from '@react-native-community/clipboard';
 import { t } from 'i18next';
 import React, { RefObject, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Platform, View } from 'react-native';
+import { ActivityIndicator, Alert, Platform, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
 import CommonItem from '@/commonComponents/CommonItem';
@@ -66,7 +66,27 @@ function Accounts({ modalRef }: Props) {
   };
 
   const onRemoveAccount = (account: Wallet) => {
-    dispatch(removeAccount(account));
+    const accountName = account?.icnsData?.reverseResolvedName || account.name;
+    Alert.alert(
+      'Remove Account',
+      `Are you sure you want to remove ${accountName} from your account list? \nYou can always add the wallet back by importing it again.`,
+      [
+        {
+          text: t('common.cancel'),
+          style: 'cancel',
+        },
+        {
+          text: t('tokensTab.deleteAction'),
+          style: 'destructive',
+          onPress: () => {
+            dispatch(removeAccount(account));
+          },
+        },
+      ],
+      {
+        cancelable: true,
+      }
+    );
   };
 
   const onChangeAccount = (walletId: string) => {
