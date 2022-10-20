@@ -1,5 +1,5 @@
+import { t } from 'i18next';
 import React, { useMemo, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Linking, ScrollView, View } from 'react-native';
 import { getBuildNumber, getVersion } from 'react-native-device-info';
 import { Modalize } from 'react-native-modalize';
@@ -16,6 +16,7 @@ import { lock, reset as resetKeyringStore } from '@/redux/slices/keyring';
 import { reset as resetUserStore } from '@/redux/slices/user';
 import { clearState as resetWalletConnectStore } from '@/redux/slices/walletconnect';
 import ConnectedApps from '@/screens/tabs/Profile/modals/ConnectedApps';
+import ExportPem from '@/screens/tabs/Profile/modals/ExportPem';
 import RevealSeedPhrase from '@/screens/tabs/Profile/modals/RevealSeedPhrase';
 import { clearStorage } from '@/utils/localStorage';
 
@@ -34,14 +35,14 @@ interface Option {
 }
 
 function Settings({ navigation }: ScreenProps<Routes.SETTINGS>) {
-  const { t } = useTranslation();
-  const deleteWalletRef = useRef<Modalize>(null);
-  const biometricUnlockRef = useRef<Modalize>(null);
-  const revealSeedPhraseRef = useRef<Modalize>(null);
-  const connectedAppsRef = useRef<Modalize>(null);
-
-  const dispatch = useAppDispatch();
   const { biometricsAvailable } = useAppSelector(state => state.user);
+  const dispatch = useAppDispatch();
+
+  const revealSeedPhraseRef = useRef<Modalize>(null);
+  const biometricUnlockRef = useRef<Modalize>(null);
+  const connectedAppsRef = useRef<Modalize>(null);
+  const deleteWalletRef = useRef<Modalize>(null);
+  const exportPemRef = useRef<Modalize>(null);
 
   const handleDeleteWallet = () => {
     clearStorage();
@@ -102,6 +103,12 @@ function Settings({ navigation }: ScreenProps<Routes.SETTINGS>) {
         description: t('settings.items.lock.desc'),
         onPress: lockAccount,
       },
+      {
+        icon: '⬇️',
+        name: t('settings.items.exportPem.name'),
+        description: t('settings.items.exportPem.desc'),
+        onPress: () => exportPemRef.current?.open(),
+      },
     ],
     []
   );
@@ -154,10 +161,11 @@ function Settings({ navigation }: ScreenProps<Routes.SETTINGS>) {
           </Text>
         </View>
       </ScrollView>
-      <DeleteWallet modalRef={deleteWalletRef} onDelete={handleDeleteWallet} />
+      <ExportPem modalRef={exportPemRef} />
+      <ConnectedApps modalRef={connectedAppsRef} />
       <BiometricUnlock modalRef={biometricUnlockRef} />
       <RevealSeedPhrase modalRef={revealSeedPhraseRef} />
-      <ConnectedApps modalRef={connectedAppsRef} />
+      <DeleteWallet modalRef={deleteWalletRef} onDelete={handleDeleteWallet} />
     </>
   );
 }

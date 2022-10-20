@@ -252,6 +252,35 @@ export const validatePem = createAsyncThunk(
   }
 );
 
+export const getPemFile = createAsyncThunk(
+  'keyring/getPemFile',
+  async (
+    {
+      walletId,
+      onSuccess,
+      onFailure,
+    }: {
+      walletId: string;
+      onSuccess: (content: string) => void;
+      onFailure: () => void;
+    },
+    { rejectWithValue }
+  ) => {
+    try {
+      const instance = KeyRing.getInstance();
+      const response = await instance?.getPemFile(walletId);
+      if (response) {
+        await onSuccess(response);
+      } else {
+        onFailure();
+      }
+    } catch (e: any) {
+      onFailure();
+      return rejectWithValue(e.message);
+    }
+  }
+);
+
 export const createSubaccount = createAsyncThunk(
   'keyring/createSubaccount',
   async (params: CreatePrincipalOptions, { rejectWithValue }) => {
