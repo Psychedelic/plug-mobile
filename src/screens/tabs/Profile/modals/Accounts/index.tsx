@@ -4,20 +4,21 @@ import React, { RefObject, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Platform, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
-// mejorar los imports
-import CommonItem from '@/commonComponents/CommonItem';
-import Header from '@/commonComponents/Header';
-import Modal from '@/commonComponents/Modal';
-import Touchable from '@/commonComponents/Touchable';
-import ActionSheet from '@/components/common/ActionSheet';
-import Text from '@/components/common/Text';
+import {
+  ActionSheet,
+  CommonItem,
+  Header,
+  Modal,
+  Text,
+  Touchable,
+} from '@/components/common';
 import Icon from '@/components/icons';
-import CopyIcon from '@/components/icons/material/Copy.svg';
-import EditIcon from '@/components/icons/material/Edit.svg';
-import TrashCan from '@/components/icons/material/TrashCan.svg';
-import AddGray from '@/components/icons/svg/AddGray.svg';
-import CheckedBlueCircle from '@/components/icons/svg/CheckedBlueCircle.svg';
 import { FontStyles } from '@/constants/theme';
+import CopyIcon from '@/icons/material/Copy.svg';
+import EditIcon from '@/icons/material/Edit.svg';
+import TrashCan from '@/icons/material/TrashCan.svg';
+import AddGray from '@/icons/svg/AddGray.svg';
+import CheckedBlueCircle from '@/icons/svg/CheckedBlueCircle.svg';
 import { Nullable } from '@/interfaces/general';
 import { Wallet } from '@/interfaces/redux';
 import { Row } from '@/layout';
