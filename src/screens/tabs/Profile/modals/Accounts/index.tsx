@@ -138,7 +138,7 @@ function Accounts({ modalRef }: Props) {
 
     if (isImportedAccount) {
       options.push({
-        id: isSelectedAccount ? 4 : 3,
+        id: options.length + 1,
         label: t('accounts.moreOptions.removeAccount'),
         onPress: () => onRemoveAccount(account),
         icon: Platform.select({ android: TrashCan }),

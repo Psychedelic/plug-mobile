@@ -323,7 +323,7 @@ export const removeAccount = createAsyncThunk(
       }
       return { walletId };
     } catch (e: any) {
-      return rejectWithValue({ error: e.message });
+      return rejectWithValue(e.message);
     }
   }
 );
