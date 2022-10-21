@@ -296,6 +296,38 @@ export const createSubaccount = createAsyncThunk(
   }
 );
 
+export const removeAccount = createAsyncThunk(
+  'keyring/removeAccount',
+  async (
+    { walletId }: { walletId: string },
+    { rejectWithValue, dispatch, getState }
+  ) => {
+    try {
+      const instance = KeyRing.getInstance();
+      const state = getState() as State;
+      await instance?.deleteImportedAccount(walletId);
+      const currentWasRemoved =
+        state.keyring.currentWallet?.walletId === walletId;
+
+      if (currentWasRemoved) {
+        const mainWalletId = state.keyring.wallets.find(
+          wallet => wallet.orderNumber === 0
+        )!.walletId;
+
+        dispatch(
+          setCurrentPrincipal({
+            icpPrice: state.icp.icpPrice,
+            walletId: mainWalletId,
+          })
+        );
+      }
+      return { walletId };
+    } catch (e: any) {
+      return rejectWithValue(e.message);
+    }
+  }
+);
+
 export const editSubaccount = createAsyncThunk(
   'keyring/editSubaccount',
   async (
@@ -455,6 +487,12 @@ export const keyringSlice = createSlice({
       })
       .addCase(lock.fulfilled, state => {
         state.isUnlocked = false;
+      })
+      .addCase(removeAccount.fulfilled, (state, action) => {
+        const { walletId } = action.payload;
+        state.wallets = state.wallets.filter(
+          wallet => wallet.walletId !== walletId
+        );
       })
       .addCase(createWallet.fulfilled, (state, action) => {
         const { wallet, unlocked } = action.payload;

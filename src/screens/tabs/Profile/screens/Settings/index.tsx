@@ -98,16 +98,16 @@ function Settings({ navigation }: ScreenProps<Routes.SETTINGS>) {
         onPress: () => connectedAppsRef.current?.open(),
       },
       {
-        icon: '🔒',
-        name: t('settings.items.lock.name'),
-        description: t('settings.items.lock.desc'),
-        onPress: lockAccount,
-      },
-      {
         icon: '⬇️',
         name: t('settings.items.exportPem.name'),
         description: t('settings.items.exportPem.desc'),
         onPress: () => exportPemRef.current?.open(),
+      },
+      {
+        icon: '🔒',
+        name: t('settings.items.lock.name'),
+        description: t('settings.items.lock.desc'),
+        onPress: lockAccount,
       },
     ],
     []

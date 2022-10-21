@@ -185,6 +185,7 @@ const translations = {
       addIcns: 'Add ICNS Domain',
       changeIcns: 'Change ICNS Domain',
       copy: 'Copy Address',
+      removeAccount: 'Remove Account',
     },
     icns: {
       setICNS: 'Choose ICNS Name',
@@ -196,6 +197,8 @@ const translations = {
       proceed: ' to proceed.',
       info: 'By choosing an ICNS name, it will be set to your Principal ID for this account, and also set your reverse-resolution to the selected ICNS name. ',
     },
+    removeAccountMessage:
+      'Are you sure you want to remove {{accountName}} from your account list? \nYou can always add the wallet back by importing it again.',
     setEmoji: 'Set Emoji',
     editEmoji: 'Edit emoji',
     editButton: '👈 Edit',

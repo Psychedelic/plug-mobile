@@ -1,24 +1,30 @@
 import Clipboard from '@react-native-community/clipboard';
 import { t } from 'i18next';
-import React, { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Platform, View } from 'react-native';
+import React, { RefObject, useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Alert, Platform, View } from 'react-native';
+import { Modalize } from 'react-native-modalize';
 
-import CommonItem from '@/commonComponents/CommonItem';
-import Header from '@/commonComponents/Header';
-import Modal from '@/commonComponents/Modal';
-import Touchable from '@/commonComponents/Touchable';
-import ActionSheet from '@/components/common/ActionSheet';
-import Text from '@/components/common/Text';
+import {
+  ActionSheet,
+  CommonItem,
+  Header,
+  Modal,
+  Text,
+  Touchable,
+} from '@/components/common';
 import Icon from '@/components/icons';
-import AddGray from '@/components/icons/svg/AddGray.svg';
-import CheckedBlueCircle from '@/components/icons/svg/CheckedBlueCircle.svg';
 import { FontStyles } from '@/constants/theme';
 import CopyIcon from '@/icons/material/Copy.svg';
 import EditIcon from '@/icons/material/Edit.svg';
+import TrashCan from '@/icons/material/TrashCan.svg';
+import AddGray from '@/icons/svg/AddGray.svg';
+import CheckedBlueCircle from '@/icons/svg/CheckedBlueCircle.svg';
+import { Nullable } from '@/interfaces/general';
+import { Wallet } from '@/interfaces/redux';
 import { Row } from '@/layout';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getICPPrice } from '@/redux/slices/icp';
-import { setCurrentPrincipal } from '@/redux/slices/keyring';
+import { removeAccount, setCurrentPrincipal } from '@/redux/slices/keyring';
 import shortAddress from '@/utils/shortAddress';
 
 import CreateEditAccount from '../CreateEditAccount';
@@ -26,22 +32,26 @@ import CreateImportAccount from '../CreateImportAccount';
 import AddICNS from './AddICNS';
 import styles from './styles';
 
-/**
- * @param {{modalRef: any, onClose?: () => void}} param
- */
-const Accounts = ({ modalRef, onClose, ...props }) => {
+interface Props {
+  modalRef: RefObject<Modalize>;
+}
+
+function Accounts({ modalRef }: Props) {
   const { wallets, currentWallet } = useAppSelector(state => state.keyring);
   const { icpPrice } = useAppSelector(state => state.icp);
   const dispatch = useAppDispatch();
-  const [loading, setLoading] = useState(false);
-  const hasICNS = !!currentWallet?.icnsData.reverseResolvedName;
-  const actionSheetRef = useRef(null);
-  const [actionSheetData, setActionSheetData] = useState(undefined);
-  const [selectedAccount, setSelectedAccount] = useState(null);
 
-  const createEditAccountRef = useRef(null);
-  const createImportAccountRef = useRef(null);
-  const addICNSRef = useRef(null);
+  const [loading, setLoading] = useState(false);
+  const [actionSheetData, setActionSheetData] = useState<any>(undefined);
+  const [selectedAccount, setSelectedAccount] =
+    useState<Nullable<Wallet>>(null);
+
+  const addICNSRef = useRef<Modalize>(null);
+  const actionSheetRef = useRef<Modalize>(null);
+  const createEditAccountRef = useRef<Modalize>(null);
+  const createImportAccountRef = useRef<Modalize>(null);
+
+  const hasICNS = !!currentWallet?.icnsData?.reverseResolvedName;
 
   useEffect(() => {
     dispatch(getICPPrice());
@@ -52,12 +62,36 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
     createImportAccountRef.current?.open();
   };
 
-  const onEditAccount = account => {
+  const onEditAccount = (account: Wallet) => {
     setSelectedAccount(account);
     createEditAccountRef.current?.open();
   };
 
-  const onChangeAccount = walletId => {
+  const onRemoveAccount = (account: Wallet) => {
+    const accountName = account?.icnsData?.reverseResolvedName || account.name;
+    Alert.alert(
+      t('accounts.moreOptions.removeAccount'),
+      t('accounts.removeAccountMessage', { accountName }),
+      [
+        {
+          text: t('common.cancel'),
+          style: 'cancel',
+        },
+        {
+          text: t('accounts.moreOptions.removeAccount'),
+          style: 'destructive',
+          onPress: () => {
+            dispatch(removeAccount(account));
+          },
+        },
+      ],
+      {
+        cancelable: true,
+      }
+    );
+  };
+
+  const onChangeAccount = (walletId: string) => {
     setLoading(true);
     dispatch(setCurrentPrincipal({ walletId, icpPrice }))
       .unwrap()
@@ -67,13 +101,15 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
       });
   };
 
-  const onAddICNS = account => {
+  const onAddICNS = (account: Wallet) => {
     setSelectedAccount(account);
     addICNSRef.current?.open();
   };
 
-  const onLongPress = account => {
+  const onLongPress = (account: Wallet) => {
     const isSelectedAccount = currentWallet?.principal === account.principal;
+    const isImportedAccount = !account.type.includes('MNEMONIC');
+
     const options = [
       {
         id: 1,
@@ -100,6 +136,15 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
       });
     }
 
+    if (isImportedAccount) {
+      options.push({
+        id: options.length + 1,
+        label: t('accounts.moreOptions.removeAccount'),
+        onPress: () => onRemoveAccount(account),
+        icon: Platform.select({ android: TrashCan }),
+      });
+    }
+
     setActionSheetData({
       title: account.name,
       subtitle: shortAddress(account.principal),
@@ -112,7 +157,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
     setActionSheetData(undefined);
   };
 
-  const renderAccountItem = (account, index) => {
+  const renderAccountItem = (account: Wallet, index: number) => {
     const isSelectedAccount = currentWallet?.principal === account.principal;
     const selectedAccountProps = {
       nameStyle: styles.selectedAccount,
@@ -128,7 +173,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
     return (
       <CommonItem
         key={index}
-        name={account?.icnsData.reverseResolvedName || account.name}
+        name={account?.icnsData?.reverseResolvedName || account.name}
         icon={account.icon}
         id={account.principal}
         onPress={handleOnPress}
@@ -142,7 +187,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
 
   return (
     <>
-      <Modal adjustToContentHeight modalRef={modalRef} {...props}>
+      <Modal adjustToContentHeight modalRef={modalRef}>
         <Header center={<Text type="subtitle2">{t('accounts.title')}</Text>} />
         <View style={styles.content}>
           {loading && (
@@ -168,7 +213,7 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
           <CreateEditAccount
             modalRef={createEditAccountRef}
             accountsModalRef={modalRef}
-            account={selectedAccount}
+            account={selectedAccount!}
           />
           <CreateImportAccount
             modalRef={createImportAccountRef}
@@ -186,6 +231,6 @@ const Accounts = ({ modalRef, onClose, ...props }) => {
       <AddICNS modalRef={addICNSRef} />
     </>
   );
-};
+}
 
 export default Accounts;
