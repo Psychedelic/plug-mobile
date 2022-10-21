@@ -17,6 +17,7 @@ import EyeSlashIcon from './svg/EyeSlash.svg';
 import FaceIdIcon from './svg/FaceId.svg';
 import GearIcon from './svg/Gear.svg';
 import ICPIcon from './svg/ICP.svg';
+import IncognitoIcon from './svg/Incognito.svg';
 import InfoIcon from './svg/Info.svg';
 import PlusIcon from './svg/Plus.svg';
 import RedirectArrowIcon from './svg/RedirectArrow.svg';
@@ -60,6 +61,7 @@ export const IconTypes = (type: string) =>
     actionActivity: ActionActivityIcon,
     eye: EyeIcon,
     eyeSlash: EyeSlashIcon,
+    unknown: IncognitoIcon,
   }[type]);
 
 interface Props {
