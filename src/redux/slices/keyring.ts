@@ -298,10 +298,29 @@ export const createSubaccount = createAsyncThunk(
 
 export const removeAccount = createAsyncThunk(
   'keyring/removeAccount',
-  async ({ walletId }: { walletId: string }, { rejectWithValue }) => {
+  async (
+    { walletId }: { walletId: string },
+    { rejectWithValue, dispatch, getState }
+  ) => {
     try {
       const instance = KeyRing.getInstance();
+      const state = getState() as State;
       await instance?.deleteImportedAccount(walletId);
+      const currentWasRemoved =
+        state.keyring.currentWallet?.walletId === walletId;
+
+      if (currentWasRemoved) {
+        const mainWalletId = state.keyring.wallets.find(
+          wallet => wallet.orderNumber === 0
+        )!.walletId;
+
+        dispatch(
+          setCurrentPrincipal({
+            icpPrice: state.icp.icpPrice,
+            walletId: mainWalletId,
+          })
+        );
+      }
       return { walletId };
     } catch (e: any) {
       return rejectWithValue({ error: e.message });
@@ -471,14 +490,6 @@ export const keyringSlice = createSlice({
       })
       .addCase(removeAccount.fulfilled, (state, action) => {
         const { walletId } = action.payload;
-        const currentWasRemoved = state.currentWallet?.walletId === walletId;
-
-        if (currentWasRemoved) {
-          // Set main wallet as current.
-          state.currentWallet = state.wallets.find(
-            wallet => wallet.orderNumber === 0
-          )!;
-        }
         state.wallets = state.wallets.filter(
           wallet => wallet.walletId !== walletId
         );
