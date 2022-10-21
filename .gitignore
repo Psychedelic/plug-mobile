@@ -29,6 +29,8 @@ build/
 .gradle
 local.properties
 *.iml
+*.hprof
+.cxx/
 
 # node.js
 #
@@ -70,7 +72,6 @@ rust/.cargo/config.toml
 /*.env
 
 # Android
-android/*.hprof
 android/app/src/main/jniLibs
 
 # Sentry
@@ -85,4 +86,3 @@ ios/envfile
 
 # Custom Patches
 patches/@dfinity+agent+0.9.3.patch
-patches/@dfinity+candid+0.9.3.patch

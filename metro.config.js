@@ -51,7 +51,7 @@ module.exports = async () => {
         // events: require.resolve('events-browserify'),
       },
       assetExts: assetExts.filter(ext => ext !== 'svg'),
-      sourceExts: ['jsx', 'js', 'ts', 'tsx', 'svg'], //add here
+      sourceExts: ['jsx', 'js', 'ts', 'tsx', 'svg', 'json'], //add here
     },
   };
 };
