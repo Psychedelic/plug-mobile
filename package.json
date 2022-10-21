@@ -50,7 +50,6 @@
     "@walletconnect/client": "^1.7.5",
     "assert-browserify": "^2.0.0",
     "axios": "0.24.0",
-    "big-integer": "1.6.40",
     "buffer": "^4.9.2",
     "crypto": "^1.0.1",
     "crypto-browserify": "^3.12.0",
