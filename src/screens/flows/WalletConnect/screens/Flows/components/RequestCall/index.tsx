@@ -1,7 +1,6 @@
 import { t } from 'i18next';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Linking, Text, View } from 'react-native';
-import { useSelector } from 'react-redux';
 
 import WarningIcon from '@/components/icons/svg/WarningIcon.svg';
 import { TOKENS } from '@/constants/assets';
@@ -14,6 +13,7 @@ import {
   WCWhiteListItem,
 } from '@/interfaces/walletConnect';
 import KeyRing from '@/modules/keyring';
+import { useAppSelector } from '@/redux/hooks';
 import { getDabNfts, getDabToken } from '@/services/DAB';
 import { formatAssetBySymbol } from '@/utils/currencies';
 import { addSpacesAndCapitalize } from '@/utils/strings';
@@ -37,7 +37,7 @@ interface Props extends WallectConnectFlowsData {
 function RequestCall(props: Props) {
   const canisterInfo = props.canisterInfo;
   const { shouldWarn, canisterId, methodName, decodedArguments } = props.args;
-  const { icpPrice } = useSelector(state => state.icp);
+  const { icpPrice } = useAppSelector(state => state.icp);
   const formattedMethodName = addSpacesAndCapitalize(methodName);
   const [token, setToken] = useState<Nullable<TransferToken>>(null);
   const [nftId, setNFTId] = useState<Nullable<string>>(null);

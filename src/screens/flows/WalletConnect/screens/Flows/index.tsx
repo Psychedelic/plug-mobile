@@ -1,15 +1,9 @@
-import {
-  NavigationProp,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { ERRORS } from '@/constants/walletconnect';
 import useDisableBack from '@/hooks/useDisableBack';
-import { RootStackParamList } from '@/interfaces/navigation';
 import {
   FlowsParams,
   WCFlowTypes,
@@ -17,6 +11,7 @@ import {
 } from '@/interfaces/walletConnect';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { addConnectedApp } from '@/redux/slices/user';
 import {
   addBridgeTimeout,
@@ -43,9 +38,8 @@ const COMPONENTS = {
 function WCFlows() {
   useDisableBack();
   const { params } = useRoute();
-  const dispatch = useDispatch();
-  const { reset, navigate } =
-    useNavigation<NavigationProp<RootStackParamList>>();
+  const dispatch = useAppDispatch();
+  const { reset, navigate } = useNavigation();
   const [sendLoading, setSendLoading] = useState(false);
   const [wcTimeout, setWCTimeout] = useState(false);
   const {
@@ -61,10 +55,10 @@ function WCFlows() {
     handleDeclineArgs,
   } = (params || {}) as FlowsParams;
 
-  const request = useSelector(
+  const request = useAppSelector(
     state => state.walletconnect.pendingCallRequests[requestId]
   );
-  const principalId = useSelector(
+  const principalId = useAppSelector(
     state => state.keyring?.currentWallet?.principal
   );
   const DisplayComponent = useMemo(() => COMPONENTS[type], [type]);
@@ -162,8 +156,8 @@ function WCFlows() {
           name: metadata.name,
           canisterList: whiteListArray,
           imageUri: metadata?.icons[0],
-          lastConection: Date.now(),
-          account: principalId,
+          lastConnection: new Date(Date.now()),
+          account: principalId!,
         })
       );
     }

@@ -3,6 +3,7 @@ import { StyleProp, TextStyle, View, ViewStyle } from 'react-native';
 
 import Touchable from '@/commonComponents/Touchable';
 import UserIcon from '@/commonComponents/UserIcon';
+import { COMMON_HITSLOP } from '@/constants/general';
 import { FontStyles } from '@/constants/theme';
 import useGetType from '@/hooks/useGetType';
 import Icon from '@/icons';
@@ -36,6 +37,7 @@ interface Props {
   onActionPress?: () => void;
   actionIconName?: string;
   showActions?: boolean;
+  disabled?: boolean;
 }
 
 // TODO: Refactor this component, make it generic.
@@ -54,6 +56,7 @@ function CommonItem({
   onLongPress,
   onActionPress,
   actionIconName = 'threeDots',
+  disabled,
   showActions = true,
 }: Props) {
   const [imageType, setImageType] = useState('');
@@ -66,7 +69,8 @@ function CommonItem({
       <Touchable
         scale={animationScales.small}
         onPress={onPress}
-        onLongPress={onLongPress}>
+        onLongPress={onLongPress}
+        disabled={disabled}>
         <View style={styles.root}>
           {imageUri ? (
             <ImageDisplayer
@@ -91,7 +95,7 @@ function CommonItem({
               <Touchable
                 onPress={onActionPress}
                 scale={animationScales.large}
-                hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}>
+                hitSlop={COMMON_HITSLOP}>
                 <Icon name={actionIconName} />
               </Touchable>
             </View>

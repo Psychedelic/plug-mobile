@@ -5,7 +5,7 @@ import { View } from 'react-native';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import { Text } from '@/components/common';
 import AmountInput from '@/components/common/AmountInput';
-import Info from '@/components/icons/svg/Info.svg';
+import Icon from '@/components/icons';
 import TokenSelector from '@/components/tokens/TokenSelector';
 import { VISIBLE_DECIMALS } from '@/constants/business';
 import { Asset } from '@/interfaces/redux';
@@ -159,7 +159,7 @@ const AmountSection = ({
       />
       {!tokenPrice ? (
         <View style={styles.captionContainer}>
-          <Info fill={iconColor} />
+          <Icon name="info" color={iconColor} />
           <Text type="caption" style={styles.captionText}>
             {t('send.noPriceAvailable', { token: selectedToken.name })}
           </Text>
