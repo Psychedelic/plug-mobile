@@ -20,7 +20,7 @@
     "android:bundle.prod": "yarn run ic:build.android && yarn run patch:android && cd android && ./gradlew clean && ./gradlew bundleProductionRelease",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings=0",
     "nodeify": "rn-nodeify --hack --install crypto,buffer,react-native-randombytes,process,stream",
     "lint-fix": "eslint . --fix",
     "removeDeps": "rm -rf yarn.lock node_modules && cd ios && rm -rf Pods Podfile.lock && cd ..",
