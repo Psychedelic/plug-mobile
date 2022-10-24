@@ -38,7 +38,7 @@ function ExportPem({ modalRef }: Props) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [safeCheck, setSafeCheck] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState<Wallet>(currentWallet!);
-  const disableButton = error || !safeCheck;
+  const disableButton = error || !safeCheck || password === '';
 
   const handleOnChange = (text: string) => {
     setError(false);

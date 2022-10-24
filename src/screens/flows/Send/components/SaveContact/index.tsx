@@ -1,7 +1,8 @@
 import emojis from 'emoji-datasource';
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { t } from 'i18next';
+import React, { RefObject, useState } from 'react';
 import { View } from 'react-native';
+import { Modalize } from 'react-native-modalize';
 
 import { charFromEmojiObject } from '@/commonComponents/EmojiSelector/utils';
 import Header from '@/commonComponents/Header';
@@ -15,32 +16,49 @@ import { addContact } from '@/redux/slices/user';
 
 import styles from './styles';
 
-function SaveContact({ modalRef, onClose, id }) {
-  const { t } = useTranslation();
+interface Props {
+  modalRef: RefObject<Modalize>;
+  id: string;
+}
+
+function SaveContact({ modalRef, id }: Props) {
   const dispatch = useAppDispatch();
-  const { contactsLoading } = useAppSelector(state => state.user);
-  const [name, setName] = useState('');
+  const { contactsLoading, contacts } = useAppSelector(state => state.user);
+
+  const [error, setError] = useState<boolean>(false);
+  const [name, setName] = useState<string>('');
+
+  const savedContactName = contacts.find(c => c.name === name);
   const title = t('saveContact.title');
 
   const handleClose = () => {
     setName('');
-    onClose?.();
+    setError(false);
+  };
+
+  const handleOnChange = (text: string) => {
+    setError(false);
+    setName(text);
   };
 
   const handleSubmit = () => {
-    const randomEmoji = charFromEmojiObject(
-      emojis[Math.floor(Math.random() * emojis.length)]
-    );
-    dispatch(
-      addContact({
-        contact: {
-          id,
-          name,
-          image: randomEmoji,
-        },
-        onFinish: () => modalRef.current?.close(),
-      })
-    );
+    if (savedContactName) {
+      setError(true);
+    } else {
+      const randomEmoji = charFromEmojiObject(
+        emojis[Math.floor(Math.random() * emojis.length)]
+      );
+      dispatch(
+        addContact({
+          contact: {
+            id,
+            name,
+            image: randomEmoji,
+          },
+          onFinish: () => modalRef.current?.close(),
+        })
+      );
+    }
   };
 
   const closeModal = () => {
@@ -61,16 +79,22 @@ function SaveContact({ modalRef, onClose, id }) {
         <TextInput
           autoFocus
           value={name}
+          autoCapitalize="words"
           maxLength={22}
           placeholder={t('saveContact.namePlaceholder')}
-          onChangeText={setName}
-          style={styles.input}
+          onChangeText={handleOnChange}
         />
+        {error && (
+          <Text type="caption" style={styles.errorMessage}>
+            {t('contacts.nameTaken')}
+          </Text>
+        )}
         <RainbowButton
           text={title}
           onPress={handleSubmit}
-          disabled={!name}
+          disabled={!name || error}
           loading={contactsLoading}
+          buttonStyle={styles.button}
         />
       </View>
     </Modal>

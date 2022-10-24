@@ -1828,10 +1828,10 @@
     cross-fetch "^3.1.4"
     crypto-js "^4.1.1"
 
-"@psychedelic/plug-controller@0.24.2":
-  version "0.24.2"
-  resolved "https://npm.pkg.github.com/download/@Psychedelic/plug-controller/0.24.2/00d49abbe4de0d358e8e038dd64133ddcb4c009d#00d49abbe4de0d358e8e038dd64133ddcb4c009d"
-  integrity sha512-gIrMCkFyxhNb9bIdOpsmCAxaDiLJ7OJqBORnbaWvwTQMwot5hNPFDtCxvXbMi9+YtzUkDNyBKKXg/RmKd9uIdQ==
+"@psychedelic/plug-controller@0.24.3":
+  version "0.24.3"
+  resolved "https://npm.pkg.github.com/download/@Psychedelic/plug-controller/0.24.3/f150066563e837bde728b059e061dd8abdb02bfc#f150066563e837bde728b059e061dd8abdb02bfc"
+  integrity sha512-amRsv2TFVeTwVzIh36izVxiLK+/jqudxMtZrCOEFkKjZ+LVgJ5Slt/6kc/VWUDxuzlPfJfpmN0ZytwxTE66zDw==
   dependencies:
     "@dfinity/agent" "0.9.3"
     "@dfinity/candid" "0.9.3"
@@ -7210,11 +7210,6 @@ js-yaml@^3.13.1:
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
-
-jsbi@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/jsbi/-/jsbi-4.3.0.tgz#b54ee074fb6fcbc00619559305c8f7e912b04741"
-  integrity sha512-SnZNcinB4RIcnEyZqFPdGPVgrg2AcnykiBy0sHVJQKHYeaLUvi3Exj+iaPpLnFVkDPZIV4U0yvgC9/R4uEAZ9g==
 
 jsc-android@^250230.2.1:
   version "250230.2.1"

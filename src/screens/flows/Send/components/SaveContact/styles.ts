@@ -10,10 +10,15 @@ export default StyleSheet.create({
     paddingTop: commonPadding,
     paddingBottom: commonPadding * 2,
   },
-  input: {
-    marginBottom: commonPadding,
+  button: {
+    marginTop: commonPadding,
   },
   valid: {
     color: Colors.ActionBlue,
+  },
+  errorMessage: {
+    marginTop: 5,
+    marginLeft: 5,
+    color: Colors.Red,
   },
 });
