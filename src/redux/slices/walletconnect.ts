@@ -272,7 +272,6 @@ const listenOnNewMessages = createAsyncThunk<
   }
 );
 
-// eslint-disable-next-line no-spaced-func
 export const walletConnectExecuteAndResponse = createAsyncThunk<
   void,
   {

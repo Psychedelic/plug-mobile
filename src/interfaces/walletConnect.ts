@@ -13,20 +13,11 @@ export interface WallectConnectAgent {
   meta: WalletConnectMetadata;
 }
 
-interface WalletConnector {
-  // TODO: Add types
-}
-
 export interface ClientMeta {
   description: string;
   url: string;
   icons: string[];
   name: string;
-}
-
-interface WallectConnectSessionRouteParams {
-  callback: () => void;
-  receivedTimestamp: number;
 }
 
 export interface WallectConnectFlowsData {

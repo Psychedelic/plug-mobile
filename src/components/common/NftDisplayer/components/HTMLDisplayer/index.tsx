@@ -14,6 +14,22 @@ interface Props {
   type: string;
 }
 
+const Spinner = ({
+  isDetailView,
+  isSendView,
+}: {
+  isDetailView?: boolean;
+  isSendView?: boolean;
+}) => (
+  <View
+    style={[
+      sharedStyles.webViewLoader,
+      (isDetailView || isSendView) && sharedStyles.webViewLoaderDetail,
+    ]}>
+    <ActivityIndicator size="small" color="white" />
+  </View>
+);
+
 function HTMLDisplayer({
   loading,
   onLoad,
@@ -24,16 +40,6 @@ function HTMLDisplayer({
   isDetailView,
 }: Props) {
   const webViewRef = useRef(null);
-
-  const Spinner = () => (
-    <View
-      style={[
-        sharedStyles.webViewLoader,
-        (isDetailView || isSendView) && sharedStyles.webViewLoaderDetail,
-      ]}>
-      <ActivityIndicator size="small" color="white" />
-    </View>
-  );
 
   return (
     <View style={[sharedStyles.image, style]}>
@@ -56,7 +62,9 @@ function HTMLDisplayer({
         }
         scrollEnabled={false}
         startInLoadingState={true}
-        renderLoading={Spinner}
+        renderLoading={() => (
+          <Spinner isDetailView={isDetailView} isSendView={isSendView} />
+        )}
         style={isSendView ? sharedStyles.webViewSend : sharedStyles.webView}
       />
       {loading && (

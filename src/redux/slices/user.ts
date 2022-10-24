@@ -241,7 +241,6 @@ export const getContacts = createAsyncThunk<
   }
 });
 
-// eslint-disable-next-line no-spaced-func
 export const addContact = createAsyncThunk<
   Contact[],
   { contact: Contact; onFinish?: () => void },
@@ -327,7 +326,6 @@ export const editContact = createAsyncThunk<
   }
 );
 
-// eslint-disable-next-line no-spaced-func
 export const addCustomToken = createAsyncThunk<
   Asset[],
   {

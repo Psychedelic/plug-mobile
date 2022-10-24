@@ -1,4 +1,7 @@
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import {
+  createMaterialTopTabNavigator,
+  MaterialTopTabBarProps,
+} from '@react-navigation/material-top-tabs';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 
@@ -12,6 +15,10 @@ import Routes from '../Routes';
 import BottomTabs from './BottomTabs';
 
 const Swipe = createMaterialTopTabNavigator();
+
+const renderBottom = (props: MaterialTopTabBarProps) => (
+  <BottomTabs {...props} />
+);
 
 const SwipeNavigator = () => {
   const { isInitialized, isUnlocked } = useAppSelector(state => state.keyring);
@@ -37,7 +44,7 @@ const SwipeNavigator = () => {
       }}
       initialRouteName={Routes.TOKENS}
       tabBarPosition="bottom"
-      tabBar={props => <BottomTabs {...props} />}>
+      tabBar={renderBottom}>
       <Swipe.Screen component={ProfileScreen} name={Routes.PROFILE_SCREEN} />
       <Swipe.Screen component={Tokens} name={Routes.TOKENS} />
       {ENABLE_NFTS && <Swipe.Screen component={NFTs} name={Routes.NFTS} />}
