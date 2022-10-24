@@ -14,7 +14,7 @@ import Text from '@/components/common/Text';
 import Icon from '@/components/icons';
 import TokenIcon from '@/components/tokens/TokenIcon';
 import { VISIBLE_DECIMALS } from '@/constants/business';
-import { Colors, FontStyles } from '@/constants/theme';
+import { FontStyles } from '@/constants/theme';
 import useGetType from '@/hooks/useGetType';
 import { Column } from '@/layout';
 import { Row } from '@/layout';

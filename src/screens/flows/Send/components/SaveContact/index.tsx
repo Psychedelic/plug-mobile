@@ -1,6 +1,6 @@
 import emojis from 'emoji-datasource';
 import { t } from 'i18next';
-import React, { RefObject, useEffect, useState } from 'react';
+import React, { RefObject, useState } from 'react';
 import { View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
@@ -31,14 +31,6 @@ function SaveContact({ modalRef, id }: Props) {
   const savedContactName = contacts.find(c => c.name === name);
   const title = t('saveContact.title');
 
-  useEffect(() => {
-    if (savedContactName) {
-      setError(true);
-    } else {
-      setError(false);
-    }
-  }, [savedContactName]);
-
   const handleClose = () => {
     setName('');
     setError(false);
@@ -50,19 +42,23 @@ function SaveContact({ modalRef, id }: Props) {
   };
 
   const handleSubmit = () => {
-    const randomEmoji = charFromEmojiObject(
-      emojis[Math.floor(Math.random() * emojis.length)]
-    );
-    dispatch(
-      addContact({
-        contact: {
-          id,
-          name,
-          image: randomEmoji,
-        },
-        onFinish: () => modalRef.current?.close(),
-      })
-    );
+    if (savedContactName) {
+      setError(true);
+    } else {
+      const randomEmoji = charFromEmojiObject(
+        emojis[Math.floor(Math.random() * emojis.length)]
+      );
+      dispatch(
+        addContact({
+          contact: {
+            id,
+            name,
+            image: randomEmoji,
+          },
+          onFinish: () => modalRef.current?.close(),
+        })
+      );
+    }
   };
 
   const closeModal = () => {
