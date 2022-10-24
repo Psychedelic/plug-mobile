@@ -60,7 +60,6 @@
     "flatted": "^3.2.4",
     "i18next": "^21.8.0",
     "js-sha256": "^0.9.0",
-    "jsbi": "^4.3.0",
     "json-bigint": "^1.0.0",
     "patch-package": "^6.4.7",
     "process": "^0.11.10",
