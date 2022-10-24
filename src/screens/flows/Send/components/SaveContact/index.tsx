@@ -50,23 +50,19 @@ function SaveContact({ modalRef, id }: Props) {
   };
 
   const handleSubmit = () => {
-    if (!savedContactName) {
-      const randomEmoji = charFromEmojiObject(
-        emojis[Math.floor(Math.random() * emojis.length)]
-      );
-      dispatch(
-        addContact({
-          contact: {
-            id,
-            name,
-            image: randomEmoji,
-          },
-          onFinish: () => modalRef.current?.close(),
-        })
-      );
-    } else {
-      setError(true);
-    }
+    const randomEmoji = charFromEmojiObject(
+      emojis[Math.floor(Math.random() * emojis.length)]
+    );
+    dispatch(
+      addContact({
+        contact: {
+          id,
+          name,
+          image: randomEmoji,
+        },
+        onFinish: () => modalRef.current?.close(),
+      })
+    );
   };
 
   const closeModal = () => {
