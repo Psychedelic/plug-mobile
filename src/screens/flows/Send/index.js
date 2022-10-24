@@ -182,11 +182,10 @@ function Send({ modalRef, nft, token, onSuccess }) {
         })
       )
         .unwrap()
-        .then(response => {
-          if (response.status) {
-            setLoading(false);
-          }
-        });
+        .then(() => {
+          setLoading(false);
+        })
+        .catch(() => setLoading(false));
     }
   };
 
