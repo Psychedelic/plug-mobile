@@ -8,7 +8,6 @@ import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
 import Touchable from '@/commonComponents/Touchable';
 import UserIcon from '@/commonComponents/UserIcon';
-import Icon from '@/components/icons';
 import { Colors } from '@/constants/theme';
 import { useDebounce } from '@/hooks/useDebounce';
 import Routes from '@/navigation/Routes';
