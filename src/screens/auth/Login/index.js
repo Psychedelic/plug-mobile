@@ -111,7 +111,7 @@ function Login({ route, navigation }) {
           disabled={!isValidPassword(password)}
           buttonStyle={styles.buttonMargin}
         />
-        {!biometricsAvailable && !usingBiometrics && (
+        {biometricsAvailable && usingBiometrics && (
           <Button
             iconName="faceIdIcon"
             text={t('login.signInBiometric')}
