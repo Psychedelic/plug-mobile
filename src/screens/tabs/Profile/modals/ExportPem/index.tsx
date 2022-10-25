@@ -15,6 +15,7 @@ import {
   Text,
 } from '@/components/common';
 import { isIos } from '@/constants/platform';
+import useCustomToast from '@/hooks/useCustomToast';
 import { Wallet } from '@/interfaces/redux';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getPemFile, validatePassword } from '@/redux/slices/keyring';
@@ -30,6 +31,7 @@ interface Props {
 function ExportPem({ modalRef }: Props) {
   const { wallets, currentWallet } = useAppSelector(state => state.keyring);
   const dispatch = useAppDispatch();
+  const toast = useCustomToast();
   const { bottom } = useSafeAreaInsets();
 
   const [error, setError] = useState(false);
@@ -67,7 +69,10 @@ function ExportPem({ modalRef }: Props) {
       getPemFile({
         walletId: selectedWallet.walletId,
         onFailure: () => {
-          // TODO: Add toast to tell the user that has been an error.
+          toast.showError(
+            t('exportPem.error.title'),
+            t('exportPem.error.message')
+          );
           modalRef.current?.close();
         },
         onSuccess: async (content: string) => {
@@ -86,7 +91,12 @@ function ExportPem({ modalRef }: Props) {
             await FileSystem.cpExternal(path, fileName, 'downloads');
           }
           modalRef.current?.close();
-          // TODO: Add toast to tell the user that the file has been downloaded in Downloads Directory
+          toast.showSuccess(
+            t('exportPem.success.title'),
+            isIos
+              ? t('exportPem.success.messageIos')
+              : t('exportPem.success.messageAndroid')
+          );
         },
       })
     );

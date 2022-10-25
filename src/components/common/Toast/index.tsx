@@ -13,7 +13,7 @@ import Text from '../Text';
 import Touchable from '../Touchable';
 import styles from './styles';
 
-enum ToastTypes {
+export enum ToastTypes {
   success = 'success',
   error = 'error',
   info = 'info',
@@ -21,8 +21,8 @@ enum ToastTypes {
 
 export interface ToastProps {
   title: string;
-  type: 'success' | 'error' | 'info';
   message: string;
+  type: 'success' | 'error' | 'info';
 }
 
 export const toastProps = {
@@ -53,7 +53,7 @@ function Toast({ title, message, type }: ToastProps) {
       <View style={styles.headerContainer}>
         <View style={styles.titleContainer}>
           <Icon height={20} width={20} />
-          <Text type="headline1" style={styles.title}>
+          <Text type="headline1" style={styles.title} numberOfLines={1}>
             {title}
           </Text>
         </View>

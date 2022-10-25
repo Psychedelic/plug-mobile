@@ -11,8 +11,10 @@ import {
   Text,
   TextInput,
 } from '@/components/common';
+import { Nullable } from '@/interfaces/general';
 import { useAppDispatch } from '@/redux/hooks';
 import { validatePem } from '@/redux/slices/keyring';
+import { toCamel } from '@/utils/strings';
 
 import CreateEditAccount from '../CreateEditAccount';
 import styles from './styles';
@@ -26,14 +28,14 @@ interface Props {
 function ImportKey({ createImportRef, modalRef, accountsModalRef }: Props) {
   const createEditAccount = useRef<Modalize>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [errorType, setErrorType] = useState<Nullable<string>>(null);
   const [key, setKey] = useState('');
   const dispatch = useAppDispatch();
-  const disabled = key === '' || loading || error;
+  const disabled = key === '' || loading || !!errorType;
 
   const handleOnChangeKey = (value: string) => {
-    if (error) {
-      setError(false);
+    if (errorType) {
+      setErrorType(null);
     }
     setKey(value);
   };
@@ -52,9 +54,14 @@ function ImportKey({ createImportRef, modalRef, accountsModalRef }: Props) {
     dispatch(
       validatePem({
         pem: key,
-        onSuccess: () => createEditAccount.current?.open(),
-        onFailure: () => setError(true),
-        onFinish: () => setLoading(false),
+        onSuccess: () => {
+          createEditAccount.current?.open();
+          setLoading(false);
+        },
+        onFailure: (eType: string) => {
+          setErrorType(toCamel(eType));
+          setLoading(false);
+        },
       })
     );
   };
@@ -75,9 +82,9 @@ function ImportKey({ createImportRef, modalRef, accountsModalRef }: Props) {
           style={styles.inputStyle}
           onChangeText={handleOnChangeKey}
         />
-        {error && (
+        {errorType && (
           <Text type="caption" style={styles.error}>
-            {t('createImportAccount.invalidKey')}
+            {t(`createImportAccount.${errorType}`)}
           </Text>
         )}
         <RainbowButton
