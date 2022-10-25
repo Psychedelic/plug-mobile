@@ -29,7 +29,7 @@ const ImportSeedPhrase = ({
   const { goBack } = navigation;
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const { saveBiometrics } = useKeychain();
+  const { saveBiometrics, resetBiometrics } = useKeychain();
   const { icpPrice } = useAppSelector(state => state.icp);
   const { password, shouldSaveBiometrics } = route?.params || {};
 
@@ -63,6 +63,8 @@ const ImportSeedPhrase = ({
         onSuccess: async () => {
           if (shouldSaveBiometrics) {
             await saveBiometrics(password);
+          } else {
+            resetBiometrics();
           }
           setImportingWallet(false);
           setError(false);
