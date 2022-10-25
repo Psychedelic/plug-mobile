@@ -11,6 +11,7 @@ import KeyboardScrollView from '@/components/common/KeyboardScrollView';
 import Text from '@/components/common/Text';
 import { TestIds } from '@/constants/testIds';
 import useKeychain from '@/hooks/useKeychain';
+import { ScreenProps } from '@/interfaces/navigation';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -19,7 +20,10 @@ import { clear, importWallet } from '@/redux/slices/keyring';
 
 import styles from './styles';
 
-const ImportSeedPhrase = ({ navigation, route }) => {
+const ImportSeedPhrase = ({
+  navigation,
+  route,
+}: ScreenProps<Routes.IMPORT_SEED_PHRASE>) => {
   const { goBack } = navigation;
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
@@ -29,7 +33,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
 
   const [error, setError] = useState(false);
   const [importingWallet, setImportingWallet] = useState(false);
-  const [seedPhrase, setSeedPhrase] = useState(null);
+  const [seedPhrase, setSeedPhrase] = useState<string>();
   const [invalidSeedPhrase, setInvalidSeedPhrase] = useState(false);
 
   useEffect(() => {
@@ -48,7 +52,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
     dispatch(
       importWallet({
         icpPrice,
-        mnemonic: seedPhrase,
+        mnemonic: seedPhrase!,
         password,
         onError: () => {
           setError(true);
@@ -67,12 +71,12 @@ const ImportSeedPhrase = ({ navigation, route }) => {
   };
 
   const isMnemonicValid =
-    seedPhrase !== null &&
+    !!seedPhrase &&
     seedPhrase.trim().split(/\s+/g).length === 12 &&
     !invalidSeedPhrase;
 
-  const onChangeText = e => {
-    setSeedPhrase(e);
+  const onChangeText = (text: string) => {
+    setSeedPhrase(text);
     setInvalidSeedPhrase(false);
   };
 
@@ -81,9 +85,11 @@ const ImportSeedPhrase = ({ navigation, route }) => {
       <Header
         left={<ActionButton onPress={goBack} label={t('common.back')} />}
         center={
-          <View style={styles.plugLogoContainer}>
-            <Image style={styles.plugLogo} source={PlugLogo} />
-          </View>
+          <Image
+            style={styles.plugLogo}
+            source={PlugLogo}
+            resizeMode="contain"
+          />
         }
       />
       <KeyboardScrollView keyboardShouldPersistTaps="always">

@@ -1,13 +1,25 @@
 import { HeaderHeightContext } from '@react-navigation/elements';
 import React from 'react';
+import { ScrollViewProps } from 'react-native';
 import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
   ScrollView,
+  StyleProp,
+  ViewStyle,
 } from 'react-native';
 
 import styles from './styles';
+
+interface Props extends ScrollViewProps {
+  children: React.ReactNode;
+  keyboardStyle?: StyleProp<ViewStyle>;
+  safeAreaStyle?: StyleProp<ViewStyle>;
+  scrollviewRef?: React.RefObject<ScrollView>;
+  scrollViewProps?: any;
+  contentStyle?: StyleProp<ViewStyle>;
+}
 
 function KeyboardScrollView({
   children,
@@ -17,7 +29,7 @@ function KeyboardScrollView({
   scrollviewRef,
   scrollViewProps,
   contentStyle,
-}) {
+}: Props) {
   return (
     <HeaderHeightContext.Consumer>
       {headerHeight => (

@@ -31,14 +31,10 @@ export default StyleSheet.create({
   button: {
     marginTop: 30,
   },
-  plugLogoContainer: {
-    width: 70,
-    height: 33,
-  },
+
   plugLogo: {
     flex: 1,
-    width: null,
-    height: null,
-    resizeMode: 'contain',
+    width: 70,
+    height: 33,
   },
 });
