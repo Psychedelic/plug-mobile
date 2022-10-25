@@ -52,8 +52,8 @@ export default StyleSheet.create({
   },
   plugLogo: {
     flex: 1,
-    width: null,
-    height: null,
+    width: undefined,
+    height: undefined,
     resizeMode: 'contain',
   },
 });

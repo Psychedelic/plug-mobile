@@ -12,8 +12,11 @@ export type RootStackParamList = {
   [Routes.LOGIN_SCREEN]: { manualLock: boolean };
   [Routes.WELCOME_SCREEN]: undefined;
   [Routes.CREATE_PASSWORD]: undefined;
-  [Routes.IMPORT_SEED_PHRASE]: undefined;
-  [Routes.BACKUP_SEED_PHRASE]: undefined;
+  [Routes.IMPORT_SEED_PHRASE]: {
+    password: string;
+    shouldSaveBiometrics: boolean;
+  };
+  [Routes.BACKUP_SEED_PHRASE]: { mnemonic: string };
   [Routes.CONNECTION_ERROR]: undefined;
   [Routes.WALLET_CONNECT_INITIAL_CONNECTION]: WalletConnectCallRequest;
   [Routes.WALLET_CONNECT_FLOWS]: undefined;

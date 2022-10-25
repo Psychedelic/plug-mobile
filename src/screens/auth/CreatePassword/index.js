@@ -27,7 +27,7 @@ import styles from './styles';
 
 const CreatePassword = ({ route, navigation }) => {
   const { t } = useTranslation();
-  const { isSensorAvailable, saveBiometrics } = useKeychain();
+  const { isSensorAvailable, saveBiometrics, resetBiometrics } = useKeychain();
   const {
     control,
     handleSubmit,
@@ -58,8 +58,8 @@ const CreatePassword = ({ route, navigation }) => {
   const handleCreate = async data => {
     const password = data?.password;
     setLoading(true);
+    const shouldSaveBiometrics = biometryAvailable && biometrics;
     if (flow === 'import') {
-      const shouldSaveBiometrics = biometryAvailable && biometrics;
       navigation.navigate(Routes.IMPORT_SEED_PHRASE, {
         password,
         shouldSaveBiometrics,
@@ -71,8 +71,10 @@ const CreatePassword = ({ route, navigation }) => {
           .unwrap()
           .then(async result => {
             if (result?.mnemonic) {
-              if (biometryAvailable && biometrics) {
+              if (shouldSaveBiometrics) {
                 await saveBiometrics(password);
+              } else {
+                resetBiometrics();
               }
               navigation.navigate(Routes.BACKUP_SEED_PHRASE, {
                 mnemonic: result.mnemonic,

@@ -1,7 +1,7 @@
 import { BlurView } from '@react-native-community/blur';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, View } from 'react-native';
+import { Image, Pressable, View } from 'react-native';
 
 import KeyImg from '@/assets/icons/key.png';
 import ListItem from '@/commonComponents/ListItem';
@@ -11,7 +11,12 @@ import { TestIds } from '@/constants/testIds';
 import Text from '../Text';
 import styles from './styles';
 
-const SeedPhrase = ({ mnemonic, onReveal = () => null }) => {
+interface Props {
+  mnemonic: string[];
+  onReveal?: () => void;
+}
+
+const SeedPhrase = ({ mnemonic, onReveal = () => {} }: Props) => {
   const { t } = useTranslation();
   const [reveal, setReveal] = useState(false);
   const revealSeedPhrase = () => {
@@ -20,11 +25,11 @@ const SeedPhrase = ({ mnemonic, onReveal = () => null }) => {
   };
 
   return (
-    <View
+    <Pressable
       style={styles.container}
       onPress={revealSeedPhrase}
       testID={TestIds.COMMON.SEED_PHRASE_VIEW}>
-      {mnemonic.map((word, i) => (
+      {mnemonic.map((word: string, i: number) => (
         <View style={styles.item} key={word}>
           <ListItem number={i + 1} text={word} />
         </View>
@@ -33,7 +38,7 @@ const SeedPhrase = ({ mnemonic, onReveal = () => null }) => {
         <>
           <BlurView
             style={styles.absolute}
-            blurType={'dark'}
+            blurType="dark"
             reducedTransparencyFallbackColor="black"
             overlayColor="transparent">
             <Touchable onPress={revealSeedPhrase} style={styles.absolute}>
@@ -43,7 +48,7 @@ const SeedPhrase = ({ mnemonic, onReveal = () => null }) => {
           </BlurView>
         </>
       )}
-    </View>
+    </Pressable>
   );
 };
 

@@ -29,4 +29,8 @@ export default StyleSheet.create({
     marginTop: 30,
     alignSelf: 'center',
   },
+  logo: {
+    width: 70,
+    height: 33,
+  },
 });
