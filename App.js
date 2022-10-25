@@ -15,11 +15,13 @@ import {
   getVersion,
 } from 'react-native-device-info';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ToastProvider } from 'react-native-toast-notifications';
 import { Provider } from 'react-redux';
 import Reactotron from 'reactotron-react-native';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import ErrorBoundary from '@/commonComponents/ErrorBoundary';
+import { ErrorBoundary } from '@/components/common';
+import { toastProps } from '@/components/common/Toast';
 import { isIos } from '@/constants/platform';
 import Routes from '@/navigation';
 import { useAppDispatch } from '@/redux/hooks';
@@ -93,13 +95,15 @@ const PersistedApp = () => {
     <PersistGate loading={null} persistor={persistor}>
       <ErrorBoundary>
         <SafeAreaProvider>
-          <StatusBar barStyle="light-content" backgroundColor="black" />
-          {showRoutes && (
-            <Routes
-              routingInstrumentation={routingInstrumentation}
-              ref={navigationRef}
-            />
-          )}
+          <ToastProvider {...toastProps}>
+            <StatusBar barStyle="light-content" backgroundColor="black" />
+            {showRoutes && (
+              <Routes
+                routingInstrumentation={routingInstrumentation}
+                ref={navigationRef}
+              />
+            )}
+          </ToastProvider>
         </SafeAreaProvider>
       </ErrorBoundary>
     </PersistGate>

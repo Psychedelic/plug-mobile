@@ -27,3 +27,4 @@ export { default as TextInput } from './TextInput';
 export { default as Touchable } from './Touchable';
 export { default as UserIcon } from './UserIcon';
 export { default as CustomCheckbox } from './CustomCheckbox';
+export { default as Toast } from './Toast';
