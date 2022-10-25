@@ -83,20 +83,29 @@ function ExportPem({ modalRef }: Props) {
           await FileSystem.writeFile(path, content);
 
           if (isIos) {
-            Share.share({
+            const response = await Share.share({
               url: path,
               title: fileName,
             });
+            if (response.action === Share.sharedAction) {
+              toast.showSuccess(
+                t('exportPem.success.title'),
+                t('exportPem.success.messageIos')
+              );
+            } else {
+              toast.showError(
+                t('exportPem.error.title'),
+                t('exportPem.error.message')
+              );
+            }
           } else {
             await FileSystem.cpExternal(path, fileName, 'downloads');
+            toast.showSuccess(
+              t('exportPem.success.title'),
+              t('exportPem.success.messageAndroid')
+            );
           }
           modalRef.current?.close();
-          toast.showSuccess(
-            t('exportPem.success.title'),
-            isIos
-              ? t('exportPem.success.messageIos')
-              : t('exportPem.success.messageAndroid')
-          );
         },
       })
     );

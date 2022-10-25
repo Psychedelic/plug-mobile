@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useToast } from 'react-native-toast-notifications';
 
+import { isIos } from '@/constants/platform';
 import { Colors } from '@/constants/theme';
 import Close from '@/icons/material/Close.svg';
 import ErrorIcon from '@/icons/svg/ErrorIcon.svg';
@@ -23,12 +24,13 @@ export interface ToastProps {
   title: string;
   message: string;
   type: 'success' | 'error' | 'info';
+  id: string;
 }
 
 export const toastProps = {
   placement: 'top',
-  offset: 35,
-  renderToast: (toast: any) => <Toast {...toast.data} />,
+  offset: isIos ? 55 : 35,
+  renderToast: (toast: any) => <Toast id={toast.id} {...toast.data} />,
 };
 
 const getToastStyles = (type: ToastTypes) => {
@@ -42,11 +44,11 @@ const getToastStyles = (type: ToastTypes) => {
   }
 };
 
-function Toast({ title, message, type }: ToastProps) {
+function Toast({ title, message, type, id }: ToastProps) {
   const toast = useToast();
   const { Icon, colors } = getToastStyles(type as ToastTypes);
 
-  const handleClose = () => toast.hideAll();
+  const handleClose = () => toast.hide(id);
 
   return (
     <LinearGradient colors={colors} style={styles.container}>
