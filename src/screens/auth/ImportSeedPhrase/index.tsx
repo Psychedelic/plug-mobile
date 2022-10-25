@@ -3,12 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
 
 import PlugLogo from '@/assets/icons/plug-logo-full.png';
-import Header from '@/commonComponents/Header';
-import TextInput from '@/commonComponents/TextInput';
 import RainbowButton from '@/components/buttons/RainbowButton';
-import ActionButton from '@/components/common/ActionButton';
-import KeyboardScrollView from '@/components/common/KeyboardScrollView';
-import Text from '@/components/common/Text';
+import {
+  ActionButton,
+  Header,
+  KeyboardScrollView,
+  Text,
+  TextInput,
+} from '@/components/common';
 import { TestIds } from '@/constants/testIds';
 import useKeychain from '@/hooks/useKeychain';
 import { ScreenProps } from '@/interfaces/navigation';

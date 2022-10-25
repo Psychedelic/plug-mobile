@@ -27,7 +27,7 @@ const SwipeNavigator = () => {
   const goToLogin = () => {
     navigation.reset({
       index: 1,
-      routes: [{ name: Routes.LOGIN_SCREEN, params: { manualLock: true } }],
+      routes: [{ name: Routes.LOGIN, params: { manualLock: true } }],
     });
   };
 
@@ -45,7 +45,7 @@ const SwipeNavigator = () => {
       initialRouteName={Routes.TOKENS}
       tabBarPosition="bottom"
       tabBar={renderBottom}>
-      <Swipe.Screen component={ProfileScreen} name={Routes.PROFILE_SCREEN} />
+      <Swipe.Screen component={ProfileScreen} name={Routes.PROFILE} />
       <Swipe.Screen component={Tokens} name={Routes.TOKENS} />
       {ENABLE_NFTS && <Swipe.Screen component={NFTs} name={Routes.NFTS} />}
     </Swipe.Navigator>

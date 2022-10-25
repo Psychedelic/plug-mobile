@@ -36,7 +36,7 @@ const translations = {
   routes: {
     [Routes.NFTS]: 'Collectibles',
     [Routes.TOKENS]: 'Tokens',
-    [Routes.PROFILE_SCREEN]: 'Profile',
+    [Routes.PROFILE]: 'Profile',
     [Routes.SETTINGS]: 'Settings',
     [Routes.CONTACTS]: 'Contacts',
     [Routes.APPROVED_CANISTERS]: 'Approved Canisters',

@@ -20,7 +20,7 @@ import { login } from '@/redux/slices/keyring';
 
 import styles from './styles';
 
-function Login({ route, navigation }: ScreenProps<Routes.LOGIN_SCREEN>) {
+function Login({ route, navigation }: ScreenProps<Routes.LOGIN>) {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const isManualLock = route?.params?.manualLock || false;
@@ -52,7 +52,7 @@ function Login({ route, navigation }: ScreenProps<Routes.LOGIN_SCREEN>) {
 
   const handleGoToWelcome = () => {
     clearState();
-    navigation.navigate(Routes.WELCOME_SCREEN);
+    navigation.navigate(Routes.WELCOME);
   };
 
   const handleSubmit = async (submittedPassword: string) => {

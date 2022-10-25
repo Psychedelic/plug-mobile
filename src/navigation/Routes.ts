@@ -2,11 +2,11 @@ enum Routes {
   // Tabs Screens:
   NFTS = 'NFTs',
   TOKENS = 'Tokens',
-  PROFILE_SCREEN = 'Profile',
+  PROFILE = 'Profile',
   SWIPE_LAYOUT = 'SwipeLayout',
   // Auth Screens:
-  LOGIN_SCREEN = 'LoginScreen',
-  WELCOME_SCREEN = 'WelcomeScreen',
+  LOGIN = 'Login',
+  WELCOME = 'Welcome',
   CREATE_PASSWORD = 'CreatePassword',
   IMPORT_SEED_PHRASE = 'ImportSeedPhrase',
   BACKUP_SEED_PHRASE = 'BackupSeedPhrase',

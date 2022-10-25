@@ -26,16 +26,16 @@ function RootStackNavigator() {
   const initialRoute = keyring.isInitialized
     ? keyring.isUnlocked
       ? Routes.SWIPE_LAYOUT
-      : Routes.LOGIN_SCREEN
-    : Routes.WELCOME_SCREEN;
+      : Routes.LOGIN
+    : Routes.WELCOME;
 
   return (
     <Stack.Navigator
       initialRouteName={initialRoute}
       screenOptions={rootStackOptions}>
       <Stack.Group>
-        <Stack.Screen name={Routes.WELCOME_SCREEN} component={Welcome} />
-        <Stack.Screen name={Routes.LOGIN_SCREEN} component={Login} />
+        <Stack.Screen name={Routes.WELCOME} component={Welcome} />
+        <Stack.Screen name={Routes.LOGIN} component={Login} />
         <Stack.Screen
           name={Routes.CREATE_PASSWORD}
           component={CreatePassword}

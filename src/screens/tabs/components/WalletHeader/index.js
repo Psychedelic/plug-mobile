@@ -79,7 +79,7 @@ const WalletHeader = () => {
   const handleGoToProfile = () => {
     if (!navigated) {
       setNavigated(true);
-      navigation.jumpTo(Routes.PROFILE_SCREEN);
+      navigation.jumpTo(Routes.PROFILE);
     }
   };
 

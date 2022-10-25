@@ -16,7 +16,3 @@ export const createPasswordRules = {
     message: t('validations.passMinLength'),
   },
 };
-
-export const createPasswordFields = {
-  password: 'password',
-};
