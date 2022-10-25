@@ -37,6 +37,7 @@ export const settingsStackOptions = (): StackNavigationOptions => ({
   headerStyle: {
     height: 60,
   },
+  headerMode: 'float',
   presentation: 'card',
   cardStyle: {
     backgroundColor: Colors.Black.Pure,
