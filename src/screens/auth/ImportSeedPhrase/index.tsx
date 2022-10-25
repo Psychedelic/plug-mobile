@@ -3,14 +3,17 @@ import { useTranslation } from 'react-i18next';
 import { Image, View } from 'react-native';
 
 import PlugLogo from '@/assets/icons/plug-logo-full.png';
-import Header from '@/commonComponents/Header';
-import TextInput from '@/commonComponents/TextInput';
 import RainbowButton from '@/components/buttons/RainbowButton';
-import ActionButton from '@/components/common/ActionButton';
-import KeyboardScrollView from '@/components/common/KeyboardScrollView';
-import Text from '@/components/common/Text';
+import {
+  ActionButton,
+  Header,
+  KeyboardScrollView,
+  Text,
+  TextInput,
+} from '@/components/common';
 import { TestIds } from '@/constants/testIds';
 import useKeychain from '@/hooks/useKeychain';
+import { ScreenProps } from '@/interfaces/navigation';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -19,17 +22,20 @@ import { clear, importWallet } from '@/redux/slices/keyring';
 
 import styles from './styles';
 
-const ImportSeedPhrase = ({ navigation, route }) => {
+const ImportSeedPhrase = ({
+  navigation,
+  route,
+}: ScreenProps<Routes.IMPORT_SEED_PHRASE>) => {
   const { goBack } = navigation;
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const { saveBiometrics } = useKeychain();
+  const { saveBiometrics, resetBiometrics } = useKeychain();
   const { icpPrice } = useAppSelector(state => state.icp);
   const { password, shouldSaveBiometrics } = route?.params || {};
 
   const [error, setError] = useState(false);
   const [importingWallet, setImportingWallet] = useState(false);
-  const [seedPhrase, setSeedPhrase] = useState(null);
+  const [seedPhrase, setSeedPhrase] = useState<string>();
   const [invalidSeedPhrase, setInvalidSeedPhrase] = useState(false);
 
   useEffect(() => {
@@ -48,7 +54,7 @@ const ImportSeedPhrase = ({ navigation, route }) => {
     dispatch(
       importWallet({
         icpPrice,
-        mnemonic: seedPhrase,
+        mnemonic: seedPhrase!,
         password,
         onError: () => {
           setError(true);
@@ -57,6 +63,8 @@ const ImportSeedPhrase = ({ navigation, route }) => {
         onSuccess: async () => {
           if (shouldSaveBiometrics) {
             await saveBiometrics(password);
+          } else {
+            resetBiometrics();
           }
           setImportingWallet(false);
           setError(false);
@@ -67,12 +75,12 @@ const ImportSeedPhrase = ({ navigation, route }) => {
   };
 
   const isMnemonicValid =
-    seedPhrase !== null &&
+    !!seedPhrase &&
     seedPhrase.trim().split(/\s+/g).length === 12 &&
     !invalidSeedPhrase;
 
-  const onChangeText = e => {
-    setSeedPhrase(e);
+  const onChangeText = (text: string) => {
+    setSeedPhrase(text);
     setInvalidSeedPhrase(false);
   };
 
@@ -81,9 +89,11 @@ const ImportSeedPhrase = ({ navigation, route }) => {
       <Header
         left={<ActionButton onPress={goBack} label={t('common.back')} />}
         center={
-          <View style={styles.plugLogoContainer}>
-            <Image style={styles.plugLogo} source={PlugLogo} />
-          </View>
+          <Image
+            style={styles.plugLogo}
+            source={PlugLogo}
+            resizeMode="contain"
+          />
         }
       />
       <KeyboardScrollView keyboardShouldPersistTaps="always">

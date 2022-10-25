@@ -12,14 +12,13 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    backgroundColor: Colors.Black.primary,
+    backgroundColor: Colors.Black.Primary,
     padding: 30,
     width: '100%',
     flex: 1,
   },
   plugIcon: {
     height: pixelRatioScale(30),
-    resizeMode: 'contain',
   },
   title: {
     ...fontMaker({
@@ -43,14 +42,14 @@ export default StyleSheet.create({
     color: 'red',
   },
   moreOptionsButton: {
-    backgroundColor: null,
+    backgroundColor: 'transparent',
     flexDirection: 'row',
   },
   moreOptionsIcon: {
     marginLeft: 11,
   },
   biometricsButton: {
-    backgroundColor: null,
+    backgroundColor: 'transparent',
     flexDirection: 'row-reverse',
   },
   biometricsIcon: {

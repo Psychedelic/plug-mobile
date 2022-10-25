@@ -84,7 +84,7 @@ const ReviewSend = ({
 
   const handleGoToActivity = () => {
     handleClose();
-    navigation.navigate(Routes.PROFILE_SCREEN);
+    navigation.navigate(Routes.PROFILE);
   };
 
   const { title, ReviewIcon } = useMemo(

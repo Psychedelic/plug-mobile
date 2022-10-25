@@ -46,14 +46,8 @@ export default StyleSheet.create({
   passwordInput: {
     marginTop: 28,
   },
-  plugLogoContainer: {
+  plugLogo: {
     width: 70,
     height: 33,
-  },
-  plugLogo: {
-    flex: 1,
-    width: null,
-    height: null,
-    resizeMode: 'contain',
   },
 });

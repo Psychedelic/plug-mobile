@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, ScrollView, View } from 'react-native';
+import { Image, ScrollView } from 'react-native';
 
 import PlugLogo from '@/assets/icons/plug-logo-full.png';
 import Copy from '@/commonComponents/Copy';
 import Header from '@/commonComponents/Header';
 import SeedPhrase from '@/commonComponents/SeedPhrase';
 import RainbowButton from '@/components/buttons/RainbowButton';
-import ActionButton from '@/components/common/ActionButton';
 import Text from '@/components/common/Text';
+import { ScreenProps } from '@/interfaces/navigation';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 
 import styles from './styles';
 
-const BackupSeedPhrase = ({ route, navigation }) => {
-  const { goBack } = navigation;
+const BackupSeedPhrase = ({
+  route,
+  navigation,
+}: ScreenProps<Routes.BACKUP_SEED_PHRASE>) => {
   const { t } = useTranslation();
   const { mnemonic } = route?.params || {};
   const [revealed, setRevealed] = useState(false);
@@ -26,19 +28,8 @@ const BackupSeedPhrase = ({ route, navigation }) => {
   return (
     <Container>
       <Header
-        left={<ActionButton onPress={goBack} label={t('common.back')} />}
         center={
-          <View style={{ width: 70, height: 33 }}>
-            <Image
-              style={{
-                flex: 1,
-                width: null,
-                height: null,
-                resizeMode: 'contain',
-              }}
-              source={PlugLogo}
-            />
-          </View>
+          <Image style={styles.logo} source={PlugLogo} resizeMode="contain" />
         }
       />
       <ScrollView

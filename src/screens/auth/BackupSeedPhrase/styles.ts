@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-import { Colors, FontStyles } from '@/constants/theme';
+import { FontStyles } from '@/constants/theme';
 
 export default StyleSheet.create({
   title: {
@@ -8,37 +8,29 @@ export default StyleSheet.create({
     marginTop: 20,
     textAlign: 'center',
   },
-  errorText: {
-    marginTop: 10,
-    color: 'red',
-  },
   subtitle: {
     ...FontStyles.NormalGray,
-    marginTop: 5,
+    marginTop: 10,
+    marginBottom: 30,
     textAlign: 'center',
   },
   container: {
     flex: 1,
+  },
+  contentContainer: {
     paddingHorizontal: 30,
-  },
-  input: {
-    marginTop: 30,
-    height: 100,
-  },
-  inputContainer: {
-    backgroundColor: Colors.Gray.Secondary,
+    width: '100%',
   },
   button: {
     marginTop: 30,
+    marginBottom: 45,
   },
-  plugLogoContainer: {
+  copy: {
+    marginTop: 30,
+    alignSelf: 'center',
+  },
+  logo: {
     width: 70,
     height: 33,
-  },
-  plugLogo: {
-    flex: 1,
-    width: null,
-    height: null,
-    resizeMode: 'contain',
   },
 });

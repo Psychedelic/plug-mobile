@@ -5,35 +5,36 @@ import { useTranslation } from 'react-i18next';
 import { Image, Keyboard, Switch, View } from 'react-native';
 
 import PlugLogo from '@/assets/icons/plug-logo-full.png';
-import Header from '@/commonComponents/Header';
-import PasswordInput from '@/commonComponents/PasswordInput';
 import RainbowButton from '@/components/buttons/RainbowButton';
-import ActionButton from '@/components/common/ActionButton';
+import { ActionButton, Header, PasswordInput, Text } from '@/components/common';
 import KeyboardScrollView from '@/components/common/KeyboardScrollView';
-import Text from '@/components/common/Text';
 import { Colors } from '@/constants/theme';
 import useKeychain from '@/hooks/useKeychain';
+import { ScreenProps } from '@/interfaces/navigation';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { createWallet } from '@/redux/slices/keyring';
 
-import {
-  createPasswordFields,
-  createPasswordRules,
-  MIN_LENGTH_MESSAGE,
-} from './constants';
+import { createPasswordRules, MIN_LENGTH_MESSAGE } from './constants';
 import styles from './styles';
 
-const CreatePassword = ({ route, navigation }) => {
+type FormValues = {
+  password: string;
+};
+
+const CreatePassword = ({
+  route,
+  navigation,
+}: ScreenProps<Routes.CREATE_PASSWORD>) => {
   const { t } = useTranslation();
-  const { isSensorAvailable, saveBiometrics } = useKeychain();
+  const { isSensorAvailable, saveBiometrics, resetBiometrics } = useKeychain();
   const {
     control,
     handleSubmit,
     formState: { errors },
     getValues,
-  } = useForm({
+  } = useForm<FormValues>({
     defaultValues: { password: '' },
     mode: 'onChange',
     criteriaMode: 'all',
@@ -51,15 +52,15 @@ const CreatePassword = ({ route, navigation }) => {
 
   useEffect(() => {
     isSensorAvailable().then(isAvailable => {
-      setBiometryAvailable(isAvailable);
+      setBiometryAvailable(!!isAvailable);
     });
   }, []);
 
-  const handleCreate = async data => {
-    const password = data?.password;
+  const handleCreate = async (data: FormValues) => {
+    const password = data.password;
     setLoading(true);
+    const shouldSaveBiometrics = biometryAvailable && biometrics;
     if (flow === 'import') {
-      const shouldSaveBiometrics = biometryAvailable && biometrics;
       navigation.navigate(Routes.IMPORT_SEED_PHRASE, {
         password,
         shouldSaveBiometrics,
@@ -71,8 +72,10 @@ const CreatePassword = ({ route, navigation }) => {
           .unwrap()
           .then(async result => {
             if (result?.mnemonic) {
-              if (biometryAvailable && biometrics) {
+              if (shouldSaveBiometrics) {
                 await saveBiometrics(password);
+              } else {
+                resetBiometrics();
               }
               navigation.navigate(Routes.BACKUP_SEED_PHRASE, {
                 mnemonic: result.mnemonic,
@@ -93,9 +96,11 @@ const CreatePassword = ({ route, navigation }) => {
           <ActionButton onPress={() => goBack()} label={t('common.back')} />
         }
         center={
-          <View style={styles.plugLogoContainer}>
-            <Image style={styles.plugLogo} source={PlugLogo} />
-          </View>
+          <Image
+            style={styles.plugLogo}
+            source={PlugLogo}
+            resizeMode="contain"
+          />
         }
       />
       <KeyboardScrollView keyboardShouldPersistTaps="always">
@@ -103,7 +108,7 @@ const CreatePassword = ({ route, navigation }) => {
           <Text style={styles.title}>{t('createPassword.title')}</Text>
           <Text style={styles.subtitle}>{t('createPassword.subtitle')}</Text>
           <Controller
-            name={createPasswordFields.password}
+            name="password"
             control={control}
             rules={createPasswordRules}
             render={({ field: { onChange, onBlur, value } }) => (
@@ -123,7 +128,7 @@ const CreatePassword = ({ route, navigation }) => {
           />
           <ErrorMessage
             errors={errors}
-            name={createPasswordFields.password}
+            name="password"
             render={({ message, messages }) => {
               const choosenMessage = messages?.pattern
                 ? messages?.pattern
@@ -135,7 +140,7 @@ const CreatePassword = ({ route, navigation }) => {
                 <Text
                   style={[
                     styles.errorText,
-                    warningMessage && styles.warningText,
+                    !!warningMessage && styles.warningText,
                   ]}>
                   {choosenMessage}
                 </Text>

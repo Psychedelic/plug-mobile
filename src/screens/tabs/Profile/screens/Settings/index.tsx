@@ -53,7 +53,7 @@ function Settings({ navigation }: ScreenProps<Routes.SETTINGS>) {
     deleteWalletRef.current?.close();
     navigation.reset({
       index: 0,
-      routes: [{ name: Routes.WELCOME_SCREEN }],
+      routes: [{ name: Routes.WELCOME }],
     });
   };
 

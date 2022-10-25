@@ -11,6 +11,7 @@ import Text from '@/components/common/Text';
 import { isValidPassword } from '@/constants/general';
 import { Colors } from '@/constants/theme';
 import useKeychain from '@/hooks/useKeychain';
+import { ScreenProps } from '@/interfaces/navigation';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -19,7 +20,7 @@ import { login } from '@/redux/slices/keyring';
 
 import styles from './styles';
 
-function Login({ route, navigation }) {
+function Login({ route, navigation }: ScreenProps<Routes.LOGIN>) {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const isManualLock = route?.params?.manualLock || false;
@@ -51,10 +52,10 @@ function Login({ route, navigation }) {
 
   const handleGoToWelcome = () => {
     clearState();
-    navigation.navigate(Routes.WELCOME_SCREEN);
+    navigation.navigate(Routes.WELCOME);
   };
 
-  const handleSubmit = async submittedPassword => {
+  const handleSubmit = async (submittedPassword: string) => {
     setLoading(true);
     setError(false);
     Keyboard.dismiss();
@@ -92,7 +93,7 @@ function Login({ route, navigation }) {
   return (
     <Container>
       <KeyboardScrollView contentStyle={styles.container}>
-        <Image source={Plug} style={styles.plugIcon} />
+        <Image source={Plug} style={styles.plugIcon} resizeMode="contain" />
         <View>
           <Text style={styles.title}>{t('login.unlock')}</Text>
         </View>
@@ -111,7 +112,7 @@ function Login({ route, navigation }) {
           disabled={!isValidPassword(password)}
           buttonStyle={styles.buttonMargin}
         />
-        {!biometricsAvailable && !usingBiometrics && (
+        {biometricsAvailable && usingBiometrics && (
           <Button
             iconName="faceIdIcon"
             text={t('login.signInBiometric')}

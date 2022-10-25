@@ -7,13 +7,16 @@ import { ConnectedApp, WalletConnectCallRequest } from './redux';
 export type RootStackParamList = {
   [Routes.NFTS]: undefined;
   [Routes.TOKENS]: undefined;
-  [Routes.PROFILE_SCREEN]: undefined;
+  [Routes.PROFILE]: undefined;
   [Routes.SWIPE_LAYOUT]: undefined;
-  [Routes.LOGIN_SCREEN]: { manualLock: boolean };
-  [Routes.WELCOME_SCREEN]: undefined;
-  [Routes.CREATE_PASSWORD]: undefined;
-  [Routes.IMPORT_SEED_PHRASE]: undefined;
-  [Routes.BACKUP_SEED_PHRASE]: undefined;
+  [Routes.LOGIN]: { manualLock: boolean };
+  [Routes.WELCOME]: undefined;
+  [Routes.CREATE_PASSWORD]: { flow: 'create' | 'import' };
+  [Routes.IMPORT_SEED_PHRASE]: {
+    password: string;
+    shouldSaveBiometrics: boolean;
+  };
+  [Routes.BACKUP_SEED_PHRASE]: { mnemonic: string };
   [Routes.CONNECTION_ERROR]: undefined;
   [Routes.WALLET_CONNECT_INITIAL_CONNECTION]: WalletConnectCallRequest;
   [Routes.WALLET_CONNECT_FLOWS]: undefined;
