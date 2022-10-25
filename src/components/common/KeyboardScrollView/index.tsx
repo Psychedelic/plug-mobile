@@ -12,12 +12,18 @@ import {
 
 import styles from './styles';
 
-interface Props extends ScrollViewProps {
+interface Props {
   children: React.ReactNode;
+  keyboardShouldPersistTaps?:
+    | boolean
+    | 'always'
+    | 'never'
+    | 'handled'
+    | undefined;
   keyboardStyle?: StyleProp<ViewStyle>;
   safeAreaStyle?: StyleProp<ViewStyle>;
   scrollviewRef?: React.RefObject<ScrollView>;
-  scrollViewProps?: any;
+  scrollViewProps?: ScrollViewProps;
   contentStyle?: StyleProp<ViewStyle>;
 }
 
