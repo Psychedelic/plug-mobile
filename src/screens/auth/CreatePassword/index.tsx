@@ -96,9 +96,11 @@ const CreatePassword = ({
           <ActionButton onPress={() => goBack()} label={t('common.back')} />
         }
         center={
-          <View style={styles.plugLogoContainer}>
-            <Image style={styles.plugLogo} source={PlugLogo} />
-          </View>
+          <Image
+            style={styles.plugLogo}
+            source={PlugLogo}
+            resizeMode="contain"
+          />
         }
       />
       <KeyboardScrollView keyboardShouldPersistTaps="always">
