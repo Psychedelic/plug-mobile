@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 
+import { SEMIBOLD } from '@/constants/fonts';
 import { Colors } from '@/constants/theme';
+import { fontMaker } from '@/utils/fonts';
 export default StyleSheet.create({
   container: {
     width: '92%',
@@ -14,15 +16,15 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
   },
   message: {
-    fontSize: 14,
-    color: Colors.White.Primary,
+    color: Colors.White.Pure,
+    opacity: 0.8,
   },
   title: {
     marginLeft: 10,
-    fontSize: 14,
-    color: Colors.White.Pure,
+    ...fontMaker({ size: 14, color: Colors.White.Pure, weight: SEMIBOLD }),
   },
   titleContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
 });

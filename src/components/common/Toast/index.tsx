@@ -1,9 +1,10 @@
 import React from 'react';
 import { View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useToast } from 'react-native-toast-notifications';
 
-import { isIos } from '@/constants/platform';
+import { isAndroid } from '@/constants/platform';
 import { Colors } from '@/constants/theme';
 import Close from '@/icons/material/Close.svg';
 import ErrorIcon from '@/icons/svg/ErrorIcon.svg';
@@ -29,7 +30,6 @@ export interface ToastProps {
 
 export const toastProviderProps = {
   placement: 'top',
-  offset: isIos ? 55 : 35,
   renderToast: (toast: any) => <Toast id={toast.id} {...toast.data} />,
 };
 
@@ -47,15 +47,17 @@ const getToastStyles = (type: ToastTypes) => {
 function Toast({ title, message, type, id }: ToastProps) {
   const toast = useToast();
   const { Icon, colors } = getToastStyles(type as ToastTypes);
-
+  const { top } = useSafeAreaInsets();
   const handleClose = () => toast.hide(id);
 
   return (
-    <LinearGradient colors={colors} style={styles.container}>
+    <LinearGradient
+      colors={colors}
+      style={[styles.container, { marginTop: isAndroid ? 25 : top }]}>
       <View style={styles.headerContainer}>
         <View style={styles.titleContainer}>
           <Icon height={20} width={20} />
-          <Text type="headline1" style={styles.title} numberOfLines={1}>
+          <Text style={styles.title} numberOfLines={1}>
             {title}
           </Text>
         </View>
