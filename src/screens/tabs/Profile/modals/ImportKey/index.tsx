@@ -14,7 +14,6 @@ import {
 import { Nullable } from '@/interfaces/general';
 import { useAppDispatch } from '@/redux/hooks';
 import { validatePem } from '@/redux/slices/keyring';
-import { toCamel } from '@/utils/strings';
 
 import CreateEditAccount from '../CreateEditAccount';
 import styles from './styles';
@@ -25,12 +24,23 @@ interface Props {
   accountsModalRef: RefObject<Modalize>;
 }
 
+const getErrorMessage = (errorType: string) => {
+  switch (errorType) {
+    case 'invalid-key':
+      return t('createImportAccount.invalidKey');
+    default:
+      return t('createImportAccount.addedAccount');
+  }
+};
+
 function ImportKey({ createImportRef, modalRef, accountsModalRef }: Props) {
+  const dispatch = useAppDispatch();
   const createEditAccount = useRef<Modalize>(null);
+
+  const [key, setKey] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorType, setErrorType] = useState<Nullable<string>>(null);
-  const [key, setKey] = useState('');
-  const dispatch = useAppDispatch();
+
   const disabled = key === '' || loading || !!errorType;
 
   const handleOnChangeKey = (value: string) => {
@@ -59,7 +69,7 @@ function ImportKey({ createImportRef, modalRef, accountsModalRef }: Props) {
           setLoading(false);
         },
         onFailure: (eType: string) => {
-          setErrorType(toCamel(eType));
+          setErrorType(eType);
           setLoading(false);
         },
       })
@@ -84,7 +94,7 @@ function ImportKey({ createImportRef, modalRef, accountsModalRef }: Props) {
         />
         {errorType && (
           <Text type="caption" style={styles.error}>
-            {t(`createImportAccount.${errorType}`)}
+            {getErrorMessage(errorType)}
           </Text>
         )}
         <RainbowButton
