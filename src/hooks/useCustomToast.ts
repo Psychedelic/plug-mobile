@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useToast } from 'react-native-toast-notifications';
 
 import { ToastTypes } from '@/components/common/Toast';
@@ -5,7 +6,7 @@ import { ToastTypes } from '@/components/common/Toast';
 function useCustomToast() {
   const toast = useToast();
 
-  const showSuccess = (title: string, message: string) => {
+  const showSuccess = useCallback((title: string, message: string) => {
     toast.show(`${ToastTypes.success}-${title}`, {
       data: {
         type: ToastTypes.success,
@@ -13,9 +14,9 @@ function useCustomToast() {
         message,
       },
     });
-  };
+  }, []);
 
-  const showError = (title: string, message: string) => {
+  const showError = useCallback((title: string, message: string) => {
     toast.show(`${ToastTypes.error}-${title}`, {
       data: {
         type: ToastTypes.error,
@@ -23,9 +24,9 @@ function useCustomToast() {
         message,
       },
     });
-  };
+  }, []);
 
-  const showInfo = (title: string, message: string) => {
+  const showInfo = useCallback((title: string, message: string) => {
     toast.show(`${ToastTypes.info}-${title}`, {
       data: {
         type: ToastTypes.info,
@@ -33,7 +34,7 @@ function useCustomToast() {
         message,
       },
     });
-  };
+  }, []);
 
   return { showError, showInfo, showSuccess };
 }

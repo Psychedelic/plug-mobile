@@ -21,7 +21,7 @@ import Reactotron from 'reactotron-react-native';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import { ErrorBoundary } from '@/components/common';
-import { toastProps } from '@/components/common/Toast';
+import { toastProviderProps } from '@/components/common/Toast';
 import { isIos } from '@/constants/platform';
 import Routes from '@/navigation';
 import { useAppDispatch } from '@/redux/hooks';
@@ -95,7 +95,7 @@ const PersistedApp = () => {
     <PersistGate loading={null} persistor={persistor}>
       <ErrorBoundary>
         <SafeAreaProvider>
-          <ToastProvider {...toastProps}>
+          <ToastProvider {...toastProviderProps}>
             <StatusBar barStyle="light-content" backgroundColor="black" />
             {showRoutes && (
               <Routes

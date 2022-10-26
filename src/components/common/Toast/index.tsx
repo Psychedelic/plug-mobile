@@ -27,7 +27,7 @@ export interface ToastProps {
   id: string;
 }
 
-export const toastProps = {
+export const toastProviderProps = {
   placement: 'top',
   offset: isIos ? 55 : 35,
   renderToast: (toast: any) => <Toast id={toast.id} {...toast.data} />,
@@ -36,11 +36,11 @@ export const toastProps = {
 const getToastStyles = (type: ToastTypes) => {
   switch (type) {
     case ToastTypes.success:
-      return { Icon: SuccessIcon, colors: ['#4A763B', '#54AA46'] };
+      return { Icon: SuccessIcon, colors: Colors.Toast.Success };
     case ToastTypes.error:
-      return { Icon: ErrorIcon, colors: ['#9D2F4A', '#EC4765'] };
+      return { Icon: ErrorIcon, colors: Colors.Toast.Error };
     default:
-      return { Icon: InfoIcon, colors: ['#2F539D', '#477DEC'] };
+      return { Icon: InfoIcon, colors: Colors.Toast.Info };
   }
 };
 
