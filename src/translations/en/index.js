@@ -205,6 +205,11 @@ const translations = {
     accountNamePlaceholder: 'Account name',
     edit: 'Edit Account',
     create: 'Create Account',
+    errorImport: {
+      title: 'Error Importing Account',
+      message:
+        'There was an error while importing the account. Please try again.',
+    },
   },
   contacts: {
     title: 'Contacts',
@@ -324,10 +329,21 @@ const translations = {
     importPem: 'PEM File',
     create: 'Create',
     invalidKey: 'Invalid key. Please, try again.',
+    addedAccount: 'Account already added.',
   },
   exportPem: {
     safeCheck: 'I’ll be safe with my DFX Identity.',
     downloadPem: 'Download PEM file',
+    error: {
+      title: 'Error Exporting Account',
+      message:
+        'There was an error while exporting the account. Please try again.',
+    },
+    success: {
+      title: 'Account Successfully Exported',
+      messageIos: 'Your .pem file should be located at the choosen directory.',
+      messageAndroid: 'Your .pem file should be located at Downloads folder.',
+    },
     selectAccount:
       "Select the account you would like to export it's DFX Identity.",
   },

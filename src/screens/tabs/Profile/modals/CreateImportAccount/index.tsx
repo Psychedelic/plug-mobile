@@ -47,18 +47,13 @@ function CreateImportAccount({ accountsModalRef, modalRef }: Props) {
   };
 
   const openFile = async () => {
-    try {
-      const type = isIos
-        ? 'public.x509-certificate'
-        : ['.pem', 'application/x-pem-file'];
-      const res = await DocumentPicker.pickSingle({ type });
+    const type = isIos
+      ? 'public.x509-certificate'
+      : ['.pem', 'application/x-pem-file'];
+    const res = await DocumentPicker.pickSingle({ type });
 
-      const stringifyPEM = await FileSystem.readFile(res.uri);
-      setPemFile(stringifyPEM, openCreateAccountModal);
-    } catch (e) {
-      // TODO: Add toast to handle this error.
-      console.log('Error opening .pem');
-    }
+    const stringifyPEM = await FileSystem.readFile(res.uri);
+    setPemFile(stringifyPEM, openCreateAccountModal);
   };
 
   const renderButton = ({ id, title, onPress, icon, colors }: Button) => (

@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native';
 
-import { FontStyles, Metrics } from '@/constants/theme';
+import { FontStyles } from '@/constants/theme';
 
 export default StyleSheet.create({
   title: {
-    paddingVertical: Metrics.Padding,
-    paddingHorizontal: Metrics.Padding,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
     ...FontStyles.Title,
   },
   scroll: {
@@ -15,8 +15,8 @@ export default StyleSheet.create({
   container: {
     justifyContent: 'space-between',
     flexDirection: 'row',
-    paddingHorizontal: Metrics.Padding,
-    paddingBottom: Metrics.Padding,
+    paddingHorizontal: 16,
+    paddingBottom: 16,
   },
   leftContainer: {
     flexDirection: 'row',

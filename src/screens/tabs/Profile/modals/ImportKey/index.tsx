@@ -11,6 +11,7 @@ import {
   Text,
   TextInput,
 } from '@/components/common';
+import { Nullable } from '@/interfaces/general';
 import { useAppDispatch } from '@/redux/hooks';
 import { validatePem } from '@/redux/slices/keyring';
 
@@ -23,17 +24,28 @@ interface Props {
   accountsModalRef: RefObject<Modalize>;
 }
 
+const getErrorMessage = (errorType: string) => {
+  switch (errorType) {
+    case 'invalid-key':
+      return t('createImportAccount.invalidKey');
+    default:
+      return t('createImportAccount.addedAccount');
+  }
+};
+
 function ImportKey({ createImportRef, modalRef, accountsModalRef }: Props) {
-  const createEditAccount = useRef<Modalize>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [key, setKey] = useState('');
   const dispatch = useAppDispatch();
-  const disabled = key === '' || loading || error;
+  const createEditAccount = useRef<Modalize>(null);
+
+  const [key, setKey] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [errorType, setErrorType] = useState<Nullable<string>>(null);
+
+  const disabled = key === '' || loading || !!errorType;
 
   const handleOnChangeKey = (value: string) => {
-    if (error) {
-      setError(false);
+    if (errorType) {
+      setErrorType(null);
     }
     setKey(value);
   };
@@ -52,9 +64,14 @@ function ImportKey({ createImportRef, modalRef, accountsModalRef }: Props) {
     dispatch(
       validatePem({
         pem: key,
-        onSuccess: () => createEditAccount.current?.open(),
-        onFailure: () => setError(true),
-        onFinish: () => setLoading(false),
+        onSuccess: () => {
+          createEditAccount.current?.open();
+          setLoading(false);
+        },
+        onFailure: (eType: string) => {
+          setErrorType(eType);
+          setLoading(false);
+        },
       })
     );
   };
@@ -75,9 +92,9 @@ function ImportKey({ createImportRef, modalRef, accountsModalRef }: Props) {
           style={styles.inputStyle}
           onChangeText={handleOnChangeKey}
         />
-        {error && (
+        {errorType && (
           <Text type="caption" style={styles.error}>
-            {t('createImportAccount.invalidKey')}
+            {getErrorMessage(errorType)}
           </Text>
         )}
         <RainbowButton
