@@ -203,7 +203,12 @@ export const login = createAsyncThunk(
 export const importAccountFromPem = createAsyncThunk(
   'keyring/importAccountFromPem',
   async (
-    { pem, icon, name }: { name: string; icon: string; pem: string },
+    {
+      pem,
+      icon,
+      name,
+      onFailure,
+    }: { name: string; icon: string; pem: string; onFailure: () => void },
     { rejectWithValue }
   ) => {
     try {
@@ -215,7 +220,7 @@ export const importAccountFromPem = createAsyncThunk(
       });
       return response;
     } catch (e: any) {
-      // TODO: Add toast to handle error.
+      onFailure();
       return rejectWithValue(e.message);
     }
   }
@@ -223,31 +228,21 @@ export const importAccountFromPem = createAsyncThunk(
 
 export const validatePem = createAsyncThunk(
   'keyring/validatePem',
-  async (
-    {
-      pem,
-      onSuccess,
-      onFailure,
-      onFinish,
-    }: {
-      pem: string;
-      onSuccess: () => void;
-      onFailure: () => void;
-      onFinish: () => void;
-    },
-    { rejectWithValue }
-  ) => {
-    try {
-      const instance = KeyRing.getInstance();
-      const response = await instance?.validatePem({ pem });
-      if (response) {
-        onSuccess();
-      } else {
-        onFailure();
-      }
-      onFinish();
-    } catch (e: any) {
-      return rejectWithValue({ error: e.message });
+  async ({
+    pem,
+    onSuccess,
+    onFailure,
+  }: {
+    pem: string;
+    onSuccess: () => void;
+    onFailure: (errorType: string) => void;
+  }) => {
+    const instance = KeyRing.getInstance();
+    const { isValid, errorType } = await instance?.validatePem({ pem });
+    if (isValid) {
+      onSuccess();
+    } else {
+      onFailure(errorType!);
     }
   }
 );

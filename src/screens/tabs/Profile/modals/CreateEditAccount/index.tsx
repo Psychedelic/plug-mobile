@@ -1,5 +1,5 @@
+import { t } from 'i18next';
 import React, { RefObject, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Keyboard, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
@@ -11,6 +11,7 @@ import RainbowButton from '@/components/buttons/RainbowButton';
 import { ActionButton } from '@/components/common';
 import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
+import useCustomToast from '@/hooks/useCustomToast';
 import { Wallet } from '@/interfaces/redux';
 import { useAppDispatch } from '@/redux/hooks';
 import {
@@ -37,7 +38,7 @@ const CreateEditAccount = ({
   pem,
   createImportModalRef,
 }: Props) => {
-  const { t } = useTranslation();
+  const toast = useCustomToast();
   const editEmojiRef = useRef<Modalize>(null);
   const [accountName, setAccountName] = useState('');
   const [editTouched, setEditTouched] = useState(false);
@@ -63,6 +64,12 @@ const CreateEditAccount = ({
           importAccountFromPem({
             ...nameAndIcon,
             pem,
+            onFailure: () => {
+              toast.showError(
+                t('accounts.errorImport.title'),
+                t('accounts.errorImport.message')
+              );
+            },
           })
         )
       : dispatch(createSubaccount(nameAndIcon));

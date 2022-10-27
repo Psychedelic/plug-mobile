@@ -1,7 +1,7 @@
 import Clipboard from '@react-native-community/clipboard';
 import { useScrollToTop } from '@react-navigation/native';
+import { t } from 'i18next';
 import React, { useMemo, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Alert, RefreshControl, ScrollView } from 'react-native';
 
 import { ActionSheet, ErrorState, Text } from '@/components/common';
@@ -22,17 +22,16 @@ import { AddToken } from './components/AddToken';
 import styles from './styles';
 
 function Tokens() {
-  const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const { assets, assetsLoading, assetsError } = useAppSelector(
+    state => state.user
+  );
   const [selectedToken, setSelectedToken] = useState(null);
+
   const sendRef = useRef(null);
   const actionsRef = useRef(null);
   const listRef = useRef(null);
   useScrollToTop(listRef);
-
-  const { assets, assetsLoading, assetsError } = useAppSelector(
-    state => state.user
-  );
 
   const handleDelete = () => {
     Alert.alert(

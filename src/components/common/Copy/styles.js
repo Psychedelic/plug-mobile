@@ -12,6 +12,7 @@ export default StyleSheet.create({
   container: {
     flexDirection: 'row',
     position: 'relative',
+    alignItems: 'center',
   },
   toastStyle: {
     top: -35,
