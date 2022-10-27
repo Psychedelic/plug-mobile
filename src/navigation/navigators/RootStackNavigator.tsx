@@ -14,7 +14,8 @@ import WCInitialConnection from '@/screens/flows/WalletConnect/screens/InitialCo
 import WCTimeoutError from '@/screens/flows/WalletConnect/screens/TimeoutError';
 
 import Routes from '../Routes';
-import { rootStackOptions, settingsGroupOptions } from '../utils';
+import { modalGroupOptions, rootStackOptions } from '../utils';
+import SendNavigator from './SendNavigator';
 import SettingsNavigator from './SettingsNavigator';
 import SwipeNavigator from './SwipeNavigator';
 
@@ -73,11 +74,12 @@ function RootStackNavigator() {
           options={{ gestureEnabled: false }}
         />
       </Stack.Group>
-      <Stack.Group screenOptions={settingsGroupOptions}>
+      <Stack.Group screenOptions={modalGroupOptions}>
         <Stack.Screen
           name={Routes.SETTINGS_STACK}
           component={SettingsNavigator}
         />
+        <Stack.Screen name={Routes.SEND_STACK} component={SendNavigator} />
       </Stack.Group>
     </Stack.Navigator>
   );

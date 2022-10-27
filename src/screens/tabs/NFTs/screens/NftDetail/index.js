@@ -155,11 +155,11 @@ function NftDetail({ modalRef, handleClose, selectedNFT, ...props }) {
         options={moreOptions.options}
         title={moreOptions.title}
       />
-      <Send
+      {/* <Send
         modalRef={sendRef}
         nft={selectedNFT}
         onSuccess={() => modalRef.current?.close()}
-      />
+      /> */}
     </>
   );
 }

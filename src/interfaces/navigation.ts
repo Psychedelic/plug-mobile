@@ -25,6 +25,8 @@ export type RootStackParamList = {
   [Routes.SETTINGS]: undefined;
   [Routes.CONTACTS]: undefined;
   [Routes.APPROVED_CANISTERS]: { app: ConnectedApp };
+  [Routes.SEND_STACK]: undefined;
+  [Routes.SEND]: undefined;
 };
 
 export type ScreenProps<T extends keyof RootStackParamList> = StackScreenProps<

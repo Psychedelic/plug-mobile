@@ -21,10 +21,9 @@ export const rootStackOptions = (): StackNavigationOptions => ({
   gestureDirection: 'horizontal',
 });
 
-export const settingsGroupOptions = (): StackNavigationOptions => ({
-  headerShown: false,
+export const modalGroupOptions = (): StackNavigationOptions => ({
   presentation: 'modal',
-  ...TransitionPresets.ModalPresentationIOS,
+  ...TransitionPresets.BottomSheetAndroid,
   cardStyle: {
     marginTop: 16,
     borderTopRightRadius: 40,
@@ -32,7 +31,7 @@ export const settingsGroupOptions = (): StackNavigationOptions => ({
   },
 });
 
-export const settingsStackOptions = (): StackNavigationOptions => ({
+export const modalStackOptions = (): StackNavigationOptions => ({
   header: (props: StackHeaderProps) => <ModalHeader {...props} showBack />,
   headerStyle: {
     height: 60,

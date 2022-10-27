@@ -21,6 +21,9 @@ enum Routes {
   SETTINGS = 'Settings',
   CONTACTS = 'Contacts',
   APPROVED_CANISTERS = 'ApprovedCanisters',
+  //Send:
+  SEND_STACK = 'SendStack',
+  SEND = 'Send',
 }
 
 export const NATIVE_ROUTES = Object.values(Routes);

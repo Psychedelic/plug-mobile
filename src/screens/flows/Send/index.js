@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Keyboard, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import Header from '@/commonComponents/Header';
 import Modal, { modalOffset } from '@/commonComponents/Modal';
@@ -44,7 +45,7 @@ const INITIAL_ADDRESS_INFO = {
   resolvedAddress: null,
 };
 
-function Send({ modalRef, nft, token, onSuccess }) {
+function Send(/*{ modalRef, nft, token, onSuccess }*/) {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { isSensorAvailable, getPassword } = useKeychain();
@@ -65,7 +66,8 @@ function Send({ modalRef, nft, token, onSuccess }) {
   const [loading, setLoading] = useState(false);
   const [usdAmount, setUsdAmount] = useState(null);
   const [destination] = useState(XTC_OPTIONS.SEND);
-  const [selectedNft, setSelectedNft] = useState(nft);
+  // const [selectedNft, setSelectedNft] = useState(nft);
+  const [selectedNft, setSelectedNft] = useState(null);
   const [tokenAmount, setTokenAmount] = useState(null);
   const [selectedToken, setSelectedToken] = useState(null);
   const [selectedContact, setSelectedContact] = useState(null);
@@ -134,7 +136,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
 
   const onError = () => {
     resetState();
-    modalRef.current?.close();
+    // modalRef.current?.close();
   };
 
   const partialReset = () => {
@@ -223,17 +225,17 @@ function Send({ modalRef, nft, token, onSuccess }) {
     }
   };
 
-  useEffect(() => {
-    if (!selectedToken && nft) {
-      setSelectedNft(nft);
-    }
-  }, [nft, isValidAddress]);
+  // useEffect(() => {
+  //   if (!selectedToken && nft) {
+  //     setSelectedNft(nft);
+  //   }
+  // }, [nft, isValidAddress]);
 
-  useEffect(() => {
-    if (!selectedNft && token) {
-      setSelectedToken(token);
-    }
-  }, [token, isValidAddress]);
+  // useEffect(() => {
+  //   if (!selectedNft && token) {
+  //     setSelectedToken(token);
+  //   }
+  // }, [token, isValidAddress]);
 
   useEffect(() => {
     if (selectedNft && (isValidAddress || selectedContact)) {
@@ -305,60 +307,29 @@ function Send({ modalRef, nft, token, onSuccess }) {
   );
 
   return (
-    <Modal
-      modalRef={modalRef}
-      onClose={resetState}
-      fullHeight
-      modalStyle={
-        isAndroid &&
-        modalOffset && {
-          marginTop: modalOffset,
-          minHeight: '100%',
+    <>
+      <TextInput
+        placeholder={t('send.inputPlaceholder')}
+        hideGradient
+        value={selectedContact ? selectedContact.name : address}
+        onChangeText={onChangeText}
+        inputStyle={[styles.inputText, isValidAddress && styles.inputTextValid]}
+        style={styles.input}
+        contentContainerStyle={styles.inputContent}
+        left={<Text style={styles.inputLeftLabel}>{t('send.inputLabel')}</Text>}
+        right={
+          !selectedContact && isValidAddress ? (
+            <Touchable
+              style={styles.addIcon}
+              onPress={saveContactRef?.current?.open}>
+              <Icon name="plus" />
+            </Touchable>
+          ) : loadingICNS ? (
+            <ActivityIndicator color="white" />
+          ) : null
         }
-      }
-      scrollViewProps={{
-        keyboardShouldPersistTaps: 'never',
-      }}
-      HeaderComponent={
-        <>
-          <Header
-            left={
-              isValidAddress && (
-                <ActionButton onPress={handleBack} label={t('common.back')} />
-              )
-            }
-            center={<Text style={styles.centerText}>{t('send.title')}</Text>}
-          />
-          <TextInput
-            placeholder={t('send.inputPlaceholder')}
-            hideGradient
-            value={selectedContact ? selectedContact.name : address}
-            onChangeText={onChangeText}
-            inputStyle={[
-              styles.inputText,
-              isValidAddress && styles.inputTextValid,
-            ]}
-            autoFocus
-            style={styles.input}
-            contentContainerStyle={styles.inputContent}
-            left={
-              <Text style={styles.inputLeftLabel}>{t('send.inputLabel')}</Text>
-            }
-            right={
-              !selectedContact && isValidAddress ? (
-                <Touchable
-                  style={styles.addIcon}
-                  onPress={saveContactRef?.current?.open}>
-                  <Icon name="plus" />
-                </Touchable>
-              ) : loadingICNS ? (
-                <ActivityIndicator color="white" />
-              ) : null
-            }
-          />
-        </>
-      }>
-      <View
+      />
+      <ScrollView
         style={[
           styles.contentContainer,
           isAndroid &&
@@ -395,7 +366,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
             onReview={onReview}
           />
         )}
-      </View>
+      </ScrollView>
       <ReviewSend
         modalRef={reviewRef}
         adjustToContentHeight
@@ -408,10 +379,10 @@ function Send({ modalRef, nft, token, onSuccess }) {
         nft={selectedNft}
         onSend={handleSend}
         onError={onError}
-        onSuccess={() => {
-          modalRef.current?.close();
-          onSuccess?.();
-        }}
+        // onSuccess={() => {
+        //   modalRef.current?.close();
+        //   onSuccess?.();
+        // }}
         onClose={partialReset}
         transaction={transaction}
         loading={loading || loadingICNS}
@@ -422,7 +393,7 @@ function Send({ modalRef, nft, token, onSuccess }) {
         handleSubmit={send}
         title={t('send.enterPassword')}
       />
-    </Modal>
+    </>
   );
 }
 

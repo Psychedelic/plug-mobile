@@ -3,8 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
 import RainbowButton from '@/components/buttons/RainbowButton';
-import { Text } from '@/components/common';
-import AmountInput from '@/components/common/AmountInput';
+import { AmountInput, Text } from '@/components/common';
 import Icon from '@/components/icons';
 import TokenSelector from '@/components/tokens/TokenSelector';
 import { VISIBLE_DECIMALS } from '@/constants/business';

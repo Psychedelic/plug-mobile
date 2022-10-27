@@ -39,7 +39,8 @@ const WalletHeader = () => {
 
   const openSend = () => {
     modalRef.current?.close();
-    sendRef.current?.open();
+    // sendRef.current?.open();
+    navigation.navigate(Routes.SEND_STACK);
   };
 
   const openDeposit = () => {
@@ -111,7 +112,7 @@ const WalletHeader = () => {
           </View>
         </View>
       </Modal>
-      <Send modalRef={sendRef} />
+      {/* <Send modalRef={sendRef} /> */}
       <Deposit modalRef={depositRef} />
     </>
   );

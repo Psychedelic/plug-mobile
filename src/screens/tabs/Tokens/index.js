@@ -144,7 +144,7 @@ function Tokens() {
           errorType={ERROR_TYPES.FETCH_ERROR}
         />
       )}
-      <Send modalRef={sendRef} token={selectedToken} />
+      {/* <Send modalRef={sendRef} token={selectedToken} /> */}
       <ActionSheet
         modalRef={actionsRef}
         options={tokenActions}
