@@ -1,17 +1,8 @@
 import { StyleSheet } from 'react-native';
 
-import { WINDOW_HEIGHT, WINDOW_WIDTH } from '@/constants/platform';
 import { fontMaker } from '@/utils/fonts';
 
 import { MEDIUM, REGULAR, SEMIBOLD } from './fonts';
-
-export const Metrics = {
-  ScreenWidth: WINDOW_HEIGHT,
-  ScreenHeight: WINDOW_WIDTH,
-  Padding: 16,
-  Margin: 16,
-  BorderRadius: 8,
-};
 
 export const Colors = {
   ActionBlue: '#3574F4',
@@ -45,6 +36,11 @@ export const Colors = {
   Divider: {
     1: '#3A3B40',
     2: '#737377',
+  },
+  Toast: {
+    Success: ['#4A763B', '#54AA46'],
+    Error: ['#9D2F4A', '#EC4765'],
+    Info: ['#2F539D', '#477DEC'],
   },
 };
 
@@ -93,17 +89,6 @@ export const DisabledRainbow = {
     'rgba(82, 255, 83, 0.2)',
   ],
 };
-
-export const Shadow = StyleSheet.create({
-  shadowColor: Colors.Black.Primary,
-  shadowOffset: {
-    width: 0,
-    height: 4,
-  },
-  shadowOpacity: 0.3,
-  shadowRadius: 4.65,
-  elevation: 5,
-});
 
 // TODO: Remove styles that doesnt match with the style guide in figma, and remove colors
 export const FontStyles = StyleSheet.create({
