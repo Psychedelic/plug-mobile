@@ -135,9 +135,7 @@ function AddICNS({ modalRef }: Props) {
                 ? t('accounts.icns.emptyState')
                 : t('accounts.icns.info')}
               <Text style={styles.actionMessage} onPress={handleActionMessage}>
-                {noNames
-                  ? t('accounts.icns.buyICNS')
-                  : t('accounts.icns.learnMore')}
+                {noNames ? t('accounts.icns.buyICNS') : t('common.learnMore')}
               </Text>
               {noNames && t('accounts.icns.proceed')}
             </Text>

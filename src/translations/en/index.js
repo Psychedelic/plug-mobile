@@ -32,6 +32,7 @@ const translations = {
     the: 'The',
     enterPassword: 'Enter Password',
     importWallet: 'Import Wallet',
+    learnMore: 'Learn More',
   },
   routes: {
     [Routes.NFTS]: 'Collectibles',
@@ -190,7 +191,6 @@ const translations = {
     icns: {
       setICNS: 'Choose ICNS Name',
       none: 'None',
-      learnMore: 'Learn More',
       emptyState:
         'We weren’t able to find any ICNS names in your Plug account. ',
       buyICNS: 'Buy an ICNS name',
@@ -288,7 +288,6 @@ const translations = {
       'Invalid token’s standard. Select a valid option for the current canister ID.',
     invalidCanisterTokenError: 'Invalid Canister ID.',
     nftTokenError: 'Custom non-fungible tokens are not supported yet.',
-    learnMore: 'Learn More',
     poweredByDab: 'POWERED BY DAB',
   },
   walletConnect: {
@@ -314,7 +313,6 @@ const translations = {
     unsafeDappName: 'Unknown DApp',
     unknown: 'Unknown',
     unknownArguments: 'Unknown arguments',
-    learnMore: 'Learn More',
   },
   deleteWallet: {
     title: 'Delete Wallet',
@@ -346,6 +344,16 @@ const translations = {
     },
     selectAccount:
       "Select the account you would like to export it's DFX Identity.",
+  },
+  addNFT: {
+    customNFTId: 'Collectible Canister ID',
+    customNFTStandard: 'Collectible Interface Standard',
+    customNFT: 'Custom Collectible',
+    customCaption: 'This allows Collectibles to be used by Plug',
+    add: 'Add Collectible',
+    noName: 'Unable to load name',
+    safetyAlert:
+      'Collectible Safety Alert: For your security, make sure to do proper research before interacting with any Collectible.',
   },
 };
 

@@ -116,7 +116,7 @@ function RequestCall(props: Props) {
                 <Text
                   onPress={goToLearnMore}
                   style={[FontStyles.Normal, styles.learnMore]}>
-                  {t('walletConnect.learnMore')}
+                  {t('common.learnMore')}
                 </Text>
               </View>
             )}
