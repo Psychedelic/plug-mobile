@@ -4,7 +4,12 @@ import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 
 import { JELLY_CANISTER_ID } from '@/constants/canister';
 import { ENABLE_NFTS } from '@/constants/nfts';
-import { FungibleStandard, TokenBalance } from '@/interfaces/keyring';
+import {
+  FungibleStandard,
+  NFTInfo,
+  NonFungibleStandard,
+  TokenBalance,
+} from '@/interfaces/keyring';
 import {
   Asset,
   Collection,
@@ -301,7 +306,7 @@ export const editContact = createAsyncThunk<
   'user/editContact',
   async ({ contact, newContact }, { getState, rejectWithValue }) => {
     try {
-      const state = getState();
+      const state = getState() as State;
       const instance = KeyRing.getInstance();
       const removeContactRes = await instance?.deleteContact({
         addressName: contact.name,
@@ -351,7 +356,7 @@ export const addCustomToken = createAsyncThunk<
         onSuccess?.();
         return user.assets;
       }
-
+      // aca
       const registeredToken = await instance?.registerToken({
         canisterId: canisterId.toString(),
         standard,
@@ -416,6 +421,64 @@ export const getTokenInfo = createAsyncThunk(
     } catch (e: any) {
       console.log('Error while fetching token info', e);
       onError?.(e.message);
+      return rejectWithValue(e.message);
+    }
+  }
+);
+
+export const getNFTInfo = createAsyncThunk(
+  'user/getNFTInfo',
+  async (
+    {
+      nft,
+      onSuccess,
+      onError,
+    }: {
+      nft: { canisterId: string; standard: NonFungibleStandard };
+      onSuccess: (nftInfo: NFTInfo) => void;
+      onError: (err: string) => void;
+    },
+    { rejectWithValue }
+  ) => {
+    const instance = KeyRing.getInstance();
+    try {
+      const nftInfo = await instance?.getNFTInfo(nft);
+      onSuccess(nftInfo);
+    } catch (e: any) {
+      console.log('Error while fetching NFT info', e);
+      onError?.(e.message);
+      return rejectWithValue(e.message);
+    }
+  }
+);
+
+export const addCustomNFT = createAsyncThunk<
+  Collection[],
+  {
+    nft: { canisterId: string; standard: NonFungibleStandard };
+    onSuccess: () => void;
+  },
+  { rejectValue: string; state: State }
+>(
+  'user/addCustomNFT',
+  async ({ nft, onSuccess }, { rejectWithValue, getState }) => {
+    console.log('nft', nft);
+    const state = getState();
+    const instance = KeyRing.getInstance();
+    try {
+      const registeredCollections = (
+        (await instance?.registerNFT(nft)) as Collection[]
+      ).map(nfts => recursiveParseBigint(nfts));
+
+      const totalCollections = [
+        ...state.user.collections,
+        ...registeredCollections,
+      ];
+      console.tron.log('total', totalCollections);
+      onSuccess();
+      return totalCollections;
+    } catch (e: any) {
+      console.log('Error while fetching NFT info', e);
       return rejectWithValue(e.message);
     }
   }
@@ -534,6 +597,18 @@ export const userSlice = createSlice({
         state.collectionsLoading = false;
       })
       .addCase(getNFTs.rejected, (state, action) => {
+        state.collectionsError = action.payload;
+        state.collectionsLoading = false;
+      })
+      .addCase(addCustomNFT.fulfilled, (state, action) => {
+        state.collections = action.payload ?? [];
+        state.collectionsLoading = false;
+      })
+      .addCase(addCustomNFT.pending, state => {
+        state.collectionsError = undefined;
+        state.collectionsLoading = true;
+      })
+      .addCase(addCustomNFT.rejected, (state, action) => {
         state.collectionsError = action.payload;
         state.collectionsLoading = false;
       })

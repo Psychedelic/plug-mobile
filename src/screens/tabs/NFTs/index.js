@@ -17,6 +17,7 @@ import NftItem, { ITEM_HEIGHT } from '@/screens/tabs/components/NftItem';
 import WalletHeader from '@/screens/tabs/components/WalletHeader';
 import { formatCollections } from '@/utils/assets';
 
+import AddNFT from './components/AddNFT';
 import NftDetail from './screens/NftDetail';
 import styles from './styles';
 function NFTs() {
@@ -81,6 +82,7 @@ function NFTs() {
                 />
               }
             />
+            <AddNFT />
           </View>
         ) : (
           <ErrorState onPress={onRefresh} errorType={ERROR_TYPES.FETCH_ERROR} />

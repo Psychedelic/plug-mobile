@@ -354,6 +354,9 @@ const translations = {
     noName: 'Unable to load name',
     safetyAlert:
       'Collectible Safety Alert: For your security, make sure to do proper research before interacting with any Collectible.',
+    addedToastTitle: 'Custom Collectible Collection Added',
+    addedToastMessage:
+      'Collectible collections are only visible to those who own their items.',
   },
 };
 
