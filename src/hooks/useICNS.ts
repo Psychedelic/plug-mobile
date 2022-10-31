@@ -12,7 +12,7 @@ export default function useICNS(
   delay = 300
 ) {
   const debouncedAddress = useDebounceValue(address, delay);
-  const [resolvedAddress, setResolvedAddress] = useState(null);
+  const [resolvedAddress, setResolvedAddress] = useState<string>();
   const [loading, setLoading] = useState(false);
   const isICP = symbol === TOKENS.ICP.symbol;
 
@@ -25,13 +25,13 @@ export default function useICNS(
           setLoading(false);
         })
         .catch(err => {
-          setResolvedAddress(null);
+          setResolvedAddress(undefined);
           setLoading(false);
           console.warn(err);
         });
     }
     if (!address || !validateICNSName(address)) {
-      setResolvedAddress(null);
+      setResolvedAddress(undefined);
     }
   }, [debouncedAddress, symbol, address]);
 

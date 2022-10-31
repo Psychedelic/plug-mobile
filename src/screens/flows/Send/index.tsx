@@ -33,10 +33,14 @@ import { Amount } from './interfaces';
 import styles from './styles';
 
 //Check this. Can we unify address of contact, written and icns?
-const INITIAL_ADDRESS_INFO = {
-  isValid: null,
-  type: null,
-  resolvedAddress: null,
+const INITIAL_ADDRESS_INFO: {
+  isValid?: boolean;
+  type?: string;
+  resolvedAddress?: string;
+} = {
+  isValid: undefined,
+  type: undefined,
+  resolvedAddress: undefined,
 };
 
 function Send({ route }: ScreenProps<Routes.SEND>) {
