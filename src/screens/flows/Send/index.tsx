@@ -1,30 +1,22 @@
+import { t } from 'i18next';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Keyboard, View } from 'react-native';
+import { ActivityIndicator, Keyboard } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Modalize } from 'react-native-modalize';
 
-import Header from '@/commonComponents/Header';
-import Modal, { modalOffset } from '@/commonComponents/Modal';
-import PasswordModal from '@/commonComponents/PasswordModal';
-import TextInput from '@/commonComponents/TextInput';
-import ActionButton from '@/components/common/ActionButton';
-import Text from '@/components/common/Text';
-import Touchable from '@/components/common/Touchable';
+import { PasswordModal, Text, TextInput, Touchable } from '@/components/common';
 import Icon from '@/components/icons';
 import { ADDRESS_TYPES } from '@/constants/addresses';
 import { TOKENS, USD_PER_TC } from '@/constants/assets';
-import { isAndroid } from '@/constants/platform';
 import XTC_OPTIONS from '@/constants/xtc';
 import useICNS from '@/hooks/useICNS';
 import useKeychain from '@/hooks/useKeychain';
+import { ScreenProps } from '@/interfaces/navigation';
+import { Asset, CollectionToken, Contact } from '@/interfaces/redux';
+import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getICPPrice } from '@/redux/slices/icp';
-import {
-  burnXtc,
-  sendToken,
-  setTransaction,
-  transferNFT,
-} from '@/redux/slices/user';
+import { burnXtc, sendToken, transferNFT } from '@/redux/slices/user';
 import { formatCollections } from '@/utils/assets';
 import {
   validateAccountId,
@@ -37,45 +29,53 @@ import ContactSection from './components/ContactSection';
 import ReviewSend from './components/ReviewSend';
 import SaveContact from './components/SaveContact';
 import TokenSection from './components/TokenSection';
+import { Amount } from './interfaces';
 import styles from './styles';
 
+//Check this. Can we unify address of contact, written and icns?
 const INITIAL_ADDRESS_INFO = {
   isValid: null,
   type: null,
   resolvedAddress: null,
 };
 
-function Send(/*{ modalRef, nft, token, onSuccess }*/) {
-  const { t } = useTranslation();
+function Send({ route }: ScreenProps<Routes.SEND>) {
   const dispatch = useAppDispatch();
+  const { token, nft } = route?.params || {};
   const { isSensorAvailable, getPassword } = useKeychain();
   const { icpPrice } = useAppSelector(state => state.icp);
   const { currentWallet } = useAppSelector(state => state.keyring);
   const { assets, contacts, transaction, collections, usingBiometrics } =
     useAppSelector(state => state.user);
 
-  const reviewRef = useRef(null);
-  const saveContactRef = useRef(null);
-  const passwordRef = useRef(null);
+  const reviewRef = useRef<Modalize>(null);
+  const saveContactRef = useRef<Modalize>(null);
+  const passwordRef = useRef<Modalize>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
 
   const nfts = useMemo(
     () => (collections ? formatCollections(collections) : []),
     [collections]
   );
-  const [address, setAddress] = useState(null);
+  const [address, setAddress] = useState<string>();
   const [loading, setLoading] = useState(false);
-  const [usdAmount, setUsdAmount] = useState(null);
   const [destination] = useState(XTC_OPTIONS.SEND);
-  // const [selectedNft, setSelectedNft] = useState(nft);
-  const [selectedNft, setSelectedNft] = useState(null);
-  const [tokenAmount, setTokenAmount] = useState(null);
-  const [selectedToken, setSelectedToken] = useState(null);
-  const [selectedContact, setSelectedContact] = useState(null);
-  const [selectedTokenPrice, setSelectedTokenPrice] = useState(null);
+  const [selectedNft, setSelectedNft] = useState<CollectionToken | undefined>(
+    nft
+  );
+  const [tokenAmount, setTokenAmount] = useState<Amount>();
+  const [usdAmount, setUsdAmount] = useState<Amount>();
+  const [selectedToken, setSelectedToken] = useState<Asset | undefined>(token);
+  const [selectedContact, setSelectedContact] = useState<Contact>();
+  const [selectedTokenPrice, setSelectedTokenPrice] = useState<number>();
   const [addressInfo, setAddressInfo] = useState(INITIAL_ADDRESS_INFO);
   const [sendingXTCtoCanister, setSendingXTCtoCanister] = useState(false);
   const [biometricsError, setBiometricsError] = useState(false);
+
   const isValidAddress = addressInfo.isValid;
+  const showContacts = !addressInfo.isValid;
+  const showTokens = addressInfo.isValid && !selectedToken;
+  const showAmountSelector = addressInfo.isValid && selectedToken;
   const to = addressInfo.resolvedAddress || address || selectedContact?.id;
 
   const {
@@ -85,67 +85,68 @@ function Send(/*{ modalRef, nft, token, onSuccess }*/) {
   } = useICNS(address || selectedContact?.id, selectedToken?.symbol);
 
   useEffect(() => {
-    const savedContact = contacts?.find(c => c.id === address);
-    const isMySelf =
-      address === currentWallet?.principal ||
-      address === currentWallet?.accountId;
-
-    if (savedContact && !isMySelf) {
-      setSelectedContact(savedContact);
-    }
-  }, [contacts, address]);
-
-  useEffect(() => {
     dispatch(getICPPrice());
   }, []);
 
-  const handleBiometricsFail = err => {
+  const scrollToTop = () => {
+    scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: false });
+  };
+
+  const handleBiometricsFail = (err: string) => {
     if (err.includes('locked')) {
       setBiometricsError(true);
     }
     passwordRef.current?.open();
   };
 
-  const onContactPress = contact => {
+  const onContactPress = (contact: Contact) => {
     Keyboard.dismiss();
-    setAddress(null);
+    setAddress(undefined);
     setSelectedContact(contact);
+    scrollToTop();
   };
 
-  const onTokenPress = pressedToken => {
+  const onTokenPress = (pressedToken: Asset) => {
     setSelectedToken(pressedToken);
-    setSelectedNft(null);
+    setSelectedNft(undefined);
+    scrollToTop();
   };
 
-  const onNftPress = pressedNFT => {
+  const onNftPress = (pressedNFT: CollectionToken) => {
     setSelectedNft(pressedNFT);
-    setSelectedToken(null);
+    setSelectedToken(undefined);
     onReview();
   };
 
-  const resetState = () => {
-    setAddress(null);
-    setAddressInfo(INITIAL_ADDRESS_INFO);
-    setSelectedNft(null);
-    setSelectedToken(null);
-    setSelectedContact(null);
-    setUsdAmount(null);
-    setTokenAmount(null);
-    dispatch(setTransaction(null));
-  };
+  // const resetState = () => {
+  //   setAddress(null);
+  //   setAddressInfo(INITIAL_ADDRESS_INFO);
+  //   setSelectedNft(null);
+  //   setSelectedToken(null);
+  //   setSelectedContact(null);
+  //   setUsdAmount(null);
+  //   setTokenAmount(null);
+  //   dispatch(setTransaction(null)); => CHECK THIS ONE
+  // };
 
-  const onError = () => {
-    resetState();
-    // modalRef.current?.close();
-  };
+  // const onError = () => {
+  //   resetState();
+  //   modalRef.current?.close();
+  // };
 
-  const partialReset = () => {
-    setSelectedNft(null);
-  };
-
-  const onChangeText = text => {
-    setSelectedContact(null);
+  const onChangeText = (text: string) => {
     setAddress(text);
+    const savedContact = contacts?.find(c => c.id === text);
+    const isMySelf =
+      text === currentWallet?.principal || text === currentWallet?.accountId;
+
+    if (savedContact && !isMySelf) {
+      setSelectedContact(savedContact);
+      setAddress(undefined);
+      scrollToTop();
+    } else if (selectedContact) {
+      setSelectedContact(undefined);
+    }
   };
 
   const onReview = () => {
@@ -154,45 +155,52 @@ function Send(/*{ modalRef, nft, token, onSuccess }*/) {
   };
 
   const handleSendNFT = () => {
-    dispatch(
-      transferNFT({
-        to,
-        nft: selectedNft,
-        icpPrice,
-        onEnd: () => setLoading(false),
-      })
-    );
+    if (selectedNft && to) {
+      setLoading(true);
+      dispatch(
+        transferNFT({
+          to,
+          nft: selectedNft,
+          icpPrice,
+          onEnd: () => setLoading(false),
+        })
+      );
+    }
   };
 
   const handleSendToken = () => {
-    const amount = tokenAmount.value;
-    if (sendingXTCtoCanister && destination === XTC_OPTIONS.BURN) {
-      dispatch(burnXtc({ to, amount: amount.toString() }));
-    } else {
-      dispatch(
-        sendToken({
-          to,
-          amount,
-          canisterId: selectedToken?.canisterId,
-          icpPrice,
-          opts: {
-            fee:
-              selectedToken?.fee && selectedToken?.decimals
-                ? selectedToken.fee * Math.pow(10, selectedToken.decimals)
-                : 0, // TODO: Change this to selectedToken.fee only when dab is ready
-          },
-        })
-      )
-        .unwrap()
-        .then(() => {
-          setLoading(false);
-        })
-        .catch(() => setLoading(false));
+    if (tokenAmount && to && selectedToken) {
+      setLoading(true);
+      const amount = tokenAmount.value;
+      if (sendingXTCtoCanister && destination === XTC_OPTIONS.BURN) {
+        dispatch(
+          burnXtc({
+            to,
+            amount: amount.toString(),
+            onEnd: () => setLoading(false),
+          })
+        );
+      } else {
+        dispatch(
+          sendToken({
+            to,
+            amount,
+            canisterId: selectedToken?.canisterId,
+            icpPrice,
+            opts: {
+              fee:
+                selectedToken?.fee && selectedToken?.decimals
+                  ? selectedToken.fee * Math.pow(10, selectedToken.decimals)
+                  : 0, // TODO: Change this to selectedToken.fee only when dab is ready
+            },
+            onEnd: () => setLoading(false),
+          })
+        );
+      }
     }
   };
 
   const send = () => {
-    setLoading(true);
     const handler = selectedNft ? handleSendNFT : handleSendToken;
     handler();
   };
@@ -225,18 +233,6 @@ function Send(/*{ modalRef, nft, token, onSuccess }*/) {
     }
   };
 
-  // useEffect(() => {
-  //   if (!selectedToken && nft) {
-  //     setSelectedNft(nft);
-  //   }
-  // }, [nft, isValidAddress]);
-
-  // useEffect(() => {
-  //   if (!selectedNft && token) {
-  //     setSelectedToken(token);
-  //   }
-  // }, [token, isValidAddress]);
-
   useEffect(() => {
     if (selectedNft && (isValidAddress || selectedContact)) {
       onReview();
@@ -248,57 +244,53 @@ function Send(/*{ modalRef, nft, token, onSuccess }*/) {
       const price =
         { ICP: icpPrice, XTC: USD_PER_TC, WTC: USD_PER_TC, WICP: icpPrice }[
           selectedToken?.symbol
-        ] || null;
+        ] || undefined;
       setSelectedTokenPrice(price);
     }
   }, [selectedToken]);
 
   useEffect(() => {
     if (address || selectedContact) {
-      const id = resolvedAddress || address || selectedContact.id;
-      const isUserAddress = [
-        currentWallet?.principal,
-        currentWallet?.accountId,
-      ].includes(id);
-      let isValid =
-        !isUserAddress &&
-        (validatePrincipalId(id) || validateAccountId(id) || isValidICNS);
+      const id = resolvedAddress || address || selectedContact?.id;
+      if (id) {
+        const isUserAddress = [
+          currentWallet?.principal,
+          currentWallet?.accountId,
+        ].includes(id);
+        let isValid =
+          !isUserAddress &&
+          (validatePrincipalId(id) || validateAccountId(id) || isValidICNS);
 
-      const type = validatePrincipalId(id)
-        ? ADDRESS_TYPES.PRINCIPAL
-        : ADDRESS_TYPES.ACCOUNT;
-      if (
-        type === ADDRESS_TYPES.ACCOUNT &&
-        selectedToken?.symbol &&
-        selectedToken.symbol !== TOKENS.ICP.symbol
-      ) {
-        isValid = false;
+        const type = validatePrincipalId(id)
+          ? ADDRESS_TYPES.PRINCIPAL
+          : ADDRESS_TYPES.ACCOUNT;
+        if (
+          type === ADDRESS_TYPES.ACCOUNT &&
+          selectedToken?.symbol &&
+          selectedToken.symbol !== TOKENS.ICP.symbol
+        ) {
+          isValid = false;
+        }
+        setAddressInfo({ isValid, type, resolvedAddress });
+        setSendingXTCtoCanister(
+          selectedToken?.symbol === TOKENS.XTC.symbol && validateCanisterId(id)
+        );
       }
-      setAddressInfo({ isValid, type, resolvedAddress });
-      setSendingXTCtoCanister(
-        selectedToken?.symbol === TOKENS.XTC.symbol && validateCanisterId(id)
-      );
     }
   }, [address, selectedContact, selectedToken, isValidICNS, resolvedAddress]);
 
   const availableAmount = useMemo(
-    () => selectedToken?.amount - selectedToken?.fee,
+    () => (selectedToken ? selectedToken?.amount - selectedToken?.fee : 0),
     [selectedToken]
   );
 
   const availableUsdAmount = useMemo(
-    () => (selectedTokenPrice ? availableAmount * selectedTokenPrice : null),
+    () =>
+      selectedTokenPrice ? availableAmount * selectedTokenPrice : undefined,
     [availableAmount, selectedTokenPrice]
   );
 
-  const handleBack = () => {
-    setAddress(null);
-    setSelectedContact(null);
-    setAddressInfo(INITIAL_ADDRESS_INFO);
-  };
-
   const tokens = useMemo(
-    // TODO: Add OGY when is available on Mobile.
     () =>
       addressInfo?.type === ADDRESS_TYPES.ACCOUNT
         ? assets.filter(asset => asset.symbol === TOKENS.ICP.symbol)
@@ -329,22 +321,18 @@ function Send(/*{ modalRef, nft, token, onSuccess }*/) {
           ) : null
         }
       />
-      <ScrollView
-        style={[
-          styles.contentContainer,
-          isAndroid &&
-            modalOffset && {
-              paddingBottom: modalOffset,
-            },
-        ]}>
-        {!isValidAddress && (
+      <ScrollView ref={scrollViewRef} style={styles.contentContainer}>
+        {showContacts && (
           <ContactSection
             filterText={address}
             onPress={onContactPress}
-            selectedTokenSymbol={selectedToken?.symbol}
+            showAccountIdContacts={
+              !selectedToken?.symbol ||
+              selectedToken.symbol === TOKENS.ICP.symbol
+            }
           />
         )}
-        {isValidAddress && !selectedToken && (
+        {showTokens && (
           <TokenSection
             nfts={nfts}
             tokens={tokens}
@@ -352,7 +340,7 @@ function Send(/*{ modalRef, nft, token, onSuccess }*/) {
             onTokenPress={onTokenPress}
           />
         )}
-        {isValidAddress && selectedToken && (
+        {showAmountSelector && (
           <AmountSection
             selectedToken={selectedToken}
             tokenPrice={selectedTokenPrice}
@@ -374,20 +362,14 @@ function Send(/*{ modalRef, nft, token, onSuccess }*/) {
         to={selectedContact ? selectedContact?.id : address}
         contact={selectedContact}
         amount={tokenAmount}
-        tokenPrice={selectedTokenPrice}
         value={usdAmount}
         nft={selectedNft}
         onSend={handleSend}
-        onError={onError}
-        // onSuccess={() => {
-        //   modalRef.current?.close();
-        //   onSuccess?.();
-        // }}
-        onClose={partialReset}
+        onClose={() => setSelectedNft(undefined)}
         transaction={transaction}
         loading={loading || loadingICNS}
       />
-      <SaveContact id={address} modalRef={saveContactRef} />
+      {address && <SaveContact id={address} modalRef={saveContactRef} />}
       <PasswordModal
         modalRef={passwordRef}
         handleSubmit={send}

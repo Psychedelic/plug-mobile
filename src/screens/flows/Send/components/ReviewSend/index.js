@@ -31,7 +31,6 @@ import styles from './styles';
 
 const ReviewSend = ({
   modalRef,
-  onError,
   token,
   nft,
   amount,
@@ -40,13 +39,9 @@ const ReviewSend = ({
   contact,
   onSend,
   onClose,
-  onSuccess,
   transaction,
-  tokenPrice,
   loading,
-  biometricsError,
-  setBiometricsError,
-  ...props
+  adjustToContentHeight,
 }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
@@ -59,6 +54,7 @@ const ReviewSend = ({
   const isError = transaction?.status === TRANSACTION_STATUS.error;
   const { icpPrice } = useAppSelector(state => state.icp);
   const feePrice = getFeePrice(token?.symbol, icpPrice, token?.fee);
+
   const handleSaveContact = () => {
     saveContactRef.current?.open();
   };
@@ -74,16 +70,12 @@ const ReviewSend = ({
     dispatch(setTransaction(null));
 
     if (isSuccess) {
-      onSuccess?.();
+      navigation.navigate(Routes.TOKENS);
     }
-    if (isError) {
-      onError?.();
-    }
-    navigation.navigate(Routes.TOKENS);
   };
 
   const handleGoToActivity = () => {
-    handleClose();
+    modalRef.current?.close();
     navigation.navigate(Routes.PROFILE);
   };
 
@@ -110,7 +102,7 @@ const ReviewSend = ({
     <Modal
       modalRef={modalRef}
       onClose={handleClose}
-      {...props}
+      adjustToContentHeight={adjustToContentHeight}
       fullHeight={isSuccess || isError}>
       <View style={styles.content}>
         <Header center={<Text type="subtitle2">{title}</Text>} />

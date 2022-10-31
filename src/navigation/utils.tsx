@@ -22,10 +22,10 @@ export const rootStackOptions = (): StackNavigationOptions => ({
 });
 
 export const modalGroupOptions = (): StackNavigationOptions => ({
-  presentation: 'modal',
-  ...TransitionPresets.BottomSheetAndroid,
+  presentation: 'transparentModal',
+  ...TransitionPresets.ModalPresentationIOS,
   cardStyle: {
-    marginTop: 16,
+    marginTop: 30,
     borderTopRightRadius: 40,
     borderTopLeftRadius: 40,
   },

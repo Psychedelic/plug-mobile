@@ -6,14 +6,18 @@ import { validateICNSName } from '@/utils/ids';
 
 import useDebounceValue from './useDebounceValue';
 
-export default function useICNS(address: string, symbol: string, delay = 300) {
+export default function useICNS(
+  address?: string,
+  symbol?: string,
+  delay = 300
+) {
   const debouncedAddress = useDebounceValue(address, delay);
   const [resolvedAddress, setResolvedAddress] = useState(null);
   const [loading, setLoading] = useState(false);
   const isICP = symbol === TOKENS.ICP.symbol;
 
   useEffect(() => {
-    if (debouncedAddress === address && validateICNSName(address)) {
+    if (address && debouncedAddress === address && validateICNSName(address)) {
       setLoading(true);
       resolveName(debouncedAddress, isICP)
         .then(response => {
@@ -26,7 +30,7 @@ export default function useICNS(address: string, symbol: string, delay = 300) {
           console.warn(err);
         });
     }
-    if (!validateICNSName(address)) {
+    if (!address || !validateICNSName(address)) {
       setResolvedAddress(null);
     }
   }, [debouncedAddress, symbol, address]);

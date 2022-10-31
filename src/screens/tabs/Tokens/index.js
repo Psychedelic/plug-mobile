@@ -1,5 +1,5 @@
 import Clipboard from '@react-native-community/clipboard';
-import { useScrollToTop } from '@react-navigation/native';
+import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import { t } from 'i18next';
 import React, { useMemo, useRef, useState } from 'react';
 import { Alert, RefreshControl, ScrollView } from 'react-native';
@@ -12,9 +12,9 @@ import CopyIcon from '@/icons/material/Copy.svg';
 import DeleteIcon from '@/icons/material/Delete.svg';
 import SendIcon from '@/icons/material/Send.svg';
 import { Container, Row, Separator } from '@/layout';
+import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getBalance, removeCustomToken } from '@/redux/slices/user';
-import Send from '@/screens/flows/Send';
 import { isDefaultToken } from '@/utils/assets';
 
 import WalletHeader from '../components/WalletHeader';
@@ -23,12 +23,12 @@ import styles from './styles';
 
 function Tokens() {
   const dispatch = useAppDispatch();
+  const navigation = useNavigation();
   const { assets, assetsLoading, assetsError } = useAppSelector(
     state => state.user
   );
   const [selectedToken, setSelectedToken] = useState(null);
 
-  const sendRef = useRef(null);
   const actionsRef = useRef(null);
   const listRef = useRef(null);
   useScrollToTop(listRef);
@@ -62,7 +62,11 @@ function Tokens() {
       {
         id: 1,
         label: t('tokensTab.tokenActions.send'),
-        onPress: sendRef.current?.open,
+        onPress: () =>
+          navigation.navigate(Routes.SEND_STACK, {
+            screen: Routes.SEND,
+            params: { token: selectedToken },
+          }),
         icon: SendIcon,
       },
       {
@@ -143,7 +147,6 @@ function Tokens() {
           errorType={ERROR_TYPES.FETCH_ERROR}
         />
       )}
-      {/* <Send modalRef={sendRef} token={selectedToken} /> */}
       <ActionSheet
         modalRef={actionsRef}
         options={tokenActions}

@@ -1,6 +1,7 @@
 import { Principal } from '@dfinity/principal';
 
 import {
+  ACCOUNT_ID_LENGTH,
   ALPHANUM_REGEX,
   CANISTER_MAX_LENGTH,
   ICNS_REGEX,
@@ -17,7 +18,7 @@ export const validatePrincipalId = (text: string) => {
 };
 
 export const validateAccountId = (text: string) =>
-  text.length === 64 && ALPHANUM_REGEX.test(text);
+  text.length === ACCOUNT_ID_LENGTH && ALPHANUM_REGEX.test(text);
 
 export const validateCanisterId = (text: string) => {
   try {

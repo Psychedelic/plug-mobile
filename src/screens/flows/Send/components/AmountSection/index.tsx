@@ -15,14 +15,14 @@ import styles, { iconColor } from './styles';
 
 interface Props {
   selectedToken: Asset;
-  tokenAmount: Amount;
-  usdAmount: Amount | null;
-  tokenPrice: number | null;
+  tokenAmount?: Amount;
+  usdAmount?: Amount;
+  tokenPrice?: number;
   availableAmount: number;
-  availableUsdAmount: number;
-  setUsdAmount: (value: Amount | null) => void;
-  setTokenAmount: (value: Amount | null) => void;
-  setSelectedToken: (token: Asset | null) => void;
+  availableUsdAmount?: number;
+  setUsdAmount: (value?: Amount) => void;
+  setTokenAmount: (value?: Amount) => void;
+  setSelectedToken: (token?: Asset) => void;
   onReview: () => void;
 }
 
@@ -58,7 +58,7 @@ const AmountSection = ({
               VISIBLE_DECIMALS
             ),
           }
-        : null
+        : undefined
     );
   };
 
@@ -78,7 +78,7 @@ const AmountSection = ({
               VISIBLE_DECIMALS
             ),
           }
-        : null
+        : undefined
     );
   };
 
@@ -97,14 +97,14 @@ const AmountSection = ({
               VISIBLE_DECIMALS
             ),
           }
-        : null
+        : undefined
     );
   };
 
   const onTokenChange = () => {
-    setTokenAmount(null);
-    setUsdAmount(null);
-    setSelectedToken(null);
+    setTokenAmount(undefined);
+    setUsdAmount(undefined);
+    setSelectedToken(undefined);
   };
 
   const getButtonText = () => {
@@ -113,7 +113,9 @@ const AmountSection = ({
     }
 
     if (
-      (usdAmount?.value && availableUsdAmount < usdAmount.value) ||
+      (availableUsdAmount &&
+        usdAmount?.value &&
+        availableUsdAmount < usdAmount.value) ||
       availableAmount < tokenAmount?.value
     ) {
       return t('send.noFunds');
@@ -124,7 +126,8 @@ const AmountSection = ({
   const isButtonDisabled = () =>
     !tokenAmount ||
     tokenAmount.value <= 0 ||
-    (usdAmount &&
+    (availableUsdAmount &&
+      usdAmount &&
       (usdAmount.value <= 0 || usdAmount.value > availableUsdAmount)) ||
     tokenAmount.value > availableAmount;
 

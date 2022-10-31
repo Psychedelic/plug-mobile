@@ -1,6 +1,5 @@
 import WalletConnect from '@walletconnect/client';
 
-import { Nullable } from './general';
 import { ICNSData } from './icns';
 import { WCWhiteListItem } from './walletConnect';
 
@@ -121,7 +120,7 @@ export interface Wallet {
 export interface KeyringState {
   isInitialized: boolean;
   isUnlocked: boolean;
-  currentWallet: Nullable<Wallet>;
+  currentWallet: Wallet;
   wallets: Wallet[];
   icnsDataLoading: boolean;
   isPrelocked: boolean;
