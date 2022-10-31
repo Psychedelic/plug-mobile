@@ -8,7 +8,6 @@ import { PasswordModal, Text, TextInput, Touchable } from '@/components/common';
 import Icon from '@/components/icons';
 import { ADDRESS_TYPES } from '@/constants/addresses';
 import { TOKENS, USD_PER_TC } from '@/constants/assets';
-import XTC_OPTIONS from '@/constants/xtc';
 import useICNS from '@/hooks/useICNS';
 import useKeychain from '@/hooks/useKeychain';
 import { ScreenProps } from '@/interfaces/navigation';
@@ -16,13 +15,9 @@ import { Asset, CollectionToken, Contact } from '@/interfaces/redux';
 import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getICPPrice } from '@/redux/slices/icp';
-import { burnXtc, sendToken, transferNFT } from '@/redux/slices/user';
+import { sendToken, transferNFT } from '@/redux/slices/user';
 import { formatCollections } from '@/utils/assets';
-import {
-  validateAccountId,
-  validateCanisterId,
-  validatePrincipalId,
-} from '@/utils/ids';
+import { validateAccountId, validatePrincipalId } from '@/utils/ids';
 
 import AmountSection from './components/AmountSection';
 import ContactSection from './components/ContactSection';
@@ -63,7 +58,6 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
   );
   const [address, setAddress] = useState<string>();
   const [loading, setLoading] = useState(false);
-  const [destination] = useState(XTC_OPTIONS.SEND);
   const [selectedNft, setSelectedNft] = useState<CollectionToken | undefined>(
     nft
   );
@@ -74,7 +68,6 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
   const [selectedContact, setSelectedContact] = useState<Contact>();
   const [selectedTokenPrice, setSelectedTokenPrice] = useState<number>();
   const [addressInfo, setAddressInfo] = useState(INITIAL_ADDRESS_INFO);
-  const [sendingXTCtoCanister, setSendingXTCtoCanister] = useState(false);
   const [biometricsError, setBiometricsError] = useState(false);
 
   const isValidAddress = addressInfo.isValid;
@@ -177,31 +170,21 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
     if (tokenAmount && to && selectedToken) {
       setLoading(true);
       const amount = tokenAmount.value;
-      if (sendingXTCtoCanister && destination === XTC_OPTIONS.BURN) {
-        dispatch(
-          burnXtc({
-            to,
-            amount: amount.toString(),
-            onEnd: () => setLoading(false),
-          })
-        );
-      } else {
-        dispatch(
-          sendToken({
-            to,
-            amount,
-            canisterId: selectedToken?.canisterId,
-            icpPrice,
-            opts: {
-              fee:
-                selectedToken?.fee && selectedToken?.decimals
-                  ? selectedToken.fee * Math.pow(10, selectedToken.decimals)
-                  : 0, // TODO: Change this to selectedToken.fee only when dab is ready
-            },
-            onEnd: () => setLoading(false),
-          })
-        );
-      }
+      dispatch(
+        sendToken({
+          to,
+          amount,
+          canisterId: selectedToken?.canisterId,
+          icpPrice,
+          opts: {
+            fee:
+              selectedToken?.fee && selectedToken?.decimals
+                ? selectedToken.fee * Math.pow(10, selectedToken.decimals)
+                : 0, // TODO: Change this to selectedToken.fee only when dab is ready
+          },
+          onEnd: () => setLoading(false),
+        })
+      );
     }
   };
 
@@ -277,9 +260,6 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
           isValid = false;
         }
         setAddressInfo({ isValid, type, resolvedAddress });
-        setSendingXTCtoCanister(
-          selectedToken?.symbol === TOKENS.XTC.symbol && validateCanisterId(id)
-        );
       }
     }
   }, [address, selectedContact, selectedToken, isValidICNS, resolvedAddress]);
