@@ -1,25 +1,21 @@
 import { t } from 'i18next';
 import React, { useRef, useState } from 'react';
-import { Image } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
-import {
-  ActionButton,
-  Header,
-  Modal,
-  Text,
-  Touchable,
-} from '@/components/common';
+import ScrollableButton from '@/components/buttons/ScrollableButton';
+import { ActionButton, Header, Modal, Text } from '@/components/common';
 import { Nullable } from '@/interfaces/general';
 import { NFTInfo } from '@/interfaces/keyring';
-import animationScales from '@/utils/animationScales';
 
-import Add from '../../../Tokens/components/AddToken/assets/Add.png'; // check this
 import CustomNFT from '../CustomNFT';
 import ReviewNFT from '../ReviewNFT';
 import styles from './styles';
 
-function AddNFT() {
+interface Props {
+  scrollPosition: number;
+}
+
+function AddNFT({ scrollPosition }: Props) {
   const modalRef = useRef<Modalize>(null);
   const [selectedNFT, setSelectedNFT] = useState<Nullable<NFTInfo>>(null);
   const showReviewNFT = !!selectedNFT;
@@ -33,12 +29,12 @@ function AddNFT() {
 
   return (
     <>
-      <Touchable
+      <ScrollableButton
+        text={t('addNFT.title')}
+        scrollPosition={scrollPosition}
         onPress={() => modalRef?.current?.open()}
-        scale={animationScales.medium}
-        style={styles.buttonContainer}>
-        <Image source={Add} />
-      </Touchable>
+        buttonStyle={styles.buttonContainer}
+      />
       <Modal
         onClosed={cleanState}
         modalRef={modalRef}

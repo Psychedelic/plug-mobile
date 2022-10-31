@@ -4,6 +4,7 @@ import { t } from 'i18next';
 import React, { useMemo, useRef, useState } from 'react';
 import { Alert, RefreshControl, ScrollView } from 'react-native';
 
+import useScrollHanlder from '@/components/buttons/ScrollableButton/hooks/useScrollHandler';
 import { ActionSheet, ErrorState, Text } from '@/components/common';
 import TokenItem from '@/components/tokens/TokenItem';
 import { ERROR_TYPES } from '@/constants/general';
@@ -27,6 +28,7 @@ function Tokens() {
     state => state.user
   );
   const [selectedToken, setSelectedToken] = useState(null);
+  const { handleOnScroll, scrollPosition } = useScrollHanlder();
 
   const sendRef = useRef(null);
   const actionsRef = useRef(null);
@@ -118,6 +120,7 @@ function Tokens() {
             overScrollMode="never"
             contentContainerStyle={styles.scrollContent}
             ref={listRef}
+            onScroll={handleOnScroll}
             refreshing={assetsLoading}
             refreshControl={
               <RefreshControl
@@ -135,7 +138,7 @@ function Tokens() {
               />
             ))}
           </ScrollView>
-          <AddToken />
+          <AddToken scrollPosition={scrollPosition} />
         </>
       ) : (
         <ErrorState

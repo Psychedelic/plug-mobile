@@ -51,7 +51,7 @@ function ReviewNFT({ nft, handleModalClose }: Props) {
         </Text>
       </View>
       <RainbowButton
-        text={t('addNFT.add')}
+        text={t('addNFT.title')}
         onPress={handleAddNFT}
         // disabled={loadingBalance || !!error}
         loading={loading}

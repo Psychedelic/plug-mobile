@@ -6,6 +6,7 @@ import { RefreshControl, View } from 'react-native';
 
 import EmptyState from '@/commonComponents/EmptyState';
 import ErrorState from '@/commonComponents/ErrorState';
+import useScrollHanlder from '@/components/buttons/ScrollableButton/hooks/useScrollHandler';
 import Text from '@/components/common/Text';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
@@ -20,6 +21,7 @@ import { formatCollections } from '@/utils/assets';
 import AddNFT from './components/AddNFT';
 import NftDetail from './screens/NftDetail';
 import styles from './styles';
+
 function NFTs() {
   const { t } = useTranslation();
   const detailRef = useRef(null);
@@ -30,6 +32,7 @@ function NFTs() {
   const { collections, collectionsError, collectionsLoading } = useAppSelector(
     state => state.user
   );
+  const { handleOnScroll, scrollPosition } = useScrollHanlder();
 
   const nfts = useMemo(
     () => (collections ? formatCollections(collections) : []),
@@ -55,6 +58,7 @@ function NFTs() {
         {!collectionsError ? (
           <View style={styles.container}>
             <FlashList
+              onScroll={handleOnScroll}
               bounces
               data={nfts}
               numColumns={2}
@@ -82,7 +86,7 @@ function NFTs() {
                 />
               }
             />
-            <AddNFT />
+            <AddNFT scrollPosition={scrollPosition} />
           </View>
         ) : (
           <ErrorState onPress={onRefresh} errorType={ERROR_TYPES.FETCH_ERROR} />

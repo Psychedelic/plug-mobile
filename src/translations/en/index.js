@@ -350,7 +350,7 @@ const translations = {
     customNFTStandard: 'Collectible Interface Standard',
     customNFT: 'Custom Collectible',
     customCaption: 'This allows Collectibles to be used by Plug',
-    add: 'Add Collectible',
+    title: 'Add Collectible',
     noName: 'Unable to load name',
     safetyAlert:
       'Collectible Safety Alert: For your security, make sure to do proper research before interacting with any Collectible.',
