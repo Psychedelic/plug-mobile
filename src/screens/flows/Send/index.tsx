@@ -67,6 +67,7 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
   const [selectedNft, setSelectedNft] = useState<CollectionToken | undefined>(
     nft
   );
+
   const [tokenAmount, setTokenAmount] = useState<Amount>();
   const [usdAmount, setUsdAmount] = useState<Amount>();
   const [selectedToken, setSelectedToken] = useState<Asset | undefined>(token);
