@@ -10,7 +10,6 @@ import {
 
 import { Touchable } from '@/components/common';
 import AddGradient from '@/icons/svg/AddGradient.svg';
-import { Nullable } from '@/interfaces/general';
 
 import styles from './styles';
 
@@ -30,12 +29,11 @@ function ScrollableButton({
   buttonStyle,
   imageStyle,
   scrollPosition,
-  ...props
 }: Props) {
   const [showFullButton, setShowFullButton] = useState(true);
   const [animationFinished, setAnimationFinished] = useState(true);
   const [currentScrollPosition, setCurrentScrollPosition] = useState(0);
-  const [textWidth, setTextWidth] = useState<Nullable<number>>(null);
+  const [textWidth, setTextWidth] = useState<number>();
   const textAnim = useRef(new Animated.Value(textWidth || 0)).current;
   const opacityAnim = useRef(new Animated.Value(1)).current;
 
@@ -107,8 +105,7 @@ function ScrollableButton({
           styles.button,
           !showFullButton && styles.smallButton,
           buttonStyle,
-        ]}
-        {...props}>
+        ]}>
         <AddGradient width={30} height={30} style={imageStyle} />
         <Animated.Text
           ellipsizeMode="clip"

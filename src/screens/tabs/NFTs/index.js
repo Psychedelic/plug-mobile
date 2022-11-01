@@ -59,7 +59,7 @@ function NFTs() {
           <View style={styles.container}>
             <FlashList
               onScroll={handleOnScroll}
-              bounces
+              bounces={false}
               data={nfts}
               numColumns={2}
               horizontal={false}

@@ -4,7 +4,6 @@ import { Modalize } from 'react-native-modalize';
 
 import ScrollableButton from '@/components/buttons/ScrollableButton';
 import { ActionButton, Header, Modal, Text } from '@/components/common';
-import { Nullable } from '@/interfaces/general';
 import { CollectionInfo } from '@/interfaces/keyring';
 
 import CustomCollection from '../CustomCollection';
@@ -18,7 +17,7 @@ interface Props {
 function AddCollection({ scrollPosition }: Props) {
   const modalRef = useRef<Modalize>(null);
   const [selectedCollection, setSelectedCollection] =
-    useState<Nullable<CollectionInfo>>(null);
+    useState<CollectionInfo>();
   const showReviewCollection = !!selectedCollection;
 
   const handleModalClose = () => {
@@ -26,7 +25,7 @@ function AddCollection({ scrollPosition }: Props) {
     cleanState();
   };
 
-  const cleanState = () => setSelectedCollection(null);
+  const cleanState = () => setSelectedCollection(undefined);
 
   return (
     <>

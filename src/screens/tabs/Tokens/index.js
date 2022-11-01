@@ -116,6 +116,7 @@ function Tokens() {
       {!assetsError ? (
         <>
           <ScrollView
+            bounces={false}
             showsVerticalScrollIndicator={false}
             overScrollMode="never"
             contentContainerStyle={styles.scrollContent}

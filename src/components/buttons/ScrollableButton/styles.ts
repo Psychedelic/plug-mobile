@@ -24,7 +24,6 @@ export default StyleSheet.create({
     opacity: 0.2,
   },
   text: {
-    ...FontStyles.Body2,
-    ...fontMaker({ color: Colors.White.Pure }),
+    ...fontMaker({ ...FontStyles.Body2, color: Colors.White.Pure }),
   },
 });

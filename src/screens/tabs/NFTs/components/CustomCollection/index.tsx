@@ -78,7 +78,7 @@ function CustomCollection({ setSelectedCollection }: Props) {
             setSelectedCollection(collection);
             clearValues();
           },
-          onError: () => {
+          onFailure: () => {
             setCollectionError(true);
             setLoading(false);
           },

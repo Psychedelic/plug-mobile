@@ -431,11 +431,11 @@ export const getCollectionInfo = createAsyncThunk(
     {
       collection,
       onSuccess,
-      onError,
+      onFailure,
     }: {
       collection: { canisterId: string; standard: NonFungibleStandard };
       onSuccess: (collectionInfo: CollectionInfo) => void;
-      onError: () => void;
+      onFailure: () => void;
     },
     { rejectWithValue }
   ) => {
@@ -445,7 +445,7 @@ export const getCollectionInfo = createAsyncThunk(
       onSuccess(collectionInfo);
     } catch (e: any) {
       console.log('Error while fetching Collection info', e);
-      onError?.();
+      onFailure?.();
       return rejectWithValue(e.message);
     }
   }
