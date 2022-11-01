@@ -39,7 +39,9 @@ function ReviewCollection({ collection, handleModalClose }: Props) {
           if (e.includes('The NFT is already registered')) {
             showInfo(
               t('addCollection.infoToastTitle'),
-              t('addCollection.infoToastMessage', { name })
+              t('addCollection.infoToastMessage', {
+                name: name || t('addCollection.unknownCollection'),
+              })
             );
           } else {
             showError(

@@ -366,6 +366,7 @@ const translations = {
     successToastTitle: 'Custom Collection Successfully Added',
     successToastMessage:
       'You’ll only be able to access the collection if own items from it.',
+    unknownCollection: 'unknown collection',
   },
 };
 

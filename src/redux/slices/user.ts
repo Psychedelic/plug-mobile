@@ -356,7 +356,6 @@ export const addCustomToken = createAsyncThunk<
         onSuccess?.();
         return user.assets;
       }
-      // aca
       const registeredToken = await instance?.registerToken({
         canisterId: canisterId.toString(),
         standard,
@@ -445,7 +444,7 @@ export const getCollectionInfo = createAsyncThunk(
       const collectionInfo = await instance?.getNFTInfo(collection);
       onSuccess(collectionInfo);
     } catch (e: any) {
-      console.log('Error while fetching NFT info', e);
+      console.log('Error while fetching Collection info', e);
       onError?.();
       return rejectWithValue(e.message);
     }
