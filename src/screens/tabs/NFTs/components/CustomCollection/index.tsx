@@ -76,12 +76,11 @@ function CustomCollection({ setSelectedCollection }: Props) {
           collection: { canisterId, standard },
           onSuccess: collection => {
             setSelectedCollection(collection);
-            clearValues(); // check if this ok
+            clearValues();
           },
           onError: () => {
             setCollectionError(true);
             setLoading(false);
-            // Should I add clearValues() here?
           },
         })
       );
