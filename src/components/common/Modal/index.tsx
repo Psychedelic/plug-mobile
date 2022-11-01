@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { Modalize } from 'react-native-modalize';
+import { IProps as ModalizeProps } from 'react-native-modalize/lib/options';
 import { Portal } from 'react-native-portalize';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -11,7 +12,7 @@ import styles from './styles';
 
 export const modalOffset = withNotch ? undefined : isIos ? 10 : 35;
 
-interface Props {
+interface Props extends ModalizeProps {
   children: React.ReactNode;
   modalRef: React.RefObject<Modalize>;
   onClose?: () => void;
@@ -39,10 +40,10 @@ function Modal({
   FooterComponent,
   FloatingComponent,
   disableScrollIfPossible,
+  onBackButtonPress,
   ...props
 }: Props) {
   const closeAllModals = useAppSelector(state => state.alert.closeAllModals);
-  const handleOnClose = () => onClose?.();
 
   useEffect(() => {
     if (closeAllModals) {
@@ -55,6 +56,7 @@ function Modal({
     <Portal>
       <Modalize
         {...props}
+        onBackButtonPress={onBackButtonPress}
         ref={modalRef}
         handlePosition="inside"
         modalStyle={[
@@ -80,8 +82,8 @@ function Modal({
         closeOnOverlayTap
         keyboardAvoidingBehavior={isIos ? 'padding' : undefined}
         modalTopOffset={modalOffset}
-        onOverlayPress={handleOnClose}
-        onClose={handleOnClose}
+        onOverlayPress={onClose}
+        onClose={onClose}
         onClosed={onClosed}
         adjustToContentHeight={adjustToContentHeight}
         HeaderComponent={HeaderComponent}

@@ -14,7 +14,7 @@ import { Asset, Contact } from '@/interfaces/redux';
 import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getICPPrice } from '@/redux/slices/icp';
-import { sendToken, transferNFT } from '@/redux/slices/user';
+import { sendToken, setTransaction, transferNFT } from '@/redux/slices/user';
 import { formatCollections, FormattedCollection } from '@/utils/assets';
 import {
   validateAccountId,
@@ -108,6 +108,9 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
 
   useEffect(() => {
     dispatch(getICPPrice());
+    return () => {
+      dispatch(setTransaction(null));
+    };
   }, []);
 
   useEffect(() => {
@@ -176,22 +179,6 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
     setSelectedToken(undefined);
     onReview();
   };
-
-  // const resetState = () => {
-  //   setAddress(null);
-  //   setAddressInfo(INITIAL_ADDRESS_INFO);
-  //   setSelectedNft(null);
-  //   setSelectedToken(null);
-  //   setSelectedContact(null);
-  //   setUsdAmount(null);
-  //   setTokenAmount(null);
-  //   dispatch(setTransaction(null)); => CHECK THIS ONE
-  // };
-
-  // const onError = () => {
-  //   resetState();
-  //   modalRef.current?.close();
-  // };
 
   const onChangeText = (text: string) => {
     if (!text) {

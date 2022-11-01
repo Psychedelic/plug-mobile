@@ -120,6 +120,7 @@ const ReviewSend = ({
       modalRef={modalRef}
       onClose={handleClose}
       adjustToContentHeight={adjustToContentHeight}
+      onBackButtonPress={() => true}
       fullHeight={isSuccess || isError}>
       <View style={styles.content}>
         <Header center={<Text type="subtitle2">{title}</Text>} />
