@@ -25,7 +25,7 @@ const DEFAULT_STATE: KeyringState = {
   isInitialized: false,
   isUnlocked: false,
   isPrelocked: false,
-  currentWallet: null,
+  currentWallet: undefined,
   wallets: [],
   icnsDataLoading: false,
 };

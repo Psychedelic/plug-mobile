@@ -62,12 +62,14 @@ export const sendToken = createAsyncThunk(
       canisterId: string;
       opts: any;
       icpPrice: number;
-      onEnd?: () => void;
+      onSuccess?: () => void;
+      onFailure?: () => void;
     },
     { rejectWithValue, getState, dispatch }
   ) => {
+    const { to, amount, canisterId, opts, icpPrice, onSuccess, onFailure } =
+      params;
     try {
-      const { to, amount, canisterId, opts, icpPrice, onEnd } = params;
       const { user } = getState() as State;
       const instance = KeyRing.getInstance();
       const token = user.assets.find(asset => asset.canisterId === canisterId);
@@ -82,13 +84,13 @@ export const sendToken = createAsyncThunk(
         dispatch(getBalance({}));
         dispatch(getTransactions({ icpPrice }));
       }
-      onEnd?.();
+      onSuccess?.();
       return {
         status: TRANSACTION_STATUS.success,
       };
     } catch (e: any) {
       console.log('e', e);
-      params.onEnd?.();
+      onFailure?.();
       return rejectWithValue({
         status: TRANSACTION_STATUS.error,
       });
@@ -207,12 +209,13 @@ export const transferNFT = createAsyncThunk(
       to: string;
       nft: CollectionToken;
       icpPrice: number;
-      onEnd?: () => void;
+      onSuccess?: () => void;
+      onFailure?: () => void;
     },
     { rejectWithValue, dispatch }
   ) => {
+    const { to, nft, icpPrice, onSuccess, onFailure } = params;
     try {
-      const { to, nft, icpPrice, onEnd } = params;
       const instance = KeyRing.getInstance();
       const response = await instance?.transferNFT({
         to,
@@ -222,14 +225,14 @@ export const transferNFT = createAsyncThunk(
       if (response) {
         dispatch(getTransactions({ icpPrice }));
       }
-      onEnd?.();
+      onSuccess?.();
       return {
         nft,
         status: TRANSACTION_STATUS.success,
       };
     } catch (e: any) {
       console.trace(e.stack);
-      params?.onEnd?.();
+      onFailure?.();
       return rejectWithValue({
         error: e.message,
         status: TRANSACTION_STATUS.error,

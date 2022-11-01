@@ -24,6 +24,7 @@ interface Props {
   setTokenAmount: (value?: Amount) => void;
   setSelectedToken: (token?: Asset) => void;
   onReview: () => void;
+  disabledButton?: boolean;
 }
 
 const AmountSection = ({
@@ -37,6 +38,7 @@ const AmountSection = ({
   setUsdAmount,
   availableAmount,
   availableUsdAmount,
+  disabledButton,
 }: Props) => {
   const { t } = useTranslation();
   const [selectedInput, setSelectedInput] = useState('USD');
@@ -171,7 +173,7 @@ const AmountSection = ({
         buttonStyle={styles.button}
         text={getButtonText()}
         onPress={onReview}
-        disabled={isButtonDisabled()}
+        disabled={disabledButton || isButtonDisabled()}
       />
     </>
   );

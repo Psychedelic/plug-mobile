@@ -1,13 +1,9 @@
 import { StackScreenProps } from '@react-navigation/stack';
 
 import Routes from '@/navigation/Routes';
+import { FormattedCollection } from '@/utils/assets';
 
-import {
-  Asset,
-  CollectionToken,
-  ConnectedApp,
-  WalletConnectCallRequest,
-} from './redux';
+import { Asset, ConnectedApp, WalletConnectCallRequest } from './redux';
 
 export type RootStackParamList = {
   [Routes.NFTS]: undefined;
@@ -31,7 +27,7 @@ export type RootStackParamList = {
   [Routes.CONTACTS]: undefined;
   [Routes.APPROVED_CANISTERS]: { app: ConnectedApp };
   [Routes.SEND_STACK]: undefined;
-  [Routes.SEND]: { token?: Asset; nft?: CollectionToken };
+  [Routes.SEND]: { token?: Asset; nft?: FormattedCollection };
 };
 
 export type ScreenProps<T extends keyof RootStackParamList> = StackScreenProps<

@@ -6,18 +6,21 @@ import { Modalize } from 'react-native-modalize';
 
 import { PasswordModal, Text, TextInput, Touchable } from '@/components/common';
 import Icon from '@/components/icons';
-import { ADDRESS_TYPES } from '@/constants/addresses';
 import { TOKENS, USD_PER_TC } from '@/constants/assets';
 import useICNS from '@/hooks/useICNS';
 import useKeychain from '@/hooks/useKeychain';
 import { ScreenProps } from '@/interfaces/navigation';
-import { Asset, CollectionToken, Contact } from '@/interfaces/redux';
+import { Asset, Contact } from '@/interfaces/redux';
 import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getICPPrice } from '@/redux/slices/icp';
 import { sendToken, transferNFT } from '@/redux/slices/user';
-import { formatCollections } from '@/utils/assets';
-import { validateAccountId, validatePrincipalId } from '@/utils/ids';
+import { formatCollections, FormattedCollection } from '@/utils/assets';
+import {
+  validateAccountId,
+  validateICNSName,
+  validatePrincipalId,
+} from '@/utils/ids';
 
 import AmountSection from './components/AmountSection';
 import ContactSection from './components/ContactSection';
@@ -27,16 +30,13 @@ import TokenSection from './components/TokenSection';
 import { Amount } from './interfaces';
 import styles from './styles';
 
-//Check this. Can we unify address of contact, written and icns?
-const INITIAL_ADDRESS_INFO: {
+export interface Receiver {
+  id: string;
+  name?: string;
+  image?: string;
+  icnsId?: string;
   isValid?: boolean;
-  type?: string;
-  resolvedAddress?: string;
-} = {
-  isValid: undefined,
-  type: undefined,
-  resolvedAddress: undefined,
-};
+}
 
 function Send({ route }: ScreenProps<Routes.SEND>) {
   const dispatch = useAppDispatch();
@@ -56,35 +56,94 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
     () => (collections ? formatCollections(collections) : []),
     [collections]
   );
-  const [address, setAddress] = useState<string>();
   const [loading, setLoading] = useState(false);
-  const [selectedNft, setSelectedNft] = useState<CollectionToken | undefined>(
-    nft
-  );
+  const [selectedNft, setSelectedNft] = useState<
+    FormattedCollection | undefined
+  >(nft);
 
   const [tokenAmount, setTokenAmount] = useState<Amount>();
   const [usdAmount, setUsdAmount] = useState<Amount>();
   const [selectedToken, setSelectedToken] = useState<Asset | undefined>(token);
-  const [selectedContact, setSelectedContact] = useState<Contact>();
   const [selectedTokenPrice, setSelectedTokenPrice] = useState<number>();
-  const [addressInfo, setAddressInfo] = useState(INITIAL_ADDRESS_INFO);
   const [biometricsError, setBiometricsError] = useState(false);
+  const [receiver, setReceiver] = useState<Receiver>();
 
-  const isValidAddress = addressInfo.isValid;
-  const showContacts = !addressInfo.isValid;
-  const showTokens = addressInfo.isValid && !selectedToken;
-  const showAmountSelector = addressInfo.isValid && selectedToken;
-  const to = addressInfo.resolvedAddress || address || selectedContact?.id;
+  const isValidAddress = receiver?.isValid;
+  const showContacts = !receiver?.isValid;
+  const showTokens = receiver?.isValid && !selectedToken;
+  const showAmountSelector = receiver?.isValid && selectedToken;
+  const isNewContact =
+    receiver?.isValid &&
+    !contacts?.find(contact =>
+      receiver?.icnsId
+        ? contact.id === receiver?.icnsId
+        : contact.id === receiver?.id
+    );
+
+  const availableAmount = selectedToken
+    ? selectedToken?.amount - selectedToken?.fee
+    : 0;
+
+  const availableUsdAmount = selectedTokenPrice
+    ? availableAmount * selectedTokenPrice
+    : undefined;
+
+  const tokens = useMemo(
+    () =>
+      receiver?.id && validateAccountId(receiver.id)
+        ? assets.filter(asset => asset.symbol === TOKENS.ICP.symbol)
+        : assets,
+    [assets, receiver]
+  );
 
   const {
     loading: loadingICNS,
+    address: resolvedName,
     resolvedAddress,
     isValid: isValidICNS,
-  } = useICNS(address || selectedContact?.id, selectedToken?.symbol);
+  } = useICNS(
+    receiver?.icnsId ? undefined : receiver?.id,
+    selectedToken?.symbol
+  );
 
   useEffect(() => {
     dispatch(getICPPrice());
   }, []);
+
+  useEffect(() => {
+    if (selectedNft && receiver?.isValid) {
+      onReview();
+    }
+  }, [selectedNft, isValidAddress, receiver]);
+
+  useEffect(() => {
+    if (selectedToken) {
+      const price =
+        { ICP: icpPrice, XTC: USD_PER_TC, WTC: USD_PER_TC, WICP: icpPrice }[
+          selectedToken?.symbol
+        ] || undefined;
+      setSelectedTokenPrice(price);
+    }
+  }, [selectedToken, icpPrice]);
+
+  /** Checks if the ICNS hook returns valid info and updates the receiver state */
+  useEffect(() => {
+    if (
+      isValidICNS &&
+      resolvedName &&
+      validateICNSName(resolvedName) &&
+      currentWallet?.icnsData?.reverseResolvedName !== resolvedName
+    ) {
+      const savedContact = contacts?.find(c => c.id === resolvedName);
+      setReceiver({
+        id: resolvedAddress!,
+        name: savedContact?.name || resolvedName,
+        image: savedContact?.image,
+        icnsId: resolvedName,
+        isValid: true,
+      });
+    }
+  }, [isValidICNS, resolvedAddress, resolvedName, contacts]);
 
   const scrollToTop = () => {
     scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: false });
@@ -97,20 +156,22 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
     passwordRef.current?.open();
   };
 
-  const onContactPress = (contact: Contact) => {
+  const handleContactPress = (contact: Contact) => {
     Keyboard.dismiss();
-    setAddress(undefined);
-    setSelectedContact(contact);
+    setReceiver({
+      ...contact,
+      isValid: true,
+    });
     scrollToTop();
   };
 
-  const onTokenPress = (pressedToken: Asset) => {
+  const handleTokenPress = (pressedToken: Asset) => {
     setSelectedToken(pressedToken);
     setSelectedNft(undefined);
     scrollToTop();
   };
 
-  const onNftPress = (pressedNFT: CollectionToken) => {
+  const handleNftPress = (pressedNFT: FormattedCollection) => {
     setSelectedNft(pressedNFT);
     setSelectedToken(undefined);
     onReview();
@@ -133,17 +194,26 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
   // };
 
   const onChangeText = (text: string) => {
-    setAddress(text);
-    const savedContact = contacts?.find(c => c.id === text);
-    const isMySelf =
-      text === currentWallet?.principal || text === currentWallet?.accountId;
+    if (!text) {
+      return setReceiver(undefined);
+    }
 
-    if (savedContact && !isMySelf) {
-      setSelectedContact(savedContact);
-      setAddress(undefined);
+    const savedContact = contacts?.find(c => c.id === text);
+    const isOwnAddress =
+      text === currentWallet?.principal ||
+      text === currentWallet?.accountId ||
+      text === currentWallet?.icnsData?.reverseResolvedName;
+
+    if (savedContact && !isOwnAddress) {
+      setReceiver({
+        ...savedContact,
+        isValid: true,
+      });
       scrollToTop();
-    } else if (selectedContact) {
-      setSelectedContact(undefined);
+    } else {
+      let isValid =
+        !isOwnAddress && (validatePrincipalId(text) || validateAccountId(text));
+      setReceiver({ id: text, isValid });
     }
   };
 
@@ -153,26 +223,27 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
   };
 
   const handleSendNFT = () => {
-    if (selectedNft && to) {
+    if (selectedNft && receiver?.id) {
       setLoading(true);
       dispatch(
         transferNFT({
-          to,
+          to: receiver.id,
           nft: selectedNft,
           icpPrice,
-          onEnd: () => setLoading(false),
+          onSuccess: () => setLoading(false),
+          onFailure: () => setLoading(false),
         })
       );
     }
   };
 
   const handleSendToken = () => {
-    if (tokenAmount && to && selectedToken) {
+    if (tokenAmount && receiver?.id && selectedToken) {
       setLoading(true);
       const amount = tokenAmount.value;
       dispatch(
         sendToken({
-          to,
+          to: receiver.id,
           amount,
           canisterId: selectedToken?.canisterId,
           icpPrice,
@@ -182,7 +253,8 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
                 ? selectedToken.fee * Math.pow(10, selectedToken.decimals)
                 : 0, // TODO: Change this to selectedToken.fee only when dab is ready
           },
-          onEnd: () => setLoading(false),
+          onSuccess: () => setLoading(false),
+          onFailure: () => setLoading(false),
         })
       );
     }
@@ -221,81 +293,30 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
     }
   };
 
-  useEffect(() => {
-    if (selectedNft && (isValidAddress || selectedContact)) {
-      onReview();
-    }
-  }, [selectedNft, isValidAddress, selectedContact]);
-
-  useEffect(() => {
-    if (selectedToken) {
-      const price =
-        { ICP: icpPrice, XTC: USD_PER_TC, WTC: USD_PER_TC, WICP: icpPrice }[
-          selectedToken?.symbol
-        ] || undefined;
-      setSelectedTokenPrice(price);
-    }
-  }, [selectedToken]);
-
-  useEffect(() => {
-    if (address || selectedContact) {
-      const id = resolvedAddress || address || selectedContact?.id;
-      if (id) {
-        const isUserAddress = [
-          currentWallet?.principal,
-          currentWallet?.accountId,
-        ].includes(id);
-        let isValid =
-          !isUserAddress &&
-          (validatePrincipalId(id) || validateAccountId(id) || isValidICNS);
-
-        const type = validatePrincipalId(id)
-          ? ADDRESS_TYPES.PRINCIPAL
-          : ADDRESS_TYPES.ACCOUNT;
-        if (
-          type === ADDRESS_TYPES.ACCOUNT &&
-          selectedToken?.symbol &&
-          selectedToken.symbol !== TOKENS.ICP.symbol
-        ) {
-          isValid = false;
-        }
-        setAddressInfo({ isValid, type, resolvedAddress });
-      }
-    }
-  }, [address, selectedContact, selectedToken, isValidICNS, resolvedAddress]);
-
-  const availableAmount = useMemo(
-    () => (selectedToken ? selectedToken?.amount - selectedToken?.fee : 0),
-    [selectedToken]
-  );
-
-  const availableUsdAmount = useMemo(
-    () =>
-      selectedTokenPrice ? availableAmount * selectedTokenPrice : undefined,
-    [availableAmount, selectedTokenPrice]
-  );
-
-  const tokens = useMemo(
-    () =>
-      addressInfo?.type === ADDRESS_TYPES.ACCOUNT
-        ? assets.filter(asset => asset.symbol === TOKENS.ICP.symbol)
-        : assets,
-    [assets, addressInfo]
-  );
+  const handleContactSaved = (contact: Contact) => {
+    setReceiver({
+      id:
+        validateICNSName(contact.id) && receiver?.id ? receiver.id : contact.id, // If the contact is an ICNS, we keep the previous resolved address
+      name: contact.name,
+      image: contact.image,
+      icnsId: receiver?.icnsId,
+      isValid: true,
+    });
+  };
 
   return (
     <>
       <TextInput
         placeholder={t('send.inputPlaceholder')}
         hideGradient
-        value={selectedContact ? selectedContact.name : address}
+        value={receiver?.name || receiver?.id}
         onChangeText={onChangeText}
         inputStyle={[styles.inputText, isValidAddress && styles.inputTextValid]}
         style={styles.input}
         contentContainerStyle={styles.inputContent}
         left={<Text style={styles.inputLeftLabel}>{t('send.inputLabel')}</Text>}
         right={
-          !selectedContact && isValidAddress ? (
+          isNewContact ? (
             <Touchable
               style={styles.addIcon}
               onPress={saveContactRef?.current?.open}>
@@ -309,8 +330,8 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
       <ScrollView ref={scrollViewRef} style={styles.contentContainer}>
         {showContacts && (
           <ContactSection
-            filterText={address}
-            onPress={onContactPress}
+            filterText={receiver?.id}
+            onPress={handleContactPress}
             showAccountIdContacts={
               !selectedToken?.symbol ||
               selectedToken.symbol === TOKENS.ICP.symbol
@@ -321,8 +342,8 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
           <TokenSection
             nfts={nfts}
             tokens={tokens}
-            onNftPress={onNftPress}
-            onTokenPress={onTokenPress}
+            onNftPress={handleNftPress}
+            onTokenPress={handleTokenPress}
           />
         )}
         {showAmountSelector && (
@@ -337,6 +358,7 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
             availableAmount={availableAmount}
             availableUsdAmount={availableUsdAmount}
             onReview={onReview}
+            disabledButton={loading || loadingICNS}
           />
         )}
       </ScrollView>
@@ -344,17 +366,24 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
         modalRef={reviewRef}
         adjustToContentHeight
         token={selectedToken}
-        to={selectedContact ? selectedContact?.id : address}
-        contact={selectedContact}
+        contact={receiver}
+        isNewContact={isNewContact}
         amount={tokenAmount}
         value={usdAmount}
         nft={selectedNft}
         onSend={handleSend}
         onClose={() => setSelectedNft(undefined)}
+        onContactSaved={handleContactSaved}
         transaction={transaction}
         loading={loading || loadingICNS}
       />
-      {address && <SaveContact id={address} modalRef={saveContactRef} />}
+      {isNewContact && receiver && (
+        <SaveContact
+          id={receiver?.icnsId || receiver.id}
+          modalRef={saveContactRef}
+          onSaved={handleContactSaved}
+        />
+      )}
       <PasswordModal
         modalRef={passwordRef}
         handleSubmit={send}

@@ -27,13 +27,17 @@ function ContactSection({ onPress, filterText, showAccountIdContacts }: Props) {
   // This removes own account and all accounts with accountID contacts if showAccountIdContacts = false
   const usableContacts = useMemo(
     () =>
-      contacts.filter(
-        contact =>
-          contact.id !== principal &&
-          contact.id !== accountId &&
-          contact.id !== icnsData?.reverseResolvedName &&
-          (showAccountIdContacts || !validateAccountId(contact.id))
-      ),
+      contacts
+        .filter(
+          contact =>
+            contact.id !== principal &&
+            contact.id !== accountId &&
+            contact.id !== icnsData?.reverseResolvedName &&
+            (showAccountIdContacts || !validateAccountId(contact.id))
+        )
+        .sort((a, b) =>
+          a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+        ),
     [contacts, showAccountIdContacts, principal, accountId, icnsData]
   );
 

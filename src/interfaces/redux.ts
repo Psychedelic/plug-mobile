@@ -120,7 +120,7 @@ export interface Wallet {
 export interface KeyringState {
   isInitialized: boolean;
   isUnlocked: boolean;
-  currentWallet: Wallet;
+  currentWallet?: Wallet;
   wallets: Wallet[];
   icnsDataLoading: boolean;
   isPrelocked: boolean;

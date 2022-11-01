@@ -37,6 +37,7 @@ export default function useICNS(
 
   return {
     loading,
+    address,
     resolvedAddress,
     isValid: !!resolvedAddress,
   };
