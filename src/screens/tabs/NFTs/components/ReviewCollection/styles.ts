@@ -17,7 +17,7 @@ export default StyleSheet.create({
     ...fontMaker({ color: Colors.White.Primary }),
     marginLeft: 12,
   },
-  nftContainer: {
+  collectionContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 16,
@@ -28,26 +28,4 @@ export default StyleSheet.create({
     marginTop: 36,
     marginBottom: 40,
   },
-  // tokenContainer: {
-  //   marginVertical: 36,
-  //   height: 70,
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   borderWidth: 1,
-  //   borderTopColor: Colors.Divider[1],
-  //   borderBottomColor: Colors.Divider[1],
-  //   padding: 14,
-  // },
-  // loader: {
-  //   justifyContent: 'center',
-  // },
-  // errorTextContainer: {
-  //   marginLeft: 8,
-  // },
-  // errorTitle: {
-  //   ...fontMaker({ color: Colors.White.Primary }),
-  // },
-  // errorSubtitle: {
-  //   ...fontMaker({ color: Colors.Gray.Pure, style: 'italic' }),
-  // },
 });

@@ -345,18 +345,27 @@ const translations = {
     selectAccount:
       "Select the account you would like to export it's DFX Identity.",
   },
-  addNFT: {
-    customNFTId: 'Collectible Canister ID',
-    customNFTStandard: 'Collectible Interface Standard',
-    customNFT: 'Custom Collectible',
+  addCollection: {
+    customCollectionId: 'Collection Canister ID',
+    customCollectionStandard: 'Collection Interface Standard',
+    customCollection: 'Custom Collection',
     customCaption: 'This allows Collectibles to be used by Plug',
-    title: 'Add Collectible',
+    title: 'Add Collection',
     noName: 'Unable to load name',
+    invalidCanisterId: 'Invalid canister ID. ',
+    canisterNotCompatible:
+      'Canister Id not compatible with {{standard}}. Please, try again.',
     safetyAlert:
-      'Collectible Safety Alert: For your security, make sure to do proper research before interacting with any Collectible.',
-    addedToastTitle: 'Custom Collectible Collection Added',
-    addedToastMessage:
-      'Collectible collections are only visible to those who own their items.',
+      'Collection Safety Alert: For your security, make sure to do proper research before interacting with any Collections.',
+    errorToastTitle: 'Error Adding Custom Collection',
+    errorToastMessage:
+      'There was an unexpected error while trying to add a custom collection. Please try again later.',
+    infoToastTitle: 'Custom Collection Already Added',
+    infoToastMessage:
+      'You’ve added this collection before. Remember, you need to own items from {{name}} to be able to access it.',
+    successToastTitle: 'Custom Collection Successfully Added',
+    successToastMessage:
+      'You’ll only be able to access the collection if own items from it.',
   },
 };
 

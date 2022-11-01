@@ -1,3 +1,5 @@
+import { WalletNFTInfo } from '@psychedelic/plug-controller/dist/interfaces/plug_wallet';
+
 export type FungibleStandard = 'DIP20' | 'EXT';
 export type NonFungibleStandard = 'DIP721';
 export type Standard = 'DIP20' | 'XTC' | 'WICP' | 'EXT' | 'ICP' | string;
@@ -29,13 +31,4 @@ export interface InferredTransaction {
   caller: string;
 }
 
-export interface NFTInfo {
-  icon?: string;
-  name: string;
-  standard: string;
-  canisterId: string;
-  description: string;
-  // TODO: replace any
-  tokens: any[];
-  registeredBy: any[];
-}
+export interface CollectionInfo extends WalletNFTInfo {}

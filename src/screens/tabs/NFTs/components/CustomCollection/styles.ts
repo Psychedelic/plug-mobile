@@ -10,9 +10,6 @@ export default StyleSheet.create({
   container: {
     paddingHorizontal: 16,
   },
-  title: {
-    color: Colors.White.Primary,
-  },
   standardButton: {
     marginTop: 16,
     flexDirection: 'row',
@@ -20,10 +17,6 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
     height: 56,
     backgroundColor: Colors.Black.Primary,
-  },
-  standardButtonError: {
-    borderColor: Colors.Red,
-    borderWidth: 1,
   },
   standardTextPlaceholder: {
     ...fontMaker({ size: 18, color: Colors.White.Secondary, weight: SEMIBOLD }),

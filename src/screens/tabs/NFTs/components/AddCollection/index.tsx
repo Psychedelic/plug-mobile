@@ -5,32 +5,33 @@ import { Modalize } from 'react-native-modalize';
 import ScrollableButton from '@/components/buttons/ScrollableButton';
 import { ActionButton, Header, Modal, Text } from '@/components/common';
 import { Nullable } from '@/interfaces/general';
-import { NFTInfo } from '@/interfaces/keyring';
+import { CollectionInfo } from '@/interfaces/keyring';
 
-import CustomNFT from '../CustomNFT';
-import ReviewNFT from '../ReviewNFT';
+import CustomCollection from '../CustomCollection';
+import ReviewCollection from '../ReviewCollection';
 import styles from './styles';
 
 interface Props {
   scrollPosition: number;
 }
 
-function AddNFT({ scrollPosition }: Props) {
+function AddCollection({ scrollPosition }: Props) {
   const modalRef = useRef<Modalize>(null);
-  const [selectedNFT, setSelectedNFT] = useState<Nullable<NFTInfo>>(null);
-  const showReviewNFT = !!selectedNFT;
+  const [selectedCollection, setSelectedCollection] =
+    useState<Nullable<CollectionInfo>>(null);
+  const showReviewCollection = !!selectedCollection;
 
   const handleModalClose = () => {
     modalRef.current?.close();
     cleanState();
   };
 
-  const cleanState = () => setSelectedNFT(null);
+  const cleanState = () => setSelectedCollection(null);
 
   return (
     <>
       <ScrollableButton
-        text={t('addNFT.title')}
+        text={t('addCollection.title')}
         scrollPosition={scrollPosition}
         onPress={() => modalRef?.current?.open()}
         buttonStyle={styles.buttonContainer}
@@ -43,30 +44,33 @@ function AddNFT({ scrollPosition }: Props) {
         HeaderComponent={
           <Header
             left={
-              showReviewNFT && (
+              showReviewCollection && (
                 <ActionButton onPress={cleanState} label={t('common.back')} />
               )
             }
             center={
               <Text style={styles.title} type="subtitle3">
-                {t('addNFT.customNFT')}
+                {t('addCollection.customCollection')}
               </Text>
             }
             right={
               <ActionButton
                 label={t('common.close')}
-                onPress={handleModalClose} // check if this ok
+                onPress={handleModalClose}
               />
             }
           />
         }>
-        {showReviewNFT ? (
-          <ReviewNFT nft={selectedNFT} handleModalClose={handleModalClose} />
+        {showReviewCollection ? (
+          <ReviewCollection
+            collection={selectedCollection}
+            handleModalClose={handleModalClose}
+          />
         ) : (
-          <CustomNFT setSelectedNFT={setSelectedNFT} />
+          <CustomCollection setSelectedCollection={setSelectedCollection} />
         )}
       </Modal>
     </>
   );
 }
-export default AddNFT;
+export default AddCollection;

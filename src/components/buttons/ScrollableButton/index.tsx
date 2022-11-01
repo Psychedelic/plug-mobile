@@ -40,7 +40,7 @@ function ScrollableButton({
   const opacityAnim = useRef(new Animated.Value(1)).current;
 
   const handleOnLayout = (event: LayoutChangeEvent) => {
-    const { width } = event.nativeEvent.layout;
+    const width = event?.nativeEvent?.layout?.width;
     if (!textWidth) {
       setTextWidth(width);
       textAnim.setValue(width);
@@ -49,6 +49,7 @@ function ScrollableButton({
 
   useEffect(() => {
     if (currentScrollPosition < scrollPosition) {
+      // Scroll down.
       setShowFullButton(false);
       if (animationFinished) {
         setAnimationFinished(false);
@@ -59,6 +60,7 @@ function ScrollableButton({
         });
       }
     } else if (scrollPosition < currentScrollPosition || scrollPosition === 0) {
+      // Scroll up or start position.
       setShowFullButton(true);
       if (animationFinished) {
         setAnimationFinished(false);

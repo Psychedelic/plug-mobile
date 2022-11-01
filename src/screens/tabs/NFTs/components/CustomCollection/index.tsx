@@ -9,49 +9,45 @@ import { ActionSheet, Text, TextInput } from '@/components/common';
 import Icon from '@/components/icons';
 import { Colors } from '@/constants/theme';
 import { custonNFTsUrl } from '@/constants/urls';
-// import { Error, getError } from './utils';
-import { NFTInfo, NonFungibleStandard } from '@/interfaces/keyring';
+import { CollectionInfo, NonFungibleStandard } from '@/interfaces/keyring';
 import { useAppDispatch } from '@/redux/hooks';
-import { getNFTInfo } from '@/redux/slices/user';
+import { getCollectionInfo } from '@/redux/slices/user';
 import { validateCanisterId } from '@/utils/ids';
 
-// import { customTokensUrl } from '@/constants/urls';
 import styles, { iconColor } from './styles';
-
 interface Props {
-  setSelectedNFT: (nftInfo: NFTInfo) => void;
+  setSelectedCollection: (collectionInfo: CollectionInfo) => void;
 }
 
-function CustomNFT({ setSelectedNFT }: Props) {
+function CustomCollection({ setSelectedCollection }: Props) {
   const dispatch = useAppDispatch();
   const optionsRef = useRef<Modalize>(null);
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [nftError, setNftError] = useState<any>(undefined);
+  const [collectionError, setCollectionError] = useState<boolean>(false);
   const [canisterId, setCanisterId] = useState<string>('');
   const [canisterIdError, setCanisterIdError] = useState<boolean>(false);
   const [standard, setStandard] = useState<NonFungibleStandard>('DIP721');
 
-  const showCanisterError =
-    nftError?.includes('INVALID_CANISTER_ID') ||
-    nftError?.includes('EMPTY_IDENTITY_ERROR');
+  const error = canisterIdError || collectionError;
 
   const handleIdChange = (text: string) => {
     setCanisterId(text);
     setCanisterIdError(!validateCanisterId(text));
-    setNftError(undefined);
+    setCollectionError(false);
   };
+
   const clearValues = () => {
     setLoading(false);
     setCanisterId('');
     setStandard('DIP721');
-    setNftError(undefined);
+    setCollectionError(false);
     setCanisterIdError(false);
   };
 
   const handleStandardChange = useCallback((selected: NonFungibleStandard) => {
     setStandard(selected);
-    setNftError(undefined);
+    setCollectionError(false);
   }, []);
 
   const handleStandardPress = () => {
@@ -66,7 +62,6 @@ function CustomNFT({ setSelectedNFT }: Props) {
         label: 'DIP721',
         onPress: () => handleStandardChange('DIP721'),
       },
-      // TODO: In the future add more standars here.
     ],
     [handleStandardChange]
   );
@@ -77,17 +72,14 @@ function CustomNFT({ setSelectedNFT }: Props) {
       setLoading(true);
       setCanisterIdError(false);
       dispatch(
-        getNFTInfo({
-          nft: { canisterId, standard },
-          onSuccess: res => {
-            console.tron.log('nftinfo:', res);
-            setSelectedNFT(res);
+        getCollectionInfo({
+          collection: { canisterId, standard },
+          onSuccess: collection => {
+            setSelectedCollection(collection);
             clearValues(); // check if this ok
           },
-          onError: (err: string) => {
-            console.tron.log('err:', err);
-            // setTokenError(getError(err));
-            setNftError(err);
+          onError: () => {
+            setCollectionError(true);
             setLoading(false);
             // Should I add clearValues() here?
           },
@@ -98,61 +90,52 @@ function CustomNFT({ setSelectedNFT }: Props) {
     }
   };
 
-  // const handleLinkPress = () => {
-  //   // todo: check for nfts
-  //   Linking.canOpenURL(custonNFTsUrl).then(() =>
-  //     Linking.openURL(custonNFTsUrl)
-  //   );
-  // };
-
-  // const renderError = (message: string, showMore: boolean = false) => {
-  //   return (
-  //     <View style={styles.errorContainer}>
-  //       <Icon name="error" color={Colors.Red} />
-  //       <Text type="caption" style={styles.errorText}>
-  //         {`${message} `}
-  //         {showMore && (
-  //           <Text style={styles.errorLink} onPress={handleLinkPress}>
-  //             {t('common.learnMore')}
-  //           </Text>
-  //         )}
-  //       </Text>
-  //     </View>
-  //   );
-  // };
+  const handleLinkPress = () => {
+    Linking.canOpenURL(custonNFTsUrl).then(() =>
+      Linking.openURL(custonNFTsUrl)
+    );
+  };
 
   return (
-    // <Modal modalRef={modalRef} adjustToContentHeight onClosed={clearValues}> check onClosed
-    // right={<ActionButton label={t('common.close')} onPress={handleClose} />} check handleClose
     <View style={styles.container}>
       <TextInput
         blurOnSubmit
         value={canisterId}
         onBlur={Keyboard.dismiss}
         onChangeText={handleIdChange}
-        placeholder={t('addNFT.customNFTId')}
-        // error={canisterIdError || showCanisterError}
+        placeholder={t('addCollection.customCollectionId')}
+        error={error}
       />
-      {/* {showCanisterError &&
-          renderError(tokenError.message, tokenError.showMore)} */}
+      {error && (
+        <View style={styles.errorContainer}>
+          <Icon name="error" color={Colors.Red} />
+          <Text type="caption" style={styles.errorText}>
+            {collectionError
+              ? t('addCollection.canisterNotCompatible', { standard })
+              : t('addCollection.invalidCanisterId')}
+            {canisterIdError && (
+              <Text style={styles.errorLink} onPress={handleLinkPress}>
+                {t('common.learnMore')}
+              </Text>
+            )}
+          </Text>
+        </View>
+      )}
       <Button
         iconName="chevron"
         onPress={handleStandardPress}
         iconStyle={styles.standardIcon}
-        buttonStyle={[
-          styles.standardButton,
-          // showStandardError && styles.standardButtonError,
-        ]}
+        buttonStyle={styles.standardButton}
         textStyle={
           standard ? styles.standardText : styles.standardTextPlaceholder
         }
-        text={standard || t('addNFT.customNFTStandard')}
+        text={standard || t('addCollection.customCollectionStandard')}
         iconProps={{ height: 18, color: Colors.White.Primary }}
       />
       <View style={styles.captionContainer}>
         <Icon name="info" color={iconColor} />
         <Text type="caption" style={styles.standardCaption}>
-          {t('addNFT.customCaption')}
+          {t('addCollection.customCaption')}
         </Text>
       </View>
       <RainbowButton
@@ -173,4 +156,4 @@ function CustomNFT({ setSelectedNFT }: Props) {
   );
 }
 
-export default CustomNFT;
+export default CustomCollection;

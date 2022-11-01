@@ -7,7 +7,7 @@ function useScrollHanlder() {
   const handleOnScroll = (
     scrollEvent: NativeSyntheticEvent<NativeScrollEvent>
   ) => {
-    setScrollPosition(scrollEvent.nativeEvent.contentOffset.y);
+    setScrollPosition(scrollEvent?.nativeEvent?.contentOffset.y);
   };
 
   return {
