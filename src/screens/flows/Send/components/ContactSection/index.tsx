@@ -17,7 +17,7 @@ interface Props {
 
 function ContactSection({ onPress, filterText, showAccountIdContacts }: Props) {
   const { principal, accountId, icnsData } = useAppSelector(
-    state => state.keyring?.currentWallet
+    state => state.keyring.currentWallet!
   );
   const contacts = useAppSelector(state => state.user?.contacts).filter(
     contact =>
