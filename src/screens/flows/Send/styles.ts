@@ -5,6 +5,9 @@ import { Colors, FontStyles } from '@/constants/theme';
 import { fontMaker } from '@/utils/fonts';
 
 export default StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   contactItem: {
     marginTop: 15,
   },

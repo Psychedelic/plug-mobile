@@ -1,8 +1,9 @@
 import { t } from 'i18next';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, Keyboard } from 'react-native';
+import { ActivityIndicator, Keyboard, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Modalize } from 'react-native-modalize';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { PasswordModal, Text, TextInput, Touchable } from '@/components/common';
 import Icon from '@/components/icons';
@@ -291,7 +292,7 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
   };
 
   return (
-    <>
+    <SafeAreaView style={styles.container}>
       <TextInput
         placeholder={t('send.inputPlaceholder')}
         hideGradient
@@ -375,7 +376,7 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
         handleSubmit={send}
         title={t('send.enterPassword')}
       />
-    </>
+    </SafeAreaView>
   );
 }
 
