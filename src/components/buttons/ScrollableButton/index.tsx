@@ -106,7 +106,7 @@ function ScrollableButton({
           !showFullButton && styles.smallButton,
           buttonStyle,
         ]}>
-        <AddGradient width={30} height={30} style={imageStyle} />
+        <AddGradient width={18} height={18} style={imageStyle} />
         <Animated.Text
           ellipsizeMode="clip"
           numberOfLines={1}

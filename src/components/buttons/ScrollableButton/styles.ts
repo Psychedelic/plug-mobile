@@ -5,13 +5,15 @@ import { fontMaker } from '@/utils/fonts';
 
 export default StyleSheet.create({
   button: {
+    minWidth: 48,
+    height: 48,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: Colors.ActionBlue,
     borderRadius: 100,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    shadowColor: Colors.Black.Pure,
+    paddingHorizontal: 16,
+    justifyContent: 'center',
+    shadowColor: Colors.White.Pure,
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 12,

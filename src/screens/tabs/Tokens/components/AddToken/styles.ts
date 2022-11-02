@@ -6,7 +6,7 @@ export default StyleSheet.create({
   buttonContainer: {
     position: 'absolute',
     bottom: 16,
-    right: 20,
+    right: 14,
     borderRadius: 100,
   },
   title: {
