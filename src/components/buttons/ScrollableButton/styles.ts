@@ -19,13 +19,13 @@ export default StyleSheet.create({
     shadowRadius: 12,
     elevation: 4,
   },
-  smallButton: {
-    paddingHorizontal: 10,
-  },
   disabled: {
     opacity: 0.2,
   },
   text: {
     ...fontMaker({ ...FontStyles.Body2, color: Colors.White.Pure }),
+  },
+  marginText: {
+    marginLeft: 8,
   },
 });

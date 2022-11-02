@@ -100,12 +100,7 @@ function ScrollableButton({
 
   return (
     <Touchable onPress={onPress}>
-      <View
-        style={[
-          styles.button,
-          !showFullButton && styles.smallButton,
-          buttonStyle,
-        ]}>
+      <View style={[styles.button, buttonStyle]}>
         <AddGradient width={18} height={18} style={imageStyle} />
         <Animated.Text
           ellipsizeMode="clip"
@@ -114,6 +109,7 @@ function ScrollableButton({
           style={[
             styles.text,
             !!textWidth && { width: textAnim, opacity: opacityAnim },
+            showFullButton && styles.marginText,
             textStyle,
           ]}>
           {text}
