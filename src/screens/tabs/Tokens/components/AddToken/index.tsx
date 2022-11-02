@@ -24,6 +24,7 @@ export function AddToken({ scrollPosition }: Props) {
   return (
     <>
       <ScrollableButton
+        textWidth={82}
         text={t('addToken.title')}
         scrollPosition={scrollPosition}
         onPress={() => modalRef?.current?.open()}

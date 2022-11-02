@@ -31,6 +31,7 @@ function AddCollection({ scrollPosition }: Props) {
     <>
       <ScrollableButton
         text={t('addCollection.title')}
+        textWidth={112}
         scrollPosition={scrollPosition}
         onPress={() => modalRef?.current?.open()}
         buttonStyle={styles.buttonContainer}

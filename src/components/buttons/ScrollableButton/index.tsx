@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  LayoutChangeEvent,
-  StyleProp,
-  TextStyle,
-  View,
-  ViewStyle,
-} from 'react-native';
+import { StyleProp, TextStyle, View, ViewStyle } from 'react-native';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -13,7 +7,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { Text, Touchable } from '@/components/common';
+import { Touchable } from '@/components/common';
 import AddGradient from '@/icons/svg/AddGradient.svg';
 
 import styles from './styles';
@@ -21,6 +15,7 @@ import styles from './styles';
 interface Props {
   onPress: () => void;
   text: string;
+  textWidth: number;
   buttonStyle?: StyleProp<ViewStyle>;
   imageStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
@@ -30,6 +25,7 @@ interface Props {
 function ScrollableButton({
   onPress,
   text,
+  textWidth,
   textStyle,
   buttonStyle,
   imageStyle,
@@ -37,9 +33,8 @@ function ScrollableButton({
 }: Props) {
   const [showFullButton, setShowFullButton] = useState(true);
   const [currentScrollPosition, setCurrentScrollPosition] = useState(0);
-  const [textWidth, setTextWidth] = useState<number>();
 
-  const animatedWidth = useSharedValue(0);
+  const animatedWidth = useSharedValue(textWidth);
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -53,15 +48,6 @@ function ScrollableButton({
     };
   });
 
-  const handleOnLayout = (event: LayoutChangeEvent) => {
-    const width = event?.nativeEvent?.layout?.width;
-    if (!textWidth) {
-      // Save initial text width
-      setTextWidth(width);
-      animatedWidth.value = width;
-    }
-  };
-
   useEffect(() => {
     if (currentScrollPosition < scrollPosition) {
       // Scroll down.
@@ -70,7 +56,7 @@ function ScrollableButton({
     } else if (scrollPosition < currentScrollPosition || scrollPosition === 0) {
       // Scroll up or start position.
       setShowFullButton(true);
-      animatedWidth.value = textWidth || 0;
+      animatedWidth.value = textWidth;
     }
     setCurrentScrollPosition(scrollPosition);
   }, [scrollPosition]);
@@ -82,7 +68,6 @@ function ScrollableButton({
         <Animated.Text
           ellipsizeMode="clip"
           numberOfLines={1}
-          onLayout={handleOnLayout}
           style={[
             styles.text,
             animatedStyle,
