@@ -31,7 +31,7 @@ import { Amount } from './interfaces';
 import styles from './styles';
 
 export interface Receiver {
-  id: string;
+  id: string; // PID or AccID address
   name?: string;
   image?: string;
   icnsId?: string;
@@ -91,7 +91,7 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
   const tokens = useMemo(
     () =>
       receiver?.id && validateAccountId(receiver.id)
-        ? assets.filter(asset => asset.symbol === TOKENS.ICP.symbol)
+        ? assets.filter(asset => asset.symbol === TOKENS.ICP.symbol) // Use only ICP if receiver is an account
         : assets,
     [assets, receiver]
   );
@@ -198,7 +198,7 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
       });
       scrollToTop();
     } else {
-      let isValid =
+      const isValid =
         !isOwnAddress && (validatePrincipalId(text) || validateAccountId(text));
       setReceiver({ id: text, isValid });
     }
