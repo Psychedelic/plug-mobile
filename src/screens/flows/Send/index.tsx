@@ -280,12 +280,11 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
     }
   };
 
-  const handleContactSaved = (contact: Contact) => {
+  const handleContactSaved = ({ id, name, image }: Contact) => {
     setReceiver({
-      id:
-        validateICNSName(contact.id) && receiver?.id ? receiver.id : contact.id, // If the contact is an ICNS, we keep the previous resolved address
-      name: contact.name,
-      image: contact.image,
+      id: validateICNSName(id) && receiver?.id ? receiver.id : id, // If the contact is an ICNS, we keep the previous resolved address
+      name,
+      image,
       icnsId: receiver?.icnsId,
       isValid: true,
     });

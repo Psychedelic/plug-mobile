@@ -44,7 +44,7 @@ interface Props {
   contact?: Receiver;
   isNewContact?: boolean;
   onContactSaved?: (contact: Contact) => void;
-  transaction?: any;
+  transaction?: { status: string | null };
   loading?: boolean;
   adjustToContentHeight?: boolean;
 }

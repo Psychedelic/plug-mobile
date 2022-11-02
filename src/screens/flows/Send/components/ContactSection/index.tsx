@@ -1,8 +1,7 @@
 import { t } from 'i18next';
 import React, { useMemo } from 'react';
 
-import CommonItem from '@/commonComponents/CommonItem';
-import Text from '@/components/common/Text';
+import { CommonItem, Text } from '@/components/common';
 import { Contact } from '@/interfaces/redux';
 import { useAppSelector } from '@/redux/hooks';
 import { validateAccountId, validateICNSName } from '@/utils/ids';

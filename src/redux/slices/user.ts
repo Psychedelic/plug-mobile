@@ -105,25 +105,26 @@ export const burnXtc = createAsyncThunk(
       to: string;
       amount: string;
       subaccount?: string;
-      onEnd?: () => void;
+      onSuccess?: () => void;
+      onFailure?: () => void;
     },
     { rejectWithValue }
   ) => {
+    const { to, amount, subaccount, onSuccess, onFailure } = params;
     try {
-      const { to, amount, subaccount, onEnd } = params;
       const instance = KeyRing.getInstance();
       const response = await instance?.burnXTC({ to, amount, subaccount });
       if ('Ok' in response) {
-        onEnd?.();
+        onSuccess?.();
         return {
           status: TRANSACTION_STATUS.success,
         };
       } else {
-        onEnd?.();
+        onFailure?.();
         return rejectWithValue({ status: TRANSACTION_STATUS.error });
       }
     } catch (e: any) {
-      params.onEnd?.();
+      onFailure?.();
       return rejectWithValue({
         status: TRANSACTION_STATUS.error,
       });

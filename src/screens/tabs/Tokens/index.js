@@ -1,5 +1,5 @@
 import Clipboard from '@react-native-community/clipboard';
-import { useNavigation, useScrollToTop } from '@react-navigation/native';
+import { useScrollToTop } from '@react-navigation/native';
 import { t } from 'i18next';
 import React, { useMemo, useRef, useState } from 'react';
 import { Alert, RefreshControl, ScrollView } from 'react-native';
@@ -21,9 +21,8 @@ import WalletHeader from '../components/WalletHeader';
 import { AddToken } from './components/AddToken';
 import styles from './styles';
 
-function Tokens() {
+function Tokens({ navigation }) {
   const dispatch = useAppDispatch();
-  const navigation = useNavigation();
   const { assets, assetsLoading, assetsError } = useAppSelector(
     state => state.user
   );
