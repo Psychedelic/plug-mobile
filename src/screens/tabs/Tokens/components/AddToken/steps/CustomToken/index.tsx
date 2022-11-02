@@ -51,7 +51,7 @@ function CustomToken({ modalRef, onSelectedToken }: Props) {
           {`${message} `}
           {showMore && (
             <Text style={styles.errorLink} onPress={handleLinkPress}>
-              {t('addToken.learnMore')}
+              {t('common.learnMore')}
             </Text>
           )}
         </Text>

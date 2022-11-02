@@ -1,15 +1,18 @@
+import { t } from 'i18next';
 import React, { useCallback, useRef } from 'react';
-import { Image } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
-import { Modal, Touchable } from '@/components/common';
-import animationScales from '@/utils/animationScales';
+import ScrollableButton from '@/components/buttons/ScrollableButton';
+import { Modal } from '@/components/common';
 
-import Add from './assets/Add.png';
 import useSteps from './hooks/useSteps';
 import styles from './styles';
 
-export function AddToken() {
+interface Props {
+  scrollPosition: number;
+}
+
+export function AddToken({ scrollPosition }: Props) {
   const modalRef = useRef<Modalize>(null);
 
   const handleModalClose = useCallback(() => {
@@ -20,12 +23,13 @@ export function AddToken() {
 
   return (
     <>
-      <Touchable
+      <ScrollableButton
+        textWidth={82}
+        text={t('addToken.title')}
+        scrollPosition={scrollPosition}
         onPress={() => modalRef?.current?.open()}
-        scale={animationScales.medium}
-        style={styles.buttonContainer}>
-        <Image source={Add} />
-      </Touchable>
+        buttonStyle={styles.buttonContainer}
+      />
       <Modal
         modalRef={modalRef}
         disableScrollIfPossible={false}

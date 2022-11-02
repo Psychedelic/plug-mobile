@@ -32,6 +32,7 @@ const translations = {
     the: 'The',
     enterPassword: 'Enter Password',
     importWallet: 'Import Wallet',
+    learnMore: 'Learn More',
   },
   routes: {
     [Routes.NFTS]: 'Collectibles',
@@ -190,7 +191,6 @@ const translations = {
     icns: {
       setICNS: 'Choose ICNS Name',
       none: 'None',
-      learnMore: 'Learn More',
       emptyState:
         'We weren’t able to find any ICNS names in your Plug account. ',
       buyICNS: 'Buy an ICNS name',
@@ -288,7 +288,6 @@ const translations = {
       'Invalid token’s standard. Select a valid option for the current canister ID.',
     invalidCanisterTokenError: 'Invalid Canister ID.',
     nftTokenError: 'Custom non-fungible tokens are not supported yet.',
-    learnMore: 'Learn More',
     poweredByDab: 'POWERED BY DAB',
   },
   walletConnect: {
@@ -314,7 +313,6 @@ const translations = {
     unsafeDappName: 'Unknown DApp',
     unknown: 'Unknown',
     unknownArguments: 'Unknown arguments',
-    learnMore: 'Learn More',
   },
   deleteWallet: {
     title: 'Delete Wallet',
@@ -346,6 +344,29 @@ const translations = {
     },
     selectAccount:
       "Select the account you would like to export it's DFX Identity.",
+  },
+  addCollection: {
+    customCollectionId: 'Collection Canister ID',
+    customCollectionStandard: 'Collection Interface Standard',
+    customCollection: 'Custom Collection',
+    customCaption: 'This allows Collectibles to be used by Plug',
+    title: 'Add Collection',
+    noName: 'Unable to load name',
+    invalidCanisterId: 'Invalid canister ID. ',
+    canisterNotCompatible:
+      'Canister Id not compatible with {{standard}}. Please, try again.',
+    safetyAlert:
+      'Collection Safety Alert: For your security, make sure to do proper research before interacting with any Collections.',
+    errorToastTitle: 'Error Adding Custom Collection',
+    errorToastMessage:
+      'There was an unexpected error while trying to add a custom collection. Please try again later.',
+    infoToastTitle: 'Custom Collection Already Added',
+    infoToastMessage:
+      'You’ve added this collection before. Remember, you need to own items from {{name}} to be able to access it.',
+    successToastTitle: 'Custom Collection Successfully Added',
+    successToastMessage:
+      'You’ll only be able to access the collection if own items from it.',
+    unknownCollection: 'unknown collection',
   },
 };
 
