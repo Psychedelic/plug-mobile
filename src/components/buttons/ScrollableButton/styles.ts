@@ -12,7 +12,6 @@ export default StyleSheet.create({
     backgroundColor: Colors.ActionBlue,
     borderRadius: 100,
     paddingHorizontal: 16,
-    justifyContent: 'center',
     shadowColor: Colors.White.Pure,
     shadowOffset: { width: 2, height: 2 },
     shadowOpacity: 0.1,

@@ -1,14 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Animated,
   LayoutChangeEvent,
   StyleProp,
   TextStyle,
   View,
   ViewStyle,
 } from 'react-native';
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
 
-import { Touchable } from '@/components/common';
+import { Text, Touchable } from '@/components/common';
 import AddGradient from '@/icons/svg/AddGradient.svg';
 
 import styles from './styles';
@@ -31,17 +36,29 @@ function ScrollableButton({
   scrollPosition,
 }: Props) {
   const [showFullButton, setShowFullButton] = useState(true);
-  const [animationFinished, setAnimationFinished] = useState(true);
   const [currentScrollPosition, setCurrentScrollPosition] = useState(0);
   const [textWidth, setTextWidth] = useState<number>();
-  const textAnim = useRef(new Animated.Value(textWidth || 0)).current;
-  const opacityAnim = useRef(new Animated.Value(1)).current;
+
+  const animatedWidth = useSharedValue(0);
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      width: withTiming(animatedWidth.value, {
+        duration: 200,
+        easing: Easing.bezier(0.25, 0.1, 0.25, 1),
+      }),
+      opacity: withTiming(animatedWidth.value > 0 ? 1 : 0, {
+        duration: 450,
+      }),
+    };
+  });
 
   const handleOnLayout = (event: LayoutChangeEvent) => {
     const width = event?.nativeEvent?.layout?.width;
     if (!textWidth) {
+      // Save initial text width
       setTextWidth(width);
-      textAnim.setValue(width);
+      animatedWidth.value = width;
     }
   };
 
@@ -49,54 +66,14 @@ function ScrollableButton({
     if (currentScrollPosition < scrollPosition) {
       // Scroll down.
       setShowFullButton(false);
-      if (animationFinished) {
-        setAnimationFinished(false);
-        hideAnimation.start(({ finished }: Animated.EndResult) => {
-          if (finished) {
-            setAnimationFinished(true);
-          }
-        });
-      }
+      animatedWidth.value = 0;
     } else if (scrollPosition < currentScrollPosition || scrollPosition === 0) {
       // Scroll up or start position.
       setShowFullButton(true);
-      if (animationFinished) {
-        setAnimationFinished(false);
-        showAnimation.start(({ finished }: Animated.EndResult) => {
-          if (finished) {
-            setAnimationFinished(true);
-          }
-        });
-      }
+      animatedWidth.value = textWidth || 0;
     }
     setCurrentScrollPosition(scrollPosition);
   }, [scrollPosition]);
-
-  const hideAnimation = Animated.parallel([
-    Animated.timing(textAnim, {
-      toValue: 0,
-      duration: 100,
-      useNativeDriver: false,
-    }),
-    Animated.timing(opacityAnim, {
-      toValue: 0,
-      duration: 10,
-      useNativeDriver: false,
-    }),
-  ]);
-
-  const showAnimation = Animated.parallel([
-    Animated.timing(textAnim, {
-      toValue: textWidth!,
-      duration: 100,
-      useNativeDriver: false,
-    }),
-    Animated.timing(opacityAnim, {
-      toValue: 1,
-      duration: 10,
-      useNativeDriver: false,
-    }),
-  ]);
 
   return (
     <Touchable onPress={onPress}>
@@ -108,7 +85,7 @@ function ScrollableButton({
           onLayout={handleOnLayout}
           style={[
             styles.text,
-            !!textWidth && { width: textAnim, opacity: opacityAnim },
+            animatedStyle,
             showFullButton && styles.marginText,
             textStyle,
           ]}>
