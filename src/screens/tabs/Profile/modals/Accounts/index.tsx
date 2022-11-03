@@ -5,14 +5,15 @@ import { ActivityIndicator, Alert, Platform, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
 import {
+  AccountShowcase,
   ActionSheet,
-  CommonItem,
   Header,
   Modal,
   Text,
   Touchable,
 } from '@/components/common';
 import Icon from '@/components/icons';
+import { COMMON_HITSLOP } from '@/constants/general';
 import { FontStyles } from '@/constants/theme';
 import CopyIcon from '@/icons/material/Copy.svg';
 import EditIcon from '@/icons/material/Edit.svg';
@@ -25,6 +26,7 @@ import { Row } from '@/layout';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getICPPrice } from '@/redux/slices/icp';
 import { removeAccount, setCurrentPrincipal } from '@/redux/slices/keyring';
+import animationScales from '@/utils/animationScales';
 import shortAddress from '@/utils/shortAddress';
 
 import CreateEditAccount from '../CreateEditAccount';
@@ -106,7 +108,7 @@ function Accounts({ modalRef }: Props) {
     addICNSRef.current?.open();
   };
 
-  const onLongPress = (account: Wallet) => {
+  const openAccountOptions = (account: Wallet) => {
     const isSelectedAccount = currentWallet?.principal === account.principal;
     const isImportedAccount = !account.type.includes('MNEMONIC');
 
@@ -159,9 +161,12 @@ function Accounts({ modalRef }: Props) {
 
   const renderAccountItem = (account: Wallet, index: number) => {
     const isSelectedAccount = currentWallet?.principal === account.principal;
+    const handleOpenAccountOptions = () => openAccountOptions(account);
+
     const selectedAccountProps = {
-      nameStyle: styles.selectedAccount,
-      right: <CheckedBlueCircle viewBox="-2 -2 16 16" />,
+      selected: true,
+      titleStyle: styles.selectedAccount,
+      titleRight: <CheckedBlueCircle viewBox="-2 -2 16 16" />,
     };
 
     const handleOnPress = () => {
@@ -171,15 +176,24 @@ function Accounts({ modalRef }: Props) {
     };
 
     return (
-      <CommonItem
+      <AccountShowcase
         key={index}
-        name={account?.icnsData?.reverseResolvedName || account.name}
         icon={account.icon}
-        id={account.principal}
         onPress={handleOnPress}
-        style={styles.accountItem}
-        onLongPress={() => onLongPress(account)}
-        onActionPress={() => onLongPress(account)}
+        selected={isSelectedAccount}
+        onLongPress={handleOpenAccountOptions}
+        subtitle={shortAddress(account.principal)}
+        title={account?.icnsData?.reverseResolvedName || account.name}
+        right={
+          <View style={styles.threeDots}>
+            <Touchable
+              onPress={handleOpenAccountOptions}
+              scale={animationScales.large}
+              hitSlop={COMMON_HITSLOP}>
+              <Icon name="threeDots" />
+            </Touchable>
+          </View>
+        }
         {...(isSelectedAccount && selectedAccountProps)}
       />
     );

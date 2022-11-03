@@ -28,3 +28,4 @@ export { default as Touchable } from './Touchable';
 export { default as UserIcon } from './UserIcon';
 export { default as CustomCheckbox } from './CustomCheckbox';
 export { default as Toast } from './Toast';
+export { default as AccountShowcase } from './AccountShowcase';

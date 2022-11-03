@@ -4,8 +4,9 @@ import { Colors } from '@/constants/theme';
 
 export default StyleSheet.create({
   content: {
-    paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingHorizontal: 12,
+    paddingBottom: 20,
+    paddingTop: 10,
     zIndex: 0,
   },
   loading: {
@@ -17,16 +18,21 @@ export default StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   row: {
-    marginBottom: 30,
-    marginTop: 10,
+    marginBottom: 20,
+    marginLeft: 10,
+    marginTop: 20,
   },
   accountItem: {
-    marginBottom: 20,
+    marginBottom: 8,
   },
   plusIcon: {
     marginRight: 8,
   },
   selectedAccount: {
     color: Colors.ActionBlue,
+  },
+  threeDots: {
+    marginLeft: 'auto',
+    justifyContent: 'center',
   },
 });

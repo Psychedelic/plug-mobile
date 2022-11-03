@@ -465,7 +465,6 @@ export const getCollectionInfo = createAsyncThunk(
   }
 );
 
-// eslint-disable-next-line no-spaced-func
 export const addCustomCollection = createAsyncThunk<
   Collection[],
   {

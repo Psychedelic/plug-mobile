@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleProp, View, ViewStyle } from 'react-native';
+import { StyleProp, TextStyle, View, ViewStyle } from 'react-native';
 
-import { CustomCheckbox, Text, Touchable, UserIcon } from '@/components/common';
+import { Text, Touchable, UserIcon } from '@/components/common';
 import { FontStyles } from '@/constants/theme';
 
 import styles from './styles';
@@ -11,6 +11,9 @@ interface Props {
   subtitle?: string;
   icon?: string;
   selected: boolean;
+  right: React.ReactNode;
+  titleStyle?: StyleProp<TextStyle>;
+  titleRight?: React.ReactNode;
   style?: StyleProp<ViewStyle>;
   onPress?: () => void;
   onLongPress?: () => void;
@@ -22,6 +25,9 @@ function AccountShowcase({
   subtitle,
   style,
   selected,
+  right,
+  titleStyle,
+  titleRight,
   onPress,
   onLongPress,
 }: Props) {
@@ -31,12 +37,13 @@ function AccountShowcase({
         <View style={[styles.root, selected && styles.selectedRoot]}>
           <UserIcon icon={icon} />
           <View style={styles.leftContainer}>
-            <Text style={FontStyles.Normal}>{title}</Text>
+            <Text style={[FontStyles.Normal, titleStyle]}>
+              {title}
+              {titleRight}
+            </Text>
             <Text style={FontStyles.NormalGray}>{subtitle}</Text>
           </View>
-          <View style={styles.rightContainer}>
-            <CustomCheckbox circle selected={selected} onPress={onPress} />
-          </View>
+          <View style={styles.rightContainer}>{right}</View>
         </View>
       </Touchable>
     </View>
