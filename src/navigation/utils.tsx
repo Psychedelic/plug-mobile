@@ -7,7 +7,7 @@ import React from 'react';
 
 import ModalHeader from '@/components/navigation/ModalHeader';
 import i18n from '@/config/i18n';
-import { isAndroid } from '@/constants/platform';
+import { isAndroid, withNotch } from '@/constants/platform';
 import { Colors } from '@/constants/theme';
 
 export const getRouteName = (name: string) => {
@@ -25,7 +25,7 @@ export const modalGroupOptions = (): StackNavigationOptions => ({
   presentation: 'transparentModal',
   ...TransitionPresets.ModalPresentationIOS,
   cardStyle: {
-    marginTop: 30,
+    marginTop: withNotch ? 60 : 30,
     borderTopRightRadius: 40,
     borderTopLeftRadius: 40,
   },
