@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/core';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { shallowEqual } from 'react-redux';
+import { Modalize } from 'react-native-modalize';
 
 import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
@@ -16,74 +16,83 @@ import TokenIcon from '@/components/tokens/TokenIcon';
 import { VISIBLE_DECIMALS } from '@/constants/business';
 import { FontStyles } from '@/constants/theme';
 import useGetType from '@/hooks/useGetType';
+import { Asset, Contact } from '@/interfaces/redux';
 import { Column } from '@/layout';
 import { Row } from '@/layout';
 import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setTransaction } from '@/redux/slices/user';
 import { TRANSACTION_STATUS } from '@/redux/utils';
+import { FormattedCollection } from '@/utils/assets';
 import { truncate } from '@/utils/number';
 import shortAddress from '@/utils/shortAddress';
 
+import { Receiver } from '../..';
+import { Amount } from '../../interfaces';
 import { getFeePrice } from '../../utils';
 import SaveContact from '../SaveContact';
 import styles from './styles';
 
+interface Props {
+  modalRef: React.RefObject<Modalize>;
+  onSend: () => void;
+  onClose: () => void;
+  token?: Asset;
+  nft?: FormattedCollection;
+  amount?: Amount;
+  value?: Amount;
+  contact?: Receiver;
+  isNewContact?: boolean;
+  onContactSaved?: (contact: Contact) => void;
+  transaction?: { status: string | null };
+  loading?: boolean;
+  adjustToContentHeight?: boolean;
+}
+
 const ReviewSend = ({
   modalRef,
-  onError,
   token,
   nft,
   amount,
   value,
-  to,
   contact,
+  isNewContact,
   onSend,
   onClose,
-  onSuccess,
+  onContactSaved,
   transaction,
-  tokenPrice,
   loading,
-  biometricsError,
-  setBiometricsError,
-  ...props
-}) => {
+  adjustToContentHeight,
+}: Props) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  const saveContactRef = useRef(null);
-  const [nftType, setNftType] = useState(null);
-  const [selectedContact, setSelectedContact] = useState(contact || null);
-  const contacts = useAppSelector(state => state.user.contacts, shallowEqual);
+  const saveContactRef = useRef<Modalize>(null);
+  const [nftType, setNftType] = useState<string>();
   const isSuccess = transaction?.status === TRANSACTION_STATUS.success;
   const isError = transaction?.status === TRANSACTION_STATUS.error;
   const { icpPrice } = useAppSelector(state => state.icp);
-  const feePrice = getFeePrice(token?.symbol, icpPrice, token?.fee);
+  const feePrice = token?.symbol
+    ? getFeePrice(token.symbol, icpPrice, token?.fee)
+    : null;
+
   const handleSaveContact = () => {
     saveContactRef.current?.open();
   };
 
   useGetType(nft?.url, setNftType);
 
-  useEffect(() => {
-    setSelectedContact(contacts?.find(c => c.id === to));
-  }, [contacts, to]);
-
   const handleClose = () => {
     onClose?.();
     dispatch(setTransaction(null));
 
     if (isSuccess) {
-      onSuccess?.();
+      navigation.navigate(Routes.TOKENS);
     }
-    if (isError) {
-      onError?.();
-    }
-    navigation.navigate(Routes.TOKENS);
   };
 
   const handleGoToActivity = () => {
-    handleClose();
+    modalRef.current?.close();
     navigation.navigate(Routes.PROFILE);
   };
 
@@ -110,7 +119,8 @@ const ReviewSend = ({
     <Modal
       modalRef={modalRef}
       onClose={handleClose}
-      {...props}
+      adjustToContentHeight={adjustToContentHeight}
+      onBackButtonPress={() => true}
       fullHeight={isSuccess || isError}>
       <View style={styles.content}>
         <Header center={<Text type="subtitle2">{title}</Text>} />
@@ -145,25 +155,27 @@ const ReviewSend = ({
         </Row>
         <Row style={styles.row}>
           <Column>
-            {selectedContact ? (
+            {isNewContact ? (
               <>
-                <Text style={styles.title}>{selectedContact?.name}</Text>
-                <Text style={styles.subtitle}>
-                  {shortAddress(selectedContact?.id)}
+                <Text style={styles.title}>
+                  {contact?.icnsId || shortAddress(contact?.id)}
                 </Text>
-              </>
-            ) : (
-              <>
-                <Text style={styles.title}>{shortAddress(to)}</Text>
                 <Text
                   style={[FontStyles.Normal, styles.valid]}
                   onPress={handleSaveContact}>
                   {t('reviewSend.saveContact')}
                 </Text>
               </>
+            ) : (
+              <>
+                <Text style={styles.title}>{contact?.name}</Text>
+                <Text style={styles.subtitle}>
+                  {contact?.icnsId || shortAddress(contact?.id)}
+                </Text>
+              </>
             )}
           </Column>
-          <UserIcon icon={selectedContact?.image} size="medium" />
+          <UserIcon icon={contact?.image} size="medium" />
         </Row>
         {token && (
           <Row style={styles.row}>
@@ -192,6 +204,7 @@ const ReviewSend = ({
                   : t('reviewSend.holdToSend')
               }
               loading={loading}
+              onPress={() => {}}
               onLongPress={onSend}
               buttonStyle={styles.button}
             />
@@ -205,7 +218,13 @@ const ReviewSend = ({
           </>
         )}
       </View>
-      <SaveContact modalRef={saveContactRef} id={to} />
+      {isNewContact && contact?.id && (
+        <SaveContact
+          modalRef={saveContactRef}
+          id={contact?.icnsId || contact.id}
+          onSaved={onContactSaved}
+        />
+      )}
     </Modal>
   );
 };

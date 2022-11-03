@@ -11,7 +11,7 @@ import ApprovedCanisters from '@/screens/tabs/Profile/screens/ApprovedCanisters'
 import Contacts from '@/screens/tabs/Profile/screens/Contacts';
 import Settings from '@/screens/tabs/Profile/screens/Settings';
 
-import { settingsStackOptions } from '../utils';
+import { modalStackOptions } from '../utils';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -25,7 +25,7 @@ function SettingsNavigator() {
   return (
     <Stack.Navigator
       initialRouteName={Routes.SETTINGS}
-      screenOptions={settingsStackOptions}>
+      screenOptions={modalStackOptions}>
       <Stack.Screen
         name={Routes.SETTINGS}
         component={Settings}

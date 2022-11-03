@@ -7,7 +7,7 @@ import React from 'react';
 
 import ModalHeader from '@/components/navigation/ModalHeader';
 import i18n from '@/config/i18n';
-import { isAndroid } from '@/constants/platform';
+import { isAndroid, withNotch } from '@/constants/platform';
 import { Colors } from '@/constants/theme';
 
 export const getRouteName = (name: string) => {
@@ -21,22 +21,22 @@ export const rootStackOptions = (): StackNavigationOptions => ({
   gestureDirection: 'horizontal',
 });
 
-export const settingsGroupOptions = (): StackNavigationOptions => ({
-  headerShown: false,
-  presentation: 'modal',
+export const modalGroupOptions = (): StackNavigationOptions => ({
+  presentation: 'transparentModal',
   ...TransitionPresets.ModalPresentationIOS,
   cardStyle: {
-    marginTop: 16,
+    marginTop: withNotch ? 60 : 30,
     borderTopRightRadius: 40,
     borderTopLeftRadius: 40,
   },
 });
 
-export const settingsStackOptions = (): StackNavigationOptions => ({
+export const modalStackOptions = (): StackNavigationOptions => ({
   header: (props: StackHeaderProps) => <ModalHeader {...props} showBack />,
   headerStyle: {
     height: 60,
   },
+  headerMode: 'float',
   presentation: 'card',
   cardStyle: {
     backgroundColor: Colors.Black.Pure,

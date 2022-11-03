@@ -41,6 +41,7 @@ const translations = {
     [Routes.SETTINGS]: 'Settings',
     [Routes.CONTACTS]: 'Contacts',
     [Routes.APPROVED_CANISTERS]: 'Approved Canisters',
+    [Routes.SEND]: 'Send',
   },
   welcome: {
     title: 'Welcome to Plug',

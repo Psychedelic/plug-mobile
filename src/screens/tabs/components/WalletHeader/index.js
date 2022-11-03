@@ -13,7 +13,6 @@ import { useDebounce } from '@/hooks/useDebounce';
 import Routes from '@/navigation/Routes';
 import { useAppSelector } from '@/redux/hooks';
 import Deposit from '@/screens/flows/Deposit';
-import Send from '@/screens/flows/Send';
 
 import ActionButton from '../ActionButton';
 import DepositIcon from './assets/Deposit.png';
@@ -25,7 +24,6 @@ import styles from './styles';
 const WalletHeader = () => {
   const { t } = useTranslation();
   const modalRef = useRef(null);
-  const sendRef = useRef(null);
   const depositRef = useRef(null);
   const { debounce } = useDebounce();
   const [navigated, setNavigated] = useState(false);
@@ -39,7 +37,7 @@ const WalletHeader = () => {
 
   const openSend = () => {
     modalRef.current?.close();
-    sendRef.current?.open();
+    navigation.navigate(Routes.SEND_STACK);
   };
 
   const openDeposit = () => {
@@ -111,7 +109,6 @@ const WalletHeader = () => {
           </View>
         </View>
       </Modal>
-      <Send modalRef={sendRef} />
       <Deposit modalRef={depositRef} />
     </>
   );

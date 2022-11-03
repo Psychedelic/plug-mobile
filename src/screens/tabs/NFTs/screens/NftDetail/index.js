@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Linking, Platform, View } from 'react-native';
@@ -14,7 +15,7 @@ import { ICNS_CANISTER_ID } from '@/constants/canister';
 import { FontStyles } from '@/constants/theme';
 import DownloadIcon from '@/icons/material/Download.svg';
 import ViewIcon from '@/icons/material/View.svg';
-import Send from '@/screens/flows/Send';
+import Routes from '@/navigation/Routes';
 import { getNFTDetails } from '@/services/DAB';
 import { downloadFile } from '@/utils/filesystem';
 import { getAbsoluteType } from '@/utils/fileTypes';
@@ -37,6 +38,7 @@ function NftDetail({ modalRef, handleClose, selectedNFT, ...props }) {
   } = selectedNFT || {};
   const isICNS = canister === ICNS_CANISTER_ID;
   const nftName = `${collectionName} #${index}`;
+  const navigation = useNavigation();
 
   const actionSheetRef = useRef(null);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -51,10 +53,12 @@ function NftDetail({ modalRef, handleClose, selectedNFT, ...props }) {
     return () => setNFTDetails(null);
   }, [selectedNFT]);
 
-  const sendRef = useRef(null);
-
   const handleSend = () => {
-    sendRef.current?.open();
+    modalRef.current?.close();
+    navigation.navigate(Routes.SEND_STACK, {
+      screen: Routes.SEND,
+      params: { nft: selectedNFT },
+    });
   };
 
   const downloadNFT = () => {
@@ -154,11 +158,6 @@ function NftDetail({ modalRef, handleClose, selectedNFT, ...props }) {
         modalRef={actionSheetRef}
         options={moreOptions.options}
         title={moreOptions.title}
-      />
-      <Send
-        modalRef={sendRef}
-        nft={selectedNFT}
-        onSuccess={() => modalRef.current?.close()}
       />
     </>
   );

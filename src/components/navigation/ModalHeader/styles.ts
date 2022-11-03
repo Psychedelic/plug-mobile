@@ -5,6 +5,7 @@ import { Colors } from '@/constants/theme';
 export default StyleSheet.create({
   container: {
     height: 60,
+    backgroundColor: Colors.Black.Pure,
   },
   header: {
     height: 60,

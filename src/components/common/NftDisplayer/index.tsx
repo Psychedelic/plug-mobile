@@ -8,7 +8,7 @@ import styles from './styles';
 
 interface Props {
   url: string;
-  style: StyleProp<ViewStyle>;
+  style?: StyleProp<ViewStyle>;
   type?: string;
   isDetailView?: boolean;
   isSend?: boolean;

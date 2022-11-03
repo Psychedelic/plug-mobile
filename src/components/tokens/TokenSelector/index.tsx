@@ -18,8 +18,8 @@ interface Props {
   token: Asset;
   onPress: () => void;
   style?: StyleProp<ViewStyle>;
-  availableAmount: number;
-  availableUsdAmount: number;
+  availableAmount?: number;
+  availableUsdAmount?: number;
   selectedInput: string;
   decimalScale?: number;
 }

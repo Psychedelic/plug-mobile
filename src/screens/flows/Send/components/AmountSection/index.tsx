@@ -3,8 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
 import RainbowButton from '@/components/buttons/RainbowButton';
-import { Text } from '@/components/common';
-import AmountInput from '@/components/common/AmountInput';
+import { AmountInput, Text } from '@/components/common';
 import Icon from '@/components/icons';
 import TokenSelector from '@/components/tokens/TokenSelector';
 import { VISIBLE_DECIMALS } from '@/constants/business';
@@ -16,15 +15,16 @@ import styles, { iconColor } from './styles';
 
 interface Props {
   selectedToken: Asset;
-  tokenAmount: Amount;
-  usdAmount: Amount | null;
-  tokenPrice: number | null;
+  tokenAmount?: Amount;
+  usdAmount?: Amount;
+  tokenPrice?: number;
   availableAmount: number;
-  availableUsdAmount: number;
-  setUsdAmount: (value: Amount | null) => void;
-  setTokenAmount: (value: Amount | null) => void;
-  setSelectedToken: (token: Asset | null) => void;
+  availableUsdAmount?: number;
+  setUsdAmount: (value?: Amount) => void;
+  setTokenAmount: (value?: Amount) => void;
+  setSelectedToken: (token?: Asset) => void;
   onReview: () => void;
+  disabledButton?: boolean;
 }
 
 const AmountSection = ({
@@ -38,6 +38,7 @@ const AmountSection = ({
   setUsdAmount,
   availableAmount,
   availableUsdAmount,
+  disabledButton,
 }: Props) => {
   const { t } = useTranslation();
   const [selectedInput, setSelectedInput] = useState('USD');
@@ -59,7 +60,7 @@ const AmountSection = ({
               VISIBLE_DECIMALS
             ),
           }
-        : null
+        : undefined
     );
   };
 
@@ -79,7 +80,7 @@ const AmountSection = ({
               VISIBLE_DECIMALS
             ),
           }
-        : null
+        : undefined
     );
   };
 
@@ -98,14 +99,14 @@ const AmountSection = ({
               VISIBLE_DECIMALS
             ),
           }
-        : null
+        : undefined
     );
   };
 
   const onTokenChange = () => {
-    setTokenAmount(null);
-    setUsdAmount(null);
-    setSelectedToken(null);
+    setTokenAmount(undefined);
+    setUsdAmount(undefined);
+    setSelectedToken(undefined);
   };
 
   const getButtonText = () => {
@@ -114,7 +115,9 @@ const AmountSection = ({
     }
 
     if (
-      (usdAmount?.value && availableUsdAmount < usdAmount.value) ||
+      (availableUsdAmount &&
+        usdAmount?.value &&
+        availableUsdAmount < usdAmount.value) ||
       availableAmount < tokenAmount?.value
     ) {
       return t('send.noFunds');
@@ -125,7 +128,8 @@ const AmountSection = ({
   const isButtonDisabled = () =>
     !tokenAmount ||
     tokenAmount.value <= 0 ||
-    (usdAmount &&
+    (availableUsdAmount &&
+      usdAmount &&
       (usdAmount.value <= 0 || usdAmount.value > availableUsdAmount)) ||
     tokenAmount.value > availableAmount;
 
@@ -169,7 +173,7 @@ const AmountSection = ({
         buttonStyle={styles.button}
         text={getButtonText()}
         onPress={onReview}
-        disabled={isButtonDisabled()}
+        disabled={disabledButton || isButtonDisabled()}
       />
     </>
   );
