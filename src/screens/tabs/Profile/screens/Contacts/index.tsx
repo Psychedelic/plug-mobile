@@ -7,6 +7,7 @@ import { Modalize } from 'react-native-modalize';
 
 import CommonItem from '@/commonComponents/CommonItem';
 import Touchable from '@/commonComponents/Touchable';
+import { EmptyState } from '@/components/common';
 import ActionSheet, { Option } from '@/components/common/ActionSheet';
 import Text from '@/components/common/Text';
 import Icon from '@/components/icons';
@@ -32,8 +33,9 @@ function Contacts() {
   const addEditContactRef = useRef<Modalize>(null);
   const actionSheetRef = useRef<Modalize>(null);
   const [actionSheetData, setActionSheetData] = useState<Options>();
-  const { contacts, contactsLoading } = useAppSelector(state => state.user);
+  const { contactsLoading, contacts } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
+  const showEmptyState = contacts.length === 0;
 
   const groupedContacts = useMemo(
     () =>
@@ -84,14 +86,17 @@ function Contacts() {
 
   return (
     <>
-      <Touchable onPress={onAddContact} style={styles.addButton}>
-        <Row align="center" style={styles.addRow}>
-          <Icon name="plus" style={styles.plusIcon} />
-          <Text style={FontStyles.Normal}>{t('contacts.addContact')}</Text>
-        </Row>
-      </Touchable>
+      {!showEmptyState && (
+        <Touchable onPress={onAddContact} style={styles.addButton}>
+          <Row align="center" style={styles.addRow}>
+            <Icon name="plus" style={styles.plusIcon} />
+            <Text style={FontStyles.Normal}>{t('contacts.addContact')}</Text>
+          </Row>
+        </Touchable>
+      )}
       <ScrollView
         style={styles.listContainer}
+        contentContainerStyle={showEmptyState && styles.emptyListContainer}
         refreshControl={
           <RefreshControl
             refreshing={contactsLoading}
@@ -99,29 +104,40 @@ function Contacts() {
             tintColor={Colors.White.Primary}
           />
         }>
-        {groupedContacts.map(section => (
-          <Fragment key={section.letter}>
-            <Text style={styles.letter}>{section.letter}</Text>
-            {section.contacts.map(contact => {
-              const isICNS = validateICNSName(contact.id);
-              return (
-                <View
-                  style={styles.contactItem}
-                  key={`${contact.id}_${contact.name}`}>
-                  <CommonItem
-                    name={contact.name}
-                    id={isICNS ? undefined : contact.id}
-                    subtitle={isICNS ? contact.id : undefined}
-                    icon={contact.image}
-                    onPress={() => onPress(contact)}
-                    onActionPress={() => onPress(contact)}
-                    disabled={contactsLoading}
-                  />
-                </View>
-              );
-            })}
-          </Fragment>
-        ))}
+        {showEmptyState ? (
+          <EmptyState
+            emoji="😶"
+            onButtonPress={onAddContact}
+            buttonStyle={styles.emptyStateButton}
+            title={t('contacts.emptyState.title')}
+            buttonTitle={t('contacts.addContact')}
+            text={t('contacts.emptyState.message')}
+          />
+        ) : (
+          groupedContacts.map(section => (
+            <Fragment key={section.letter}>
+              <Text style={styles.letter}>{section.letter}</Text>
+              {section.contacts.map(contact => {
+                const isICNS = validateICNSName(contact.id);
+                return (
+                  <View
+                    style={styles.contactItem}
+                    key={`${contact.id}_${contact.name}`}>
+                    <CommonItem
+                      name={contact.name}
+                      id={isICNS ? undefined : contact.id}
+                      subtitle={isICNS ? contact.id : undefined}
+                      icon={contact.image}
+                      onPress={() => onPress(contact)}
+                      onActionPress={() => onPress(contact)}
+                      disabled={contactsLoading}
+                    />
+                  </View>
+                );
+              })}
+            </Fragment>
+          ))
+        )}
       </ScrollView>
       <ActionSheet
         modalRef={actionSheetRef}

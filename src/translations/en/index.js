@@ -216,6 +216,11 @@ const translations = {
     title: 'Contacts',
     addContact: 'Add contact',
     editContact: 'Edit contact',
+    emptyState: {
+      title: 'Empty Contact List',
+      message:
+        'You don’t have any contacts yet. Invite your friends to send tokens, Collectibles, and more.',
+    },
     moreOptions: {
       edit: 'Edit Contact',
       copy: 'Copy Address',
