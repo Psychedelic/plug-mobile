@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 
 import ImageDisplayer from '@/components/common/NftDisplayer/components/ImageDisplayer';
@@ -15,8 +15,7 @@ export interface Props {
 }
 
 function ActionItem({ title, subtitle, iconUrl }: Props) {
-  const [imageType, setImageType] = useState('');
-  useGetType(iconUrl, setImageType);
+  const imageType = useGetType(iconUrl);
 
   return (
     <View style={styles.itemDataContainer}>

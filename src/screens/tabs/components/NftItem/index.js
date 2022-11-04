@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 
 import NftDisplayer from '@/commonComponents/NftDisplayer';
@@ -14,9 +14,7 @@ function NftItem({ item, onOpen }) {
   const { url, canister, index, name, collectionName } = item;
   const isICNS = canister === ICNS_CANISTER_ID;
   const title = isICNS ? collectionName : `${collectionName} #${index}`;
-  const [type, setType] = useState(null);
-
-  useGetType(url, setType);
+  const type = useGetType(url);
 
   const handleOnPress = () => {
     onOpen({ ...item, type })();

@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/core';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
@@ -68,7 +68,6 @@ const ReviewSend = ({
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const saveContactRef = useRef<Modalize>(null);
-  const [nftType, setNftType] = useState<string>();
   const isSuccess = transaction?.status === TRANSACTION_STATUS.success;
   const isError = transaction?.status === TRANSACTION_STATUS.error;
   const { icpPrice } = useAppSelector(state => state.icp);
@@ -80,7 +79,7 @@ const ReviewSend = ({
     saveContactRef.current?.open();
   };
 
-  useGetType(nft?.url, setNftType);
+  const nftType = useGetType(nft?.url);
 
   const handleClose = () => {
     onClose?.();
