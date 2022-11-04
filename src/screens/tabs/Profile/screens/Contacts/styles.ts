@@ -30,4 +30,12 @@ export default StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
   },
+  emptyListContainer: {
+    justifyContent: 'center',
+    flex: 1,
+  },
+  emptyStateButton: {
+    minWidth: '100%',
+    marginTop: 32,
+  },
 });

@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import RainbowButton from '@/components/buttons/RainbowButton';
 import {
+  AccountShowcase,
   ActionButton,
   CustomCheckbox,
   Header,
@@ -21,7 +22,6 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getPemFile, validatePassword } from '@/redux/slices/keyring';
 import shortAddress from '@/utils/shortAddress';
 
-import AccountShowcase from './components/AccountShowcase';
 import styles from './styles';
 
 interface Props {
@@ -113,13 +113,23 @@ function ExportPem({ modalRef }: Props) {
 
   const renderAccount = (account: Wallet) => {
     const { name, walletId, icon, principal } = account;
+    const selected = selectedWallet.walletId === walletId;
+    const handleSetAccount = () => setSelectedWallet(account);
+
     return (
       <AccountShowcase
         icon={icon}
         key={walletId}
+        right={
+          <CustomCheckbox
+            circle
+            selected={selected}
+            onPress={handleSetAccount}
+          />
+        }
         subtitle={shortAddress(principal)}
-        selected={selectedWallet.walletId === walletId}
-        onPress={() => setSelectedWallet(account)}
+        selected={selected}
+        onPress={handleSetAccount}
         title={account?.icnsData?.reverseResolvedName || name}
       />
     );
