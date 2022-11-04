@@ -166,7 +166,7 @@ function Accounts({ modalRef }: Props) {
     const selectedAccountProps = {
       selected: true,
       titleStyle: styles.selectedAccount,
-      titleRight: <CheckedBlueCircle viewBox="-2 -2 16 16" />,
+      titleRight: <CheckedBlueCircle style={styles.checkbox} />,
     };
 
     const handleOnPress = () => {

@@ -37,10 +37,10 @@ function AccountShowcase({
         <View style={[styles.root, selected && styles.selectedRoot]}>
           <UserIcon icon={icon} />
           <View style={styles.leftContainer}>
-            <Text style={[FontStyles.Normal, titleStyle]}>
-              {title}
+            <View style={styles.titleContainer}>
+              <Text style={[FontStyles.Normal, titleStyle]}>{title}</Text>
               {titleRight}
-            </Text>
+            </View>
             <Text style={FontStyles.NormalGray}>{subtitle}</Text>
           </View>
           <View style={styles.rightContainer}>{right}</View>

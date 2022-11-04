@@ -35,4 +35,7 @@ export default StyleSheet.create({
     marginLeft: 'auto',
     justifyContent: 'center',
   },
+  checkbox: {
+    marginLeft: 6,
+  },
 });

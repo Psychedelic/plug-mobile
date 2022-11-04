@@ -23,4 +23,8 @@ export default StyleSheet.create({
     alignItems: 'flex-end',
     marginRight: 8,
   },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });
