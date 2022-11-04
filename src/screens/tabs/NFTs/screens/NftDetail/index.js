@@ -3,14 +3,16 @@ import { t } from 'i18next';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Linking, Platform, View } from 'react-native';
 
-import Badge from '@/commonComponents/Badge';
-import Header from '@/commonComponents/Header';
-import Modal from '@/commonComponents/Modal';
-import NftDisplayer from '@/commonComponents/NftDisplayer';
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
-import ActionSheet from '@/components/common/ActionSheet';
-import Text from '@/components/common/Text';
+import {
+  ActionSheet,
+  Badge,
+  Header,
+  Modal,
+  NftDisplayer,
+  Text,
+} from '@/components/common';
 import { ICNS_CANISTER_ID } from '@/constants/canister';
 import { FontStyles } from '@/constants/theme';
 import DownloadIcon from '@/icons/material/Download.svg';

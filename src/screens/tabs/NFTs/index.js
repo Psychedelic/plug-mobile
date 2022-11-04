@@ -18,7 +18,7 @@ import NftItem, { ITEM_HEIGHT } from '@/screens/tabs/components/NftItem';
 import WalletHeader from '@/screens/tabs/components/WalletHeader';
 import { formatCollections } from '@/utils/assets';
 
-import AddCollection from './components/AddCollection';
+import AddCollection from './modals/AddCollection';
 import NftDetail from './screens/NftDetail';
 import styles from './styles';
 
@@ -46,9 +46,8 @@ function NFTs() {
   };
 
   const onRefresh = () => {
-    dispatch(getNFTs());
+    dispatch(getNFTs({ refresh: true }));
   };
-
   return (
     <>
       <Container>

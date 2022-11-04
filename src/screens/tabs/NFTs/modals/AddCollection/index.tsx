@@ -6,8 +6,8 @@ import ScrollableButton from '@/components/buttons/ScrollableButton';
 import { ActionButton, Header, Modal, Text } from '@/components/common';
 import { CollectionInfo } from '@/interfaces/keyring';
 
-import CustomCollection from '../CustomCollection';
-import ReviewCollection from '../ReviewCollection';
+import CustomCollection from './components/CustomCollection';
+import ReviewCollection from './components/ReviewCollection';
 import styles from './styles';
 
 interface Props {
