@@ -12,7 +12,7 @@ const ActivityIcon = ({ image, type }) => {
     <View style={styles.root}>
       {type && (
         <Icon
-          name={ACTIVITY_IMAGES[type] || 'lightingActivity'}
+          name={ACTIVITY_IMAGES[type] || 'actionActivity'}
           style={styles.activity}
         />
       )}

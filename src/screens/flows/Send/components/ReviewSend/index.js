@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/core';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 
 import Header from '@/commonComponents/Header';
 import Modal from '@/commonComponents/Modal';
@@ -14,11 +14,12 @@ import Text from '@/components/common/Text';
 import Icon from '@/components/icons';
 import TokenIcon from '@/components/tokens/TokenIcon';
 import { VISIBLE_DECIMALS } from '@/constants/business';
-import { Colors, FontStyles } from '@/constants/theme';
+import { FontStyles } from '@/constants/theme';
 import useGetType from '@/hooks/useGetType';
 import { Column } from '@/layout';
 import { Row } from '@/layout';
 import Routes from '@/navigation/Routes';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setTransaction } from '@/redux/slices/user';
 import { TRANSACTION_STATUS } from '@/redux/utils';
 import { truncate } from '@/utils/number';
@@ -48,17 +49,16 @@ const ReviewSend = ({
   ...props
 }) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const saveContactRef = useRef(null);
   const [nftType, setNftType] = useState(null);
   const [selectedContact, setSelectedContact] = useState(contact || null);
-  const contacts = useSelector(state => state.user.contacts, shallowEqual);
+  const contacts = useAppSelector(state => state.user.contacts, shallowEqual);
   const isSuccess = transaction?.status === TRANSACTION_STATUS.success;
   const isError = transaction?.status === TRANSACTION_STATUS.error;
-  const { icpPrice } = useSelector(state => state.icp);
+  const { icpPrice } = useAppSelector(state => state.icp);
   const feePrice = getFeePrice(token?.symbol, icpPrice, token?.fee);
-
   const handleSaveContact = () => {
     saveContactRef.current?.open();
   };
@@ -70,7 +70,7 @@ const ReviewSend = ({
   }, [contacts, to]);
 
   const handleClose = () => {
-    onClose();
+    onClose?.();
     dispatch(setTransaction(null));
 
     if (isSuccess) {
@@ -92,11 +92,11 @@ const ReviewSend = ({
       ({
         [TRANSACTION_STATUS.success]: {
           title: t('reviewSend.transactionSuccess'),
-          ReviewIcon: <Icon name="confirm" style={styles.icon} />,
+          ReviewIcon: <Icon name="transactionSuccess" style={styles.icon} />,
         },
         [TRANSACTION_STATUS.error]: {
           title: t('reviewSend.transactionError'),
-          ReviewIcon: <Icon name="error" style={styles.icon} />,
+          ReviewIcon: <Icon name="transactionError" style={styles.icon} />,
         },
         pending: {
           title: t('reviewSend.transactionPending'),
@@ -125,14 +125,14 @@ const ReviewSend = ({
                 <Text style={styles.subtitle}>${value?.display}</Text>
               ) : null}
             </Column>
-            <TokenIcon {...token} color={Colors.Gray.Tertiary} />
+            <TokenIcon {...token} />
           </Row>
         )}
         {nft && (
           <Row style={styles.row}>
             <Column>
               <Text style={styles.title}>{`#${nft.index}`}</Text>
-              <Text type="subtitle3">{nft.name || `${nft.collection}`}</Text>
+              <Text type="subtitle3">{nft.collectionName}</Text>
             </Column>
             <NftDisplayer url={nft.url} type={nftType} isSend />
           </Row>
@@ -163,7 +163,7 @@ const ReviewSend = ({
               </>
             )}
           </Column>
-          <UserIcon size="medium" />
+          <UserIcon icon={selectedContact?.image} size="medium" />
         </Row>
         {token && (
           <Row style={styles.row}>

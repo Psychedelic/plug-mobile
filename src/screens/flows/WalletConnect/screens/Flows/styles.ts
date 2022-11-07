@@ -11,4 +11,9 @@ export default StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
   },
+  showcaseContainer: {
+    flexGrow: 1,
+    width: '100%',
+    justifyContent: 'center',
+  },
 });

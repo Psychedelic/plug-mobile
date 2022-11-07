@@ -2,6 +2,7 @@ import { getNumberFormatSettings } from 'react-native-localize';
 
 import { ACTIVITY_STATUS } from '@/constants/business';
 import { ERROR_TYPES, MIN_PASSWORD_LENGTH } from '@/constants/general';
+import Routes from '@/navigation/Routes';
 
 const { decimalSeparator } = getNumberFormatSettings();
 
@@ -28,14 +29,23 @@ const translations = {
     available: 'available',
     max: 'Max',
     questionMark: '?',
+    the: 'The',
     enterPassword: 'Enter Password',
+    importWallet: 'Import Wallet',
+  },
+  routes: {
+    [Routes.NFTS]: 'Collectibles',
+    [Routes.TOKENS]: 'Tokens',
+    [Routes.PROFILE_SCREEN]: 'Profile',
+    [Routes.SETTINGS]: 'Settings',
+    [Routes.CONTACTS]: 'Contacts',
+    [Routes.APPROVED_CANISTERS]: 'Approved Canisters',
   },
   welcome: {
     title: 'Welcome to Plug',
     initTitle: 'Choose an option',
     create: 'Create Wallet',
     createNew: 'Create New Wallet',
-    import: 'Import Wallet',
     importNew: 'Import New Wallet',
   },
   login: {
@@ -45,7 +55,6 @@ const translations = {
     moreOptions: 'More options',
   },
   importSeedPhrase: {
-    title: 'Import Wallet',
     enterPhrase: 'Please enter your 12 word Secret Recovery Phrase.',
     secretPhrase: 'Secret Recovery Phrase',
     notFound: 'Recovery phrase not found',
@@ -150,6 +159,14 @@ const translations = {
         desc: 'Turn Biometrics on or off.',
       },
       lock: { name: 'Lock Account', desc: 'Lock your account and sign out.' },
+      connectedApps: {
+        name: 'Connected Apps',
+        desc: 'View your connected apps.',
+      },
+      exportPem: {
+        name: 'Export DFX Identity',
+        desc: 'Get a PEM file to use in DFX.',
+      },
     },
     version: 'v{{version}}({{build}})',
     infoItems: {
@@ -162,11 +179,13 @@ const translations = {
   },
   accounts: {
     title: 'Accounts',
-    createAccount: 'Create account',
+    createImportAccount: 'Create/Import Account',
     moreOptions: {
       edit: 'Edit Account',
-      icns: 'Add ICNS Domain',
+      addIcns: 'Add ICNS Domain',
+      changeIcns: 'Change ICNS Domain',
       copy: 'Copy Address',
+      removeAccount: 'Remove Account',
     },
     icns: {
       setICNS: 'Choose ICNS Name',
@@ -178,13 +197,19 @@ const translations = {
       proceed: ' to proceed.',
       info: 'By choosing an ICNS name, it will be set to your Principal ID for this account, and also set your reverse-resolution to the selected ICNS name. ',
     },
+    removeAccountMessage:
+      'Are you sure you want to remove {{accountName}} from your account list? \nYou can always add the wallet back by importing it again.',
     setEmoji: 'Set Emoji',
     editEmoji: 'Edit emoji',
     editButton: '👈 Edit',
     accountNamePlaceholder: 'Account name',
-    save: 'Save Account',
     edit: 'Edit Account',
     create: 'Create Account',
+    errorImport: {
+      title: 'Error Importing Account',
+      message:
+        'There was an error while importing the account. Please try again.',
+    },
   },
   contacts: {
     title: 'Contacts',
@@ -200,6 +225,12 @@ const translations = {
     nameTaken: 'Name is already taken!',
     unresolvedICNS: 'Unable to resolve ICNS name',
     contactAlreadySaved: 'Contact already saved as {{value}}',
+  },
+  connectedApps: {
+    viewDetail: 'View Details',
+    deleteConnection: 'Delete Connection',
+    approvedCanisters: 'Approved Canisters',
+    emptyState: 'No apps connected yet',
   },
   placeholders: {
     amount: `0${decimalSeparator}00`,
@@ -231,8 +262,7 @@ const translations = {
       title: 'Oops, we had an issue!',
       description:
         'Close and reopen the app to try again. If the issue persists, contact our team on Discord.',
-      buttonTitle: '  Join Discord',
-      buttonImage: 'discord',
+      buttonTitle: '👾 Join Discord',
     },
   },
   addToken: {
@@ -244,6 +274,8 @@ const translations = {
     searchResults: 'Search Results',
     noResults: 'No search results found.',
     addCustomToken: 'Add custom token',
+    balanceError: 'Failed to fetch balance',
+    addError: 'Failed to add custom token',
     addButton: 'Add Token',
     safetyAlert:
       'Token Safety Alert: For your security, make sure to do proper research before interacting with any token.',
@@ -268,7 +300,21 @@ const translations = {
     connectTitle: 'Connect Wallet',
     connectTo: 'Would you like to connect your wallet to ',
     cannisterPermission: 'wants pemission to use these canisters:',
-    actionsPermission: 'wants pemission to perform the\nfollowing actions:',
+    actionsPermission: {
+      one: 'wants pemission to perform the\nfollowing action:',
+      several: 'wants pemission to perform the\nfollowing actions:',
+    },
+    transaction: 'Transaction',
+    request: 'Request',
+    balance: 'Balance',
+    wallet: 'Wallet',
+    startAgain: 'Start Again',
+    timeOutTitle: 'The connection has timed out',
+    timeOutSubtitle: 'took to long to respond',
+    unsafeDappName: 'Unknown DApp',
+    unknown: 'Unknown',
+    unknownArguments: 'Unknown arguments',
+    learnMore: 'Learn More',
   },
   deleteWallet: {
     title: 'Delete Wallet',
@@ -277,6 +323,29 @@ const translations = {
     description:
       'You can always recover your accounts through your Secret recovery Phrase given that your accounts exists on the blockchain.',
     action: 'Delete Wallet',
+  },
+  createImportAccount: {
+    importKey: 'Private Key',
+    importPem: 'PEM File',
+    create: 'Create',
+    invalidKey: 'Invalid key. Please, try again.',
+    addedAccount: 'Account already added.',
+  },
+  exportPem: {
+    safeCheck: 'I’ll be safe with my DFX Identity.',
+    downloadPem: 'Download PEM file',
+    error: {
+      title: 'Error Exporting Account',
+      message:
+        'There was an error while exporting the account. Please try again.',
+    },
+    success: {
+      title: 'Account Successfully Exported',
+      messageIos: 'Your .pem file should be located at the choosen directory.',
+      messageAndroid: 'Your .pem file should be located at Downloads folder.',
+    },
+    selectAccount:
+      "Select the account you would like to export it's DFX Identity.",
   },
 };
 

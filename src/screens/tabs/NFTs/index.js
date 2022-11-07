@@ -3,7 +3,6 @@ import { FlashList } from '@shopify/flash-list';
 import React, { useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshControl, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 
 import EmptyState from '@/commonComponents/EmptyState';
 import ErrorState from '@/commonComponents/ErrorState';
@@ -12,26 +11,27 @@ import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
 import { useStateWithCallback } from '@/hooks/useStateWithCallback';
 import { Container, Separator } from '@/layout';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getNFTs } from '@/redux/slices/user';
 import NftItem, { ITEM_HEIGHT } from '@/screens/tabs/components/NftItem';
 import WalletHeader from '@/screens/tabs/components/WalletHeader';
+import { formatCollections } from '@/utils/assets';
 
 import NftDetail from './screens/NftDetail';
 import styles from './styles';
-
-const NFTs = () => {
+function NFTs() {
   const { t } = useTranslation();
   const detailRef = useRef(null);
   const NFTListRef = useRef(null);
   useScrollToTop(NFTListRef);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [selectedNft, setSelectedNft] = useStateWithCallback(null);
-  const { collections, collectionsError, collectionsLoading } = useSelector(
+  const { collections, collectionsError, collectionsLoading } = useAppSelector(
     state => state.user
   );
 
   const nfts = useMemo(
-    () => collections?.flatMap(collection => collection?.tokens || []) || [],
+    () => (collections ? formatCollections(collections) : []),
     [collections]
   );
 
@@ -93,6 +93,6 @@ const NFTs = () => {
       />
     </>
   );
-};
+}
 
 export default NFTs;

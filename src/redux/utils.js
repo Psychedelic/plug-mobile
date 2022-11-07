@@ -32,6 +32,9 @@ export const DEFAULT_ASSETS = [
     amount: 0,
     value: 0,
     icon: TOKEN_IMAGES.ICP,
+    decimals: TOKENS.ICP.decimals,
+    canisterId: TOKENS.ICP.canisterId,
+    fee: TOKENS.ICP.fee,
   },
   {
     symbol: 'XTC',
@@ -39,6 +42,9 @@ export const DEFAULT_ASSETS = [
     amount: 0,
     value: 0,
     icon: TOKEN_IMAGES.XTC,
+    decimals: TOKENS.XTC.decimals,
+    canisterId: TOKENS.XTC.canisterId,
+    fee: TOKENS.XTC.fee,
   },
   {
     symbol: 'WICP',
@@ -46,12 +52,13 @@ export const DEFAULT_ASSETS = [
     amount: 0,
     value: 0,
     icon: TOKEN_IMAGES.WICP,
+    decimals: TOKENS.WICP.decimals,
+    canisterId: TOKENS.WICP.canisterId,
+    fee: TOKENS.WICP.fee,
   },
 ];
 
 export const DEFAULT_TRANSACTION = {
-  height: null,
-  transactionId: null,
   status: null,
 };
 
@@ -212,12 +219,10 @@ export const contactCreateValueObj = currentId => {
 };
 
 export const DEFAULT_WALLET_CONNECT_STATE = {
-  pendingRedirect: false,
-  pendingSessionRequests: {},
+  pendingRedirect: {},
   pendingCallRequests: {},
-  walletConnectors: {},
   sessions: {},
-  bridgeTimeout: { timeout: null, onBridgeContact: () => {} },
+  bridgeTimeouts: {},
 };
 
 export const migrateData = async () => {
@@ -234,3 +239,6 @@ export const migrateData = async () => {
   await AsyncStorage.setItem(KEYRING_STORAGE_KEY, JSON.stringify(oldState));
   return oldState;
 };
+
+export const formatWallets = wallets =>
+  Object.keys(wallets).map(key => wallets[key]);

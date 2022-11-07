@@ -20,6 +20,7 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+ios/.xcode.env.local
 
 # Android/IntelliJ
 #
@@ -28,6 +29,8 @@ build/
 .gradle
 local.properties
 *.iml
+*.hprof
+.cxx/
 
 # node.js
 #
@@ -48,15 +51,17 @@ buck-out/
 # For more information about the recommended setup visit:
 # https://docs.fastlane.tools/best-practices/source-control/
 
-*/fastlane/report.xml
-*/fastlane/Preview.html
-*/fastlane/screenshots
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output
 
 # Bundle artifact
 *.jsbundle
 
-# CocoaPods
+# Ruby / CocoaPods
 /ios/Pods/
+/vendor/bundle/
 
 # IC
 rust/.cargo/mobile_app/target
@@ -67,8 +72,11 @@ rust/.cargo/config.toml
 /*.env
 
 # Android
-android/*.hprof
 android/app/src/main/jniLibs
+
+# Sentry
+android/sentry.properties
+ios/sentry.properties
 
 # react-native-config codegen
 ios/envfile
@@ -78,4 +86,3 @@ ios/envfile
 
 # Custom Patches
 patches/@dfinity+agent+0.9.3.patch
-patches/@dfinity+candid+0.9.3.patch

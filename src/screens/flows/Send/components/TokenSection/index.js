@@ -4,8 +4,8 @@ import { View } from 'react-native';
 
 import Text from '@/components/common/Text';
 import TokenItem from '@/components/tokens/TokenItem';
+import { ICNS_CANISTER_ID } from '@/constants/canister';
 import { ENABLE_NFTS } from '@/constants/nfts';
-import { Colors } from '@/constants/theme';
 import NftItem from '@/screens/tabs/components/NftItem';
 
 import styles from './styles';
@@ -17,7 +17,7 @@ const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }) => {
   };
 
   // Filter ICNS since it's not tradable
-  const filteredNFTS = nfts.filter(nft => nft.collection !== 'ICNS');
+  const filteredNFTS = nfts.filter(nft => nft.canister !== ICNS_CANISTER_ID);
 
   return (
     <>
@@ -27,7 +27,6 @@ const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }) => {
           token={token}
           key={token.symbol}
           onPress={() => onTokenPress(token)}
-          color={Colors.Gray.Tertiary}
           style={styles.token}
         />
       ))}

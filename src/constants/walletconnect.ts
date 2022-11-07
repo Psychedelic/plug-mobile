@@ -21,7 +21,10 @@ export const ERRORS = {
     message:
       'The transaction the app/page attempted failed because the destination Canister ID is invalid. Please contact this project’s developers so they can fix it.',
   },
-  SERVER_ERROR: (message: string) => ({ code: 500, message }),
+  SERVER_ERROR: (message: string) => ({
+    code: 500,
+    message: message || 'Server error',
+  }),
   AGENT_REJECTED: { code: 401, message: 'The agent creation was rejected.' },
   TRANSACTION_REJECTED: {
     code: 401,
@@ -52,6 +55,7 @@ export const ERRORS = {
       'The transaction that was just attempted failed because of timeout. Please contact the project’s developers.',
   },
   CLIENT_ERROR: (message: string) => ({ code: 400, message }),
+  SESSION_REJECTED: { code: 401, message: 'The session was rejected.' },
 };
 
 export const BIOMETRICS_ANIMATION_DELAY = 569;
@@ -75,7 +79,7 @@ export const SIGNING_METHODS = [
   'requestTransfer',
   'requestTransferToken',
   'requestBurnXTC',
-  'batchTransaction',
+  'batchTransactions',
   'requestCall',
   'verifyWhitelist',
 ];

@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Keyboard, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 
 import Header from '@/commonComponents/Header';
 import Modal, { modalOffset } from '@/commonComponents/Modal';
@@ -17,6 +16,7 @@ import { isAndroid } from '@/constants/platform';
 import XTC_OPTIONS from '@/constants/xtc';
 import useICNS from '@/hooks/useICNS';
 import useKeychain from '@/hooks/useKeychain';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getICPPrice } from '@/redux/slices/icp';
 import {
   burnXtc,
@@ -24,6 +24,7 @@ import {
   setTransaction,
   transferNFT,
 } from '@/redux/slices/user';
+import { formatCollections } from '@/utils/assets';
 import {
   validateAccountId,
   validateCanisterId,
@@ -45,18 +46,21 @@ const INITIAL_ADDRESS_INFO = {
 
 function Send({ modalRef, nft, token, onSuccess }) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { isSensorAvailable, getPassword } = useKeychain();
-  const { icpPrice } = useSelector(state => state.icp);
-  const { currentWallet } = useSelector(state => state.keyring);
+  const { icpPrice } = useAppSelector(state => state.icp);
+  const { currentWallet } = useAppSelector(state => state.keyring);
   const { assets, contacts, transaction, collections, usingBiometrics } =
-    useSelector(state => state.user);
+    useAppSelector(state => state.user);
 
   const reviewRef = useRef(null);
   const saveContactRef = useRef(null);
   const passwordRef = useRef(null);
-  const nfts =
-    collections?.flatMap(collection => collection?.tokens || []) || [];
+
+  const nfts = useMemo(
+    () => (collections ? formatCollections(collections) : []),
+    [collections]
+  );
   const [address, setAddress] = useState(null);
   const [loading, setLoading] = useState(false);
   const [usdAmount, setUsdAmount] = useState(null);
@@ -148,11 +152,14 @@ function Send({ modalRef, nft, token, onSuccess }) {
   };
 
   const handleSendNFT = () => {
-    dispatch(transferNFT({ to, nft: selectedNft, icpPrice }))
-      .unwrap()
-      .then(() => {
-        setLoading(false);
-      });
+    dispatch(
+      transferNFT({
+        to,
+        nft: selectedNft,
+        icpPrice,
+        onEnd: () => setLoading(false),
+      })
+    );
   };
 
   const handleSendToken = () => {
@@ -167,16 +174,18 @@ function Send({ modalRef, nft, token, onSuccess }) {
           canisterId: selectedToken?.canisterId,
           icpPrice,
           opts: {
-            fee: selectedToken.fee * Math.pow(10, selectedToken.decimals), // TODO: Change this to selectedToken.fee only when dab is ready
+            fee:
+              selectedToken?.fee && selectedToken?.decimals
+                ? selectedToken.fee * Math.pow(10, selectedToken.decimals)
+                : 0, // TODO: Change this to selectedToken.fee only when dab is ready
           },
         })
       )
         .unwrap()
-        .then(response => {
-          if (response.status) {
-            setLoading(false);
-          }
-        });
+        .then(() => {
+          setLoading(false);
+        })
+        .catch(() => setLoading(false));
     }
   };
 
