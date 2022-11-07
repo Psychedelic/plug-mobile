@@ -1,3 +1,5 @@
+import { FileTypes } from '@/interfaces/general';
+
 export const FILE_TYPES = {
   SVG: '.svg',
   JPG: '.jpg',
@@ -31,9 +33,9 @@ export const getAbsoluteType = (type?: string) => {
 /**
  * Function that returns the file type of a given url or file type
  * @param value URL or file type
- * @returns "html" | "image" | "video" | undefined
+ * @returns "html" | "image" | "video" | "svg" | undefined
  */
-export const getType = (value?: string | null) => {
+export const getType = (value?: string | null): FileTypes => {
   if (!value) {
     return undefined;
   }

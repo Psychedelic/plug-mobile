@@ -43,9 +43,9 @@ export function TokenList({ onSelectedToken, tokens, loading }: Props) {
     return (
       <EmptyState
         title={t('addToken.noResults')}
-        text={t('addToken.addCustomToken')}
+        description={t('addToken.addCustomToken')}
         style={styles.emptyState}
-        onTextPress={handleCustomModalOpen}
+        onPress={handleCustomModalOpen}
       />
     );
   }

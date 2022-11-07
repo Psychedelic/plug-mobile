@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 
+import { FileTypes } from '@/interfaces/general';
 import { getType } from '@/utils/fileTypes';
 
 function useGetType(url?: string) {
-  const [type, setType] = useState<string>();
+  const [type, setType] = useState<FileTypes>();
   useEffect(() => {
     const fetchType = async () =>
       await fetch(url!).then(res =>

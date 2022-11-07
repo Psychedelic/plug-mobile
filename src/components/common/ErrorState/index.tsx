@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 
 import Button from '@/buttons/Button';
 import { FontStyles } from '@/constants/theme';
@@ -8,9 +8,23 @@ import Text from '../Text';
 import { getErrorStateData } from './constants';
 import styles from './styles';
 
-function ErrorState({ errorType, onPress, loading, style, buttonStyle }) {
-  const { title, emoji, description, buttonTitle, buttonImage } =
-    getErrorStateData(errorType);
+interface Props {
+  errorType: string;
+  onPress?: () => void;
+  loading?: boolean;
+  style?: StyleProp<ViewStyle>;
+  buttonStyle?: StyleProp<ViewStyle>;
+}
+
+function ErrorState({
+  errorType,
+  onPress,
+  loading,
+  style,
+  buttonStyle,
+}: Props) {
+  const { title, emoji, description, buttonTitle } =
+    getErrorStateData(errorType) || {};
 
   return (
     <View style={[styles.container, style]}>
@@ -23,8 +37,7 @@ function ErrorState({ errorType, onPress, loading, style, buttonStyle }) {
         <Button
           onPress={onPress}
           loading={loading}
-          text={buttonTitle}
-          iconName={buttonImage}
+          text={buttonTitle || ''}
           buttonStyle={[styles.button, buttonStyle]}
         />
       )}

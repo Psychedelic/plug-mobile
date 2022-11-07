@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { ActivityIndicator, StyleProp, View, ViewStyle } from 'react-native';
 
+import { FileTypes } from '@/interfaces/general';
+
 import ICNSDisplayer from './components/ICNSDisplayer';
 import ImageDisplayer from './components/ImageDisplayer';
 import VideoDisplayer from './components/VideoDisplayer';
@@ -9,7 +11,7 @@ import styles from './styles';
 interface Props {
   url: string;
   style?: StyleProp<ViewStyle>;
-  type?: string;
+  type?: FileTypes;
   isDetailView?: boolean;
   isSend?: boolean;
   ICNSName?: string;

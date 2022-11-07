@@ -4,46 +4,56 @@ import React, { useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshControl, View } from 'react-native';
 
+// import { Modalize } from 'react-native-modalize';
 import EmptyState from '@/commonComponents/EmptyState';
 import ErrorState from '@/commonComponents/ErrorState';
 import useScrollHanlder from '@/components/buttons/ScrollableButton/hooks/useScrollHandler';
 import Text from '@/components/common/Text';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
-import { useStateWithCallback } from '@/hooks/useStateWithCallback';
+// import { useStateWithCallback } from '@/hooks/useStateWithCallback';
+import { Collection } from '@/interfaces/redux';
 import { Container, Separator } from '@/layout';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getNFTs } from '@/redux/slices/user';
-import NftItem, { ITEM_HEIGHT } from '@/screens/tabs/components/NftItem';
 import WalletHeader from '@/screens/tabs/components/WalletHeader';
-import { formatCollections } from '@/utils/assets';
 
+// import { formatCollections } from '@/utils/assets';
+import CollectionItem, { ITEM_HEIGHT } from './components/CollectionItem';
 import AddCollection from './modals/AddCollection';
-import NftDetail from './screens/NftDetail';
+// import NftDetail from './screens/NftDetail';
 import styles from './styles';
 
 function NFTs() {
   const { t } = useTranslation();
-  const detailRef = useRef(null);
+  // const detailRef = useRef<Modalize>(null);
   const NFTListRef = useRef(null);
   useScrollToTop(NFTListRef);
   const dispatch = useAppDispatch();
-  const [selectedNft, setSelectedNft] = useStateWithCallback(null);
+  // const [selectedNft, setSelectedNft] = useStateWithCallback(null);
   const { collections, collectionsError, collectionsLoading } = useAppSelector(
     state => state.user
   );
   const { handleOnScroll, scrollPosition } = useScrollHanlder();
 
-  const nfts = useMemo(
-    () => (collections ? formatCollections(collections) : []),
-    [collections]
+  // const nfts = useMemo(
+  //   () => (collections ? formatCollections(collections) : []),
+  //   [collections]
+  // );
+
+  const totalNfts = useMemo(() => {
+    return collections.reduce((acc, curr) => acc + curr.tokens.length, 0);
+  }, [collections]);
+
+  // const renderNFT = ({ item }) => <NftItem item={item} onOpen={onOpen} />;
+
+  const renderCollection = ({ item }: { item: Collection }) => (
+    <CollectionItem collection={item} />
   );
 
-  const renderNFT = ({ item }) => <NftItem item={item} onOpen={onOpen} />;
-
-  const onOpen = nft => () => {
-    setSelectedNft(nft, () => detailRef.current?.open());
-  };
+  // const onOpen = (nft: Collection) => () => {
+  //   setSelectedNft(nft, () => detailRef.current?.open());
+  // };
 
   const onRefresh = () => {
     dispatch(getNFTs({ refresh: true }));
@@ -52,20 +62,25 @@ function NFTs() {
     <>
       <Container>
         <WalletHeader />
-        <Text style={styles.title}>{t('common.collectibles')}</Text>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>{t('common.collectibles')}</Text>
+          <Text type="caption" style={styles.totalItems}>
+            {t('nftTab.items', { count: totalNfts })}
+          </Text>
+        </View>
         <Separator />
         {!collectionsError ? (
           <View style={styles.container}>
             <FlashList
               onScroll={handleOnScroll}
               bounces={false}
-              data={nfts}
+              data={collections}
               numColumns={2}
               horizontal={false}
               ref={NFTListRef}
-              renderItem={renderNFT}
+              renderItem={renderCollection}
               estimatedItemSize={ITEM_HEIGHT}
-              keyExtractor={({ index, canister }) => `${index}${canister}`}
+              keyExtractor={({ canisterId }) => `${canisterId}`}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.nftsContainer}
               overScrollMode="never"
@@ -80,7 +95,7 @@ function NFTs() {
               ListEmptyComponent={
                 <EmptyState
                   title={t('nftTab.emptyTitle')}
-                  text={t('nftTab.emptySubtitle')}
+                  description={t('nftTab.emptySubtitle')}
                   style={styles.emptyState}
                 />
               }
@@ -91,11 +106,11 @@ function NFTs() {
           <ErrorState onPress={onRefresh} errorType={ERROR_TYPES.FETCH_ERROR} />
         )}
       </Container>
-      <NftDetail
+      {/* <NftDetail
         modalRef={detailRef}
         selectedNFT={selectedNft}
         handleClose={() => setSelectedNft(null)}
-      />
+      /> */}
     </>
   );
 }

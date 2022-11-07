@@ -4,6 +4,7 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import Image from '@/components/common/Image';
 import { Colors } from '@/constants/theme';
+import { FileTypes } from '@/interfaces/general';
 
 import sharedStyles from '../../styles';
 import HTMLDisplayer from '../HTMLDisplayer';
@@ -13,7 +14,7 @@ interface Props {
   url: string;
   isSendView?: boolean;
   isDetailView?: boolean;
-  type?: string; //TODO: Improve this
+  type?: FileTypes;
 }
 
 function ImageDisplayer({ style, type, url, isSendView, isDetailView }: Props) {
@@ -35,7 +36,7 @@ function ImageDisplayer({ style, type, url, isSendView, isDetailView }: Props) {
           ]}
         />
       }>
-      {type?.includes('svg') || type?.includes('html') ? (
+      {type === 'svg' || type === 'html' ? (
         <HTMLDisplayer
           url={url}
           style={innerStyle}

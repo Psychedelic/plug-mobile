@@ -129,6 +129,8 @@ const translations = {
     emptyTitle: "You don't own any Collectibles yet",
     emptySubtitle:
       "When you do, they'll show here, where you will see their traits and send them.",
+    items: '{{count}} item',
+    items_plural: '{{count}} items',
   },
   nftDetail: {
     collectionTitle: '🧩 Collection',
