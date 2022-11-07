@@ -45,8 +45,6 @@ export default StyleSheet.create({
   moreOptionsButton: {
     backgroundColor: null,
     flexDirection: 'row',
-    opacity: 0.5,
-    alignSelf: 'center',
   },
   moreOptionsIcon: {
     marginLeft: 11,
@@ -57,5 +55,8 @@ export default StyleSheet.create({
   },
   biometricsIcon: {
     marginRight: 11,
+  },
+  moreOptionsText: {
+    color: Colors.Gray.Pure,
   },
 });

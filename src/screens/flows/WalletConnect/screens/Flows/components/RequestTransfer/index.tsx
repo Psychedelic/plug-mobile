@@ -1,44 +1,36 @@
 import React from 'react';
-import { Text, View } from 'react-native';
 
-import {
-  WallectConnectFlowsData,
-  WCFlowTypes,
-} from '@/interfaces/walletConnect';
+import { WallectConnectFlowsData } from '@/interfaces/walletConnect';
+import { useAppSelector } from '@/redux/hooks';
+import { formatAssetBySymbol } from '@/utils/currencies';
 
-// import styles from './styles';
+import { getAssetData, ICP_DIVISOR } from '../../utils';
+import TransferItem from '../TransferItem';
 
 interface Props extends WallectConnectFlowsData {
-  type: WCFlowTypes;
+  canisterId: string;
 }
 
-// Matt-TODO:THIS IS A WIP SCREEN
-function RequestTransfer({ args, type }: Props) {
-  //const { dappUrl, dappName } = request;
-  console.log('args:', args);
-  console.log('type:', type);
-  // const { to } = args;
+function RequestTransfer({ canisterId, args }: Props) {
+  const assetData = getAssetData(canisterId);
+  const { icpPrice } = useAppSelector(state => state.icp);
 
-  return (
-    <View style={{ flexGrow: 1 }}>
-      <View style={{ flexDirection: 'row' }}>
-        {/* <Image /> */}
-        <View>
-          <View>
-            <Text>Transaction</Text>
-            <Text>Request</Text>
-          </View>
-          <View>
-            <View>
-              {/* <Image /> */}
-              <Text>1.10 WICP</Text>
-            </View>
-            <Text>$12.11 USD</Text>
-          </View>
-        </View>
-      </View>
-    </View>
-  );
+  const amount = args.amount
+    ? args.amount / ICP_DIVISOR
+    : args.strAmount
+    ? parseFloat(args.strAmount)
+    : 0;
+
+  const token = {
+    icon: assetData?.icon!,
+    amount: amount,
+    symbol: assetData?.symbol!,
+    usdValue:
+      formatAssetBySymbol(amount.toString(), assetData?.symbol!, icpPrice)
+        .value || null,
+  };
+
+  return <TransferItem token={token} />;
 }
 
 export default RequestTransfer;

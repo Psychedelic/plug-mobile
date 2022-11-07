@@ -15,16 +15,19 @@ import {
   getVersion,
 } from 'react-native-device-info';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Provider, useDispatch } from 'react-redux';
+import { ToastProvider } from 'react-native-toast-notifications';
+import { Provider } from 'react-redux';
 import Reactotron from 'reactotron-react-native';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import ErrorBoundary from '@/commonComponents/ErrorBoundary';
+import { ErrorBoundary } from '@/components/common';
+import { toastProviderProps } from '@/components/common/Toast';
 import { isIos } from '@/constants/platform';
 import Routes from '@/navigation';
+import { useAppDispatch } from '@/redux/hooks';
 import { initKeyring } from '@/redux/slices/keyring';
 import { persistor, store } from '@/redux/store';
-import { TopLevelNavigationRef } from '@/utils/navigation';
+import { navigationRef } from '@/utils/navigation';
 
 const routingInstrumentation = new Sentry.ReactNavigationInstrumentation();
 const baseDist = getBuildNumber();
@@ -49,7 +52,7 @@ Sentry.init({
 const PersistedApp = () => {
   const appState = useRef(AppState.currentState);
   const [showRoutes, setShowRoutes] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const event = AppState.addEventListener('change', handleAppStateChange);
@@ -92,13 +95,15 @@ const PersistedApp = () => {
     <PersistGate loading={null} persistor={persistor}>
       <ErrorBoundary>
         <SafeAreaProvider>
-          <StatusBar barStyle="light-content" backgroundColor="black" />
-          {showRoutes && (
-            <Routes
-              routingInstrumentation={routingInstrumentation}
-              ref={TopLevelNavigationRef}
-            />
-          )}
+          <ToastProvider {...toastProviderProps}>
+            <StatusBar barStyle="light-content" backgroundColor="black" />
+            {showRoutes && (
+              <Routes
+                routingInstrumentation={routingInstrumentation}
+                ref={navigationRef}
+              />
+            )}
+          </ToastProvider>
         </SafeAreaProvider>
       </ErrorBoundary>
     </PersistGate>

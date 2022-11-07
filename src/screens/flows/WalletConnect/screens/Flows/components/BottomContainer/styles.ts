@@ -21,4 +21,7 @@ export default StyleSheet.create({
     width: '100%',
     paddingBottom: 20,
   },
+  extraMargin: {
+    marginBottom: 20,
+  },
 });

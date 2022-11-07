@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { Portal } from 'react-native-portalize';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { isIos, withNotch } from '@/constants/platform';
+import { useAppSelector } from '@/redux/hooks';
 
 import styles from './styles';
 
@@ -40,6 +41,15 @@ function Modal({
   disableScrollIfPossible,
   ...props
 }: Props) {
+  const closeAllModals = useAppSelector(state => state.alert.closeAllModals);
+  const handleOnClose = () => onClose?.();
+
+  useEffect(() => {
+    if (closeAllModals) {
+      modalRef.current?.close();
+    }
+  }, [closeAllModals]);
+
   const { bottom } = useSafeAreaInsets();
   return (
     <Portal>
@@ -70,14 +80,14 @@ function Modal({
         closeOnOverlayTap
         keyboardAvoidingBehavior={isIos ? 'padding' : undefined}
         modalTopOffset={modalOffset}
-        onOverlayPress={onClose}
-        onClose={onClose}
+        onOverlayPress={handleOnClose}
+        onClose={handleOnClose}
         onClosed={onClosed}
-        disableScrollIfPossible={disableScrollIfPossible}
         adjustToContentHeight={adjustToContentHeight}
         HeaderComponent={HeaderComponent}
         FooterComponent={FooterComponent}
         FloatingComponent={FloatingComponent}
+        disableScrollIfPossible={disableScrollIfPossible}
         threshold={15}>
         {children}
       </Modalize>

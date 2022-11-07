@@ -15,6 +15,12 @@ enum Routes {
   //Wallet Connect:
   WALLET_CONNECT_INITIAL_CONNECTION = 'WCInitialConnection',
   WALLET_CONNECT_FLOWS = 'WCFlows',
+  WALLET_CONNECT_ERROR = 'WCError',
+  //Settings:
+  SETTINGS_STACK = 'SettingsStack',
+  SETTINGS = 'Settings',
+  CONTACTS = 'Contacts',
+  APPROVED_CANISTERS = 'ApprovedCanisters',
 }
 
 export const NATIVE_ROUTES = Object.values(Routes);

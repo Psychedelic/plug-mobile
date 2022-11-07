@@ -5,6 +5,7 @@ import { StyleSheet } from 'react-native';
 import { ActionButton, Header, Text } from '@/components/common';
 import { Colors } from '@/constants/theme';
 import { DABToken } from '@/interfaces/dab';
+import { StandardToken } from '@/interfaces/keyring';
 import { getDabTokens } from '@/services/DAB';
 
 import { ReviewToken } from '../steps/ReviewToken';
@@ -28,9 +29,11 @@ const useSteps = ({ handleModalClose }: Props): Return => {
   const [step, setStep] = useState<number>(0);
   const [tokens, setTokens] = useState<DABToken[]>([]);
   const [tokensLoading, setTokensLoading] = useState(true);
-  const [selectedToken, setSelectedToken] = useState<DABToken>();
+  const [selectedToken, setSelectedToken] = useState<
+    DABToken | StandardToken
+  >();
 
-  const handleSelectedToken = useCallback((token: DABToken) => {
+  const handleSelectedToken = useCallback((token: DABToken | StandardToken) => {
     setSelectedToken(token);
     setStep(1);
   }, []);

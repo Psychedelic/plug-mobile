@@ -1,7 +1,9 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+
+import animationScales from '@/utils/animationScales';
 
 import Text, { TextTypes } from '../Text';
+import Touchable from '../Touchable';
 import styles from './styles';
 
 interface Props {
@@ -12,14 +14,14 @@ interface Props {
 
 function ActionButton({ onPress, label, type = 'body1' }: Props) {
   return (
-    <TouchableOpacity
+    <Touchable
       onPress={onPress}
       style={styles.container}
-      activeOpacity={0.5}>
+      scale={animationScales.medium}>
       <Text type={type} style={styles.text}>
         {label}
       </Text>
-    </TouchableOpacity>
+    </Touchable>
   );
 }
 

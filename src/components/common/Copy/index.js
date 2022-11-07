@@ -5,6 +5,7 @@ import { View } from 'react-native';
 
 import CopiedToast from '@/commonComponents/CopiedToast';
 import Touchable from '@/commonComponents/Touchable';
+import { Colors } from '@/constants/theme';
 import Icon from '@/icons';
 
 import Text from '../Text';
@@ -31,7 +32,7 @@ const Copy = ({ text, customStyle }) => {
           customStyle={styles.toastStyle}
           customPointerStyle={styles.toastPointerStyle}
         />
-        <Icon name="copy" />
+        <Icon name="copy" color={Colors.ActionBlue} />
         <Text style={styles.text}>{t('common.copyClipboard')}</Text>
       </View>
     </Touchable>

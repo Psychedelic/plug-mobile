@@ -4,5 +4,7 @@ declare module '*.svg' {
   const content: React.FC<SvgProps>;
   export default content;
 }
+
 declare module 'react-native-fetch-api';
 declare module 'react-native-crypto-js';
+declare module 'emoji-datasource';

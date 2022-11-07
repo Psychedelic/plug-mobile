@@ -5,10 +5,10 @@ import { Colors } from '@/constants/theme';
 export default StyleSheet.create({
   listContentContainer: {
     paddingVertical: 10,
-    flexGrow: 1,
   },
   list: {
     width: '100%',
+    flex: 1,
   },
   appIcon: {
     height: 28,
@@ -37,18 +37,16 @@ export default StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 20,
     paddingVertical: 16,
-    marginVertical: 4,
+    marginVertical: 10,
   },
   separatorContainer: {
-    backgroundColor: Colors.Gray.Primary,
     height: 32,
     width: 32,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 25,
-    bottom: -16,
+    bottom: 0,
     position: 'absolute',
     alignSelf: 'center',
-    zIndex: 2,
   },
 });

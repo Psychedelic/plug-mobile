@@ -6,5 +6,9 @@ export default StyleSheet.create({
   },
   scrollViewContainer: {
     paddingVertical: 10,
+    flexGrow: 1,
+  },
+  container: {
+    flex: 1,
   },
 });

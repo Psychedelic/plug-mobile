@@ -13,7 +13,7 @@ interface Props {
   url: string;
   isSendView?: boolean;
   isDetailView?: boolean;
-  type: string; //TODO: Improve this
+  type?: string; //TODO: Improve this
 }
 
 function ImageDisplayer({ style, type, url, isSendView, isDetailView }: Props) {

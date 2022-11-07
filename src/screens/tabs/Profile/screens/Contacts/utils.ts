@@ -1,10 +1,5 @@
+import { Contact } from '@/interfaces/redux';
 import { getFirstLetterFrom } from '@/utils/strings';
-
-export interface Contact {
-  image: string;
-  name: string;
-  id: string;
-}
 
 interface ContactList {
   contacts: Contact[];
@@ -22,7 +17,9 @@ export const getGroupedContacts = (contacts: Contact[]) => {
     if (!listItem) {
       list.push({ letter: getFirstLetterFrom(name), contacts: [contact] });
     } else {
-      listItem.contacts.push(contact);
+      listItem.contacts = [...listItem.contacts, contact].sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
     }
 
     return list;

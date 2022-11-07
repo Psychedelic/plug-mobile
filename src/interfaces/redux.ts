@@ -1,26 +1,23 @@
-import { ICNSData } from '@/interfaces/icns';
-import { Contact } from '@/screens/tabs/Profile/screens/Contacts/utils';
+import WalletConnect from '@walletconnect/client';
 
 import { Nullable } from './general';
+import { ICNSData } from './icns';
+import { WCWhiteListItem } from './walletConnect';
 
-// Override the default state interface
-declare module 'react-redux' {
-  interface DefaultRootState {
-    icp: IcpState;
-    keyring: KeyringState;
-    user: UserState;
-  }
+export interface State {
+  icp: IcpState;
+  keyring: KeyringState;
+  user: UserState;
+  alert: AlertState;
+  walletconnect: WalletConnectState;
 }
 
 export interface CollectionToken {
-  id: string;
   index: number | string;
   canister: string;
   url: string;
   standard: string;
-  collection: string;
-  owner?: string;
-  metadata?: any;
+  metadata: any;
 }
 
 export interface Collection {
@@ -77,16 +74,16 @@ export interface TransactionDetails {
 
 export interface Transaction {
   amount: string | number;
-  value: string | number;
-  icon: string;
   type: string; //TODO: Add types here SEND/RECEIVE. Check ACTIVITY_TYPES
   symbol: string;
   hash: string;
   to: string;
   from: string;
-  date: string;
-  status?: number | string;
+  date: Date;
   image: string;
+  value?: string | number;
+  status?: number | string;
+  icon?: string;
   canisterId?: string;
   plug?: any;
   canisterInfo?: CanisterInfo;
@@ -108,40 +105,101 @@ export interface Asset {
 export interface IcpState {
   icpPrice: number;
 }
+
 export interface Wallet {
   name: string;
-  walletNumber: number;
+  walletId: string;
+  orderNumber: number;
   principal: string;
   accountId: string;
-  connectedApps: any[];
-  assets: any;
-  icon: string;
-  nftCollections: any[];
   icnsData?: ICNSData;
+  type: string;
+  keyPair?: string;
+  icon?: string;
 }
 
 export interface KeyringState {
   isInitialized: boolean;
   isUnlocked: boolean;
-  currentWallet: Wallet;
+  currentWallet: Nullable<Wallet>;
   wallets: Wallet[];
   icnsDataLoading: boolean;
+  isPrelocked: boolean;
 }
 
+export interface Contact {
+  image: string;
+  name: string;
+  id: string;
+}
+
+export interface ConnectedApp {
+  name: string;
+  canisterList: WCWhiteListItem[];
+  lastConnection: Date;
+  account: string;
+  imageUri?: string;
+}
 export interface UserState {
   assets: Asset[];
-  assetsError: Nullable<string>;
+  assetsError?: string;
   assetsLoading: boolean;
   contacts: Contact[];
   contactsLoading: boolean;
-  contactsError: Nullable<string>;
-  transaction: Transaction;
+  contactsError?: string;
+  transaction: {
+    status: string | null;
+  };
   transactions: Transaction[];
-  transactionsError: Nullable<string>;
+  transactionsError?: string;
   transactionsLoading: boolean;
   collections: Collection[];
-  collectionsError: Nullable<string>;
+  collectionsError?: string;
   collectionsLoading: boolean;
   usingBiometrics: boolean;
   biometricsAvailable: boolean;
+  connectedApps: ConnectedApp[];
+}
+
+export interface WalletConnectCallRequest {
+  clientId: string;
+  dappName: string;
+  dappScheme: string;
+  dappUrl: string;
+  imageUrl: string;
+  methodName: string;
+  args: any;
+  peerId: string;
+  requestId: number;
+  executor: any;
+}
+
+export interface WalletConnectSession {
+  pending: boolean;
+  walletConnector: WalletConnect;
+  meta: any;
+}
+
+export interface WalletConnectState {
+  pendingRedirect: {
+    [requestId: string]: {
+      pending: boolean;
+      scheme?: string;
+    };
+  };
+  pendingCallRequests: { [requestId: number]: WalletConnectCallRequest };
+  sessions: {
+    [peerId: string]: WalletConnectSession;
+  };
+  bridgeTimeouts: {
+    [requestId: string]: {
+      pending: boolean;
+      timeout: number;
+      onBridgeContact: any;
+    };
+  };
+}
+
+export interface AlertState {
+  closeAllModals: boolean;
 }

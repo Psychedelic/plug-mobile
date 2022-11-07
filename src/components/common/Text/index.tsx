@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Text as RNText, TextProps } from 'react-native';
+import { Text as RNText, TextProps as RNTextProps } from 'react-native';
 
 export type TextTypes =
   | 'headline1'
@@ -14,13 +14,13 @@ export type TextTypes =
   | 'overline'
   | 'normal';
 
-interface Props extends TextProps {
+export interface TextProps extends RNTextProps {
   type?: TextTypes;
 }
 
 import styles from './styles';
 
-function Text({ style, type, ...props }: Props) {
+function Text({ style, type, ...props }: TextProps) {
   const baseStyle = useMemo(
     () => (type ? [styles.base, styles[type], style] : [styles.base, style]),
     [type, style]

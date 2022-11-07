@@ -1,29 +1,41 @@
 import { blobFromBuffer } from '@dfinity/candid';
 import PlugController from '@psychedelic/plug-controller';
+import { randomBytes } from 'crypto';
 import { fetch } from 'react-native-fetch-api';
 
 import { XTC_FEE } from '@/constants/addresses';
 import { CYCLES_PER_TC } from '@/constants/assets';
 import { ASSET_CANISTER_IDS } from '@/constants/canister';
-import { ERRORS } from '@/constants/walletconnect';
+import {
+  CONNECTION_STATUS,
+  ERRORS,
+  SIGNING_METHODS,
+} from '@/constants/walletconnect';
 import {
   ConnectionModule,
   InformationModule,
   TransactionModule,
 } from '@/modules';
-import { setProtectedIds } from '@/modules/storageManager';
+import {
+  getApps,
+  getBatchTransactions,
+  setApps,
+  setBatchTransactions,
+  setProtectedIds,
+} from '@/modules/storageManager';
 import Routes from '@/navigation/Routes';
 import {
+  addBridgeTimeout,
   getSession,
-  setPendingSessionRequest,
   setSession,
   walletConnectApproveSession,
   walletConnectRejectSession,
 } from '@/redux/slices/walletconnect';
 import { getDabNfts, getDabTokens } from '@/services/DAB';
+import { addBatchTransaction, addDelegation } from '@/services/SignerServer';
 import { validateAccountId, validatePrincipalId } from '@/utils/ids';
 import { validateCanisterId } from '@/utils/ids';
-import Navigation from '@/utils/navigation';
+import { navigate } from '@/utils/navigation';
 import {
   isValidBigInt,
   validateAmount,
@@ -33,40 +45,45 @@ import { recursiveParseBigint } from '@/utils/objects';
 
 import { base64ToBuffer } from './utilities';
 
-export const connectionRequestResponseHandlerFactory = (dispatch, uri) => {
-  return async ({
+export const responseSessionRequest = async (meta, dispatch) => {
+  const {
     approved,
     chainId,
     accountAddress,
     peerId,
     dappScheme,
+    requestId,
     dappName,
     dappUrl,
-  }) => {
-    const { walletConnector, timedOut } = await dispatch(
-      getSession({ uri })
-    ).unwrap();
+  } = meta;
+  const { walletConnector } = await dispatch(getSession({ peerId })).unwrap();
 
-    if (approved) {
-      dispatch(setPendingSessionRequest({ peerId, walletConnector }));
-      dispatch(
-        walletConnectApproveSession({
-          peerId,
-          dappScheme,
-          chainId,
-          accountAddress,
-        })
-      );
-    } else if (!timedOut) {
-      await dispatch(walletConnectRejectSession(peerId, walletConnector));
-    }
-  };
+  if (approved) {
+    const timeout = setTimeout(() => {
+      navigate(Routes.WALLET_CONNECT_ERROR, {
+        dappName,
+        dappUrl,
+      });
+    }, 20000);
+
+    await dispatch(addBridgeTimeout({ requestId, timeout }));
+
+    await dispatch(
+      walletConnectApproveSession({
+        peerId,
+        dappScheme,
+        chainId,
+        accountAddress,
+      })
+    );
+  } else if (!approved) {
+    await dispatch(walletConnectRejectSession({ peerId, walletConnector }));
+  }
+
+  await dispatch(setSession({ peerId, sessionInfo: { pending: false, meta } }));
 };
 
-export const sessionRequestHandler = async (
-  { dispatch, uri },
-  { error, payload }
-) => {
+export const sessionRequestHandler = async ({ error, payload, requestId }) => {
   if (error) {
     throw error;
   }
@@ -75,22 +92,16 @@ export const sessionRequestHandler = async (
   const dappName = peerMeta?.name;
   const dappUrl = peerMeta?.url;
   const dappScheme = peerMeta?.scheme;
-  const dappImageUrl = peerMeta?.icons?.[0];
+  const imageUrl = peerMeta?.icons?.[0];
 
-  const meta = {
+  navigate(Routes.WALLET_CONNECT_INITIAL_CONNECTION, {
     chainId,
     dappName,
     dappScheme,
     dappUrl,
     peerId,
-    dappImageUrl,
-  };
-
-  await dispatch(setSession({ uri, sessionInfo: { meta } }));
-
-  Navigation.handleAction(Routes.WALLET_CONNECT_INITIAL_CONNECTION, {
-    uri,
-    meta,
+    imageUrl,
+    requestId,
   });
 };
 
@@ -101,9 +112,9 @@ export const callRequestHandlerFactory = (dispatch, getState) => {
     ...ConnectionModule(dispatch, getState),
   ];
   const walletConnectHandlers = modules.reduce(
-    (acum, handlerObj) => ({
+    (acum, { methodName, handler, executor }) => ({
       ...acum,
-      [handlerObj.methodName]: [handlerObj.handler, handlerObj.executor],
+      [methodName]: [handler, executor],
     }),
     {}
   );
@@ -133,32 +144,23 @@ export const initializeProtectedIds = async () => {
 
 export const fetchCanistersInfo = async whitelist => {
   if (whitelist && whitelist.length > 0) {
-    const canistersInfo = await Promise.all(
-      whitelist.map(async id => {
-        let canisterInfo = { id };
-
-        try {
-          const fetchedCanisterInfo = await PlugController.getCanisterInfo({
-            canisterId: id,
-            fetch,
-          });
-          canisterInfo = { id, ...fetchedCanisterInfo };
-        } catch (error) {
-          console.error(error);
+    try {
+      const canistersInfo = await PlugController.getMultipleCanisterInfo(
+        whitelist,
+        undefined,
+        fetch
+      );
+      const sortedCanistersInfo = canistersInfo.sort((a, b) => {
+        if (a.name && !b.name) {
+          return -1;
         }
+        return 1;
+      });
 
-        return canisterInfo;
-      })
-    );
-
-    const sortedCanistersInfo = canistersInfo.sort((a, b) => {
-      if (a.name && !b.name) {
-        return -1;
-      }
-      return 1;
-    });
-
-    return sortedCanistersInfo;
+      return sortedCanistersInfo;
+    } catch (e) {
+      console.log('error fetching canisters info', e);
+    }
   }
 
   return [];
@@ -234,16 +236,38 @@ export const validateTransactions = transactions => {
   return message ? ERRORS.CLIENT_ERROR(message) : null;
 };
 
-export const generateRequestInfo = args => {
+const getLeafValues = (data, values = []) => {
+  if (!data) {
+    return [...values, data];
+  }
+  if (typeof data !== 'object') {
+    return [data];
+  }
+  return [
+    ...values,
+    ...Object.values(data).flatMap(v => getLeafValues(v, values)),
+  ];
+};
+
+const doObjectValuesMatch = (obj1 = {}, obj2 = {}) => {
+  const leafValues1 = getLeafValues(obj1) || [];
+  const leafValues2 = getLeafValues(obj2) || [];
+  return leafValues1.every(v => leafValues2.includes(v));
+};
+
+export const generateRequestInfo = (args, preDecodedArgs) => {
   const decodedArguments = recursiveParseBigint(
     PlugController.IDLDecode(blobFromBuffer(base64ToBuffer(args.arg)))
   );
-
+  const shouldWarn = !doObjectValuesMatch(preDecodedArgs, decodedArguments);
   return {
-    ...args,
+    canisterId: args.canisterId,
+    methodName: args.methodName,
+    sender: args.sender,
     arguments: args.arg,
-    decodedArguments,
+    decodedArguments: preDecodedArgs || decodedArguments,
     type: 'call',
+    shouldWarn,
   };
 };
 
@@ -270,4 +294,100 @@ export const validateBatchTx = (
   }
 
   return true;
+};
+
+export const needSign = (methodName, args) => {
+  if (methodName === 'requestCall' && args[2]) {
+    return false;
+  } else if (SIGNING_METHODS.includes(methodName)) {
+    return true;
+  }
+
+  return false;
+};
+
+export const getWhitelistWithInfo = async whitelist => {
+  const canisterInfo = await fetchCanistersInfo(whitelist);
+
+  return canisterInfo.concat(whitelist.map(wh => ({ canisterId: wh }))).reduce(
+    (acum, info) => ({
+      ...acum,
+      [info.canisterId]: { ...info, ...acum[info.canisterId] },
+    }),
+    {}
+  );
+};
+
+export const updateWhitelist = async (
+  whitelist,
+  currentWalletId,
+  status,
+  url
+) => {
+  const apps = await getApps(currentWalletId);
+  const date = new Date().toISOString();
+
+  const newApps = {
+    ...apps,
+    [url]: {
+      ...apps[url],
+      status: status || CONNECTION_STATUS.rejected,
+      date,
+      whitelist: { ...apps[url]?.whitelist, ...whitelist },
+      events: [
+        ...(apps[url]?.events || []),
+        {
+          status: status || CONNECTION_STATUS.rejected,
+          date,
+        },
+      ],
+    },
+  };
+
+  await setApps(currentWalletId, newApps);
+};
+
+export const resolveBatchTransactionIos = async ({
+  keyring,
+  transactions,
+  metadata,
+}) => {
+  const agent = await keyring.getAgent();
+  const host = agent._host;
+  const { batchTxId, derPublicKey } = await addBatchTransaction(
+    transactions.map(tx => ({
+      canisterId: tx.canisterId,
+      methodName: tx.methodName,
+      args: tx.arguments,
+    })),
+    metadata,
+    host
+  );
+
+  const bufferPublicKey = base64ToBuffer(derPublicKey);
+
+  const delegationChain = await keyring.delegateIdentity({
+    to: bufferPublicKey,
+    targets: transactions.map(tx => tx.canisterId),
+  });
+
+  await addDelegation(batchTxId, delegationChain);
+
+  return batchTxId;
+};
+
+export const resolveBatchTransactionAndroid = async ({ transactions }) => {
+  const savedBatchTransactions = await getBatchTransactions();
+  const newBatchTransactionId = randomBytes(16).toString('hex');
+  const updatedBatchTransactions = {
+    ...savedBatchTransactions,
+    [newBatchTransactionId]: transactions.map(tx => ({
+      canisterId: tx.canisterId,
+      methodName: tx.methodName,
+      args: tx.arguments,
+    })),
+  };
+  await setBatchTransactions(updatedBatchTransactions);
+
+  return newBatchTransactionId;
 };
