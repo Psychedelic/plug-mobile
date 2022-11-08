@@ -11,6 +11,6 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
   },
   lastBoardRow: {
-    justifyContent: null,
+    justifyContent: undefined,
   },
 });

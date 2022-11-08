@@ -1,21 +1,25 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import Text from '@/commonComponents/Text';
-import Touchable from '@/commonComponents/Touchable';
+import { Text, Touchable } from '@/components/common';
+import { Colors } from '@/constants/theme';
 
-import { Categories, categoryKeys } from '../../utils';
+import { Categories, Category } from '../../utils';
 import styles from './styles';
 
-const EmojiBar = ({ currentCategory, setCurrentCategory }) => {
+interface Props {
+  currentCategory: Category;
+  setCurrentCategory: (category: Category) => void;
+}
+
+function EmojiBar({ currentCategory, setCurrentCategory }: Props) {
   return (
     <View style={styles.emojiBar}>
-      {categoryKeys.map(c => {
-        const category = Categories[c];
+      {Categories.map((category: Category) => {
         const backgroundColor =
           category.name === currentCategory.name
-            ? 'rgba(120, 120, 128, 0.36)'
-            : '#000000';
+            ? Colors.White.Secondary
+            : Colors.Black.Pure;
 
         return (
           <Touchable
@@ -31,6 +35,6 @@ const EmojiBar = ({ currentCategory, setCurrentCategory }) => {
       })}
     </View>
   );
-};
+}
 
 export default EmojiBar;

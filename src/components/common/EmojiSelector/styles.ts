@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
 
+import { Colors } from '@/constants/theme';
+
 export default StyleSheet.create({
   emojiSelector: {
     marginTop: 24,
@@ -8,5 +10,10 @@ export default StyleSheet.create({
     marginBottom: 24,
     width: '100%',
     alignSelf: 'center',
+  },
+  emojiCategoryTytle: {
+    fontSize: 16,
+    marginBottom: 3,
+    color: Colors.White.Primary,
   },
 });

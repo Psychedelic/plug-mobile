@@ -1,12 +1,17 @@
 import React from 'react';
 
-import Text from '@/commonComponents/Text';
-import Touchable from '@/commonComponents/Touchable';
+import { Text, Touchable } from '@/components/common';
 
 import { charFromEmojiObject } from '../../utils';
 import styles from './styles';
 
-function Emoji({ onSelect, emojiObject, isLastEmoji }) {
+interface Props {
+  onSelect: (emoji: string) => void;
+  emojiObject: any;
+  isLastEmoji: boolean;
+}
+
+function Emoji({ onSelect, emojiObject, isLastEmoji }: Props) {
   const charEmoji = charFromEmojiObject(emojiObject);
   const margin = { marginRight: isLastEmoji ? 0 : 10 };
 
