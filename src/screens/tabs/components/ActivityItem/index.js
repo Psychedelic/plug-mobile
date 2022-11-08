@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
 import Text from '@/components/common/Text';
+import Icon from '@/components/icons';
 import { VISIBLE_DECIMALS } from '@/constants/business';
 import { FontStyles } from '@/constants/theme';
 import UsdFormat from '@/formatters/UsdFormat';
@@ -28,18 +29,27 @@ const ActivityItem = ({
   swapData,
   symbol,
   image,
+  logo,
   canisterId,
   details,
   canisterInfo,
+  icon,
 }) => {
   const { t } = useTranslation();
   const isSonic = !!details?.sonicData;
   const isSwap = type === 'SWAP';
   const isLiquidity = type.includes('Liquidity');
+  const tokenImage = image || logo;
+  const TokenImageComponent = tokenImage ? (
+    <ActivityIcon image={tokenImage} type={type} />
+  ) : (
+    <Icon name={`${symbol}`.toLowerCase()} />
+  );
 
+  // ojo que llega un icon.
   return (
     <View style={styles.container}>
-      <ActivityIcon image={image} type={type} />
+      <TokenImageComponent />
       <View style={styles.leftContainer}>
         <Text numberOfLines={1} style={styles.title}>
           {getTitle(type, symbol, swapData, plug)}
@@ -53,7 +63,10 @@ const ActivityItem = ({
       <View style={styles.rightContainer}>
         {details?.tokenId && !isSonic ? (
           <>
-            <Text style={FontStyles.Normal}>
+            <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={FontStyles.Normal}>
               {details?.tokenId?.length > 5
                 ? shortAddress(details?.tokenId)
                 : `#${details?.tokenId}`}
@@ -61,7 +74,7 @@ const ActivityItem = ({
             <Text
               numberOfLines={1}
               ellipsizeMode="tail"
-              style={[FontStyles.SmallGray, styles.canisterName]}>
+              style={FontStyles.SmallGray}>
               {getCanisterName(canisterInfo, canisterId)}
             </Text>
           </>

@@ -182,25 +182,27 @@ export const getTransactions = createAsyncThunk<
   { rejectValue: string }
 >('user/getTransactions', async (params, { rejectWithValue }) => {
   try {
-    const { icpPrice } = params;
+    // const { icpPrice } = params;
     const instance = KeyRing.getInstance();
-    const currentWalletId = instance?.currentWalletId;
-    const state = await instance?.getState();
-    const currentWallet = state.wallets[currentWalletId];
+    // const currentWalletId = instance?.currentWalletId;
+    // const state = await instance?.getState();
+    // const currentWallet = state.wallets[currentWalletId];
     const response = await instance?.getTransactions({});
-    let parsedTrx =
-      response?.transactions?.map(formatTransaction(icpPrice, currentWallet)) ||
-      [];
+    // let parsedTrx =
+    //   response?.transactions?.map(formatTransaction(icpPrice, currentWallet)) ||
+    //   [];
+    const parsedTrx = response?.transactions;
+    console.tron.log('parsedT: ', parsedTrx);
 
-    if (!ENABLE_NFTS) {
-      parsedTrx = parsedTrx.filter(
-        item =>
-          !(
-            item?.symbol === 'NFT' ||
-            item?.details.canisterId === JELLY_CANISTER_ID
-          )
-      );
-    }
+    // if (!ENABLE_NFTS) {
+    //   parsedTrx = parsedTrx.filter(
+    //     item =>
+    //       !(
+    //         item?.symbol === 'NFT' ||
+    //         item?.details.canisterId === JELLY_CANISTER_ID
+    //       )
+    //   );
+    // }
 
     return parsedTrx;
   } catch (e: any) {

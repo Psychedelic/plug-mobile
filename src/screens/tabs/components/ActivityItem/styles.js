@@ -19,9 +19,8 @@ export default StyleSheet.create({
     marginLeft: 'auto',
     alignItems: 'flex-end',
     justifyContent: 'space-evenly',
-  },
-  canisterName: {
-    maxWidth: '50%',
+    paddingLeft: 5,
+    maxWidth: '30%',
   },
   title: {
     maxWidth: '78%',
