@@ -11,9 +11,11 @@ import useScrollHanlder from '@/components/buttons/ScrollableButton/hooks/useScr
 import Text from '@/components/common/Text';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
+import { ScreenProps } from '@/interfaces/navigation';
 // import { useStateWithCallback } from '@/hooks/useStateWithCallback';
 import { Collection } from '@/interfaces/redux';
 import { Container, Separator } from '@/layout';
+import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getNFTs } from '@/redux/slices/user';
 import WalletHeader from '@/screens/tabs/components/WalletHeader';
@@ -24,40 +26,39 @@ import AddCollection from './modals/AddCollection';
 // import NftDetail from './screens/NftDetail';
 import styles from './styles';
 
-function NFTs() {
+function NFTs({ navigation }: ScreenProps<Routes.NFTS>) {
   const { t } = useTranslation();
   // const detailRef = useRef<Modalize>(null);
   const NFTListRef = useRef(null);
   useScrollToTop(NFTListRef);
   const dispatch = useAppDispatch();
-  // const [selectedNft, setSelectedNft] = useStateWithCallback(null);
   const { collections, collectionsError, collectionsLoading } = useAppSelector(
     state => state.user
   );
   const { handleOnScroll, scrollPosition } = useScrollHanlder();
 
-  // const nfts = useMemo(
-  //   () => (collections ? formatCollections(collections) : []),
-  //   [collections]
-  // );
-
   const totalNfts = useMemo(() => {
     return collections.reduce((acc, curr) => acc + curr.tokens.length, 0);
   }, [collections]);
 
-  // const renderNFT = ({ item }) => <NftItem item={item} onOpen={onOpen} />;
-
   const renderCollection = ({ item }: { item: Collection }) => (
-    <CollectionItem collection={item} />
+    <CollectionItem
+      url={item.icon}
+      title={item.name}
+      subtitle={t('nftTab.items', { count: item.tokens.length })}
+      onPress={() =>
+        navigation.navigate(Routes.SEND_STACK, {
+          screen: Routes.NFT_LIST,
+          params: { canisterId: item.canisterId },
+        })
+      }
+    />
   );
-
-  // const onOpen = (nft: Collection) => () => {
-  //   setSelectedNft(nft, () => detailRef.current?.open());
-  // };
 
   const onRefresh = () => {
     dispatch(getNFTs({ refresh: true }));
   };
+
   return (
     <>
       <Container>

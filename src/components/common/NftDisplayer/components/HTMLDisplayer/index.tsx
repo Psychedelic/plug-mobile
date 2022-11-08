@@ -2,6 +2,8 @@ import React, { useRef } from 'react';
 import { ActivityIndicator, StyleProp, View, ViewStyle } from 'react-native';
 import { WebView } from 'react-native-webview';
 
+import { FileTypes } from '@/interfaces/general';
+
 import sharedStyles from '../../styles';
 
 interface Props {
@@ -11,7 +13,7 @@ interface Props {
   style: StyleProp<ViewStyle>;
   isSendView?: boolean;
   isDetailView?: boolean;
-  type: string;
+  type: FileTypes;
 }
 
 const Spinner = ({
@@ -47,7 +49,7 @@ function HTMLDisplayer({
         onLoad={onLoad}
         ref={webViewRef}
         source={
-          type?.includes('html')
+          type === 'html'
             ? {
                 uri: url,
               }

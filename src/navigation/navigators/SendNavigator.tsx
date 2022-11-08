@@ -8,6 +8,7 @@ import ModalHeader from '@/components/navigation/ModalHeader';
 import { RootStackParamList } from '@/interfaces/navigation';
 import Routes from '@/navigation/Routes';
 import Send from '@/screens/flows/Send';
+import NftList from '@/screens/tabs/NFTs/screens/NftList';
 
 import { modalStackOptions } from '../utils';
 
@@ -29,6 +30,7 @@ function SendNavigator() {
         component={Send}
         options={screenOptions[Routes.SEND]}
       />
+      <Stack.Screen name={Routes.NFT_LIST} component={NftList} />
     </Stack.Navigator>
   );
 }

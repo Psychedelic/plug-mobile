@@ -17,7 +17,7 @@ function NftItem({ item, onOpen }) {
   const type = useGetType(url);
 
   const handleOnPress = () => {
-    onOpen({ ...item, type })();
+    onOpen?.({ ...item, type })?.();
   };
 
   return (
