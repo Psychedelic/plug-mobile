@@ -1,17 +1,20 @@
 import Clipboard from '@react-native-community/clipboard';
 import { t } from 'i18next';
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 
-import CopiedToast from '@/commonComponents/CopiedToast';
-import Touchable from '@/commonComponents/Touchable';
+import { CopiedToast, Text, Touchable } from '@/components/common';
 import { Colors } from '@/constants/theme';
 import Icon from '@/icons';
 
-import Text from '../Text';
 import styles from './styles';
 
-const Copy = ({ text, customStyle }) => {
+interface Props {
+  text: string;
+  customStyle?: StyleProp<ViewStyle>;
+}
+
+function Copy({ text, customStyle }: Props) {
   const [visibility, setVisibility] = useState(false);
 
   useEffect(() => {
@@ -37,6 +40,6 @@ const Copy = ({ text, customStyle }) => {
       </View>
     </Touchable>
   );
-};
+}
 
 export default Copy;

@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react';
 
 import CopiedToast from '@/commonComponents/CopiedToast';
 import GradientText from '@/commonComponents/GradientText';
-import InfoWithActions from '@/commonComponents/InfoWithActions';
 import Text from '@/commonComponents/Text';
 import { Column } from '@/layout';
 import { useAppSelector } from '@/redux/hooks';
 import shortAddress from '@/utils/shortAddress';
 
 import { getIdInfo } from '../../constants';
+import InfoWithActions from '../InfoWithActions';
 import styles from './styles';
 
 function IDDetails({ idType }) {

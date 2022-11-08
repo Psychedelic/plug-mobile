@@ -1,21 +1,37 @@
 import React from 'react';
-import { View } from 'react-native';
+import { StyleProp, View, ViewStyle } from 'react-native';
 
 import Button from '@/buttons/Button';
+import { ERROR_TYPES } from '@/constants/general';
 import { FontStyles } from '@/constants/theme';
 
 import Text from '../Text';
-import { getErrorStateData } from './constants';
+import { ErrorStateData, getErrorStateData } from './constants';
 import styles from './styles';
 
-function ErrorState({ errorType, onPress, loading, style, buttonStyle }) {
-  const { title, emoji, description, buttonTitle, buttonImage } =
-    getErrorStateData(errorType);
+interface Props {
+  errorType: ERROR_TYPES;
+  onPress?: () => void;
+  loading?: boolean;
+  style?: StyleProp<ViewStyle>;
+  buttonStyle?: StyleProp<ViewStyle>;
+}
+
+function ErrorState({
+  errorType,
+  onPress,
+  loading,
+  style,
+  buttonStyle,
+}: Props) {
+  const { title, emoji, description, buttonTitle } = getErrorStateData(
+    errorType
+  ) as ErrorStateData;
 
   return (
     <View style={[styles.container, style]}>
       <Text style={styles.emoji}>{emoji}</Text>
-      <Text style={FontStyles.Normal}>{title}</Text>
+      <Text type="normal">{title}</Text>
       <Text style={[FontStyles.SmallGray, styles.description]}>
         {description}
       </Text>
@@ -24,7 +40,6 @@ function ErrorState({ errorType, onPress, loading, style, buttonStyle }) {
           onPress={onPress}
           loading={loading}
           text={buttonTitle}
-          iconName={buttonImage}
           buttonStyle={[styles.button, buttonStyle]}
         />
       )}
