@@ -7,14 +7,14 @@ import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
-import { ScreenProps } from '@/interfaces/navigation';
+import { RootScreenProps } from '@/interfaces/navigation';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 import { useAppSelector } from '@/redux/hooks';
 
 import styles from './styles';
 
-function Welcome({ navigation }: ScreenProps<Routes.WELCOME>) {
+function Welcome({ navigation }: RootScreenProps<Routes.WELCOME>) {
   const { t } = useTranslation();
   const { isInitialized } = useAppSelector(state => state.keyring);
 

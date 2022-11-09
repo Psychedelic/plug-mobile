@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 
 import { getType } from '@/utils/fileTypes';
-
+/**
+ * Hook to get the mime-type of a file
+ * @param url URL of the file to be fetched
+ * @returns string mime-type of the file
+ */
 function useGetType(url?: string) {
   const [type, setType] = useState<string>();
   useEffect(() => {

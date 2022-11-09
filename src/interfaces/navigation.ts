@@ -1,10 +1,17 @@
-import { NavigatorScreenParams } from '@react-navigation/native';
+import {
+  CompositeScreenProps,
+  NavigatorScreenParams,
+} from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 
 import Routes from '@/navigation/Routes';
-import { FormattedCollection } from '@/utils/assets';
 
-import { Asset, ConnectedApp, WalletConnectCallRequest } from './redux';
+import {
+  Asset,
+  CollectionToken,
+  ConnectedApp,
+  WalletConnectCallRequest,
+} from './redux';
 
 export type RootStackParamList = {
   [Routes.NFTS]: undefined;
@@ -30,7 +37,7 @@ export type ModalStackParamList = {
   [Routes.SETTINGS]: undefined;
   [Routes.CONTACTS]: undefined;
   [Routes.APPROVED_CANISTERS]: { app: ConnectedApp };
-  [Routes.SEND]: { token?: Asset; nft?: FormattedCollection };
+  [Routes.SEND]: { token?: Asset; nft?: CollectionToken };
   [Routes.NFT_LIST]: { canisterId: string };
   [Routes.NFT_DETAIL]: {
     canisterId: string;
@@ -38,13 +45,14 @@ export type ModalStackParamList = {
   };
 };
 
-export type ModalScreenProps<T extends keyof ModalStackParamList> =
-  StackScreenProps<ModalStackParamList, T>;
+export type RootScreenProps<T extends keyof RootStackParamList> =
+  StackScreenProps<RootStackParamList, T>;
 
-export type ScreenProps<T extends keyof RootStackParamList> = StackScreenProps<
-  RootStackParamList,
-  T
->;
+export type ModalScreenProps<T extends keyof ModalStackParamList> =
+  CompositeScreenProps<
+    StackScreenProps<ModalStackParamList, T>,
+    RootScreenProps<keyof RootStackParamList>
+  >;
 
 declare global {
   namespace ReactNavigation {

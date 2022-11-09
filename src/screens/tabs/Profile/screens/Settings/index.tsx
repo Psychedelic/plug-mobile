@@ -7,7 +7,7 @@ import { Modalize } from 'react-native-modalize';
 import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
 import { blogUrl, discordUrl, docsUrl, twitterUrl } from '@/constants/urls';
-import { ScreenProps } from '@/interfaces/navigation';
+import { ModalScreenProps } from '@/interfaces/navigation';
 import { Separator } from '@/layout';
 import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -34,7 +34,7 @@ interface Option {
   iconName?: string;
 }
 
-function Settings({ navigation }: ScreenProps<Routes.SETTINGS>) {
+function Settings({ navigation }: ModalScreenProps<Routes.SETTINGS>) {
   const { biometricsAvailable } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
 

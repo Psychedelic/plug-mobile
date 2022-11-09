@@ -12,7 +12,6 @@ import { fetch } from 'react-native-fetch-api';
 
 import { DFINITY_HOST, IC_URL_HOST } from '@/constants/urls';
 import { DABToken } from '@/interfaces/dab';
-import { CollectionToken } from '@/interfaces/redux';
 import { recursiveParseBigint, recursiveParsePrincipal } from '@/utils/objects';
 
 export const getDabTokens = async (): Promise<DABToken[]> => {
@@ -43,7 +42,11 @@ export const getNFTDetails = async ({
   index,
   canister,
   standard,
-}: CollectionToken): Promise<NFTDetails<string | bigint>> => {
+}: {
+  index: number | string;
+  canister: string;
+  standard: string;
+}): Promise<NFTDetails<string | bigint>> => {
   const agent = new HttpAgent({ fetch, host: IC_URL_HOST });
   const NFTActor = getNFTActor({ canisterId: canister, standard, agent });
   const details = await NFTActor.details(index);

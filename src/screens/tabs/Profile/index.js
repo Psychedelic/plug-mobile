@@ -107,7 +107,7 @@ const Profile = () => {
                 <EmptyState
                   style={styles.emptyState}
                   title={t('activity.emptyTitle')}
-                  description={t('activity.emptySubtitle')}
+                  text={t('activity.emptySubtitle')}
                 />
               }
             />

@@ -11,7 +11,7 @@ import Text from '@/components/common/Text';
 import { isValidPassword } from '@/constants/general';
 import { Colors } from '@/constants/theme';
 import useKeychain from '@/hooks/useKeychain';
-import { ScreenProps } from '@/interfaces/navigation';
+import { RootScreenProps } from '@/interfaces/navigation';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -20,7 +20,7 @@ import { login } from '@/redux/slices/keyring';
 
 import styles from './styles';
 
-function Login({ route, navigation }: ScreenProps<Routes.LOGIN>) {
+function Login({ route, navigation }: RootScreenProps<Routes.LOGIN>) {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const isManualLock = route?.params?.manualLock || false;

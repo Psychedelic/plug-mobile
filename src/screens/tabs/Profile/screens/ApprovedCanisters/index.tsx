@@ -4,14 +4,16 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import { CommonItem } from '@/components/common';
 import { icScanUrl } from '@/constants/urls';
-import { ScreenProps } from '@/interfaces/navigation';
+import { ModalScreenProps } from '@/interfaces/navigation';
 import { WCWhiteListItem } from '@/interfaces/walletConnect';
 import Routes from '@/navigation/Routes';
 import { formatLongDate } from '@/utils/dates';
 
 import styles from './styles';
 
-function ApprovedCanisters({ route }: ScreenProps<Routes.APPROVED_CANISTERS>) {
+function ApprovedCanisters({
+  route,
+}: ModalScreenProps<Routes.APPROVED_CANISTERS>) {
   const { name, canisterList, imageUri, lastConnection } =
     route.params.app || {};
 

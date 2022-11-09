@@ -27,8 +27,8 @@ function NftDetail({ route, navigation }: ModalScreenProps<Routes.NFT_DETAIL>) {
   const { canisterId, index } = route.params;
   const { collections } = useAppSelector(state => state.user);
   const collection = collections.find(c => c.canisterId === canisterId);
-  const selectedNFT = collection?.tokens?.find(token => token.index === index);
-  const { url, canister, standard, name } = selectedNFT || {};
+  const selectedNFT = collection?.tokens?.find(token => token.index === index)!;
+  const { url, canister, standard, name } = selectedNFT;
   const isICNS = canister === ICNS_CANISTER_ID;
   const nftName = `${collection?.name || ''} #${index}`;
   const type = useGetType(url);
@@ -75,7 +75,7 @@ function NftDetail({ route, navigation }: ModalScreenProps<Routes.NFT_DETAIL>) {
       {
         id: 1,
         label: t('nftDetail.moreOptions.view'),
-        onPress: () => Linking.openURL(selectedNFT?.url),
+        onPress: () => Linking.openURL(selectedNFT?.url!),
         icon: Platform.select({ android: ViewIcon }),
       },
       {
@@ -116,12 +116,14 @@ function NftDetail({ route, navigation }: ModalScreenProps<Routes.NFT_DETAIL>) {
             />
           </View>
         </View>
-        <Section
-          title={t('nftDetail.collectionTitle')}
-          style={styles.collectionSection}>
-          <Badge value={collection?.name} icon={collection?.icon} />
-          <Badge value={isICNS ? name : `#${index}`} />
-        </Section>
+        {collection && name && (
+          <Section
+            title={t('nftDetail.collectionTitle')}
+            style={styles.collectionSection}>
+            <Badge value={collection?.name} icon={collection?.icon} />
+            <Badge value={isICNS ? name : `#${index}`} />
+          </Section>
+        )}
         {!!collection?.description && (
           <Section title={t('nftDetail.descriptionTitle')}>
             <Text style={FontStyles.NormalGray}>{collection.description}</Text>
@@ -129,7 +131,7 @@ function NftDetail({ route, navigation }: ModalScreenProps<Routes.NFT_DETAIL>) {
         )}
         {!!nftDetails?.metadata?.properties?.length && (
           <Section title={t('nftDetail.attributesTitle')}>
-            {nftDetails.metadata.properties.map(prop => (
+            {nftDetails.metadata.properties.map((prop: any) => (
               <Badge key={prop.name} name={prop.name} value={prop.value} />
             ))}
           </Section>

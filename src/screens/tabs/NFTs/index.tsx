@@ -11,7 +11,7 @@ import Text from '@/components/common/Text';
 import { ICNS_CANISTER_ID } from '@/constants/canister';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
-import { ScreenProps } from '@/interfaces/navigation';
+import { RootScreenProps } from '@/interfaces/navigation';
 import { Collection } from '@/interfaces/redux';
 import { Container, Separator } from '@/layout';
 import Routes from '@/navigation/Routes';
@@ -23,7 +23,7 @@ import CollectionItem, { ITEM_HEIGHT } from './components/CollectionItem';
 import AddCollection from './modals/AddCollection';
 import styles from './styles';
 
-function NFTs({ navigation }: ScreenProps<Routes.NFTS>) {
+function NFTs({ navigation }: RootScreenProps<Routes.NFTS>) {
   const { t } = useTranslation();
   const NFTListRef = useRef(null);
   useScrollToTop(NFTListRef);
@@ -109,7 +109,7 @@ function NFTs({ navigation }: ScreenProps<Routes.NFTS>) {
               ListEmptyComponent={
                 <EmptyState
                   title={t('nftTab.emptyTitle')}
-                  description={t('nftTab.emptySubtitle')}
+                  text={t('nftTab.emptySubtitle')}
                   style={styles.emptyState}
                 />
               }
