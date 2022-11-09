@@ -2,14 +2,15 @@ import React from 'react';
 import { StyleProp, View, ViewStyle } from 'react-native';
 
 import Button from '@/buttons/Button';
+import { ERROR_TYPES } from '@/constants/general';
 import { FontStyles } from '@/constants/theme';
 
 import Text from '../Text';
-import { getErrorStateData } from './constants';
+import { ErrorStateData, getErrorStateData } from './constants';
 import styles from './styles';
 
 interface Props {
-  errorType: string;
+  errorType: ERROR_TYPES;
   onPress?: () => void;
   loading?: boolean;
   style?: StyleProp<ViewStyle>;
@@ -23,13 +24,14 @@ function ErrorState({
   style,
   buttonStyle,
 }: Props) {
-  const { title, emoji, description, buttonTitle } =
-    getErrorStateData(errorType) || {};
+  const { title, emoji, description, buttonTitle } = getErrorStateData(
+    errorType
+  ) as ErrorStateData;
 
   return (
     <View style={[styles.container, style]}>
       <Text style={styles.emoji}>{emoji}</Text>
-      <Text style={FontStyles.Normal}>{title}</Text>
+      <Text type="normal">{title}</Text>
       <Text style={[FontStyles.SmallGray, styles.description]}>
         {description}
       </Text>
@@ -37,7 +39,7 @@ function ErrorState({
         <Button
           onPress={onPress}
           loading={loading}
-          text={buttonTitle || ''}
+          text={buttonTitle}
           buttonStyle={[styles.button, buttonStyle]}
         />
       )}

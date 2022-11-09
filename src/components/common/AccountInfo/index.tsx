@@ -2,13 +2,11 @@ import Clipboard from '@react-native-community/clipboard';
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
-import CopiedToast from '@/commonComponents/CopiedToast';
-import Touchable from '@/commonComponents/Touchable';
+import { CopiedToast, Text, Touchable } from '@/components/common';
 import { FontStyles } from '@/constants/theme';
 import { useAppSelector } from '@/redux/hooks';
 import shortAddress from '@/utils/shortAddress';
 
-import Text from '../Text';
 import styles from './styles';
 
 const AccountInfo = () => {
@@ -24,7 +22,7 @@ const AccountInfo = () => {
   }, []);
 
   const copyToClipboard = async () => {
-    Clipboard.setString(principal);
+    Clipboard.setString(principal!);
     setVisibility(true);
   };
 
@@ -32,7 +30,7 @@ const AccountInfo = () => {
     <>
       <Touchable onPress={copyToClipboard}>
         <View style={styles.container}>
-          <Text style={FontStyles.Normal}>{reverseResolvedName || name}</Text>
+          <Text type="normal">{reverseResolvedName || name}</Text>
           <Text style={FontStyles.SmallGray}>{shortAddress(principal)}</Text>
         </View>
       </Touchable>

@@ -4,11 +4,10 @@ import { useTranslation } from 'react-i18next';
 import { Image, Pressable, View } from 'react-native';
 
 import KeyImg from '@/assets/icons/key.png';
-import ListItem from '@/commonComponents/ListItem';
-import Touchable from '@/commonComponents/Touchable';
+import { Text, Touchable } from '@/components/common';
 import { TestIds } from '@/constants/testIds';
 
-import Text from '../Text';
+import ListItem from './components/ListItem';
 import styles from './styles';
 
 interface Props {

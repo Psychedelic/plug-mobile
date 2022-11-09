@@ -28,7 +28,9 @@ function WCTimeoutError({
       index: 1,
       routes: [{ name: Routes.SWIPE_LAYOUT }],
     });
-    gotoDapp();
+    if (dappUrl) {
+      gotoDapp();
+    }
   };
 
   return (

@@ -1,21 +1,28 @@
 import { t } from 'i18next';
 import React, { useEffect, useRef } from 'react';
-import { Animated, View } from 'react-native';
+import { Animated, StyleProp, View, ViewStyle } from 'react-native';
 
+import { Text } from '@/components/common';
 import { FontStyles } from '@/constants/theme';
 
-import Text from '../Text';
 import styles from './styles';
 
 const TOAST_DURATION = 2500;
 const TOAST_ANIMATION_SPEED = 200;
+
+interface Props {
+  visibility: boolean;
+  setVisibility: (value: boolean) => void;
+  customStyle?: StyleProp<ViewStyle>;
+  customPointerStyle?: StyleProp<ViewStyle>;
+}
 
 function CopiedToast({
   visibility,
   setVisibility,
   customStyle,
   customPointerStyle,
-}) {
+}: Props) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
