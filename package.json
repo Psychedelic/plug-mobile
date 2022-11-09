@@ -46,7 +46,7 @@
     "@react-navigation/stack": "^6.2.0",
     "@reduxjs/toolkit": "^1.8.6",
     "@sentry/react-native": "^4.5.0",
-    "@shopify/flash-list": "^1.2.2",
+    "@shopify/flash-list": "^1.4.0",
     "@walletconnect/client": "^1.7.5",
     "assert-browserify": "^2.0.0",
     "axios": "0.24.0",
