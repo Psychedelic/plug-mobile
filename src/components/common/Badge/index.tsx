@@ -1,10 +1,17 @@
 import React from 'react';
 import { Image, View } from 'react-native';
 
-import Text from '../Text';
+import { Text } from '@/components/common';
+
 import styles from './styles';
 
-const Badge = ({ name, value, icon }) => (
+interface Props {
+  name?: string;
+  value: string;
+  icon?: string;
+}
+
+const Badge = ({ name, value, icon }: Props) => (
   <View style={styles.root}>
     {name && <Text style={styles.name}>{name}</Text>}
     <View style={styles.valueContainer}>

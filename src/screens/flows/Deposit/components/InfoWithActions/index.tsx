@@ -2,14 +2,24 @@ import React from 'react';
 import { View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-import Touchable from '@/commonComponents/Touchable';
+import { Text, Touchable } from '@/components/common';
 import Icon from '@/icons';
 import animationScales from '@/utils/animationScales';
 
-import Text from '../Text';
 import styles from './styles';
 
-const InfoWithActions = ({ text, colors, actions }) => {
+interface Action {
+  icon: string;
+  onPress: () => void;
+}
+
+interface Props {
+  text: string;
+  colors: string[];
+  actions: Action[];
+}
+
+function InfoWithActions({ text, colors, actions }: Props) {
   return (
     <LinearGradient
       colors={colors}
@@ -18,7 +28,7 @@ const InfoWithActions = ({ text, colors, actions }) => {
       end={{ x: 1, y: 0 }}>
       <View style={styles.container}>
         <Text style={styles.text}>{text}</Text>
-        <View style={styles.actionsContainer}>
+        <View>
           {React.Children.toArray(
             actions.map(action => (
               <View style={styles.action}>
@@ -34,6 +44,6 @@ const InfoWithActions = ({ text, colors, actions }) => {
       </View>
     </LinearGradient>
   );
-};
+}
 
 export default InfoWithActions;

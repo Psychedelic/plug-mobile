@@ -1,10 +1,16 @@
 import React from 'react';
 import { View } from 'react-native';
 
-import Text from '../Text';
+import { Text } from '@/components/common';
+
 import styles from './styles';
 
-function ListItem({ number, text }) {
+interface Props {
+  number: number;
+  text: string;
+}
+
+function ListItem({ number, text }: Props) {
   return (
     <View style={styles.container}>
       <Text style={styles.number}>{number}</Text>
