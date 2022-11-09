@@ -39,7 +39,7 @@ function NFTs({ navigation }: ScreenProps<Routes.NFTS>) {
 
   const handleCollectionPress = (collection: Collection) => {
     if (collection.tokens.length === 1) {
-      navigation.navigate(Routes.SEND_STACK, {
+      navigation.navigate(Routes.MODAL_STACK, {
         screen: Routes.NFT_DETAIL,
         params: {
           index: collection.tokens[0].index,
@@ -47,7 +47,7 @@ function NFTs({ navigation }: ScreenProps<Routes.NFTS>) {
         },
       });
     } else {
-      navigation.navigate(Routes.SEND_STACK, {
+      navigation.navigate(Routes.MODAL_STACK, {
         screen: Routes.NFT_LIST,
         params: { canisterId: collection.canisterId },
       });

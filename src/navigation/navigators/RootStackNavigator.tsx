@@ -15,8 +15,7 @@ import WCTimeoutError from '@/screens/flows/WalletConnect/screens/TimeoutError';
 
 import Routes from '../Routes';
 import { modalGroupOptions, rootStackOptions } from '../utils';
-import SendNavigator from './SendNavigator';
-import SettingsNavigator from './SettingsNavigator';
+import ModalStackNavigator from './ModalStackNavigator';
 import SwipeNavigator from './SwipeNavigator';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -76,10 +75,9 @@ function RootStackNavigator() {
       </Stack.Group>
       <Stack.Group screenOptions={modalGroupOptions}>
         <Stack.Screen
-          name={Routes.SETTINGS_STACK}
-          component={SettingsNavigator}
+          name={Routes.MODAL_STACK}
+          component={ModalStackNavigator}
         />
-        <Stack.Screen name={Routes.SEND_STACK} component={SendNavigator} />
       </Stack.Group>
     </Stack.Navigator>
   );

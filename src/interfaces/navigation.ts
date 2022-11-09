@@ -1,3 +1,4 @@
+import { NavigatorScreenParams } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 
 import Routes from '@/navigation/Routes';
@@ -22,11 +23,13 @@ export type RootStackParamList = {
   [Routes.WALLET_CONNECT_INITIAL_CONNECTION]: WalletConnectCallRequest;
   [Routes.WALLET_CONNECT_FLOWS]: undefined;
   [Routes.WALLET_CONNECT_ERROR]: { dappName: string; dappUrl: string };
-  [Routes.SETTINGS_STACK]: undefined;
+  [Routes.MODAL_STACK]: NavigatorScreenParams<ModalStackParamList>;
+};
+
+export type ModalStackParamList = {
   [Routes.SETTINGS]: undefined;
   [Routes.CONTACTS]: undefined;
   [Routes.APPROVED_CANISTERS]: { app: ConnectedApp };
-  [Routes.SEND_STACK]: undefined;
   [Routes.SEND]: { token?: Asset; nft?: FormattedCollection };
   [Routes.NFT_LIST]: { canisterId: string };
   [Routes.NFT_DETAIL]: {
@@ -34,6 +37,9 @@ export type RootStackParamList = {
     index: string | number;
   };
 };
+
+export type ModalScreenProps<T extends keyof ModalStackParamList> =
+  StackScreenProps<ModalStackParamList, T>;
 
 export type ScreenProps<T extends keyof RootStackParamList> = StackScreenProps<
   RootStackParamList,
