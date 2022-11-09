@@ -1,23 +1,18 @@
-import { useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Linking, Platform, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
-import {
-  ActionSheet,
-  Badge,
-  Header,
-  Modal,
-  NftDisplayer,
-  Text,
-} from '@/components/common';
+import { ActionSheet, Badge, NftDisplayer, Text } from '@/components/common';
 import { ICNS_CANISTER_ID } from '@/constants/canister';
 import { FontStyles } from '@/constants/theme';
+import useGetType from '@/hooks/useGetType';
 import DownloadIcon from '@/icons/material/Download.svg';
 import ViewIcon from '@/icons/material/View.svg';
 import Routes from '@/navigation/Routes';
+import { useAppSelector } from '@/redux/hooks';
 import { getNFTDetails } from '@/services/DAB';
 import { downloadFile } from '@/utils/filesystem';
 import { getAbsoluteType } from '@/utils/fileTypes';
@@ -26,21 +21,15 @@ import { deleteWhiteSpaces } from '@/utils/strings';
 import Section from './components/Section';
 import styles from './styles';
 
-function NftDetail({ modalRef, handleClose, selectedNFT, ...props }) {
-  const {
-    url,
-    canister,
-    index,
-    standard,
-    name,
-    icon,
-    collectionDescription,
-    type,
-    collectionName,
-  } = selectedNFT || {};
+function NftDetail({ route, navigation }) {
+  const { canisterId, index } = route.params;
+  const { collections } = useAppSelector(state => state.user);
+  const collection = collections.find(c => c.canisterId === canisterId);
+  const selectedNFT = collection.tokens.find(token => token.index === index);
+  const { url, canister, standard, name, icon } = selectedNFT || {};
   const isICNS = canister === ICNS_CANISTER_ID;
-  const nftName = `${collectionName} #${index}`;
-  const navigation = useNavigation();
+  const nftName = `${collection.name} #${index}`;
+  const type = useGetType(url);
 
   const actionSheetRef = useRef(null);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -56,23 +45,17 @@ function NftDetail({ modalRef, handleClose, selectedNFT, ...props }) {
   }, [selectedNFT]);
 
   const handleSend = () => {
-    modalRef.current?.close();
-    navigation.navigate(Routes.SEND_STACK, {
-      screen: Routes.SEND,
-      params: { nft: selectedNFT },
-    });
+    navigation.navigate(Routes.SEND, { nft: selectedNFT });
   };
 
   const downloadNFT = () => {
     // TODO: Handle download error and permissons error
     setIsDownloading(true);
-    downloadFile({
-      filename: `NFT_${deleteWhiteSpaces(nftName)}${getAbsoluteType(
-        selectedNFT?.type
-      )}`,
-      url: selectedNFT?.url,
-      onFetched: () => setIsDownloading(false),
-    });
+    // downloadFile({
+    //   filename: `NFT_${deleteWhiteSpaces(nftName)}${getAbsoluteType(type)}`,
+    //   url: selectedNFT?.url,
+    //   onFetched: () => setIsDownloading(false),
+    // });
   };
 
   const moreOptions = useMemo(
@@ -98,64 +81,50 @@ function NftDetail({ modalRef, handleClose, selectedNFT, ...props }) {
 
   return (
     <>
-      <Modal
-        scrollViewProps={{ showsVerticalScrollIndicator: false }}
-        modalRef={modalRef}
-        onClose={handleClose}
-        {...props}>
-        <Header
-          center={
-            <Text type="subtitle2">
-              {isICNS ? name : index ? `#${index}` : ''}
-            </Text>
-          }
-        />
-        <View style={styles.content}>
-          <View style={styles.nftDisplayerContainer}>
-            <NftDisplayer
-              ICNSName={isICNS ? name : undefined}
-              url={url}
-              type={type}
-              style={styles.video}
-              isDetailView
+      <ScrollView style={styles.content}>
+        <View style={styles.nftDisplayerContainer}>
+          <NftDisplayer
+            ICNSName={isICNS ? name : undefined}
+            url={url}
+            type={type}
+            style={styles.video}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <View style={styles.buttonWraperLeft}>
+            <Button
+              text={t('common.more')}
+              onPress={actionSheetRef.current?.open}
+              loading={isDownloading}
             />
           </View>
-          <View style={styles.buttonContainer}>
-            <View style={styles.buttonWraperLeft}>
-              <Button
-                text={t('common.more')}
-                onPress={actionSheetRef.current?.open}
-                loading={isDownloading}
-              />
-            </View>
-            <View style={styles.buttonWraperRight}>
-              <RainbowButton
-                text={t('common.send')}
-                onPress={handleSend}
-                disabled={isDownloading}
-              />
-            </View>
+          <View style={styles.buttonWraperRight}>
+            <RainbowButton
+              text={t('common.send')}
+              onPress={handleSend}
+              disabled={isDownloading}
+            />
           </View>
-          <Section
-            title={t('nftDetail.collectionTitle')}
-            style={styles.collectionSection}>
-            <Badge value={collectionName} icon={icon} />
-            <Badge value={isICNS ? name : `#${index}`} />
-          </Section>
-          {!!collectionDescription && (
-            <Section title={t('nftDetail.descriptionTitle')}>
-              <Text style={FontStyles.NormalGray}>{collectionDescription}</Text>
-            </Section>
-          )}
-          {!!nftDetails?.metadata?.properties?.length && (
-            <Section title={t('nftDetail.attributesTitle')}>
-              {nftDetails.metadata.properties.map(prop => (
-                <Badge key={prop.name} name={prop.name} value={prop.value} />
-              ))}
-            </Section>
-          )}
         </View>
-      </Modal>
+        <Section
+          title={t('nftDetail.collectionTitle')}
+          style={styles.collectionSection}>
+          <Badge value={collection.name} icon={icon} />
+          <Badge value={isICNS ? name : `#${index}`} />
+        </Section>
+        {!!collection.description && (
+          <Section title={t('nftDetail.descriptionTitle')}>
+            <Text style={FontStyles.NormalGray}>{collection.description}</Text>
+          </Section>
+        )}
+        {!!nftDetails?.metadata?.properties?.length && (
+          <Section title={t('nftDetail.attributesTitle')}>
+            {nftDetails.metadata.properties.map(prop => (
+              <Badge key={prop.name} name={prop.name} value={prop.value} />
+            ))}
+          </Section>
+        )}
+      </ScrollView>
       <ActionSheet
         modalRef={actionSheetRef}
         options={moreOptions.options}

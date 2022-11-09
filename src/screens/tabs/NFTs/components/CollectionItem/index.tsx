@@ -1,28 +1,39 @@
 import React from 'react';
+import { StyleProp, TextStyle, ViewStyle } from 'react-native';
 
-import { Text, Touchable } from '@/components/common';
-import ImageDisplayer from '@/components/common/NftDisplayer/components/ImageDisplayer';
+import { NftDisplayer, Text, Touchable } from '@/components/common';
 import useGetType from '@/hooks/useGetType';
 
-import styles, { TOTAL_CONTAINER_HEIGHT } from './styles';
+import styles, { CONTAINER_HEIGHT } from './styles';
 
-export const ITEM_HEIGHT = TOTAL_CONTAINER_HEIGHT;
+export const ITEM_HEIGHT = CONTAINER_HEIGHT;
 
 interface Props {
   url: string;
   title: string;
   subtitle?: string;
   onPress: () => void;
+  titleStyle?: StyleProp<TextStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
+  imageStyle?: StyleProp<ViewStyle>;
 }
 
-function CollectionItem({ onPress, url, title, subtitle }: Props) {
+function CollectionItem({
+  onPress,
+  url,
+  title,
+  titleStyle,
+  subtitle,
+  containerStyle,
+  imageStyle,
+}: Props) {
   const type = useGetType(url);
   return (
-    <Touchable style={styles.container} onPress={onPress}>
-      <ImageDisplayer type={type} url={url} style={styles.logo} />
+    <Touchable style={containerStyle} onPress={onPress}>
+      <NftDisplayer type={type} url={url} style={[styles.image, imageStyle]} />
       <Text
         type="caption"
-        style={styles.title}
+        style={[styles.title, titleStyle]}
         numberOfLines={1}
         ellipsizeMode="tail">
         {title}

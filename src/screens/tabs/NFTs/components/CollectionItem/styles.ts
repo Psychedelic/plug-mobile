@@ -6,16 +6,10 @@ import { Colors } from '@/constants/theme';
 const LOGO_SIZE = WINDOW_WIDTH / 2 - 30;
 
 // This is estimated if item has title and subtitle
-const CONTAINER_HEIGHT = LOGO_SIZE + 50;
-const CONTAINER_MARGIN = 10;
-
-export const TOTAL_CONTAINER_HEIGHT = CONTAINER_HEIGHT + CONTAINER_MARGIN * 2;
+export const CONTAINER_HEIGHT = LOGO_SIZE + 50;
 
 export default StyleSheet.create({
-  container: {
-    margin: CONTAINER_MARGIN,
-  },
-  logo: {
+  image: {
     width: LOGO_SIZE,
     height: LOGO_SIZE,
     backgroundColor: Colors.Black.Pure,

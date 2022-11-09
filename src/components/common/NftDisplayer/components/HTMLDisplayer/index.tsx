@@ -11,36 +11,21 @@ interface Props {
   onLoad?: () => void;
   url: string;
   style: StyleProp<ViewStyle>;
-  isSendView?: boolean;
-  isDetailView?: boolean;
   type: FileTypes;
 }
 
-const Spinner = ({
-  isDetailView,
-  isSendView,
-}: {
-  isDetailView?: boolean;
-  isSendView?: boolean;
-}) => (
+const Spinner = ({ style }: { style?: StyleProp<ViewStyle> }) => (
   <View
     style={[
       sharedStyles.webViewLoader,
-      (isDetailView || isSendView) && sharedStyles.webViewLoaderDetail,
+      sharedStyles.webViewLoaderDetail,
+      style,
     ]}>
     <ActivityIndicator size="small" color="white" />
   </View>
 );
 
-function HTMLDisplayer({
-  loading,
-  onLoad,
-  url,
-  style,
-  isSendView,
-  type,
-  isDetailView,
-}: Props) {
+function HTMLDisplayer({ loading, onLoad, url, style, type }: Props) {
   const webViewRef = useRef(null);
 
   return (
@@ -64,10 +49,8 @@ function HTMLDisplayer({
         }
         scrollEnabled={false}
         startInLoadingState={true}
-        renderLoading={() => (
-          <Spinner isDetailView={isDetailView} isSendView={isSendView} />
-        )}
-        style={isSendView ? sharedStyles.webViewSend : sharedStyles.webView}
+        renderLoading={() => <Spinner style={style} />}
+        style={[sharedStyles.webView, style]}
       />
       {loading && (
         <ActivityIndicator

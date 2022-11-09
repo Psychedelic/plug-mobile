@@ -12,15 +12,13 @@ import HTMLDisplayer from '../HTMLDisplayer';
 interface Props {
   style: StyleProp<ViewStyle>;
   url: string;
-  isSendView?: boolean;
-  isDetailView?: boolean;
   type?: FileTypes;
 }
 
-function ImageDisplayer({ style, type, url, isSendView, isDetailView }: Props) {
-  const innerStyle = isSendView
-    ? { width: 54, height: 54 }
-    : { width: '100%', height: '100%' };
+function ImageDisplayer({ style, type, url }: Props) {
+  // const innerStyle = isSendView
+  //   ? { width: 54, height: 54 }
+  //   : { width: '100%', height: '100%' };
 
   return (
     <MaskedView
@@ -30,22 +28,26 @@ function ImageDisplayer({ style, type, url, isSendView, isDetailView }: Props) {
           style={[
             StyleSheet.absoluteFill,
             {
-              borderRadius: isSendView ? 10 : 20,
+              // borderRadius: isSendView ? 10 : 20,
+              borderRadius: 20,
               backgroundColor: Colors.Black.Pure,
             },
+            style,
           ]}
         />
       }>
       {type === 'svg' || type === 'html' ? (
         <HTMLDisplayer
           url={url}
-          style={innerStyle}
-          isSendView
+          style={{ width: '100%', height: '100%' }}
           type={type}
-          isDetailView={isDetailView}
         />
       ) : (
-        <Image resizeMode="contain" style={innerStyle} url={url} />
+        <Image
+          resizeMode="contain"
+          style={{ width: '100%', height: '100%' }}
+          url={url}
+        />
       )}
     </MaskedView>
   );

@@ -47,4 +47,7 @@ export default StyleSheet.create({
   emptyState: {
     marginTop: 60,
   },
+  itemContainer: {
+    margin: 10,
+  },
 });

@@ -26,6 +26,7 @@ enum Routes {
   SEND = 'Send',
 
   NFT_LIST = 'NFTList',
+  NFT_DETAIL = 'NFTDetail',
 }
 
 export const NATIVE_ROUTES = Object.values(Routes);

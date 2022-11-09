@@ -29,6 +29,10 @@ export type RootStackParamList = {
   [Routes.SEND_STACK]: undefined;
   [Routes.SEND]: { token?: Asset; nft?: FormattedCollection };
   [Routes.NFT_LIST]: { canisterId: string };
+  [Routes.NFT_DETAIL]: {
+    canisterId: string;
+    index: string | number;
+  };
 };
 
 export type ScreenProps<T extends keyof RootStackParamList> = StackScreenProps<

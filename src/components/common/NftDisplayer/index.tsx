@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ActivityIndicator, StyleProp, View, ViewStyle } from 'react-native';
+import React from 'react';
+import { ActivityIndicator, StyleProp, ViewStyle } from 'react-native';
 
 import { FileTypes } from '@/interfaces/general';
 
@@ -13,43 +13,17 @@ interface Props {
   style?: StyleProp<ViewStyle>;
   type?: FileTypes;
   isDetailView?: boolean;
-  isSend?: boolean;
   ICNSName?: string;
 }
 
-const NftDisplayer = ({
-  url,
-  style,
-  type,
-  isDetailView,
-  isSend,
-  ICNSName,
-}: Props) => {
-  const [loading, setLoading] = useState(true);
-
-  const hideSpinner = () => {
-    setLoading(false);
-  };
-
+const NftDisplayer = ({ url, style, type, isDetailView, ICNSName }: Props) => {
+  console.log(type, url);
   return type ? (
-    <View>
+    <>
       {type?.includes('video') ? (
-        <VideoDisplayer
-          url={url}
-          loading={loading}
-          isSendView={isSend}
-          style={styles.image}
-          onLoad={hideSpinner}
-          isDetailView={isDetailView}
-        />
+        <VideoDisplayer url={url} style={[styles.image, style]} />
       ) : (
-        <ImageDisplayer
-          url={url}
-          type={type}
-          style={style}
-          isSendView={isSend}
-          isDetailView={isDetailView}
-        />
+        <ImageDisplayer url={url} type={type} style={style} />
       )}
       {ICNSName && (
         <ICNSDisplayer
@@ -57,12 +31,9 @@ const NftDisplayer = ({
           size={isDetailView ? 'big' : 'small'}
         />
       )}
-    </View>
+    </>
   ) : (
-    <ActivityIndicator
-      color="white"
-      style={isSend ? styles.sendActivityIndicator : styles.activityIndicator}
-    />
+    <ActivityIndicator color="white" style={style} />
   );
 };
 

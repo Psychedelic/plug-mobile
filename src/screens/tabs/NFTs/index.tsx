@@ -4,15 +4,14 @@ import React, { useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshControl, View } from 'react-native';
 
-// import { Modalize } from 'react-native-modalize';
 import EmptyState from '@/commonComponents/EmptyState';
 import ErrorState from '@/commonComponents/ErrorState';
 import useScrollHanlder from '@/components/buttons/ScrollableButton/hooks/useScrollHandler';
 import Text from '@/components/common/Text';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
+import { FileTypes } from '@/interfaces/general';
 import { ScreenProps } from '@/interfaces/navigation';
-// import { useStateWithCallback } from '@/hooks/useStateWithCallback';
 import { Collection } from '@/interfaces/redux';
 import { Container, Separator } from '@/layout';
 import Routes from '@/navigation/Routes';
@@ -20,15 +19,12 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getNFTs } from '@/redux/slices/user';
 import WalletHeader from '@/screens/tabs/components/WalletHeader';
 
-// import { formatCollections } from '@/utils/assets';
 import CollectionItem, { ITEM_HEIGHT } from './components/CollectionItem';
 import AddCollection from './modals/AddCollection';
-// import NftDetail from './screens/NftDetail';
 import styles from './styles';
 
 function NFTs({ navigation }: ScreenProps<Routes.NFTS>) {
   const { t } = useTranslation();
-  // const detailRef = useRef<Modalize>(null);
   const NFTListRef = useRef(null);
   useScrollToTop(NFTListRef);
   const dispatch = useAppDispatch();
@@ -41,17 +37,30 @@ function NFTs({ navigation }: ScreenProps<Routes.NFTS>) {
     return collections.reduce((acc, curr) => acc + curr.tokens.length, 0);
   }, [collections]);
 
+  const handleCollectionPress = (collection: Collection) => {
+    if (collection.tokens.length === 1) {
+      navigation.navigate(Routes.SEND_STACK, {
+        screen: Routes.NFT_DETAIL,
+        params: {
+          index: collection.tokens[0].index,
+          canisterId: collection.canisterId,
+        },
+      });
+    } else {
+      navigation.navigate(Routes.SEND_STACK, {
+        screen: Routes.NFT_LIST,
+        params: { canisterId: collection.canisterId },
+      });
+    }
+  };
+
   const renderCollection = ({ item }: { item: Collection }) => (
     <CollectionItem
       url={item.icon}
       title={item.name}
       subtitle={t('nftTab.items', { count: item.tokens.length })}
-      onPress={() =>
-        navigation.navigate(Routes.SEND_STACK, {
-          screen: Routes.NFT_LIST,
-          params: { canisterId: item.canisterId },
-        })
-      }
+      containerStyle={styles.itemContainer}
+      onPress={() => handleCollectionPress(item)}
     />
   );
 
@@ -107,11 +116,6 @@ function NFTs({ navigation }: ScreenProps<Routes.NFTS>) {
           <ErrorState onPress={onRefresh} errorType={ERROR_TYPES.FETCH_ERROR} />
         )}
       </Container>
-      {/* <NftDetail
-        modalRef={detailRef}
-        selectedNFT={selectedNft}
-        handleClose={() => setSelectedNft(null)}
-      /> */}
     </>
   );
 }
