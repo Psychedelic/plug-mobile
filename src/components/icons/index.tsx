@@ -39,7 +39,6 @@ export const IconTypes = (type: string) =>
     gear: GearIcon,
     plus: PlusIcon,
     dfinity: ICPIcon,
-    icp: ICPIcon,
     profile: TabProfileIcon,
     tokens: TabTokensIcon,
     nfts: TabNftsIcon,

@@ -17,8 +17,6 @@ import styles, { HEIGHT } from './styles';
 
 export const ITEM_HEIGHT = HEIGHT;
 
-interface Props extends Transaction {}
-
 const ActivityItem = ({
   type,
   to,
@@ -32,7 +30,7 @@ const ActivityItem = ({
   canisterId,
   details,
   canisterInfo,
-}: Props) => {
+}: Transaction) => {
   const isSonic = !!details?.sonicData;
   const isLiquidity = type.includes('Liquidity');
 
