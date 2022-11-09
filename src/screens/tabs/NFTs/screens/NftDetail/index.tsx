@@ -1,7 +1,9 @@
+import { NFTDetails } from '@psychedelic/dab-js';
 import { t } from 'i18next';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Linking, Platform, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Modalize } from 'react-native-modalize';
 
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
@@ -11,6 +13,7 @@ import { FontStyles } from '@/constants/theme';
 import useGetType from '@/hooks/useGetType';
 import DownloadIcon from '@/icons/material/Download.svg';
 import ViewIcon from '@/icons/material/View.svg';
+import { ModalScreenProps } from '@/interfaces/navigation';
 import Routes from '@/navigation/Routes';
 import { useAppSelector } from '@/redux/hooks';
 import { getNFTDetails } from '@/services/DAB';
@@ -20,19 +23,19 @@ import { deleteWhiteSpaces } from '@/utils/strings';
 import Section from './components/Section';
 import styles from './styles';
 
-function NftDetail({ route, navigation }) {
+function NftDetail({ route, navigation }: ModalScreenProps<Routes.NFT_DETAIL>) {
   const { canisterId, index } = route.params;
   const { collections } = useAppSelector(state => state.user);
   const collection = collections.find(c => c.canisterId === canisterId);
-  const selectedNFT = collection.tokens.find(token => token.index === index);
-  const { url, canister, standard, name, icon } = selectedNFT || {};
+  const selectedNFT = collection?.tokens?.find(token => token.index === index);
+  const { url, canister, standard, name } = selectedNFT || {};
   const isICNS = canister === ICNS_CANISTER_ID;
-  const nftName = `${collection.name} #${index}`;
+  const nftName = `${collection?.name || ''} #${index}`;
   const type = useGetType(url);
 
-  const actionSheetRef = useRef(null);
+  const actionSheetRef = useRef<Modalize>(null);
   const [isDownloading, setIsDownloading] = useState(false);
-  const [nftDetails, setNFTDetails] = useState(null);
+  const [nftDetails, setNFTDetails] = useState<NFTDetails<string | bigint>>();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -46,7 +49,7 @@ function NftDetail({ route, navigation }) {
         .then(details => setNFTDetails(details))
         .catch(() => {});
     }
-    return () => setNFTDetails(null);
+    return () => setNFTDetails(undefined);
   }, [selectedNFT]);
 
   const handleSend = () => {
@@ -55,13 +58,15 @@ function NftDetail({ route, navigation }) {
 
   const downloadNFT = () => {
     // TODO: Handle download error and permissons error
-    setIsDownloading(true);
-    downloadFile({
-      filename: `NFT_${deleteWhiteSpaces(nftName)}`,
-      mimeType: type,
-      url: selectedNFT?.url,
-      onFetched: () => setIsDownloading(false),
-    });
+    if (type && selectedNFT?.url) {
+      setIsDownloading(true);
+      downloadFile({
+        filename: `NFT_${deleteWhiteSpaces(nftName)}`,
+        mimeType: type,
+        url: selectedNFT?.url,
+        onFetched: () => setIsDownloading(false),
+      });
+    }
   };
 
   const moreOptions = {
@@ -98,7 +103,7 @@ function NftDetail({ route, navigation }) {
           <View style={styles.buttonWraperLeft}>
             <Button
               text={t('common.more')}
-              onPress={actionSheetRef.current?.open}
+              onPress={actionSheetRef.current?.open!}
               loading={isDownloading}
               disabled={!type}
             />
@@ -114,10 +119,10 @@ function NftDetail({ route, navigation }) {
         <Section
           title={t('nftDetail.collectionTitle')}
           style={styles.collectionSection}>
-          <Badge value={collection.name} icon={icon} />
+          <Badge value={collection?.name} icon={collection?.icon} />
           <Badge value={isICNS ? name : `#${index}`} />
         </Section>
-        {!!collection.description && (
+        {!!collection?.description && (
           <Section title={t('nftDetail.descriptionTitle')}>
             <Text style={FontStyles.NormalGray}>{collection.description}</Text>
           </Section>

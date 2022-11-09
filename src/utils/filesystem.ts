@@ -35,9 +35,9 @@ interface DownloadFileProps {
   filename: string;
   url: string;
   mimeType: string;
-  onFetched: () => void;
-  onSuccess: () => void;
-  onError: () => void;
+  onFetched?: () => void;
+  onSuccess?: () => void;
+  onError?: () => void;
 }
 
 export const downloadFile = async ({
