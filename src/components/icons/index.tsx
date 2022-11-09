@@ -38,7 +38,7 @@ export const IconTypes = (type: string) =>
     copy: CopyIcon,
     gear: GearIcon,
     plus: PlusIcon,
-    // dfinity: ICPIcon,
+    dfinity: ICPIcon,
     icp: ICPIcon,
     profile: TabProfileIcon,
     tokens: TabTokensIcon,

@@ -14,16 +14,20 @@ export default StyleSheet.create({
   },
   leftContainer: {
     justifyContent: 'space-evenly',
+    maxWidth: '50%',
   },
   rightContainer: {
     marginLeft: 'auto',
     alignItems: 'flex-end',
     justifyContent: 'space-evenly',
     paddingLeft: 5,
-    maxWidth: '30%',
+    maxWidth: '32%',
   },
   title: {
-    maxWidth: '78%',
+    width: '100%',
     ...FontStyles.Normal,
+  },
+  text: {
+    width: '100%',
   },
 });

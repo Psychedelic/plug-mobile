@@ -1,12 +1,12 @@
+import { t } from 'i18next';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 
-import Text from '@/components/common/Text';
-import Icon from '@/components/icons';
+import { Text } from '@/components/common';
 import { VISIBLE_DECIMALS } from '@/constants/business';
 import { FontStyles } from '@/constants/theme';
 import UsdFormat from '@/formatters/UsdFormat';
+import { Nullable } from '@/interfaces/general';
 import { formatDate } from '@/utils/dates';
 import { formatToMaxDecimals } from '@/utils/number';
 import shortAddress from '@/utils/shortAddress';
@@ -17,6 +17,21 @@ import styles, { HEIGHT } from './styles';
 
 export const ITEM_HEIGHT = HEIGHT;
 
+interface Props {
+  type: string;
+  to: string;
+  from: string;
+  amount: Nullable<number | typeof NaN>;
+  value?: Nullable<number>;
+  status?: number;
+  date: bigint;
+  swapData: any;
+  symbol: string;
+  logo: string;
+  canisterId: string;
+  details?: { [key: string]: any };
+  canisterInfo?: Object;
+}
 const ActivityItem = ({
   type,
   to,
@@ -25,39 +40,28 @@ const ActivityItem = ({
   value,
   status,
   date,
-  plug,
   swapData,
   symbol,
-  image,
   logo,
   canisterId,
   details,
   canisterInfo,
-  icon,
-}) => {
-  const { t } = useTranslation();
+}: Props) => {
   const isSonic = !!details?.sonicData;
   const isSwap = type === 'SWAP';
   const isLiquidity = type.includes('Liquidity');
-  const tokenImage = image || logo;
-  const TokenImageComponent = tokenImage ? (
-    <ActivityIcon image={tokenImage} type={type} />
-  ) : (
-    <Icon name={`${symbol}`.toLowerCase()} />
-  );
 
-  // ojo que llega un icon.
   return (
     <View style={styles.container}>
-      <TokenImageComponent />
+      <ActivityIcon logo={logo} type={type} symbol={symbol} />
       <View style={styles.leftContainer}>
         <Text numberOfLines={1} style={styles.title}>
-          {getTitle(type, symbol, swapData, plug)}
+          {getTitle(type, symbol, swapData)}
         </Text>
-        <Text style={FontStyles.SmallGray}>
+        <Text style={[FontStyles.SmallGray, styles.text]} numberOfLines={1}>
           {getStatus(status, styles)}
           {formatDate(date, 'MMM Do')}
-          {getSubtitle(type, to, from, canisterId)}
+          {getSubtitle(type, to, from)}
         </Text>
       </View>
       <View style={styles.rightContainer}>
@@ -66,7 +70,8 @@ const ActivityItem = ({
             <Text
               numberOfLines={1}
               ellipsizeMode="tail"
-              style={FontStyles.Normal}>
+              type="normal"
+              style={styles.text}>
               {details?.tokenId?.length > 5
                 ? shortAddress(details?.tokenId)
                 : `#${details?.tokenId}`}
@@ -74,7 +79,7 @@ const ActivityItem = ({
             <Text
               numberOfLines={1}
               ellipsizeMode="tail"
-              style={FontStyles.SmallGray}>
+              style={[FontStyles.SmallGray, styles.text]}>
               {getCanisterName(canisterInfo, canisterId)}
             </Text>
           </>
@@ -83,13 +88,17 @@ const ActivityItem = ({
         ) : (
           <>
             {amount ? (
-              <Text style={FontStyles.Normal}>{`${formatToMaxDecimals(
+              <Text type="normal" numberOfLines={1}>{`${formatToMaxDecimals(
                 Number(amount),
                 VISIBLE_DECIMALS
               )} ${symbol}`}</Text>
             ) : null}
             {value ? (
-              <UsdFormat value={Number(value)} style={FontStyles.SmallGray} />
+              <UsdFormat
+                numberOfLines={1}
+                value={Number(value)}
+                style={FontStyles.SmallGray}
+              />
             ) : null}
           </>
         )}
