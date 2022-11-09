@@ -25,6 +25,7 @@ function NftItem({ item, onOpen }) {
       <Touchable onPress={handleOnPress} style={styles.touchable}>
         <NftDisplayer
           ICNSName={isICNS ? name : undefined}
+          icnsSize="small"
           type={type}
           url={url}
           style={styles.nftDisplayer}

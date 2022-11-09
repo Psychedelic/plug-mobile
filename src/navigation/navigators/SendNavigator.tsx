@@ -17,7 +17,12 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 const screenOptions = {
   [Routes.SEND]: {
-    header: (props: StackHeaderProps) => <ModalHeader {...props} />,
+    header: (props: StackHeaderProps) => {
+      const showBack = !!(
+        props.route?.params as RootStackParamList[Routes.SEND]
+      )?.nft;
+      return <ModalHeader {...props} showBack={showBack} />;
+    },
   },
 };
 

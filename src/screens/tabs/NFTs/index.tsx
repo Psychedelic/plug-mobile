@@ -8,9 +8,9 @@ import EmptyState from '@/commonComponents/EmptyState';
 import ErrorState from '@/commonComponents/ErrorState';
 import useScrollHanlder from '@/components/buttons/ScrollableButton/hooks/useScrollHandler';
 import Text from '@/components/common/Text';
+import { ICNS_CANISTER_ID } from '@/constants/canister';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
-import { FileTypes } from '@/interfaces/general';
 import { ScreenProps } from '@/interfaces/navigation';
 import { Collection } from '@/interfaces/redux';
 import { Container, Separator } from '@/layout';
@@ -54,15 +54,19 @@ function NFTs({ navigation }: ScreenProps<Routes.NFTS>) {
     }
   };
 
-  const renderCollection = ({ item }: { item: Collection }) => (
-    <CollectionItem
-      url={item.icon}
-      title={item.name}
-      subtitle={t('nftTab.items', { count: item.tokens.length })}
-      containerStyle={styles.itemContainer}
-      onPress={() => handleCollectionPress(item)}
-    />
-  );
+  const renderCollection = ({ item }: { item: Collection }) => {
+    const isICNS = item.canisterId === ICNS_CANISTER_ID;
+    return (
+      <CollectionItem
+        url={item.icon}
+        title={item.name}
+        subtitle={t('nftTab.items', { count: item.tokens.length })}
+        containerStyle={styles.itemContainer}
+        imageStyle={isICNS && styles.icnsImage}
+        onPress={() => handleCollectionPress(item)}
+      />
+    );
+  };
 
   const onRefresh = () => {
     dispatch(getNFTs({ refresh: true }));

@@ -2,8 +2,6 @@ import React, { useRef } from 'react';
 import { ActivityIndicator, StyleProp, View, ViewStyle } from 'react-native';
 import { WebView } from 'react-native-webview';
 
-import { FileTypes } from '@/interfaces/general';
-
 import sharedStyles from '../../styles';
 
 interface Props {
@@ -11,16 +9,11 @@ interface Props {
   onLoad?: () => void;
   url: string;
   style: StyleProp<ViewStyle>;
-  type: FileTypes;
+  type: string;
 }
 
 const Spinner = ({ style }: { style?: StyleProp<ViewStyle> }) => (
-  <View
-    style={[
-      sharedStyles.webViewLoader,
-      sharedStyles.webViewLoaderDetail,
-      style,
-    ]}>
+  <View style={[sharedStyles.webViewLoader, style]}>
     <ActivityIndicator size="small" color="white" />
   </View>
 );
@@ -29,7 +22,7 @@ function HTMLDisplayer({ loading, onLoad, url, style, type }: Props) {
   const webViewRef = useRef(null);
 
   return (
-    <View style={[sharedStyles.image, style]}>
+    <View style={style}>
       <WebView
         onLoad={onLoad}
         ref={webViewRef}
@@ -52,12 +45,7 @@ function HTMLDisplayer({ loading, onLoad, url, style, type }: Props) {
         renderLoading={() => <Spinner style={style} />}
         style={[sharedStyles.webView, style]}
       />
-      {loading && (
-        <ActivityIndicator
-          style={sharedStyles.activityIndicator}
-          color="white"
-        />
-      )}
+      {loading && <Spinner style={style} />}
     </View>
   );
 }

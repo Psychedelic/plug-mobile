@@ -19,15 +19,6 @@ const commonCotainer = {
 export default StyleSheet.create({
   image: commonStyle,
   video: commonCotainer,
-  activityIndicator: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    right: 0,
-    left: 0,
-    backgroundColor: Colors.Black.Pure,
-    ...commonCotainer,
-  },
   webView: {
     backgroundColor: 'transparent',
     flex: 0,
@@ -38,12 +29,11 @@ export default StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     top: 0,
+    bottom: 0,
+    right: 0,
     left: 0,
-    backgroundColor: Colors.Black.Primary,
+    backgroundColor: Colors.Black.Pure,
     height: '100%',
     width: '100%',
-  },
-  webViewLoaderDetail: {
-    backgroundColor: Colors.Black.Pure,
   },
 });

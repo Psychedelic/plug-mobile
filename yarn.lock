@@ -1800,10 +1800,10 @@
     axios "^0.24.0"
     cross-fetch "^3.1.4"
 
-"@psychedelic/dab-js@1.4.12":
-  version "1.4.12"
-  resolved "https://npm.pkg.github.com/download/@Psychedelic/dab-js/1.4.12/ee252e693f8606327f479cbbdbfe8424b422e8f5#ee252e693f8606327f479cbbdbfe8424b422e8f5"
-  integrity sha512-oJwMbgafesO5KOBoV70oQ929wel18n0X6u/IBtR7mcBa0SdwM2uyhbgjNqVLpFdBaVBRoAxKdCABc4sVRcqglg==
+"@psychedelic/dab-js@1.5.0-beta.4":
+  version "1.5.0-beta.4"
+  resolved "https://npm.pkg.github.com/download/@Psychedelic/dab-js/1.5.0-beta.4/efd377970c28a917a93e933a96cbf0013d3c5a61#efd377970c28a917a93e933a96cbf0013d3c5a61"
+  integrity sha512-A5AKfXUyu7OLJwyv9hT7dVp6zZ01F/QKnLCu4yc7/KpbxQ8V7CvVYp6Jap5Ig06tGYz/XJu2HDLMUxrrIogWxg==
   dependencies:
     "@dfinity/agent" "0.9.3"
     "@dfinity/candid" "0.9.3"
@@ -1814,10 +1814,10 @@
     cross-fetch "^3.1.4"
     crypto-js "^4.1.1"
 
-"@psychedelic/dab-js@1.5.0-beta.4":
-  version "1.5.0-beta.4"
-  resolved "https://npm.pkg.github.com/download/@Psychedelic/dab-js/1.5.0-beta.4/efd377970c28a917a93e933a96cbf0013d3c5a61#efd377970c28a917a93e933a96cbf0013d3c5a61"
-  integrity sha512-A5AKfXUyu7OLJwyv9hT7dVp6zZ01F/QKnLCu4yc7/KpbxQ8V7CvVYp6Jap5Ig06tGYz/XJu2HDLMUxrrIogWxg==
+"@psychedelic/dab-js@^1.5.0":
+  version "1.5.0"
+  resolved "https://npm.pkg.github.com/download/@Psychedelic/dab-js/1.5.0/7e8c93fe9958186a2412c13dc89d74ed4c131dde#7e8c93fe9958186a2412c13dc89d74ed4c131dde"
+  integrity sha512-7Nj+WmFeAtuHbx+VWPVh7euvB0QPT2zXcSR0/0Zf4FiUtTn0CWTywdiM7Zr6eqTY7kpR4M2Q89k5A8AcKhRGNA==
   dependencies:
     "@dfinity/agent" "0.9.3"
     "@dfinity/candid" "0.9.3"
@@ -7961,7 +7961,7 @@ mime-db@1.51.0:
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.51.0.tgz#d9ff62451859b18342d960850dc3cfb77e63fb0c"
   integrity sha512-5y8A56jg7XVQx2mbv1lu49NR4dokRnhZYTtL+KGfaa27uq4pSTXkwQkFJl4pkRMyNFz/EtYDSkiiEHx3F7UN6g==
 
-"mime-db@>= 1.43.0 < 2":
+mime-db@1.52.0, "mime-db@>= 1.43.0 < 2":
   version "1.52.0"
   resolved "https://registry.yarnpkg.com/mime-db/-/mime-db-1.52.0.tgz#bbabcdc02859f4987301c856e3387ce5ec43bf70"
   integrity sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==
@@ -7972,6 +7972,13 @@ mime-types@^2.1.12, mime-types@^2.1.27, mime-types@~2.1.34:
   integrity sha512-6cP692WwGIs9XXdOO4++N+7qjqv0rqxxVvJ3VHPh/Sc9mVZcQP+ZGhkKiTvWMQRr2tbHkJP/Yn7Y0npb3ZBs4A==
   dependencies:
     mime-db "1.51.0"
+
+mime-types@^2.1.35:
+  version "2.1.35"
+  resolved "https://registry.yarnpkg.com/mime-types/-/mime-types-2.1.35.tgz#381a871b62a734450660ae3deee44813f70d959a"
+  integrity sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==
+  dependencies:
+    mime-db "1.52.0"
 
 mime@1.6.0, mime@^1.3.4:
   version "1.6.0"

@@ -42,4 +42,9 @@ export default StyleSheet.create({
   subtitle: {
     ...fontMaker({ size: 16, weight: MEDIUM, color: Colors.White.Secondary }),
   },
+  nft: {
+    height: 45,
+    width: 45,
+    borderRadius: 10,
+  },
 });

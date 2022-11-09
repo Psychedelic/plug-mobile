@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Linking, Platform, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -15,7 +15,6 @@ import Routes from '@/navigation/Routes';
 import { useAppSelector } from '@/redux/hooks';
 import { getNFTDetails } from '@/services/DAB';
 import { downloadFile } from '@/utils/filesystem';
-import { getAbsoluteType } from '@/utils/fileTypes';
 import { deleteWhiteSpaces } from '@/utils/strings';
 
 import Section from './components/Section';
@@ -35,11 +34,17 @@ function NftDetail({ route, navigation }) {
   const [isDownloading, setIsDownloading] = useState(false);
   const [nftDetails, setNFTDetails] = useState(null);
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: nftName,
+    });
+  }, [nftName]);
+
   useEffect(() => {
     if (selectedNFT && !isICNS) {
-      getNFTDetails({ index, canister, standard }).then(details =>
-        setNFTDetails(details)
-      );
+      getNFTDetails({ index, canister, standard })
+        .then(details => setNFTDetails(details))
+        .catch(() => {});
     }
     return () => setNFTDetails(null);
   }, [selectedNFT]);
@@ -51,33 +56,31 @@ function NftDetail({ route, navigation }) {
   const downloadNFT = () => {
     // TODO: Handle download error and permissons error
     setIsDownloading(true);
-    // downloadFile({
-    //   filename: `NFT_${deleteWhiteSpaces(nftName)}${getAbsoluteType(type)}`,
-    //   url: selectedNFT?.url,
-    //   onFetched: () => setIsDownloading(false),
-    // });
+    downloadFile({
+      filename: `NFT_${deleteWhiteSpaces(nftName)}`,
+      mimeType: type,
+      url: selectedNFT?.url,
+      onFetched: () => setIsDownloading(false),
+    });
   };
 
-  const moreOptions = useMemo(
-    () => ({
-      title: t('nftDetail.moreTitle'),
-      options: [
-        {
-          id: 1,
-          label: t('nftDetail.moreOptions.view'),
-          onPress: () => Linking.openURL(selectedNFT?.url),
-          icon: Platform.select({ android: ViewIcon }),
-        },
-        {
-          id: 2,
-          label: t('nftDetail.moreOptions.download'),
-          onPress: downloadNFT,
-          icon: Platform.select({ android: DownloadIcon }),
-        },
-      ],
-    }),
-    [selectedNFT]
-  );
+  const moreOptions = {
+    title: t('nftDetail.moreTitle'),
+    options: [
+      {
+        id: 1,
+        label: t('nftDetail.moreOptions.view'),
+        onPress: () => Linking.openURL(selectedNFT?.url),
+        icon: Platform.select({ android: ViewIcon }),
+      },
+      {
+        id: 2,
+        label: t('nftDetail.moreOptions.download'),
+        onPress: downloadNFT,
+        icon: Platform.select({ android: DownloadIcon }),
+      },
+    ],
+  };
 
   return (
     <>
@@ -85,6 +88,7 @@ function NftDetail({ route, navigation }) {
         <View style={styles.nftDisplayerContainer}>
           <NftDisplayer
             ICNSName={isICNS ? name : undefined}
+            icnsSize="big"
             url={url}
             type={type}
             style={styles.video}
@@ -96,6 +100,7 @@ function NftDetail({ route, navigation }) {
               text={t('common.more')}
               onPress={actionSheetRef.current?.open}
               loading={isDownloading}
+              disabled={!type}
             />
           </View>
           <View style={styles.buttonWraperRight}>

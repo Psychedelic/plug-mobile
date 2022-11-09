@@ -21,5 +21,3 @@ declare global {
     tron: any;
   }
 }
-
-export type FileTypes = 'html' | 'image' | 'video' | 'svg' | undefined;

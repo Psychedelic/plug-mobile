@@ -10,12 +10,12 @@ export const ITEM_HEIGHT = CONTAINER_HEIGHT;
 
 interface Props {
   url: string;
-  title: string;
-  subtitle?: string;
   onPress: () => void;
   titleStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
   imageStyle?: StyleProp<ViewStyle>;
+  title?: string;
+  subtitle?: string;
 }
 
 function CollectionItem({
@@ -30,14 +30,21 @@ function CollectionItem({
   const type = useGetType(url);
   return (
     <Touchable style={containerStyle} onPress={onPress}>
-      <NftDisplayer type={type} url={url} style={[styles.image, imageStyle]} />
-      <Text
-        type="caption"
-        style={[styles.title, titleStyle]}
-        numberOfLines={1}
-        ellipsizeMode="tail">
-        {title}
-      </Text>
+      <NftDisplayer
+        type={type}
+        url={url}
+        style={[styles.image, imageStyle]}
+        icnsSize="small"
+      />
+      {title && (
+        <Text
+          type="caption"
+          style={[styles.title, titleStyle]}
+          numberOfLines={1}
+          ellipsizeMode="tail">
+          {title}
+        </Text>
+      )}
       {subtitle && (
         <Text
           type="caption"

@@ -4,7 +4,6 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import Image from '@/components/common/Image';
 import { Colors } from '@/constants/theme';
-import { FileTypes } from '@/interfaces/general';
 
 import sharedStyles from '../../styles';
 import HTMLDisplayer from '../HTMLDisplayer';
@@ -12,14 +11,10 @@ import HTMLDisplayer from '../HTMLDisplayer';
 interface Props {
   style: StyleProp<ViewStyle>;
   url: string;
-  type?: FileTypes;
+  type?: string;
 }
 
 function ImageDisplayer({ style, type, url }: Props) {
-  // const innerStyle = isSendView
-  //   ? { width: 54, height: 54 }
-  //   : { width: '100%', height: '100%' };
-
   return (
     <MaskedView
       style={[sharedStyles.image, style]}
@@ -28,7 +23,6 @@ function ImageDisplayer({ style, type, url }: Props) {
           style={[
             StyleSheet.absoluteFill,
             {
-              // borderRadius: isSendView ? 10 : 20,
               borderRadius: 20,
               backgroundColor: Colors.Black.Pure,
             },
@@ -36,7 +30,7 @@ function ImageDisplayer({ style, type, url }: Props) {
           ]}
         />
       }>
-      {type === 'svg' || type === 'html' ? (
+      {type === 'image/svg+xml' || type === 'text/html' ? (
         <HTMLDisplayer
           url={url}
           style={{ width: '100%', height: '100%' }}

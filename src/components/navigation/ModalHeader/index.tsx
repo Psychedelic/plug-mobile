@@ -19,8 +19,9 @@ function ModalHeader({
   showBack,
   showClose,
   progress,
+  options,
 }: Props) {
-  const title = getRouteName(route.name);
+  const title = options?.title || getRouteName(route.name);
   const opacity = Animated.add(
     progress.current,
     progress.next || 0

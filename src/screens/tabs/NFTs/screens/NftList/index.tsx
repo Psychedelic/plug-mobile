@@ -1,15 +1,13 @@
 import { FlashList } from '@shopify/flash-list';
-import React from 'react';
-import { FlatList } from 'react-native';
+import React, { useLayoutEffect } from 'react';
 
 import { ICNS_CANISTER_ID } from '@/constants/canister';
-import { FileTypes } from '@/interfaces/general';
 import { ScreenProps } from '@/interfaces/navigation';
 import { CollectionToken } from '@/interfaces/redux';
 import Routes from '@/navigation/Routes';
 import { useAppSelector } from '@/redux/hooks';
 
-import CollectionItem from '../../components/CollectionItem';
+import CollectionItem, { ITEM_HEIGHT } from '../../components/CollectionItem';
 import styles from './styles';
 
 function NftList({ route, navigation }: ScreenProps<Routes.NFT_LIST>) {
@@ -17,11 +15,16 @@ function NftList({ route, navigation }: ScreenProps<Routes.NFT_LIST>) {
   const { collections } = useAppSelector(state => state.user);
   const collection = collections.find(c => c.canisterId === canisterId);
 
-  const handleItemPress = (item: CollectionToken, type: FileTypes) => {
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: `${collection?.name} (${collection?.tokens.length})`,
+    });
+  }, [collection]);
+
+  const handleItemPress = (item: CollectionToken) => {
     navigation.navigate(Routes.NFT_DETAIL, {
       index: item.index,
       canisterId: item.canister,
-      type,
     });
   };
 
@@ -35,7 +38,7 @@ function NftList({ route, navigation }: ScreenProps<Routes.NFT_LIST>) {
       <CollectionItem
         title={title}
         url={item.url}
-        onPress={type => handleItemPress(item, type)}
+        onPress={() => handleItemPress(item)}
         containerStyle={styles.itemContainer}
         imageStyle={styles.imageStyle}
       />
@@ -43,10 +46,11 @@ function NftList({ route, navigation }: ScreenProps<Routes.NFT_LIST>) {
   };
 
   return (
-    <FlatList
+    <FlashList
       data={collection?.tokens}
       renderItem={renderItem}
       numColumns={2}
+      estimatedItemSize={ITEM_HEIGHT}
     />
   );
 }

@@ -50,4 +50,8 @@ export default StyleSheet.create({
   itemContainer: {
     margin: 10,
   },
+  icnsImage: {
+    backgroundColor: Colors.White.Pure,
+    padding: 20,
+  },
 });
