@@ -28,6 +28,7 @@ export default StyleSheet.create({
     ...FontStyles.Normal,
   },
   text: {
+    ...FontStyles.SmallGray,
     width: '100%',
   },
 });

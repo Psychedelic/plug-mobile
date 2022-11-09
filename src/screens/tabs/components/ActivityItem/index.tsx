@@ -6,7 +6,7 @@ import { Text } from '@/components/common';
 import { VISIBLE_DECIMALS } from '@/constants/business';
 import { FontStyles } from '@/constants/theme';
 import UsdFormat from '@/formatters/UsdFormat';
-import { Nullable } from '@/interfaces/general';
+import { Transaction } from '@/interfaces/redux';
 import { formatDate } from '@/utils/dates';
 import { formatToMaxDecimals } from '@/utils/number';
 import shortAddress from '@/utils/shortAddress';
@@ -17,21 +17,8 @@ import styles, { HEIGHT } from './styles';
 
 export const ITEM_HEIGHT = HEIGHT;
 
-interface Props {
-  type: string;
-  to: string;
-  from: string;
-  amount: Nullable<number | typeof NaN>;
-  value?: Nullable<number>;
-  status?: number;
-  date: bigint;
-  swapData: any;
-  symbol: string;
-  logo: string;
-  canisterId: string;
-  details?: { [key: string]: any };
-  canisterInfo?: Object;
-}
+interface Props extends Transaction {}
+
 const ActivityItem = ({
   type,
   to,
@@ -40,7 +27,6 @@ const ActivityItem = ({
   value,
   status,
   date,
-  swapData,
   symbol,
   logo,
   canisterId,
@@ -48,7 +34,6 @@ const ActivityItem = ({
   canisterInfo,
 }: Props) => {
   const isSonic = !!details?.sonicData;
-  const isSwap = type === 'SWAP';
   const isLiquidity = type.includes('Liquidity');
 
   return (
@@ -56,9 +41,9 @@ const ActivityItem = ({
       <ActivityIcon logo={logo} type={type} symbol={symbol} />
       <View style={styles.leftContainer}>
         <Text numberOfLines={1} style={styles.title}>
-          {getTitle(type, symbol, swapData)}
+          {getTitle(type, symbol)}
         </Text>
-        <Text style={[FontStyles.SmallGray, styles.text]} numberOfLines={1}>
+        <Text style={styles.text} numberOfLines={1}>
           {getStatus(status, styles)}
           {formatDate(date, 'MMM Do')}
           {getSubtitle(type, to, from)}
@@ -67,23 +52,16 @@ const ActivityItem = ({
       <View style={styles.rightContainer}>
         {details?.tokenId && !isSonic ? (
           <>
-            <Text
-              numberOfLines={1}
-              ellipsizeMode="tail"
-              type="normal"
-              style={styles.text}>
+            <Text numberOfLines={1} ellipsizeMode="tail" type="normal">
               {details?.tokenId?.length > 5
                 ? shortAddress(details?.tokenId)
                 : `#${details?.tokenId}`}
             </Text>
-            <Text
-              numberOfLines={1}
-              ellipsizeMode="tail"
-              style={[FontStyles.SmallGray, styles.text]}>
+            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.text}>
               {getCanisterName(canisterInfo, canisterId)}
             </Text>
           </>
-        ) : isSwap || isLiquidity ? (
+        ) : isLiquidity ? (
           <Text style={FontStyles.SmallGray}>{t('common.comingSoon')}</Text>
         ) : (
           <>

@@ -41,15 +41,8 @@ export const getTypeIcon = type => {
   }
 };
 
-export const getTitle = (type, symbol, swapData) => {
+export const getTitle = (type, symbol) => {
   switch (type) {
-    case 'SWAP':
-      return swapData?.currency.name
-        ? t('transactionTypes.swapFor', {
-            from: symbol,
-            to: swapData?.currency.name,
-          })
-        : t('transactionTypes.swap');
     case 'DIRECTBUY':
       return t('transactionTypes.buyNTF');
     case 'MAKELISTING':
