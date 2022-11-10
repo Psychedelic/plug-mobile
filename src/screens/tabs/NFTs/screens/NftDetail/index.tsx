@@ -1,4 +1,5 @@
 import { NFTDetails } from '@psychedelic/dab-js';
+import { StackHeaderProps } from '@react-navigation/stack';
 import { t } from 'i18next';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Linking, Platform, View } from 'react-native';
@@ -8,6 +9,7 @@ import { Modalize } from 'react-native-modalize';
 import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import { ActionSheet, Badge, NftDisplayer, Text } from '@/components/common';
+import ModalHeader from '@/components/navigation/ModalHeader';
 import { ICNS_CANISTER_ID } from '@/constants/canister';
 import { FontStyles } from '@/constants/theme';
 import useGetType from '@/hooks/useGetType';
@@ -23,8 +25,12 @@ import { deleteWhiteSpaces } from '@/utils/strings';
 import Section from './components/Section';
 import styles from './styles';
 
+const header = (props: StackHeaderProps, showBack?: boolean) => (
+  <ModalHeader {...props} showBack={showBack} />
+);
+
 function NftDetail({ route, navigation }: ModalScreenProps<Routes.NFT_DETAIL>) {
-  const { canisterId, index } = route.params;
+  const { canisterId, index, showBack } = route.params;
   const { collections } = useAppSelector(state => state.user);
   const collection = collections.find(c => c.canisterId === canisterId);
   const selectedNFT = collection?.tokens?.find(token => token.index === index);
@@ -38,9 +44,10 @@ function NftDetail({ route, navigation }: ModalScreenProps<Routes.NFT_DETAIL>) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: nftName,
+      title: `#${index}`,
+      header: (props: StackHeaderProps) => header(props, showBack),
     });
-  }, [nftName]);
+  }, [index]);
 
   useEffect(() => {
     if (selectedNFT && !isICNS) {
@@ -121,12 +128,12 @@ function NftDetail({ route, navigation }: ModalScreenProps<Routes.NFT_DETAIL>) {
             />
           </View>
         </View>
-        {collection && selectedNFT?.name && (
+        {collection && selectedNFT && (
           <Section
             title={t('nftDetail.collectionTitle')}
             style={styles.collectionSection}>
             <Badge value={collection?.name} icon={collection?.icon} />
-            <Badge value={isICNS ? selectedNFT.name : `#${index}`} />
+            <Badge value={isICNS ? selectedNFT.name || '' : `#${index}`} />
           </Section>
         )}
         {!!collection?.description && (

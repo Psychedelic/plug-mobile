@@ -42,6 +42,7 @@ export type ModalStackParamList = {
   [Routes.NFT_DETAIL]: {
     canisterId: string;
     index: string | number;
+    showBack?: boolean;
   };
 };
 
