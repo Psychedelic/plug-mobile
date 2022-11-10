@@ -27,11 +27,10 @@ function NftDetail({ route, navigation }: ModalScreenProps<Routes.NFT_DETAIL>) {
   const { canisterId, index } = route.params;
   const { collections } = useAppSelector(state => state.user);
   const collection = collections.find(c => c.canisterId === canisterId);
-  const selectedNFT = collection?.tokens?.find(token => token.index === index)!;
-  const { url, canister, standard, name } = selectedNFT;
-  const isICNS = canister === ICNS_CANISTER_ID;
+  const selectedNFT = collection?.tokens?.find(token => token.index === index);
+  const isICNS = selectedNFT?.canister === ICNS_CANISTER_ID;
   const nftName = `${collection?.name || ''} #${index}`;
-  const type = useGetType(url);
+  const type = useGetType(selectedNFT?.url);
 
   const actionSheetRef = useRef<Modalize>(null);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -45,7 +44,11 @@ function NftDetail({ route, navigation }: ModalScreenProps<Routes.NFT_DETAIL>) {
 
   useEffect(() => {
     if (selectedNFT && !isICNS) {
-      getNFTDetails({ index, canister, standard })
+      getNFTDetails({
+        index,
+        canister: selectedNFT.canister,
+        standard: selectedNFT.standard,
+      })
         .then(details => setNFTDetails(details))
         .catch(() => {});
     }
@@ -89,15 +92,17 @@ function NftDetail({ route, navigation }: ModalScreenProps<Routes.NFT_DETAIL>) {
 
   return (
     <>
-      <ScrollView style={styles.content}>
+      <ScrollView style={styles.content} bounces={false}>
         <View style={styles.nftDisplayerContainer}>
-          <NftDisplayer
-            ICNSName={isICNS ? name : undefined}
-            icnsSize="big"
-            url={url}
-            type={type}
-            style={styles.video}
-          />
+          {selectedNFT && (
+            <NftDisplayer
+              ICNSName={isICNS ? selectedNFT.name : undefined}
+              icnsSize="big"
+              url={selectedNFT?.url}
+              type={type}
+              style={styles.video}
+            />
+          )}
         </View>
         <View style={styles.buttonContainer}>
           <View style={styles.buttonWraperLeft}>
@@ -116,12 +121,12 @@ function NftDetail({ route, navigation }: ModalScreenProps<Routes.NFT_DETAIL>) {
             />
           </View>
         </View>
-        {collection && name && (
+        {collection && selectedNFT?.name && (
           <Section
             title={t('nftDetail.collectionTitle')}
             style={styles.collectionSection}>
             <Badge value={collection?.name} icon={collection?.icon} />
-            <Badge value={isICNS ? name : `#${index}`} />
+            <Badge value={isICNS ? selectedNFT.name : `#${index}`} />
           </Section>
         )}
         {!!collection?.description && (
