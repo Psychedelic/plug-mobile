@@ -141,6 +141,13 @@ const translations = {
     },
   },
   activity: {
+    details: {
+      title: 'Activity Detail',
+      trxType: 'Transaction Type:',
+      from: 'From:',
+      to: 'To:',
+      you: ' (you)',
+    },
     [ACTIVITY_STATUS.COMPLETED]: 'Completed',
     [ACTIVITY_STATUS.PENDING]: 'Pending',
     [ACTIVITY_STATUS.REVERTED]: 'Failed',

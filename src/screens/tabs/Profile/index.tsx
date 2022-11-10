@@ -1,20 +1,26 @@
-import { useNavigation, useScrollToTop } from '@react-navigation/native';
+import { useScrollToTop } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
+import { t } from 'i18next';
 import React, { useRef } from 'react';
-import { useTranslation } from 'react-i18next';
 import { RefreshControl, View } from 'react-native';
+import { Modalize } from 'react-native-modalize';
 import { shallowEqual } from 'react-redux';
 
-import EmptyState from '@/commonComponents/EmptyState';
-import ErrorState from '@/commonComponents/ErrorState';
-import Header from '@/commonComponents/Header';
-import UserIcon from '@/commonComponents/UserIcon';
 import Button from '@/components/buttons/Button';
-import { Touchable } from '@/components/common';
-import Text from '@/components/common/Text';
+import {
+  EmptyState,
+  ErrorState,
+  Header,
+  Text,
+  Touchable,
+  UserIcon,
+} from '@/components/common';
 import Icon from '@/components/icons';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
+import { useStateWithCallback } from '@/hooks/useStateWithCallback';
+import { ScreenProps } from '@/interfaces/navigation';
+import { Transaction } from '@/interfaces/redux';
 import { Container, Separator } from '@/layout';
 import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -25,18 +31,21 @@ import ActivityItem, {
 import animationScales from '@/utils/animationScales';
 
 import Accounts from './modals/Accounts';
+import ActivityDetail from './modals/ActivityDetail';
 import styles from './styles';
 
-const Profile = () => {
-  const { t } = useTranslation();
-  const navigation = useNavigation();
+function Profile({ navigation }: ScreenProps<Routes.PROFILE>) {
   const dispatch = useAppDispatch();
-  const modalRef = useRef(null);
+  const accountsModalRef = useRef<Modalize>(null);
+  const activityDetailModalRef = useRef<Modalize>(null);
   const transactionListRef = useRef(null);
   useScrollToTop(transactionListRef);
   const reverseResolvedName = useAppSelector(
     state => state.keyring.currentWallet?.icnsData?.reverseResolvedName
   );
+  const [selectedTransaction, setSelectedTransaction] = useStateWithCallback<
+    Transaction | undefined
+  >(undefined);
 
   const { currentWallet } = useAppSelector(state => state.keyring);
   const { icpPrice } = useAppSelector(state => state.icp);
@@ -47,7 +56,16 @@ const Profile = () => {
     dispatch(getTransactions({ icpPrice }));
   };
 
-  const renderTransaction = ({ item }) => <ActivityItem {...item} />;
+  const renderTransaction = ({ item }: { item: Transaction }) => (
+    <ActivityItem
+      {...item}
+      onPress={() =>
+        setSelectedTransaction(item, () =>
+          activityDetailModalRef?.current?.open()
+        )
+      }
+    />
+  );
 
   return (
     <>
@@ -66,7 +84,7 @@ const Profile = () => {
             <UserIcon
               icon={currentWallet?.icon}
               size="large"
-              onPress={modalRef.current?.open}
+              onPress={accountsModalRef.current?.open}
             />
             <Text
               type="subtitle1"
@@ -80,7 +98,7 @@ const Profile = () => {
             text={t('common.change')}
             buttonStyle={styles.buttonStyle}
             textStyle={styles.buttonTextStyle}
-            onPress={modalRef.current?.open}
+            onPress={() => accountsModalRef.current?.open()}
           />
         </View>
         <Separator />
@@ -120,9 +138,13 @@ const Profile = () => {
           />
         )}
       </Container>
-      <Accounts modalRef={modalRef} />
+      <Accounts modalRef={accountsModalRef} />
+      <ActivityDetail
+        modalRef={activityDetailModalRef}
+        activity={selectedTransaction!}
+      />
     </>
   );
-};
+}
 
 export default Profile;

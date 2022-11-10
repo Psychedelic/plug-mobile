@@ -1,4 +1,4 @@
-import Clipboard from '@react-native-community/clipboard';
+import Clipboard from '@react-native-clipboard/clipboard';
 import { t } from 'i18next';
 import React, { RefObject, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Platform, View } from 'react-native';
