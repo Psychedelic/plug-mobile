@@ -62,7 +62,7 @@ function NFTs({ navigation }: RootScreenProps<Routes.NFTS>) {
         title={item.name}
         subtitle={t('nftTab.items', { count: item.tokens.length })}
         containerStyle={styles.itemContainer}
-        imageStyle={isICNS && styles.icnsImage}
+        itemStyle={isICNS && styles.icnsImage}
         onPress={() => handleCollectionPress(item)}
       />
     );

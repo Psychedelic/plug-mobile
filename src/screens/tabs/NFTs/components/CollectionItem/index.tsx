@@ -13,7 +13,7 @@ interface Props {
   onPress: () => void;
   titleStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
-  imageStyle?: StyleProp<ViewStyle>;
+  itemStyle?: StyleProp<ViewStyle>;
   title?: string;
   subtitle?: string;
 }
@@ -25,7 +25,7 @@ function CollectionItem({
   titleStyle,
   subtitle,
   containerStyle,
-  imageStyle,
+  itemStyle,
 }: Props) {
   const type = useGetType(url);
   return (
@@ -33,8 +33,9 @@ function CollectionItem({
       <NftDisplayer
         type={type}
         url={url}
-        style={[styles.image, imageStyle]}
+        style={[styles.display, itemStyle]}
         icnsSize="small"
+        paused
       />
       {title && (
         <Text

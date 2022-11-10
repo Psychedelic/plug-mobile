@@ -9,7 +9,7 @@ const LOGO_SIZE = WINDOW_WIDTH / 2 - 30;
 export const CONTAINER_HEIGHT = LOGO_SIZE + 50;
 
 export default StyleSheet.create({
-  image: {
+  display: {
     width: LOGO_SIZE,
     height: LOGO_SIZE,
     backgroundColor: Colors.Black.Pure,

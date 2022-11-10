@@ -4,7 +4,6 @@ import { ActivityIndicator, StyleProp, ViewStyle } from 'react-native';
 import ICNSDisplayer from './components/ICNSDisplayer';
 import ImageDisplayer from './components/ImageDisplayer';
 import VideoDisplayer from './components/VideoDisplayer';
-import styles from './styles';
 
 interface Props {
   url: string;
@@ -13,13 +12,21 @@ interface Props {
   isDetailView?: boolean;
   ICNSName?: string;
   icnsSize?: 'big' | 'small';
+  paused?: boolean;
 }
 
-const NftDisplayer = ({ url, style, type, icnsSize, ICNSName }: Props) => {
+const NftDisplayer = ({
+  url,
+  style,
+  type,
+  icnsSize,
+  ICNSName,
+  paused,
+}: Props) => {
   return type ? (
     <>
       {type?.includes('video/') ? (
-        <VideoDisplayer url={url} style={[styles.image, style]} />
+        <VideoDisplayer url={url} style={style} paused={paused} />
       ) : (
         <ImageDisplayer url={url} type={type} style={style} />
       )}

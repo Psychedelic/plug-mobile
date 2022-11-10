@@ -7,7 +7,7 @@ export default StyleSheet.create({
     marginVertical: 10,
     marginHorizontal: 15,
   },
-  imageStyle: {
+  itemStyle: {
     borderColor: Colors.Gray.Primary,
     borderWidth: 1,
   },

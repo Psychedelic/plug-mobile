@@ -9,9 +9,10 @@ import sharedStyles from '../../styles';
 interface Props {
   style: StyleProp<ViewStyle>;
   url: string;
+  paused?: boolean;
 }
 
-const VideoDisplayer = ({ style, url }: Props) => {
+const VideoDisplayer = ({ style, url, paused }: Props) => {
   const [loading, setLoading] = useState(true);
 
   const hideSpinner = () => {
@@ -27,6 +28,7 @@ const VideoDisplayer = ({ style, url }: Props) => {
       ) : (
         <Video
           repeat
+          paused={paused}
           onLoad={hideSpinner}
           resizeMode="cover"
           source={{ uri: newUrl }}

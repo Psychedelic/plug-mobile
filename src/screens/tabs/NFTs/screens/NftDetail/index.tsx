@@ -44,10 +44,10 @@ function NftDetail({ route, navigation }: ModalScreenProps<Routes.NFT_DETAIL>) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: `#${index}`,
+      title: isICNS ? selectedNFT?.name : `#${selectedNFT?.index}`,
       header: (props: StackHeaderProps) => header(props, showBack),
     });
-  }, [index]);
+  }, [selectedNFT]);
 
   useEffect(() => {
     if (selectedNFT && !isICNS) {

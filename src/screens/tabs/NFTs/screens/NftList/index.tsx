@@ -25,6 +25,7 @@ function NftList({ route, navigation }: ModalScreenProps<Routes.NFT_LIST>) {
     navigation.navigate(Routes.NFT_DETAIL, {
       index: item.index,
       canisterId: item.canister,
+      showBack: true,
     });
   };
 
@@ -40,7 +41,7 @@ function NftList({ route, navigation }: ModalScreenProps<Routes.NFT_LIST>) {
         url={item.url}
         onPress={() => handleItemPress(item)}
         containerStyle={styles.itemContainer}
-        imageStyle={styles.imageStyle}
+        itemStyle={styles.itemStyle}
       />
     );
   };
