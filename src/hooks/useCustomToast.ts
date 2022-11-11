@@ -6,7 +6,7 @@ import { ToastTypes } from '@/components/common/Toast';
 function useCustomToast() {
   const toast = useToast();
 
-  const showSuccess = useCallback((title: string, message: string) => {
+  const showSuccess = useCallback((title: string, message?: string) => {
     toast.show(`${ToastTypes.success}-${title}`, {
       data: {
         type: ToastTypes.success,
@@ -16,7 +16,7 @@ function useCustomToast() {
     });
   }, []);
 
-  const showError = useCallback((title: string, message: string) => {
+  const showError = useCallback((title: string, message?: string) => {
     toast.show(`${ToastTypes.error}-${title}`, {
       data: {
         type: ToastTypes.error,
@@ -26,7 +26,7 @@ function useCustomToast() {
     });
   }, []);
 
-  const showInfo = useCallback((title: string, message: string) => {
+  const showInfo = useCallback((title: string, message?: string) => {
     toast.show(`${ToastTypes.info}-${title}`, {
       data: {
         type: ToastTypes.info,

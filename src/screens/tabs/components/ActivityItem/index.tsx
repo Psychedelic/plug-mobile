@@ -12,7 +12,7 @@ import { formatToMaxDecimals } from '@/utils/number';
 import shortAddress from '@/utils/shortAddress';
 
 import ActivityIcon from '../ActivityIcon';
-import { getCanisterName, getStatus, getSubtitle, getTitle } from '../utils';
+import { getCanisterName, getStatus, getTitle } from '../utils';
 import styles, { HEIGHT } from './styles';
 
 export const ITEM_HEIGHT = HEIGHT;
@@ -20,13 +20,11 @@ export const ITEM_HEIGHT = HEIGHT;
 interface Props extends Transaction {
   onPress?: (trx: Transaction) => void;
   style?: StyleProp<ViewStyle>;
-  onlyDate?: boolean;
+  hideAddress?: boolean;
 }
 
 const ActivityItem = ({
   type,
-  to,
-  from,
   amount,
   value,
   status,
@@ -38,7 +36,6 @@ const ActivityItem = ({
   style,
   canisterInfo,
   onPress,
-  onlyDate,
 }: Props) => {
   const isSonic = !!details?.sonicData;
   const isLiquidity = type.includes('Liquidity');
@@ -54,7 +51,6 @@ const ActivityItem = ({
           <Text style={styles.text} numberOfLines={1}>
             {getStatus(status, styles)}
             {formatDate(date, 'MMM Do')}
-            {!onlyDate && getSubtitle(type, to, from)}
           </Text>
         </View>
         <View style={styles.rightContainer}>

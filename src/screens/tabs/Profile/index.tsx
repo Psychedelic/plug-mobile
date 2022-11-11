@@ -1,7 +1,7 @@
 import { useScrollToTop } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import { t } from 'i18next';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { RefreshControl, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 import { shallowEqual } from 'react-redux';
@@ -18,7 +18,6 @@ import {
 import Icon from '@/components/icons';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
-import { useStateWithCallback } from '@/hooks/useStateWithCallback';
 import { ScreenProps } from '@/interfaces/navigation';
 import { Transaction } from '@/interfaces/redux';
 import { Container, Separator } from '@/layout';
@@ -35,22 +34,28 @@ import ActivityDetail from './modals/ActivityDetail';
 import styles from './styles';
 
 function Profile({ navigation }: ScreenProps<Routes.PROFILE>) {
-  const dispatch = useAppDispatch();
   const accountsModalRef = useRef<Modalize>(null);
   const activityDetailModalRef = useRef<Modalize>(null);
   const transactionListRef = useRef(null);
-  useScrollToTop(transactionListRef);
-  const reverseResolvedName = useAppSelector(
-    state => state.keyring.currentWallet?.icnsData?.reverseResolvedName
-  );
-  const [selectedTransaction, setSelectedTransaction] = useStateWithCallback<
+  const [selectedTransaction, setSelectedTransaction] = useState<
     Transaction | undefined
   >(undefined);
 
+  useScrollToTop(transactionListRef);
+  const dispatch = useAppDispatch();
+  const reverseResolvedName = useAppSelector(
+    state => state.keyring.currentWallet?.icnsData?.reverseResolvedName
+  );
   const { currentWallet } = useAppSelector(state => state.keyring);
   const { icpPrice } = useAppSelector(state => state.icp);
   const { transactions, transactionsLoading, transactionsError } =
     useAppSelector(state => state.user, shallowEqual);
+
+  useEffect(() => {
+    if (selectedTransaction) {
+      activityDetailModalRef.current?.open();
+    }
+  }, [selectedTransaction]);
 
   const onRefresh = () => {
     dispatch(getTransactions({ icpPrice }));
@@ -59,11 +64,9 @@ function Profile({ navigation }: ScreenProps<Routes.PROFILE>) {
   const renderTransaction = ({ item }: { item: Transaction }) => (
     <ActivityItem
       {...item}
-      onPress={() =>
-        setSelectedTransaction(item, () =>
-          activityDetailModalRef?.current?.open()
-        )
-      }
+      onPress={() => {
+        setSelectedTransaction(item);
+      }}
     />
   );
 
@@ -142,6 +145,7 @@ function Profile({ navigation }: ScreenProps<Routes.PROFILE>) {
       <ActivityDetail
         modalRef={activityDetailModalRef}
         activity={selectedTransaction!}
+        onClosed={() => setSelectedTransaction(undefined)}
       />
     </>
   );

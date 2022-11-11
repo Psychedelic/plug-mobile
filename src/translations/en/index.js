@@ -147,6 +147,7 @@ const translations = {
       from: 'From:',
       to: 'To:',
       you: ' (you)',
+      copied: 'Address copied in clipboard',
     },
     [ACTIVITY_STATUS.COMPLETED]: 'Completed',
     [ACTIVITY_STATUS.PENDING]: 'Pending',
