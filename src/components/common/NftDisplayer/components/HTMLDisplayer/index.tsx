@@ -27,7 +27,7 @@ function HTMLDisplayer({ loading, onLoad, url, style, type }: Props) {
         onLoad={onLoad}
         ref={webViewRef}
         source={
-          type === 'html'
+          type?.includes('html')
             ? {
                 uri: url,
               }

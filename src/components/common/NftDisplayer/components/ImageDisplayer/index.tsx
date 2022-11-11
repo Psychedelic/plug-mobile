@@ -30,7 +30,7 @@ function ImageDisplayer({ style, type, url }: Props) {
           ]}
         />
       }>
-      {type === 'image/svg+xml' || type === 'text/html' ? (
+      {type?.includes('svg') || type?.includes('html') ? (
         <HTMLDisplayer
           url={url}
           style={{ width: '100%', height: '100%' }}
