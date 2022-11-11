@@ -47,6 +47,7 @@ interface Props {
   transaction?: { status: string | null };
   loading?: boolean;
   adjustToContentHeight?: boolean;
+  disabled?: boolean;
 }
 
 const ReviewSend = ({
@@ -62,6 +63,7 @@ const ReviewSend = ({
   onContactSaved,
   transaction,
   loading,
+  disabled,
   adjustToContentHeight,
 }: Props) => {
   const { t } = useTranslation();
@@ -209,6 +211,7 @@ const ReviewSend = ({
                   : t('reviewSend.holdToSend')
               }
               loading={loading}
+              disabled={disabled}
               onPress={() => {}}
               onLongPress={onSend}
               buttonStyle={styles.button}

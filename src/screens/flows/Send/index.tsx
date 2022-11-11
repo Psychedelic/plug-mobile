@@ -369,7 +369,8 @@ function Send({ route }: ModalScreenProps<Routes.SEND>) {
         onClose={() => setSelectedNft(undefined)}
         onContactSaved={handleContactSaved}
         transaction={transaction}
-        loading={loading || loadingICNS}
+        loading={loading}
+        disabled={loadingICNS}
       />
       {isNewContact && receiver && (
         <SaveContact
