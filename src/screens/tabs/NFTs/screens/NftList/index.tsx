@@ -1,12 +1,12 @@
 import { FlashList } from '@shopify/flash-list';
 import React, { useLayoutEffect } from 'react';
 
-import { ICNS_CANISTER_ID } from '@/constants/canister';
 import { ModalScreenProps } from '@/interfaces/navigation';
 import { CollectionToken } from '@/interfaces/redux';
 import Routes from '@/navigation/Routes';
 import { useAppSelector } from '@/redux/hooks';
 import NftItem, { ITEM_HEIGHT } from '@/screens/tabs/components/NftItem';
+import { isICNSCanister } from '@/utils/assets';
 
 import styles from './styles';
 
@@ -30,7 +30,7 @@ function NftList({ route, navigation }: ModalScreenProps<Routes.NFT_LIST>) {
   };
 
   const renderItem = ({ item }: { item: CollectionToken }) => {
-    const isICNS = collection?.canisterId === ICNS_CANISTER_ID;
+    const isICNS = isICNSCanister(collection?.canisterId);
     const title = isICNS
       ? collection?.name
       : `${collection?.name} #${item.index}`;

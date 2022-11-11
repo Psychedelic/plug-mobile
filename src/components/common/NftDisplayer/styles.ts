@@ -30,4 +30,12 @@ export default StyleSheet.create({
     height: '100%',
     width: '100%',
   },
+  imageMask: {
+    borderRadius: 20,
+    backgroundColor: Colors.Black.Pure,
+  },
+  fullsize: {
+    width: '100%',
+    height: '100%',
+  },
 });

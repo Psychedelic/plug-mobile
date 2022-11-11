@@ -36,12 +36,12 @@ export default StyleSheet.create({
     marginTop: 4,
     color: Colors.ActionBlue,
   },
-  title: {
-    ...fontMaker({ size: 24, weight: SEMIBOLD, color: Colors.White.Primary }),
-  },
-  subtitle: {
-    ...fontMaker({ size: 16, weight: MEDIUM, color: Colors.White.Secondary }),
-  },
+  title: fontMaker({ size: 24, weight: SEMIBOLD, color: Colors.White.Primary }),
+  subtitle: fontMaker({
+    size: 16,
+    weight: MEDIUM,
+    color: Colors.White.Secondary,
+  }),
   nft: {
     height: 45,
     width: 45,

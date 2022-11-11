@@ -4,11 +4,8 @@ import React, { useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RefreshControl, View } from 'react-native';
 
-import EmptyState from '@/commonComponents/EmptyState';
-import ErrorState from '@/commonComponents/ErrorState';
 import useScrollHanlder from '@/components/buttons/ScrollableButton/hooks/useScrollHandler';
-import Text from '@/components/common/Text';
-import { ICNS_CANISTER_ID } from '@/constants/canister';
+import { EmptyState, ErrorState, Text } from '@/components/common';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
 import { RootScreenProps } from '@/interfaces/navigation';
@@ -18,6 +15,7 @@ import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getNFTs } from '@/redux/slices/user';
 import WalletHeader from '@/screens/tabs/components/WalletHeader';
+import { isICNSCanister } from '@/utils/assets';
 
 import NftItem, { ITEM_HEIGHT } from '../components/NftItem';
 import AddCollection from './modals/AddCollection';
@@ -55,7 +53,7 @@ function NFTs({ navigation }: RootScreenProps<Routes.NFTS>) {
   };
 
   const renderCollection = ({ item }: { item: Collection }) => {
-    const isICNS = item.canisterId === ICNS_CANISTER_ID;
+    const isICNS = isICNSCanister(item.canisterId);
     return (
       <NftItem
         url={item.icon}
@@ -95,7 +93,7 @@ function NFTs({ navigation }: RootScreenProps<Routes.NFTS>) {
               ref={NFTListRef}
               renderItem={renderCollection}
               estimatedItemSize={ITEM_HEIGHT}
-              keyExtractor={({ canisterId }) => `${canisterId}`}
+              keyExtractor={({ canisterId }) => canisterId}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={styles.nftsContainer}
               overScrollMode="never"

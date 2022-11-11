@@ -35,11 +35,9 @@ export default StyleSheet.create({
     borderRadius: 16,
     marginLeft: 8,
   },
-  inputStyle: {
-    ...fontMaker({
-      size: 16,
-      weight: SEMIBOLD,
-      color: Colors.White.Pure,
-    }),
-  },
+  inputStyle: fontMaker({
+    size: 16,
+    weight: SEMIBOLD,
+    color: Colors.White.Pure,
+  }),
 });

@@ -3,8 +3,8 @@ import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 
 import Image from '@/components/common/Image';
-import { Colors } from '@/constants/theme';
 
+import styles from '../../styles';
 import HTMLDisplayer from '../HTMLDisplayer';
 
 interface Props {
@@ -18,29 +18,12 @@ function ImageDisplayer({ style, type, url }: Props) {
     <MaskedView
       style={style}
       maskElement={
-        <View
-          style={[
-            StyleSheet.absoluteFill,
-            {
-              borderRadius: 20,
-              backgroundColor: Colors.Black.Pure,
-            },
-            style,
-          ]}
-        />
+        <View style={[StyleSheet.absoluteFill, styles.imageMask, style]} />
       }>
       {type?.includes('svg') || type?.includes('html') ? (
-        <HTMLDisplayer
-          url={url}
-          style={{ width: '100%', height: '100%' }}
-          type={type}
-        />
+        <HTMLDisplayer url={url} style={styles.fullsize} type={type} />
       ) : (
-        <Image
-          resizeMode="contain"
-          style={{ width: '100%', height: '100%' }}
-          url={url}
-        />
+        <Image resizeMode="contain" style={styles.fullsize} url={url} />
       )}
     </MaskedView>
   );

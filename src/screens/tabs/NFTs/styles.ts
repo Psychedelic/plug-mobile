@@ -29,9 +29,7 @@ export default StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 20,
   },
-  title: {
-    ...FontStyles.Title,
-  },
+  title: FontStyles.Title,
   totalItems: {
     color: Colors.White.Secondary,
   },

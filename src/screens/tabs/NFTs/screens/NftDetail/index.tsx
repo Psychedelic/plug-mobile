@@ -10,7 +10,6 @@ import Button from '@/components/buttons/Button';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import { ActionSheet, Badge, NftDisplayer, Text } from '@/components/common';
 import ModalHeader from '@/components/navigation/ModalHeader';
-import { ICNS_CANISTER_ID } from '@/constants/canister';
 import { FontStyles } from '@/constants/theme';
 import useGetType from '@/hooks/useGetType';
 import DownloadIcon from '@/icons/material/Download.svg';
@@ -19,6 +18,7 @@ import { ModalScreenProps } from '@/interfaces/navigation';
 import Routes from '@/navigation/Routes';
 import { useAppSelector } from '@/redux/hooks';
 import { getNFTDetails } from '@/services/DAB';
+import { isICNSCanister } from '@/utils/assets';
 import { downloadFile } from '@/utils/filesystem';
 import { deleteWhiteSpaces } from '@/utils/strings';
 
@@ -34,7 +34,7 @@ function NftDetail({ route, navigation }: ModalScreenProps<Routes.NFT_DETAIL>) {
   const { collections } = useAppSelector(state => state.user);
   const collection = collections.find(c => c.canisterId === canisterId);
   const selectedNFT = collection?.tokens?.find(token => token.index === index);
-  const isICNS = selectedNFT?.canister === ICNS_CANISTER_ID;
+  const isICNS = isICNSCanister(selectedNFT?.canister);
   const nftName = `${collection?.name || ''} #${index}`;
   const type = useGetType(selectedNFT?.url);
 
