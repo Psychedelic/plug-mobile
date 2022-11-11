@@ -9,8 +9,6 @@ import {
   ACTIVITY_TYPES,
 } from '@/constants/business';
 import { JELLY_CANISTER_ID } from '@/constants/canister';
-import { validateICNSName } from '@/utils/ids';
-import shortAddress from '@/utils/shortAddress';
 import { capitalize } from '@/utils/strings.js';
 
 export const getNativeTokensLogo = symbol => {
@@ -83,21 +81,6 @@ export const getStatus = (status, styles) => {
     default:
       return null;
   }
-};
-
-export const getSubtitle = (type, to, from) => {
-  const toText = t('activity.subtitleTo', {
-    value: validateICNSName(to) ? to : shortAddress(to),
-  });
-  const fromText = t('activity.subtitleFrom', {
-    value: validateICNSName(from) ? from : shortAddress(from),
-  });
-
-  return {
-    SEND: toText,
-    BURN: toText,
-    RECEIVE: fromText,
-  }[type];
 };
 
 export const getCanisterName = (canisterInfo, canisterId) => {

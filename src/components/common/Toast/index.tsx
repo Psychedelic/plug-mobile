@@ -23,7 +23,7 @@ export enum ToastTypes {
 
 export interface ToastProps {
   title: string;
-  message: string;
+  message?: string;
   type: 'success' | 'error' | 'info';
   id: string;
 }
@@ -65,9 +65,11 @@ function Toast({ title, message, type, id }: ToastProps) {
           <Close fill={Colors.White.Primary} height={20} />
         </Touchable>
       </View>
-      <Text type="caption" style={styles.message}>
-        {message}
-      </Text>
+      {message && (
+        <Text type="caption" style={styles.message}>
+          {message}
+        </Text>
+      )}
     </LinearGradient>
   );
 }

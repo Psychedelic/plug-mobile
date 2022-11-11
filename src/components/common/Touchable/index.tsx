@@ -16,7 +16,7 @@ import scales from '@/utils/animationScales';
 
 interface Props {
   children?: React.ReactNode;
-  onPress?: () => void;
+  onPress?: (param?: any) => void;
   onLongPress?: () => void;
   hapticType?: HapticFeedbackTypes;
   scale?: number;
