@@ -2,25 +2,45 @@ import { t } from 'i18next';
 import React from 'react';
 
 import Text from '@/components/common/Text';
-import { ACTIVITY_STATUS } from '@/constants/business';
+import { TOKENS } from '@/constants/assets';
+import {
+  ACTIVITY_IMAGES,
+  ACTIVITY_STATUS,
+  ACTIVITY_TYPES,
+} from '@/constants/business';
 import { JELLY_CANISTER_ID } from '@/constants/canister';
-import { validateICNSName } from '@/utils/ids';
-import shortAddress from '@/utils/shortAddress';
 import { capitalize } from '@/utils/strings.js';
 
-export const parseImageName = name => name.replace('.png', '').toLowerCase();
+export const getNativeTokensLogo = symbol => {
+  switch (symbol) {
+    case TOKENS.ICP.symbol:
+      return TOKENS.ICP.icon;
+    case TOKENS.WICP.symbol:
+      return TOKENS.WICP.icon;
+    case TOKENS.XTC.symbol:
+      return TOKENS.XTC.icon;
+    default:
+      return 'unknown';
+  }
+};
 
-export const getTitle = (type, symbol, swapData, plug) => {
+export const getTypeIcon = type => {
   switch (type) {
-    case 'SWAP':
-      return swapData?.currency.name
-        ? t('transactionTypes.swapFor', {
-            from: symbol,
-            to: swapData?.currency.name,
-          })
-        : t('transactionTypes.swap');
-    case 'PLUG':
-      return t('common.pluggedInto', { name: plug.name });
+    case ACTIVITY_TYPES.RECEIVE:
+      return ACTIVITY_IMAGES.RECEIVE;
+    case ACTIVITY_TYPES.BURN:
+      return ACTIVITY_IMAGES.BURN;
+    case ACTIVITY_TYPES.SEND:
+      return ACTIVITY_IMAGES.SEND;
+    case ACTIVITY_TYPES.MINT:
+      return ACTIVITY_IMAGES.MINT;
+    default:
+      return 'actionActivity';
+  }
+};
+
+export const getTitle = (type, symbol) => {
+  switch (type) {
     case 'DIRECTBUY':
       return t('transactionTypes.buyNTF');
     case 'MAKELISTING':
@@ -61,21 +81,6 @@ export const getStatus = (status, styles) => {
     default:
       return null;
   }
-};
-
-export const getSubtitle = (type, to, from) => {
-  const toText = t('activity.subtitleTo', {
-    value: validateICNSName(to) ? to : shortAddress(to),
-  });
-  const fromText = t('activity.subtitleFrom', {
-    value: validateICNSName(from) ? from : shortAddress(from),
-  });
-
-  return {
-    SEND: toText,
-    BURN: toText,
-    RECEIVE: fromText,
-  }[type];
 };
 
 export const getCanisterName = (canisterInfo, canisterId) => {

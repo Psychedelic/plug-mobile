@@ -2,7 +2,6 @@ import { Principal } from '@dfinity/principal';
 import { Address } from '@psychedelic/plug-controller/dist/interfaces/contact_registry';
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 
-import { JELLY_CANISTER_ID } from '@/constants/canister';
 import { ENABLE_NFTS } from '@/constants/nfts';
 import {
   CollectionInfo,
@@ -35,7 +34,6 @@ import {
   DEFAULT_TRANSACTION,
   formatContact,
   formatContactForController,
-  formatTransaction,
   TRANSACTION_STATUS,
 } from '../utils';
 
@@ -184,25 +182,11 @@ export const getTransactions = createAsyncThunk<
   try {
     const { icpPrice } = params;
     const instance = KeyRing.getInstance();
-    const currentWalletId = instance?.currentWalletId;
-    const state = await instance?.getState();
-    const currentWallet = state.wallets[currentWalletId];
-    const response = await instance?.getTransactions({});
-    let parsedTrx =
-      response?.transactions?.map(formatTransaction(icpPrice, currentWallet)) ||
-      [];
+    const { transactions } = await instance?.getTransactions({
+      icpPrice,
+    });
 
-    if (!ENABLE_NFTS) {
-      parsedTrx = parsedTrx.filter(
-        item =>
-          !(
-            item?.symbol === 'NFT' ||
-            item?.details.canisterId === JELLY_CANISTER_ID
-          )
-      );
-    }
-
-    return parsedTrx;
+    return transactions;
   } catch (e: any) {
     return rejectWithValue(e.message);
   }
