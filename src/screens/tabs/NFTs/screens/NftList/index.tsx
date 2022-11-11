@@ -6,8 +6,8 @@ import { ModalScreenProps } from '@/interfaces/navigation';
 import { CollectionToken } from '@/interfaces/redux';
 import Routes from '@/navigation/Routes';
 import { useAppSelector } from '@/redux/hooks';
+import NftItem, { ITEM_HEIGHT } from '@/screens/tabs/components/NftItem';
 
-import CollectionItem, { ITEM_HEIGHT } from '../../components/CollectionItem';
 import styles from './styles';
 
 function NftList({ route, navigation }: ModalScreenProps<Routes.NFT_LIST>) {
@@ -36,7 +36,7 @@ function NftList({ route, navigation }: ModalScreenProps<Routes.NFT_LIST>) {
       : `${collection?.name} #${item.index}`;
 
     return (
-      <CollectionItem
+      <NftItem
         title={title}
         url={item.url}
         onPress={() => handleItemPress(item)}
@@ -54,6 +54,8 @@ function NftList({ route, navigation }: ModalScreenProps<Routes.NFT_LIST>) {
       renderItem={renderItem}
       numColumns={2}
       estimatedItemSize={ITEM_HEIGHT}
+      bounces={false}
+      showsVerticalScrollIndicator={false}
     />
   );
 }

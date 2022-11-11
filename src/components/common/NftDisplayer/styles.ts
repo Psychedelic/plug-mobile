@@ -5,24 +5,18 @@ import { Colors } from '@/constants/theme';
 
 const itemSize = WINDOW_WIDTH / 2 - 40;
 
-const commonStyle = {
-  borderRadius: 20,
-  alignSelf: 'center',
-} as ViewStyle;
-
 const commonCotainer = {
-  ...commonStyle,
+  alignSelf: 'center',
   width: itemSize,
   height: itemSize,
-};
+} as ViewStyle;
 
 export default StyleSheet.create({
-  image: commonStyle,
   video: commonCotainer,
   webView: {
+    ...commonCotainer,
     backgroundColor: 'transparent',
     flex: 0,
-    ...commonCotainer,
   },
   webViewLoader: {
     alignItems: 'center',

@@ -5,7 +5,6 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import Image from '@/components/common/Image';
 import { Colors } from '@/constants/theme';
 
-import sharedStyles from '../../styles';
 import HTMLDisplayer from '../HTMLDisplayer';
 
 interface Props {
@@ -17,7 +16,7 @@ interface Props {
 function ImageDisplayer({ style, type, url }: Props) {
   return (
     <MaskedView
-      style={[sharedStyles.image, style]}
+      style={style}
       maskElement={
         <View
           style={[

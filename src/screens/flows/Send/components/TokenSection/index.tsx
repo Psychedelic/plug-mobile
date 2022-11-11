@@ -21,7 +21,7 @@ interface Props {
 
 const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }: Props) => {
   const { t } = useTranslation();
-  const handleOnOpenNFT = (nft: FormattedCollection) => () => {
+  const handleOnOpenNFT = (nft: FormattedCollection) => {
     onNftPress(nft);
   };
 
