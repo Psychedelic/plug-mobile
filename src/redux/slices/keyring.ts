@@ -372,7 +372,7 @@ export const setCurrentPrincipal = createAsyncThunk(
       const wallet = wallets[walletId];
       dispatch(setCurrentWallet(wallet || {}));
       dispatch(getBalance());
-      dispatch(getNFTs());
+      dispatch(getNFTs({ refresh: true }));
       dispatch(getTransactions({ icpPrice }));
     } catch (e: any) {
       console.log('setCurrentPrincipal', e.message);

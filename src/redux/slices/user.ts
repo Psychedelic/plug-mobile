@@ -229,6 +229,8 @@ export const transferNFT = createAsyncThunk(
         token: nft,
       });
       if (response) {
+        // Reload nft list in kyassu and get new transactionlist
+        instance.getNFTs({ refresh: true });
         dispatch(getTransactions({ icpPrice }));
       }
       onSuccess?.();
