@@ -20,7 +20,7 @@ interface Props {
   subtitle?: string;
 }
 
-function CollectionItem({
+function NftItem({
   onPress,
   url,
   title,
@@ -65,4 +65,4 @@ function CollectionItem({
   );
 }
 
-export default CollectionItem;
+export default NftItem;

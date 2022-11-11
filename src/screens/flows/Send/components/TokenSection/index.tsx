@@ -46,13 +46,20 @@ const TokenSection = ({ tokens, nfts, onTokenPress, onNftPress }: Props) => {
             {t('common.collectibles')}
           </Text>
           <View style={styles.nftsContainer}>
-            {filteredNFTS.map(item => (
-              <NftItem
-                key={`${item.canister}_${item.index}`}
-                item={item}
-                onOpen={handleOnOpenNFT}
-              />
-            ))}
+            {filteredNFTS.map(item => {
+              return (
+                <NftItem
+                  key={`${item.canister}_${item.index}`}
+                  onPress={() => handleOnOpenNFT(item)}
+                  url={item.url}
+                  title={`${item?.collectionName} #${item.index}`}
+                  titleStyle={styles.itemTitle}
+                  canisterId={item.canister}
+                  itemId={item.index}
+                  containerStyle={styles.itemContainer}
+                />
+              );
+            })}
           </View>
         </>
       )}

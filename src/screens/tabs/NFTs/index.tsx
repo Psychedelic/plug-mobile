@@ -19,7 +19,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getNFTs } from '@/redux/slices/user';
 import WalletHeader from '@/screens/tabs/components/WalletHeader';
 
-import CollectionItem, { ITEM_HEIGHT } from './components/CollectionItem';
+import NftItem, { ITEM_HEIGHT } from '../components/NftItem';
 import AddCollection from './modals/AddCollection';
 import styles from './styles';
 
@@ -57,7 +57,7 @@ function NFTs({ navigation }: RootScreenProps<Routes.NFTS>) {
   const renderCollection = ({ item }: { item: Collection }) => {
     const isICNS = item.canisterId === ICNS_CANISTER_ID;
     return (
-      <CollectionItem
+      <NftItem
         url={item.icon}
         title={item.name}
         subtitle={t('nftTab.items', { count: item.tokens.length })}
@@ -89,7 +89,6 @@ function NFTs({ navigation }: RootScreenProps<Routes.NFTS>) {
           <View style={styles.container}>
             <FlashList
               onScroll={handleOnScroll}
-              bounces={false}
               data={collections}
               numColumns={2}
               horizontal={false}
