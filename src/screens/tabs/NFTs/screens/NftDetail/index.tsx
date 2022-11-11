@@ -99,7 +99,10 @@ function NftDetail({ route, navigation }: ModalScreenProps<Routes.NFT_DETAIL>) {
 
   return (
     <>
-      <ScrollView style={styles.content} bounces={false}>
+      <ScrollView
+        style={styles.content}
+        bounces={false}
+        showsVerticalScrollIndicator={false}>
         <View style={styles.nftDisplayerContainer}>
           {selectedNFT && (
             <NftDisplayer
@@ -108,6 +111,8 @@ function NftDetail({ route, navigation }: ModalScreenProps<Routes.NFT_DETAIL>) {
               url={selectedNFT?.url}
               type={type}
               style={styles.video}
+              canisterId={selectedNFT.canister}
+              itemId={selectedNFT.index}
             />
           )}
         </View>

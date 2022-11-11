@@ -3,23 +3,26 @@ import { ActivityIndicator, StyleProp, ViewStyle } from 'react-native';
 import Video from 'react-native-video';
 
 import useFileDownload from '@/hooks/useFileDownload';
+import { getExtension } from '@/utils/fileTypes';
 
 import sharedStyles from '../../styles';
 
 interface Props {
   style: StyleProp<ViewStyle>;
   url: string;
+  type: string;
   paused?: boolean;
+  filename?: string;
 }
 
-const VideoDisplayer = ({ style, url, paused }: Props) => {
+const VideoDisplayer = ({ style, url, paused, type, filename }: Props) => {
   const [loading, setLoading] = useState(true);
+  const format = getExtension(type) || 'mp4';
+  const newUrl = useFileDownload({ url, format, filename });
 
   const hideSpinner = () => {
     setLoading(false);
   };
-
-  const newUrl = useFileDownload({ url, format: 'mp4' });
 
   return (
     <>

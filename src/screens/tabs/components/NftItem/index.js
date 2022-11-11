@@ -29,6 +29,8 @@ function NftItem({ item, onOpen }) {
           type={type}
           url={url}
           style={styles.nftDisplayer}
+          canisterId={canister}
+          itemId={index}
         />
       </Touchable>
       <Text numberOfLines={1} ellipsizeMode="tail" style={styles.text}>

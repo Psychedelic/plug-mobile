@@ -64,6 +64,8 @@ function NFTs({ navigation }: RootScreenProps<Routes.NFTS>) {
         containerStyle={styles.itemContainer}
         itemStyle={isICNS && styles.icnsImage}
         onPress={() => handleCollectionPress(item)}
+        canisterId={item.canisterId}
+        itemId={item.name}
       />
     );
   };

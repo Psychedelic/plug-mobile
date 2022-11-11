@@ -11,6 +11,8 @@ export const ITEM_HEIGHT = CONTAINER_HEIGHT;
 interface Props {
   url: string;
   onPress: () => void;
+  canisterId: string;
+  itemId: string | number;
   titleStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
   itemStyle?: StyleProp<ViewStyle>;
@@ -26,6 +28,8 @@ function CollectionItem({
   subtitle,
   containerStyle,
   itemStyle,
+  canisterId,
+  itemId,
 }: Props) {
   const type = useGetType(url);
   return (
@@ -36,6 +40,8 @@ function CollectionItem({
         style={[styles.display, itemStyle]}
         icnsSize="small"
         paused
+        canisterId={canisterId}
+        itemId={itemId}
       />
       {title && (
         <Text

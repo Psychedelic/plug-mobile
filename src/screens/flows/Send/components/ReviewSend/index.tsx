@@ -143,7 +143,13 @@ const ReviewSend = ({
               <Text style={styles.title}>{`#${nft.index}`}</Text>
               <Text type="subtitle3">{nft.collectionName}</Text>
             </Column>
-            <NftDisplayer url={nft.url} type={nftType} style={styles.nft} />
+            <NftDisplayer
+              url={nft.url}
+              type={nftType}
+              style={styles.nft}
+              canisterId={nft.canister}
+              itemId={nft.index}
+            />
           </Row>
         )}
         <Row style={[styles.row, styles.toRow]}>
