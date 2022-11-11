@@ -37,9 +37,7 @@ function Profile({ navigation }: ScreenProps<Routes.PROFILE>) {
   const accountsModalRef = useRef<Modalize>(null);
   const activityDetailModalRef = useRef<Modalize>(null);
   const transactionListRef = useRef(null);
-  const [selectedTransaction, setSelectedTransaction] = useState<
-    Transaction | undefined
-  >(undefined);
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction>();
 
   useScrollToTop(transactionListRef);
   const dispatch = useAppDispatch();
