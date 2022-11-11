@@ -1,61 +1,48 @@
-import React from 'react';
-import { ActivityIndicator, StyleProp, View, ViewStyle } from 'react-native';
+import React, { useState } from 'react';
+import { ActivityIndicator, StyleProp, ViewStyle } from 'react-native';
 import Video from 'react-native-video';
 
 import useFileDownload from '@/hooks/useFileDownload';
+import { getExtension } from '@/utils/fileTypes';
 
 import sharedStyles from '../../styles';
 
 interface Props {
-  onLoad?: () => void;
   style: StyleProp<ViewStyle>;
   url: string;
-  loading?: boolean;
-  isDetailView?: boolean;
-  isSendView?: boolean;
+  type: string;
+  paused?: boolean;
+  filename?: string;
 }
 
-const VideoDisplayer = ({
-  onLoad,
-  style,
-  url,
-  loading,
-  isDetailView,
-  isSendView,
-}: Props) => {
-  const newUrl = useFileDownload({ url, format: 'mp4' });
+const VideoDisplayer = ({ style, url, paused, type, filename }: Props) => {
+  const [loading, setLoading] = useState(true);
+  const format = getExtension(type) || 'mp4';
+  const newUrl = useFileDownload({ url, format, filename });
+
+  const hideSpinner = () => {
+    setLoading(false);
+  };
 
   return (
-    <View
-      style={[
-        sharedStyles.container,
-        isDetailView && sharedStyles.containerDetail,
-        isSendView && sharedStyles.containerSend,
-        style,
-      ]}>
+    <>
       {loading && !newUrl ? (
-        <ActivityIndicator
-          style={sharedStyles.activityIndicator}
-          color="white"
-        />
+        <ActivityIndicator style={[sharedStyles.video, style]} color="white" />
       ) : (
         <Video
           repeat
-          onLoad={onLoad}
+          paused={paused}
+          onLoad={hideSpinner}
           resizeMode="cover"
           source={{ uri: newUrl }}
           selectedVideoTrack={{
             type: 'resolution',
             value: 480,
           }}
-          style={[
-            sharedStyles.video,
-            isDetailView && sharedStyles.videoDetail,
-            isSendView && sharedStyles.videoSend,
-          ]}
+          style={[sharedStyles.video, style]}
         />
       )}
-    </View>
+    </>
   );
 };
 

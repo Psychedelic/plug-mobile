@@ -10,7 +10,7 @@ import { ActionButton, Header, PasswordInput, Text } from '@/components/common';
 import KeyboardScrollView from '@/components/common/KeyboardScrollView';
 import { Colors } from '@/constants/theme';
 import useKeychain from '@/hooks/useKeychain';
-import { ScreenProps } from '@/interfaces/navigation';
+import { RootScreenProps } from '@/interfaces/navigation';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -26,7 +26,7 @@ type FormValues = {
 const CreatePassword = ({
   route,
   navigation,
-}: ScreenProps<Routes.CREATE_PASSWORD>) => {
+}: RootScreenProps<Routes.CREATE_PASSWORD>) => {
   const { t } = useTranslation();
   const { isSensorAvailable, saveBiometrics, resetBiometrics } = useKeychain();
   const {

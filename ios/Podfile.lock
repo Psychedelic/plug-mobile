@@ -439,7 +439,7 @@ PODS:
     - SDWebImageWebPCoder (~> 0.8.4)
   - RNFileViewer (2.1.5):
     - React-Core
-  - RNFlashList (1.2.2):
+  - RNFlashList (1.4.0):
     - React-Core
   - RNGestureHandler (2.7.1):
     - React-Core
@@ -480,7 +480,7 @@ PODS:
   - RNSentry (4.5.0):
     - React-Core
     - Sentry (= 7.25.1)
-  - RNSVG (13.4.0):
+  - RNSVG (13.5.0):
     - React-Core
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
@@ -821,14 +821,14 @@ SPEC CHECKSUMS:
   RNDeviceInfo: 4701f0bf2a06b34654745053db0ce4cb0c53ada7
   RNFastImage: 3207b9eb17c2425d574ca40db35185db6e324f4e
   RNFileViewer: ce7ca3ac370e18554d35d6355cffd7c30437c592
-  RNFlashList: 13d14d9502661134ad3ba892f81d76bdcbd79755
+  RNFlashList: 399bf6a0db68f594ad2c86aaff3ea39564f39f8a
   RNGestureHandler: b7a872907ee289ada902127f2554fa1d2c076122
   RNLocalize: a64514b46a01375fdfae9349036b4dc7130333b5
   RNReactNativeHapticFeedback: 1e3efeca9628ff9876ee7cdd9edec1b336913f8c
   RNReanimated: 2a91e85fcd343f8af3c58d3425b99fdd285590a5
   RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
   RNSentry: a034d0e81e3d3c04b770dd2df953fe634d372d22
-  RNSVG: 07dbd870b0dcdecc99b3a202fa37c8ca163caec2
+  RNSVG: 38ca962c970dbce1ca38991a5aebf26d163f9efb
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815
   Sentry: dd29c18c32b0af9269949f079cf631d581ca76ca

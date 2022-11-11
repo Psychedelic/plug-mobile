@@ -1,66 +1,52 @@
-import React, { useState } from 'react';
-import { ActivityIndicator, StyleProp, View, ViewStyle } from 'react-native';
+import React from 'react';
+import { ActivityIndicator, StyleProp, ViewStyle } from 'react-native';
+
+import { deleteWhiteSpaces } from '@/utils/strings';
 
 import ICNSDisplayer from './components/ICNSDisplayer';
 import ImageDisplayer from './components/ImageDisplayer';
 import VideoDisplayer from './components/VideoDisplayer';
-import styles from './styles';
 
 interface Props {
   url: string;
+  canisterId: string;
+  itemId: string | number;
   style?: StyleProp<ViewStyle>;
   type?: string;
   isDetailView?: boolean;
-  isSend?: boolean;
   ICNSName?: string;
+  icnsSize?: 'big' | 'small';
+  paused?: boolean;
 }
 
 const NftDisplayer = ({
   url,
   style,
   type,
-  isDetailView,
-  isSend,
+  icnsSize,
   ICNSName,
+  canisterId,
+  itemId,
+  paused,
 }: Props) => {
-  const [loading, setLoading] = useState(true);
-
-  const hideSpinner = () => {
-    setLoading(false);
-  };
-
+  const uniqueId = deleteWhiteSpaces(`${canisterId}${itemId}`);
   return type ? (
-    <View>
-      {type?.includes('video') ? (
+    <>
+      {type?.includes('video/') ? (
         <VideoDisplayer
           url={url}
-          loading={loading}
-          isSendView={isSend}
-          style={styles.image}
-          onLoad={hideSpinner}
-          isDetailView={isDetailView}
+          style={style}
+          paused={paused}
+          type={type}
+          filename={uniqueId}
         />
       ) : (
-        <ImageDisplayer
-          url={url}
-          type={type}
-          style={style}
-          isSendView={isSend}
-          isDetailView={isDetailView}
-        />
+        <ImageDisplayer url={url} type={type} style={style} />
       )}
-      {ICNSName && (
-        <ICNSDisplayer
-          ICNSName={ICNSName}
-          size={isDetailView ? 'big' : 'small'}
-        />
-      )}
-    </View>
+      {ICNSName && <ICNSDisplayer ICNSName={ICNSName} size={icnsSize} />}
+    </>
   ) : (
-    <ActivityIndicator
-      color="white"
-      style={isSend ? styles.sendActivityIndicator : styles.activityIndicator}
-    />
+    <ActivityIndicator color="white" style={style} />
   );
 };
 

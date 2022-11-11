@@ -75,7 +75,7 @@ function Profile({ navigation }: ScreenProps<Routes.PROFILE>) {
           left={
             <Touchable
               scale={animationScales.medium}
-              onPress={() => navigation.navigate(Routes.SETTINGS_STACK)}>
+              onPress={() => navigation.navigate(Routes.MODAL_STACK)}>
               <Icon name="gear" color={Colors.White.Primary} />
             </Touchable>
           }

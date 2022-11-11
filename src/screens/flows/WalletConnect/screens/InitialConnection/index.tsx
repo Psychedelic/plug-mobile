@@ -9,7 +9,7 @@ import RainbowButton from '@/components/buttons/RainbowButton';
 import Icon from '@/components/icons';
 import { FontStyles } from '@/constants/theme';
 import useDisableBack from '@/hooks/useDisableBack';
-import { ScreenProps } from '@/interfaces/navigation';
+import { RootScreenProps } from '@/interfaces/navigation';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -26,7 +26,7 @@ import styles from './styles';
 function WCInitialConnection({
   route,
   navigation,
-}: ScreenProps<Routes.WALLET_CONNECT_INITIAL_CONNECTION>) {
+}: RootScreenProps<Routes.WALLET_CONNECT_INITIAL_CONNECTION>) {
   useDisableBack();
   const modalRef = useRef<Modalize>(null);
   const dispatch = useAppDispatch();

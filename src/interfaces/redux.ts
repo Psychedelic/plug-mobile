@@ -18,6 +18,7 @@ export interface CollectionToken {
   url: string;
   standard: string;
   metadata: any;
+  name?: string; // ICNS
 }
 
 export interface Collection {

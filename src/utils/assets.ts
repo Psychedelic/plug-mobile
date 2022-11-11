@@ -1,5 +1,5 @@
 import { TOKENS } from '@/constants/assets';
-import { ICP_CANISTER_ID } from '@/constants/canister';
+import { ICNS_CANISTER_ID, ICP_CANISTER_ID } from '@/constants/canister';
 import { Collection, CollectionToken } from '@/interfaces/redux';
 import { validateCanisterId } from '@/utils/ids';
 
@@ -43,3 +43,6 @@ export const formatCollections = (
       ...token,
     }))
   );
+
+export const isICNSCanister = (canisterId?: string) =>
+  canisterId === ICNS_CANISTER_ID;

@@ -9,40 +9,20 @@ interface Props {
   onLoad?: () => void;
   url: string;
   style: StyleProp<ViewStyle>;
-  isSendView?: boolean;
-  isDetailView?: boolean;
   type: string;
 }
 
-const Spinner = ({
-  isDetailView,
-  isSendView,
-}: {
-  isDetailView?: boolean;
-  isSendView?: boolean;
-}) => (
-  <View
-    style={[
-      sharedStyles.webViewLoader,
-      (isDetailView || isSendView) && sharedStyles.webViewLoaderDetail,
-    ]}>
+const Spinner = ({ style }: { style?: StyleProp<ViewStyle> }) => (
+  <View style={[sharedStyles.webViewLoader, style]}>
     <ActivityIndicator size="small" color="white" />
   </View>
 );
 
-function HTMLDisplayer({
-  loading,
-  onLoad,
-  url,
-  style,
-  isSendView,
-  type,
-  isDetailView,
-}: Props) {
+function HTMLDisplayer({ loading, onLoad, url, style, type }: Props) {
   const webViewRef = useRef(null);
 
   return (
-    <View style={[sharedStyles.image, style]}>
+    <View style={style}>
       <WebView
         onLoad={onLoad}
         ref={webViewRef}
@@ -62,17 +42,10 @@ function HTMLDisplayer({
         }
         scrollEnabled={false}
         startInLoadingState={true}
-        renderLoading={() => (
-          <Spinner isDetailView={isDetailView} isSendView={isSendView} />
-        )}
-        style={isSendView ? sharedStyles.webViewSend : sharedStyles.webView}
+        renderLoading={() => <Spinner style={style} />}
+        style={[sharedStyles.webView, style]}
       />
-      {loading && (
-        <ActivityIndicator
-          style={sharedStyles.activityIndicator}
-          color="white"
-        />
-      )}
+      {loading && <Spinner style={style} />}
     </View>
   );
 }

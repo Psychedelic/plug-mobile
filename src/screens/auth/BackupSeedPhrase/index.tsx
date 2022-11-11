@@ -8,7 +8,7 @@ import Header from '@/commonComponents/Header';
 import SeedPhrase from '@/commonComponents/SeedPhrase';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import Text from '@/components/common/Text';
-import { ScreenProps } from '@/interfaces/navigation';
+import { RootScreenProps } from '@/interfaces/navigation';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 
@@ -17,7 +17,7 @@ import styles from './styles';
 const BackupSeedPhrase = ({
   route,
   navigation,
-}: ScreenProps<Routes.BACKUP_SEED_PHRASE>) => {
+}: RootScreenProps<Routes.BACKUP_SEED_PHRASE>) => {
   const { t } = useTranslation();
   const { mnemonic } = route?.params || {};
   const [revealed, setRevealed] = useState(false);

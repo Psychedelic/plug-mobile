@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleProp, TextStyle, View, ViewStyle } from 'react-native';
 
 import Touchable from '@/commonComponents/Touchable';
@@ -59,8 +59,7 @@ function CommonItem({
   disabled,
   showActions = true,
 }: Props) {
-  const [imageType, setImageType] = useState('');
-  useGetType(imageUri, setImageType);
+  const imageType = useGetType(imageUri);
 
   const formattedId = shortAddress(id, longId ? longIdConfig : undefined);
 
