@@ -17,6 +17,7 @@ import { getICPPrice } from '@/redux/slices/icp';
 import { sendToken, setTransaction, transferNFT } from '@/redux/slices/user';
 import { formatCollections, FormattedCollection } from '@/utils/assets';
 import {
+  isOwnAddress,
   validateAccountId,
   validateICNSName,
   validatePrincipalId,
@@ -194,12 +195,9 @@ function Send({ route }: ModalScreenProps<Routes.SEND>) {
     }
 
     const savedContact = contacts?.find(c => c.id === text);
-    const isOwnAddress =
-      text === currentWallet?.principal ||
-      text === currentWallet?.accountId ||
-      text === currentWallet?.icnsData?.reverseResolvedName;
+    const isOwn = isOwnAddress(text, currentWallet!);
 
-    if (savedContact && !isOwnAddress) {
+    if (savedContact && !isOwn) {
       setReceiver({
         ...savedContact,
         isValid: true,
@@ -207,7 +205,7 @@ function Send({ route }: ModalScreenProps<Routes.SEND>) {
       scrollToTop();
     } else {
       const isValid =
-        !isOwnAddress && (validatePrincipalId(text) || validateAccountId(text));
+        !isOwn && (validatePrincipalId(text) || validateAccountId(text));
       setReceiver({ id: text, isValid });
     }
   };

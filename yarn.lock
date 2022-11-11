@@ -1828,10 +1828,10 @@
     cross-fetch "^3.1.4"
     crypto-js "^4.1.1"
 
-"@psychedelic/plug-controller@0.24.9":
-  version "0.24.9"
-  resolved "https://npm.pkg.github.com/download/@Psychedelic/plug-controller/0.24.9/ef37d22d00554de71b00782dbd7a440c2c9ee6f6#ef37d22d00554de71b00782dbd7a440c2c9ee6f6"
-  integrity sha512-PJd5oN+b30VOkjfge6sIqpN9K2w9Xawcc2Tw+ByAXIpLFNVUPOmcOm2LOuMgPo++xtlqAonGsDAGqQ4KUq/4Zw==
+"@psychedelic/plug-controller@0.25.0":
+  version "0.25.0"
+  resolved "https://npm.pkg.github.com/download/@Psychedelic/plug-controller/0.25.0/44dd9d6b554615d07390d389f397fbe8a65f8ebd#44dd9d6b554615d07390d389f397fbe8a65f8ebd"
+  integrity sha512-4o1k3Z698JraEuN++d5l+vGPf11ax5m0PXvRk99Bn/i6uQ9KQD09HYF/mA3dF8++stnHqgtC1XCTID2wFIXJEg==
   dependencies:
     "@dfinity/agent" "0.9.3"
     "@dfinity/candid" "0.9.3"
@@ -1867,6 +1867,11 @@
   integrity sha512-KrR021BmBLsA0TT1AAsfH16bHYy0MSbhdAeBAqpriak3GS1T2alFcdTUvn13p0ZW6FKRD6Bd3ryU2zhU/IYYJQ==
   dependencies:
     merge-options "^3.0.4"
+
+"@react-native-clipboard/clipboard@^1.11.1":
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/@react-native-clipboard/clipboard/-/clipboard-1.11.1.tgz#d3a9e685ce2383b1e92b89a334896c5575cc103d"
+  integrity sha512-nvSIIHzybVWqYxcJE5hpT17ekxAAg383Ggzw5WrYHtkKX61N1AwaKSNmXs5xHV7pmKSOe/yWjtSwxIzfW51I5Q==
 
 "@react-native-community/blur@^4.2.0":
   version "4.2.0"
@@ -2057,11 +2062,6 @@
     graceful-fs "^4.1.3"
     prompts "^2.4.0"
     semver "^6.3.0"
-
-"@react-native-community/clipboard@^1.5.1":
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/@react-native-community/clipboard/-/clipboard-1.5.1.tgz#32abb3ea2eb91ee3f9c5fb1d32d5783253c9fabe"
-  integrity sha512-AHAmrkLEH5UtPaDiRqoULERHh3oNv7Dgs0bTC0hO5Z2GdNokAMPT5w8ci8aMcRemcwbtdHjxChgtjbeA38GBdA==
 
 "@react-native-community/eslint-config@^3.1.0":
   version "3.1.0"

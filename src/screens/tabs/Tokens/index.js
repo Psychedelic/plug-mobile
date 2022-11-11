@@ -1,4 +1,4 @@
-import Clipboard from '@react-native-community/clipboard';
+import Clipboard from '@react-native-clipboard/clipboard';
 import { useScrollToTop } from '@react-navigation/native';
 import { t } from 'i18next';
 import React, { useMemo, useRef, useState } from 'react';

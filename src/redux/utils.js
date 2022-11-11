@@ -4,14 +4,11 @@ import Flatted from 'flatted';
 import { t } from 'i18next';
 
 import { TOKEN_IMAGES, TOKENS } from '@/constants/assets';
-import { ACTIVITY_STATUS } from '@/constants/business';
 import {
   KEYRING_KEYS_IN_STORAGE,
   KEYRING_STORAGE_KEY,
 } from '@/constants/keyring';
-import { formatAssetBySymbol, parseToFloatAmount } from '@/utils/currencies';
 import { validateAccountId, validatePrincipalId } from '@/utils/ids';
-import { recursiveParseBigint } from '@/utils/objects';
 
 import { clear } from './slices/keyring';
 import {
@@ -80,113 +77,6 @@ export const getNewAccountData = async (dispatch, icpPrice) => {
   dispatch(getBalance());
   dispatch(getTransactions({ icpPrice }));
   dispatch(getContacts());
-};
-
-const parseTransactionObject = transactionObject => {
-  const { amount, currency, token, sonicData, canisterInfo } =
-    transactionObject;
-
-  const { decimals } = {
-    ...currency,
-    ...token,
-    ...(sonicData?.token ?? {}),
-    ...(canisterInfo?.tokenRegistryInfo?.details ?? {}),
-  };
-  // TODO: Decimals are currently not in DAB. Remove once they are added.
-  const parsedAmount = parseToFloatAmount(
-    amount,
-    decimals || TOKENS[sonicData?.token?.details?.symbol]?.decimals
-  );
-
-  return {
-    ...transactionObject,
-    amount: parsedAmount,
-  };
-};
-
-const parseTransaction = transaction => {
-  const { details } = transaction;
-  const { fee } = details;
-
-  const parsedDetails = parseTransactionObject(details);
-  let parsedFee = fee;
-
-  if (fee instanceof Object && ('token' in fee || 'currency' in fee)) {
-    parsedFee = parseTransactionObject(fee);
-  }
-
-  return {
-    ...transaction,
-    details: {
-      ...parsedDetails,
-      fee: parsedFee,
-    },
-  };
-};
-
-const getTransactionSymbol = details => {
-  if (!details) {
-    return '';
-  }
-  if ('tokenRegistryInfo' in (details?.canisterInfo || [])) {
-    return details?.canisterInfo.tokenRegistryInfo.symbol;
-  }
-  if ('nftRegistryInfo' in (details?.canisterInfo || [])) {
-    return 'NFT';
-  }
-  return (
-    details?.currency?.symbol ??
-    details?.sonicData?.token?.details?.symbol ??
-    details?.details?.name ??
-    ''
-  );
-};
-
-const getTransactionType = (type, isOwnTx) => {
-  if (!type) {
-    return '';
-  }
-  if (type.includes('transfer')) {
-    return isOwnTx ? 'SEND' : 'RECEIVE';
-  }
-  if (type.includes('Liquidity')) {
-    return `${type.includes('removeLiquidity') ? 'Remove' : 'Add'} Liquidity`;
-  }
-  return type.toUpperCase();
-};
-
-export const formatTransaction = (icpPrice, currentWallet) => trx => {
-  const { principal, accountId } = currentWallet;
-
-  let parsedTransaction = recursiveParseBigint(parseTransaction(trx));
-  const { details, hash, caller, timestamp } = parsedTransaction || {};
-  const isOwnTx = [principal, accountId].includes(caller);
-
-  const symbol = getTransactionSymbol(details);
-  const asset = formatAssetBySymbol(details?.amount, symbol, icpPrice);
-  const type = getTransactionType(parsedTransaction?.type, isOwnTx);
-
-  const transaction = {
-    amount: asset.amount,
-    value: asset.value,
-    icon: asset.icon,
-    type,
-    hash,
-    to: details?.to?.icns || details?.to?.principal,
-    from: details?.from?.icns || details?.from?.principal || caller,
-    date: new Date(timestamp),
-    status: ACTIVITY_STATUS[details?.status],
-    image: details?.canisterInfo?.icon || TOKEN_IMAGES[symbol] || '',
-    symbol,
-    canisterId: details?.canisterId,
-    plug: null,
-    canisterInfo: details?.canisterInfo,
-    details: {
-      ...details,
-      caller,
-    },
-  };
-  return transaction;
 };
 
 export const formatContact = contact => {

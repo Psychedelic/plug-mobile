@@ -14,17 +14,21 @@ export default StyleSheet.create({
   },
   leftContainer: {
     justifyContent: 'space-evenly',
+    maxWidth: '50%',
   },
   rightContainer: {
     marginLeft: 'auto',
     alignItems: 'flex-end',
     justifyContent: 'space-evenly',
-  },
-  canisterName: {
-    maxWidth: '50%',
+    paddingLeft: 5,
+    maxWidth: '32%',
   },
   title: {
-    maxWidth: '78%',
+    width: '100%',
     ...FontStyles.Normal,
+  },
+  text: {
+    ...FontStyles.SmallGray,
+    width: '100%',
   },
 });

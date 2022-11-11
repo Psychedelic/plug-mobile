@@ -1,4 +1,4 @@
-import Clipboard from '@react-native-community/clipboard';
+import Clipboard from '@react-native-clipboard/clipboard';
 import React, { useEffect, useState } from 'react';
 
 import CopiedToast from '@/commonComponents/CopiedToast';
