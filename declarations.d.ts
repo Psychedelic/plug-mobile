@@ -8,3 +8,4 @@ declare module '*.svg' {
 declare module 'react-native-fetch-api';
 declare module 'react-native-crypto-js';
 declare module 'emoji-datasource';
+declare module 'mime-types';

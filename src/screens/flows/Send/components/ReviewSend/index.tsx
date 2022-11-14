@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/core';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
@@ -47,6 +47,7 @@ interface Props {
   transaction?: { status: string | null };
   loading?: boolean;
   adjustToContentHeight?: boolean;
+  disabled?: boolean;
 }
 
 const ReviewSend = ({
@@ -62,13 +63,13 @@ const ReviewSend = ({
   onContactSaved,
   transaction,
   loading,
+  disabled,
   adjustToContentHeight,
 }: Props) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const saveContactRef = useRef<Modalize>(null);
-  const [nftType, setNftType] = useState<string>();
   const isSuccess = transaction?.status === TRANSACTION_STATUS.success;
   const isError = transaction?.status === TRANSACTION_STATUS.error;
   const { icpPrice } = useAppSelector(state => state.icp);
@@ -80,7 +81,7 @@ const ReviewSend = ({
     saveContactRef.current?.open();
   };
 
-  useGetType(nft?.url, setNftType);
+  const nftType = useGetType(nft?.url);
 
   const handleClose = () => {
     onClose?.();
@@ -144,7 +145,13 @@ const ReviewSend = ({
               <Text style={styles.title}>{`#${nft.index}`}</Text>
               <Text type="subtitle3">{nft.collectionName}</Text>
             </Column>
-            <NftDisplayer url={nft.url} type={nftType} isSend />
+            <NftDisplayer
+              url={nft.url}
+              type={nftType}
+              style={styles.nft}
+              canisterId={nft.canister}
+              itemId={nft.index}
+            />
           </Row>
         )}
         <Row style={[styles.row, styles.toRow]}>
@@ -204,6 +211,7 @@ const ReviewSend = ({
                   : t('reviewSend.holdToSend')
               }
               loading={loading}
+              disabled={disabled}
               onPress={() => {}}
               onLongPress={onSend}
               buttonStyle={styles.button}

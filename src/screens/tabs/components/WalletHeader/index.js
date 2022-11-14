@@ -37,7 +37,7 @@ const WalletHeader = () => {
 
   const openSend = () => {
     modalRef.current?.close();
-    navigation.navigate(Routes.SEND_STACK);
+    navigation.navigate(Routes.MODAL_STACK, { screen: Routes.SEND });
   };
 
   const openDeposit = () => {

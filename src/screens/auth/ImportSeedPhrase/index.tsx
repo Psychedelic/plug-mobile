@@ -13,7 +13,7 @@ import {
 } from '@/components/common';
 import { TestIds } from '@/constants/testIds';
 import useKeychain from '@/hooks/useKeychain';
-import { ScreenProps } from '@/interfaces/navigation';
+import { RootScreenProps } from '@/interfaces/navigation';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -25,7 +25,7 @@ import styles from './styles';
 const ImportSeedPhrase = ({
   navigation,
   route,
-}: ScreenProps<Routes.IMPORT_SEED_PHRASE>) => {
+}: RootScreenProps<Routes.IMPORT_SEED_PHRASE>) => {
   const { goBack } = navigation;
   const dispatch = useAppDispatch();
   const { t } = useTranslation();

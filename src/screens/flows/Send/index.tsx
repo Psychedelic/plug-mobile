@@ -9,7 +9,7 @@ import Icon from '@/components/icons';
 import { TOKENS, USD_PER_TC } from '@/constants/assets';
 import useICNS from '@/hooks/useICNS';
 import useKeychain from '@/hooks/useKeychain';
-import { ScreenProps } from '@/interfaces/navigation';
+import { ModalScreenProps } from '@/interfaces/navigation';
 import { Asset, Contact } from '@/interfaces/redux';
 import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -17,6 +17,7 @@ import { getICPPrice } from '@/redux/slices/icp';
 import { sendToken, setTransaction, transferNFT } from '@/redux/slices/user';
 import { formatCollections, FormattedCollection } from '@/utils/assets';
 import {
+  isOwnAddress,
   validateAccountId,
   validateICNSName,
   validatePrincipalId,
@@ -38,12 +39,13 @@ export interface Receiver {
   isValid?: boolean;
 }
 
-function Send({ route }: ScreenProps<Routes.SEND>) {
+function Send({ route }: ModalScreenProps<Routes.SEND>) {
   const dispatch = useAppDispatch();
   const { token, nft } = route?.params || {};
   const { isSensorAvailable, getPassword } = useKeychain();
   const { icpPrice } = useAppSelector(state => state.icp);
   const { currentWallet } = useAppSelector(state => state.keyring);
+
   const { assets, contacts, transaction, collections, usingBiometrics } =
     useAppSelector(state => state.user);
 
@@ -56,10 +58,17 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
     () => (collections ? formatCollections(collections) : []),
     [collections]
   );
+
+  const formattedNFT = useMemo(() => {
+    if (!nft) {
+      return undefined;
+    }
+    return nfts.find(n => n.canister === nft.canister && n.index === nft.index);
+  }, [nfts]);
   const [loading, setLoading] = useState(false);
   const [selectedNft, setSelectedNft] = useState<
     FormattedCollection | undefined
-  >(nft);
+  >(formattedNFT);
 
   const [tokenAmount, setTokenAmount] = useState<Amount>();
   const [usdAmount, setUsdAmount] = useState<Amount>();
@@ -186,12 +195,9 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
     }
 
     const savedContact = contacts?.find(c => c.id === text);
-    const isOwnAddress =
-      text === currentWallet?.principal ||
-      text === currentWallet?.accountId ||
-      text === currentWallet?.icnsData?.reverseResolvedName;
+    const isOwn = isOwnAddress(text, currentWallet!);
 
-    if (savedContact && !isOwnAddress) {
+    if (savedContact && !isOwn) {
       setReceiver({
         ...savedContact,
         isValid: true,
@@ -199,7 +205,7 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
       scrollToTop();
     } else {
       const isValid =
-        !isOwnAddress && (validatePrincipalId(text) || validateAccountId(text));
+        !isOwn && (validatePrincipalId(text) || validateAccountId(text));
       setReceiver({ id: text, isValid });
     }
   };
@@ -361,7 +367,8 @@ function Send({ route }: ScreenProps<Routes.SEND>) {
         onClose={() => setSelectedNft(undefined)}
         onContactSaved={handleContactSaved}
         transaction={transaction}
-        loading={loading || loadingICNS}
+        loading={loading}
+        disabled={loadingICNS}
       />
       {isNewContact && receiver && (
         <SaveContact

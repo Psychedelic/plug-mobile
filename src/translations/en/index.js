@@ -129,6 +129,8 @@ const translations = {
     emptyTitle: "You don't own any Collectibles yet",
     emptySubtitle:
       "When you do, they'll show here, where you will see their traits and send them.",
+    items: '{{count}} item',
+    items_plural: '{{count}} items',
   },
   nftDetail: {
     collectionTitle: '🧩 Collection',
@@ -141,6 +143,14 @@ const translations = {
     },
   },
   activity: {
+    details: {
+      title: 'Activity Detail',
+      trxType: 'Transaction Type:',
+      from: 'From:',
+      to: 'To:',
+      you: ' (you)',
+      copied: 'Address copied in clipboard',
+    },
     [ACTIVITY_STATUS.COMPLETED]: 'Completed',
     [ACTIVITY_STATUS.PENDING]: 'Pending',
     [ACTIVITY_STATUS.REVERTED]: 'Failed',
@@ -342,6 +352,10 @@ const translations = {
       title: 'Error Exporting Account',
       message:
         'There was an error while exporting the account. Please try again.',
+    },
+    permissionError: {
+      title: 'Error Exporting Account',
+      message: 'You need to allow the app to access storage to save the file.',
     },
     success: {
       title: 'Account Successfully Exported',

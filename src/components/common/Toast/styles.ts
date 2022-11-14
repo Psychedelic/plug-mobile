@@ -11,11 +11,11 @@ export default StyleSheet.create({
   },
   headerContainer: {
     flexDirection: 'row',
-    marginBottom: 8,
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   message: {
+    marginTop: 8,
     color: Colors.White.Pure,
     opacity: 0.8,
   },

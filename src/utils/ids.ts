@@ -6,6 +6,7 @@ import {
   CANISTER_MAX_LENGTH,
   ICNS_REGEX,
 } from '@/constants/addresses';
+import { Wallet } from '@/interfaces/redux';
 
 export const validateICNSName = (name: string) => ICNS_REGEX.test(name);
 
@@ -27,3 +28,9 @@ export const validateCanisterId = (text: string) => {
     return false;
   }
 };
+
+export const isOwnAddress = (address: string, currentWallet: Wallet) =>
+  validateICNSName(address)
+    ? address === currentWallet.icnsData?.reverseResolvedName
+    : address === currentWallet.principal ||
+      address === currentWallet.accountId;

@@ -13,17 +13,25 @@ interface Props {
   onChangeText: (text: string) => void;
   placeholder: string;
   style?: StyleProp<ViewStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
   onActionPress?: () => void;
 }
 
-function SearchBar({ placeholder, style, onChangeText, onActionPress }: Props) {
+function SearchBar({
+  placeholder,
+  style,
+  onChangeText,
+  onActionPress,
+  containerStyle,
+}: Props) {
   return (
     <View style={[styles.container, style]}>
       <TextInput
         placeholder={placeholder}
-        contentContainerStyle={styles.inputContent}
+        contentContainerStyle={[styles.inputContent, containerStyle]}
         style={styles.input}
         onChangeText={onChangeText}
+        inputStyle={styles.inputStyle}
         left={<Search fill={searchColor} style={styles.searchIcon} />}
       />
       {onActionPress && (

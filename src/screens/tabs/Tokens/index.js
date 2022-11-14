@@ -1,4 +1,4 @@
-import Clipboard from '@react-native-community/clipboard';
+import Clipboard from '@react-native-clipboard/clipboard';
 import { useScrollToTop } from '@react-navigation/native';
 import { t } from 'i18next';
 import React, { useMemo, useRef, useState } from 'react';
@@ -64,7 +64,7 @@ function Tokens({ navigation }) {
         id: 1,
         label: t('tokensTab.tokenActions.send'),
         onPress: () =>
-          navigation.navigate(Routes.SEND_STACK, {
+          navigation.navigate(Routes.MODAL_STACK, {
             screen: Routes.SEND,
             params: { token: selectedToken },
           }),

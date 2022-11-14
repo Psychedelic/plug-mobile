@@ -4,7 +4,9 @@ import FileViewer from 'react-native-file-viewer';
 
 import { isAndroid, isIos } from '@/constants/platform';
 
-const requestStoragePermissions = async (
+import { getExtension } from './fileTypes';
+
+export const requestStoragePermissions = async (
   onError?: () => void,
   onSuccess?: () => void
 ) => {
@@ -32,14 +34,16 @@ const requestStoragePermissions = async (
 interface DownloadFileProps {
   filename: string;
   url: string;
-  onFetched: () => void;
-  onSuccess: () => void;
-  onError: () => void;
+  mimeType: string;
+  onFetched?: () => void;
+  onSuccess?: () => void;
+  onError?: () => void;
 }
 
 export const downloadFile = async ({
   filename,
   url,
+  mimeType,
   onFetched,
   onSuccess,
   onError,
@@ -49,23 +53,25 @@ export const downloadFile = async ({
       await requestStoragePermissions(onError);
     }
     const dirToSave = Dirs.DocumentDir;
-    const path = `${dirToSave}/${filename}`;
+    const extension = getExtension(mimeType);
+    const path = `${dirToSave}/${filename}.${extension}`;
 
     FileSystem.fetch(url, {
       method: 'GET',
       path,
     }).then(async res => {
       onFetched?.();
+      const nameWithExtension = `${filename}.${extension}`;
       if (isAndroid) {
-        await FileSystem.cpExternal(path, filename, 'downloads');
+        await FileSystem.cpExternal(path, nameWithExtension, 'downloads');
       }
       if (res.ok) {
         FileViewer.open(path, {
           showOpenWithDialog: true,
-          displayName: filename,
+          displayName: nameWithExtension,
         }).then(() => {
           if (isIos) {
-            Share.share({ url: path, title: filename });
+            Share.share({ url: path, title: nameWithExtension });
           }
           onSuccess?.();
         });

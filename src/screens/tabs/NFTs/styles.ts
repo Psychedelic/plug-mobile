@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { WINDOW_WIDTH } from '@/constants/platform';
-import { FontStyles } from '@/constants/theme';
+import { Colors, FontStyles } from '@/constants/theme';
 
 const itemSize = WINDOW_WIDTH / 2 - 40;
 
@@ -13,20 +13,25 @@ const commonContainerSize = {
 export default StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 18,
+    paddingHorizontal: 10,
   },
   nftsContainer: {
-    paddingVertical: 20,
+    paddingBottom: 60,
   },
   text: {
     ...FontStyles.SmallGray,
     marginTop: 10,
     maxWidth: itemSize,
   },
-  title: {
-    paddingLeft: 20,
+  titleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
     paddingBottom: 20,
-    ...FontStyles.Title,
+  },
+  title: FontStyles.Title,
+  totalItems: {
+    color: Colors.White.Secondary,
   },
   nftDisplayer: {
     ...commonContainerSize,
@@ -39,5 +44,12 @@ export default StyleSheet.create({
   },
   emptyState: {
     marginTop: 60,
+  },
+  itemContainer: {
+    margin: 10,
+  },
+  icnsImage: {
+    backgroundColor: Colors.White.Pure,
+    padding: 20,
   },
 });
