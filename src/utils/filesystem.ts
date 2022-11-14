@@ -6,7 +6,7 @@ import { isAndroid, isIos } from '@/constants/platform';
 
 import { getExtension } from './fileTypes';
 
-const requestStoragePermissions = async (
+export const requestStoragePermissions = async (
   onError?: () => void,
   onSuccess?: () => void
 ) => {

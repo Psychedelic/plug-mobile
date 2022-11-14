@@ -353,6 +353,10 @@ const translations = {
       message:
         'There was an error while exporting the account. Please try again.',
     },
+    permissionError: {
+      title: 'Error Exporting Account',
+      message: 'You need to allow the app to access storage to save the file.',
+    },
     success: {
       title: 'Account Successfully Exported',
       messageIos: 'Your .pem file should be located at the choosen directory.',

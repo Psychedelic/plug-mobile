@@ -20,6 +20,7 @@ import useCustomToast from '@/hooks/useCustomToast';
 import { Wallet } from '@/interfaces/redux';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getPemFile, validatePassword } from '@/redux/slices/keyring';
+import { requestStoragePermissions } from '@/utils/filesystem';
 import shortAddress from '@/utils/shortAddress';
 
 import styles from './styles';
@@ -64,7 +65,7 @@ function ExportPem({ modalRef }: Props) {
     );
   };
 
-  const handleExportPem = () => {
+  const downloadPem = () => {
     dispatch(
       getPemFile({
         walletId: selectedWallet.walletId,
@@ -109,6 +110,19 @@ function ExportPem({ modalRef }: Props) {
         },
       })
     );
+  };
+
+  const handleExportPem = async () => {
+    if (isIos) {
+      downloadPem();
+    } else {
+      await requestStoragePermissions(() => {
+        toast.showError(
+          t('exportPem.permissionError.title'),
+          t('exportPem.permissionError.message')
+        );
+      }, downloadPem);
+    }
   };
 
   const renderAccount = (account: Wallet) => {
