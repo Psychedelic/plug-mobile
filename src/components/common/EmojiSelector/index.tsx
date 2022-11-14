@@ -17,7 +17,9 @@ function EmojiSelector({ onSelect }: Props) {
 
   return (
     <View style={styles.emojiSelector}>
-      <Text style={styles.emojiCategoryTytle}>{currentCategory.name}</Text>
+      <Text type="subtitle3" style={styles.emojiCategoryTytle}>
+        {currentCategory.name}
+      </Text>
       <EmojiBoard onSelect={onSelect} currentCategory={currentCategory} />
       <EmojiBar
         currentCategory={currentCategory}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import { Category, emojiByCategory, sortEmoji, splitToRows } from '../../utils';
@@ -6,7 +6,7 @@ import Emoji from '../Emoji';
 import styles from './styles';
 
 interface Props {
-  onSelect: () => void;
+  onSelect: (emoji: string) => void;
   currentCategory: Category;
 }
 
@@ -14,10 +14,21 @@ function EmojiBoard({ onSelect, currentCategory }: Props) {
   const categoryEmojis = emojiByCategory(currentCategory);
   const sortedEmojis = sortEmoji(categoryEmojis);
   const rowsToDisplay = splitToRows(sortedEmojis);
+  const listRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    if (listRef.current) {
+      listRef.current.scrollTo({ y: 0, animated: false });
+    }
+  }, [currentCategory]);
 
   return (
     <View style={styles.emojiBoard}>
-      <ScrollView showsVerticalScrollIndicator={false} overScrollMode="never">
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        overScrollMode="never"
+        ref={listRef}
+        horizontal>
         {rowsToDisplay.map((row, index) => {
           const isLastRow = rowsToDisplay?.length === index + 1;
           return (

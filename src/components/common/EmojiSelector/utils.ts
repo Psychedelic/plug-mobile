@@ -6,6 +6,17 @@ export interface Category {
   type: string;
 }
 
+export interface Emoji {
+  name: string;
+  unified: string;
+  category: string;
+  subcategory: string;
+  sort_order: number;
+  added_in: string;
+  utf16: string;
+  obsoleted_by: string;
+}
+
 export const Categories: Category[] = [
   {
     symbol: '😀',
@@ -54,20 +65,22 @@ export const Categories: Category[] = [
   },
 ];
 
-export const charFromUtf16 = utf16 =>
-  String.fromCodePoint(...utf16.split('-').map(u => '0x' + u));
+export const charFromUtf16 = (utf16: any) =>
+  String.fromCodePoint(...utf16.split('-').map((u: number) => '0x' + u));
 
-export const charFromEmojiObject = obj => charFromUtf16(obj.unified);
+export const charFromEmojiObject = (obj: Emoji) => charFromUtf16(obj.unified);
 
-export const filteredEmojis = emoji.filter(e => !e.obsoleted_by);
+export const filteredEmojis: Emoji[] = emoji.filter(
+  (e: Emoji) => !e.obsoleted_by && e.added_in < '13.1'
+);
 
 export const emojiByCategory = (category: Category) =>
   filteredEmojis.filter(e => e.category === category.name);
 
-export const sortEmoji = list =>
+export const sortEmoji = (list: Emoji[]) =>
   list.sort((a, b) => a.sort_order - b.sort_order);
 
-export const splitToRows = list => {
+export const splitToRows = (list: Emoji[]) => {
   const result = [];
   while (list.length > 0) {
     result.push(list.splice(0, 8));

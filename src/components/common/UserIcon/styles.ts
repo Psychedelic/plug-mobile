@@ -25,7 +25,7 @@ export default StyleSheet.create({
     height: 34,
   },
   textextralarge: {
-    fontSize: 40,
+    fontSize: 36,
   },
   textlarge: {
     fontSize: 32,

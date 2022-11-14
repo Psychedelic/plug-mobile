@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
+import { Modalize } from 'react-native-modalize';
 
 import EmojiSelector from '@/commonComponents/EmojiSelector';
 import Header from '@/commonComponents/Header';
@@ -11,14 +12,20 @@ import Text from '@/components/common/Text';
 
 import styles from './styles';
 
-const EditEmoji = ({ modalRef, onSave, emoji }) => {
+interface Props {
+  modalRef: React.RefObject<Modalize>;
+  onSave: (emoji: string) => void;
+  emoji?: string;
+}
+
+function EditEmoji({ modalRef, onSave, emoji }: Props) {
   const { t } = useTranslation();
   const [selectedEmoji, setSelectedEmoji] = useState('');
 
   const handleSave = () => {
     onSave(selectedEmoji);
     setSelectedEmoji('');
-    modalRef?.current.close();
+    modalRef.current?.close();
   };
 
   useEffect(() => {
@@ -28,8 +35,14 @@ const EditEmoji = ({ modalRef, onSave, emoji }) => {
   }, [emoji]);
 
   return (
-    <Modal adjustToContentHeight modalRef={modalRef}>
-      <Header center={<Text type="subtitle2">{t('accounts.setEmoji')}</Text>} />
+    <Modal
+      adjustToContentHeight
+      modalRef={modalRef}
+      HeaderComponent={
+        <Header
+          center={<Text type="subtitle2">{t('accounts.setEmoji')}</Text>}
+        />
+      }>
       <View style={styles.content}>
         <UserIcon icon={selectedEmoji} size="extralarge" style={styles.icon} />
         <EmojiSelector onSelect={setSelectedEmoji} />
@@ -37,6 +50,6 @@ const EditEmoji = ({ modalRef, onSave, emoji }) => {
       </View>
     </Modal>
   );
-};
+}
 
 export default EditEmoji;

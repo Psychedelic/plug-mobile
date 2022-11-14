@@ -18,7 +18,7 @@ import {
 import Icon from '@/components/icons';
 import { ERROR_TYPES } from '@/constants/general';
 import { Colors } from '@/constants/theme';
-import { ScreenProps } from '@/interfaces/navigation';
+import { RootScreenProps } from '@/interfaces/navigation';
 import { Transaction } from '@/interfaces/redux';
 import { Container, Separator } from '@/layout';
 import Routes from '@/navigation/Routes';
@@ -33,7 +33,7 @@ import Accounts from './modals/Accounts';
 import ActivityDetail from './modals/ActivityDetail';
 import styles from './styles';
 
-function Profile({ navigation }: ScreenProps<Routes.PROFILE>) {
+function Profile({ navigation }: RootScreenProps<Routes.PROFILE>) {
   const accountsModalRef = useRef<Modalize>(null);
   const activityDetailModalRef = useRef<Modalize>(null);
   const transactionListRef = useRef(null);
