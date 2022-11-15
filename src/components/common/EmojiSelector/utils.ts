@@ -83,7 +83,7 @@ export const sortEmoji = (list: Emoji[]) =>
 export const splitToRows = (list: Emoji[]) => {
   const result = [];
   while (list.length > 0) {
-    result.push(list.splice(0, 8));
+    result.push(list.splice(0, 5));
   }
   return result;
 };
