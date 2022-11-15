@@ -36,8 +36,6 @@ function EmojiBoard({ onSelect, currentCategory }: Props) {
               style={[styles.emojiBoardRow, isLastRow && styles.lastBoardRow]}
               key={`${currentCategory}-${index}`}>
               {row.map((emojiObject, emojiIndex) => {
-                console.tron.log('emojiObject', emojiObject);
-                console.tron.log('emojiIndex', emojiIndex);
                 return (
                   <Emoji
                     isLastEmoji={emojiIndex + 1 === row?.length}
