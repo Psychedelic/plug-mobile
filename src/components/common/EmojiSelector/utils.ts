@@ -71,7 +71,7 @@ export const charFromUtf16 = (utf16: any) =>
 export const charFromEmojiObject = (obj: Emoji) => charFromUtf16(obj.unified);
 
 export const filteredEmojis: Emoji[] = emoji.filter(
-  (e: Emoji) => !e.obsoleted_by && e.added_in < '13.1'
+  (e: Emoji) => !e.obsoleted_by
 );
 
 export const emojiByCategory = (category: Category) =>
