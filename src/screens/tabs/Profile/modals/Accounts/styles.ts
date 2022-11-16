@@ -6,7 +6,6 @@ export default StyleSheet.create({
   content: {
     paddingHorizontal: 12,
     paddingBottom: 20,
-    paddingTop: 10,
     zIndex: 0,
   },
   loading: {

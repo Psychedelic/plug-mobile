@@ -20,7 +20,6 @@ import EditIcon from '@/icons/material/Edit.svg';
 import TrashCan from '@/icons/material/TrashCan.svg';
 import AddGray from '@/icons/svg/AddGray.svg';
 import CheckedBlueCircle from '@/icons/svg/CheckedBlueCircle.svg';
-import { Nullable } from '@/interfaces/general';
 import { Wallet } from '@/interfaces/redux';
 import { Row } from '@/layout';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -44,9 +43,8 @@ function Accounts({ modalRef }: Props) {
   const dispatch = useAppDispatch();
 
   const [loading, setLoading] = useState(false);
-  const [actionSheetData, setActionSheetData] = useState<any>(undefined);
-  const [selectedAccount, setSelectedAccount] =
-    useState<Nullable<Wallet>>(null);
+  const [actionSheetData, setActionSheetData] = useState<any>();
+  const [selectedAccount, setSelectedAccount] = useState<Wallet>();
 
   const addICNSRef = useRef<Modalize>(null);
   const actionSheetRef = useRef<Modalize>(null);
@@ -60,7 +58,7 @@ function Accounts({ modalRef }: Props) {
   }, []);
 
   const onCreateImportAccount = () => {
-    setSelectedAccount(null);
+    setSelectedAccount(undefined);
     createImportAccountRef.current?.open();
   };
 
@@ -199,10 +197,22 @@ function Accounts({ modalRef }: Props) {
     );
   };
 
+  const resetState = () => {
+    setSelectedAccount(undefined);
+    setActionSheetData(undefined);
+  };
+
   return (
     <>
-      <Modal adjustToContentHeight modalRef={modalRef}>
-        <Header center={<Text type="subtitle2">{t('accounts.title')}</Text>} />
+      <Modal
+        adjustToContentHeight
+        modalRef={modalRef}
+        onClosed={resetState}
+        HeaderComponent={
+          <Header
+            center={<Text type="subtitle2">{t('accounts.title')}</Text>}
+          />
+        }>
         <View style={styles.content}>
           {loading && (
             <View style={styles.loading}>
@@ -226,13 +236,9 @@ function Accounts({ modalRef }: Props) {
           </Touchable>
           <CreateEditAccount
             modalRef={createEditAccountRef}
-            accountsModalRef={modalRef}
             account={selectedAccount!}
           />
-          <CreateImportAccount
-            modalRef={createImportAccountRef}
-            accountsModalRef={modalRef}
-          />
+          <CreateImportAccount modalRef={createImportAccountRef} />
         </View>
       </Modal>
       <ActionSheet

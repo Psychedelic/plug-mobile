@@ -21,7 +21,6 @@ import styles from './styles';
 interface Props {
   modalRef: RefObject<Modalize>;
   createImportRef: RefObject<Modalize>;
-  accountsModalRef: RefObject<Modalize>;
 }
 
 const getErrorMessage = (errorType: string) => {
@@ -33,7 +32,7 @@ const getErrorMessage = (errorType: string) => {
   }
 };
 
-function ImportKey({ createImportRef, modalRef, accountsModalRef }: Props) {
+function ImportKey({ createImportRef, modalRef }: Props) {
   const dispatch = useAppDispatch();
   const createEditAccount = useRef<Modalize>(null);
 
@@ -48,11 +47,6 @@ function ImportKey({ createImportRef, modalRef, accountsModalRef }: Props) {
       setErrorType(null);
     }
     setKey(value);
-  };
-
-  const closeModal = () => {
-    createImportRef?.current?.close();
-    accountsModalRef?.current?.close();
   };
 
   const handleBack = () => {
@@ -77,12 +71,15 @@ function ImportKey({ createImportRef, modalRef, accountsModalRef }: Props) {
   };
 
   return (
-    <Modal adjustToContentHeight modalRef={modalRef}>
-      <Header
-        right={<ActionButton onPress={closeModal} label={t('common.close')} />}
-        left={<ActionButton onPress={handleBack} label={t('common.back')} />}
-        center={<Text type="subtitle2">{t('common.importWallet')}</Text>}
-      />
+    <Modal
+      adjustToContentHeight
+      modalRef={modalRef}
+      HeaderComponent={
+        <Header
+          left={<ActionButton onPress={handleBack} label={t('common.back')} />}
+          center={<Text type="subtitle2">{t('common.importWallet')}</Text>}
+        />
+      }>
       <View style={styles.container}>
         <TextInput
           autoFocus
@@ -107,7 +104,6 @@ function ImportKey({ createImportRef, modalRef, accountsModalRef }: Props) {
       <CreateEditAccount
         pem={key}
         modalRef={createEditAccount}
-        accountsModalRef={accountsModalRef}
         createImportModalRef={createImportRef}
       />
     </Modal>

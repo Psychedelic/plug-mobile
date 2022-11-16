@@ -5,13 +5,7 @@ import DocumentPicker from 'react-native-document-picker';
 import { FileSystem } from 'react-native-file-access';
 import { Modalize } from 'react-native-modalize';
 
-import {
-  ActionButton,
-  GradientText,
-  Header,
-  Modal,
-  Text,
-} from '@/components/common';
+import { GradientText, Header, Modal, Text } from '@/components/common';
 import { isIos } from '@/constants/platform';
 import { useStateWithCallback } from '@/hooks/useStateWithCallback';
 
@@ -22,21 +16,12 @@ import { Button, getCreateImportButtons } from './utils';
 
 interface Props {
   modalRef: RefObject<Modalize>;
-  accountsModalRef: RefObject<Modalize>;
 }
 
-function CreateImportAccount({ accountsModalRef, modalRef }: Props) {
+function CreateImportAccount({ modalRef }: Props) {
   const [pemFile, setPemFile] = useStateWithCallback<string>('');
   const createAccountRef = useRef<Modalize>(null);
   const importKeyRef = useRef<Modalize>(null);
-
-  const closeModal = () => {
-    accountsModalRef?.current?.close();
-  };
-
-  const handleBack = () => {
-    modalRef?.current?.close();
-  };
 
   const openCreateAccountModal = () => {
     createAccountRef?.current?.open();
@@ -50,10 +35,12 @@ function CreateImportAccount({ accountsModalRef, modalRef }: Props) {
     const type = isIos
       ? 'public.x509-certificate'
       : ['.pem', 'application/x-pem-file'];
-    const res = await DocumentPicker.pickSingle({ type });
-
-    const stringifyPEM = await FileSystem.readFile(res.uri);
-    setPemFile(stringifyPEM, openCreateAccountModal);
+    DocumentPicker.pickSingle({ type })
+      .then(async res => {
+        const stringifyPEM = await FileSystem.readFile(res.uri);
+        setPemFile(stringifyPEM, openCreateAccountModal);
+      })
+      .catch(() => {});
   };
 
   const renderButton = ({ id, title, onPress, icon, colors }: Button) => (
@@ -71,27 +58,29 @@ function CreateImportAccount({ accountsModalRef, modalRef }: Props) {
     openImportKeyModal,
   });
 
+  const resetState = () => {
+    setPemFile('');
+  };
+
   return (
-    <Modal adjustToContentHeight modalRef={modalRef}>
-      <Header
-        right={<ActionButton onPress={closeModal} label={t('common.close')} />}
-        left={<ActionButton onPress={handleBack} label={t('common.back')} />}
-        center={
-          <Text type="subtitle2">{t('accounts.createImportAccount')}</Text>
-        }
-      />
+    <Modal
+      adjustToContentHeight
+      modalRef={modalRef}
+      onClosed={resetState}
+      HeaderComponent={
+        <Header
+          center={
+            <Text type="subtitle2">{t('accounts.createImportAccount')}</Text>
+          }
+        />
+      }>
       <View style={styles.container}>{buttons.map(renderButton)}</View>
       <CreateAccount
         pem={pemFile}
         modalRef={createAccountRef}
         createImportModalRef={modalRef}
-        accountsModalRef={accountsModalRef}
       />
-      <ImportKey
-        modalRef={importKeyRef}
-        createImportRef={modalRef}
-        accountsModalRef={accountsModalRef}
-      />
+      <ImportKey modalRef={importKeyRef} createImportRef={modalRef} />
     </Modal>
   );
 }
