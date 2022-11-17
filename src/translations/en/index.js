@@ -137,6 +137,7 @@ const translations = {
     descriptionTitle: '📝 Description',
     attributesTitle: '🎛 Attributes',
     moreTitle: 'More Options',
+    manage: 'Manage',
     moreOptions: {
       view: 'View',
       download: 'Download',
