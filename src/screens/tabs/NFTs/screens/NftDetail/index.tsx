@@ -129,7 +129,7 @@ function NftDetail({ route, navigation }: ModalScreenProps<Routes.NFT_DETAIL>) {
             <RainbowButton
               text={t('common.send')}
               onPress={handleSend}
-              disabled={isDownloading}
+              disabled={isDownloading || isICNS}
             />
           </View>
         </View>

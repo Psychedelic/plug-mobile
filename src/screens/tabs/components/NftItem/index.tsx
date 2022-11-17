@@ -18,6 +18,7 @@ interface Props {
   itemStyle?: StyleProp<ViewStyle>;
   title?: string;
   subtitle?: string;
+  ICNSName?: string;
 }
 
 function NftItem({
@@ -30,6 +31,7 @@ function NftItem({
   itemStyle,
   canisterId,
   itemId,
+  ICNSName,
 }: Props) {
   const type = useGetType(url);
   return (
@@ -42,6 +44,7 @@ function NftItem({
         paused
         canisterId={canisterId}
         itemId={itemId}
+        ICNSName={ICNSName}
       />
       {title && (
         <Text
