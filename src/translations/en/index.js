@@ -345,6 +345,8 @@ const translations = {
     create: 'Create',
     invalidKey: 'Invalid key. Please, try again.',
     addedAccount: 'Account already added.',
+    importError:
+      'There was an error while importing the account. Please try again.',
   },
   exportPem: {
     safeCheck: 'I’ll be safe with my DFX Identity.',

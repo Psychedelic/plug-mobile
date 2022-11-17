@@ -15,12 +15,12 @@ export interface Button {
 
 export const getCreateImportButtons = ({
   openCreateAccountModal,
-  openFile,
   openImportKeyModal,
+  openFile,
 }: {
   openCreateAccountModal: () => void;
-  openFile: () => void;
   openImportKeyModal: () => void;
+  openFile: () => void;
 }) =>
   [
     {

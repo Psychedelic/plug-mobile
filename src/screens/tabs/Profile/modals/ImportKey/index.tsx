@@ -15,6 +15,7 @@ import { Nullable } from '@/interfaces/general';
 import { useAppDispatch } from '@/redux/hooks';
 import { validatePem } from '@/redux/slices/keyring';
 
+import { getPemImportError } from '../../utils';
 import CreateEditAccount from '../CreateEditAccount';
 import styles from './styles';
 
@@ -22,15 +23,6 @@ interface Props {
   modalRef: RefObject<Modalize>;
   createImportRef: RefObject<Modalize>;
 }
-
-const getErrorMessage = (errorType: string) => {
-  switch (errorType) {
-    case 'invalid-key':
-      return t('createImportAccount.invalidKey');
-    default:
-      return t('createImportAccount.addedAccount');
-  }
-};
 
 function ImportKey({ createImportRef, modalRef }: Props) {
   const dispatch = useAppDispatch();
@@ -91,7 +83,7 @@ function ImportKey({ createImportRef, modalRef }: Props) {
         />
         {errorType && (
           <Text type="caption" style={styles.error}>
-            {getErrorMessage(errorType)}
+            {getPemImportError(errorType)}
           </Text>
         )}
         <RainbowButton

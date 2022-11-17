@@ -7,8 +7,12 @@ import { Modalize } from 'react-native-modalize';
 
 import { GradientText, Header, Modal, Text } from '@/components/common';
 import { isIos } from '@/constants/platform';
+import useCustomToast from '@/hooks/useCustomToast';
 import { useStateWithCallback } from '@/hooks/useStateWithCallback';
+import { useAppDispatch } from '@/redux/hooks';
+import { validatePem } from '@/redux/slices/keyring';
 
+import { getPemImportError } from '../../utils';
 import CreateAccount from '../CreateEditAccount';
 import ImportKey from '../ImportKey';
 import styles from './styles';
@@ -22,6 +26,8 @@ function CreateImportAccount({ modalRef }: Props) {
   const [pemFile, setPemFile] = useStateWithCallback<string>('');
   const createAccountRef = useRef<Modalize>(null);
   const importKeyRef = useRef<Modalize>(null);
+  const toast = useCustomToast();
+  const dispatch = useAppDispatch();
 
   const openCreateAccountModal = () => {
     createAccountRef?.current?.open();
@@ -38,7 +44,21 @@ function CreateImportAccount({ modalRef }: Props) {
     DocumentPicker.pickSingle({ type })
       .then(async res => {
         const stringifyPEM = await FileSystem.readFile(res.uri);
-        setPemFile(stringifyPEM, openCreateAccountModal);
+        dispatch(
+          validatePem({
+            pem: stringifyPEM,
+            onSuccess: () => {
+              setPemFile(stringifyPEM, openCreateAccountModal);
+            },
+            onFailure: (eType: string) => {
+              toast.showError(
+                t('accounts.errorImport.title'),
+                getPemImportError(eType)
+              );
+              modalRef.current?.close();
+            },
+          })
+        );
       })
       .catch(() => {});
   };
@@ -54,8 +74,8 @@ function CreateImportAccount({ modalRef }: Props) {
 
   const buttons = getCreateImportButtons({
     openCreateAccountModal,
-    openFile,
     openImportKeyModal,
+    openFile,
   });
 
   const resetState = () => {
