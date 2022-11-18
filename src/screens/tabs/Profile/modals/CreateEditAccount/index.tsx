@@ -25,7 +25,6 @@ import styles from './styles';
 
 interface Props {
   modalRef: RefObject<Modalize>;
-  accountsModalRef?: RefObject<Modalize>;
   account?: Wallet;
   pem?: string;
   createImportModalRef?: RefObject<Modalize>;
@@ -34,7 +33,6 @@ interface Props {
 const CreateEditAccount = ({
   modalRef,
   account,
-  accountsModalRef,
   pem,
   createImportModalRef,
 }: Props) => {
@@ -78,7 +76,7 @@ const CreateEditAccount = ({
     if (createImportModalRef) {
       createImportModalRef.current?.close();
     }
-    modalRef.current?.close();
+    handleBack();
   };
 
   const resetState = () => {
@@ -101,27 +99,23 @@ const CreateEditAccount = ({
     }
   }, [account]);
 
-  const closeModal = () => {
-    accountsModalRef?.current?.close();
-  };
-
   const handleBack = () => {
+    Keyboard.dismiss();
     modalRef?.current?.close();
   };
 
-  const handleClose = () => {
-    if (!account) {
-      resetState();
-    }
-  };
-
   return (
-    <Modal adjustToContentHeight modalRef={modalRef} onClose={handleClose}>
-      <Header
-        right={<ActionButton onPress={closeModal} label={t('common.close')} />}
-        left={<ActionButton onPress={handleBack} label={t('common.back')} />}
-        center={<Text type="subtitle2">{title}</Text>}
-      />
+    <Modal
+      adjustToContentHeight
+      modalRef={modalRef}
+      onClose={Keyboard.dismiss}
+      onClosed={resetState}
+      HeaderComponent={
+        <Header
+          left={<ActionButton onPress={handleBack} label={t('common.back')} />}
+          center={<Text type="subtitle2">{title}</Text>}
+        />
+      }>
       <View style={styles.content}>
         <View>
           <UserIcon

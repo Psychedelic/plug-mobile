@@ -31,17 +31,15 @@ function NftList({ route, navigation }: ModalScreenProps<Routes.NFT_LIST>) {
 
   const renderItem = ({ item }: { item: CollectionToken }) => {
     const isICNS = isICNSCanister(collection?.canisterId);
-    const title = isICNS
-      ? collection?.name
-      : `${collection?.name} #${item.index}`;
+    const title = isICNS ? item?.name : `${collection?.name} #${item.index}`;
 
     return (
       <NftItem
-        title={title}
+        title={isICNS ? undefined : title}
+        ICNSName={isICNS ? title : undefined}
         url={item.url}
         onPress={() => handleItemPress(item)}
         containerStyle={styles.itemContainer}
-        itemStyle={styles.itemStyle}
         canisterId={item.canister}
         itemId={item.index}
       />

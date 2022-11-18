@@ -6,7 +6,8 @@ export default StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 24,
-    paddingVertical: 32,
+    paddingBottom: 32,
+    paddingTop: 8,
   },
   inputStyle: {
     width: '100%',

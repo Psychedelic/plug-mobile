@@ -11,6 +11,7 @@ import RainbowButton from '@/components/buttons/RainbowButton';
 import { ActionSheet, Badge, NftDisplayer, Text } from '@/components/common';
 import ModalHeader from '@/components/navigation/ModalHeader';
 import { FontStyles } from '@/constants/theme';
+import { ICNS_URL } from '@/constants/urls';
 import useGetType from '@/hooks/useGetType';
 import DownloadIcon from '@/icons/material/Download.svg';
 import ViewIcon from '@/icons/material/View.svg';
@@ -61,6 +62,15 @@ function NftDetail({ route, navigation }: ModalScreenProps<Routes.NFT_DETAIL>) {
     }
     return () => setNFTDetails(undefined);
   }, [selectedNFT]);
+
+  const handleMore = () => {
+    if (isICNS) {
+      const name = selectedNFT?.name?.split('.')[0];
+      Linking.openURL(`${ICNS_URL}/domains/${name}/detail`);
+    } else {
+      actionSheetRef.current?.open();
+    }
+  };
 
   const handleSend = () => {
     navigation.navigate(Routes.SEND, { nft: selectedNFT });
@@ -119,8 +129,8 @@ function NftDetail({ route, navigation }: ModalScreenProps<Routes.NFT_DETAIL>) {
         <View style={styles.buttonContainer}>
           <View style={styles.buttonWraperLeft}>
             <Button
-              text={t('common.more')}
-              onPress={actionSheetRef.current?.open!}
+              text={isICNS ? t('nftDetail.manage') : t('common.more')}
+              onPress={handleMore}
               loading={isDownloading}
               disabled={!type}
             />
@@ -129,7 +139,7 @@ function NftDetail({ route, navigation }: ModalScreenProps<Routes.NFT_DETAIL>) {
             <RainbowButton
               text={t('common.send')}
               onPress={handleSend}
-              disabled={isDownloading}
+              disabled={isDownloading || isICNS}
             />
           </View>
         </View>

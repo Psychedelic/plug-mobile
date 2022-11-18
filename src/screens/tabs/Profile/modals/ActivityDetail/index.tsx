@@ -4,13 +4,7 @@ import React, { RefObject } from 'react';
 import { View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
-import {
-  ActionButton,
-  Header,
-  Modal,
-  Text,
-  Touchable,
-} from '@/components/common';
+import { Header, Modal, Text, Touchable } from '@/components/common';
 import useCustomToast from '@/hooks/useCustomToast';
 import { Contact, Transaction } from '@/interfaces/redux';
 import { useAppSelector } from '@/redux/hooks';
@@ -51,7 +45,6 @@ function ActivityDetail({ modalRef, activity, onClosed }: Props) {
   const { contacts } = useAppSelector(state => state.user);
   const { showInfo } = useCustomToast();
 
-  const closeModal = () => modalRef?.current?.close();
   const handleOnCopy = (address: string) => () => {
     Clipboard.setString(address);
     showInfo(t('activity.details.copied'));
@@ -116,9 +109,6 @@ function ActivityDetail({ modalRef, activity, onClosed }: Props) {
       onClosed={onClosed}
       HeaderComponent={
         <Header
-          right={
-            <ActionButton onPress={closeModal} label={t('common.close')} />
-          }
           center={<Text type="subtitle2">{t('activity.details.title')}</Text>}
         />
       }>

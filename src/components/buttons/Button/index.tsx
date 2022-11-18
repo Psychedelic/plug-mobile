@@ -41,7 +41,6 @@ const Button = ({
   disableAnimation = false,
   loading = false,
   iconProps,
-  ...props
 }: Props) => {
   return (
     <Touchable
@@ -49,7 +48,7 @@ const Button = ({
       disabled={disabled || disableAnimation}
       onPress={onPress}
       onLongPress={onLongPress || onPress}>
-      <View style={[styles.button, buttonStyle]} {...props}>
+      <View style={[styles.button, buttonStyle]}>
         {loading ? (
           <ActivityIndicator style={StyleSheet.absoluteFill} color="white" />
         ) : (
