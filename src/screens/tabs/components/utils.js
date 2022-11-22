@@ -31,6 +31,7 @@ export const getTypeIcon = type => {
     case ACTIVITY_TYPES.BURN:
       return ACTIVITY_IMAGES.BURN;
     case ACTIVITY_TYPES.SEND:
+    case ACTIVITY_TYPES.TRANSFERFROM:
       return ACTIVITY_IMAGES.SEND;
     case ACTIVITY_TYPES.MINT:
       return ACTIVITY_IMAGES.MINT;
@@ -39,22 +40,35 @@ export const getTypeIcon = type => {
   }
 };
 
+export const getTransactionDetailType = type => {
+  switch (type) {
+    case ACTIVITY_TYPES.RECEIVE:
+    case ACTIVITY_TYPES.SEND:
+    case ACTIVITY_TYPES.TRANSFERFROM:
+      return t('transactionTypes.transfer');
+    default:
+      return `${capitalize(type?.toLowerCase())}`;
+  }
+};
+
 export const getTitle = (type, symbol) => {
   switch (type) {
-    case 'DIRECTBUY':
+    case ACTIVITY_TYPES.DIRECT_BUY:
       return t('transactionTypes.buyNTF');
-    case 'MAKELISTING':
+    case ACTIVITY_TYPES.MAKE_LISTING:
       return t('transactionTypes.listNFT');
-    case 'CANCELLISTING':
+    case ACTIVITY_TYPES.CANCEL_LISTING:
       return t('transactionTypes.cancelListingNFT');
-    case 'MAKEOFFER':
+    case ACTIVITY_TYPES.MAKE_OFFER:
       return t('transactionTypes.makeOfferNFT');
-    case 'ACCEPTOFFER':
+    case ACTIVITY_TYPES.ACCEPT_OFFER:
       return t('transactionTypes.acceptOfferNFT');
-    case 'CANCELOFFER':
+    case ACTIVITY_TYPES.CANCEL_OFFER:
       return t('transactionTypes.cancelOfferNFT');
-    case 'DENYOFFER':
+    case ACTIVITY_TYPES.DENY_OFFER:
       return t('transactionTypes.denyOfferNFT');
+    case ACTIVITY_TYPES.TRANSFERFROM:
+      return `${t('transactionTypes.send')} ${symbol ?? ''}`;
     default:
       if (type.includes('Liquidity')) {
         return type;

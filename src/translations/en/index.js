@@ -99,6 +99,8 @@ const translations = {
     acceptOfferNFT: 'Accept Offer',
     cancelOfferNFT: 'Cancel Offer',
     denyOfferNFT: 'Deny Offer',
+    transfer: 'Transfer',
+    send: 'Send',
   },
   reviewSend: {
     to: 'To',
