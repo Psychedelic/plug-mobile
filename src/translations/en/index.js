@@ -346,7 +346,7 @@ const translations = {
     importPem: 'PEM File',
     create: 'Create',
     invalidKey: 'Invalid key. Please, try again.',
-    addedAccount: 'Account already added.',
+    alreadyImported: 'This account is already imported',
     importError:
       'There was an error while importing the account. Please try again.',
   },

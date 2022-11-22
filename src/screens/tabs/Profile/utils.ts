@@ -5,7 +5,7 @@ export const getPemImportError = (error: string) => {
     case 'invalid-key':
       return t('createImportAccount.invalidKey');
     case 'added-account':
-      return t('createImportAccount.addedAccount');
+      return t('createImportAccount.alreadyImported');
     default:
       return t('createImportAccount.importError');
   }
