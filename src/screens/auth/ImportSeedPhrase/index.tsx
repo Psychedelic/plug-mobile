@@ -42,36 +42,39 @@ const ImportSeedPhrase = ({
     dispatch(getICPPrice());
   }, []);
 
-  useEffect(() => {
-    // This is the only way to make the loading button work fine, otherwise it's laggy.
-    if (importingWallet) {
-      importWalletFromSeedPhrase();
-    }
-  }, [importingWallet, setImportingWallet]);
+  // useEffect(() => {
+  //   // This is the only way to make the loading button work fine, otherwise it's laggy.
+  //   if (importingWallet) {
+  //     importWalletFromSeedPhrase();
+  //   }
+  // }, [importingWallet, setImportingWallet]);
 
   const importWalletFromSeedPhrase = async () => {
-    dispatch(clear());
-    dispatch(
-      importWallet({
-        icpPrice,
-        mnemonic: seedPhrase!,
-        password,
-        onError: () => {
-          setError(true);
-          setImportingWallet(false);
-        },
-        onSuccess: async () => {
-          if (shouldSaveBiometrics) {
-            await saveBiometrics(password);
-          } else {
-            resetBiometrics();
-          }
-          setImportingWallet(false);
-          setError(false);
-          navigation.navigate(Routes.SWIPE_LAYOUT);
-        },
-      })
-    );
+    setImportingWallet(true);
+    setTimeout(() => {
+      dispatch(clear());
+      dispatch(
+        importWallet({
+          icpPrice,
+          mnemonic: seedPhrase!,
+          password,
+          onError: () => {
+            setError(true);
+            setImportingWallet(false);
+          },
+          onSuccess: async () => {
+            if (shouldSaveBiometrics) {
+              await saveBiometrics(password);
+            } else {
+              resetBiometrics();
+            }
+            setImportingWallet(false);
+            setError(false);
+            navigation.navigate(Routes.SWIPE_LAYOUT);
+          },
+        })
+      );
+    }, 500);
   };
 
   const isMnemonicValid =
@@ -120,7 +123,7 @@ const ImportSeedPhrase = ({
           )}
           <RainbowButton
             text={t('common.continue')}
-            onPress={() => setImportingWallet(true)}
+            onPress={importWalletFromSeedPhrase}
             loading={importingWallet}
             buttonStyle={styles.button}
             disabled={!isMnemonicValid}
