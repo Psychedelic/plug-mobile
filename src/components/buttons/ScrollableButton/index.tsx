@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleProp, TextStyle, View, ViewStyle } from 'react-native';
+import { StyleProp, TextStyle, ViewStyle } from 'react-native';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -72,21 +72,19 @@ function ScrollableButton({
   }, [scrollPosition]);
 
   return (
-    <Touchable onPress={onPress}>
-      <View style={[styles.button, buttonStyle]}>
-        <AddGradient width={18} height={18} style={imageStyle} />
-        <Animated.Text
-          ellipsizeMode="clip"
-          numberOfLines={1}
-          style={[
-            styles.text,
-            animatedStyle,
-            showFullButton && styles.marginText,
-            textStyle,
-          ]}>
-          {text}
-        </Animated.Text>
-      </View>
+    <Touchable onPress={onPress} style={[styles.button, buttonStyle]}>
+      <AddGradient width={18} height={18} style={imageStyle} />
+      <Animated.Text
+        ellipsizeMode="clip"
+        numberOfLines={1}
+        style={[
+          styles.text,
+          animatedStyle,
+          showFullButton && styles.marginText,
+          textStyle,
+        ]}>
+        {text}
+      </Animated.Text>
     </Touchable>
   );
 }
