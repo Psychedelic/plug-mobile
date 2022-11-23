@@ -9,9 +9,9 @@ import useCustomToast from '@/hooks/useCustomToast';
 import { Contact, Transaction } from '@/interfaces/redux';
 import { useAppSelector } from '@/redux/hooks';
 import ActivityItem from '@/screens/tabs/components/ActivityItem';
+import { getTransactionDetailType } from '@/screens/tabs/components/utils';
 import { isOwnAddress, validateICNSName } from '@/utils/ids';
 import shortAddress from '@/utils/shortAddress';
-import { capitalize } from '@/utils/strings';
 
 import styles from './styles';
 
@@ -55,7 +55,7 @@ function ActivityDetail({ modalRef, activity, onClosed }: Props) {
       ? [
           {
             title: t('activity.details.trxType'),
-            value: capitalize(activity.type?.toLocaleLowerCase()),
+            value: getTransactionDetailType(activity.type),
           },
           {
             title: t('activity.details.from'),

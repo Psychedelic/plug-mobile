@@ -152,7 +152,7 @@ android {
         applicationId "co.psychedelic.plug"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 26
+        versionCode 27
         versionName "0.4.0"
         resValue "string", "build_config_package", "co.psychedelic.plug"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()

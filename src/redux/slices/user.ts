@@ -363,7 +363,7 @@ export const addCustomToken = createAsyncThunk<
         logo,
       });
 
-      const assets = [
+      const assets: Asset[] = [
         ...user.assets,
         formatAsset(registeredToken, icp.icpPrice),
       ];
@@ -465,17 +465,19 @@ export const addCustomCollection = createAsyncThunk<
     const state = getState();
     const instance = KeyRing.getInstance();
     try {
-      const registeredCollection = recursiveParseBigint(
-        await instance?.registerNFT(nft)
+      const isAlreadyAdded = !!state.user.collections.find(
+        collection => collection.canisterId === nft.canisterId
       );
 
-      const totalCollections = [
-        ...state.user.collections,
-        registeredCollection,
-      ] as Collection[];
+      if (isAlreadyAdded) {
+        onFailure('The NFT is already registered');
+        return state.user.collections;
+      }
+
+      const nfts = await instance.getNFTs({ refresh: true });
 
       onSuccess();
-      return totalCollections;
+      return (nfts || []).map(item => recursiveParseBigint(item));
     } catch (e: any) {
       onFailure(e.message);
       console.log('Error while adding custom collection:', e);

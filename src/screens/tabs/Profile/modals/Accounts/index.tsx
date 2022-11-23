@@ -158,7 +158,10 @@ function Accounts({ modalRef }: Props) {
   };
 
   const renderAccountItem = (account: Wallet, index: number) => {
-    const isSelectedAccount = currentWallet?.principal === account.principal;
+    const isSelectedAccount =
+      currentWallet?.principal === account.principal &&
+      currentWallet?.type === account.type;
+
     const handleOpenAccountOptions = () => openAccountOptions(account);
 
     const selectedAccountProps = {
