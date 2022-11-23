@@ -49,16 +49,26 @@ function ScrollableButton({
   });
 
   useEffect(() => {
-    if (currentScrollPosition < scrollPosition) {
-      // Scroll down.
-      setShowFullButton(false);
-      animatedWidth.value = 0;
-    } else if (scrollPosition < currentScrollPosition || scrollPosition === 0) {
-      // Scroll up or start position.
+    if (scrollPosition < 0) {
+      // to capture ios bounce effect
       setShowFullButton(true);
       animatedWidth.value = textWidth;
+      setCurrentScrollPosition(0);
+    } else if (Math.abs(scrollPosition - currentScrollPosition) > 100) {
+      if (currentScrollPosition < scrollPosition) {
+        // Scroll down.
+        setShowFullButton(false);
+        animatedWidth.value = 0;
+      } else if (
+        scrollPosition < currentScrollPosition ||
+        scrollPosition === 0
+      ) {
+        // Scroll up or start position.
+        setShowFullButton(true);
+        animatedWidth.value = textWidth;
+      }
+      setCurrentScrollPosition(scrollPosition);
     }
-    setCurrentScrollPosition(scrollPosition);
   }, [scrollPosition]);
 
   return (

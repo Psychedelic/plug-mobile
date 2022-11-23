@@ -42,13 +42,6 @@ const ImportSeedPhrase = ({
     dispatch(getICPPrice());
   }, []);
 
-  // useEffect(() => {
-  //   // This is the only way to make the loading button work fine, otherwise it's laggy.
-  //   if (importingWallet) {
-  //     importWalletFromSeedPhrase();
-  //   }
-  // }, [importingWallet, setImportingWallet]);
-
   const importWalletFromSeedPhrase = async () => {
     setImportingWallet(true);
     setTimeout(() => {
