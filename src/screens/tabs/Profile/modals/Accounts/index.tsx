@@ -98,7 +98,8 @@ function Accounts({ modalRef }: Props) {
       .then(() => {
         setLoading(false);
         modalRef.current?.close();
-      });
+      })
+      .catch(() => {});
   };
 
   const onAddICNS = (account: Wallet) => {
