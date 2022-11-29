@@ -32,14 +32,16 @@ const translations = {
     the: 'The',
     enterPassword: 'Enter Password',
     importWallet: 'Import Wallet',
+    learnMore: 'Learn More',
   },
   routes: {
     [Routes.NFTS]: 'Collectibles',
     [Routes.TOKENS]: 'Tokens',
-    [Routes.PROFILE_SCREEN]: 'Profile',
+    [Routes.PROFILE]: 'Profile',
     [Routes.SETTINGS]: 'Settings',
     [Routes.CONTACTS]: 'Contacts',
     [Routes.APPROVED_CANISTERS]: 'Approved Canisters',
+    [Routes.SEND]: 'Send',
   },
   welcome: {
     title: 'Welcome to Plug',
@@ -97,6 +99,8 @@ const translations = {
     acceptOfferNFT: 'Accept Offer',
     cancelOfferNFT: 'Cancel Offer',
     denyOfferNFT: 'Deny Offer',
+    transfer: 'Transfer',
+    send: 'Send',
   },
   reviewSend: {
     to: 'To',
@@ -127,18 +131,29 @@ const translations = {
     emptyTitle: "You don't own any Collectibles yet",
     emptySubtitle:
       "When you do, they'll show here, where you will see their traits and send them.",
+    items: '{{count}} item',
+    items_plural: '{{count}} items',
   },
   nftDetail: {
     collectionTitle: '🧩 Collection',
     descriptionTitle: '📝 Description',
     attributesTitle: '🎛 Attributes',
     moreTitle: 'More Options',
+    manage: 'Manage',
     moreOptions: {
       view: 'View',
       download: 'Download',
     },
   },
   activity: {
+    details: {
+      title: 'Activity Detail',
+      trxType: 'Transaction Type:',
+      from: 'From:',
+      to: 'To:',
+      you: ' (you)',
+      copied: 'Address copied in clipboard',
+    },
     [ACTIVITY_STATUS.COMPLETED]: 'Completed',
     [ACTIVITY_STATUS.PENDING]: 'Pending',
     [ACTIVITY_STATUS.REVERTED]: 'Failed',
@@ -190,7 +205,6 @@ const translations = {
     icns: {
       setICNS: 'Choose ICNS Name',
       none: 'None',
-      learnMore: 'Learn More',
       emptyState:
         'We weren’t able to find any ICNS names in your Plug account. ',
       buyICNS: 'Buy an ICNS name',
@@ -215,6 +229,11 @@ const translations = {
     title: 'Contacts',
     addContact: 'Add contact',
     editContact: 'Edit contact',
+    emptyState: {
+      title: 'Empty Contact List',
+      message:
+        'You don’t have any contacts yet. Invite your friends to send tokens, collectibles, and more.',
+    },
     moreOptions: {
       edit: 'Edit Contact',
       copy: 'Copy Address',
@@ -288,7 +307,6 @@ const translations = {
       'Invalid token’s standard. Select a valid option for the current canister ID.',
     invalidCanisterTokenError: 'Invalid Canister ID.',
     nftTokenError: 'Custom non-fungible tokens are not supported yet.',
-    learnMore: 'Learn More',
     poweredByDab: 'POWERED BY DAB',
   },
   walletConnect: {
@@ -314,7 +332,6 @@ const translations = {
     unsafeDappName: 'Unknown DApp',
     unknown: 'Unknown',
     unknownArguments: 'Unknown arguments',
-    learnMore: 'Learn More',
   },
   deleteWallet: {
     title: 'Delete Wallet',
@@ -329,7 +346,9 @@ const translations = {
     importPem: 'PEM File',
     create: 'Create',
     invalidKey: 'Invalid key. Please, try again.',
-    addedAccount: 'Account already added.',
+    alreadyImported: 'This account is already imported',
+    importError:
+      'There was an error while importing the account. Please try again.',
   },
   exportPem: {
     safeCheck: 'I’ll be safe with my DFX Identity.',
@@ -339,6 +358,10 @@ const translations = {
       message:
         'There was an error while exporting the account. Please try again.',
     },
+    permissionError: {
+      title: 'Error Exporting Account',
+      message: 'You need to allow the app to access storage to save the file.',
+    },
     success: {
       title: 'Account Successfully Exported',
       messageIos: 'Your .pem file should be located at the choosen directory.',
@@ -346,6 +369,29 @@ const translations = {
     },
     selectAccount:
       "Select the account you would like to export it's DFX Identity.",
+  },
+  addCollection: {
+    customCollectionId: 'Collection Canister ID',
+    customCollectionStandard: 'Collection Interface Standard',
+    customCollection: 'Custom Collection',
+    customCaption: 'This allows Collectibles to be used by Plug',
+    title: 'Add Collection',
+    noName: 'Unable to load name',
+    invalidCanisterId: 'Invalid canister ID. ',
+    canisterNotCompatible:
+      'Canister Id not compatible with {{standard}}. Please, try again.',
+    safetyAlert:
+      'Collection Safety Alert: For your security, make sure to do proper research before interacting with any Collections.',
+    errorToastTitle: 'Error Adding Custom Collection',
+    errorToastMessage:
+      'There was an unexpected error while trying to add a custom collection. Please try again later.',
+    infoToastTitle: 'Custom Collection Already Added',
+    infoToastMessage:
+      'You’ve added this collection before. Remember, you need to own items from {{name}} to be able to access it.',
+    successToastTitle: 'Custom Collection Successfully Added',
+    successToastMessage:
+      'You’ll only be able to access the collection if own items from it.',
+    unknownCollection: 'unknown collection',
   },
 };
 

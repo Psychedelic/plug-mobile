@@ -1,7 +1,7 @@
 import { StackHeaderProps } from '@react-navigation/stack';
 import { t } from 'i18next';
 import React from 'react';
-import { View } from 'react-native';
+import { Animated, View } from 'react-native';
 
 import { ActionButton, Header, Text } from '@/components/common';
 import { getRouteName } from '@/navigation/utils';
@@ -13,10 +13,25 @@ interface Props extends StackHeaderProps {
   showClose?: boolean;
 }
 
-function ModalHeader({ navigation, route, showBack, showClose }: Props) {
-  const title = getRouteName(route.name);
+function ModalHeader({
+  navigation,
+  route,
+  showBack,
+  showClose,
+  progress,
+  options,
+}: Props) {
+  const title = options?.title || getRouteName(route.name);
+  const opacity = Animated.add(
+    progress.current,
+    progress.next || 0
+  ).interpolate({
+    inputRange: [0, 1, 2],
+    outputRange: [0, 1, 0],
+  });
+
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, { opacity }]}>
       <View style={styles.handle} />
       <Header
         style={styles.header}
@@ -38,7 +53,7 @@ function ModalHeader({ navigation, route, showBack, showClose }: Props) {
           )
         }
       />
-    </View>
+    </Animated.View>
   );
 }
 

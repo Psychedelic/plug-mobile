@@ -14,8 +14,8 @@ import WCInitialConnection from '@/screens/flows/WalletConnect/screens/InitialCo
 import WCTimeoutError from '@/screens/flows/WalletConnect/screens/TimeoutError';
 
 import Routes from '../Routes';
-import { rootStackOptions, settingsGroupOptions } from '../utils';
-import SettingsNavigator from './SettingsNavigator';
+import { modalGroupOptions, rootStackOptions } from '../utils';
+import ModalStackNavigator from './ModalStackNavigator';
 import SwipeNavigator from './SwipeNavigator';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -26,16 +26,16 @@ function RootStackNavigator() {
   const initialRoute = keyring.isInitialized
     ? keyring.isUnlocked
       ? Routes.SWIPE_LAYOUT
-      : Routes.LOGIN_SCREEN
-    : Routes.WELCOME_SCREEN;
+      : Routes.LOGIN
+    : Routes.WELCOME;
 
   return (
     <Stack.Navigator
       initialRouteName={initialRoute}
       screenOptions={rootStackOptions}>
       <Stack.Group>
-        <Stack.Screen name={Routes.WELCOME_SCREEN} component={Welcome} />
-        <Stack.Screen name={Routes.LOGIN_SCREEN} component={Login} />
+        <Stack.Screen name={Routes.WELCOME} component={Welcome} />
+        <Stack.Screen name={Routes.LOGIN} component={Login} />
         <Stack.Screen
           name={Routes.CREATE_PASSWORD}
           component={CreatePassword}
@@ -73,10 +73,10 @@ function RootStackNavigator() {
           options={{ gestureEnabled: false }}
         />
       </Stack.Group>
-      <Stack.Group screenOptions={settingsGroupOptions}>
+      <Stack.Group screenOptions={modalGroupOptions}>
         <Stack.Screen
-          name={Routes.SETTINGS_STACK}
-          component={SettingsNavigator}
+          name={Routes.MODAL_STACK}
+          component={ModalStackNavigator}
         />
       </Stack.Group>
     </Stack.Navigator>

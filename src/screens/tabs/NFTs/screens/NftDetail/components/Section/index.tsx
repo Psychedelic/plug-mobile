@@ -8,7 +8,7 @@ import styles from './styles';
 interface Props {
   title: string;
   children: React.ReactNode;
-  style: StyleProp<ViewStyle>;
+  style?: StyleProp<ViewStyle>;
 }
 
 const Section = ({ title, children, style }: Props) => (

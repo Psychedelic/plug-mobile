@@ -15,7 +15,7 @@ function ICNSDisplayer({ ICNSName, size = 'small' }: Props) {
   const isBigSize = size === 'big';
 
   return (
-    <View style={styles.ICNSContainer}>
+    <View style={[styles.ICNSContainer, isBigSize && styles.bigContainer]}>
       <Image
         url={ICNS_LOGO}
         resizeMode="contain"

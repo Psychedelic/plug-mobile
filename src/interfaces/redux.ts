@@ -18,6 +18,7 @@ export interface CollectionToken {
   url: string;
   standard: string;
   metadata: any;
+  name?: string; // ICNS
 }
 
 export interface Collection {
@@ -54,40 +55,20 @@ export interface CanisterInfo {
   symbol?: string;
 }
 
-interface Currency {
-  symbol: string;
-  decimals: number;
-}
-
-export interface TransactionDetails {
-  status: string; //check if this is correct
-  fee: {
-    amount: string;
-    currency: Currency;
-  };
-  from: string;
-  amount: string;
-  currency: Currency;
-  to: string;
-  caller: string;
-}
-
 export interface Transaction {
-  amount: string | number;
-  type: string; //TODO: Add types here SEND/RECEIVE. Check ACTIVITY_TYPES
-  symbol: string;
-  hash: string;
+  type: string;
   to: string;
   from: string;
-  date: Date;
-  image: string;
-  value?: string | number;
-  status?: number | string;
-  icon?: string;
-  canisterId?: string;
-  plug?: any;
-  canisterInfo?: CanisterInfo;
-  details?: TransactionDetails;
+  hash: string;
+  amount: Nullable<number | typeof NaN>;
+  value?: Nullable<number>;
+  status: number;
+  date: bigint;
+  symbol: string;
+  logo: string;
+  canisterId: string;
+  details?: { [key: string]: any };
+  canisterInfo?: Object;
 }
 
 export interface Asset {
@@ -121,7 +102,7 @@ export interface Wallet {
 export interface KeyringState {
   isInitialized: boolean;
   isUnlocked: boolean;
-  currentWallet: Nullable<Wallet>;
+  currentWallet?: Wallet;
   wallets: Wallet[];
   icnsDataLoading: boolean;
   isPrelocked: boolean;

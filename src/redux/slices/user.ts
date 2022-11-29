@@ -2,9 +2,13 @@ import { Principal } from '@dfinity/principal';
 import { Address } from '@psychedelic/plug-controller/dist/interfaces/contact_registry';
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit';
 
-import { JELLY_CANISTER_ID } from '@/constants/canister';
 import { ENABLE_NFTS } from '@/constants/nfts';
-import { FungibleStandard, TokenBalance } from '@/interfaces/keyring';
+import {
+  CollectionInfo,
+  FungibleStandard,
+  NonFungibleStandard,
+  TokenBalance,
+} from '@/interfaces/keyring';
 import {
   Asset,
   Collection,
@@ -30,7 +34,6 @@ import {
   DEFAULT_TRANSACTION,
   formatContact,
   formatContactForController,
-  formatTransaction,
   TRANSACTION_STATUS,
 } from '../utils';
 
@@ -62,11 +65,14 @@ export const sendToken = createAsyncThunk(
       canisterId: string;
       opts: any;
       icpPrice: number;
+      onSuccess?: () => void;
+      onFailure?: () => void;
     },
     { rejectWithValue, getState, dispatch }
   ) => {
+    const { to, amount, canisterId, opts, icpPrice, onSuccess, onFailure } =
+      params;
     try {
-      const { to, amount, canisterId, opts, icpPrice } = params;
       const { user } = getState() as State;
       const instance = KeyRing.getInstance();
       const token = user.assets.find(asset => asset.canisterId === canisterId);
@@ -81,11 +87,13 @@ export const sendToken = createAsyncThunk(
         dispatch(getBalance({}));
         dispatch(getTransactions({ icpPrice }));
       }
+      onSuccess?.();
       return {
         status: TRANSACTION_STATUS.success,
       };
     } catch (e: any) {
       console.log('e', e);
+      onFailure?.();
       return rejectWithValue({
         status: TRANSACTION_STATUS.error,
       });
@@ -96,20 +104,30 @@ export const sendToken = createAsyncThunk(
 export const burnXtc = createAsyncThunk(
   'user/burnXtc',
   async (
-    params: { to: string; amount: string; subaccount: string },
+    params: {
+      to: string;
+      amount: string;
+      subaccount?: string;
+      onSuccess?: () => void;
+      onFailure?: () => void;
+    },
     { rejectWithValue }
   ) => {
+    const { to, amount, subaccount, onSuccess, onFailure } = params;
     try {
       const instance = KeyRing.getInstance();
-      const response = await instance?.burnXTC(params);
+      const response = await instance?.burnXTC({ to, amount, subaccount });
       if ('Ok' in response) {
+        onSuccess?.();
         return {
           status: TRANSACTION_STATUS.success,
         };
       } else {
+        onFailure?.();
         return rejectWithValue({ status: TRANSACTION_STATUS.error });
       }
     } catch (e: any) {
+      onFailure?.();
       return rejectWithValue({
         status: TRANSACTION_STATUS.error,
       });
@@ -164,25 +182,11 @@ export const getTransactions = createAsyncThunk<
   try {
     const { icpPrice } = params;
     const instance = KeyRing.getInstance();
-    const currentWalletId = instance?.currentWalletId;
-    const state = await instance?.getState();
-    const currentWallet = state.wallets[currentWalletId];
-    const response = await instance?.getTransactions({});
-    let parsedTrx =
-      response?.transactions?.map(formatTransaction(icpPrice, currentWallet)) ||
-      [];
+    const { transactions } = await instance?.getTransactions({
+      icpPrice,
+    });
 
-    if (!ENABLE_NFTS) {
-      parsedTrx = parsedTrx.filter(
-        item =>
-          !(
-            item?.symbol === 'NFT' ||
-            item?.details.canisterId === JELLY_CANISTER_ID
-          )
-      );
-    }
-
-    return parsedTrx;
+    return transactions;
   } catch (e: any) {
     return rejectWithValue(e.message);
   }
@@ -195,12 +199,13 @@ export const transferNFT = createAsyncThunk(
       to: string;
       nft: CollectionToken;
       icpPrice: number;
-      onEnd?: () => void;
+      onSuccess?: () => void;
+      onFailure?: () => void;
     },
     { rejectWithValue, dispatch }
   ) => {
+    const { to, nft, icpPrice, onSuccess, onFailure } = params;
     try {
-      const { to, nft, icpPrice, onEnd } = params;
       const instance = KeyRing.getInstance();
       const response = await instance?.transferNFT({
         to,
@@ -208,16 +213,18 @@ export const transferNFT = createAsyncThunk(
         token: nft,
       });
       if (response) {
+        // Reload nft list in kyassu and get new transactionlist
+        instance.getNFTs({ refresh: true });
         dispatch(getTransactions({ icpPrice }));
       }
-      onEnd?.();
+      onSuccess?.();
       return {
         nft,
         status: TRANSACTION_STATUS.success,
       };
     } catch (e: any) {
       console.trace(e.stack);
-      params?.onEnd?.();
+      onFailure?.();
       return rejectWithValue({
         error: e.message,
         status: TRANSACTION_STATUS.error,
@@ -241,7 +248,6 @@ export const getContacts = createAsyncThunk<
   }
 });
 
-// eslint-disable-next-line no-spaced-func
 export const addContact = createAsyncThunk<
   Contact[],
   { contact: Contact; onFinish?: () => void },
@@ -301,7 +307,7 @@ export const editContact = createAsyncThunk<
   'user/editContact',
   async ({ contact, newContact }, { getState, rejectWithValue }) => {
     try {
-      const state = getState();
+      const state = getState() as State;
       const instance = KeyRing.getInstance();
       const removeContactRes = await instance?.deleteContact({
         addressName: contact.name,
@@ -327,7 +333,6 @@ export const editContact = createAsyncThunk<
   }
 );
 
-// eslint-disable-next-line no-spaced-func
 export const addCustomToken = createAsyncThunk<
   Asset[],
   {
@@ -351,7 +356,6 @@ export const addCustomToken = createAsyncThunk<
         onSuccess?.();
         return user.assets;
       }
-
       const registeredToken = await instance?.registerToken({
         canisterId: canisterId.toString(),
         standard,
@@ -359,7 +363,7 @@ export const addCustomToken = createAsyncThunk<
         logo,
       });
 
-      const assets = [
+      const assets: Asset[] = [
         ...user.assets,
         formatAsset(registeredToken, icp.icpPrice),
       ];
@@ -416,6 +420,67 @@ export const getTokenInfo = createAsyncThunk(
     } catch (e: any) {
       console.log('Error while fetching token info', e);
       onError?.(e.message);
+      return rejectWithValue(e.message);
+    }
+  }
+);
+
+export const getCollectionInfo = createAsyncThunk(
+  'user/getCollectionInfo',
+  async (
+    {
+      collection,
+      onSuccess,
+      onFailure,
+    }: {
+      collection: { canisterId: string; standard: NonFungibleStandard };
+      onSuccess: (collectionInfo: CollectionInfo) => void;
+      onFailure: () => void;
+    },
+    { rejectWithValue }
+  ) => {
+    const instance = KeyRing.getInstance();
+    try {
+      const collectionInfo = await instance?.getNFTInfo(collection);
+      onSuccess(collectionInfo);
+    } catch (e: any) {
+      console.log('Error while fetching Collection info', e);
+      onFailure?.();
+      return rejectWithValue(e.message);
+    }
+  }
+);
+
+export const addCustomCollection = createAsyncThunk<
+  Collection[],
+  {
+    nft: { canisterId: string; standard: NonFungibleStandard };
+    onSuccess: () => void;
+    onFailure: (e: string) => void;
+  },
+  { rejectValue: string; state: State }
+>(
+  'user/addCustomCollection',
+  async ({ nft, onSuccess, onFailure }, { rejectWithValue, getState }) => {
+    const state = getState();
+    const instance = KeyRing.getInstance();
+    try {
+      const isAlreadyAdded = !!state.user.collections.find(
+        collection => collection.canisterId === nft.canisterId
+      );
+
+      if (isAlreadyAdded) {
+        onFailure('The NFT is already registered');
+        return state.user.collections;
+      }
+
+      const nfts = await instance.getNFTs({ refresh: true });
+
+      onSuccess();
+      return (nfts || []).map(item => recursiveParseBigint(item));
+    } catch (e: any) {
+      onFailure(e.message);
+      console.log('Error while adding custom collection:', e);
       return rejectWithValue(e.message);
     }
   }
@@ -535,6 +600,16 @@ export const userSlice = createSlice({
       })
       .addCase(getNFTs.rejected, (state, action) => {
         state.collectionsError = action.payload;
+        state.collectionsLoading = false;
+      })
+      .addCase(addCustomCollection.fulfilled, (state, action) => {
+        state.collections = action.payload ?? [];
+        state.collectionsLoading = false;
+      })
+      .addCase(addCustomCollection.pending, state => {
+        state.collectionsLoading = true;
+      })
+      .addCase(addCustomCollection.rejected, state => {
         state.collectionsLoading = false;
       })
       .addCase(getTransactions.pending, state => {

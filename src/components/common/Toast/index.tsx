@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useToast } from 'react-native-toast-notifications';
@@ -12,7 +12,6 @@ import InfoIcon from '@/icons/svg/InfoIcon.svg';
 import SuccessIcon from '@/icons/svg/SuccessIcon.svg';
 
 import Text from '../Text';
-import Touchable from '../Touchable';
 import styles from './styles';
 
 export enum ToastTypes {
@@ -23,7 +22,7 @@ export enum ToastTypes {
 
 export interface ToastProps {
   title: string;
-  message: string;
+  message?: string;
   type: 'success' | 'error' | 'info';
   id: string;
 }
@@ -61,13 +60,15 @@ function Toast({ title, message, type, id }: ToastProps) {
             {title}
           </Text>
         </View>
-        <Touchable onPress={handleClose}>
+        <Pressable onPress={handleClose}>
           <Close fill={Colors.White.Primary} height={20} />
-        </Touchable>
+        </Pressable>
       </View>
-      <Text type="caption" style={styles.message}>
-        {message}
-      </Text>
+      {message && (
+        <Text type="caption" style={styles.message}>
+          {message}
+        </Text>
+      )}
     </LinearGradient>
   );
 }

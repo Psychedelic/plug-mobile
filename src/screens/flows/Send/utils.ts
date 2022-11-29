@@ -4,7 +4,7 @@ import { TOKENS, USD_PER_TC } from '@/constants/assets';
 export const getFeePrice = (
   tokenSymbol: string,
   icpPrice: number,
-  tokenFee: number
+  tokenFee: number = 0
 ) => {
   switch (tokenSymbol) {
     case TOKENS.ICP.symbol:

@@ -1,5 +1,2 @@
-import { isAndroid } from './platform';
-
-// Since we're having problems with Apple's approval we're disabling NFTs until we find a solution
-
-export const ENABLE_NFTS = isAndroid;
+// TODO: Delete ENABLE_NFTS everywhere.
+export const ENABLE_NFTS = true;

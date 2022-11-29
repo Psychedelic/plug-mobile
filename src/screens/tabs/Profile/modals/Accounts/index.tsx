@@ -1,30 +1,31 @@
-import Clipboard from '@react-native-community/clipboard';
+import Clipboard from '@react-native-clipboard/clipboard';
 import { t } from 'i18next';
 import React, { RefObject, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Platform, View } from 'react-native';
 import { Modalize } from 'react-native-modalize';
 
 import {
+  AccountShowcase,
   ActionSheet,
-  CommonItem,
   Header,
   Modal,
   Text,
   Touchable,
 } from '@/components/common';
 import Icon from '@/components/icons';
+import { COMMON_HITSLOP } from '@/constants/general';
 import { FontStyles } from '@/constants/theme';
 import CopyIcon from '@/icons/material/Copy.svg';
 import EditIcon from '@/icons/material/Edit.svg';
 import TrashCan from '@/icons/material/TrashCan.svg';
 import AddGray from '@/icons/svg/AddGray.svg';
 import CheckedBlueCircle from '@/icons/svg/CheckedBlueCircle.svg';
-import { Nullable } from '@/interfaces/general';
 import { Wallet } from '@/interfaces/redux';
 import { Row } from '@/layout';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getICPPrice } from '@/redux/slices/icp';
 import { removeAccount, setCurrentPrincipal } from '@/redux/slices/keyring';
+import animationScales from '@/utils/animationScales';
 import shortAddress from '@/utils/shortAddress';
 
 import CreateEditAccount from '../CreateEditAccount';
@@ -42,9 +43,8 @@ function Accounts({ modalRef }: Props) {
   const dispatch = useAppDispatch();
 
   const [loading, setLoading] = useState(false);
-  const [actionSheetData, setActionSheetData] = useState<any>(undefined);
-  const [selectedAccount, setSelectedAccount] =
-    useState<Nullable<Wallet>>(null);
+  const [actionSheetData, setActionSheetData] = useState<any>();
+  const [selectedAccount, setSelectedAccount] = useState<Wallet>();
 
   const addICNSRef = useRef<Modalize>(null);
   const actionSheetRef = useRef<Modalize>(null);
@@ -58,7 +58,7 @@ function Accounts({ modalRef }: Props) {
   }, []);
 
   const onCreateImportAccount = () => {
-    setSelectedAccount(null);
+    setSelectedAccount(undefined);
     createImportAccountRef.current?.open();
   };
 
@@ -98,7 +98,8 @@ function Accounts({ modalRef }: Props) {
       .then(() => {
         setLoading(false);
         modalRef.current?.close();
-      });
+      })
+      .catch(() => {});
   };
 
   const onAddICNS = (account: Wallet) => {
@@ -106,7 +107,7 @@ function Accounts({ modalRef }: Props) {
     addICNSRef.current?.open();
   };
 
-  const onLongPress = (account: Wallet) => {
+  const openAccountOptions = (account: Wallet) => {
     const isSelectedAccount = currentWallet?.principal === account.principal;
     const isImportedAccount = !account.type.includes('MNEMONIC');
 
@@ -158,10 +159,16 @@ function Accounts({ modalRef }: Props) {
   };
 
   const renderAccountItem = (account: Wallet, index: number) => {
-    const isSelectedAccount = currentWallet?.principal === account.principal;
+    const isSelectedAccount =
+      currentWallet?.principal === account.principal &&
+      currentWallet?.type === account.type;
+
+    const handleOpenAccountOptions = () => openAccountOptions(account);
+
     const selectedAccountProps = {
-      nameStyle: styles.selectedAccount,
-      right: <CheckedBlueCircle viewBox="-2 -2 16 16" />,
+      selected: true,
+      titleStyle: styles.selectedAccount,
+      titleRight: <CheckedBlueCircle style={styles.checkbox} />,
     };
 
     const handleOnPress = () => {
@@ -171,24 +178,45 @@ function Accounts({ modalRef }: Props) {
     };
 
     return (
-      <CommonItem
+      <AccountShowcase
         key={index}
-        name={account?.icnsData?.reverseResolvedName || account.name}
         icon={account.icon}
-        id={account.principal}
         onPress={handleOnPress}
-        style={styles.accountItem}
-        onLongPress={() => onLongPress(account)}
-        onActionPress={() => onLongPress(account)}
+        selected={isSelectedAccount}
+        onLongPress={handleOpenAccountOptions}
+        subtitle={shortAddress(account.principal)}
+        title={account?.icnsData?.reverseResolvedName || account.name}
+        right={
+          <View style={styles.threeDots}>
+            <Touchable
+              onPress={handleOpenAccountOptions}
+              scale={animationScales.large}
+              hitSlop={COMMON_HITSLOP}>
+              <Icon name="threeDots" />
+            </Touchable>
+          </View>
+        }
         {...(isSelectedAccount && selectedAccountProps)}
       />
     );
   };
 
+  const resetState = () => {
+    setSelectedAccount(undefined);
+    setActionSheetData(undefined);
+  };
+
   return (
     <>
-      <Modal adjustToContentHeight modalRef={modalRef}>
-        <Header center={<Text type="subtitle2">{t('accounts.title')}</Text>} />
+      <Modal
+        adjustToContentHeight
+        modalRef={modalRef}
+        onClosed={resetState}
+        HeaderComponent={
+          <Header
+            center={<Text type="subtitle2">{t('accounts.title')}</Text>}
+          />
+        }>
         <View style={styles.content}>
           {loading && (
             <View style={styles.loading}>
@@ -212,13 +240,9 @@ function Accounts({ modalRef }: Props) {
           </Touchable>
           <CreateEditAccount
             modalRef={createEditAccountRef}
-            accountsModalRef={modalRef}
             account={selectedAccount!}
           />
-          <CreateImportAccount
-            modalRef={createImportAccountRef}
-            accountsModalRef={modalRef}
-          />
+          <CreateImportAccount modalRef={createImportAccountRef} />
         </View>
       </Modal>
       <ActionSheet

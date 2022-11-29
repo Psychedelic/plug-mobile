@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import RainbowButton from '@/components/buttons/RainbowButton';
 import {
+  AccountShowcase,
   ActionButton,
   CustomCheckbox,
   Header,
@@ -19,9 +20,9 @@ import useCustomToast from '@/hooks/useCustomToast';
 import { Wallet } from '@/interfaces/redux';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getPemFile, validatePassword } from '@/redux/slices/keyring';
+import { requestStoragePermissions } from '@/utils/filesystem';
 import shortAddress from '@/utils/shortAddress';
 
-import AccountShowcase from './components/AccountShowcase';
 import styles from './styles';
 
 interface Props {
@@ -64,7 +65,7 @@ function ExportPem({ modalRef }: Props) {
     );
   };
 
-  const handleExportPem = () => {
+  const downloadPem = () => {
     dispatch(
       getPemFile({
         walletId: selectedWallet.walletId,
@@ -111,15 +112,38 @@ function ExportPem({ modalRef }: Props) {
     );
   };
 
+  const handleExportPem = async () => {
+    if (isIos) {
+      downloadPem();
+    } else {
+      await requestStoragePermissions(() => {
+        toast.showError(
+          t('exportPem.permissionError.title'),
+          t('exportPem.permissionError.message')
+        );
+      }, downloadPem);
+    }
+  };
+
   const renderAccount = (account: Wallet) => {
     const { name, walletId, icon, principal } = account;
+    const selected = selectedWallet.walletId === walletId;
+    const handleSetAccount = () => setSelectedWallet(account);
+
     return (
       <AccountShowcase
         icon={icon}
         key={walletId}
+        right={
+          <CustomCheckbox
+            circle
+            selected={selected}
+            onPress={handleSetAccount}
+          />
+        }
         subtitle={shortAddress(principal)}
-        selected={selectedWallet.walletId === walletId}
-        onPress={() => setSelectedWallet(account)}
+        selected={selected}
+        onPress={handleSetAccount}
         title={account?.icnsData?.reverseResolvedName || name}
       />
     );

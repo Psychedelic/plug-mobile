@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native';
 
+import { SEMIBOLD } from '@/constants/fonts';
 import { Colors } from '@/constants/theme';
+import { fontMaker } from '@/utils/fonts';
 
 export const searchColor = Colors.White.Secondary;
 
@@ -33,4 +35,9 @@ export default StyleSheet.create({
     borderRadius: 16,
     marginLeft: 8,
   },
+  inputStyle: fontMaker({
+    size: 16,
+    weight: SEMIBOLD,
+    color: Colors.White.Pure,
+  }),
 });

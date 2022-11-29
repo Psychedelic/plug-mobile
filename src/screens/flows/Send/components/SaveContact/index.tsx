@@ -11,6 +11,7 @@ import TextInput from '@/commonComponents/TextInput';
 import RainbowButton from '@/components/buttons/RainbowButton';
 import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
+import { Contact } from '@/interfaces/redux';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { addContact } from '@/redux/slices/user';
 
@@ -19,9 +20,10 @@ import styles from './styles';
 interface Props {
   modalRef: RefObject<Modalize>;
   id: string;
+  onSaved?: (contact: Contact) => void;
 }
 
-function SaveContact({ modalRef, id }: Props) {
+function SaveContact({ modalRef, id, onSaved }: Props) {
   const dispatch = useAppDispatch();
   const { contactsLoading, contacts } = useAppSelector(state => state.user);
 
@@ -30,6 +32,11 @@ function SaveContact({ modalRef, id }: Props) {
 
   const savedContactName = contacts.find(c => c.name === name);
   const title = t('saveContact.title');
+
+  const handleSaved = (contact: Contact) => {
+    onSaved?.(contact);
+    modalRef.current?.close();
+  };
 
   const handleClose = () => {
     setName('');
@@ -55,7 +62,12 @@ function SaveContact({ modalRef, id }: Props) {
             name,
             image: randomEmoji,
           },
-          onFinish: () => modalRef.current?.close(),
+          onFinish: () =>
+            handleSaved({
+              id,
+              name,
+              image: randomEmoji,
+            }),
         })
       );
     }

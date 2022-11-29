@@ -1,9 +1,10 @@
-import Clipboard from '@react-native-community/clipboard';
+import Clipboard from '@react-native-clipboard/clipboard';
 import { useScrollToTop } from '@react-navigation/native';
 import { t } from 'i18next';
 import React, { useMemo, useRef, useState } from 'react';
 import { Alert, RefreshControl, ScrollView } from 'react-native';
 
+import useScrollHanlder from '@/components/buttons/ScrollableButton/hooks/useScrollHandler';
 import { ActionSheet, ErrorState, Text } from '@/components/common';
 import TokenItem from '@/components/tokens/TokenItem';
 import { ERROR_TYPES } from '@/constants/general';
@@ -12,23 +13,23 @@ import CopyIcon from '@/icons/material/Copy.svg';
 import DeleteIcon from '@/icons/material/Delete.svg';
 import SendIcon from '@/icons/material/Send.svg';
 import { Container, Row, Separator } from '@/layout';
+import Routes from '@/navigation/Routes';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { getBalance, removeCustomToken } from '@/redux/slices/user';
-import Send from '@/screens/flows/Send';
 import { isDefaultToken } from '@/utils/assets';
 
 import WalletHeader from '../components/WalletHeader';
 import { AddToken } from './components/AddToken';
 import styles from './styles';
 
-function Tokens() {
+function Tokens({ navigation }) {
   const dispatch = useAppDispatch();
   const { assets, assetsLoading, assetsError } = useAppSelector(
     state => state.user
   );
   const [selectedToken, setSelectedToken] = useState(null);
+  const { handleOnScroll, scrollPosition } = useScrollHanlder();
 
-  const sendRef = useRef(null);
   const actionsRef = useRef(null);
   const listRef = useRef(null);
   useScrollToTop(listRef);
@@ -62,7 +63,11 @@ function Tokens() {
       {
         id: 1,
         label: t('tokensTab.tokenActions.send'),
-        onPress: sendRef.current?.open,
+        onPress: () =>
+          navigation.navigate(Routes.MODAL_STACK, {
+            screen: Routes.SEND,
+            params: { token: selectedToken },
+          }),
         icon: SendIcon,
       },
       {
@@ -114,10 +119,12 @@ function Tokens() {
       {!assetsError ? (
         <>
           <ScrollView
+            bounces={false}
             showsVerticalScrollIndicator={false}
             overScrollMode="never"
             contentContainerStyle={styles.scrollContent}
             ref={listRef}
+            onScroll={handleOnScroll}
             refreshing={assetsLoading}
             refreshControl={
               <RefreshControl
@@ -135,7 +142,7 @@ function Tokens() {
               />
             ))}
           </ScrollView>
-          <AddToken />
+          <AddToken scrollPosition={scrollPosition} />
         </>
       ) : (
         <ErrorState
@@ -143,7 +150,6 @@ function Tokens() {
           errorType={ERROR_TYPES.FETCH_ERROR}
         />
       )}
-      <Send modalRef={sendRef} token={selectedToken} />
       <ActionSheet
         modalRef={actionsRef}
         options={tokenActions}

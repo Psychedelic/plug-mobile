@@ -2,11 +2,11 @@ enum Routes {
   // Tabs Screens:
   NFTS = 'NFTs',
   TOKENS = 'Tokens',
-  PROFILE_SCREEN = 'Profile',
+  PROFILE = 'Profile',
   SWIPE_LAYOUT = 'SwipeLayout',
   // Auth Screens:
-  LOGIN_SCREEN = 'LoginScreen',
-  WELCOME_SCREEN = 'WelcomeScreen',
+  LOGIN = 'Login',
+  WELCOME = 'Welcome',
   CREATE_PASSWORD = 'CreatePassword',
   IMPORT_SEED_PHRASE = 'ImportSeedPhrase',
   BACKUP_SEED_PHRASE = 'BackupSeedPhrase',
@@ -16,11 +16,15 @@ enum Routes {
   WALLET_CONNECT_INITIAL_CONNECTION = 'WCInitialConnection',
   WALLET_CONNECT_FLOWS = 'WCFlows',
   WALLET_CONNECT_ERROR = 'WCError',
-  //Settings:
-  SETTINGS_STACK = 'SettingsStack',
+
+  //Modal Stack:
+  MODAL_STACK = 'ModalStack',
   SETTINGS = 'Settings',
   CONTACTS = 'Contacts',
   APPROVED_CANISTERS = 'ApprovedCanisters',
+  SEND = 'Send',
+  NFT_LIST = 'NFTList',
+  NFT_DETAIL = 'NFTDetail',
 }
 
 export const NATIVE_ROUTES = Object.values(Routes);

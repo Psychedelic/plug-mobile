@@ -1,0 +1,15 @@
+diff --git a/node_modules/react-native/Libraries/Components/Keyboard/KeyboardAvoidingView.js b/node_modules/react-native/Libraries/Components/Keyboard/KeyboardAvoidingView.js
+index 6a343d8..474b2ec 100644
+--- a/node_modules/react-native/Libraries/Components/Keyboard/KeyboardAvoidingView.js
++++ b/node_modules/react-native/Libraries/Components/Keyboard/KeyboardAvoidingView.js
+@@ -111,6 +111,10 @@ class KeyboardAvoidingView extends React.Component<Props, State> {
+       this._initialFrameHeight = this._frame.height;
+     }
+ 
++    if (this.props.onLayout) {
++      event.persist();
++    }
++
+     if (wasFrameNull) {
+       await this._updateBottomIfNecessary();
+     }

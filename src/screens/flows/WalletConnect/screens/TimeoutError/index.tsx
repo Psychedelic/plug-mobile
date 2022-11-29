@@ -6,7 +6,7 @@ import Button from '@/components/buttons/Button';
 import Text from '@/components/common/Text';
 import { FontStyles } from '@/constants/theme';
 import useDisableBack from '@/hooks/useDisableBack';
-import { ScreenProps } from '@/interfaces/navigation';
+import { RootScreenProps } from '@/interfaces/navigation';
 import { Container } from '@/layout';
 import Routes from '@/navigation/Routes';
 
@@ -15,7 +15,7 @@ import styles from './styles';
 function WCTimeoutError({
   route,
   navigation,
-}: ScreenProps<Routes.WALLET_CONNECT_ERROR>) {
+}: RootScreenProps<Routes.WALLET_CONNECT_ERROR>) {
   useDisableBack();
   const { dappUrl, dappName } = route?.params || {};
 
@@ -28,7 +28,9 @@ function WCTimeoutError({
       index: 1,
       routes: [{ name: Routes.SWIPE_LAYOUT }],
     });
-    gotoDapp();
+    if (dappUrl) {
+      gotoDapp();
+    }
   };
 
   return (
